@@ -12,42 +12,62 @@
         <p>Foco total na aprovação e revisão inteligente</p>
     </header>
 
-    <main>
-        <!-- Painel de Estatísticas / Placar -->
-        <section class="painel-placar">
+    <div class="container-app">
+        <!-- BARRA LATERAL (Sidebar) -->
+        <aside class="sidebar">
+            <h3>Meu Desempenho</h3>
             <div class="card-stat">
-                <span>Acertos</span>
+                <span>Acertos Totais</span>
                 <strong id="stat-acertos">0</strong>
             </div>
             <div class="card-stat">
-                <span>Erros (Para Revisão)</span>
+                <span>Erros (Revisão)</span>
                 <strong id="stat-erros">0</strong>
             </div>
-            <button id="btn-modo-revisao" class="btn-secundario">Revisar Erros (<span id="contador-revisao">0</span>)</button>
-        </section>
+            <button id="btn-modo-revisao" class="btn-pequeno">Revisar Erros (<span id="contador-revisao">0</span>)</button>
+            <button id="btn-limpar-dados" class="btn-pequeno btn-perigo">Zerar Histórico</button>
 
-        <!-- Filtros -->
-        <section class="filtros">
-            <h2>Filtros</h2>
-            <select id="filtro-banca">
-                <option value="">Todas as Bancas</option>
-                <option value="Cesgranrio">Cesgranrio</option>
-                <option value="FGV">FGV</option>
-                <option value="CEBRASPE">CEBRASPE</option>
-            </select>
-            <button id="btn-filtrar">Filtrar</button>
-            <button id="btn-todas" class="btn-secundario">Ver Todas</button>
-        </section>
-
-        <!-- Lista de Questões -->
-        <section id="lista-questoes">
-            <h2>Questões</h2>
-            <div id="container-questoes">
-                <!-- As questões vão aparecer aqui dinamicamente -->
+            <!-- NOVO: Dashboard de Matérias -->
+            <div id="dashboard-materias" class="dashboard-materias">
+                <!-- As barras de progresso vão aparecer aqui -->
             </div>
-        </section>
-    </main>
+        </aside>
 
+        <!-- CONTEÚDO PRINCIPAL -->
+        <main class="conteudo-principal">
+            <!-- Filtros -->
+            <section class="filtros">
+                <select id="filtro-banca">
+                    <option value="">Todas as Bancas</option>
+                    <option value="Cesgranrio">Cesgranrio</option>
+                    <option value="FGV">FGV</option>
+                    <option value="CEBRASPE">CEBRASPE</option>
+                </select>
+                
+                <!-- NOVO: Filtro de Matéria -->
+                <select id="filtro-materia">
+                    <option value="">Todas as Matérias</option>
+                    <!-- O JavaScript vai preencher as matérias aqui automaticamente -->
+                </select>
+
+                <button id="btn-filtrar" class="btn-pequeno">Filtrar</button>
+                <button id="btn-todas" class="btn-pequeno btn-secundario">Ver Todas</button>
+            </section>
+
+            <section id="lista-questoes">
+                <div id="container-questoes"></div>
+            </section>
+        </main>
+    </div>
+
+   <!-- ... todo o resto do seu HTML acima ... -->
+    
+    <!-- 1º Carrega os dados -->
+    <script src="questoes.js"></script>
+    
+    <!-- 2º Carrega a lógica que vai usar os dados -->
     <script src="app.js"></script>
+</body>
+</html>
 </body>
 </html>
