@@ -1,45 +1,73 @@
 
     
     const questoes = [
-    // id-1: Português - Concordância Verbal
+    
+    // id-1: Português - Concordância Verbal (Perfil Cesgranrio)
     { 
         id: 1, 
         banca: "Cesgranrio", 
         materia: "Português", 
         tags: ["#concordância", "#revisar-véspera", "#pegadinha"],
-        enunciado: "Assinale a alternativa correta sobre concordância verbal...", 
-        alternativas: ["A) Errado", "B) Incorreto", "C) Correto", "D) Nenhuma"], 
-        gabarito: "C" 
+        enunciado: "Assinale a opção em que a concordância verbal está plenamente de acordo com a norma-padrão da Língua Portuguesa.", 
+        alternativas: [
+            "A) Fazem dois anos que estudo para o concurso do Banco Central.", 
+            "B) Haviam muitos candidatos inscritos na prova de tecnologia.", 
+            "C) Tratam-se de regras de negócio complexas na nova API.", 
+            "D) Espera-se que hajam mudanças no edital na próxima semana.",
+            "E) Devem existir outras formas de otimizar esse algoritmo."
+        ], 
+        gabarito: "E" 
     },
 
-    // id-2: Raciocínio Lógico - Lógica de Primeira Ordem
+    // id-2: Raciocínio Lógico - Lógica de Primeira Ordem (Perfil FGV)
     { 
         id: 2, 
         banca: "FGV", 
         materia: "Raciocínio Lógico", 
-        enunciado: "Se todo A é B e nenhum B é C...", 
-        alternativas: ["A) Verdadeiro", "B) Falso", "C) Indeterminado", "D) Talvez"], 
+        tags: ["#lógica-de-primeira-ordem", "#silogismo", "#cgu"],
+        enunciado: "Considere as seguintes premissas verdadeiras: 'Todo desenvolvedor sabe Python. Nenhum analista de infraestrutura sabe Python.' A partir dessas premissas, é logicamente correto concluir que:", 
+        alternativas: [
+            "A) Algum analista de infraestrutura é desenvolvedor.", 
+            "B) Nenhum desenvolvedor é analista de infraestrutura.", 
+            "C) Todo analista de infraestrutura é desenvolvedor.", 
+            "D) Pelo menos um desenvolvedor não sabe Python.",
+            "E) Todo desenvolvedor é analista de infraestrutura."
+        ], 
         gabarito: "B" 
     },
 
-    // id-3: Python - Divisão em Python 3
+    // id-3: Python - Tipagem e Operadores (Perfil Cesgranrio)
     { 
         id: 3, 
         banca: "Cesgranrio", 
         materia: "Python", 
-        enunciado: "Qual é o tipo de dado resultante da expressão 3 / 2 em Python 3?", 
-        alternativas: ["A) float", "B) int", "C) str", "D) bool"], 
-        gabarito: "A" 
+        tags: ["#python", "#tipos-de-dados", "#operadores"],
+        enunciado: "Em Python 3, a divisão comum entre dois números inteiros utilizando o operador de barra simples (por exemplo, ao executar `resultado = 5 / 2`) gerará um valor do tipo:", 
+        alternativas: [
+            "A) int", 
+            "B) float", 
+            "C) double", 
+            "D) decimal",
+            "E) string"
+        ], 
+        gabarito: "B" 
     },
 
-    // id-4: Python - Função print()
+    // id-4: Python - Manipulação de Listas (Perfil Cesgranrio)
     { 
         id: 4, 
         banca: "Cesgranrio", 
         materia: "Python", 
-        enunciado: "O que faz a função print() em Python?", 
-        alternativas: ["A) Lê um arquivo", "B) Exibe dados na tela", "C) Cria uma variável", "D) Fecha o programa"], 
-        gabarito: "B" 
+        tags: ["#python", "#listas", "#estruturas-dados"],
+        enunciado: "Considere a lista `dados = [10, 20, 30]`. Para adicionar o valor inteiro `40` exatamente ao final dessa estrutura em Python, o método correto a ser utilizado é:", 
+        alternativas: [
+            "A) dados.insert(40)", 
+            "B) dados.push(40)", 
+            "C) dados.add(40)", 
+            "D) dados.append(40)",
+            "E) dados.extend(40)"
+        ], 
+        gabarito: "D" 
     },
 
     // id-5: Ciência de Dados - Métodos Supervisionados vs Não Supervisionados

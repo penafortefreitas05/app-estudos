@@ -11,11 +11,21 @@ let tagSelecionada = "";
 let intervaloCronometro; 
 
 function carregarFiltroMaterias() {
-    const materiasUnicas = [...new Set(questoes.map(q => q.materia))];
+    // Limpa o select mantendo a opção padrão inicial
+    selectMateria.innerHTML = '<option value="">📖 Todas as Matérias</option>';
+    
+    // Faz a contagem de questões por matéria
+    const contagem = {};
+    questoes.forEach(q => {
+        contagem[q.materia] = (contagem[q.materia] || 0) + 1;
+    });
+
+    // Ordena as matérias em ordem alfabética e adiciona ao menu
+    const materiasUnicas = Object.keys(contagem).sort();
     materiasUnicas.forEach(materia => {
         const option = document.createElement("option");
-        option.value = materia;
-        option.innerText = materia;
+        option.value = materia; // O valor invisível mantém o nome exato para o filtro não quebrar
+        option.innerText = `${materia} (${contagem[materia]})`; // O texto visível exibe a quantidade
         selectMateria.appendChild(option);
     });
 }
