@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu App de Estudos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Meu App de Estudos 🚀</h1>
+        <p>Focado em desempenho direto ao ponto</p>
+    </header>
+
+    <main>
+        <section class="filtros">
+            <h2>Filtros</h2>
+            <select id="filtro-banca">
+                <option value="">Todas as Bancas</option>
+                <option value="Cesgranrio">Cesgranrio</option>
+                <option value="FGV">FGV</option>
+                <option value="CEBRASPE">CEBRASPE</option>
+            </select>
+            <button id="btn-filtrar">Filtrar</button>
+        </section>
+
+        <section id="lista-questoes">
+            <h2>Questões</h2>
+            <div id="container-questoes">
+                <!-- As questões vão aparecer aqui dinamicamente -->
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
