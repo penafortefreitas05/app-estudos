@@ -37,6 +37,8 @@
         <main class="conteudo-principal">
             <!-- Filtros -->
            <!-- Filtros e Simulado -->
+           <!-- Filtros e Simulado -->
+           <!-- Filtros e Simulado -->
             <section class="filtros">
                 <select id="filtro-banca">
                     <option value="">Todas as Bancas</option>
@@ -47,14 +49,33 @@
                 
                 <select id="filtro-materia">
                     <option value="">Todas as Matérias</option>
-                    <!-- O JavaScript vai preencher as matérias aqui -->
                 </select>
 
-                <!-- NOVO: Controles do Simulado -->
+                <input type="text" id="filtro-busca" placeholder="Buscar palavra..." style="width: 140px; padding: 8px; border-radius: 5px; border: 1px solid #475569; background: #0f172a; color: white;">
+
+                <!-- Controles do Simulado -->
+                <input type="number" id="qtd-simulado" placeholder="Qtd" min="1" max="100" style="width: 60px; padding: 8px; border-radius: 5px; border: 1px solid #475569; background: #0f172a; color: white;" title="Quantidade de questões">
+                
+                <!-- NOVO: Campo de tempo do cronômetro -->
+                <input type="number" id="tempo-simulado" placeholder="Min" min="1" max="240" style="width: 60px; padding: 8px; border-radius: 5px; border: 1px solid #475569; background: #0f172a; color: white;" title="Tempo em minutos">
+                
+                <button id="btn-simulado" class="btn-pequeno" style="background: #ea580c;">Gerar Simulado</button>
+                <button id="btn-todas" class="btn-pequeno btn-secundario">Ver Todas</button>
+            </section>
+
+            <!-- NOVO: Display do Cronômetro -->
+            <div id="display-cronometro" style="display: none; text-align: center; margin: 15px 0; padding: 10px; background: #1e293b; border-radius: 8px; border: 1px solid #ea580c;">
+                <span style="font-size: 1.2rem; color: #94a3b8;">Tempo Restante: </span>
+                <span id="tempo-restante" style="font-size: 1.5rem; font-weight: bold; color: #ea580c;">00:00</span>
+            </div>
+
+                <!-- NOVO: Barra de Pesquisa Rápida -->
+                <input type="text" id="filtro-busca" placeholder="Buscar palavra..." style="width: 140px; padding: 8px; border-radius: 5px; border: 1px solid #475569; background: #0f172a; color: white;">
+
+                <!-- Controles do Simulado -->
                 <input type="number" id="qtd-simulado" placeholder="Qtd" min="1" max="100" style="width: 70px; padding: 8px; border-radius: 5px; border: 1px solid #475569; background: #0f172a; color: white;" title="Quantidade de questões">
                 
                 <button id="btn-simulado" class="btn-pequeno" style="background: #ea580c;">Gerar Simulado</button>
-                <button id="btn-filtrar" class="btn-pequeno">Filtrar</button>
                 <button id="btn-todas" class="btn-pequeno btn-secundario">Ver Todas</button>
             </section>
 

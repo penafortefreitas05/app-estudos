@@ -4,7 +4,11 @@ let historico = JSON.parse(localStorage.getItem('appEstudos_Historico')) || {};
 const container = document.getElementById("container-questoes");
 const selectBanca = document.getElementById("filtro-banca");
 const selectMateria = document.getElementById("filtro-materia");
-let tagSelecionada = ""; // Variável global para guardar a tag atual
+const inputBusca = document.getElementById("filtro-busca"); 
+let tagSelecionada = ""; 
+
+// NOVO: Variável global do relógio
+let intervaloCronometro; 
 
 function carregarFiltroMaterias() {
     const materiasUnicas = [...new Set(questoes.map(q => q.materia))];
@@ -115,7 +119,6 @@ function renderizarQuestoes(lista) {
             return `<button class="btn-opcao" onclick="responder(${q.id}, '${letra}')">${alt}</button>`;
         }).join("");
 
-        // Monta o HTML das tags
         let htmlTags = "";
         if (q.tags && q.tags.length > 0) {
             htmlTags = `<div class="container-tags">` +
@@ -139,21 +142,24 @@ function renderizarQuestoes(lista) {
 }
 
 function aplicarFiltros() {
+    pararCronometro(); // Desliga o relógio se mudar os filtros manualmente
+    
     const bancaSelecionada = selectBanca.value;
     const materiaSelecionada = selectMateria.value;
+    const termoBusca = inputBusca.value.toLowerCase(); 
 
     const filtradas = questoes.filter(q => {
         const bateBanca = bancaSelecionada === "" || q.banca === bancaSelecionada;
         const bateMateria = materiaSelecionada === "" || q.materia === materiaSelecionada;
         const bateTag = tagSelecionada === "" || (q.tags && q.tags.includes(tagSelecionada));
+        const bateBusca = termoBusca === "" || q.enunciado.toLowerCase().includes(termoBusca) || q.alternativas.join(" ").toLowerCase().includes(termoBusca);
         
-        return bateBanca && bateMateria && bateTag;
+        return bateBanca && bateMateria && bateTag && bateBusca;
     });
 
     renderizarQuestoes(filtradas);
 }
 
-// Algoritmo Fisher-Yates para o Simulado
 function embaralharArray(array) {
     let arrayEmbaralhado = [...array]; 
     for (let i = arrayEmbaralhado.length - 1; i > 0; i--) {
@@ -161,6 +167,39 @@ function embaralharArray(array) {
         [arrayEmbaralhado[i], arrayEmbaralhado[j]] = [arrayEmbaralhado[j], arrayEmbaralhado[i]];
     }
     return arrayEmbaralhado;
+}
+
+// NOVO: Funções do Cronômetro
+function iniciarCronometro(minutos) {
+    clearInterval(intervaloCronometro);
+    const display = document.getElementById("display-cronometro");
+    const spanTempo = document.getElementById("tempo-restante");
+    display.style.display = "block";
+    spanTempo.style.color = "#ea580c"; // Reseta a cor para laranja
+
+    let tempoEmSegundos = minutos * 60;
+
+    function atualizarTela() {
+        const min = Math.floor(tempoEmSegundos / 60);
+        const seg = tempoEmSegundos % 60;
+        spanTempo.innerText = `${min.toString().padStart(2, '0')}:${seg.toString().padStart(2, '0')}`;
+
+        if (tempoEmSegundos <= 0) {
+            clearInterval(intervaloCronometro);
+            spanTempo.innerText = "00:00 - TEMPO ESGOTADO!";
+            spanTempo.style.color = "#ef4444"; // Vermelho
+            alert("O tempo do seu simulado acabou! Verifique seu desempenho.");
+        }
+        tempoEmSegundos--;
+    }
+
+    atualizarTela(); 
+    intervaloCronometro = setInterval(atualizarTela, 1000);
+}
+
+function pararCronometro() {
+    clearInterval(intervaloCronometro);
+    document.getElementById("display-cronometro").style.display = "none";
 }
 
 window.responder = function(idQuestao, alternativaEscolhida) {
@@ -188,8 +227,10 @@ window.responder = function(idQuestao, alternativaEscolhida) {
     localStorage.setItem('appEstudos_Historico', JSON.stringify(historico));
     atualizarPlacar();
     
-    // Atualiza a tela mantendo os filtros atuais após 1.5s
-    setTimeout(aplicarFiltros, 1500);
+    // ATUALIZADO: Só limpa a questão se NÃO estiver no modo simulado ativo
+    if (document.getElementById("display-cronometro").style.display === "none") {
+        setTimeout(aplicarFiltros, 1500);
+    }
 };
 
 window.filtrarPorTag = function(tag) {
@@ -197,36 +238,49 @@ window.filtrarPorTag = function(tag) {
     aplicarFiltros();
 };
 
-
-// --- EVENTOS DE CLIQUE DOS BOTÕES ---
+// Eventos
+inputBusca.addEventListener("input", aplicarFiltros);
+selectBanca.addEventListener("change", aplicarFiltros);
+selectMateria.addEventListener("change", aplicarFiltros);
 
 document.getElementById("btn-simulado").addEventListener("click", () => {
     const bancaSelecionada = selectBanca.value;
     const materiaSelecionada = selectMateria.value;
+    const termoBusca = inputBusca.value.toLowerCase();
     const qtd = parseInt(document.getElementById("qtd-simulado").value) || 10; 
+    const tempo = parseInt(document.getElementById("tempo-simulado").value); // NOVO
 
     const filtradas = questoes.filter(q => {
         const bateBanca = bancaSelecionada === "" || q.banca === bancaSelecionada;
         const bateMateria = materiaSelecionada === "" || q.materia === materiaSelecionada;
         const bateTag = tagSelecionada === "" || (q.tags && q.tags.includes(tagSelecionada));
-        return bateBanca && bateMateria && bateTag;
+        const bateBusca = termoBusca === "" || q.enunciado.toLowerCase().includes(termoBusca);
+        return bateBanca && bateMateria && bateTag && bateBusca;
     });
 
     const sorteadas = embaralharArray(filtradas);
     renderizarQuestoes(sorteadas.slice(0, qtd));
-});
 
-document.getElementById("btn-filtrar").addEventListener("click", aplicarFiltros);
+    // Inicia o cronômetro se o usuário digitou os minutos
+    if (tempo > 0) {
+        iniciarCronometro(tempo);
+    } else {
+        pararCronometro();
+    }
+});
 
 document.getElementById("btn-todas").addEventListener("click", () => {
     selectBanca.value = "";
     selectMateria.value = "";
+    inputBusca.value = "";
     document.getElementById("qtd-simulado").value = "";
-    tagSelecionada = ""; // Limpa a tag ao ver todas
-    aplicarFiltros();
+    document.getElementById("tempo-simulado").value = "";
+    tagSelecionada = ""; 
+    aplicarFiltros(); // O aplicarFiltros já chama o pararCronometro()
 });
 
 document.getElementById("btn-modo-revisao").addEventListener("click", () => {
+    pararCronometro();
     const questoesParaRevisar = questoes.filter(q => historico[q.id] && historico[q.id].ultimaResposta === 'errado');
     renderizarQuestoes(questoesParaRevisar);
 });
@@ -240,7 +294,7 @@ document.getElementById("btn-limpar-dados").addEventListener("click", () => {
     }
 });
 
-// Carga inicial ao abrir a página
+// Carga inicial
 carregarFiltroMaterias();
 atualizarPlacar();
 aplicarFiltros();

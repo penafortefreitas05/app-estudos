@@ -448,6 +448,95 @@
             "B) Errado"
         ], 
         gabarito: "A" 
+    },
+    // id-31: Banco de Dados - Normalização (Perfil Bacen/CGU)
+    { 
+        id: 31, 
+        banca: "CEBRASPE", 
+        materia: "Bancos de Dados", 
+        tags: ["#normalização", "#bacen", "#banco-de-dados"],
+        enunciado: "Acerca de banco de dados relacional, julgue o item a seguir. A terceira forma normal (3FN) exige que a tabela esteja na segunda forma normal (2FN) e que não existam dependências transitivas entre os atributos não chave e a chave primária.", 
+        alternativas: [
+            "A) Certo", 
+            "B) Errado"
+        ], 
+        gabarito: "A" 
+    },
+
+    // id-32: Segurança da Informação - Assinatura Digital
+    { 
+        id: 32, 
+        banca: "CEBRASPE", 
+        materia: "Segurança da Informação", 
+        tags: ["#assinatura-digital", "#criptografia", "#bacen"],
+        enunciado: "Na assinatura digital, utiliza-se a chave privada do remetente para cifrar o hash da mensagem, garantindo assim a integridade e o não repúdio da informação.", 
+        alternativas: [
+            "A) Certo", 
+            "B) Errado"
+        ], 
+        gabarito: "A" 
+    },
+
+    // id-33: Engenharia de Software - Requisitos
+    { 
+        id: 33, 
+        banca: "CEBRASPE", 
+        materia: "Desenvolvimento de Sistemas", 
+        tags: ["#engenharia-de-requisitos", "#bacen", "#agile"],
+        enunciado: "Os requisitos não funcionais dizem respeito às restrições sobre os serviços ou funções oferecidos pelo sistema, como, por exemplo, restrições de tempo, limitações sobre o processo de desenvolvimento ou imposições por padrões.", 
+        alternativas: [
+            "A) Certo", 
+            "B) Errado"
+        ], 
+        gabarito: "A" 
+    },
+
+    // id-34: Banco de Dados - SQL Joins (Perfil CGU)
+    { 
+        id: 34, 
+        banca: "FGV", 
+        materia: "Bancos de Dados", 
+        tags: ["#sql", "#cgu", "#join"],
+        enunciado: "Em SQL, o operador utilizado para combinar registros de duas tabelas, retornando apenas as linhas que possuem valores correspondentes em ambas as tabelas, é o:", 
+        alternativas: [
+            "A) LEFT JOIN", 
+            "B) RIGHT JOIN", 
+            "C) FULL OUTER JOIN", 
+            "D) INNER JOIN", 
+            "E) CROSS JOIN"
+        ], 
+        gabarito: "D" 
+    },
+
+    // id-35: Python - Tratamento de Exceções
+    { 
+        id: 35, 
+        banca: "FGV", 
+        materia: "Python", 
+        tags: ["#python", "#cgu", "#exceções"],
+        enunciado: "Em Python, o bloco de código destinado a tentar executar instruções que podem gerar erros, e o bloco destinado a capturar e tratar as exceções caso elas ocorram, são definidos, respectivamente, pelas palavras reservadas:", 
+        alternativas: [
+            "A) try e catch", 
+            "B) try e except", 
+            "C) catch e default", 
+            "D) try e finally", 
+            "E) except e end"
+        ], 
+        gabarito: "B" 
+    },
+
+    // id-36: Ciência de Dados - Overfitting
+    { 
+        id: 36, 
+        banca: "CEBRASPE", 
+        materia: "Ciência de Dados", 
+        tags: ["#machine-learning", "#bacen", "#overfitting"],
+        enunciado: "Ocorre overfitting (sobreajuste) quando um modelo de aprendizado de máquina se ajusta tão bem aos dados de treinamento que acaba perdendo a capacidade de generalização para novos dados, apresentando alto desempenho no treino, mas baixo desempenho no teste.", 
+        alternativas: [
+            "A) Certo", 
+            "B) Errado"
+        ], 
+        gabarito: "A" 
     }
 
 ];
