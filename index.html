@@ -9,10 +9,24 @@
 <body>
     <header>
         <h1>Meu App de Estudos 🚀</h1>
-        <p>Focado em desempenho direto ao ponto</p>
+        <p>Foco total na aprovação e revisão inteligente</p>
     </header>
 
     <main>
+        <!-- Painel de Estatísticas / Placar -->
+        <section class="painel-placar">
+            <div class="card-stat">
+                <span>Acertos</span>
+                <strong id="stat-acertos">0</strong>
+            </div>
+            <div class="card-stat">
+                <span>Erros (Para Revisão)</span>
+                <strong id="stat-erros">0</strong>
+            </div>
+            <button id="btn-modo-revisao" class="btn-secundario">Revisar Erros (<span id="contador-revisao">0</span>)</button>
+        </section>
+
+        <!-- Filtros -->
         <section class="filtros">
             <h2>Filtros</h2>
             <select id="filtro-banca">
@@ -22,8 +36,10 @@
                 <option value="CEBRASPE">CEBRASPE</option>
             </select>
             <button id="btn-filtrar">Filtrar</button>
+            <button id="btn-todas" class="btn-secundario">Ver Todas</button>
         </section>
 
+        <!-- Lista de Questões -->
         <section id="lista-questoes">
             <h2>Questões</h2>
             <div id="container-questoes">
