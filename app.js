@@ -1,14 +1,13 @@
+// Carrega o histórico salvo no navegador
 let historico = JSON.parse(localStorage.getItem('appEstudos_Historico')) || {};
 
 const container = document.getElementById("container-questoes");
 const selectBanca = document.getElementById("filtro-banca");
-const selectMateria = document.getElementById("filtro-materia"); // NOVO
+const selectMateria = document.getElementById("filtro-materia");
+let tagSelecionada = ""; // Variável global para guardar a tag atual
 
-// NOVO: Preenche o filtro de matérias automaticamente baseado no banco de questões
 function carregarFiltroMaterias() {
-    // Pega o nome de todas as matérias sem repetir
     const materiasUnicas = [...new Set(questoes.map(q => q.materia))];
-    
     materiasUnicas.forEach(materia => {
         const option = document.createElement("option");
         option.value = materia;
@@ -20,7 +19,6 @@ function carregarFiltroMaterias() {
 function classificarStatus(id) {
     const dados = historico[id];
     if (!dados || dados.tentativas === 0) return { classe: '', texto: 'Nova' };
-
     const taxaAcerto = (dados.acertos / dados.tentativas) * 100;
 
     if (taxaAcerto >= 80 && dados.tentativas >= 3) {
@@ -117,11 +115,20 @@ function renderizarQuestoes(lista) {
             return `<button class="btn-opcao" onclick="responder(${q.id}, '${letra}')">${alt}</button>`;
         }).join("");
 
+        // Monta o HTML das tags
+        let htmlTags = "";
+        if (q.tags && q.tags.length > 0) {
+            htmlTags = `<div class="container-tags">` +
+                q.tags.map(tag => `<span class="tag-item" style="cursor: pointer;" onclick="filtrarPorTag('${tag}')">${tag}</span>`).join("") +
+            `</div>`;
+        }
+
         div.innerHTML = `
             <div class="questao-header">
                 <span><strong>Banca:</strong> ${q.banca} | <strong>Matéria:</strong> ${q.materia}</span>
                 <span class="badge ${status.classe}">${status.texto}</span>
             </div>
+            ${htmlTags}
             <p>${q.enunciado}</p>
             <div class="opcoes-resposta">${botoesAlternativas}</div>
             <small style="color: #64748b; font-size: 0.75rem;">Tentativas: ${dados.tentativas}</small>
@@ -131,7 +138,6 @@ function renderizarQuestoes(lista) {
     });
 }
 
-// NOVO: Função centralizada para aplicar todos os filtros juntos
 function aplicarFiltros() {
     const bancaSelecionada = selectBanca.value;
     const materiaSelecionada = selectMateria.value;
@@ -139,10 +145,22 @@ function aplicarFiltros() {
     const filtradas = questoes.filter(q => {
         const bateBanca = bancaSelecionada === "" || q.banca === bancaSelecionada;
         const bateMateria = materiaSelecionada === "" || q.materia === materiaSelecionada;
-        return bateBanca && bateMateria;
+        const bateTag = tagSelecionada === "" || (q.tags && q.tags.includes(tagSelecionada));
+        
+        return bateBanca && bateMateria && bateTag;
     });
 
     renderizarQuestoes(filtradas);
+}
+
+// Algoritmo Fisher-Yates para o Simulado
+function embaralharArray(array) {
+    let arrayEmbaralhado = [...array]; 
+    for (let i = arrayEmbaralhado.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arrayEmbaralhado[i], arrayEmbaralhado[j]] = [arrayEmbaralhado[j], arrayEmbaralhado[i]];
+    }
+    return arrayEmbaralhado;
 }
 
 window.responder = function(idQuestao, alternativaEscolhida) {
@@ -174,12 +192,37 @@ window.responder = function(idQuestao, alternativaEscolhida) {
     setTimeout(aplicarFiltros, 1500);
 };
 
-// Eventos de clique agora chamam a nova função aplicarFiltros
+window.filtrarPorTag = function(tag) {
+    tagSelecionada = tag;
+    aplicarFiltros();
+};
+
+
+// --- EVENTOS DE CLIQUE DOS BOTÕES ---
+
+document.getElementById("btn-simulado").addEventListener("click", () => {
+    const bancaSelecionada = selectBanca.value;
+    const materiaSelecionada = selectMateria.value;
+    const qtd = parseInt(document.getElementById("qtd-simulado").value) || 10; 
+
+    const filtradas = questoes.filter(q => {
+        const bateBanca = bancaSelecionada === "" || q.banca === bancaSelecionada;
+        const bateMateria = materiaSelecionada === "" || q.materia === materiaSelecionada;
+        const bateTag = tagSelecionada === "" || (q.tags && q.tags.includes(tagSelecionada));
+        return bateBanca && bateMateria && bateTag;
+    });
+
+    const sorteadas = embaralharArray(filtradas);
+    renderizarQuestoes(sorteadas.slice(0, qtd));
+});
+
 document.getElementById("btn-filtrar").addEventListener("click", aplicarFiltros);
 
 document.getElementById("btn-todas").addEventListener("click", () => {
     selectBanca.value = "";
     selectMateria.value = "";
+    document.getElementById("qtd-simulado").value = "";
+    tagSelecionada = ""; // Limpa a tag ao ver todas
     aplicarFiltros();
 });
 
@@ -197,7 +240,7 @@ document.getElementById("btn-limpar-dados").addEventListener("click", () => {
     }
 });
 
-// Carga inicial
+// Carga inicial ao abrir a página
 carregarFiltroMaterias();
 atualizarPlacar();
 aplicarFiltros();

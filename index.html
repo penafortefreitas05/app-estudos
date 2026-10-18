@@ -36,6 +36,7 @@
         <!-- CONTEÚDO PRINCIPAL -->
         <main class="conteudo-principal">
             <!-- Filtros -->
+           <!-- Filtros e Simulado -->
             <section class="filtros">
                 <select id="filtro-banca">
                     <option value="">Todas as Bancas</option>
@@ -44,12 +45,15 @@
                     <option value="CEBRASPE">CEBRASPE</option>
                 </select>
                 
-                <!-- NOVO: Filtro de Matéria -->
                 <select id="filtro-materia">
                     <option value="">Todas as Matérias</option>
-                    <!-- O JavaScript vai preencher as matérias aqui automaticamente -->
+                    <!-- O JavaScript vai preencher as matérias aqui -->
                 </select>
 
+                <!-- NOVO: Controles do Simulado -->
+                <input type="number" id="qtd-simulado" placeholder="Qtd" min="1" max="100" style="width: 70px; padding: 8px; border-radius: 5px; border: 1px solid #475569; background: #0f172a; color: white;" title="Quantidade de questões">
+                
+                <button id="btn-simulado" class="btn-pequeno" style="background: #ea580c;">Gerar Simulado</button>
                 <button id="btn-filtrar" class="btn-pequeno">Filtrar</button>
                 <button id="btn-todas" class="btn-pequeno btn-secundario">Ver Todas</button>
             </section>

@@ -200,3 +200,21 @@ select {
 .barra-progresso.excelente { background: #22c55e; } /* Verde (+80%) */
 .barra-progresso.atencao { background: #facc15; }   /* Amarelo (+60%) */
 .barra-progresso.critico { background: #ef4444; }   /* Vermelho (-60%) */
+
+.container-tags {
+    margin-top: 10px;
+    margin-bottom: 15px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.tag-item {
+    background: #334155;
+    color: #38bdf8;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}

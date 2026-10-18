@@ -6,6 +6,7 @@
         id: 1, 
         banca: "Cesgranrio", 
         materia: "Português", 
+        tags: ["#concordância", "#revisar-véspera", "#pegadinha"],
         enunciado: "Assinale a alternativa correta sobre concordância verbal...", 
         alternativas: ["A) Errado", "B) Incorreto", "C) Correto", "D) Nenhuma"], 
         gabarito: "C" 
@@ -389,5 +390,64 @@
             "E) declaração de aplicabilidade." 
         ], 
         gabarito: "E" 
+    },
+    // id-27: Python - Manipulação de Listas e Dicionários (Perfil Bacen/CGU)
+    { 
+        id: 27, 
+        banca: "CEBRASPE", 
+        materia: "Python", 
+        tags: ["#python", "#bacen", "#estruturas-dados"],
+        enunciado: "Em Python, considere a instrução: dados = {'a': 1, 'b': 2, 'c': 3}. A execução da instrução list(dados.keys()) produzirá como resultado uma lista contendo as chaves do dicionário.", 
+        alternativas: [
+            "A) Certo", 
+            "B) Errado"
+        ], 
+        gabarito: "A" 
+    },
+
+    // id-28: Ciência de Dados - Aprendizado Não Supervisionado (Perfil Bacen/CGU)
+    { 
+        id: 28, 
+        banca: "CEBRASPE", 
+        materia: "Ciência de Dados", 
+        tags: ["#algoritmos", "#bacen", "#clustering"],
+        enunciado: "O algoritmo K-Means é um método de aprendizado de máquina não supervisionado utilizado para agrupamento (clustering), no qual o número de clusters (K) deve ser definido previamente pelo usuário.", 
+        alternativas: [
+            "A) Certo", 
+            "B) Errado"
+        ], 
+        gabarito: "A" 
+    },
+
+    // id-29: Python - Compreensão de Listas (List Comprehension)
+    { 
+        id: 29, 
+        banca: "FGV", 
+        materia: "Python", 
+        tags: ["#python", "#cgu", "#sintaxe-avançada"],
+        enunciado: "Considere o seguinte código em Python 3: numeros = [1, 2, 3, 4, 5]; resultado = [x**2 for x in numeros if x % 2 != 0]. O valor da variável 'resultado' após a execução é:", 
+        alternativas: [
+            "A) [1, 4, 9, 16, 25]", 
+            "B) [4, 16]", 
+            "C) [1, 9, 25]", 
+            "D) [2, 4]",
+            "E) [1, 3, 5]" 
+        ], 
+        gabarito: "C" 
+    },
+
+    // id-30: Engenharia de Software - Microserviços (Perfil Bacen/CGU)
+    { 
+        id: 30, 
+        banca: "FGV", 
+        materia: "Desenvolvimento de Sistemas", 
+        tags: ["#arquitetura", "#bacen", "#microserviços"],
+        enunciado: "Em uma arquitetura baseada em microsserviços, cada serviço deve idealmente possuir sua própria base de dados (Database per Service) para garantir o desacoplamento e a autonomia de implantação.", 
+        alternativas: [
+            "A) Certo", 
+            "B) Errado"
+        ], 
+        gabarito: "A" 
     }
+
 ];
