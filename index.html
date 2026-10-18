@@ -3,96 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu App de Estudos</title>
+    <title>FocoPro - Preparação Inteligente</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Fonte moderna similar à da imagem -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <h1>Meu App de Estudos 🚀</h1>
-        <p>Foco total na aprovação e revisão inteligente</p>
-    </header>
-
-    <div class="container-app">
-        <!-- BARRA LATERAL (Sidebar) -->
+    <div class="app-layout">
+        <!-- PAINEL LATERAL (Menu Escuro) -->
         <aside class="sidebar">
-            <h3>Meu Desempenho</h3>
-            <div class="card-stat">
-                <span>Acertos Totais</span>
-                <strong id="stat-acertos">0</strong>
+            <div class="brand">
+                <h2>FocoPro ✦ </h2>
+                <p>Foco total na aprovação</p>
             </div>
-            <div class="card-stat">
-                <span>Erros (Revisão)</span>
-                <strong id="stat-erros">0</strong>
-            </div>
-            <button id="btn-modo-revisao" class="btn-pequeno">Revisar Erros (<span id="contador-revisao">0</span>)</button>
-            <button id="btn-limpar-dados" class="btn-pequeno btn-perigo">Zerar Histórico</button>
 
-            <!-- NOVO: Dashboard de Matérias -->
-            <div id="dashboard-materias" class="dashboard-materias">
-                <!-- As barras de progresso vão aparecer aqui -->
+            <div class="menu-item active">
+                🏠 Meu Desempenho
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-title">🎯 Acertos Totais</span>
+                <span class="stat-value text-blue" id="stat-acertos">0</span>
+                <div class="progress-bar-mini blue"></div>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-title">🔄 Erros (Revisão)</span>
+                <span class="stat-value text-orange" id="stat-erros">0</span>
+                <div class="progress-bar-mini orange"></div>
+            </div>
+
+            <button id="btn-modo-revisao" class="btn-sidebar">
+                <span>📑 Revisar Erros</span>
+                <span class="badge-count" id="contador-revisao">0</span>
+            </button>
+
+            <button id="btn-limpar-dados" class="btn-sidebar danger">
+                <span>❌ Zerar Histórico</span>
+            </button>
+
+            <div class="dashboard-container" id="dashboard-materias">
+                <!-- Gráficos gerados pelo JS entram aqui -->
             </div>
         </aside>
 
-        <!-- CONTEÚDO PRINCIPAL -->
-        <main class="conteudo-principal">
-            <!-- Filtros -->
-           <!-- Filtros e Simulado -->
-           <!-- Filtros e Simulado -->
-           <!-- Filtros e Simulado -->
-            <section class="filtros">
-                <select id="filtro-banca">
-                    <option value="">Todas as Bancas</option>
-                    <option value="Cesgranrio">Cesgranrio</option>
-                    <option value="FGV">FGV</option>
-                    <option value="CEBRASPE">CEBRASPE</option>
-                </select>
-                
-                <select id="filtro-materia">
-                    <option value="">Todas as Matérias</option>
-                </select>
+        <!-- CONTEÚDO PRINCIPAL (Área Central) -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="filtros-container">
+                    <select id="filtro-banca" class="input-dark">
+                        <option value="">🏛️ Todas as Bancas</option>
+                        <option value="Cesgranrio">Cesgranrio</option>
+                        <option value="FGV">FGV</option>
+                        <option value="CEBRASPE">CEBRASPE</option>
+                    </select>
+                    
+                    <select id="filtro-materia" class="input-dark">
+                        <option value="">📖 Todas as Matérias</option>
+                    </select>
 
-                <input type="text" id="filtro-busca" placeholder="Buscar palavra..." style="width: 140px; padding: 8px; border-radius: 5px; border: 1px solid #475569; background: #0f172a; color: white;">
+                    <div class="search-box">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="filtro-busca" class="input-dark" placeholder="Buscar palavra...">
+                    </div>
 
-                <!-- Controles do Simulado -->
-                <input type="number" id="qtd-simulado" placeholder="Qtd" min="1" max="100" style="width: 60px; padding: 8px; border-radius: 5px; border: 1px solid #475569; background: #0f172a; color: white;" title="Quantidade de questões">
-                
-                <!-- NOVO: Campo de tempo do cronômetro -->
-                <input type="number" id="tempo-simulado" placeholder="Min" min="1" max="240" style="width: 60px; padding: 8px; border-radius: 5px; border: 1px solid #475569; background: #0f172a; color: white;" title="Tempo em minutos">
-                
-                <button id="btn-simulado" class="btn-pequeno" style="background: #ea580c;">Gerar Simulado</button>
-                <button id="btn-todas" class="btn-pequeno btn-secundario">Ver Todas</button>
-            </section>
+                    <input type="number" id="qtd-simulado" class="input-dark num-input" placeholder="Qtd" min="1" max="100" title="Quantidade de questões">
+                    <input type="number" id="tempo-simulado" class="input-dark num-input" placeholder="Min" min="1" max="240" title="Tempo em minutos">
+                    
+                    <button id="btn-simulado" class="btn-primary">▶ Gerar Simulado</button>
+                    <button id="btn-todas" class="btn-secondary">⚙️ Ver Todas</button>
+                </div>
+            </header>
 
-            <!-- NOVO: Display do Cronômetro -->
-            <div id="display-cronometro" style="display: none; text-align: center; margin: 15px 0; padding: 10px; background: #1e293b; border-radius: 8px; border: 1px solid #ea580c;">
-                <span style="font-size: 1.2rem; color: #94a3b8;">Tempo Restante: </span>
-                <span id="tempo-restante" style="font-size: 1.5rem; font-weight: bold; color: #ea580c;">00:00</span>
+            <!-- Cronômetro -->
+            <div id="display-cronometro" class="cronometro-box" style="display: none;">
+                <span>Tempo Restante: </span>
+                <span id="tempo-restante" class="tempo-valor">00:00</span>
             </div>
 
-                <!-- NOVO: Barra de Pesquisa Rápida -->
-                <input type="text" id="filtro-busca" placeholder="Buscar palavra..." style="width: 140px; padding: 8px; border-radius: 5px; border: 1px solid #475569; background: #0f172a; color: white;">
-
-                <!-- Controles do Simulado -->
-                <input type="number" id="qtd-simulado" placeholder="Qtd" min="1" max="100" style="width: 70px; padding: 8px; border-radius: 5px; border: 1px solid #475569; background: #0f172a; color: white;" title="Quantidade de questões">
-                
-                <button id="btn-simulado" class="btn-pequeno" style="background: #ea580c;">Gerar Simulado</button>
-                <button id="btn-todas" class="btn-pequeno btn-secundario">Ver Todas</button>
-            </section>
-
-            <section id="lista-questoes">
-                <div id="container-questoes"></div>
+            <!-- Cartões de Questões -->
+            <section id="container-questoes" class="questoes-grid">
+                <!-- Questões renderizadas pelo JS entram aqui -->
             </section>
         </main>
     </div>
 
-   <!-- ... todo o resto do seu HTML acima ... -->
-    
-    <!-- 1º Carrega os dados -->
     <script src="questoes.js"></script>
-    
-    <!-- 2º Carrega a lógica que vai usar os dados -->
     <script src="app.js"></script>
-</body>
-</html>
 </body>
 </html>
