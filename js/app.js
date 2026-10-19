@@ -1,5 +1,5 @@
 // ============================================================
-// js/app.js - Orquestrador Principal (Com Carga Assíncrona)
+// js/app.js - Orquestrador Principal (Com Caderno de Erros & Ações)
 // ============================================================
 
 // ---------- IMPORTAÇÕES DE MÓDULOS ----------
@@ -24,7 +24,7 @@ import {
 import { showToast, showConfirmModal } from './notifications.js';
 import { carregarQuestoes } from './api.js';
 
-// ---------- ESTADO GLOBAL DA APLICAÇÃO ----------
+// ---------- ESTADO GLOBAL ----------
 let historico = carregarHistorico();
 let questoes = [];
 let porId = new Map();
@@ -63,7 +63,7 @@ const btnImportar = criarBotaoSidebar("📂 Importar Histórico");
 const btnLimpar = document.getElementById("btn-limpar-dados");
 if (btnLimpar) btnLimpar.before(btnExportar, btnImportar);
 
-// ---------- UTILITÁRIOS ----------
+// ---------- UTILITÁRIOS E VALIDAÇÃO ----------
 function embaralharArray(array) {
     const a = [...array];
     for (let i = a.length - 1; i > 0; i--) {
@@ -87,7 +87,7 @@ function validarQuestoes() {
     });
 }
 
-// ---------- FILTROS DE QUESTÕES ----------
+// ---------- FILTROS ----------
 function filtrarQuestoes() {
     const banca = selectBanca.value;
     const materia = selectMateria.value;
@@ -168,14 +168,16 @@ function responder(card, botao) {
     atualizarPlacar(historico, questoes);
 }
 
-// ---------- EXPORTAR / IMPORTAR ----------
+// ---------- EXPORTAR E IMPORTAR ----------
 function exportarHistorico() {
     const blob = new Blob([JSON.stringify(historico, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
     a.download = `focopro-historico-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
     a.click();
+    a.remove();
     URL.revokeObjectURL(url);
     showToast("Download do histórico iniciado!", "sucesso");
 }
@@ -185,8 +187,7 @@ function importarHistorico(arquivo) {
     leitor.onload = async () => {
         try {
             const dados = JSON.parse(leitor.result);
-            const valido = dados && typeof dados === 'object' && !Array.isArray(dados) &&
-                Object.values(dados).every(h => h && typeof h === 'object' && typeof h.tentativas === 'number');
+            const valido = dados && typeof dados === 'object' && !Array.isArray(dados);
             
             if (!valido) throw new Error("formato inválido");
 
@@ -205,7 +206,7 @@ function importarHistorico(arquivo) {
             aplicarFiltros();
             showToast("Histórico importado com sucesso!", "sucesso");
         } catch (e) {
-            showToast("Arquivo JSON inválido. Use um backup exportado pelo FocoPro.", "erro");
+            showToast("Arquivo JSON inválido. Use um backup do FocoPro.", "erro");
         }
     };
     leitor.readAsText(arquivo);
@@ -213,7 +214,7 @@ function importarHistorico(arquivo) {
 
 // ---------- ESCUTADORES DE EVENTOS ----------
 container.addEventListener("click", e => {
-    // 1. Responder opção de questão
+    // 1. Responder
     const opcao = e.target.closest(".btn-opcao");
     if (opcao && !opcao.disabled) {
         responder(opcao.closest(".questao-card"), opcao);
@@ -233,7 +234,7 @@ container.addEventListener("click", e => {
         return;
     }
 
-    // 4. Toggle da Caixa de Anotação (Caderno de Erros)
+    // 4. Toggle Anotação
     const btnToggleAnotacao = e.target.closest(".btn-anotacao-toggle");
     if (btnToggleAnotacao) {
         const card = btnToggleAnotacao.closest(".questao-card");
@@ -242,7 +243,7 @@ container.addEventListener("click", e => {
         return;
     }
 
-    // 5. Salvar Anotação Pessoal
+    // 5. Salvar Anotação
     const btnSalvarAnotacao = e.target.closest(".btn-salvar-anotacao");
     if (btnSalvarAnotacao) {
         const card = btnSalvarAnotacao.closest(".questao-card");
@@ -263,12 +264,55 @@ container.addEventListener("click", e => {
     }
 });
 
-// ---------- BOTÃO MODO REVISÃO / CADERNO DE ERROS ----------
+chipTag.addEventListener("click", e => {
+    if (e.target.id === "btn-limpar-tag") definirTag("");
+});
+
+inputBusca.addEventListener("input", aplicarFiltros);
+selectBanca.addEventListener("change", aplicarFiltros);
+selectMateria.addEventListener("change", aplicarFiltros);
+
+document.getElementById("btn-simulado").addEventListener("click", () => {
+    const qtd = parseInt(document.getElementById("qtd-simulado").value) || 10;
+    const tempo = parseInt(document.getElementById("tempo-simulado").value);
+
+    const filtradas = filtrarQuestoes();
+    pararCronometro(displayCronometro);
+
+    if (filtradas.length === 0) {
+        simulado = null;
+        renderizarQuestoes(container, [], historico);
+        return;
+    }
+
+    const sorteadas = embaralharArray(filtradas).slice(0, qtd);
+    simulado = { ids: sorteadas.map(q => q.id), respostas: {}, inicio: Date.now(), finalizado: false };
+    renderizarQuestoes(container, sorteadas, historico);
+    adicionarBotaoFinalizar(container);
+
+    if (tempo > 0) {
+        iniciarCronometro(tempo, displayCronometro, () => {
+            finalizarSimulado(simulado, container, porId, historico, questoes, true);
+        });
+    }
+});
+
+document.getElementById("btn-todas").addEventListener("click", () => {
+    selectBanca.value = "";
+    selectMateria.value = "";
+    inputBusca.value = "";
+    document.getElementById("qtd-simulado").value = "";
+    document.getElementById("tempo-simulado").value = "";
+    tagSelecionada = "";
+    atualizarChipTag(chipTag, tagSelecionada);
+    aplicarFiltros();
+    showToast("Exibindo todas as questões.", "info");
+});
+
 document.getElementById("btn-modo-revisao").addEventListener("click", () => {
     simulado = null;
     pararCronometro(displayCronometro);
     
-    // Filtra questões que possuem erros recentes OU anotações salvas
     const cadernoDeErros = questoes.filter(q => {
         const h = historico[q.id];
         if (!h) return false;
@@ -284,15 +328,38 @@ document.getElementById("btn-modo-revisao").addEventListener("click", () => {
     
     showToast(`Carregadas ${cadernoDeErros.length} questões no Caderno de Erros.`, "info");
 });
+
+if (btnLimpar) {
+    btnLimpar.addEventListener("click", async () => {
+        const confirmado = await showConfirmModal({
+            titulo: "Zerar Histórico",
+            mensagem: "Tem certeza que deseja apagar todo o seu progresso? Esta ação não pode ser desfeita.",
+            textoConfirmar: "Sim, Apagar Tudo",
+            textoCancelar: "Cancelar",
+            corPerigo: true
+        });
+
+        if (confirmado) {
+            localStorage.removeItem('appEstudos_Historico');
+            historico = {};
+            atualizarPlacar(historico, questoes);
+            aplicarFiltros();
+            showToast("Seu histórico de progresso foi zerado.", "alerta");
+        }
+    });
+}
+
+btnExportar.addEventListener("click", exportarHistorico);
+btnImportar.addEventListener("click", () => inputImportar.click());
+inputImportar.addEventListener("change", () => {
+    if (inputImportar.files[0]) importarHistorico(inputImportar.files[0]);
+    inputImportar.value = "";
+});
+
 // ---------- CARGA INICIAL ASSÍNCRONA ----------
 async function iniciarApp() {
-    // 1. Busca as questões via Fetch API (async/await)
     questoes = await carregarQuestoes();
-
-    // 2. Cria o Map de acesso rápido por ID
     porId = new Map(questoes.map(q => [String(q.id), q]));
-
-    // 3. Valida os dados e popula a interface
     validarQuestoes();
     preencherSelect(selectBanca, "🏛️ Todas as Bancas", "banca", questoes);
     preencherSelect(selectMateria, "📖 Todas as Matérias", "materia", questoes);
@@ -300,5 +367,4 @@ async function iniciarApp() {
     aplicarFiltros();
 }
 
-// Dispara a inicialização
 iniciarApp();

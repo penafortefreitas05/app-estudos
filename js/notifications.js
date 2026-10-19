@@ -1,8 +1,7 @@
 // ============================================================
-// js/notifications.js - Toasts e Modais Premium (ES6 + Promises)
+// js/notifications.js - Toasts e Modais Assíncronos (Sem Travamentos)
 // ============================================================
 
-// Garante o container de toasts no DOM
 function obterToastContainer() {
     let container = document.getElementById("toast-container");
     if (!container) {
@@ -14,24 +13,13 @@ function obterToastContainer() {
     return container;
 }
 
-/**
- * Exibe uma notificação estilo Toast no canto inferior direito
- * @param {string} mensagem - Texto da notificação
- * @param {'sucesso'|'erro'|'alerta'|'info'} tipo - Tipo do toast
- * @param {number} duracao - Tempo de exibição em ms
- */
+// ---------- TOASTS DE NOTIFICAÇÃO ----------
 export function showToast(mensagem, tipo = 'info', duracao = 3500) {
     const container = obterToastContainer();
-    
     const toast = document.createElement("div");
     toast.className = `toast toast-${tipo}`;
     
-    const icones = {
-        sucesso: '✔',
-        erro: '✖',
-        alerta: '⚠',
-        info: 'ℹ'
-    };
+    const icones = { sucesso: '✔', erro: '✖', alerta: '⚠', info: 'ℹ' };
 
     toast.innerHTML = `
         <span class="toast-icone">${icones[tipo] || 'ℹ'}</span>
@@ -39,20 +27,15 @@ export function showToast(mensagem, tipo = 'info', duracao = 3500) {
     `;
 
     container.appendChild(toast);
-
-    // Entrada suave
     requestAnimationFrame(() => toast.classList.add("visible"));
 
-    // Saída automática
     setTimeout(() => {
         toast.classList.remove("visible");
-        toast.addEventListener("transitionend", () => toast.remove());
+        setTimeout(() => toast.remove(), 300);
     }, duracao);
 }
 
-/**
- * Exibe um Modal de Confirmação customizado e retorna uma Promise<boolean>
- */
+// ---------- MODAL DE CONFIRMAÇÃO (PROMISE ROBUSTA) ----------
 export function showConfirmModal({
     titulo = "Confirmação",
     mensagem = "Tem certeza que deseja prosseguir?",
@@ -76,21 +59,24 @@ export function showConfirmModal({
         `;
 
         document.body.appendChild(overlay);
-
         requestAnimationFrame(() => overlay.classList.add("visible"));
 
+        let resolvido = false;
         const fechar = (resultado) => {
+            if (resolvido) return;
+            resolvido = true;
             overlay.classList.remove("visible");
-            overlay.addEventListener("transitionend", () => {
-                overlay.remove();
-                resolve(resultado);
-            });
+            
+            // Garante a remoção do DOM e resolve a Promise sem travar
+            setTimeout(() => {
+                if (overlay.parentNode) overlay.remove();
+            }, 200);
+            
+            resolve(resultado);
         };
 
         overlay.querySelector(".btn-modal-confirmar").addEventListener("click", () => fechar(true));
         overlay.querySelector(".btn-modal-cancelar").addEventListener("click", () => fechar(false));
-        
-        // Fechar se clicar fora do cartão
         overlay.addEventListener("click", (e) => {
             if (e.target === overlay) fechar(false);
         });

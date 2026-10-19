@@ -301,7 +301,8 @@ body {
 .toast-info { border-left: 4px solid #3b82f6; }
 .toast-info .toast-icone { color: #60a5fa; }
 
-/* Overlay escuro com Blur para o Modal */
+
+/* Overlay escuro do Modal */
 .modal-overlay {
     position: fixed;
     inset: 0;
@@ -313,7 +314,13 @@ body {
     justify-content: center;
     padding: 1.5rem;
     opacity: 0;
+    pointer-events: none; /* Evita que a camada invisível bloqueie cliques na página */
     transition: opacity 0.2s ease-in-out;
+}
+
+.modal-overlay.visible {
+    opacity: 1;
+    pointer-events: auto; /* Libera a interação com os botões quando o modal abre */
 }
 
 .modal-overlay.visible {
