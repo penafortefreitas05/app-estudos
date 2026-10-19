@@ -246,3 +246,122 @@ body {
 ::-webkit-scrollbar-track { background: #020617; }
 ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: #334155; }
+
+/* ============================================================
+   TOASTS E MODAIS - FocoPro Dark Mode Premium
+   ============================================================ */
+
+/* Container fixo para notificações */
+.toast-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    pointer-events: none;
+}
+
+/* Cartão do Toast */
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    color: #f8fafc;
+    font-size: 0.9rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: auto;
+    max-width: 380px;
+}
+
+.toast.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.toast-icone { font-weight: bold; font-size: 1.1rem; }
+
+.toast-sucesso { border-left: 4px solid #10b981; }
+.toast-sucesso .toast-icone { color: #34d399; }
+
+.toast-erro { border-left: 4px solid #ef4444; }
+.toast-erro .toast-icone { color: #f87171; }
+
+.toast-alerta { border-left: 4px solid #f59e0b; }
+.toast-alerta .toast-icone { color: #fbbf24; }
+
+.toast-info { border-left: 4px solid #3b82f6; }
+.toast-info .toast-icone { color: #60a5fa; }
+
+/* Overlay escuro com Blur para o Modal */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(6px);
+    z-index: 9998;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.modal-overlay.visible {
+    opacity: 1;
+}
+
+/* Cartão do Modal */
+.modal-card {
+    background: #0f172a;
+    border: 1px solid #1e293b;
+    border-radius: 14px;
+    padding: 1.75rem;
+    max-width: 440px;
+    width: 100%;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+    transform: scale(0.92);
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-overlay.visible .modal-card {
+    transform: scale(1);
+}
+
+.modal-titulo {
+    color: #f8fafc;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.modal-mensagem {
+    color: #94a3b8;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    margin-bottom: 1.75rem;
+}
+
+.modal-acoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+}
+
+.btn-danger {
+    background-color: #ef4444 !important;
+    border-color: #ef4444 !important;
+    color: #ffffff !important;
+}
+.btn-danger:hover {
+    background-color: #dc2626 !important;
+}

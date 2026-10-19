@@ -1,0 +1,1749 @@
+[
+  {
+    "id": 1,
+    "banca": "Cesgranrio",
+    "materia": "Português",
+    "enunciado": "Assinale a opção em que a concordância verbal está plenamente de acordo com a norma-padrão da Língua Portuguesa.",
+    "alternativas": [
+      "Fazem dois anos que estudo para o concurso do Banco Central.",
+      "Haviam muitos candidatos inscritos na prova de tecnologia.",
+      "Tratam-se de regras de negócio complexas na nova API.",
+      "Espera-se que hajam mudanças no edital na próxima semana.",
+      "Devem existir outras formas de otimizar esse algoritmo."
+    ],
+    "gabarito": "Devem existir outras formas de otimizar esse algoritmo.",
+    "explicacao": "",
+    "tags": [
+      "concordância",
+      "revisar-véspera",
+      "pegadinha"
+    ]
+  },
+  {
+    "id": 2,
+    "banca": "FGV",
+    "materia": "Raciocínio Lógico",
+    "enunciado": "Considere as seguintes premissas verdadeiras: 'Todo desenvolvedor sabe Python. Nenhum analista de infraestrutura sabe Python.' A partir dessas premissas, é logicamente correto concluir que:",
+    "alternativas": [
+      "Algum analista de infraestrutura é desenvolvedor.",
+      "Nenhum desenvolvedor é analista de infraestrutura.",
+      "Todo analista de infraestrutura é desenvolvedor.",
+      "Pelo menos um desenvolvedor não sabe Python.",
+      "Todo desenvolvedor é analista de infraestrutura."
+    ],
+    "gabarito": "Nenhum desenvolvedor é analista de infraestrutura.",
+    "explicacao": "",
+    "tags": [
+      "lógica-de-primeira-ordem",
+      "silogismo",
+      "cgu"
+    ]
+  },
+  {
+    "id": 3,
+    "banca": "Cesgranrio",
+    "materia": "Python",
+    "enunciado": "Em Python 3, a divisão comum entre dois números inteiros utilizando o operador de barra simples (por exemplo, ao executar `resultado = 5 / 2`) gerará um valor do tipo:",
+    "alternativas": [
+      "int",
+      "float",
+      "double",
+      "decimal",
+      "string"
+    ],
+    "gabarito": "float",
+    "explicacao": "",
+    "tags": [
+      "python",
+      "tipos-de-dados",
+      "operadores"
+    ]
+  },
+  {
+    "id": 4,
+    "banca": "Cesgranrio",
+    "materia": "Python",
+    "enunciado": "Considere a lista `dados = [10, 20, 30]`. Para adicionar o valor inteiro `40` exatamente ao final dessa estrutura em Python, o método correto a ser utilizado é:",
+    "alternativas": [
+      "dados.insert(40)",
+      "dados.push(40)",
+      "dados.add(40)",
+      "dados.append(40)",
+      "dados.extend(40)"
+    ],
+    "gabarito": "dados.append(40)",
+    "explicacao": "",
+    "tags": [
+      "python",
+      "listas",
+      "estruturas-dados"
+    ]
+  },
+  {
+    "id": 5,
+    "banca": "FGV",
+    "materia": "Ciência de Dados",
+    "enunciado": "Dois colegas de um time de ciência de dados discutem o novo projeto do time: avaliar um grupo de unidades de negócio e tentar, através de algumas características compartilhadas, separá-las em grupos. O objetivo é migrar de um cenário em que são elaborados contratos individuais para um cenário em que possam ser elaborados contratos por grupo. Alice acha que deve ser usado um método supervisionado. Ela escolhe o K-means Clustering e propõe ajustar os hiperparâmetros C e sigma para alcançar um resultado adequado. Bob prefere métodos não supervisionados, já que a base de dados não possui rótulos, e está em dúvida entre utilizar Naive Bayes (em razão de a base de dados ser pequena) ou Decision Trees (por talvez ser necessário ter um modelo explicável). Analisando as posições de Alice e Bob sobre esse projeto, pode-se afirmar que:",
+    "alternativas": [
+      "Alice e Bob estão corretos. Entretanto, não é possível realizar uma análise prévia dos algoritmos avaliam-se apenas modelos e suas métricas de desempenho;",
+      "Alice e Bob estão errados. K-means Clustering é um método não supervisionado e não possui os parâmetros C e sigma. Naive Bayes e Decision Trees são métodos supervisionados;",
+      "Alice está correta, mas a sugestão de Bob de utilizar Naive Bayes é fraca, pois esse algoritmo não apresenta bom desempenho com pequenos conjuntos de dados;",
+      "Bob está correto e Alice está errada. K-means Clustering é um algoritmo não supervisionado;",
+      "Bob está errado e Alice está correta. Modelos baseados em Decision Trees não são explicáveis."
+    ],
+    "gabarito": "Alice e Bob estão errados. K-means Clustering é um método não supervisionado e não possui os parâmetros C e sigma. Naive Bayes e Decision Trees são métodos supervisionados;",
+    "explicacao": "",
+    "tags": []
+  },
+  {
+    "id": 6,
+    "banca": "FGV",
+    "materia": "Ciência de Dados",
+    "enunciado": "Considere uma matriz de confusão de um modelo de classificação binária de relatórios financeiros. O modelo classifica os relatórios em fraudulentos ou não fraudulentos. Se essa matriz apresenta 200 verdadeiros positivos, 100 verdadeiros negativos, 40 erros do 'tipo 1' e 20 erros do 'tipo 2' podem-se calcular as métricas de desempenho aproximadas como:",
+    "alternativas": [
+      "Precision = 0.71. Recall = 0.83;",
+      "Precision = 0.83. Recall = 0.71;",
+      "Precision = 0.83. Recall = 0.90;",
+      "Precision = 0.90. Recall = 0.71;",
+      "Precision = 0.90. Recall = 0.83."
+    ],
+    "gabarito": "Precision = 0.83. Recall = 0.90;",
+    "explicacao": "",
+    "tags": []
+  },
+  {
+    "id": 7,
+    "banca": "FGV",
+    "materia": "Ciência de Dados",
+    "enunciado": "Uma organização deseja implementar um pipeline de dados e está avaliando a opção mais adequada para o seu contexto de operação. Em torno de 40% dos dados consumidos pela organização se encontram em planilhas eletrônicas que contêm dados sensíveis, produzidas semanalmente por suas unidades de negócio. Os outros 60% dos dados se encontram em alguns bancos de dados relacionais de sistemas de produção da organização. O tamanho da base é de moderado a pequeno, mas existe a necessidade de conformidade com normas de privacidade e confidencialidade dos dados. O objetivo do pipeline é fornecer insumos para um departamento que realiza análises de dados com métodos não supervisionados de aprendizagem de máquina para elaborar relatórios periódicos mensais. A organização está avaliando a construção de um Armazém de Dados (ETL) ou de um Lago de Dados (ELT). A proposta de modelo adequada e corretamente justificada é:",
+    "alternativas": [
+      "Armazém de Dados. Ambos os modelos são adequados, mas Lago de Dados tem maior latência até a carga (L) e custo maior;",
+      "Armazém de Dados. Esse modelo possui menor latência até a carga (L) e, ao contrário do Lago de Dados, opera de forma eficiente com dados relacionais;",
+      "Armazém de Dados. O processo ETL é mais adequado para o tratamento dos dados sensíveis e os casos de uso são bem conhecidos;",
+      "Lago de Dados. Esse modelo possui menor latência até a carga (L) e permite a extração (E) de dados semiestruturados e não estruturados;",
+      "Lago de Dados. Esse modelo não necessita de hardware especializado e, ao contrário do Armazém de Dados, possibilita tarefas de aprendizado de máquina."
+    ],
+    "gabarito": "Armazém de Dados. O processo ETL é mais adequado para o tratamento dos dados sensíveis e os casos de uso são bem conhecidos;",
+    "explicacao": "",
+    "tags": []
+  },
+  {
+    "id": 8,
+    "banca": "FGV",
+    "materia": "Ciência de Dados",
+    "enunciado": "Um time de ciência de dados utilizou um modelo linear para resolver uma tarefa de análise de dados financeiros provenientes de diferentes unidades de uma organização. Um membro do time, que não participou da modelagem, testa o modelo e verifica que ele apresenta um péssimo resultado. Preocupado, ele busca os resultados apresentados no treino e pode concluir que ocorreu:",
+    "alternativas": [
+      "underfitting, se o resultado do treino foi ótimo. Uma possível solução é a utilização de um modelo mais complexo e a redução do tempo de treinamento;",
+      "underfitting, se o resultado do treino também foi péssimo. Uma possível solução é a utilização de um modelo menos complexo e métodos de validação cruzada;",
+      "overfitting, se o resultado do treino também foi péssimo. Uma possível solução é a utilização de técnicas de regularização e métodos de validação cruzada;",
+      "overfitting, se o resultado do treino foi ótimo. Uma possível solução é a utilização de um modelo menos complexo e métodos de validação cruzada;",
+      "overfitting, se o resultado do treino foi ótimo. Uma possível solução é a utilização de um modelo mais complexo e o aumento do tempo de treinamento."
+    ],
+    "gabarito": "overfitting, se o resultado do treino foi ótimo. Uma possível solução é a utilização de um modelo menos complexo e métodos de validação cruzada;",
+    "explicacao": "",
+    "tags": []
+  },
+  {
+    "id": 9,
+    "banca": "FGV",
+    "materia": "Ciência de Dados",
+    "enunciado": "Analise o código Python a seguir: x = lambda a, b: a + [a[-1] + a[-2] + b]; y = [-1, 0]; for i in range(7): y = x(y, i); print(y). O resultado produzido pela execução desse código na IDLE Shell 3.9.9 é:",
+    "alternativas": [
+      "[-1, 0, -1, -1, -2, -3, -5, -8, -13]",
+      "[0, 1, 4, 9, 18, 33, 51, 84]",
+      "[-1, 0, -1, -2, -3, -5, -8, -13, -21]",
+      "[-1, 0, 1, 0, 1, 4, 9, 18, 33]",
+      "[-1, 0, 1, 4, 9, 18, 33, 51]"
+    ],
+    "gabarito": "[-1, 0, 1, 4, 9, 18, 33, 51]",
+    "explicacao": "",
+    "tags": []
+  },
+  {
+    "id": 10,
+    "banca": "FGV",
+    "materia": "Ciência de Dados",
+    "enunciado": "Considere as sentenças a seguir. A = 'Eu gostei do livro, apesar do livro ser longo'; B = 'Esse livro é muito legal'; C = 'Eu não gostei do livro, não gosto muito desse autor'. Vamos considerar a seguinte classificação sobre o sentido das sentenças acima: A - positiva; B - positiva; C - negativa. Para calcular as probabilidades de uma sentença ser positiva e de uma determinada palavra aparecer na sentença, dado que a sentença é positiva, em Aprendizado de Máquinas, pode-se usar o Naive Bayes. Com a utilização dessa técnica, e com base nos dados das três sentenças acima, os valores das estimativas de máxima verossimilhança de P(positiva) e P(livro | positiva) são, respectivamente:",
+    "alternativas": [
+      "1/3 e 1/2",
+      "1/3 e 3/14",
+      "2/3 e 3/14",
+      "2/3 e 1/2",
+      "2/3 e 2/3"
+    ],
+    "gabarito": "2/3 e 3/14",
+    "explicacao": "",
+    "tags": []
+  },
+  {
+    "id": 11,
+    "banca": "FGV",
+    "materia": "Ciência de Dados",
+    "enunciado": "Como parte de um esforço para melhorar a produtividade, uma empresa vem medindo o tempo gasto em cada tarefa do seu principal processo produtivo. Uma das tarefas, que envolve carregar material em uma máquina, ocorre uma vez por dia e teve os seguintes tempos medidos na semana anterior, em minutos: Seg 80, Ter 76, Qua 85, Qui 68, Sex 56. Considerando um modelo de regressão linear ajustado para perda mínima, usando as medições da semana anterior, o valor residual com relação ao modelo, para o tempo de 70 minutos medido na quinta-feira da semana atual é, em minutos:",
+    "alternativas": [
+      "-3",
+      "-2",
+      "1",
+      "2",
+      "3"
+    ],
+    "gabarito": "2",
+    "explicacao": "",
+    "tags": []
+  },
+  {
+    "id": 12,
+    "banca": "FGV",
+    "materia": "Bancos de Dados",
+    "enunciado": "No âmbito do PostgreSQL 12, considere o comando a seguir: CREATE SEQUENCE TESTE. Ao objeto TESTE, assim criado, aplicam-se as seguintes funções nativas:",
+    "alternativas": [
+      "before, after;",
+      "commit, abort;",
+      "currval, nextval;",
+      "low, high;",
+      "next, last."
+    ],
+    "gabarito": "currval, nextval;",
+    "explicacao": "",
+    "tags": []
+  },
+  {
+    "id": 13,
+    "banca": "FGV",
+    "materia": "Bancos de Dados",
+    "enunciado": "No contexto do SQL Server 2019, considere o script SQL a seguir: create table XPTO ( C1 int identity, C2 varchar(16) ) insert into XPTO (C2) values ('A') insert into XPTO (C2) values ('B') insert into XPTO (C2) values ('C') truncate table XPTO insert into XPTO (C2) values ('D') insert into XPTO (C2) values ('E') delete from XPTO truncate table XPTO insert into XPTO (C2) values ('F') truncate table XPTO. Após a execução desse script, o resultado exibido pelo comando select max(C1) from XPTO é:",
+    "alternativas": [
+      "0",
+      "NULL",
+      "1",
+      "3",
+      "6"
+    ],
+    "gabarito": "NULL",
+    "explicacao": "",
+    "tags": []
+  },
+  {
+    "id": 14,
+    "banca": "FGV",
+    "materia": "Bancos de Dados",
+    "enunciado": "Sobre o MongoDB v5.0, considere as afirmativas a seguir. I. Todos os documentos de uma coleção (collection) devem possuir o mesmo número de campos (fields). II. Um campo presente em diferentes documentos de uma collection pode ter diferentes tipos de dados ao longo dos documentos. III. MongoDB oferece a capacidade de validar esquemas durante operações de inserção (insertion) e atualização (update). Está correto o que se afirma em:",
+    "alternativas": [
+      "somente I;",
+      "somente III;",
+      "somente I e II;",
+      "somente II e III;",
+      "I, II e III."
+    ],
+    "gabarito": "somente II e III;",
+    "explicacao": "",
+    "tags": []
+  },
+  {
+    "id": 15,
+    "banca": "FGV",
+    "materia": "Desenvolvimento de Sistemas",
+    "enunciado": "Sistemas de Controle de Versão (SCV), tais como o Mercurial, o GIT e o SVN, são ferramentas indispensáveis para apoiar as melhores práticas de desenvolvimento de sistemas. Os SCVs atualmente disponíveis possuem grande flexibilidade para se adaptar ao fluxo de trabalho de um time e suas práticas de desenvolvimento. No GIT, essa customização do fluxo de trabalho para um time ou projeto é comum, e muitos desses fluxos de trabalho utilizam uma abordagem conhecida como ramificação de recurso (Feature Branch). Uma possível limitação dessa abordagem seria o(a):",
+    "alternativas": [
+      "diminuição da velocidade de desenvolvimento. A necessidade de utilização de rebase quando uma funcionalidade é finalizada aumenta a complexidade do desenvolvimento;",
+      "indisponibilidade de dados de auditoria. Existe perda parcial do histórico do repositório quando é realizado o merge de um ramo (Branch);",
+      "impacto na integração contínua. Se o ciclo de entrega de funcionalidade de um time é longo, aumentam os riscos e desafios dos merges e integrações;",
+      "menor qualidade funcional. O novo fluxo de trabalho dificulta a elaboração de testes de aceitação em função da separação de funcionalidades em diferentes ramos (Branches);",
+      "menor qualidade do código. O novo fluxo de trabalho dificulta a execução de revisão de código (Code Review) pela imposição de pull requests e merge reviews."
+    ],
+    "gabarito": "impacto na integração contínua. Se o ciclo de entrega de funcionalidade de um time é longo, aumentam os riscos e desafios dos merges e integrações;",
+    "explicacao": "",
+    "tags": []
+  },
+  {
+    "id": 16,
+    "banca": "FGV",
+    "materia": "Desenvolvimento de Sistemas",
+    "enunciado": "Considere um cenário típico de exposição de dados sensíveis: uma organização acredita estar segura ao utilizar a criptografia automática do seu banco de dados para encriptar dados financeiros sigilosos dos seus usuários, mas esquece que permite que esses dados sejam automaticamente decriptados nas operações de consulta. Um time de desenvolvedores sem experiência em desenvolvimento seguro trabalha em uma aplicação que acessa essa base de dados. Ao longo do desenvolvimento da aplicação, um tipo comum de vulnerabilidade é inserido em muitas das consultas realizadas, como no seguinte trecho: String consultaHTTP = 'SELECT * FROM extratos WHERE id_cliente=' + request.getParameter('id') + ''; Para mitigar o impacto dos riscos criados por esse tipo de vulnerabilidade, é possível utilizar:",
+    "alternativas": [
+      "protocolos como FTP ou SMTP para o transporte dos dados sensíveis da aplicação;",
+      "funções criptográficas fortes, como MD5 e SHA1, no mecanismo automático do banco de dados;",
+      "frameworks ORM como o Hibernate e linguagens de consulta como a HQL (Hibernate Query Language);",
+      "apenas dados fornecidos por usuários autenticados no processamento de consultas;",
+      "cláusulas como LIMIT nas consultas para restringir os resultados retornados."
+    ],
+    "gabarito": "frameworks ORM como o Hibernate e linguagens de consulta como a HQL (Hibernate Query Language);",
+    "explicacao": "",
+    "tags": []
+  },
+  {
+    "id": 17,
+    "banca": "FGV",
+    "materia": "Desenvolvimento de Sistemas",
+    "enunciado": "Considere o desenvolvimento de uma aplicação de tratamento de dados sensíveis. O time tem experiência com desenvolvimento seguro e elabora uma lista de verificação com foco em segurança para ser utilizada na revisão de código manual que ocorre antes de um commit. Essa lista de verificação trata exclusivamente da aplicação de boas práticas de validação dos dados de entrada das unidades do sistema. Deveria fazer parte dessa lista verificar se:",
+    "alternativas": [
+      "todo acesso ao banco utiliza credenciais seguras;",
+      "todos os dados são validados após redirecionamentos;",
+      "todos os dados provenientes de usuários são validados após o processamento;",
+      "toda operação de registro (logging) é realizada por aplicações de terceiros (Third Party Applications);",
+      "apenas falhas de validação de autenticação e autorização causam rejeição completa dos dados de entrada."
+    ],
+    "gabarito": "todos os dados provenientes de usuários são validados após o processamento;",
+    "explicacao": "",
+    "tags": []
+  },
+  {
+    "id": 18,
+    "banca": "FGV",
+    "materia": "Desenvolvimento de Sistemas",
+    "enunciado": "De acordo com o Guia do Scrum, a 'Meta da Sprint é o único objetivo da Sprint. Embora a Meta da Sprint seja um compromisso dos Developers, esta fornece flexibilidade em termos do trabalho exato necessário para alcançá-la'. A Meta da Sprint é elaborada:",
+    "alternativas": [
+      "pelo Product Owner, e deve ser finalizada antes da Sprint Planning, para que seja apresentada e negociada com o Scrum Team;",
+      "por todo o Scrum Team na Sprint Planning, e deve ser finalizada até o final do evento;",
+      "em conjunto pelo Product Owner e os Developers, e deve ser finalizada até o início do primeiro Daily Scrum;",
+      "em conjunto pelo Product Owner e os Developers, e deve ser finalizada até o final da Sprint;",
+      "pelos Developers na Sprint Planning, e deve ser finalizada até o final do evento."
+    ],
+    "gabarito": "em conjunto pelo Product Owner e os Developers, e deve ser finalizada até o final da Sprint;",
+    "explicacao": "",
+    "tags": []
+  },
+  {
+    "id": 19,
+    "banca": "FGV",
+    "materia": "Segurança da Informação",
+    "enunciado": "A equipe de Tecnologia da Informação (TI) de um órgão da Administração Pública Federal (APF), ao definir sua Política de Gestão de Continuidade de Negócios (PGCN), precisará restringir o escopo inicial da PGCN, devido a restrições orçamentárias. Considerando que o órgão oferta serviços web essenciais para a população e que a indisponibilidade desses serviços poderia acarretar grandes prejuízos para seus usuários, a alta administração do órgão definiu o escopo inicial de sua PGCN, incluindo os dez principais serviços web ofertados. Para assegurar a implementação e a sustentação da PGCN, de acordo com a ABNT 22301 (Segurança e resiliência - Sistema de gestão de continuidade de negócios), a equipe de TI deve optar por uma estratégia de recuperação de negócios que:",
+    "alternativas": [
+      "utilize uma solução de continuidade adotada em outro órgão da APF e incluí-la no Plano Diretor de Tecnologia da Informação e Comunicação (PDTIC) para contratação/aquisição emergencial;",
+      "impeça a disrupção dos serviços de TI ofertados pelo órgão por mapearem os processos e utilizarem replicação de dados assíncrona em um Centro de Dados de contingência;",
+      "contemple planos e procedimentos para a operação durante a disrupção, incluindo os custos com a aquisição dos equipamentos necessários;",
+      "inclua as orientações e os recursos necessários para a operação antes, durante e após a disrupção, considerando os custos e benefícios associados;",
+      "considere todos os serviços a serem recuperados com a mesma prioridade, variando apenas o seu tempo de recuperação ou dependência de outros serviços."
+    ],
+    "gabarito": "inclua as orientações e os recursos necessários para a operação antes, durante e após a disrupção, considerando os custos e benefícios associados;",
+    "explicacao": "",
+    "tags": []
+  },
+  {
+    "id": 20,
+    "banca": "FGV",
+    "materia": "Segurança da Informação",
+    "enunciado": "A equipe liderada por Jonas é responsável por prover o home office de um órgão da Administração Pública Federal (APF). Jonas recebeu uma solicitação da Equipe de Tratamento de Incidente de Rede (ETIR) para fornecer os registros de acesso a um sistema, ocorridos durante determinado tempo, para averiguação por suspeita de um incidente de segurança da informação. Considerando as orientações da Norma Complementar 21/IN01/DSIC/GSIPR, quanto aos requisitos para adequação dos ativos de informação para coleta e preservação das evidências, a equipe de Jonas deve fornecer as seguintes informações para cada acesso:",
+    "alternativas": [
+      "identificação inequívoca do usuário;",
+      "registro das autenticações malsucedidas;",
+      "data e hora dos acessos sincronizados com o servidor de hora local;",
+      "tempo máximo de registro de log de quatro meses;",
+      "registro das autenticações bem sucedidas."
+    ],
+    "gabarito": "data e hora dos acessos sincronizados com o servidor de hora local;",
+    "explicacao": "",
+    "tags": []
+  },
+  {
+    "id": 21,
+    "banca": "FGV",
+    "materia": "Segurança da Informação",
+    "enunciado": "A equipe de Tecnologia da Informação (TI) de um órgão público está implementando uma solução de TI para atender requisitos de segurança e privacidade dos dados pessoais em conformidade com a Lei Geral de Proteção de Dados Pessoais (LGPD). Adicionalmente, a equipe passou a adotar controles de segurança do CIS v8 (Center for Internet Security, Inc.) para mitigar os tipos de ataques cibernéticos mais conhecidos. Para reforçar o trabalho associado à LGPD, a equipe de TI identificou e começou a implementar um controle de segurança do CIS v8 que auxilia na mitigação de violação de dados, garantindo privacidade e integridade das informações sensíveis e pessoais. O controle de segurança do CIS v8 implementado pela equipe de TI é a:",
+    "alternativas": [
+      "configuração segura de ativos institucionais e software;",
+      "proteção de dados;",
+      "gestão do controle de acesso;",
+      "gestão contínua de vulnerabilidades;",
+      "recuperação de dados."
+    ],
+    "gabarito": "proteção de dados;",
+    "explicacao": "",
+    "tags": []
+  },
+  {
+    "id": 22,
+    "banca": "FGV",
+    "materia": "Segurança da Informação",
+    "enunciado": "Geraldo foi aprovado em um concurso público e assumiu a função de gestor de Segurança da Informação. O órgão em que Geraldo trabalha está atualizando sua Política de Segurança da Informação alinhada às orientações da Instrução Normativa nº 01 do Gabinete de Segurança Institucional (GSI). Como gestor de Segurança da Informação, Geraldo possui, entre suas atribuições:",
+    "alternativas": [
+      "a aprovação da Política de Segurança da Informação no âmbito de seu órgão;",
+      "a publicação de atos normativos sobre segurança da informação;",
+      "o provimento dos recursos necessários para a execução da Política de Segurança da Informação no âmbito de seu órgão;",
+      "a manutenção de contato direto com o Departamento de Segurança da Informação do GSI em assuntos relativos à segurança da informação;",
+      "a comunicação de incidentes de segurança ao Centro de Tratamento de Incidentes de Segurança em Redes de Computadores da Administração Pública Federal (CTIR Gov)."
+    ],
+    "gabarito": "a manutenção de contato direto com o Departamento de Segurança da Informação do GSI em assuntos relativos à segurança da informação;",
+    "explicacao": "",
+    "tags": []
+  },
+  {
+    "id": 23,
+    "banca": "FGV",
+    "materia": "Segurança da Informação",
+    "enunciado": "Wallace está implementando em um órgão público um modelo de infraestrutura de chaves públicas baseado no padrão X.509 (PKIX). Wallace identificou que os sistemas clientes, para operarem com segurança, necessitam da instalação de materiais da chave que possuem o relacionamento apropriado com as chaves armazenadas em outro lugar na infraestrutura de chaves públicas. Para gerenciar a PKIX de forma a atender o requisito identificado, Wallace deve implementar a função:",
+    "alternativas": [
+      "registro;",
+      "inicialização;",
+      "certificação;",
+      "certificação cruzada;",
+      "solicitação de revogação."
+    ],
+    "gabarito": "certificação cruzada;",
+    "explicacao": "",
+    "tags": []
+  },
+  {
+    "id": 24,
+    "banca": "FGV",
+    "materia": "Segurança da Informação",
+    "enunciado": "João foi contratado para fazer a gestão de risco em um órgão público de acordo com as diretrizes para o processo de gestão de riscos de segurança da informação estabelecidas na norma ABNT NBR ISO/IEC 27005:2019. João está trabalhando em sua tarefa incluindo, excluindo e alterando alguns controles. Com isso poderá avaliar os riscos residuais e considerá-los aceitáveis ou não. A etapa do processo de gestão de riscos de segurança da informação em que João está trabalhando é:",
+    "alternativas": [
+      "definição do contexto;",
+      "processo de avaliação de riscos;",
+      "tratamento de riscos;",
+      "aceitação de riscos;",
+      "monitoramento e análise crítica dos riscos."
+    ],
+    "gabarito": "tratamento de riscos;",
+    "explicacao": "",
+    "tags": []
+  },
+  {
+    "id": 25,
+    "banca": "FGV",
+    "materia": "Segurança da Informação",
+    "enunciado": "Roberto é funcionário de um órgão público e está trabalhando em home office devido ao cenário pandêmico. Para que não haja perda de produtividade, Roberto precisa acessar a rede interna do órgão onde trabalha. Para isso, Roberto irá utilizar um computador considerado um endpoint, por se tratar de um dispositivo final que se conecta fisicamente a uma rede interna do órgão. Para que o órgão público em que Roberto trabalha possa confiar em conexões externas com a rede interna, soluções de segurança de endpoints precisam ser implementadas e ter como características:",
+    "alternativas": [
+      "redução de custos e facilidade de atualização;",
+      "configuração simplificada e fácil instalação de API;",
+      "monitoramento completo e antivírus atualizado;",
+      "administração descentralizada e facilidade de integração com novas tecnologias;",
+      "bloqueio de ações indesejadas e controle no lado do usuário."
+    ],
+    "gabarito": "bloqueio de ações indesejadas e controle no lado do usuário.",
+    "explicacao": "",
+    "tags": []
+  },
+  {
+    "id": 26,
+    "banca": "FGV",
+    "materia": "Segurança da Informação",
+    "enunciado": "Um Sistema de Gestão de Segurança da Informação (SGSI) é um conjunto de controles que uma organização implementa para proteger os seus próprios ativos de informação e também para proteger outros ativos pelos quais é responsável. A norma ABNT NBR ISO/IEC 27001:2019 fornece os requisitos necessários para um SGSI. Rafael foi contratado para implementar o SGSI em um órgão público. Ele elencou os controles necessários para garantir a adequação à norma. Para isso, Rafael teve que elaborar:",
+    "alternativas": [
+      "políticas de segurança da informação;",
+      "avaliação de desempenho;",
+      "política de controle de acesso;",
+      "definição de funções e responsabilidades de segurança;",
+      "declaração de aplicabilidade."
+    ],
+    "gabarito": "declaração de aplicabilidade.",
+    "explicacao": "",
+    "tags": []
+  },
+  {
+    "id": 27,
+    "banca": "CEBRASPE",
+    "materia": "Python",
+    "enunciado": "Em Python, considere a instrução: dados = {'a': 1, 'b': 2, 'c': 3}. A execução da instrução list(dados.keys()) produzirá como resultado uma lista contendo as chaves do dicionário.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "python",
+      "bacen",
+      "estruturas-dados"
+    ]
+  },
+  {
+    "id": 28,
+    "banca": "CEBRASPE",
+    "materia": "Ciência de Dados",
+    "enunciado": "O algoritmo K-Means é um método de aprendizado de máquina não supervisionado utilizado para agrupamento (clustering), no qual o número de clusters (K) deve ser definido previamente pelo usuário.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "algoritmos",
+      "bacen",
+      "clustering"
+    ]
+  },
+  {
+    "id": 29,
+    "banca": "FGV",
+    "materia": "Python",
+    "enunciado": "Considere o seguinte código em Python 3: numeros = [1, 2, 3, 4, 5]; resultado = [x**2 for x in numeros if x % 2 != 0]. O valor da variável 'resultado' após a execução é:",
+    "alternativas": [
+      "[1, 4, 9, 16, 25]",
+      "[4, 16]",
+      "[1, 9, 25]",
+      "[2, 4]",
+      "[1, 3, 5]"
+    ],
+    "gabarito": "[1, 9, 25]",
+    "explicacao": "",
+    "tags": [
+      "python",
+      "cgu",
+      "sintaxe-avançada"
+    ]
+  },
+  {
+    "id": 30,
+    "banca": "FGV",
+    "materia": "Desenvolvimento de Sistemas",
+    "enunciado": "Em uma arquitetura baseada em microsserviços, cada serviço deve idealmente possuir sua própria base de dados (Database per Service) para garantir o desacoplamento e a autonomia de implantação.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "arquitetura",
+      "bacen",
+      "microserviços"
+    ]
+  },
+  {
+    "id": 31,
+    "banca": "CEBRASPE",
+    "materia": "Bancos de Dados",
+    "enunciado": "Acerca de banco de dados relacional, julgue o item a seguir. A terceira forma normal (3FN) exige que a tabela esteja na segunda forma normal (2FN) e que não existam dependências transitivas entre os atributos não chave e a chave primária.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "normalização",
+      "bacen",
+      "banco-de-dados"
+    ]
+  },
+  {
+    "id": 32,
+    "banca": "CEBRASPE",
+    "materia": "Segurança da Informação",
+    "enunciado": "Na assinatura digital, utiliza-se a chave privada do remetente para cifrar o hash da mensagem, garantindo assim a integridade e o não repúdio da informação.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "assinatura-digital",
+      "criptografia",
+      "bacen"
+    ]
+  },
+  {
+    "id": 33,
+    "banca": "CEBRASPE",
+    "materia": "Desenvolvimento de Sistemas",
+    "enunciado": "Os requisitos não funcionais dizem respeito às restrições sobre os serviços ou funções oferecidos pelo sistema, como, por exemplo, restrições de tempo, limitações sobre o processo de desenvolvimento ou imposições por padrões.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "engenharia-de-requisitos",
+      "bacen",
+      "agile"
+    ]
+  },
+  {
+    "id": 34,
+    "banca": "FGV",
+    "materia": "Bancos de Dados",
+    "enunciado": "Em SQL, o operador utilizado para combinar registros de duas tabelas, retornando apenas as linhas que possuem valores correspondentes em ambas as tabelas, é o:",
+    "alternativas": [
+      "LEFT JOIN",
+      "RIGHT JOIN",
+      "FULL OUTER JOIN",
+      "INNER JOIN",
+      "CROSS JOIN"
+    ],
+    "gabarito": "INNER JOIN",
+    "explicacao": "",
+    "tags": [
+      "sql",
+      "cgu",
+      "join"
+    ]
+  },
+  {
+    "id": 35,
+    "banca": "FGV",
+    "materia": "Python",
+    "enunciado": "Em Python, o bloco de código destinado a tentar executar instruções que podem gerar erros, e o bloco destinado a capturar e tratar as exceções caso elas ocorram, são definidos, respectivamente, pelas palavras reservadas:",
+    "alternativas": [
+      "try e catch",
+      "try e except",
+      "catch e default",
+      "try e finally",
+      "except e end"
+    ],
+    "gabarito": "try e except",
+    "explicacao": "",
+    "tags": [
+      "python",
+      "cgu",
+      "exceções"
+    ]
+  },
+  {
+    "id": 36,
+    "banca": "CEBRASPE",
+    "materia": "Ciência de Dados",
+    "enunciado": "Ocorre overfitting (sobreajuste) quando um modelo de aprendizado de máquina se ajusta tão bem aos dados de treinamento que acaba perdendo a capacidade de generalização para novos dados, apresentando alto desempenho no treino, mas baixo desempenho no teste.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "machine-learning",
+      "bacen",
+      "overfitting"
+    ]
+  },
+  {
+    "id": 37,
+    "banca": "CEBRASPE",
+    "materia": "Arquitetura de Computadores",
+    "enunciado": "Computadores efetuam a subtração de números binários por meio de adição, na qual o número a ser subtraído é representado em complemento de um.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "",
+    "tags": [
+      "binarios",
+      "complemento-de-dois",
+      "bacen"
+    ]
+  },
+  {
+    "id": 38,
+    "banca": "CEBRASPE",
+    "materia": "Arquitetura de Computadores",
+    "enunciado": "Um programa em linguagem de alto nível deve ser compilado para se transformar em linguagem de montagem e, posteriormente, montado para se transformar em linguagem de máquina.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "",
+    "tags": [
+      "compiladores",
+      "assembly",
+      "bacen"
+    ]
+  },
+  {
+    "id": 39,
+    "banca": "CEBRASPE",
+    "materia": "Sistemas Operacionais",
+    "enunciado": "A respeito de sistemas operacionais, julgue o item que se segue: Em sistemas Unix, a proteção de arquivos é efetuada pelo controle dos campos dono, grupo e universo, compostos de três bits (rwx), que definem se um usuário pode ler, escrever ou executar o arquivo.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "unix",
+      "linux",
+      "permissoes",
+      "bacen"
+    ]
+  },
+  {
+    "id": 40,
+    "banca": "CEBRASPE",
+    "materia": "Sistemas Operacionais",
+    "enunciado": "A respeito de sistemas operacionais, julgue o item que se segue: Para que um programa possa ser executado, suas instruções precisam ser mapeadas para endereços absolutos e carregadas na memória.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "memoria",
+      "processos",
+      "bacen"
+    ]
+  },
+  {
+    "id": 41,
+    "banca": "CEBRASPE",
+    "materia": "Redes de Computadores",
+    "enunciado": "Com relação às redes de computadores, julgue o item subsequente: A taxa de dados máxima alcançável em um canal ideal pode ser calculada pela equação de Nyquist e, em um canal ruidoso, pela equação de Metcalfe.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "",
+    "tags": [
+      "teorema-nyquist",
+      "meios-de-transmissao",
+      "bacen"
+    ]
+  },
+  {
+    "id": 42,
+    "banca": "CEBRASPE",
+    "materia": "Arquitetura de Computadores",
+    "enunciado": "Julgue o próximo item, relativo a sistemas concorrentes: Na computação paralela, todos os processadores estão presentes no mesmo circuito integrado, enquanto, na computação distribuída, cada processador encontra-se geograficamente separado por longas distâncias.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "",
+    "tags": [
+      "sistemas-distribuidos",
+      "computacao-paralela",
+      "bacen"
+    ]
+  },
+  {
+    "id": 43,
+    "banca": "CEBRASPE",
+    "materia": "Gerenciamento de Projetos",
+    "enunciado": "Em uma organização de matriz fraca, o gerente de projetos e o gerente funcional compartilham igualmente o poder.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "",
+    "tags": [
+      "pmbok",
+      "estruturas-organizacionais",
+      "bacen"
+    ]
+  },
+  {
+    "id": 44,
+    "banca": "CEBRASPE",
+    "materia": "Gerenciamento de Projetos",
+    "enunciado": "Para criar o diagrama de rede, é necessário criar primeiramente a lista de atividades.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "pmbok",
+      "cronograma",
+      "bacen"
+    ]
+  },
+  {
+    "id": 45,
+    "banca": "CEBRASPE",
+    "materia": "Governança de TI",
+    "enunciado": "Em relação aos fundamentos de SCRUM, ITIL V3 e COBIT, julgue o item a seguir: Segundo o COBIT 4.1, uma organização está no nível 2 repetível, quando as decisões dependem de pessoas-chave e a área de TI é organizada para responder taticamente, porém de forma inconsistente.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "cobit",
+      "maturidade",
+      "bacen"
+    ]
+  },
+  {
+    "id": 46,
+    "banca": "CEBRASPE",
+    "materia": "Governança de TI",
+    "enunciado": "Em relação aos fundamentos de SCRUM, ITIL V3 e COBIT, julgue o item a seguir: De acordo com a biblioteca ITIL V3, o banco de dados do gerenciamento de configuração (BDGC) contém todas as requisições de mudança de um item de configuração (IC).",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "itil-v3",
+      "gerenciamento-configuracao",
+      "bacen"
+    ]
+  },
+  {
+    "id": 47,
+    "banca": "CEBRASPE",
+    "materia": "Engenharia de Software",
+    "enunciado": "Em relação aos fundamentos de SCRUM, ITIL V3 e COBIT, julgue o item a seguir: No SCRUM, o product owner é responsável por alterar o backlog da sprint durante a sprint.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "",
+    "tags": [
+      "scrum",
+      "agil",
+      "product-owner",
+      "bacen"
+    ]
+  },
+  {
+    "id": 48,
+    "banca": "CEBRASPE",
+    "materia": "Engenharia de Software",
+    "enunciado": "Julgue os seguintes itens, acerca da análise de pontos de função (APF): O agente governamental que atua diretamente nos requisitos do software e interage com ele é considerado um usuário do sistema.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "apf",
+      "atores",
+      "bacen"
+    ]
+  },
+  {
+    "id": 49,
+    "banca": "CEBRASPE",
+    "materia": "Engenharia de Software",
+    "enunciado": "Transferência de dados, transformação de dados, usabilidade, portabilidade e armazenamento de dados são considerados requisitos funcionais.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "",
+    "tags": [
+      "requisitos",
+      "requisitos-nao-funcionais",
+      "bacen"
+    ]
+  },
+  {
+    "id": 50,
+    "banca": "CEBRASPE",
+    "materia": "Engenharia de Software",
+    "enunciado": "Um dos objetivos da APF é medir como o software foi construído.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "",
+    "tags": [
+      "apf",
+      "metricas",
+      "bacen"
+    ]
+  },
+  {
+    "id": 51,
+    "banca": "CEBRASPE",
+    "materia": "Engenharia de Software",
+    "enunciado": "Na mudança de servidor de uma aplicação web de Apache para Websphere, a aplicação já instalada precisará de manutenção adaptativa, quando passará por algumas alterações.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "",
+    "tags": [
+      "manutencao",
+      "tipos-de-manutencao",
+      "bacen"
+    ]
+  },
+  {
+    "id": 52,
+    "banca": "CEBRASPE",
+    "materia": "Engenharia de Software",
+    "enunciado": "A engenharia de software engloba, além dos processos técnicos de desenvolvimento de software, atividades de gerenciamento de projeto de software e desenvolvimento de ferramentas, métodos e procedimento para apoiar a produção de software. Oferece uma base para a construção de software de alta qualidade e produtividade. Com relação à engenharia de software, julgue o item que se segue: Procedimento é o conjunto de tarefas que inclui o planejamento e estimativa de projeto, análise de requisitos de sistema, modelagem de dados, arquitetura, codificação, teste e manutenção.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "",
+    "tags": [
+      "processo-de-software",
+      "ciclo-de-vida",
+      "bacen"
+    ]
+  },
+  {
+    "id": 53,
+    "banca": "CEBRASPE",
+    "materia": "Engenharia de Software",
+    "enunciado": "Julgue os itens a seguir, relativos a análise e projeto de software: A modelagem orientada a objetos pode demonstrar, entre outros aspectos, como eles podem ser classificados, de que forma herdam atributos e operações de outros objetos, como são compostos por meio de modelos de agregação e de que forma interagem por meio de modelos de comportamento simples.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "orientacao-a-objetos",
+      "modelagem",
+      "bacen"
+    ]
+  },
+  {
+    "id": 54,
+    "banca": "CEBRASPE",
+    "materia": "Engenharia de Software",
+    "enunciado": "Julgue os itens a seguir, relativos a análise e projeto de software: Na modelagem entidade-relacionamento-atributo, dicionários de dados podem ser utilizados a fim de se obter descrições mais detalhadas das entidades, relacionamentos e atributos incluídos no modelo.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "mer",
+      "dicionario-de-dados",
+      "bacen"
+    ]
+  },
+  {
+    "id": 55,
+    "banca": "CEBRASPE",
+    "materia": "Engenharia de Software",
+    "enunciado": "Julgue os itens a seguir, relativos a análise e projeto de software: A linguagem ubíqua utiliza termos que fazem parte das discussões entre os especialistas de negócio e as equipes de desenvolvimento, os quais devem utilizar a mesma terminologia na linguagem falada e no código.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "ddd",
+      "linguagem-ubiqua",
+      "bacen"
+    ]
+  },
+  {
+    "id": 56,
+    "banca": "CEBRASPE",
+    "materia": "Engenharia de Software",
+    "enunciado": "Julgue os itens a seguir, relativos a análise e projeto de software: UML (unified modeling language) é uma metodologia de desenvolvimento focada na análise orientada a objetos que buscam especificar, construir e documentar artefatos de um sistema de software.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "⚠️ PEGADINHA: UML não é uma METODOLOGIA de desenvolvimento (como Scrum ou XP). Ela é apenas uma LINGUAGEM de modelagem visual. Ela não diz 'como' você deve trabalhar, apenas te dá os símbolos para desenhar o projeto.",
+    "tags": [
+      "uml",
+      "metodologia",
+      "pegadinha",
+      "bacen"
+    ]
+  },
+  {
+    "id": 57,
+    "banca": "CEBRASPE",
+    "materia": "Engenharia de Software",
+    "enunciado": "Julgue os itens a seguir, relativos a análise e projeto de software: A análise de requisitos envolve descoberta, refinamento, modelagem e especificação do software. Requisitos funcionais estão relacionados aos serviços que o software deve oferecer, ao passo que requisitos não funcionais são restrições acerca de serviços oferecidos pelo software.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "requisitos",
+      "funcionais-x-nao-funcionais",
+      "bacen"
+    ]
+  },
+  {
+    "id": 58,
+    "banca": "CEBRASPE",
+    "materia": "Engenharia de Software",
+    "enunciado": "Julgue os itens subsequentes, no que se refere aos processos de desenvolvimento de software: Uma metodologia é considerada ágil quando realiza o desenvolvimento de software de forma incremental, colaborativa, direta e adaptativa.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "💡 DICA: Os quatro pilares do desenvolvimento ágil nas provas são: Iterativo (ciclos), Incremental (entregas parciais), Colaborativo (cliente junto à equipe) e Adaptativo (aberto a mudanças).",
+    "tags": [
+      "agil",
+      "manifesto-agil",
+      "bacen"
+    ]
+  },
+  {
+    "id": 59,
+    "banca": "CEBRASPE",
+    "materia": "Engenharia de Software",
+    "enunciado": "Julgue os itens subsequentes, no que se refere aos processos de desenvolvimento de software: As principais características do Extreme Programming são a divisão em equipes de até 7 pessoas, duração de uma iteração de quatro semanas e distribuição de equipes.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "⚠️ PEGADINHA: A banca misturou conceitos de Scrum e XP! No XP (Extreme Programming), as iterações são bem curtas (1 a 2 semanas, não 4) e a equipe deve trabalhar junta fisicamente no mesmo ambiente (não equipes distribuídas/separadas). Além disso, o número fixo de pessoas remete mais às regras do Scrum.",
+    "tags": [
+      "xp",
+      "extreme-programming",
+      "pegadinha",
+      "bacen"
+    ]
+  },
+  {
+    "id": 60,
+    "banca": "CEBRASPE",
+    "materia": "Engenharia de Software",
+    "enunciado": "Julgue os itens subsequentes, no que se refere aos processos de desenvolvimento de software: De acordo com a norma ISO/IEC 12.207, se uma atividade é coesiva o suficiente, ela é convertida em um subprocesso por meio da definição de propósito e resultados.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "iso-12207",
+      "processos",
+      "bacen"
+    ]
+  },
+  {
+    "id": 61,
+    "banca": "CEBRASPE",
+    "materia": "Engenharia de Software",
+    "enunciado": "Julgue os itens subsequentes, no que se refere aos processos de desenvolvimento de software: Na abordagem incremental, o sistema é dividido em subsistemas por funcionalidades. Após a identificação das funcionalidades a serem entregues no primeiro incremento, novas funcionalidades serão adicionadas a cada versão.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "ciclo-de-vida",
+      "modelo-incremental",
+      "bacen"
+    ]
+  },
+  {
+    "id": 62,
+    "banca": "CEBRASPE",
+    "materia": "Desenvolvimento Web",
+    "enunciado": "Acerca das folhas de estilo (CSS), julgue o item seguinte: A propriedade padding permite que o usuário redimensione um elemento HMTL, como <div>, por exemplo. A sintaxe correta para essa propriedade é div { padding: both; }.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "⚠️ PEGADINHA: A propriedade que permite o redimensionamento de um elemento pelo usuário é 'resize' (ex: resize: both;). A propriedade 'padding' serve apenas para definir o espaçamento interno do elemento.",
+    "tags": [
+      "css",
+      "padding",
+      "bacen"
+    ]
+  },
+  {
+    "id": 63,
+    "banca": "CEBRASPE",
+    "materia": "Desenvolvimento Web",
+    "enunciado": "Acerca das folhas de estilo (CSS), julgue o item seguinte: A propriedade text indentation transforma em maiúscula a primeira letra de cada palavra que esteja formatada, por exemplo, por meio do elemento <p>. A sintaxe correta para essa propriedade é p{text-indentation:capitalize;}.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "⚠️ PEGADINHA: A banca inventou a propriedade 'text-indentation' (o correto para recuo é 'text-indent'). Além disso, para transformar a primeira letra de cada palavra em maiúscula, a propriedade correta é 'text-transform: capitalize;'.",
+    "tags": [
+      "css",
+      "text-transform",
+      "bacen"
+    ]
+  },
+  {
+    "id": 64,
+    "banca": "CEBRASPE",
+    "materia": "Acessibilidade",
+    "enunciado": "Considerando o modelo de acessibilidade de governo eletrônico (e-MAG) 3.0, julgue o item subsecutivo: Quando apenas o teclado do computador for utilizado, todas as funções da página, desenvolvidas em Javascript, devem estar disponíveis.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "e-mag",
+      "javascript",
+      "acessibilidade",
+      "bacen"
+    ]
+  },
+  {
+    "id": 65,
+    "banca": "CEBRASPE",
+    "materia": "Acessibilidade",
+    "enunciado": "Considerando o modelo de acessibilidade de governo eletrônico (e-MAG) 3.0, julgue o item subsecutivo: Para permitir que softwares leitores de tela leiam mais facilmente o conteúdo de páginas com carga textual elevada, recomenda-se abrir os links que remetam a esse conteúdo em novas instâncias de abas ou janelas. Assim, deve-se sempre utilizar a mudança no controle do foco do teclado.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "💡 DICA: Abrir links em novas abas/janelas forçadamente é uma das piores práticas de acessibilidade. Isso desorienta completamente o usuário de leitor de tela, pois ele perde o histórico de navegação (botão 'voltar' para de funcionar) e o contexto.",
+    "tags": [
+      "e-mag",
+      "leitores-de-tela",
+      "bacen"
+    ]
+  },
+  {
+    "id": 66,
+    "banca": "CEBRASPE",
+    "materia": "Acessibilidade",
+    "enunciado": "Considerando o modelo de acessibilidade de governo eletrônico (e-MAG) 3.0, julgue o item subsecutivo: Para maximizar a compatibilidade com atuais e futuros agentes de usuário, é fundamental respeitar os padrões de desenvolvimento web do W3C (World Wide Web Consortium). Por exemplo, é necessário declarar o DOCTYPE correto da página de qualquer documento HTML ou XHTML.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "w3c",
+      "html",
+      "e-mag",
+      "bacen"
+    ]
+  },
+  {
+    "id": 67,
+    "banca": "CEBRASPE",
+    "materia": "Redes de Computadores",
+    "enunciado": "Julgue o item a seguir, referente à arquitetura de aplicações web: Intranet é uma rede privada de computadores. Extranet pode ser vista como extensão de uma intranet para usuários externos a uma organização, geralmente parceiros, vendedores e fornecedores, em isolamento de todos os outros usuários da Internet.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "intranet",
+      "extranet",
+      "bacen"
+    ]
+  },
+  {
+    "id": 68,
+    "banca": "CEBRASPE",
+    "materia": "Banco de Dados",
+    "enunciado": "Considerando os sistemas de gerenciamento de bancos de dados, julgue o próximo item: PostgreSQL, MariaDB, IIS e SQL Server são exemplos de sistemas gerenciadores de bancos de dados.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "⚠️ PEGADINHA: O IIS (Internet Information Services) da Microsoft não é um Banco de Dados (SGBD). Ele é um Servidor Web (assim como o Apache ou o Nginx).",
+    "tags": [
+      "sgbd",
+      "iis",
+      "pegadinha",
+      "bacen"
+    ]
+  },
+  {
+    "id": 69,
+    "banca": "CEBRASPE",
+    "materia": "Engenharia de Software",
+    "enunciado": "Julgue o seguinte item, acerca da arquitetura em três camadas: MVC (Model-view-controller) é um modelo de arquitetura de software que separa, de um lado, a representação da informação e, de outro, a interação do usuário com a informação.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "mvc",
+      "arquitetura-de-software",
+      "bacen"
+    ]
+  },
+  {
+    "id": 70,
+    "banca": "CEBRASPE",
+    "materia": "Arquitetura de Software",
+    "enunciado": "No que diz respeito a soluções de integração, julgue o item a seguir: O estilo arquitetural REST define um conjunto de restrições para uma aplicação, como, por exemplo, utilização de arquitetura par-a-par, manutenção de informações de estado, não uso de cache no cliente e apresentação de uma interface uniforme.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "⚠️ PEGADINHA: A banca inverteu os princípios REST! REST utiliza arquitetura cliente-servidor (e não par-a-par), é stateless / sem estado (não mantém informações de estado) e incentiva ativamente o uso de cache.",
+    "tags": [
+      "rest",
+      "api",
+      "bacen"
+    ]
+  },
+  {
+    "id": 71,
+    "banca": "CEBRASPE",
+    "materia": "Desenvolvimento Mobile",
+    "enunciado": "Julgue o item subsequente, relativo às arquiteturas para desenvolvimento de aplicativos em dispositivos móveis: No projeto de aplicações para dispositivos móveis, devem ser considerados, entre outros aspectos, as características dos dispositivos de hardware para os quais a aplicação está sendo desenvolvida e o consumo de energia gerado por cada recurso do sistema, visando-se a economia de bateria.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "mobile",
+      "arquitetura",
+      "bacen"
+    ]
+  },
+  {
+    "id": 72,
+    "banca": "CEBRASPE",
+    "materia": "Computação em Nuvem",
+    "enunciado": "A respeito de computação em nuvem, julgue o próximo item: Multitenancy é uma importante característica da computação em nuvem que garante que cada usuário acesse recursos da nuvem de forma exclusiva.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "💡 DICA: O conceito de 'Multitenancy' (Multi-inquilino) significa exatamente o oposto: os recursos físicos e o software são COMPARTILHADOS entre vários clientes (inquilinos), embora os dados de cada um fiquem isolados logicamente.",
+    "tags": [
+      "cloud",
+      "multitenancy",
+      "bacen"
+    ]
+  },
+  {
+    "id": 73,
+    "banca": "CEBRASPE",
+    "materia": "Linguagens de Programação",
+    "enunciado": "No que se refere a linguagens e ambientes de programação Java, C# e paradigma de programação orientada a objetos, julgue o item subsequente: Em C#, o operador ?? é denominado operador de concentração de nulo e é usado para definir um valor padrão para tipos de valor anulável ou tipos de referência. No exemplo abaixo, caso a variável num seja nula, o valor de x será igual a 1.\n\nint x = num ?? 1;",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "c-sharp",
+      "operadores",
+      "bacen"
+    ]
+  },
+  {
+    "id": 74,
+    "banca": "CEBRASPE",
+    "materia": "Linguagens de Programação",
+    "enunciado": "Considere que as linhas abaixo foram retiradas de um programa escrito em Java, e que não há modificações destas ao longo do programa.\n\nint i = 10;\nint n = ++i%5;\n\nDiante disso, os valores finais das variáveis i e n serão, respectivamente, 11 e 1.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "💡 DICA: O operador '++' vem ANTES de 'i' (pré-incremento). Logo, o 'i' vira 11 primeiro. Depois ocorre a operação '11 % 5' (resto da divisão de 11 por 5), que é 1. Portanto, i=11 e n=1.",
+    "tags": [
+      "java",
+      "operadores",
+      "matematica",
+      "bacen"
+    ]
+  },
+  {
+    "id": 75,
+    "banca": "CEBRASPE",
+    "materia": "Orientação a Objetos",
+    "enunciado": "No paradigma orientado a objetos, o polimorfismo está relacionado à herança de métodos. O Java possui duas modalidades de polimorfismo: overriding, que consiste em alterar o método em uma subclasse mantendo-se sua mesma assinatura da superclasse; e overloading, no qual há métodos de mesmo nome associados por meio da herança, porém, com argumentos diferentes.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "⚠️ PEGADINHA: O erro está em dizer que o 'overloading' (sobrecarga) é associado 'por meio da herança'. A sobrecarga geralmente ocorre DENTRO da própria classe, criando métodos com o mesmo nome, mas recebendo parâmetros diferentes.",
+    "tags": [
+      "poo",
+      "polimorfismo",
+      "sobrecarga",
+      "bacen"
+    ]
+  },
+  {
+    "id": 76,
+    "banca": "CEBRASPE",
+    "materia": "Linguagens de Programação",
+    "enunciado": "Considere a seguinte classe desenvolvida em C#.\n\nclass Teste {\n static void Main() {\n  int num = 1;\n  while (num++ < 6) {\n   Console.WriteLine (\"num é = {0}\", num);\n  }\n }\n}\n\nNessa situação, essa classe produz o seguinte resultado:\nnum é = 1\nnum é = 2\nnum é = 3\nnum é = 4\nnum é = 5",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "⚠️ PEGADINHA de Teste de Mesa: Como é usado 'num++' no while, ele testa a condição com o valor atual e incrementa logo em seguida. Quando 'num' vale 1 (testa 1 < 6, Certo), ele já entra no bloco de código valendo 2. Portanto, o programa vai imprimir de 'num é = 2' até 'num é = 6', e não de 1 a 5.",
+    "tags": [
+      "c-sharp",
+      "loops",
+      "logica",
+      "bacen"
+    ]
+  },
+  {
+    "id": 77,
+    "banca": "CEBRASPE",
+    "materia": "Desenvolvimento Web",
+    "enunciado": "Julgue os itens subsecutivos, referentes ao desenvolvimento de sistemas web HTML/HTML5 e CSS3: O CSS3 permite criar animações e transições de estilo sem a necessidade de utilizar Flash ou Javascripts.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "css3",
+      "animacoes",
+      "bacen"
+    ]
+  },
+  {
+    "id": 78,
+    "banca": "CEBRASPE",
+    "materia": "Desenvolvimento Web",
+    "enunciado": "Julgue os itens subsecutivos, referentes ao desenvolvimento de sistemas web HTML/HTML5 e CSS3: O exemplo abaixo está escrito corretamente em HTML 5 e o atributo required obriga o usuário a escolher uma cor para que o formulário seja enviado.\n\n<select required>\n  <option value=\"\">Escolha um</option>\n  <option value=\"vermelho\">Vermelho</option>\n  <option value=\"verde\">Verde</option>\n  <option value=\"azul\">Azul</option>\n</select>",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "html5",
+      "formularios",
+      "bacen"
+    ]
+  },
+  {
+    "id": 79,
+    "banca": "CEBRASPE",
+    "materia": "Engenharia de Software",
+    "enunciado": "Acerca de JUnit, JMeter e Concordion, julgue o próximo item: O JUnit é um framework que permite realizar testes unitários de códigos Java, herdando algumas características da própria linguagem. Na versão 4.11, ele permite, entre outros recursos, mudar a ordem de testes, criar testes parametrizados, executar testes de exceção e testes temporizados por meio da palavra-chave timeout.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "testes",
+      "junit",
+      "java",
+      "bacen"
+    ]
+  },
+  {
+    "id": 80,
+    "banca": "CEBRASPE",
+    "materia": "Banco de Dados",
+    "enunciado": "Considerando o script: CREATE TABLE Pessoa ( Id int NULL, Matricula int NOT NULL, Nome varchar(255) NOT NULL, DataNascimento date NULL );\n\nJulgue o item seguinte: O comando abaixo seleciona os cinco primeiros caracteres da coluna Nome da tabela Pessoa.\n\nSELECT MID(Nome,1,5) FROM Pessoa",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "sql",
+      "funcoes-de-string",
+      "bacen"
+    ]
+  },
+  {
+    "id": 81,
+    "banca": "CEBRASPE",
+    "materia": "Banco de Dados",
+    "enunciado": "Considerando a tabela Pessoa ( Id int NULL, Matricula int NOT NULL, Nome varchar(255) NOT NULL, DataNascimento date NULL ), julgue o item:\n\nO comando abaixo insere corretamente apenas um registro na tabela Pessoa.\n\nINSERT INTO Pessoa (Id,Matricula) VALUES (1,287)",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "⚠️ PEGADINHA: A inserção vai falhar! A tabela 'Pessoa' foi criada com a coluna 'Nome' sendo 'NOT NULL'. Como o comando INSERT não informou nenhum valor para o Nome, o banco de dados rejeitará a operação.",
+    "tags": [
+      "sql",
+      "insert",
+      "restricoes",
+      "bacen"
+    ]
+  },
+  {
+    "id": 82,
+    "banca": "CEBRASPE",
+    "materia": "Banco de Dados",
+    "enunciado": "Considerando a tabela Pessoa ( Id int NULL, Matricula int NOT NULL, Nome varchar(255) NOT NULL, DataNascimento date NULL ), julgue o item:\n\nPara criar uma chave primária composta na Tabela Pessoa, deve-se executar o seguinte comando.\n\nALTER TABLE Pessoa ADD CONSTRAINT pk_PessoaID PRIMARY KEY (Id, Matricula)",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "⚠️ PEGADINHA: Repare que a coluna 'Id' foi definida como 'NULL' na criação da tabela. Em bancos relacionais, NENHUMA coluna que faça parte de uma Chave Primária (PK) pode aceitar valores nulos. O comando retornará erro.",
+    "tags": [
+      "sql",
+      "primary-key",
+      "bacen"
+    ]
+  },
+  {
+    "id": 83,
+    "banca": "CEBRASPE",
+    "materia": "Banco de Dados",
+    "enunciado": "Considerando a tabela EnderecoPessoa ( Id int NOT NULL, TipoEndereco char (1) NOT NULL, Endereco varchar(255), Cidade char(55), UF varchar (2) ), julgue o item:\n\nConsiderando que o campo Id na tabela Pessoa esteja corretamente configurado como chave primária, para se criar uma chave estrangeira, deve-se executar o comando:\n\nALTER TABLE EnderecoPessoa ADD CONSTRAINT fk_Endereco_Pessoa FOREIGN KEY (P_id) REFERENCES Pessoa (Id)",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "⚠️ PEGADINHA: O comando falha miseravelmente porque tenta usar a coluna 'P_id' na tabela EnderecoPessoa... mas essa coluna NÃO EXISTE na estrutura da tabela que foi criada! As colunas da tabela são apenas Id, TipoEndereco, Endereco, Cidade e UF.",
+    "tags": [
+      "sql",
+      "foreign-key",
+      "bacen"
+    ]
+  },
+  {
+    "id": 84,
+    "banca": "CEBRASPE",
+    "materia": "Portais Corporativos",
+    "enunciado": "Julgue os itens a seguir, acerca de portais corporativos: A personalização de um portal corporativo é caracterizada fundamentalmente pela capacidade de alteração do leiaute da página principal conforme o número de acessos por minuto.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "",
+    "tags": [
+      "portais",
+      "personalizacao",
+      "bacen"
+    ]
+  },
+  {
+    "id": 85,
+    "banca": "CEBRASPE",
+    "materia": "Portais Corporativos",
+    "enunciado": "Julgue os itens a seguir, acerca de portais corporativos: Por meio de um portal corporativo, não é possível o acesso a informações de diversas fontes, como, por exemplo, vários bancos de dados.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "",
+    "tags": [
+      "portais",
+      "integracao",
+      "bacen"
+    ]
+  },
+  {
+    "id": 86,
+    "banca": "CEBRASPE",
+    "materia": "Gestão de Conteúdo",
+    "enunciado": "Julgue os itens seguintes, a respeito de Web 2.0 e de gestão de conteúdo: Os sistemas de gerenciamento de conteúdo possibilitam a separação entre conteúdo (informação) e formato de exibição.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "cms",
+      "web-2.0",
+      "bacen"
+    ]
+  },
+  {
+    "id": 87,
+    "banca": "CEBRASPE",
+    "materia": "Gestão de Conteúdo",
+    "enunciado": "Julgue os itens seguintes, a respeito de Web 2.0 e de gestão de conteúdo: A Web 2.0, resultado da introdução da tecnologia 3G nos celulares, constituiu uma mudança de conceito na velocidade de acesso aos portais.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "💡 DICA: A Web 2.0 não tem nenhuma relação com a tecnologia 3G de celulares. O termo refere-se à mudança de paradigma na internet: de páginas estáticas para uma rede colaborativa, focada na interação e conteúdo gerado pelo próprio usuário (ex: redes sociais, wikis, blogs).",
+    "tags": [
+      "web-2.0",
+      "conceitos",
+      "bacen"
+    ]
+  },
+  {
+    "id": 88,
+    "banca": "CEBRASPE",
+    "materia": "Sistemas de Busca",
+    "enunciado": "Com relação aos sistemas de busca e indexação de conteúdo, julgue os próximos itens: A indexação do conteúdo de uma página recém-publicada na Internet ocorre de modo imediato nos sistemas de busca, como Google, Bing e semelhantes.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "",
+    "tags": [
+      "indexacao",
+      "crawlers",
+      "bacen"
+    ]
+  },
+  {
+    "id": 89,
+    "banca": "CEBRASPE",
+    "materia": "Sistemas de Busca",
+    "enunciado": "Com relação aos sistemas de busca e indexação de conteúdo, julgue os próximos itens: No sistema de buscas do Google, pode-se restringir a busca de documentos pertinentes a um domínio DNS específico, como, por exemplo, a busca do sítio: www.brasil.gov.br presidente.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "⚠️ PEGADINHA: O comando do Google deve ser em inglês. O operador correto para restringir a um domínio é 'site:', e não 'sítio:' como traduzido no enunciado da questão.",
+    "tags": [
+      "google",
+      "operadores-de-busca",
+      "pegadinha",
+      "bacen"
+    ]
+  },
+  {
+    "id": 90,
+    "banca": "CEBRASPE",
+    "materia": "Portais Corporativos",
+    "enunciado": "Julgue os seguintes itens, relativos a SharePoint 2010: Não é possível a visualização do SharePoint 2010 em um aparelho celular.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "",
+    "tags": [
+      "sharepoint",
+      "mobile",
+      "bacen"
+    ]
+  },
+  {
+    "id": 91,
+    "banca": "CEBRASPE",
+    "materia": "Portais Corporativos",
+    "enunciado": "Julgue os seguintes itens, relativos a SharePoint 2010: O SharePoint 2010 permite que o usuário crie páginas personalizadas com níveis de restrição de acesso manipuláveis.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "sharepoint",
+      "acesso",
+      "bacen"
+    ]
+  },
+  {
+    "id": 92,
+    "banca": "CEBRASPE",
+    "materia": "Business Intelligence",
+    "enunciado": "Com relação à inteligência de negócios, julgue os itens subsecutivos: Data warehouse (DW) e data mart (DM) são componentes importantes em um ambiente de business intelligence, visto que eles representam repositórios de múltiplos bancos de dados operacionais da empresa. Um DM agrega informações de diversos DWs distribuídos pelos departamentos da empresa.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "⚠️ PEGADINHA: A banca inverteu totalmente os conceitos! O Data Warehouse (DW) é o grande repositório central que unifica os dados corporativos. O Data Mart (DM) é um subconjunto menor desse repositório, focado em apenas um departamento específico (ex: um DM só para o setor de RH).",
+    "tags": [
+      "bi",
+      "data-warehouse",
+      "data-mart",
+      "bacen"
+    ]
+  },
+  {
+    "id": 93,
+    "banca": "CEBRASPE",
+    "materia": "Business Intelligence",
+    "enunciado": "Com relação à inteligência de negócios, julgue os itens subsecutivos: Árvores de decisão e regras de associação são exemplos de algoritmos de data mining.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "bi",
+      "data-mining",
+      "bacen"
+    ]
+  },
+  {
+    "id": 94,
+    "banca": "CEBRASPE",
+    "materia": "Gestão de Conteúdo",
+    "enunciado": "Com relação à gestão de conteúdo, julgue os itens subsecutivos: Devido às dificuldades de processamento e armazenamento, nas empresas, de um número cada vez maior de documentos, a gestão de conteúdo (enterprise content management ― ECM), que surgiu na década de 90 do século XX como resultado das preocupações ambientais, atualmente limita-se à gestão eletrônica de documento (GED).",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "💡 DICA: O conceito de ECM (Enterprise Content Management) é muito mais amplo que o GED (Gestão Eletrônica de Documentos). O ECM gerencia todo o ciclo de vida do conteúdo corporativo, não se limitando apenas a documentos tradicionais. Além disso, a sua origem principal está ligada à eficiência e inteligência de negócios, não a 'preocupações ambientais'.",
+    "tags": [
+      "ecm",
+      "ged",
+      "bacen"
+    ]
+  },
+  {
+    "id": 95,
+    "banca": "CEBRASPE",
+    "materia": "Gerenciamento de Processos",
+    "enunciado": "No que se refere ao gerenciamento e à automação de processos, julgue os itens subsecutivos: As atividades de um workflow devem incluir, minimamente, atores que as executem, rotas que explicitam o encadeamento e o destino das atividades, documentos produzidos e consumidos durante a execução das atividades e regras que devem ser respeitadas durante a execução das atividades.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "workflow",
+      "automacao",
+      "bacen"
+    ]
+  },
+  {
+    "id": 96,
+    "banca": "CEBRASPE",
+    "materia": "Gerenciamento de Processos",
+    "enunciado": "No que se refere ao gerenciamento e à automação de processos, julgue os itens subsecutivos: Com relação à hierarquia de processos, é correto afirmar que o detalhamento no nível de tarefa é obrigatório durante a modelagem de processos de negócio.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "",
+    "tags": [
+      "modelagem",
+      "hierarquia",
+      "bacen"
+    ]
+  },
+  {
+    "id": 97,
+    "banca": "CEBRASPE",
+    "materia": "Gerenciamento de Processos",
+    "enunciado": "No que diz respeito à modelagem de processos de negócio, julgue os próximos itens: Um fluxo de sequência que possua uma condição a ele associada poderá seguir adiante ainda que essa condição seja avaliada como falsa.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "",
+    "tags": [
+      "bpmn",
+      "fluxo",
+      "bacen"
+    ]
+  },
+  {
+    "id": 98,
+    "banca": "CEBRASPE",
+    "materia": "Gerenciamento de Processos",
+    "enunciado": "No que diz respeito à modelagem de processos de negócio, julgue os próximos itens: Uma das técnicas de análise de processo é a teoria das Redes Petri (RdPs), formada por dois tipos de componentes: as transições que representam ações do sistema e os lugares que representam variáveis de estado do sistema.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Certo",
+    "explicacao": "",
+    "tags": [
+      "redes-de-petri",
+      "modelagem",
+      "bacen"
+    ]
+  },
+  {
+    "id": 99,
+    "banca": "CEBRASPE",
+    "materia": "Gerenciamento de Processos",
+    "enunciado": "No que diz respeito à modelagem de processos de negócio, julgue os próximos itens: Um processo tem suas métricas de tempo de execução medidas por meio do tempo necessário para a execução de uma tarefa.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "",
+    "tags": [
+      "metricas",
+      "tempo-de-execucao",
+      "bacen"
+    ]
+  },
+  {
+    "id": 100,
+    "banca": "CEBRASPE",
+    "materia": "Gerenciamento de Processos",
+    "enunciado": "No que diz respeito à modelagem de processos de negócio, julgue os próximos itens: Um evento de início indica onde o processo começa e o que acontece ao longo de sua execução.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "",
+    "tags": [
+      "bpmn",
+      "eventos",
+      "bacen"
+    ]
+  },
+  {
+    "id": 101,
+    "banca": "CEBRASPE",
+    "materia": "Gerenciamento de Processos",
+    "enunciado": "Julgue os itens a seguir, referentes a técnicas de modelagem e desenho de processos: Em um processo no setor de RH, a utilização da técnica de mapeamento AS-IS fornecerá o desenho de como o processo é executado, com inclusão apenas de seus acertos.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "⚠️ PEGADINHA: O mapeamento AS-IS retrata a situação atual do processo exatamente como ele é executado no momento, incluindo todas as suas falhas, gargalos, redundâncias e erros. O objetivo é justamente diagnosticar o cenário real para, depois, propor melhorias no modelo TO-BE.",
+    "tags": [
+      "as-is",
+      "mapeamento",
+      "bacen"
+    ]
+  },
+  {
+    "id": 102,
+    "banca": "CEBRASPE",
+    "materia": "Engenharia de Software",
+    "enunciado": "Julgue os itens a seguir, referentes a técnicas de modelagem e desenho de processos: O diagrama de comunicação mostra a sequência de interações entre os elementos, de acordo com a temporalidade com que os processos acontecem.",
+    "alternativas": [
+      "Certo",
+      "Errado"
+    ],
+    "gabarito": "Errado",
+    "explicacao": "💡 DICA: A banca trocou os conceitos dos diagramas UML! Quem mostra as interações enfatizando a 'temporalidade' (linha do tempo) é o Diagrama de Sequência. O Diagrama de Comunicação (antigo diagrama de colaboração) foca na organização estrutural e nos vínculos entre os objetos, não na linha do tempo.",
+    "tags": [
+      "uml",
+      "diagramas",
+      "bacen"
+    ]
+  }
+]
