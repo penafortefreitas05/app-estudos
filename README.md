@@ -1,42 +1,45 @@
-# app-estudos
-Aplicativo pessoal de estudos e resoluções de questões.
-# 🚀 App de Estudos Inteligente - Foco TI (Bacen, CGU, TCU)
+# 🎯 FocoPro - Plataforma de Simulados para Concursos de TI
 
-## 📌 Sobre o Projeto
-Uma aplicação web (Single Page Application - SPA) desenvolvida do zero com o objetivo de criar um ecossistema de estudos tático e altamente customizável para concursos públicos de alto nível em Tecnologia da Informação. 
+> Aplicação web (SPA) moderna, responsiva e otimizada para a preparação estratégica em concursos públicos de Tecnologia da Informação (Bacen, TCU, CGU, Analista Judiciário).
 
-Diferente de plataformas genéricas, este sistema permite o controle total do banco de questões e utiliza métricas de desempenho para direcionar revisões precisas, unindo conceitos de metodologias ativas de estudo (como flashcards e repetição espaçada) a um painel analítico de progresso.
-
-## 🛠️ Tecnologias e Arquitetura
-* **Frontend:** HTML5, CSS3 e JavaScript (Vanilla/ES6+).
-* **Armazenamento:** `localStorage` (Client-side storage) garantindo isolamento total de dados por usuário e dispositivo, sem necessidade de backend na versão 1.0.
-* **Banco de Dados Local:** Estrutura de dados em Array de Objetos JSON (`questoes.js`), otimizada para buscas rápidas e iterações nativas do JS.
-* **Deploy e CI/CD:** Hospedado no [Vercel](https://vercel.com/) com integração contínua via GitHub.
-
-## ⚙️ Funcionalidades e Destaques Técnicos
-
-### 1. Motor de Filtragem Dinâmica e Busca em Tempo Real
-* **Filtros Combinados:** Cruzamento de dados instantâneo utilizando o método `.filter()` do JavaScript para Banca, Matéria, Tags e Termos de Busca.
-* **Sistema de Tags Clicáveis:** Implementação de marcações táticas (ex: `#bacen`, `#pegadinha`, `#estruturas-dados`) para isolamento de tópicos específicos.
-* **Busca Textual (Live Search):** Varredura de strings no enunciado e alternativas aplicando `.toLowerCase()` e `.includes()` em tempo real enquanto o usuário digita.
-
-### 2. Painel de Desempenho (Dashboard Analytics)
-* **Classificação de Status:** Algoritmo que calcula a taxa de acertos e o volume de tentativas para classificar automaticamente a proficiência na questão ("Dominada", "Em Aprendizado", "Alerta: Erro", "Nova").
-* **Dashboard Macro:** Geração dinâmica de barras de progresso percentuais que ilustram a evolução de aprendizado consolidada por disciplina.
-
-### 3. Modo Simulado com Algoritmo Fisher-Yates
-* **Embaralhamento Aleatório (Shuffle):** Implementação do algoritmo matemático *Fisher-Yates* para garantir complexidade de tempo O(n) na randomização justa do array de questões, evitando vícios visuais.
-* **Fatiamento (Slice):** Geração de provas com limites customizáveis de questões definidos pelo usuário.
-* **Cronômetro Regressivo:** Utilização de `setInterval` e manipulação de tempo (Minutos/Segundos) para simular a pressão do gerenciamento de tempo de uma prova real, com alertas visuais de esgotamento.
-
-### 4. Modo Revisão Focada
-* Filtragem baseada no estado da última resposta computada no `localStorage`, isolando apenas as questões erradas na tentativa anterior para uma revisão cirúrgica.
-
-## 🚀 Roadmap (Próximos Passos)
-- [ ] **Migração para Cloud:** Integração com Firebase ou Supabase (BaaS) para sincronização de dados entre dispositivos e trabalho offline/embarcado.
-- [ ] **Autenticação:** Sistema de Login de usuários para isolar múltiplos perfis no servidor.
-- [ ] **Algoritmo de Repetição Espaçada:** Automatização do agendamento de revisões inspirado no modelo do Anki.
-- [ ] **Integração com IA:** Uso de LLMs para gerar explicações automáticas das alternativas incorretas.
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6%2B-yellow?style=for-the-badge&logo=javascript)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![Architecture](https://img.shields.io/badge/Architecture-Modular_ES6-blue?style=for-the-badge)
 
 ---
-*Desenvolvido por Nathan Freitas - Estudante de Análise e Desenvolvimento de Sistemas (ADS).*
+
+## 🎨 Visão Geral & Interface
+
+O **FocoPro** foi projetado com foco em usabilidade e alta performance durante longas sessões de estudo. Possui uma interface em **Dark Mode Premium** baseada nas paletas *Slate* e *Blue/Emerald*, reduzindo a fadiga visual e organizando métricas em tempo real.
+
+---
+
+## 🚀 Principais Funcionalidades
+
+- 📖 **Banco de Questões Assíncrono:** Consumo estrito via **Fetch API** (`async/await`) alimentado por base de dados em formato JSON.
+- ⚙️ **Arquitetura Modular (ES6):** Separação rígida de responsabilidades seguindo o princípio SOLID (Single Responsibility Principle).
+- ⏱️ **Modo Simulado & Cronômetro:** Geração aleatória de simulados por quantidade e limite de tempo com relatório final de desempenho.
+- 💾 **Persistência de Dados & Backup:** Armazenamento isolado no `localStorage` com suporte a **exportação e importação de histórico em JSON**.
+- 🔔 **Sistema de Notificações Assíncronas:** Substituição de caixas nativas do navegador por **Toasts animadas** e **Modais baseados em Promises (`async/await`)**.
+- 📊 **Dashboard Macro de Desempenho:** Cálculo dinâmico de taxa de acertos por matéria e marcação de status da questão (*Dominada*, *Em Aprendizado*, *Alerta*).
+
+---
+
+## 📁 Arquitetura do Projeto
+
+```text
+📁 focopro/
+├── 📄 index.html              # Estrutura semântica principal (Entry point)
+├── 📄 README.md                # Documentação técnica do repositório
+├── 📁 css/
+│   └── 📄 style.css           # Design System em Dark Mode Premium
+├── 📁 data/
+│   └── 📄 questoes.json       # Base estrita de dados em formato JSON
+└── 📁 js/
+    ├── 📄 api.js              # Serviço de busca assíncrona (Fetch API)
+    ├── 📄 app.js              # Controlador e orquestrador de eventos
+    ├── 📄 notifications.js    # Toasts e Modais assíncronos (Promises)
+    ├── 📄 simulado.js         # Lógica de prova, cronômetro e relatórios
+    ├── 📄 storage.js          # Camada de abstração do LocalStorage
+    └── 📄 ui.js               # Renderização dinâmica do DOM e componentes

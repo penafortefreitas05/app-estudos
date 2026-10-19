@@ -106,6 +106,7 @@ export function atualizarPlacar(historico, questoes) {
     atualizarDashboardMacro(questoes, historico);
 }
 
+// ---------- RENDERIZAÇÃO DE QUESTÕES E ANOTAÇÕES ----------
 export function renderizarQuestoes(container, lista, historico, mensagemVazia = "Nenhuma questão encontrada para este filtro.") {
     container.innerHTML = "";
     if (lista.length === 0) {
@@ -115,7 +116,9 @@ export function renderizarQuestoes(container, lista, historico, mensagemVazia = 
 
     lista.forEach(q => {
         const status = classificarStatus(q.id, historico);
-        const tentativas = (historico[q.id] && historico[q.id].tentativas) || 0;
+        const h = historico[q.id] || {};
+        const tentativas = h.tentativas || 0;
+        const anotacao = h.anotacao || "";
 
         const botoes = q.alternativas.map(alt =>
             `<button type="button" class="btn-opcao" data-letra="${esc(letraDe(alt))}">${esc(alt)}</button>`
@@ -138,10 +141,24 @@ export function renderizarQuestoes(container, lista, historico, mensagemVazia = 
             <div class="opcoes-resposta">${botoes}</div>
             <small class="tentativas">Tentativas: ${tentativas}</small>
             <div class="feedback-area"></div>
+            
+            <!-- BLOCO DE ANOTAÇÕES PESSOAIS / CADERNO DE ERROS -->
+            <div class="area-anotacao">
+                <button type="button" class="btn-anotacao-toggle">
+                    📝 <span>${anotacao ? 'Editar Anotação Pessoal' : 'Adicionar Anotação Pessoal'}</span>
+                </button>
+                <div class="box-anotacao" ${anotacao ? '' : 'hidden'}>
+                    <textarea class="input-anotacao" placeholder="Anote a pegadinha da banca, o motivo do erro ou a regra teórica...">${esc(anotacao)}</textarea>
+                    <div class="acoes-anotacao">
+                        <button type="button" class="btn-sidebar btn-salvar-anotacao">💾 Salvar Anotação</button>
+                    </div>
+                </div>
+            </div>
         `;
         container.appendChild(card);
     });
 }
+
 
 export function revelar(card, q, escolhida) {
     const gab = gabaritoDe(q);

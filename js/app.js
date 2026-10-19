@@ -213,95 +213,77 @@ function importarHistorico(arquivo) {
 
 // ---------- ESCUTADORES DE EVENTOS ----------
 container.addEventListener("click", e => {
+    // 1. Responder opção de questão
     const opcao = e.target.closest(".btn-opcao");
     if (opcao && !opcao.disabled) {
         responder(opcao.closest(".questao-card"), opcao);
         return;
     }
+
+    // 2. Filtrar por Tag
     const tag = e.target.closest(".tag-item");
     if (tag) {
         definirTag(tag.dataset.tag);
         return;
     }
+
+    // 3. Finalizar Simulado
     if (e.target.closest("#btn-finalizar")) {
         finalizarSimulado(simulado, container, porId, historico, questoes, false);
-    }
-});
-
-chipTag.addEventListener("click", e => {
-    if (e.target.id === "btn-limpar-tag") definirTag("");
-});
-
-inputBusca.addEventListener("input", aplicarFiltros);
-selectBanca.addEventListener("change", aplicarFiltros);
-selectMateria.addEventListener("change", aplicarFiltros);
-
-document.getElementById("btn-simulado").addEventListener("click", () => {
-    const qtd = parseInt(document.getElementById("qtd-simulado").value) || 10;
-    const tempo = parseInt(document.getElementById("tempo-simulado").value);
-
-    const filtradas = filtrarQuestoes();
-    pararCronometro(displayCronometro);
-
-    if (filtradas.length === 0) {
-        simulado = null;
-        renderizarQuestoes(container, [], historico);
         return;
     }
 
-    const sorteadas = embaralharArray(filtradas).slice(0, qtd);
-    simulado = { ids: sorteadas.map(q => q.id), respostas: {}, inicio: Date.now(), finalizado: false };
-    renderizarQuestoes(container, sorteadas, historico);
-    adicionarBotaoFinalizar(container);
+    // 4. Toggle da Caixa de Anotação (Caderno de Erros)
+    const btnToggleAnotacao = e.target.closest(".btn-anotacao-toggle");
+    if (btnToggleAnotacao) {
+        const card = btnToggleAnotacao.closest(".questao-card");
+        const box = card.querySelector(".box-anotacao");
+        box.hidden = !box.hidden;
+        return;
+    }
 
-    if (tempo > 0) {
-        iniciarCronometro(tempo, displayCronometro, () => {
-            finalizarSimulado(simulado, container, porId, historico, questoes, true);
-        });
+    // 5. Salvar Anotação Pessoal
+    const btnSalvarAnotacao = e.target.closest(".btn-salvar-anotacao");
+    if (btnSalvarAnotacao) {
+        const card = btnSalvarAnotacao.closest(".questao-card");
+        const qId = card.dataset.id;
+        const texto = card.querySelector(".input-anotacao").value.trim();
+
+        if (!historico[qId]) {
+            historico[qId] = { acertos: 0, erros: 0, tentativas: 0, ultimaResposta: null, recentes: [] };
+        }
+
+        historico[qId].anotacao = texto;
+        salvarHistorico(historico);
+        
+        showToast("Anotação salva no seu Caderno de Erros!", "sucesso");
+        
+        const spanBtn = card.querySelector(".btn-anotacao-toggle span");
+        if (spanBtn) spanBtn.innerText = texto ? "Editar Anotação Pessoal" : "Adicionar Anotação Pessoal";
     }
 });
 
-document.getElementById("btn-todas").addEventListener("click", () => {
-    selectBanca.value = "";
-    selectMateria.value = "";
-    inputBusca.value = "";
-    document.getElementById("qtd-simulado").value = "";
-    document.getElementById("tempo-simulado").value = "";
-    definirTag("");
-});
-
+// ---------- BOTÃO MODO REVISÃO / CADERNO DE ERROS ----------
 document.getElementById("btn-modo-revisao").addEventListener("click", () => {
     simulado = null;
     pararCronometro(displayCronometro);
-    const erradas = questoes.filter(q => historico[q.id] && historico[q.id].ultimaResposta === 'errado');
-    renderizarQuestoes(container, erradas, historico, "Nenhuma questão para revisar. Você não tem erros pendentes.");
-});
-
-document.getElementById("btn-limpar-dados").addEventListener("click", async () => {
-    const confirmado = await showConfirmModal({
-        titulo: "Zerar Histórico",
-        mensagem: "Tem certeza que deseja apagar todo o seu progresso? Esta ação não pode ser desfeita.",
-        textoConfirmar: "Sim, Apagar Tudo",
-        textoCancelar: "Cancelar",
-        corPerigo: true
+    
+    // Filtra questões que possuem erros recentes OU anotações salvas
+    const cadernoDeErros = questoes.filter(q => {
+        const h = historico[q.id];
+        if (!h) return false;
+        return h.ultimaResposta === 'errado' || (h.anotacao && h.anotacao.length > 0);
     });
 
-    if (confirmado) {
-        localStorage.removeItem('appEstudos_Historico');
-        historico = {};
-        atualizarPlacar(historico, questoes);
-        aplicarFiltros();
-        showToast("Seu histórico de progresso foi zerado.", "alerta");
-    }
+    renderizarQuestoes(
+        container, 
+        cadernoDeErros, 
+        historico, 
+        "Seu Caderno de Erros está vazio! Nenhuma questão pendente para revisão ou com anotações salvas."
+    );
+    
+    showToast(`Carregadas ${cadernoDeErros.length} questões no Caderno de Erros.`, "info");
 });
-
-btnExportar.addEventListener("click", exportarHistorico);
-btnImportar.addEventListener("click", () => inputImportar.click());
-inputImportar.addEventListener("change", () => {
-    if (inputImportar.files[0]) importarHistorico(inputImportar.files[0]);
-    inputImportar.value = "";
-});
-
 // ---------- CARGA INICIAL ASSÍNCRONA ----------
 async function iniciarApp() {
     // 1. Busca as questões via Fetch API (async/await)
