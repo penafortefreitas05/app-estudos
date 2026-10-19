@@ -222,6 +222,7 @@ window.responder = function(idQuestao, alternativaEscolhida) {
 
     historico[idQuestao].tentativas++;
 
+    // Verifica se acertou ou errou
     if (alternativaEscolhida === questao.gabarito) {
         historico[idQuestao].acertos++;
         historico[idQuestao].ultimaResposta = 'certo';
@@ -234,12 +235,20 @@ window.responder = function(idQuestao, alternativaEscolhida) {
         feedbackDiv.innerHTML = `✖ Resposta Incorreta. O gabarito é: ${questao.gabarito}`;
     }
 
+    // NOVO: Adiciona a explicação/pegadinha na tela se existir no banco de dados
+    if (questao.explicacao) {
+        feedbackDiv.innerHTML += `
+            <div style="margin-top: 12px; padding: 12px; background: #1e293b; border-left: 4px solid #3b82f6; border-radius: 4px; font-size: 0.85rem; color: #cbd5e1; text-align: left;">
+                ${questao.explicacao}
+            </div>
+        `;
+    }
+
     localStorage.setItem('appEstudos_Historico', JSON.stringify(historico));
     atualizarPlacar();
     
-    // ATUALIZADO: Só limpa a questão se NÃO estiver no modo simulado ativo
     if (document.getElementById("display-cronometro").style.display === "none") {
-        setTimeout(aplicarFiltros, 1500);
+        setTimeout(aplicarFiltros, 2500); // Aumentei para 2.5s para dar tempo de ler a dica
     }
 };
 
