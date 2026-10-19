@@ -1,116 +1,202 @@
 // ============================================================
-// js/ui.js - Interface do Usuário e Renderização do DOM
+// js/ui.js - Renderizacao e Manipulacao da Interface (FocoPro)
 // ============================================================
 
+// ---------- UTILITARIOS DE TEXTO E SEGURANCA ----------
 export function esc(texto) {
-    return String(texto).replace(/[&<>"']/g, c => (
-        { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
-    ));
+    if (texto === null || texto === undefined) return "";
+    return String(texto)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
-export function letraDe(alternativa) {
-    return String(alternativa).trim().charAt(0).toUpperCase();
+export function formatarTempo(segundos) {
+    if (isNaN(segundos) || segundos < 0) return "00:00";
+    const min = Math.floor(segundos / 60);
+    const seg = segundos % 60;
+    return String(min).padStart(2, '0') + ":" + String(seg).padStart(2, '0');
+}
+
+// ---------- EXTRATORES DE LETRA E GABARITO (SEM REGEX FRAGIL) ----------
+export function letraDe(alt) {
+    if (!alt) return "";
+    const str = String(alt).trim();
+    const lower = str.toLowerCase();
+
+    if (lower === "certo" || lower === "correto") return "CERTO";
+    if (lower === "errado" || lower === "incorreto") return "ERRADO";
+
+    const primeiraLetra = str.charAt(0).toUpperCase();
+    if (primeiraLetra >= "A" && primeiraLetra <= "Z") {
+        return primeiraLetra;
+    }
+
+    return str.toUpperCase();
 }
 
 export function gabaritoDe(q) {
-    return String(q.gabarito).trim().toUpperCase();
+    if (!q || !q.gabarito) return "";
+    const g = String(q.gabarito).trim();
+    const lower = g.toLowerCase();
+
+    if (lower === "certo" || lower === "correto") return "CERTO";
+    if (lower === "errado" || lower === "incorreto") return "ERRADO";
+
+    const eCertoErrado = q.alternativas && q.alternativas.some(alt => {
+        const l = String(alt).trim().toLowerCase();
+        return l === "certo" || l === "errado";
+    });
+
+    if (eCertoErrado) {
+        if (lower === "c") return "CERTO";
+        if (lower === "e") return "ERRADO";
+    }
+
+    const primeiraLetra = g.charAt(0).toUpperCase();
+    if (primeiraLetra >= "A" && primeiraLetra <= "Z") {
+        return primeiraLetra;
+    }
+
+    return g.toUpperCase();
 }
 
-export function formatarTempo(ms) {
-    const total = Math.round(ms / 1000);
-    return `${String(Math.floor(total / 60)).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}`;
+// ---------- COMPONENTES DE INTERFACE ----------
+export function preencherSelect(selectElement, textoPadrao, propriedade, listaQuestoes) {
+    if (!selectElement) return;
+    const valoresUnicos = [...new Set(listaQuestoes.map(q => q[propriedade]).filter(Boolean))].sort();
+    
+    selectElement.innerHTML = '<option value="">' + esc(textoPadrao) + '</option>';
+    valoresUnicos.forEach(valor => {
+        const opt = document.createElement("option");
+        opt.value = valor;
+        opt.textContent = valor;
+        selectElement.appendChild(opt);
+    });
 }
 
-export function classificarStatus(id, historico) {
-    const dados = historico[id];
-    if (!dados || !dados.tentativas) return { classe: 'nova', texto: 'Nova' };
-
-    const rec = Array.isArray(dados.recentes) ? dados.recentes : null;
-    const n = rec && rec.length ? rec.length : dados.tentativas;
-    const taxa = (rec && rec.length ? rec.reduce((s, x) => s + x, 0) / rec.length : dados.acertos / dados.tentativas) * 100;
-
-    if (taxa >= 80 && n >= 3) return { classe: 'dominada', texto: `Dominada (${Math.round(taxa)}%)` };
-    if (taxa <= 50 && n >= 2) return { classe: 'alerta', texto: `Alerta: Erro (${Math.round(taxa)}%)` };
-    return { classe: 'aprendizado', texto: `Em Aprendizado (${Math.round(taxa)}%)` };
-}
-
-export function preencherSelect(select, rotuloPadrao, campo, questoes) {
-    const contagem = {};
-    questoes.forEach(q => { contagem[q[campo]] = (contagem[q[campo]] || 0) + 1; });
-
-    select.innerHTML = "";
-    select.add(new Option(rotuloPadrao, ""));
-    Object.keys(contagem)
-        .sort((a, b) => a.localeCompare(b, 'pt-BR'))
-        .forEach(valor => select.add(new Option(`${valor} (${contagem[valor]})`, valor)));
-}
-
-export function atualizarChipTag(chipTag, tagSelecionada) {
-    if (!tagSelecionada) {
-        chipTag.hidden = true;
-        chipTag.innerHTML = "";
+export function atualizarChipTag(chipTagElement, tag) {
+    if (!chipTagElement) return;
+    if (!tag) {
+        chipTagElement.hidden = true;
+        chipTagElement.innerHTML = "";
         return;
     }
-    chipTag.hidden = false;
-    chipTag.innerHTML = `<span>Filtrando pela tag: <strong>${esc(tagSelecionada)}</strong></span>
-        <button type="button" id="btn-limpar-tag" aria-label="Remover filtro de tag">✕</button>`;
+    chipTagElement.hidden = false;
+    chipTagElement.innerHTML = 'Filtro por tag: <strong>#' + esc(tag) + '</strong> <button type="button" id="btn-limpar-tag" class="btn-limpar-tag">✖ Remover</button>';
 }
 
-export function atualizarDashboardMacro(questoes, historico) {
-    const painel = document.getElementById("dashboard-materias");
-    if (!painel) return;
-    const stats = {};
+export function classificarStatus(qId, historico) {
+    const h = historico[qId];
+    if (!h || !h.tentativas) return { texto: "Não Respondida", classe: "badge-neutro" };
+
+    const recentes = Array.isArray(h.recentes) ? h.recentes : [];
+    const ultimosCinco = recentes.slice(-5);
+    const taxaRecente = ultimosCinco.length > 0
+        ? (ultimosCinco.reduce((acc, v) => acc + v, 0) / ultimosCinco.length) * 100
+        : 0;
+
+    if (h.tentativas >= 3 && taxaRecente >= 80) return { texto: "Dominada 🎯", classe: "badge-sucesso" };
+    if (taxaRecente <= 40) return { texto: "Alerta ⚠️", classe: "badge-perigo" };
+    return { texto: "Em Aprendizado 📘", classe: "badge-alerta" };
+}
+
+// ---------- ATUALIZACAO DO PLACAR E DASHBOARD ----------
+export function atualizarPlacar(historico, questoes) {
+    if (!historico) historico = {};
+    if (!questoes) questoes = [];
+
+    let totalAcertos = 0;
+    let totalErros = 0;
+    let qtdCadernoErros = 0;
+    const materiasMap = {};
+
+    const histMap = new Map();
+    Object.entries(historico).forEach(([k, v]) => {
+        histMap.set(String(k), v);
+    });
 
     questoes.forEach(q => {
-        stats[q.materia] = stats[q.materia] || { acertos: 0, tentativas: 0 };
-        const h = historico[q.id];
+        const idStr = String(q.id);
+        const h = histMap.get(idStr);
+        const mat = q.materia || "Geral";
+
+        if (!materiasMap[mat]) {
+            materiasMap[mat] = { respondidas: 0, acertos: 0, erros: 0, total: 0 };
+        }
+        materiasMap[mat].total++;
+
         if (h) {
-            stats[q.materia].acertos += h.acertos || 0;
-            stats[q.materia].tentativas += h.tentativas || 0;
+            const ac = Number(h.acertos || 0);
+            const er = Number(h.erros || 0);
+            const tent = Number(h.tentativas || 0);
+
+            if (tent > 0 || ac > 0 || er > 0 || h.ultimaResposta) {
+                totalAcertos += ac;
+                totalErros += er;
+
+                materiasMap[mat].respondidas++;
+                materiasMap[mat].acertos += ac;
+                materiasMap[mat].erros += er;
+            }
+
+            if (h.ultimaResposta === 'errado' || (h.anotacao && String(h.anotacao).trim().length > 0)) {
+                qtdCadernoErros++;
+            }
         }
     });
 
-    let html = "<h4>Desempenho por Matéria</h4>";
-    let temDados = false;
+    const elAcertos = document.getElementById("stat-acertos");
+    const elErros = document.getElementById("stat-erros");
+    const elContadorRevisao = document.getElementById("contador-revisao");
 
-    Object.keys(stats).sort((a, b) => a.localeCompare(b, 'pt-BR')).forEach(materia => {
-        const { acertos, tentativas } = stats[materia];
-        if (tentativas === 0) return;
-        temDados = true;
-        const taxa = (acertos / tentativas) * 100;
-        const cor = taxa >= 80 ? 'excelente' : taxa >= 60 ? 'atencao' : 'critico';
+    if (elAcertos) elAcertos.innerText = totalAcertos;
+    if (elErros) elErros.innerText = totalErros;
+    if (elContadorRevisao) elContadorRevisao.innerText = qtdCadernoErros;
 
-        html += `
-            <div class="materia-stat">
-                <div class="materia-header"><span>${esc(materia)}</span><span>${Math.round(taxa)}%</span></div>
-                <div class="barra-fundo"><div class="barra-progresso ${cor}" style="width: ${taxa}%"></div></div>
-            </div>`;
+    renderizarDesempenhoMaterias(materiasMap);
+}
+
+function renderizarDesempenhoMaterias(materiasMap) {
+    const containerMaterias = document.getElementById("dashboard-materias");
+    if (!containerMaterias) return;
+
+    const materiasComAtividade = Object.keys(materiasMap).filter(mat => materiasMap[mat].respondidas > 0);
+
+    if (materiasComAtividade.length === 0) {
+        containerMaterias.innerHTML = '<p class="aviso-vazio" style="color: #64748b; font-size: 0.8rem; margin-top: 1.2rem; text-align: center;">Sem dados de desempenho acumulados.</p>';
+        return;
+    }
+
+    let html = '<div class="painel-desempenho-materias">';
+    materiasComAtividade.sort().forEach(mat => {
+        const dados = materiasMap[mat];
+        const somaResp = dados.acertos + dados.erros;
+        const taxa = somaResp > 0 
+            ? ((dados.acertos / somaResp) * 100).toFixed(0) 
+            : 0;
+        
+        html += '<div class="materia-stat-item">' +
+                    '<div class="materia-stat-header">' +
+                        '<span class="materia-nome">📖 ' + esc(mat) + '</span>' +
+                        '<span class="materia-taxa">' + taxa + '% (' + dados.acertos + '/' + dados.respondidas + ')</span>' +
+                    '</div>' +
+                    '<div class="barra-progresso-bg">' +
+                        '<div class="barra-progresso-fill" style="width: ' + taxa + '%;"></div>' +
+                    '</div>' +
+                '</div>';
     });
-
-    if (!temDados) {
-        html += "<p class='aviso-vazio'>Responda questões para ver seu gráfico.</p>";
-    }
-    painel.innerHTML = html;
+    html += '</div>';
+    containerMaterias.innerHTML = html;
 }
 
-export function atualizarPlacar(historico, questoes) {
-    let acertos = 0, erros = 0, revisar = 0;
-    for (const id in historico) {
-        acertos += historico[id].acertos || 0;
-        erros += historico[id].erros || 0;
-        if (historico[id].ultimaResposta === 'errado') revisar++;
-    }
-    document.getElementById("stat-acertos").innerText = acertos;
-    document.getElementById("stat-erros").innerText = erros;
-    document.getElementById("contador-revisao").innerText = revisar;
-    atualizarDashboardMacro(questoes, historico);
-}
-
-// ---------- RENDERIZAÇÃO DE QUESTÕES E ANOTAÇÕES ----------
-export function renderizarQuestoes(container, lista, historico, mensagemVazia = "Nenhuma questão encontrada para este filtro.") {
+// ---------- RENDERIZACAO DE QUESTOES ----------
+export function renderizarQuestoes(container, lista, historico, mensagemVazia = "Nenhuma questão encontrada.") {
     container.innerHTML = "";
     if (lista.length === 0) {
-        container.innerHTML = `<p class="aviso-vazio">${esc(mensagemVazia)}</p>`;
+        container.innerHTML = '<p class="aviso-vazio">' + esc(mensagemVazia) + '</p>';
         return;
     }
 
@@ -120,73 +206,66 @@ export function renderizarQuestoes(container, lista, historico, mensagemVazia = 
         const tentativas = h.tentativas || 0;
         const anotacao = h.anotacao || "";
 
-        const botoes = q.alternativas.map(alt =>
-            `<button type="button" class="btn-opcao" data-letra="${esc(letraDe(alt))}">${esc(alt)}</button>`
-        ).join("");
+        const botoes = q.alternativas.map(alt => {
+            const letra = letraDe(alt);
+            return '<button type="button" class="btn-opcao" data-letra="' + esc(letra) + '">' + esc(alt) + '</button>';
+        }).join("");
 
         const tags = (q.tags && q.tags.length)
-            ? `<div class="container-tags">${q.tags.map(t => `<span class="tag-item" data-tag="${esc(t)}">${esc(t)}</span>`).join("")}</div>`
+            ? '<div class="container-tags">' + q.tags.map(t => '<span class="tag-item" data-tag="' + esc(t) + '">' + esc(t) + '</span>').join("") + '</div>'
             : "";
 
         const card = document.createElement("div");
         card.className = "questao-card";
         card.dataset.id = q.id;
-        card.innerHTML = `
-            <div class="questao-header">
-                <span><strong>Banca:</strong> ${esc(q.banca)} | <strong>Matéria:</strong> ${esc(q.materia)}</span>
-                <span class="badge ${status.classe}">${status.texto}</span>
-            </div>
-            ${tags}
-            <p>${esc(q.enunciado)}</p>
-            <div class="opcoes-resposta">${botoes}</div>
-            <small class="tentativas">Tentativas: ${tentativas}</small>
-            <div class="feedback-area"></div>
-            
-            <!-- BLOCO DE ANOTAÇÕES PESSOAIS / CADERNO DE ERROS -->
-            <div class="area-anotacao">
-                <button type="button" class="btn-anotacao-toggle">
-                    📝 <span>${anotacao ? 'Editar Anotação Pessoal' : 'Adicionar Anotação Pessoal'}</span>
-                </button>
-                <div class="box-anotacao" ${anotacao ? '' : 'hidden'}>
-                    <textarea class="input-anotacao" placeholder="Anote a pegadinha da banca, o motivo do erro ou a regra teórica...">${esc(anotacao)}</textarea>
-                    <div class="acoes-anotacao">
-                        <button type="button" class="btn-sidebar btn-salvar-anotacao">💾 Salvar Anotação</button>
-                    </div>
-                </div>
-            </div>
-        `;
+        card.innerHTML = 
+            '<div class="questao-header">' +
+                '<span><strong>Banca:</strong> ' + esc(q.banca) + ' | <strong>Matéria:</strong> ' + esc(q.materia) + '</span>' +
+                '<span class="badge ' + status.classe + '">' + status.texto + '</span>' +
+            '</div>' +
+            tags +
+            '<p class="enunciado">' + esc(q.enunciado) + '</p>' +
+            '<div class="opcoes-resposta">' + botoes + '</div>' +
+            '<small class="tentativas">Tentativas: ' + tentativas + '</small>' +
+            '<div class="feedback-area"></div>' +
+            '<div class="area-anotacao">' +
+                '<button type="button" class="btn-anotacao-toggle">' +
+                    '📝 <span>' + (anotacao ? 'Editar Anotação Pessoal' : 'Adicionar Anotação Pessoal') + '</span>' +
+                '</button>' +
+                '<div class="box-anotacao"' + (anotacao ? '' : ' hidden') + '>' +
+                    '<textarea class="input-anotacao" placeholder="Escreva aqui seu resumo, motivo do erro ou regra teórica...">' + esc(anotacao) + '</textarea>' +
+                    '<div class="acoes-anotacao">' +
+                        '<button type="button" class="btn-sidebar btn-salvar-anotacao">💾 Salvar Anotação</button>' +
+                    '</div>' +
+                '</div>' +
+            '</div>';
         container.appendChild(card);
     });
 }
 
-
-export function revelar(card, q, escolhida) {
-    const gab = gabaritoDe(q);
-    card.querySelectorAll(".btn-opcao").forEach(btn => {
-        btn.disabled = true;
-        if (btn.dataset.letra !== escolhida) {
-            btn.classList.remove("selecionada");
-        }
-        if (btn.dataset.letra === gab) {
-            btn.classList.add("correta");
-        } else if (btn.dataset.letra === escolhida) {
-            btn.classList.add("errada");
-        }
-    });
-
+export function revelar(card, q, letraEscolhida) {
+    const gabaritoLetra = gabaritoDe(q);
+    const acertou = (letraEscolhida === gabaritoLetra);
     const fb = card.querySelector(".feedback-area");
-    let html;
-    if (escolhida === null) {
-        fb.className = "feedback-area feedback errado";
-        html = `⚠ Em branco. O gabarito é: ${esc(gab)}`;
-    } else if (escolhida === gab) {
-        fb.className = "feedback-area feedback certo";
-        html = "✔ Resposta Correta!";
+
+    const altCorretaObj = (q.alternativas || []).find(alt => letraDe(alt) === gabaritoLetra);
+    const textoCorreto = altCorretaObj ? altCorretaObj : q.gabarito;
+
+    if (acertou) {
+        fb.className = "feedback-area feedback correto";
+        fb.innerHTML = '✔ <strong>Resposta Correta!</strong>' + (q.explicacao ? '<br><small>' + esc(q.explicacao) + '</small>' : '');
     } else {
-        fb.className = "feedback-area feedback errado";
-        html = `✖ Resposta Incorreta. O gabarito é: ${esc(gab)}`;
+        fb.className = "feedback-area feedback incorreto";
+        fb.innerHTML = '✖ <strong>Resposta Incorreta.</strong> O gabarito é: <strong>' + esc(textoCorreto) + '</strong>' + (q.explicacao ? '<br><small>' + esc(q.explicacao) + '</small>' : '');
     }
-    
-    if (q.explicacao) html += `<div class="explicacao">${q.explicacao}</div>`;
-    fb.innerHTML = html;
+
+    card.querySelectorAll(".btn-opcao").forEach(btn => {
+        const btnLetra = letraDe(btn.dataset.letra || btn.innerText);
+        if (btnLetra === gabaritoLetra) {
+            btn.classList.add("correta");
+        } else if (btnLetra === letraEscolhida && !acertou) {
+            btn.classList.add("incorreta");
+        }
+        btn.disabled = true;
+    });
 }

@@ -1,5 +1,5 @@
 // ============================================================
-// js/app.js - Orquestrador Principal (Com Caderno de Erros & Ações)
+// js/app.js - Orquestrador Principal do FocoPro
 // ============================================================
 
 // ---------- IMPORTAÇÕES DE MÓDULOS ----------
@@ -31,14 +31,14 @@ let porId = new Map();
 let tagSelecionada = "";
 let simulado = null;
 
-// ---------- CAPTURA DE ELEMENTOS DO DOM ----------
+// ---------- ELEMENTOS DO DOM ----------
 const container = document.getElementById("container-questoes");
 const selectBanca = document.getElementById("filtro-banca");
 const selectMateria = document.getElementById("filtro-materia");
 const inputBusca = document.getElementById("filtro-busca");
 const displayCronometro = document.getElementById("display-cronometro");
 
-// ---------- ELEMENTOS DINÂMICOS ----------
+// ---------- ELEMENTOS DINÂMICOS DA SIDEBAR ----------
 const chipTag = document.createElement("div");
 chipTag.className = "chip-tag";
 chipTag.hidden = true;
@@ -63,7 +63,7 @@ const btnImportar = criarBotaoSidebar("📂 Importar Histórico");
 const btnLimpar = document.getElementById("btn-limpar-dados");
 if (btnLimpar) btnLimpar.before(btnExportar, btnImportar);
 
-// ---------- UTILITÁRIOS E VALIDAÇÃO ----------
+// ---------- UTILITÁRIOS ----------
 function embaralharArray(array) {
     const a = [...array];
     for (let i = a.length - 1; i > 0; i--) {
@@ -78,12 +78,6 @@ function validarQuestoes() {
     questoes.forEach(q => {
         if (ids.has(String(q.id))) console.warn('ID duplicado:', q.id);
         ids.add(String(q.id));
-        ['banca', 'materia', 'enunciado', 'gabarito'].forEach(campo => {
-            if (!q[campo]) console.warn(`Campo ausente (${campo}) na questão`, q.id);
-        });
-        if (!Array.isArray(q.alternativas) || !q.alternativas.map(letraDe).includes(gabaritoDe(q))) {
-            console.warn('Gabarito não bate com as alternativas:', q.id);
-        }
     });
 }
 
@@ -116,6 +110,7 @@ function aplicarFiltros() {
 }
 
 // ---------- RESPOSTAS E PONTUAÇÃO ----------
+// ---------- RESPOSTA DE QUESTÕES (REGISTRO DUPLO DE SIMULADO) ----------
 function responder(card, botao) {
     if (simulado && simulado.finalizado) return;
     if (!simulado && card.dataset.respondida) return;
@@ -123,28 +118,35 @@ function responder(card, botao) {
     const q = porId.get(card.dataset.id);
     if (!q) return;
 
-    const letra = botao.dataset.letra;
+    const letraEscolhida = letraDe(botao.dataset.letra || botao.innerText);
+    const gabaritoOficial = gabaritoDe(q);
 
     if (simulado) {
-        simulado.respostas[q.id] = letra;
+        const idStr = String(q.id);
+        simulado.respostas[idStr] = letraEscolhida;
+        simulado.respostas[q.id] = letraEscolhida;
+        
         card.querySelectorAll(".btn-opcao").forEach(b => b.classList.remove("selecionada"));
         botao.classList.add("selecionada");
         
         const fb = card.querySelector(".feedback-area");
-        fb.className = "feedback-area feedback neutro";
-        fb.innerText = "Resposta registrada. Você pode alterar antes de finalizar.";
+        if (fb) {
+            fb.className = "feedback-area feedback neutro";
+            fb.innerText = "Resposta registrada. Você pode alterar antes de finalizar.";
+        }
         return; 
     }
 
     card.dataset.respondida = "1";
     botao.classList.add("selecionada"); 
 
-    const acertou = letra === gabaritoDe(q);
+    const acertou = (letraEscolhida === gabaritoOficial);
+    const idChave = String(q.id);
 
-    if (!historico[q.id]) {
-        historico[q.id] = { acertos: 0, erros: 0, tentativas: 0, ultimaResposta: null, recentes: [] };
+    if (!historico[idChave]) {
+        historico[idChave] = { acertos: 0, erros: 0, tentativas: 0, ultimaResposta: null, recentes: [] };
     }
-    const h = historico[q.id];
+    const h = historico[idChave];
     if (!Array.isArray(h.recentes)) h.recentes = [];
 
     h.tentativas = (h.tentativas || 0) + 1;
@@ -157,12 +159,14 @@ function responder(card, botao) {
     h.ultimaData = Date.now();
     salvarHistorico(historico);
 
-    revelar(card, q, letra);
+    revelar(card, q, letraEscolhida);
 
-    const status = classificarStatus(q.id, historico);
+    const status = classificarStatus(idChave, historico);
     const badge = card.querySelector(".badge");
-    badge.className = `badge ${status.classe}`;
-    badge.innerText = status.texto;
+    if (badge) {
+        badge.className = `badge ${status.classe}`;
+        badge.innerText = status.texto;
+    }
     card.querySelector(".tentativas").innerText = `Tentativas: ${h.tentativas}`;
 
     atualizarPlacar(historico, questoes);
@@ -309,14 +313,16 @@ document.getElementById("btn-todas").addEventListener("click", () => {
     showToast("Exibindo todas as questões.", "info");
 });
 
+// ---------- BOTÃO MODO REVISÃO / CADERNO DE ERROS ----------
 document.getElementById("btn-modo-revisao").addEventListener("click", () => {
     simulado = null;
     pararCronometro(displayCronometro);
     
     const cadernoDeErros = questoes.filter(q => {
-        const h = historico[q.id];
+        const idStr = String(q.id);
+        const h = historico[idStr] || historico[q.id];
         if (!h) return false;
-        return h.ultimaResposta === 'errado' || (h.anotacao && h.anotacao.length > 0);
+        return h.ultimaResposta === 'errado' || (h.anotacao && h.anotacao.trim().length > 0);
     });
 
     renderizarQuestoes(

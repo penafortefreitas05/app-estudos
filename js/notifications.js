@@ -1,5 +1,5 @@
 // ============================================================
-// js/notifications.js - Toasts e Modais Assíncronos (Sem Travamentos)
+// js/notifications.js - Toasts e Modais Assíncronos
 // ============================================================
 
 function obterToastContainer() {
@@ -13,7 +13,6 @@ function obterToastContainer() {
     return container;
 }
 
-// ---------- TOASTS DE NOTIFICAÇÃO ----------
 export function showToast(mensagem, tipo = 'info', duracao = 3500) {
     const container = obterToastContainer();
     const toast = document.createElement("div");
@@ -35,7 +34,6 @@ export function showToast(mensagem, tipo = 'info', duracao = 3500) {
     }, duracao);
 }
 
-// ---------- MODAL DE CONFIRMAÇÃO (PROMISE ROBUSTA) ----------
 export function showConfirmModal({
     titulo = "Confirmação",
     mensagem = "Tem certeza que deseja prosseguir?",
@@ -66,12 +64,9 @@ export function showConfirmModal({
             if (resolvido) return;
             resolvido = true;
             overlay.classList.remove("visible");
-            
-            // Garante a remoção do DOM e resolve a Promise sem travar
             setTimeout(() => {
                 if (overlay.parentNode) overlay.remove();
             }, 200);
-            
             resolve(resultado);
         };
 
