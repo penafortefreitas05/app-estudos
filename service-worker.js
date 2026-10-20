@@ -42,6 +42,9 @@ self.addEventListener('activate', (event) => {
 
 // Estratégia Network-First: garante código sempre atualizado no desenvolvimento e 100% funcional offline
 self.addEventListener('fetch', (event) => {
+    if (event.request.method !== 'GET') {
+        return; 
+    }
     const url = new URL(event.request.url);
     if (!url.protocol.startsWith('http')) return;
 

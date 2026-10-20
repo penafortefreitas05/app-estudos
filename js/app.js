@@ -3,7 +3,7 @@
 // ============================================================
 
 // ---------- 1. IMPORTAÇÕES DE MÓDULOS ----------
-import { supabase } from './supabase.js';
+import { supabaseClient, salvarRespostaNoHistorico, carregarHistoricoDoUsuario } from './supabase.js';
 import { criarConta, entrar, sair } from './auth.js';
 import { carregarHistorico, salvarHistorico } from './storage.js';
 import {
@@ -26,11 +26,32 @@ import { showToast, showConfirmModal } from './notifications.js';
 import { carregarQuestoes } from './api.js';
 
 // ---------- 2. ESTADO GLOBAL ----------
-let historico = []; // Inicializa vazio. Será preenchido após o login!
+let historico = {}; // Alterado para objeto para compatibilidade com o formato de armazenamento local
 let questoes = [];
 let porId = new Map();
 let tagSelecionada = "";
 let simulado = null;
+export let usuarioAtual = null;
+
+// Questões padrão para a tela nunca iniciar vazia
+const questoesPadrao = [
+    {
+        id: "git_01",
+        pergunta: "Qual comando do Git envia os commits do repositório local para o remoto?",
+        alternativas: ["git pull", "git push", "git commit", "git fetch"],
+        resposta_correta: "B",
+        materia: "Controle de Versão",
+        banca: "Cesgranrio"
+    },
+    {
+        id: "bd_01",
+        pergunta: "No modelo relacional de banco de dados, qual chave identifica unicamente cada registro em uma tabela?",
+        alternativas: ["Chave Estrangeira", "Chave Primária", "Chave Candidata", "Chave Substituta"],
+        resposta_correta: "B",
+        materia: "Banco de Dados",
+        banca: "Cesgranrio"
+    }
+];
 
 // ---------- 3. ELEMENTOS DO DOM ----------
 const container = document.getElementById("container-questoes");
@@ -116,11 +137,13 @@ function definirTag(tag) {
 function aplicarFiltros() {
     simulado = null;
     pararCronometro(displayCronometro);
-    renderizarQuestoes(container, filtrarQuestoes(), historico);
+    if (typeof renderizarQuestoes === 'function') {
+        renderizarQuestoes(container, filtrarQuestoes(), historico);
+    }
 }
 
 // ---------- 7. LÓGICA DE RESPOSTA E PONTUAÇÃO ----------
-function responder(card, botao) {
+async function responder(card, botao) {
     if (!card) return;
     if (simulado && simulado.finalizado) return;
     if (!simulado && card.dataset.respondida === "1") return;
@@ -137,6 +160,7 @@ function responder(card, botao) {
 
     const letraEscolhida = radioSelecionado.value;
     const gabaritoOficial = gabaritoDe(q);
+    const acertou = (letraEscolhida === gabaritoOficial);
 
     // MODO SIMULADO: Registra a resposta sem revelar o gabarito
     if (simulado) {
@@ -164,8 +188,18 @@ function responder(card, botao) {
     card.dataset.respondida = "1";
     if (botao) botao.disabled = true;
 
-    const acertou = (letraEscolhida === gabaritoOficial);
+    // PERSISTÊNCIA NO SUPABASE (Se a função existir)
+    if (typeof salvarRespostaNoHistorico === 'function') {
+        await salvarRespostaNoHistorico({
+            questaoId: idChave,
+            materia: q.materia || q.disciplina || 'Geral',
+            banca: q.banca || 'Não informada',
+            acertou: acertou,
+            respostaEscolhida: letraEscolhida
+        });
+    }
 
+    // Atualização do Histórico Local
     if (!historico[idChave]) {
         historico[idChave] = { acertos: 0, erros: 0, tentativas: 0, ultimaResposta: null, recentes: [], status: 'novo' };
     }
@@ -257,7 +291,6 @@ function importarHistorico(arquivo) {
 
 // ---------- 9. DELEGAÇÃO E ESCUTADORES DE EVENTOS ----------
 if (container) {
-    // Em Modo Simulado, marcar uma opção já registra automaticamente a escolha
     container.addEventListener("change", (e) => {
         if (e.target.classList.contains("radio-opcao") && simulado && !simulado.finalizado) {
             const card = e.target.closest(".card-questao");
@@ -267,7 +300,6 @@ if (container) {
     });
 
     container.addEventListener("click", (e) => {
-        // 1. Clique no botão "Responder"
         const btnResponder = e.target.closest(".btn-responder");
         if (btnResponder) {
             const card = btnResponder.closest(".card-questao");
@@ -275,7 +307,6 @@ if (container) {
             return;
         }
 
-        // 2. Clique em tags dentro dos cards (#sql, #uml)
         const elemTag = e.target.closest(".tag-item");
         if (elemTag) {
             const tagTexto = elemTag.dataset.tag || elemTag.innerText.replace(/^#/, "").trim();
@@ -283,7 +314,6 @@ if (container) {
             return;
         }
 
-        // 3. Botão de Finalizar Simulado
         const btnFinalizar = e.target.closest("#btn-finalizar-simulado, #btn-finalizar");
         if (btnFinalizar && simulado) {
             pararCronometro(displayCronometro);
@@ -291,7 +321,6 @@ if (container) {
             return;
         }
 
-        // 4. Abrir/Fechar Caixa de Anotação Pessoal
         const btnToggleAnotacao = e.target.closest(".btn-anotacao-toggle");
         if (btnToggleAnotacao) {
             const card = btnToggleAnotacao.closest(".card-questao");
@@ -300,7 +329,6 @@ if (container) {
             return;
         }
 
-        // 5. Salvar Anotação Pessoal no Caderno de Erros
         const btnSalvarAnotacao = e.target.closest(".btn-salvar-anotacao");
         if (btnSalvarAnotacao) {
             const card = btnSalvarAnotacao.closest(".card-questao");
@@ -316,7 +344,6 @@ if (container) {
             historico[qId].anotacao = texto;
             salvarHistorico(historico);
             atualizarPlacar(historico, questoes);
-
             showToast(texto ? "Anotação salva no seu Caderno de Erros!" : "Anotação removida.", "sucesso");
 
             const spanBtn = card.querySelector(".btn-anotacao-toggle span");
@@ -349,13 +376,13 @@ if (btnSimulado) {
 
         if (filtradas.length === 0) {
             simulado = null;
-            renderizarQuestoes(container, [], historico);
+            if (typeof renderizarQuestoes === 'function') renderizarQuestoes(container, [], historico);
             return;
         }
 
         const sorteadas = embaralharArray(filtradas).slice(0, qtd);
         simulado = { ids: sorteadas.map(q => q.id), respostas: {}, inicio: Date.now(), finalizado: false };
-        renderizarQuestoes(container, sorteadas, historico);
+        if (typeof renderizarQuestoes === 'function') renderizarQuestoes(container, sorteadas, historico);
         adicionarBotaoFinalizar(container);
 
         showToast(`Simulado iniciado com ${sorteadas.length} questões!`, "info");
@@ -406,12 +433,14 @@ if (btnModoRevisao) {
             return ehErroAtivo || temAnotacao;
         });
 
-        renderizarQuestoes(
-            container,
-            cadernoDeErros,
-            historico,
-            "Seu Caderno de Erros está limpo! Nenhuma questão pendente para revisão no momento."
-        );
+        if (typeof renderizarQuestoes === 'function') {
+            renderizarQuestoes(
+                container,
+                cadernoDeErros,
+                historico,
+                "Seu Caderno de Erros está limpo! Nenhuma questão pendente para revisão no momento."
+            );
+        }
 
         showToast(`Carregadas ${cadernoDeErros.length} questões no Caderno de Erros.`, "info");
     });
@@ -445,6 +474,7 @@ inputImportar.addEventListener("change", () => {
     if (inputImportar.files[0]) importarHistorico(inputImportar.files[0]);
     inputImportar.value = "";
 });
+
 // ============================================================
 // 12. SISTEMA DE AUTENTICAÇÃO E MODAL
 // ============================================================
@@ -460,10 +490,9 @@ const userEmail = document.getElementById('user-email');
 const userAvatar = document.getElementById('user-avatar');
 
 let isCadastro = false;
-export let usuarioAtual = null;
 
 // Escuta mudanças de sessão em tempo real (Login / Logout)
-supabase.auth.onAuthStateChange((event, session) => {
+supabaseClient.auth.onAuthStateChange((event, session) => {
     usuarioAtual = session?.user || null;
     
     if (usuarioAtual) {
@@ -478,7 +507,6 @@ supabase.auth.onAuthStateChange((event, session) => {
     }
 });
 
-// Abrir Modal ou Sair da Conta
 if (btnAuthAcao) {
     btnAuthAcao.addEventListener('click', () => {
         if (usuarioAtual) {
@@ -489,14 +517,12 @@ if (btnAuthAcao) {
     });
 }
 
-// Fechar modal ao clicar fora dele
 if (modalAuth) {
     modalAuth.addEventListener('click', (e) => {
         if (e.target === modalAuth) modalAuth.classList.remove('visible');
     });
 }
 
-// Alternar formulário entre Entrar e Cadastrar
 if (btnAlternarAuth) {
     btnAlternarAuth.addEventListener('click', () => {
         isCadastro = !isCadastro;
@@ -516,7 +542,6 @@ if (btnAlternarAuth) {
     });
 }
 
-// Submeter o Formulário
 if (formAuth) {
     formAuth.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -536,34 +561,10 @@ if (formAuth) {
         btnSubmitAuth.innerText = isCadastro ? "Cadastrar" : "Entrar";
     });
 }
-// ---------- 10. CARGA INICIAL ASSÍNCRONA ----------
-async function iniciarApp() {
-    pararCronometro(displayCronometro);
-    questoes = await carregarQuestoes();
-    porId = new Map(questoes.map(q => [String(q.id), q]));
-    validarQuestoes();
-    preencherSelect(selectBanca, "🏛️ Todas as Bancas", "banca", questoes);
-    preencherSelect(selectMateria, "📖 Todas as Matérias", "materia", questoes);
-    atualizarPlacar(historico, questoes);
-    aplicarFiltros();
-}
 
-iniciarApp();
-
-// ---------- 11. REGISTRO DO SERVICE WORKER (PWA) ----------
-//if ('serviceWorker' in navigator) {
-    //window.addEventListener('load', () => {
-        //    .then(reg => {
-               //reg.update();
-                //console.log('Service Worker ativo no escopo:', reg.scope);
-         //  })
-           // .catch(err => console.error('Falha ao registrar Service Worker:', err));
-    //});
-//}
 // ============================================================
-// Lógica de Importação em Massa de Questões (Execução Direta)
+// 13. LÓGICA DE IMPORTAÇÃO EM MASSA DE QUESTÕES
 // ============================================================
-
 console.log("-> Módulo app.js carregado. Inicializando importador...");
 
 const modalImportar = document.getElementById('modalImportar');
@@ -572,12 +573,8 @@ const btnFecharImportar = document.getElementById('btnFecharImportar');
 const btnProcessarImportacao = document.getElementById('btnProcessarImportacao');
 const textoJsonQuestoes = document.getElementById('textoJsonQuestoes');
 
-console.log("Status dos elementos:", {
-    botaoAbrir: !!btnAbrirImportar,
-    modal: !!modalImportar
-});
-
-// Substitua o trecho interno do try do processamento por este:
+// Os eventos de abrir e fechar o modal já estão no HTML via 'onclick'.
+// Este ouvinte processa o conteúdo JSON colado:
 if (btnProcessarImportacao && textoJsonQuestoes && modalImportar) {
     btnProcessarImportacao.addEventListener('click', async () => {
         try {
@@ -594,28 +591,20 @@ if (btnProcessarImportacao && textoJsonQuestoes && modalImportar) {
                 return;
             }
 
-            // 1. Adiciona as novas questões ao array principal da aplicação
+            // Adiciona as novas questões ao array principal
             novasQuestoes.forEach((q, index) => {
-                // Se a questão não tiver ID único, cria um
-                if (!q.id) {
-                    q.id = `importada_${Date.now()}_${index}`;
-                }
+                if (!q.id) q.id = `importada_${Date.now()}_${index}`;
                 questoes.push(q);
-                porId.set(q.id, q);
+                porId.set(String(q.id), q);
             });
 
             alert(`Sucesso! ${novasQuestoes.length} questões foram adicionadas.`);
-
-            // 2. Limpa o campo e fecha o modal
+            
             modalImportar.style.display = 'none';
             textoJsonQuestoes.value = '';
 
-            // 3. Atualiza a interface (chame a sua função de renderizar a lista/questão)
-            if (typeof renderizarQuestoes === 'function') {
-                renderizarQuestoes();
-            } else if (typeof renderizarProximaQuestao === 'function') {
-                renderizarProximaQuestao();
-            }
+            // Renderiza na tela as novas questões inseridas
+            aplicarFiltros();
 
         } catch (erro) {
             console.error('Erro ao processar JSON:', erro);
@@ -623,40 +612,60 @@ if (btnProcessarImportacao && textoJsonQuestoes && modalImportar) {
         }
     });
 }
- else {
-    console.error("Falha ao localizar elementos no DOM. Verifique os IDs no index.html.");
-}
 
-if (btnFecharImportar && modalImportar) {
-    btnFecharImportar.addEventListener('click', () => {
-        modalImportar.style.display = 'none';
-    });
-}
+// ============================================================
+// 14. CARGA INICIAL DA APLICAÇÃO (Executado por último)
+// ============================================================
+async function iniciarApp() {
+    pararCronometro(displayCronometro);
+    
+    // 1. Carrega as questões padrão
+    questoes = questoesPadrao; 
+    porId = new Map(questoes.map(q => [String(q.id), q]));
+    validarQuestoes();
 
-if (btnProcessarImportacao && textoJsonQuestoes && modalImportar) {
-    btnProcessarImportacao.addEventListener('click', async () => {
-        try {
-            const jsonBruto = textoJsonQuestoes.value.trim();
-            if (!jsonBruto) {
-                alert('Cole o conteúdo JSON antes de prosseguir.');
-                return;
+    // 2. Recupera histórico local básico
+    historico = carregarHistorico() || {};
+    
+    // 3. RECUPERA O HISTÓRICO DA NUVEM (SUPABASE)
+    const historicoSupabase = await carregarHistoricoDoUsuario();
+    
+    if (historicoSupabase && historicoSupabase.length > 0) {
+        // Sincroniza o que veio da nuvem com a memória da tela
+        historicoSupabase.forEach(registro => {
+            const qId = String(registro.questao_id);
+            
+            if (!historico[qId]) {
+                historico[qId] = { acertos: 0, erros: 0, tentativas: 0, ultimaResposta: null, recentes: [], status: 'novo' };
             }
-
-            const novasQuestoes = JSON.parse(jsonBruto);
-
-            if (!Array.isArray(novasQuestoes)) {
-                alert('O formato deve ser uma lista (array) de questões válida.');
-                return;
+            
+            const h = historico[qId];
+            h.tentativas = 1;
+            
+            if (registro.acertou) {
+                h.acertos = 1;
+                h.status = 'acerto';
+                h.ultimaResposta = 'certo';
+            } else {
+                h.erros = 1;
+                h.status = 'erro';
+                h.ultimaResposta = 'errado';
             }
+            
+            // Avisa o card que esta questão já foi respondida
+            const questaoLocal = porId.get(qId);
+            if (questaoLocal) questaoLocal.respondida = "1";
+        });
+        
+        // Salva localmente para a interface desenhar mais rápido
+        salvarHistorico(historico);
+    }
 
-            console.log('Questões importadas com sucesso:', novasQuestoes);
-            alert(`Sucesso! ${novasQuestoes.length} questões foram importadas.`);
-
-            modalImportar.style.display = 'none';
-            textoJsonQuestoes.value = '';
-        } catch (erro) {
-            console.error('Erro ao processar JSON:', erro);
-            alert('Erro no formato do JSON. Verifique se as aspas e chaves estão corretas.');
-        }
-    });
+    // 4. Prepara a Interface
+    preencherSelect(selectBanca, "🏛️ Todas as Bancas", "banca", questoes);
+    preencherSelect(selectMateria, "📖 Todas as Matérias", "materia", questoes);
+    atualizarPlacar(historico, questoes);
+    aplicarFiltros(); // Desenha as questões pintadas com os dados da nuvem
 }
+
+iniciarApp();
