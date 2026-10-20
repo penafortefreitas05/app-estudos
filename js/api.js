@@ -2,7 +2,6 @@
 // js/api.js - Carregamento Assíncrono e Normalização (FocoPro)
 // ============================================================
 
-// ---------- 1. MAPEAMENTO DE MATÉRIAS ESPECÍFICAS PARA OS 9 PILARES MACRO ----------
 const MAPA_MATERIAS_MACRO = {
     // 1. Português
     "português": "Português",
@@ -23,6 +22,7 @@ const MAPA_MATERIAS_MACRO = {
     "agilidade": "Engenharia de Software & Agilidade",
     "metodologias ágeis": "Engenharia de Software & Agilidade",
     "engenharia de software": "Engenharia de Software & Agilidade",
+    "engenharia de software & agilidade": "Engenharia de Software & Agilidade",
     "requisitos": "Engenharia de Software & Agilidade",
     "análise de requisitos": "Engenharia de Software & Agilidade",
     "uml": "Engenharia de Software & Agilidade",
@@ -33,12 +33,19 @@ const MAPA_MATERIAS_MACRO = {
     "cmmi": "Engenharia de Software & Agilidade",
     "mps.br": "Engenharia de Software & Agilidade",
 
-    // 4. Desenvolvimento, POO & Linguagens (Absorveu POO e Portais Corporativos)
+    // 4. Desenvolvimento, POO & Linguagens
     "desenvolvimento": "Desenvolvimento, POO & Linguagens",
+    "desenvolvimento, poo & linguagens": "Desenvolvimento, POO & Linguagens",
+    "desenvolvimento de sistemas": "Desenvolvimento, POO & Linguagens",
+    "desenvolvimento web": "Desenvolvimento, POO & Linguagens",
+    "desenvolvimento mobile": "Desenvolvimento, POO & Linguagens",
     "desenvolvimento em linguagem": "Desenvolvimento, POO & Linguagens",
+    "linguagens de programação": "Desenvolvimento, POO & Linguagens",
     "orientação a objetos": "Desenvolvimento, POO & Linguagens",
     "poo": "Desenvolvimento, POO & Linguagens",
     "portais corporativos": "Desenvolvimento, POO & Linguagens",
+    "gestão de conteúdo": "Desenvolvimento, POO & Linguagens",
+    "acessibilidade": "Desenvolvimento, POO & Linguagens",
     "programação": "Desenvolvimento, POO & Linguagens",
     "lógica de programação": "Desenvolvimento, POO & Linguagens",
     "javascript": "Desenvolvimento, POO & Linguagens",
@@ -53,7 +60,10 @@ const MAPA_MATERIAS_MACRO = {
 
     // 5. Banco de Dados & Dados
     "banco de dados": "Banco de Dados & Dados",
+    "bancos de dados": "Banco de Dados & Dados",
+    "banco de dados & dados": "Banco de Dados & Dados",
     "banco de dados e dados": "Banco de Dados & Dados",
+    "ciência de dados": "Banco de Dados & Dados",
     "sql": "Banco de Dados & Dados",
     "normalização": "Banco de Dados & Dados",
     "modelagem er": "Banco de Dados & Dados",
@@ -71,6 +81,7 @@ const MAPA_MATERIAS_MACRO = {
 
     // 6. Arquitetura de TI & Nuvem
     "arquitetura": "Arquitetura de TI & Nuvem",
+    "arquitetura de ti & nuvem": "Arquitetura de TI & Nuvem",
     "arquitetura de ti e nuvem": "Arquitetura de TI & Nuvem",
     "arquitetura de software": "Arquitetura de TI & Nuvem",
     "microsserviços": "Arquitetura de TI & Nuvem",
@@ -84,6 +95,7 @@ const MAPA_MATERIAS_MACRO = {
 
     // 7. Redes & Segurança da Informação
     "redes": "Redes & Segurança da Informação",
+    "redes & segurança da informação": "Redes & Segurança da Informação",
     "rede e segurança da informação": "Redes & Segurança da Informação",
     "redes de computadores": "Redes & Segurança da Informação",
     "segurança": "Redes & Segurança da Informação",
@@ -94,10 +106,13 @@ const MAPA_MATERIAS_MACRO = {
     "lgpd": "Redes & Segurança da Informação",
     "tcp/ip": "Redes & Segurança da Informação",
 
-    // 8. Governança, Gestão & Projetos de TI (Absorveu Gerenciamento de Projetos)
+    // 8. Governança, Gestão & Projetos de TI
     "governança": "Governança, Gestão & Projetos de TI",
+    "governança de ti": "Governança, Gestão & Projetos de TI",
+    "governança, gestão & projetos de ti": "Governança, Gestão & Projetos de TI",
     "governança e gestão de ti": "Governança, Gestão & Projetos de TI",
     "gerenciamento de projetos": "Governança, Gestão & Projetos de TI",
+    "gerenciamento de processos": "Governança, Gestão & Projetos de TI",
     "itil": "Governança, Gestão & Projetos de TI",
     "cobit": "Governança, Gestão & Projetos de TI",
     "pmbok": "Governança, Gestão & Projetos de TI",
@@ -107,7 +122,9 @@ const MAPA_MATERIAS_MACRO = {
 
     // 9. Sistemas Operacionais & Hardware
     "sistemas operacionais": "Sistemas Operacionais & Hardware",
+    "sistemas operacionais & hardware": "Sistemas Operacionais & Hardware",
     "sistemas operacionais e hardware": "Sistemas Operacionais & Hardware",
+    "arquitetura de computadores": "Sistemas Operacionais & Hardware",
     "linux": "Sistemas Operacionais & Hardware",
     "shell script": "Sistemas Operacionais & Hardware",
     "windows": "Sistemas Operacionais & Hardware",
@@ -116,17 +133,14 @@ const MAPA_MATERIAS_MACRO = {
     "hardware": "Sistemas Operacionais & Hardware"
 };
 
-// ---------- 2. FUNÇÃO AUXILIAR DE NORMALIZAÇÃO COM FALLBACK FLEXÍVEL ----------
 function normalizarMateriaEAgruparTags(questao) {
     if (!questao || !questao.materia) return questao;
 
     const materiaOriginal = String(questao.materia).trim();
     const materiaLower = materiaOriginal.toLowerCase();
 
-    // 1. Busca Direta no Mapa
     let materiaMacro = MAPA_MATERIAS_MACRO[materiaLower];
 
-    // 2. Busca Flexível por Palavras-Chave (Fallback)
     if (!materiaMacro) {
         if (materiaLower.includes("portugu")) {
             materiaMacro = "Português";
@@ -134,20 +148,19 @@ function normalizarMateriaEAgruparTags(questao) {
             materiaMacro = "Raciocínio Lógico & Matemática";
         } else if (materiaLower.includes("scrum") || materiaLower.includes("agil") || materiaLower.includes("requisito") || materiaLower.includes("uml") || materiaLower.includes("software")) {
             materiaMacro = "Engenharia de Software & Agilidade";
-        } else if (materiaLower.includes("prog") || materiaLower.includes("desenv") || materiaLower.includes("orienta") || materiaLower.includes("objetos") || materiaLower.includes("poo") || materiaLower.includes("portal") || materiaLower.includes("script") || materiaLower.includes("java") || materiaLower.includes("python") || materiaLower.includes("web")) {
+        } else if (materiaLower.includes("prog") || materiaLower.includes("desenv") || materiaLower.includes("orienta") || materiaLower.includes("objetos") || materiaLower.includes("poo") || materiaLower.includes("portal") || materiaLower.includes("acessibil") || materiaLower.includes("java") || materiaLower.includes("python") || materiaLower.includes("web")) {
             materiaMacro = "Desenvolvimento, POO & Linguagens";
         } else if (materiaLower.includes("banco") || materiaLower.includes("sql") || materiaLower.includes("dado") || materiaLower.includes("bi") || materiaLower.includes("busca")) {
             materiaMacro = "Banco de Dados & Dados";
-        } else if (materiaLower.includes("cloud") || materiaLower.includes("nuvem") || materiaLower.includes("docker") || materiaLower.includes("arq")) {
+        } else if (materiaLower.includes("cloud") || materiaLower.includes("nuvem") || materiaLower.includes("docker") || materiaLower.includes("arquitetura")) {
             materiaMacro = "Arquitetura de TI & Nuvem";
         } else if (materiaLower.includes("rede") || materiaLower.includes("seguran") || materiaLower.includes("lgpd") || materiaLower.includes("cripto")) {
             materiaMacro = "Redes & Segurança da Informação";
-        } else if (materiaLower.includes("itil") || materiaLower.includes("cobit") || materiaLower.includes("gov") || materiaLower.includes("gest") || materiaLower.includes("projet")) {
+        } else if (materiaLower.includes("itil") || materiaLower.includes("cobit") || materiaLower.includes("gov") || materiaLower.includes("gest") || materiaLower.includes("projet") || materiaLower.includes("processo")) {
             materiaMacro = "Governança, Gestão & Projetos de TI";
-        } else if (materiaLower.includes("so") || materiaLower.includes("linux") || materiaLower.includes("window") || materiaLower.includes("hard")) {
+        } else if (materiaLower.includes("operaciona") || materiaLower.includes("linux") || materiaLower.includes("window") || materiaLower.includes("hard")) {
             materiaMacro = "Sistemas Operacionais & Hardware";
         } else {
-            console.warn(`[FocoPro] Matéria não mapeada encontrada: "${materiaOriginal}"`);
             materiaMacro = materiaOriginal;
         }
     }
@@ -156,7 +169,6 @@ function normalizarMateriaEAgruparTags(questao) {
         questao.tags = [];
     }
 
-    // Preserva a matéria específica como tag para buscas
     const tagExiste = questao.tags.some(t => String(t).toLowerCase() === materiaLower);
     if (!tagExiste && materiaOriginal !== materiaMacro) {
         questao.tags.push(materiaOriginal);
@@ -166,7 +178,6 @@ function normalizarMateriaEAgruparTags(questao) {
     return questao;
 }
 
-// ---------- 3. EXPORTAÇÃO DA FUNÇÃO DE CARREGAMENTO ----------
 export async function carregarQuestoes() {
     try {
         const resposta = await fetch('./data/questoes.json');

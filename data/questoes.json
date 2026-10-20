@@ -1731,19 +1731,70 @@
   },
   {
     "id": 102,
+    "materia": "Banco de Dados & Dados",
+    "banca": "Cesgranrio",
+    "ano": 2024,
+    "tipo": "multipla_escolha",
+    "enunciado": "Conteúdo da questão 101...",
+    "alternativas": {
+      "A": "Opção A",
+      "B": "Opção B"
+    },
+    "gabarito": "A",
+    "tags": ["SQL"]
+  },
+  {
+    "id": 103,
+    "materia": "Engenharia de Software & Agilidade",
     "banca": "CEBRASPE",
-    "materia": "Engenharia de Software",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista de TI",
+    "tipo": "certo_errado",
     "enunciado": "Julgue os itens a seguir, referentes a técnicas de modelagem e desenho de processos: O diagrama de comunicação mostra a sequência de interações entre os elementos, de acordo com a temporalidade com que os processos acontecem.",
-    "alternativas": [
-      "Certo",
-      "Errado"
-    ],
-    "gabarito": "Errado",
-    "explicacao": "💡 DICA: A banca trocou os conceitos dos diagramas UML! Quem mostra as interações enfatizando a 'temporalidade' (linha do tempo) é o Diagrama de Sequência. O Diagrama de Comunicação (antigo diagrama de colaboração) foca na organização estrutural e nos vínculos entre os objetos, não na linha do tempo.",
-    "tags": [
-      "uml",
-      "diagramas",
-      "bacen"
-    ]
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "💡 DICA: A banca trocou os conceitos dos diagramas UML! Quem mostra as interações enfatizando a 'temporalidade' (linha do tempo) é o Diagrama de Sequência.",
+    "tags": ["UML", "Diagramas", "Bacen"]
+  },
+  {
+    "id": 104,
+    "materia": "Português",
+    "banca": "Cesgranrio",
+    "ano": 2024,
+    "orgao": "Banco do Brasil",
+    "cargo": "Analista de TI",
+    "tipo": "multipla_escolha",
+    "enunciado": "Em relação à concordância verbal, assinale a opção correta de acordo com a norma-padrão da língua portuguesa:",
+    "alternativas": {
+      "A": "Haviam muitos candidatos inscritos para a vaga de TI.",
+      "B": "Faz três anos que a equipe migrou a arquitetura para nuvem.",
+      "C": "Vende-se servidores de alto desempenho para o datacenter.",
+      "D": "Aluga-se licenças de software corporativo na plataforma.",
+      "E": "Existe dúvidas sobre a implementação do novo microsserviço."
+    },
+    "gabarito": "B",
+    "explicacao": "O verbo 'fazer' indicando tempo decorrido é impessoal (fica na 3ª pessoa do singular).",
+    "tags": ["Concordância Verbal", "Gramática", "Sintaxe"]
+  },
+  {
+    "id": 105,
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "banca": "Cesgranrio",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "tipo": "certo_errado",
+    "enunciado": "No JavaScript ES6, a declaração 'const' impede a reatribuição de valor à variável, mas permite a mutação de propriedades de objetos e elementos de arrays atribuídos a ela.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "Correto. 'const' cria uma referência imutável à variável, mas a estrutura interna de objetos/arrays ainda pode sofrer mutação.",
+    "tags": ["JavaScript", "ES6", "Imutabilidade"]
   }
 ]

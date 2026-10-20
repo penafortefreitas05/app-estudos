@@ -2,7 +2,7 @@
 // js/ui.js - Renderização e Manipulação da Interface (FocoPro)
 // ============================================================
 
-// ---------- UTILITÁRIOS DE TEXTO E SEGURANÇA ----------
+// ---------- 1. UTILITÁRIOS DE TEXTO E SEGURANÇA ----------
 export function esc(texto) {
     if (texto === null || texto === undefined) return "";
     return String(texto)
@@ -20,61 +20,125 @@ export function formatarTempo(segundos) {
     return String(min).padStart(2, '0') + ":" + String(seg).padStart(2, '0');
 }
 
-// ---------- EXTRATORES DE LETRA E GABARITO (SEM REGEX FRÁGIL) ----------
+// ---------- 2. NORMALIZADOR UNIVERSAL DE ALTERNATIVAS E GABARITO ----------
+export function obterOpcoes(q) {
+    if (!q || !q.alternativas) return [];
+
+    // Caso 1: Alternativas em formato de Array
+    if (Array.isArray(q.alternativas)) {
+        const textosLimpos = q.alternativas.map(x => String(x).trim());
+        const lowers = textosLimpos.map(x => x.toLowerCase());
+
+        // Detecta questões de Certo / Errado em Array
+        const ehCertoErrado = textosLimpos.length === 2 &&
+            lowers.every(l => l === "certo" || l === "correto" || l === "errado" || l === "incorreto");
+
+        if (ehCertoErrado) {
+            return textosLimpos.map(texto => {
+                const l = (texto.toLowerCase() === "certo" || texto.toLowerCase() === "correto") ? "C" : "E";
+                return { letra: l, texto };
+            });
+        }
+
+        // Múltipla escolha em Array (com ou sem prefixo "A) ")
+        return textosLimpos.map((texto, i) => {
+            const matchPrefixo = /^([A-Ea-e])\s*[\)\.\-:]\s+(.*)$/.exec(texto);
+            if (matchPrefixo) {
+                return { letra: matchPrefixo[1].toUpperCase(), texto: matchPrefixo[2].trim() };
+            }
+            return { letra: String.fromCharCode(65 + i), texto };
+        });
+    }
+
+    // Caso 2: Alternativas em formato de Objeto { A: "...", B: "..." } ou { C: "Certo", E: "Errado" }
+    if (typeof q.alternativas === "object") {
+        return Object.entries(q.alternativas).map(([letra, texto]) => ({
+            letra: String(letra).trim().toUpperCase(),
+            texto: String(texto).trim()
+        }));
+    }
+
+    return [];
+}
+
 export function letraDe(alt) {
     if (!alt) return "";
     const str = String(alt).trim();
     const lower = str.toLowerCase();
 
-    if (lower === "certo" || lower === "correto") return "CERTO";
-    if (lower === "errado" || lower === "incorreto") return "ERRADO";
+    if (lower === "certo" || lower === "correto" || lower === "c") return "C";
+    if (lower === "errado" || lower === "incorreto" || lower === "e") return "E";
 
     const primeiraLetra = str.charAt(0).toUpperCase();
     if (primeiraLetra >= "A" && primeiraLetra <= "Z") {
         return primeiraLetra;
     }
-
     return str.toUpperCase();
 }
 
 export function gabaritoDe(q) {
     if (!q || !q.gabarito) return "";
-    const g = String(q.gabarito).trim();
-    const lower = g.toLowerCase();
+    const opcoes = obterOpcoes(q);
+    const gabRaw = String(q.gabarito).trim();
+    const gabLower = gabRaw.toLowerCase();
 
-    if (lower === "certo" || lower === "correto") return "CERTO";
-    if (lower === "errado" || lower === "incorreto") return "ERRADO";
+    // 1. Compara pelo texto completo da alternativa (Questões 1 a 101)
+    const porTexto = opcoes.find(op => op.texto.toLowerCase() === gabLower);
+    if (porTexto) return porTexto.letra;
 
-    const eCertoErrado = q.alternativas && q.alternativas.some(alt => {
-        const l = String(alt).trim().toLowerCase();
-        return l === "certo" || l === "errado";
-    });
+    // 2. Compara pela letra exata da opção (Questões 102 a 105)
+    const porLetra = opcoes.find(op => op.letra === gabRaw.toUpperCase());
+    if (porLetra) return porLetra.letra;
 
-    if (eCertoErrado) {
-        if (lower === "c") return "CERTO";
-        if (lower === "e") return "ERRADO";
+    // 3. Sinônimos de Certo / Errado
+    if (gabLower === "certo" || gabLower === "correto" || gabLower === "c") {
+        const opC = opcoes.find(op => op.letra === "C" || op.texto.toLowerCase() === "certo");
+        if (opC) return opC.letra;
+        return "C";
+    }
+    if (gabLower === "errado" || gabLower === "incorreto" || gabLower === "e") {
+        const opE = opcoes.find(op => op.letra === "E" || op.texto.toLowerCase() === "errado");
+        if (opE) return opE.letra;
+        return "E";
     }
 
-    const primeiraLetra = g.charAt(0).toUpperCase();
-    if (primeiraLetra >= "A" && primeiraLetra <= "Z") {
-        return primeiraLetra;
-    }
+    // 4. Fallback caso o gabarito venha como "A) Texto"
+    const matchPrefixo = /^([A-Ea-e])\s*[\)\.\-:]/.exec(gabRaw);
+    if (matchPrefixo) return matchPrefixo[1].toUpperCase();
 
-    return g.toUpperCase();
+    return gabRaw.charAt(0).toUpperCase();
 }
 
-// ---------- COMPONENTES DE INTERFACE ----------
+export function textoGabaritoDe(q) {
+    const opcoes = obterOpcoes(q);
+    const letra = gabaritoDe(q);
+    const opCorreta = opcoes.find(op => op.letra === letra);
+    if (opCorreta) {
+        return opCorreta.letra === opCorreta.texto.charAt(0).toUpperCase() && (opCorreta.texto === "Certo" || opCorreta.texto === "Errado")
+            ? opCorreta.texto
+            : `${opCorreta.letra}) ${opCorreta.texto}`;
+    }
+    return String(q.gabarito || "");
+}
+
+// ---------- 3. COMPONENTES DE INTERFACE ----------
 export function preencherSelect(selectElement, textoPadrao, propriedade, listaQuestoes) {
     if (!selectElement) return;
-    const valoresUnicos = [...new Set(listaQuestoes.map(q => q[propriedade]).filter(Boolean))].sort();
-    
-    selectElement.innerHTML = '<option value="">' + esc(textoPadrao) + '</option>';
-    valoresUnicos.forEach(valor => {
-        const opt = document.createElement("option");
-        opt.value = valor;
-        opt.textContent = valor;
-        selectElement.appendChild(opt);
+    const contagem = {};
+    listaQuestoes.forEach(q => {
+        const val = q[propriedade];
+        if (val) contagem[val] = (contagem[val] || 0) + 1;
     });
+
+    selectElement.innerHTML = `<option value="">${esc(textoPadrao)} (${listaQuestoes.length})</option>`;
+    Object.keys(contagem)
+        .sort((a, b) => a.localeCompare(b, 'pt-BR'))
+        .forEach(valor => {
+            const opt = document.createElement("option");
+            opt.value = valor;
+            opt.textContent = `${valor} (${contagem[valor]})`;
+            selectElement.appendChild(opt);
+        });
 }
 
 export function atualizarChipTag(chipTagElement, tag) {
@@ -85,11 +149,11 @@ export function atualizarChipTag(chipTagElement, tag) {
         return;
     }
     chipTagElement.hidden = false;
-    chipTagElement.innerHTML = 'Filtro por tag: <strong>#' + esc(tag) + '</strong> <button type="button" id="btn-limpar-tag" class="btn-limpar-tag">✖ Remover</button>';
+    chipTagElement.innerHTML = `<span>Filtro ativo por tag: <strong>#${esc(tag)}</strong></span> <button type="button" id="btn-limpar-tag" class="btn-limpar-tag">✖ Remover</button>`;
 }
 
 export function classificarStatus(qId, historico) {
-    const h = historico[qId];
+    const h = historico[String(qId)] || historico[qId];
     if (!h || !h.tentativas) return { texto: "Não Respondida", classe: "badge-neutro" };
 
     if (h.status === 'superado') return { texto: "Superada ⚡", classe: "badge-sucesso" };
@@ -98,14 +162,14 @@ export function classificarStatus(qId, historico) {
     const ultimosCinco = recentes.slice(-5);
     const taxaRecente = ultimosCinco.length > 0
         ? (ultimosCinco.reduce((acc, v) => acc + v, 0) / ultimosCinco.length) * 100
-        : 0;
+        : ((h.acertos || 0) / h.tentativas) * 100;
 
     if (h.tentativas >= 3 && taxaRecente >= 80) return { texto: "Dominada 🎯", classe: "badge-sucesso" };
-    if (taxaRecente <= 40 || h.status === 'erro' || h.ultimaResposta === 'errado') return { texto: "Alerta ⚠️", classe: "badge-perigo" };
+    if (taxaRecente <= 40 || h.status === 'erro' || h.ultimaResposta === 'errado') return { texto: "Caderno de Erros ❌", classe: "badge-perigo" };
     return { texto: "Em Aprendizado 📘", classe: "badge-alerta" };
 }
 
-// ---------- ATUALIZAÇÃO DO PLACAR E DASHBOARD ----------
+// ---------- 4. ATUALIZAÇÃO DO PLACAR E DASHBOARD ----------
 export function atualizarPlacar(historico, questoes) {
     if (!historico) historico = {};
     if (!questoes) questoes = [];
@@ -144,8 +208,6 @@ export function atualizarPlacar(historico, questoes) {
                 materiasMap[mat].erros += er;
             }
 
-            // Regra do Caderno de Erros Ativos:
-            // Permanece na revisão se estiver marcado como 'erro' OU se o último resultado foi 'errado' E não foi 'superado'.
             const ehErroAtivo = h.status === 'erro' || (h.ultimaResposta === 'errado' && h.status !== 'superado');
             const temAnotacao = h.anotacao && String(h.anotacao).trim().length > 0;
 
@@ -173,106 +235,173 @@ function renderizarDesempenhoMaterias(materiasMap) {
     const materiasComAtividade = Object.keys(materiasMap).filter(mat => materiasMap[mat].respondidas > 0);
 
     if (materiasComAtividade.length === 0) {
-        containerMaterias.innerHTML = '<p class="aviso-vazio" style="color: #64748b; font-size: 0.8rem; margin-top: 1.2rem; text-align: center;">Sem dados de desempenho acumulados.</p>';
+        containerMaterias.innerHTML = '<p class="aviso-vazio" style="color: #64748b; font-size: 0.8rem; margin-top: 1.2rem; text-align: center;">Responda questões para visualizar seu desempenho por matéria.</p>';
         return;
     }
 
     let html = '<div class="painel-desempenho-materias">';
-    materiasComAtividade.sort().forEach(mat => {
+    materiasComAtividade.sort((a, b) => a.localeCompare(b, 'pt-BR')).forEach(mat => {
         const dados = materiasMap[mat];
         const somaResp = dados.acertos + dados.erros;
-        const taxa = somaResp > 0 
-            ? ((dados.acertos / somaResp) * 100).toFixed(0) 
+        const taxa = somaResp > 0
+            ? ((dados.acertos / somaResp) * 100).toFixed(0)
             : 0;
-        
-        html += '<div class="materia-stat-item">' +
-                    '<div class="materia-stat-header">' +
-                        '<span class="materia-nome">📖 ' + esc(mat) + '</span>' +
-                        '<span class="materia-taxa">' + taxa + '% (' + dados.acertos + '/' + dados.respondidas + ')</span>' +
-                    '</div>' +
-                    '<div class="barra-progresso-bg">' +
-                        '<div class="barra-progresso-fill" style="width: ' + taxa + '%;"></div>' +
-                    '</div>' +
-                '</div>';
+
+        html += `
+            <div class="materia-stat-item">
+                <div class="materia-stat-header">
+                    <span class="materia-nome">📖 ${esc(mat)}</span>
+                    <span class="materia-taxa">${taxa}% (${dados.acertos}/${somaResp})</span>
+                </div>
+                <div class="barra-progresso-bg">
+                    <div class="barra-progresso-fill" style="width: ${taxa}%;"></div>
+                </div>
+            </div>
+        `;
     });
     html += '</div>';
     containerMaterias.innerHTML = html;
 }
 
-// ---------- RENDERIZAÇÃO DE QUESTÕES ----------
-export function renderizarQuestoes(container, lista, historico, mensagemVazia = "Nenhuma questão encontrada.") {
+// ---------- 5. RENDERIZAÇÃO DE QUESTÕES ----------
+export function renderizarQuestoes(container, lista, historico = {}, mensagemVazia = "Nenhuma questão encontrada.") {
+    if (!container) return;
     container.innerHTML = "";
-    if (lista.length === 0) {
-        container.innerHTML = '<p class="aviso-vazio">' + esc(mensagemVazia) + '</p>';
+
+    if (!lista || lista.length === 0) {
+        container.innerHTML = `<p class="aviso-vazio">${esc(mensagemVazia)}</p>`;
         return;
     }
 
     lista.forEach(q => {
-        const status = classificarStatus(q.id, historico);
-        const h = historico[q.id] || {};
-        const tentativas = h.tentativas || 0;
-        const anotacao = h.anotacao || "";
+        const idStr = String(q.id);
+        const opcoes = obterOpcoes(q);
+        const regHist = historico[idStr] || historico[q.id] || {};
+        const tentativas = regHist.tentativas || 0;
+        const anotacao = regHist.anotacao || "";
+        const status = classificarStatus(idStr, historico);
 
-        const botoes = q.alternativas.map(alt => {
-            const letra = letraDe(alt);
-            return '<button type="button" class="btn-opcao" data-letra="' + esc(letra) + '">' + esc(alt) + '</button>';
-        }).join("");
+        const htmlAlternativas = opcoes.map(({ letra, texto }) => `
+            <label class="opcao-item" data-letra="${esc(letra)}">
+                <input type="radio" name="questao_${esc(idStr)}" value="${esc(letra)}" class="radio-opcao">
+                <span class="letra-badge">${esc(letra)}</span>
+                <span class="opcao-texto">${esc(texto)}</span>
+            </label>
+        `).join('');
 
-        const tags = (q.tags && q.tags.length)
-            ? '<div class="container-tags">' + q.tags.map(t => '<span class="tag-item" data-tag="' + esc(t) + '">' + esc(t) + '</span>').join("") + '</div>'
-            : "";
+        const htmlTags = (q.tags || []).map(t => `<span class="tag-item" data-tag="${esc(t)}">#${esc(t)}</span>`).join('');
 
-        const card = document.createElement("div");
-        card.className = "questao-card";
-        card.dataset.id = q.id;
-        card.innerHTML = 
-            '<div class="questao-header">' +
-                '<span><strong>Banca:</strong> ' + esc(q.banca) + ' | <strong>Matéria:</strong> ' + esc(q.materia) + '</span>' +
-                '<span class="badge ' + status.classe + '">' + status.texto + '</span>' +
-            '</div>' +
-            tags +
-            '<p class="enunciado">' + esc(q.enunciado) + '</p>' +
-            '<div class="opcoes-resposta">' + botoes + '</div>' +
-            '<small class="tentativas">Tentativas: ' + tentativas + '</small>' +
-            '<div class="feedback-area"></div>' +
-            '<div class="area-anotacao">' +
-                '<button type="button" class="btn-anotacao-toggle">' +
-                    '📝 <span>' + (anotacao ? 'Editar Anotação Pessoal' : 'Adicionar Anotação Pessoal') + '</span>' +
-                '</button>' +
-                '<div class="box-anotacao"' + (anotacao ? '' : ' hidden') + '>' +
-                    '<textarea class="input-anotacao" placeholder="Escreva aqui seu resumo, motivo do erro ou regra teórica...">' + esc(anotacao) + '</textarea>' +
-                    '<div class="acoes-anotacao">' +
-                        '<button type="button" class="btn-sidebar btn-salvar-anotacao">💾 Salvar Anotação</button>' +
-                    '</div>' +
-                '</div>' +
-            '</div>';
-        container.appendChild(card);
+        const infoExtra = [
+            q.banca ? esc(q.banca) : '',
+            q.ano ? esc(q.ano) : '',
+            q.orgao ? esc(q.orgao) : ''
+        ].filter(Boolean).join(' • ');
+
+        const cardHTML = `
+            <article class="card-questao questao-card" data-id="${esc(idStr)}">
+                <div class="card-header">
+                    <div class="header-info">
+                        <span class="badge-materia">${esc(q.materia)}</span>
+                        <span class="badge-info">${infoExtra}</span>
+                    </div>
+                    <span class="badge ${status.classe}">${status.texto}</span>
+                </div>
+
+                <p class="enunciado">${esc(q.enunciado)}</p>
+
+                <div class="opcoes-container">
+                    ${htmlAlternativas}
+                </div>
+
+                ${htmlTags ? `<div class="tags-container">${htmlTags}</div>` : ''}
+
+                <div class="card-footer">
+                    <div class="card-actions-row">
+                        <button type="button" class="btn-primary btn-responder" data-id="${esc(idStr)}">✔ Responder</button>
+                        <small class="tentativas">Tentativas: ${tentativas}</small>
+                    </div>
+
+                    <div class="feedback-container oculta" id="feedback_${esc(idStr)}">
+                        <div class="gabarito-resposta"></div>
+                        <div class="explicacao-texto"></div>
+                    </div>
+
+                    <div class="area-anotacao">
+                        <button type="button" class="btn-anotacao-toggle">
+                            📝 <span>${anotacao ? 'Editar Anotação Pessoal' : 'Adicionar Anotação Pessoal'}</span>
+                        </button>
+                        <div class="box-anotacao" ${anotacao ? '' : 'hidden'}>
+                            <textarea class="input-anotacao" placeholder="Anote a pegadinha da banca, o motivo do erro ou a regra teórica...">${esc(anotacao)}</textarea>
+                            <div class="acoes-anotacao">
+                                <button type="button" class="btn-sidebar btn-salvar-anotacao">💾 Salvar Anotação</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        `;
+
+        container.insertAdjacentHTML('beforeend', cardHTML);
     });
 }
 
+// ---------- 6. REVELAÇÃO DO GABARITO E FEEDBACK VISUAL ----------
 export function revelar(card, q, letraEscolhida) {
+    if (!card || !q) return;
+
     const gabaritoLetra = gabaritoDe(q);
+    const textoCorreto = textoGabaritoDe(q);
     const acertou = (letraEscolhida === gabaritoLetra);
-    const fb = card.querySelector(".feedback-area");
 
-    const altCorretaObj = (q.alternativas || []).find(alt => letraDe(alt) === gabaritoLetra);
-    const textoCorreto = altCorretaObj ? altCorretaObj : q.gabarito;
+    // 1. Destaca as opções (verde para gabarito, vermelho se marcou errada)
+    card.querySelectorAll(".opcao-item").forEach(label => {
+        const opLetra = label.dataset.letra;
+        const radio = label.querySelector(".radio-opcao");
+        if (radio) radio.disabled = true;
 
-    if (acertou) {
-        fb.className = "feedback-area feedback correto";
-        fb.innerHTML = '✔ <strong>Resposta Correta!</strong>' + (q.explicacao ? '<br><small>' + esc(q.explicacao) + '</small>' : '');
-    } else {
-        fb.className = "feedback-area feedback incorreto";
-        fb.innerHTML = '✖ <strong>Resposta Incorreta.</strong> O gabarito é: <strong>' + esc(textoCorreto) + '</strong>' + (q.explicacao ? '<br><small>' + esc(q.explicacao) + '</small>' : '');
+        label.classList.remove("selecionada", "correta", "incorreta");
+        label.classList.add("desabilitada");
+
+        if (opLetra === gabaritoLetra) {
+            label.classList.add("correta");
+        } else if (opLetra === letraEscolhida && !acertou) {
+            label.classList.add("incorreta");
+        }
+    });
+
+    // 2. Desabilita o botão Responder
+    const btnResponder = card.querySelector(".btn-responder");
+    if (btnResponder) {
+        btnResponder.disabled = true;
+        btnResponder.innerText = acertou ? "✔ Respondida (Acerto)" : "✖ Respondida (Erro)";
     }
 
-    card.querySelectorAll(".btn-opcao").forEach(btn => {
-        const btnLetra = letraDe(btn.dataset.letra || btn.innerText);
-        if (btnLetra === gabaritoLetra) {
-            btn.classList.add("correta");
-        } else if (btnLetra === letraEscolhida && !acertou) {
-            btn.classList.add("incorreta");
+    // 3. Exibe o container de feedback
+    const fbContainer = card.querySelector(".feedback-container");
+    if (!fbContainer) return;
+
+    fbContainer.classList.remove("oculta", "correto", "incorreto", "neutro");
+    fbContainer.classList.add(acertou ? "correto" : "incorreto");
+
+    const gabaritoDiv = fbContainer.querySelector(".gabarito-resposta");
+    const explicacaoDiv = fbContainer.querySelector(".explicacao-texto");
+
+    if (gabaritoDiv) {
+        if (letraEscolhida === null || letraEscolhida === undefined) {
+            gabaritoDiv.innerHTML = `⚠️ <strong>Questão em branco.</strong> Gabarito oficial: <strong>${esc(textoCorreto)}</strong>`;
+        } else if (acertou) {
+            gabaritoDiv.innerHTML = `✔ <strong>Resposta Correta!</strong> Alternativa <strong>${esc(gabaritoLetra)}</strong>.`;
+        } else {
+            gabaritoDiv.innerHTML = `✖ <strong>Resposta Incorreta.</strong> Você marcou (${esc(letraEscolhida)}). O gabarito é: <strong>${esc(textoCorreto)}</strong>`;
         }
-        btn.disabled = true;
-    });
+    }
+
+    if (explicacaoDiv) {
+        if (q.explicacao && String(q.explicacao).trim() !== "") {
+            explicacaoDiv.innerHTML = q.explicacao;
+            explicacaoDiv.style.display = "block";
+        } else {
+            explicacaoDiv.style.display = "none";
+        }
+    }
 }

@@ -2,7 +2,7 @@
 // js/simulado.js - Processamento de Simulados Blindado (FocoPro)
 // ============================================================
 
-import { formatarTempo, letraDe, gabaritoDe, classificarStatus, atualizarPlacar, revelar } from './ui.js';
+import { formatarTempo, gabaritoDe, classificarStatus, atualizarPlacar, revelar } from './ui.js';
 import { salvarHistorico } from './storage.js';
 import { showToast } from './notifications.js';
 
@@ -14,13 +14,14 @@ export function iniciarCronometro(minutos, displayElement, onFinishCallback) {
     if (!displayElement) return;
 
     let tempoRestante = minutos * 60;
-    displayElement.innerText = formatarTempo(tempoRestante);
+    displayElement.hidden = false;
+    displayElement.innerText = `⏱️ Tempo Restante: ${formatarTempo(tempoRestante)}`;
     displayElement.classList.add("ativo");
 
     timerInterval = setInterval(() => {
         tempoRestante--;
         if (displayElement) {
-            displayElement.innerText = formatarTempo(tempoRestante);
+            displayElement.innerText = `⏱️ Tempo Restante: ${formatarTempo(tempoRestante)}`;
         }
 
         if (tempoRestante <= 0) {
@@ -39,6 +40,7 @@ export function pararCronometro(displayElement) {
     if (displayElement) {
         displayElement.innerText = "00:00";
         displayElement.classList.remove("ativo");
+        displayElement.hidden = true;
     }
 }
 
@@ -53,8 +55,8 @@ export function adicionarBotaoFinalizar(container) {
     div.style.margin = "2rem 0";
     div.style.textAlign = "center";
     div.innerHTML = `
-        <button type="button" id="btn-finalizar" class="btn-primary btn-finalizar-simulado">
-            🏁 Finalizar Simulado
+        <button type="button" id="btn-finalizar-simulado" class="btn-primary btn-finalizar-simulado">
+            🏁 Finalizar Simulado e Ver Resultado
         </button>
     `;
     container.appendChild(div);
@@ -65,7 +67,7 @@ export function finalizarSimulado(simulado, container, porId, historico, questoe
     if (!simulado || simulado.finalizado) return;
     simulado.finalizado = true;
 
-    const btnFinalizar = document.getElementById("btn-finalizar");
+    const btnFinalizar = document.getElementById("btn-finalizar-simulado") || document.getElementById("btn-finalizar");
     if (btnFinalizar) {
         btnFinalizar.disabled = true;
         btnFinalizar.innerText = "✓ Simulado Finalizado";
@@ -80,15 +82,16 @@ export function finalizarSimulado(simulado, container, porId, historico, questoe
         const q = porId.get(idStr);
         if (!q) return;
 
-        const card = container.querySelector(`.questao-card[data-id="${idStr}"]`) || 
-                     container.querySelector(`.questao-card[data-id="${q.id}"]`);
-        
-        // Recuperação flexível da resposta registrada no simulado
-        const respostaDada = simulado.respostas[idStr] || simulado.respostas[q.id];
+        const card = container.querySelector(`.card-questao[data-id="${idStr}"]`) ||
+                     container.querySelector(`.questao-card[data-id="${idStr}"]`);
+
+        // Verifica resposta registrada ou radio marcado diretamente no card
+        const radioMarcado = card ? card.querySelector(".radio-opcao:checked") : null;
+        const respostaDada = simulado.respostas[idStr] || simulado.respostas[q.id] || (radioMarcado ? radioMarcado.value : null);
         const temResposta = (respostaDada !== undefined && respostaDada !== null && String(respostaDada).trim() !== "");
 
         if (card && temResposta) {
-            const letraDada = letraDe(respostaDada);
+            const letraDada = String(respostaDada).trim().toUpperCase();
             const gabaritoOficial = gabaritoDe(q);
             const acertou = (letraDada === gabaritoOficial);
 
@@ -102,7 +105,6 @@ export function finalizarSimulado(simulado, container, porId, historico, questoe
             if (acertou) {
                 h.acertos = (h.acertos || 0) + 1;
                 acertosSimulado++;
-                // Transição de status para superado se a questão estava pendente no caderno de erros
                 if (h.status === 'erro' || h.ultimaResposta === 'errado') {
                     h.status = 'superado';
                 } else {
@@ -118,7 +120,6 @@ export function finalizarSimulado(simulado, container, porId, historico, questoe
             if (h.recentes.length > 5) h.recentes.shift();
             h.ultimaData = Date.now();
 
-            // Revela a resposta no DOM e atualiza badge de status
             revelar(card, q, letraDada);
 
             const status = classificarStatus(idStr, historico);
@@ -130,19 +131,14 @@ export function finalizarSimulado(simulado, container, porId, historico, questoe
             const elTentativas = card.querySelector(".tentativas");
             if (elTentativas) elTentativas.innerText = `Tentativas: ${h.tentativas}`;
         } else if (card) {
-            const fb = card.querySelector(".feedback-area");
-            if (fb) {
-                fb.className = "feedback-area feedback neutro";
-                fb.innerText = "Questão não respondida.";
-            }
+            revelar(card, q, null);
         }
     });
 
-    // Atualiza o armazenamento local e redesenha o painel lateral
     salvarHistorico(historico);
     atualizarPlacar(historico, questoes);
 
     const taxa = totalQuestoes > 0 ? ((acertosSimulado / totalQuestoes) * 100).toFixed(1) : 0;
     const msgTempo = porTempo ? " (Tempo Esgotado)" : "";
-    showToast(`Simulado finalizado${msgTempo}! Nota: ${acertosSimulado}/${totalQuestoes} (${taxa}%)`, "sucesso");
+    showToast(`Simulado finalizado${msgTempo}! Nota: ${acertosSimulado}/${totalQuestoes} (${taxa}%)`, "sucesso", 5000);
 }

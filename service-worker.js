@@ -2,9 +2,8 @@
 // service-worker.js - Gerenciador de Cache e Offline (FocoPro)
 // ============================================================
 
-const CACHE_NAME = 'focopro-v1';
+const CACHE_NAME = 'focopro-v2';
 
-// ---------- 1. RECURSOS DO APP SHELL PARA CACHE INICIAL ----------
 const RECURSOS_ESTATICOS = [
     './',
     './index.html',
@@ -15,10 +14,10 @@ const RECURSOS_ESTATICOS = [
     './js/simulado.js',
     './js/storage.js',
     './js/notifications.js',
-    './js/api.js'
+    './js/api.js',
+    './data/questoes.json'
 ];
 
-// ---------- 2. EVENTO DE INSTALAÇÃO (PRE-CACHING) ----------
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
@@ -27,7 +26,6 @@ self.addEventListener('install', (event) => {
     );
 });
 
-// ---------- 3. EVENTO DE ATIVAÇÃO (LIMPEZA DE CACHES ANTIGOS) ----------
 self.addEventListener('activate', (event) => {
     event.waitUntil(
         caches.keys().then((chaves) => {
@@ -42,43 +40,20 @@ self.addEventListener('activate', (event) => {
     );
 });
 
-// ---------- 4. ESTRATÉGIA DE INTERCEPTAÇÃO DE REQUISIÇÕES ----------
+// Estratégia Network-First: garante código sempre atualizado no desenvolvimento e 100% funcional offline
 self.addEventListener('fetch', (event) => {
     const url = new URL(event.request.url);
-
-    // Ignora requisições de extensões do Chrome ou esquemas não-HTTP
     if (!url.protocol.startsWith('http')) return;
 
-    // Estratégia Network-First para requisições de dados JSON (Banco de Questões)
-    if (url.pathname.endsWith('.json') && !url.pathname.endsWith('manifest.json')) {
-        event.respondWith(
-            fetch(event.request)
-                .then((respostaRede) => {
-                    if (respostaRede.ok) {
-                        const respostaClonada = respostaRede.clone(); // Clone síncrono
-                        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, respostaClonada));
-                    }
-                    return respostaRede;
-                })
-                .catch(() => caches.match(event.request))
-        );
-        return;
-    }
-
-    // Estratégia Stale-While-Revalidate para o App Shell e assets estáticos
     event.respondWith(
-        caches.match(event.request).then((respostaCache) => {
-            const buscarNaRede = fetch(event.request).then((respostaRede) => {
+        fetch(event.request)
+            .then((respostaRede) => {
                 if (respostaRede && respostaRede.status === 200) {
-                    const respostaClonada = respostaRede.clone(); // Clone síncrono antes do retorno
+                    const respostaClonada = respostaRede.clone();
                     caches.open(CACHE_NAME).then((cache) => cache.put(event.request, respostaClonada));
                 }
                 return respostaRede;
-            }).catch(() => {
-                // Silencia falhas de conexão quando estiver 100% offline
-            });
-
-            return respostaCache || buscarNaRede;
-        })
+            })
+            .catch(() => caches.match(event.request))
     );
 });
