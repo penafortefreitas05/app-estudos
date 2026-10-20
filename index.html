@@ -56,6 +56,15 @@
                 <span>📑 Revisar Erros</span>
                 <span class="badge-count" id="contador-revisao">0</span>
             </button>
+            <!-- Botão para abrir o modal de importação -->
+             <div>
+               <button id="btnAbrirImportar" class="btn-acao" onclick="document.getElementById('modalImportar').style.display = 'flex'">
+                Importar Questões em Massa
+                </button>
+             </div>
+
+
+
 
             <!-- Botão: Zerar Histórico -->
             <button id="btn-limpar-dados" class="btn-sidebar danger">
@@ -123,8 +132,28 @@
             </div>
         </div>
     </div>
+    <!-- Modal de Importação -->
+<!-- Modal Importar (Solto no final do body para pegar a tela toda) -->
+    <div id="modalImportar" class="modal" style="display: none;">
+        <div class="modal-conteudo">
+            <h3>Importação em Massa</h3>
+            <p>Cole o seu bloco de questões em formato JSON abaixo:</p>
+            <textarea id="textoJsonQuestoes" rows="10" placeholder='[{"pergunta": "..."}]'></textarea>
+            <div class="modal-botoes">
+                <button id="btnProcessarImportacao" class="btn-primario">Processar</button>
+                <button id="btnFecharImportar" class="btn-secundario"onclick="document.getElementById('modalImportar').style.display = 'none'"> cancelar
 
-    <!-- 4. CARREGAMENTO DOS ES6 MODULES -->
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts com type="module" OBRIGATÓRIO -->
+    <script type="module" src="js/supabase.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/storage.js"></script>
     <script type="module" src="js/app.js"></script>
+</body>
+</html>
 </body>
 </html>

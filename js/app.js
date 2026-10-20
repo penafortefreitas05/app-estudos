@@ -26,7 +26,7 @@ import { showToast, showConfirmModal } from './notifications.js';
 import { carregarQuestoes } from './api.js';
 
 // ---------- 2. ESTADO GLOBAL ----------
-let historico = carregarHistorico();
+let historico = []; // Inicializa vazio. Será preenchido após o login!
 let questoes = [];
 let porId = new Map();
 let tagSelecionada = "";
@@ -551,13 +551,112 @@ async function iniciarApp() {
 iniciarApp();
 
 // ---------- 11. REGISTRO DO SERVICE WORKER (PWA) ----------
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./service-worker.js')
-            .then(reg => {
-                reg.update();
-                console.log('Service Worker ativo no escopo:', reg.scope);
-            })
-            .catch(err => console.error('Falha ao registrar Service Worker:', err));
+//if ('serviceWorker' in navigator) {
+    //window.addEventListener('load', () => {
+        //    .then(reg => {
+               //reg.update();
+                //console.log('Service Worker ativo no escopo:', reg.scope);
+         //  })
+           // .catch(err => console.error('Falha ao registrar Service Worker:', err));
+    //});
+//}
+// ============================================================
+// Lógica de Importação em Massa de Questões (Execução Direta)
+// ============================================================
+
+console.log("-> Módulo app.js carregado. Inicializando importador...");
+
+const modalImportar = document.getElementById('modalImportar');
+const btnAbrirImportar = document.getElementById('btnAbrirImportar');
+const btnFecharImportar = document.getElementById('btnFecharImportar');
+const btnProcessarImportacao = document.getElementById('btnProcessarImportacao');
+const textoJsonQuestoes = document.getElementById('textoJsonQuestoes');
+
+console.log("Status dos elementos:", {
+    botaoAbrir: !!btnAbrirImportar,
+    modal: !!modalImportar
+});
+
+// Substitua o trecho interno do try do processamento por este:
+if (btnProcessarImportacao && textoJsonQuestoes && modalImportar) {
+    btnProcessarImportacao.addEventListener('click', async () => {
+        try {
+            const jsonBruto = textoJsonQuestoes.value.trim();
+            if (!jsonBruto) {
+                alert('Cole o conteúdo JSON antes de prosseguir.');
+                return;
+            }
+
+            const novasQuestoes = JSON.parse(jsonBruto);
+
+            if (!Array.isArray(novasQuestoes)) {
+                alert('O formato deve ser uma lista (array) de questões válida.');
+                return;
+            }
+
+            // 1. Adiciona as novas questões ao array principal da aplicação
+            novasQuestoes.forEach((q, index) => {
+                // Se a questão não tiver ID único, cria um
+                if (!q.id) {
+                    q.id = `importada_${Date.now()}_${index}`;
+                }
+                questoes.push(q);
+                porId.set(q.id, q);
+            });
+
+            alert(`Sucesso! ${novasQuestoes.length} questões foram adicionadas.`);
+
+            // 2. Limpa o campo e fecha o modal
+            modalImportar.style.display = 'none';
+            textoJsonQuestoes.value = '';
+
+            // 3. Atualiza a interface (chame a sua função de renderizar a lista/questão)
+            if (typeof renderizarQuestoes === 'function') {
+                renderizarQuestoes();
+            } else if (typeof renderizarProximaQuestao === 'function') {
+                renderizarProximaQuestao();
+            }
+
+        } catch (erro) {
+            console.error('Erro ao processar JSON:', erro);
+            alert('Erro no formato do JSON. Verifique as aspas e vírgulas.');
+        }
+    });
+}
+ else {
+    console.error("Falha ao localizar elementos no DOM. Verifique os IDs no index.html.");
+}
+
+if (btnFecharImportar && modalImportar) {
+    btnFecharImportar.addEventListener('click', () => {
+        modalImportar.style.display = 'none';
+    });
+}
+
+if (btnProcessarImportacao && textoJsonQuestoes && modalImportar) {
+    btnProcessarImportacao.addEventListener('click', async () => {
+        try {
+            const jsonBruto = textoJsonQuestoes.value.trim();
+            if (!jsonBruto) {
+                alert('Cole o conteúdo JSON antes de prosseguir.');
+                return;
+            }
+
+            const novasQuestoes = JSON.parse(jsonBruto);
+
+            if (!Array.isArray(novasQuestoes)) {
+                alert('O formato deve ser uma lista (array) de questões válida.');
+                return;
+            }
+
+            console.log('Questões importadas com sucesso:', novasQuestoes);
+            alert(`Sucesso! ${novasQuestoes.length} questões foram importadas.`);
+
+            modalImportar.style.display = 'none';
+            textoJsonQuestoes.value = '';
+        } catch (erro) {
+            console.error('Erro ao processar JSON:', erro);
+            alert('Erro no formato do JSON. Verifique se as aspas e chaves estão corretas.');
+        }
     });
 }

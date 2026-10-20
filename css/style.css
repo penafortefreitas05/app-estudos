@@ -786,3 +786,61 @@ body {
     color: #7dd3fc;
     text-decoration: underline;
 }
+/* Botão de Importar Questões */
+#btnAbrirImportar {
+    background-color: #2563eb; /* Azul moderno */
+    color: white;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 20px;
+    transition: background-color 0.2s ease-in-out;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#btnAbrirImportar:hover {
+    background-color: #1d4ed8; /* Azul mais escuro no hover */
+}
+/* =========================================
+   Modal de Importação em Massa (Camada Forçada)
+   ========================================= */
+
+#modalImportar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background-color: rgba(0, 0, 0, 0.75) !important;
+    display: none; /* Controlado via JS */
+    justify-content: center !important;
+    align-items: center !important;
+    z-index: 999999 !important; /* Fica acima de qualquer outro elemento */
+}
+
+#modalImportar .modal-conteudo {
+    background-color: #ffffff !important;
+    padding: 30px !important;
+    border-radius: 8px !important;
+    width: 90% !important;
+    max-width: 600px !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+    position: relative !important;
+    z-index: 1000000 !important;
+}
+
+#textoJsonQuestoes {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    min-height: 200px !important;
+    margin: 15px 0 !important;
+    padding: 10px !important;
+    font-family: monospace !important;
+    font-size: 13px !important;
+    border: 1px solid #ccc !important;
+    border-radius: 4px !important;
+}
