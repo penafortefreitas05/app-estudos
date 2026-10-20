@@ -79,3 +79,55 @@ export async function carregarHistoricoDoUsuario() {
         return [];
     }
 }
+/**
+ * Salva uma lista de questões importadas na tabela 'questoes'
+ */
+/**
+ * Salva uma lista de questões importadas na tabela 'questoes'
+ */
+export async function salvarQuestoesEmMassa(arrayDeQuestoes) {
+    try {
+        // Filtra objetos vazios e adapta os nomes das chaves (aceita pergunta ou enunciado)
+        const payload = arrayDeQuestoes
+            .filter(q => q.pergunta || q.enunciado) // Impede envio de objetos sem texto
+            .map(q => ({
+                id: String(q.id),
+                pergunta: q.pergunta || q.enunciado, 
+                alternativas: q.alternativas || q.opcoes || [],
+                resposta_correta: q.resposta_correta || q.gabarito || 'A',
+                materia: q.materia || q.disciplina || 'Geral',
+                banca: q.banca || 'Não informada',
+                orgao: q.orgao || null,
+                tags: q.tags || []
+            }));
+
+        const { error } = await supabaseClient
+            .from('questoes')
+            .upsert(payload);
+
+        if (error) throw error;
+        console.log(`${payload.length} questões salvas no Supabase com sucesso.`);
+    } catch (erro) {
+        console.error("Erro ao salvar questões em massa:", erro.message);
+        throw erro; // Repassa o erro para o app.js ver
+    }
+}
+
+/**
+ * Puxa todas as questões salvas no banco de dados para a tela
+ */
+export async function carregarTodasQuestoes() {
+    try {
+        const { data, error } = await supabaseClient
+            .from('questoes')
+            .select('*');
+
+        if (error) throw error;
+        
+        console.log(`Foram carregadas ${data.length} questões da nuvem.`);
+        return data || [];
+    } catch (erro) {
+        console.error("Erro ao buscar questões:", erro.message);
+        return [];
+    }
+}

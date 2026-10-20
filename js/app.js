@@ -3,7 +3,7 @@
 // ============================================================
 
 // ---------- 1. IMPORTAÇÕES DE MÓDULOS ----------
-import { supabaseClient, salvarRespostaNoHistorico, carregarHistoricoDoUsuario } from './supabase.js';
+import { supabaseClient, salvarRespostaNoHistorico, carregarHistoricoDoUsuario, salvarQuestoesEmMassa, carregarTodasQuestoes } from './supabase.js';
 import { criarConta, entrar, sair } from './auth.js';
 import { carregarHistorico, salvarHistorico } from './storage.js';
 import {
@@ -573,9 +573,8 @@ const btnFecharImportar = document.getElementById('btnFecharImportar');
 const btnProcessarImportacao = document.getElementById('btnProcessarImportacao');
 const textoJsonQuestoes = document.getElementById('textoJsonQuestoes');
 
-// Os eventos de abrir e fechar o modal já estão no HTML via 'onclick'.
-// Este ouvinte processa o conteúdo JSON colado:
 if (btnProcessarImportacao && textoJsonQuestoes && modalImportar) {
+    // ATENÇÃO: O 'async' aqui é obrigatório para podermos usar o 'await' lá dentro
     btnProcessarImportacao.addEventListener('click', async () => {
         try {
             const jsonBruto = textoJsonQuestoes.value.trim();
@@ -591,19 +590,20 @@ if (btnProcessarImportacao && textoJsonQuestoes && modalImportar) {
                 return;
             }
 
-            // Adiciona as novas questões ao array principal
             novasQuestoes.forEach((q, index) => {
                 if (!q.id) q.id = `importada_${Date.now()}_${index}`;
                 questoes.push(q);
                 porId.set(String(q.id), q);
             });
 
-            alert(`Sucesso! ${novasQuestoes.length} questões foram adicionadas.`);
+            // Salva as questões no Supabase
+            await salvarQuestoesEmMassa(novasQuestoes);
+
+            alert(`Sucesso! ${novasQuestoes.length} questões foram adicionadas e salvas na nuvem.`);
             
             modalImportar.style.display = 'none';
             textoJsonQuestoes.value = '';
 
-            // Renderiza na tela as novas questões inseridas
             aplicarFiltros();
 
         } catch (erro) {
@@ -616,11 +616,14 @@ if (btnProcessarImportacao && textoJsonQuestoes && modalImportar) {
 // ============================================================
 // 14. CARGA INICIAL DA APLICAÇÃO (Executado por último)
 // ============================================================
+// ATENÇÃO: A função tem que ser 'async'
 async function iniciarApp() {
     pararCronometro(displayCronometro);
     
-    // 1. Carrega as questões padrão
-    questoes = questoesPadrao; 
+    // 1. Carrega as questões da nuvem
+    const bancoNuvem = await carregarTodasQuestoes();
+    questoes = (bancoNuvem && bancoNuvem.length > 0) ? bancoNuvem : questoesPadrao;
+    
     porId = new Map(questoes.map(q => [String(q.id), q]));
     validarQuestoes();
 
@@ -631,7 +634,6 @@ async function iniciarApp() {
     const historicoSupabase = await carregarHistoricoDoUsuario();
     
     if (historicoSupabase && historicoSupabase.length > 0) {
-        // Sincroniza o que veio da nuvem com a memória da tela
         historicoSupabase.forEach(registro => {
             const qId = String(registro.questao_id);
             
@@ -652,12 +654,10 @@ async function iniciarApp() {
                 h.ultimaResposta = 'errado';
             }
             
-            // Avisa o card que esta questão já foi respondida
             const questaoLocal = porId.get(qId);
             if (questaoLocal) questaoLocal.respondida = "1";
         });
         
-        // Salva localmente para a interface desenhar mais rápido
         salvarHistorico(historico);
     }
 
@@ -665,7 +665,7 @@ async function iniciarApp() {
     preencherSelect(selectBanca, "🏛️ Todas as Bancas", "banca", questoes);
     preencherSelect(selectMateria, "📖 Todas as Matérias", "materia", questoes);
     atualizarPlacar(historico, questoes);
-    aplicarFiltros(); // Desenha as questões pintadas com os dados da nuvem
+    aplicarFiltros(); 
 }
 
 iniciarApp();
