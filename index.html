@@ -1,20 +1,27 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    <!-- 1. METADADOS E PWA -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FocoPro - Preparação Inteligente</title>
+    <meta name="theme-color" content="#020617">
+    <title>FocoPro - Preparação Intensiva para Concursos</title>
+    
+    <!-- Ícone, Manifest e Estilos -->
     <link rel="icon" href="data:,">
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="css/style.css">
-    <!-- Fonte moderna similar à da imagem -->
+    
+    <!-- Tipografia Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="app-layout">
-        <!-- PAINEL LATERAL (Menu Escuro) -->
+        
+        <!-- 2. PAINEL LATERAL (SIDEBAR & DESEMPENHO) -->
         <aside class="sidebar">
             <div class="brand">
-                <h2>FocoPro ✦ </h2>
+                <h2>FocoPro ✦</h2>
                 <p>Foco total na aprovação</p>
             </div>
 
@@ -22,41 +29,45 @@
                 🏠 Meu Desempenho
             </div>
 
+            <!-- Card: Acertos Totais -->
             <div class="stat-card">
                 <span class="stat-title">🎯 Acertos Totais</span>
                 <span class="stat-value text-blue" id="stat-acertos">0</span>
                 <div class="progress-bar-mini blue"></div>
             </div>
 
+            <!-- Card: Erros Totais -->
             <div class="stat-card">
-                <span class="stat-title">🔄 Erros (Revisão)</span>
+                <span class="stat-title">🔄 Erros Totais</span>
                 <span class="stat-value text-orange" id="stat-erros">0</span>
                 <div class="progress-bar-mini orange"></div>
             </div>
 
+            <!-- Botão: Caderno de Erros / Modo Revisão -->
             <button id="btn-modo-revisao" class="btn-sidebar">
                 <span>📑 Revisar Erros</span>
                 <span class="badge-count" id="contador-revisao">0</span>
             </button>
 
+            <!-- Botão: Zerar Histórico -->
             <button id="btn-limpar-dados" class="btn-sidebar danger">
                 <span>❌ Zerar Histórico</span>
             </button>
 
+            <!-- Container Dinâmico do Desempenho por Matéria -->
             <div class="dashboard-container" id="dashboard-materias">
-                <!-- Gráficos gerados pelo JS entram aqui -->
+                <!-- Renderizado via js/ui.js -->
             </div>
         </aside>
 
-        <!-- CONTEÚDO PRINCIPAL (Área Central) -->
+        <!-- 3. ÁREA PRINCIPAL DE ESTUDOS -->
         <main class="main-content">
+            
+            <!-- Barra Superior de Filtros e Simulado -->
             <header class="top-bar">
                 <div class="filtros-container">
                     <select id="filtro-banca" class="input-dark">
                         <option value="">🏛️ Todas as Bancas</option>
-                        <option value="Cesgranrio">Cesgranrio</option>
-                        <option value="FGV">FGV</option>
-                        <option value="CEBRASPE">CEBRASPE</option>
                     </select>
                     
                     <select id="filtro-materia" class="input-dark">
@@ -76,22 +87,17 @@
                 </div>
             </header>
 
-            <!-- Cronômetro -->
-            <div id="display-cronometro" class="cronometro-box" style="display: none;">
-                <span>Tempo Restante: </span>
-                <span id="tempo-restante" class="tempo-valor">00:00</span>
-            </div>
+            <!-- Cronômetro Ativo do Simulado -->
+            <div id="display-cronometro" class="cronometro-box">00:00</div>
 
-            <!-- Cartões de Questões -->
+            <!-- Feed Central de Questões -->
             <section id="container-questoes" class="questoes-grid">
-                <!-- Questões renderizadas pelo JS entram aqui -->
+                <!-- Renderizado via js/ui.js -->
             </section>
         </main>
     </div>
 
-   <!-- Final do seu body -->
-   
+    <!-- 4. CARREGAMENTO DOS ES6 MODULES -->
     <script type="module" src="js/app.js"></script>
-
 </body>
 </html>

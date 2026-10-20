@@ -1,23 +1,27 @@
 // ============================================================
-// js/simulado.js - Processamento de Simulados Blindado
+// js/simulado.js - Processamento de Simulados Blindado (FocoPro)
 // ============================================================
 
 import { formatarTempo, letraDe, gabaritoDe, classificarStatus, atualizarPlacar, revelar } from './ui.js';
 import { salvarHistorico } from './storage.js';
 import { showToast } from './notifications.js';
 
+// ---------- 1. CONTROLE DO TEMPO E CRONÔMETRO ----------
 let timerInterval = null;
 
-// ---------- CRONÔMETRO ----------
 export function iniciarCronometro(minutos, displayElement, onFinishCallback) {
     pararCronometro(displayElement);
+    if (!displayElement) return;
+
     let tempoRestante = minutos * 60;
     displayElement.innerText = formatarTempo(tempoRestante);
     displayElement.classList.add("ativo");
 
     timerInterval = setInterval(() => {
         tempoRestante--;
-        displayElement.innerText = formatarTempo(tempoRestante);
+        if (displayElement) {
+            displayElement.innerText = formatarTempo(tempoRestante);
+        }
 
         if (tempoRestante <= 0) {
             pararCronometro(displayElement);
@@ -38,8 +42,9 @@ export function pararCronometro(displayElement) {
     }
 }
 
-// ---------- BOTÃO DE FINALIZAR ----------
+// ---------- 2. INJEÇÃO DO BOTÃO DE FINALIZAÇÃO ----------
 export function adicionarBotaoFinalizar(container) {
+    if (!container) return;
     const antigo = container.querySelector(".container-finalizar-simulado");
     if (antigo) antigo.remove();
 
@@ -55,7 +60,7 @@ export function adicionarBotaoFinalizar(container) {
     container.appendChild(div);
 }
 
-// ---------- PROCESSAMENTO E CONTABILIZAÇÃO DE SIMULADO ----------
+// ---------- 3. PROCESSAMENTO E CONTABILIZAÇÃO EM LOTE ----------
 export function finalizarSimulado(simulado, container, porId, historico, questoes, porTempo = false) {
     if (!simulado || simulado.finalizado) return;
     simulado.finalizado = true;
@@ -78,7 +83,7 @@ export function finalizarSimulado(simulado, container, porId, historico, questoe
         const card = container.querySelector(`.questao-card[data-id="${idStr}"]`) || 
                      container.querySelector(`.questao-card[data-id="${q.id}"]`);
         
-        // Busca flexível da resposta registrada
+        // Recuperação flexível da resposta registrada no simulado
         const respostaDada = simulado.respostas[idStr] || simulado.respostas[q.id];
         const temResposta = (respostaDada !== undefined && respostaDada !== null && String(respostaDada).trim() !== "");
 
@@ -88,7 +93,7 @@ export function finalizarSimulado(simulado, container, porId, historico, questoe
             const acertou = (letraDada === gabaritoOficial);
 
             if (!historico[idStr]) {
-                historico[idStr] = { acertos: 0, erros: 0, tentativas: 0, ultimaResposta: null, recentes: [] };
+                historico[idStr] = { acertos: 0, erros: 0, tentativas: 0, ultimaResposta: null, recentes: [], status: 'novo' };
             }
             const h = historico[idStr];
             if (!Array.isArray(h.recentes)) h.recentes = [];
@@ -97,8 +102,15 @@ export function finalizarSimulado(simulado, container, porId, historico, questoe
             if (acertou) {
                 h.acertos = (h.acertos || 0) + 1;
                 acertosSimulado++;
+                // Transição de status para superado se a questão estava pendente no caderno de erros
+                if (h.status === 'erro' || h.ultimaResposta === 'errado') {
+                    h.status = 'superado';
+                } else {
+                    h.status = 'acerto';
+                }
             } else {
                 h.erros = (h.erros || 0) + 1;
+                h.status = 'erro';
             }
 
             h.ultimaResposta = acertou ? 'certo' : 'errado';
@@ -106,6 +118,7 @@ export function finalizarSimulado(simulado, container, porId, historico, questoe
             if (h.recentes.length > 5) h.recentes.shift();
             h.ultimaData = Date.now();
 
+            // Revela a resposta no DOM e atualiza badge de status
             revelar(card, q, letraDada);
 
             const status = classificarStatus(idStr, historico);
@@ -125,9 +138,11 @@ export function finalizarSimulado(simulado, container, porId, historico, questoe
         }
     });
 
+    // Atualiza o armazenamento local e redesenha o painel lateral
     salvarHistorico(historico);
     atualizarPlacar(historico, questoes);
 
     const taxa = totalQuestoes > 0 ? ((acertosSimulado / totalQuestoes) * 100).toFixed(1) : 0;
-    showToast(`Simulado finalizado! Nota: ${acertosSimulado}/${totalQuestoes} (${taxa}%)`, "sucesso");
+    const msgTempo = porTempo ? " (Tempo Esgotado)" : "";
+    showToast(`Simulado finalizado${msgTempo}! Nota: ${acertosSimulado}/${totalQuestoes} (${taxa}%)`, "sucesso");
 }

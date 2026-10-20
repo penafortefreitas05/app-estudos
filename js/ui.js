@@ -1,8 +1,8 @@
 // ============================================================
-// js/ui.js - Renderizacao e Manipulacao da Interface (FocoPro)
+// js/ui.js - Renderização e Manipulação da Interface (FocoPro)
 // ============================================================
 
-// ---------- UTILITARIOS DE TEXTO E SEGURANCA ----------
+// ---------- UTILITÁRIOS DE TEXTO E SEGURANÇA ----------
 export function esc(texto) {
     if (texto === null || texto === undefined) return "";
     return String(texto)
@@ -20,7 +20,7 @@ export function formatarTempo(segundos) {
     return String(min).padStart(2, '0') + ":" + String(seg).padStart(2, '0');
 }
 
-// ---------- EXTRATORES DE LETRA E GABARITO (SEM REGEX FRAGIL) ----------
+// ---------- EXTRATORES DE LETRA E GABARITO (SEM REGEX FRÁGIL) ----------
 export function letraDe(alt) {
     if (!alt) return "";
     const str = String(alt).trim();
@@ -92,6 +92,8 @@ export function classificarStatus(qId, historico) {
     const h = historico[qId];
     if (!h || !h.tentativas) return { texto: "Não Respondida", classe: "badge-neutro" };
 
+    if (h.status === 'superado') return { texto: "Superada ⚡", classe: "badge-sucesso" };
+
     const recentes = Array.isArray(h.recentes) ? h.recentes : [];
     const ultimosCinco = recentes.slice(-5);
     const taxaRecente = ultimosCinco.length > 0
@@ -99,11 +101,11 @@ export function classificarStatus(qId, historico) {
         : 0;
 
     if (h.tentativas >= 3 && taxaRecente >= 80) return { texto: "Dominada 🎯", classe: "badge-sucesso" };
-    if (taxaRecente <= 40) return { texto: "Alerta ⚠️", classe: "badge-perigo" };
+    if (taxaRecente <= 40 || h.status === 'erro' || h.ultimaResposta === 'errado') return { texto: "Alerta ⚠️", classe: "badge-perigo" };
     return { texto: "Em Aprendizado 📘", classe: "badge-alerta" };
 }
 
-// ---------- ATUALIZACAO DO PLACAR E DASHBOARD ----------
+// ---------- ATUALIZAÇÃO DO PLACAR E DASHBOARD ----------
 export function atualizarPlacar(historico, questoes) {
     if (!historico) historico = {};
     if (!questoes) questoes = [];
@@ -142,7 +144,12 @@ export function atualizarPlacar(historico, questoes) {
                 materiasMap[mat].erros += er;
             }
 
-            if (h.ultimaResposta === 'errado' || (h.anotacao && String(h.anotacao).trim().length > 0)) {
+            // Regra do Caderno de Erros Ativos:
+            // Permanece na revisão se estiver marcado como 'erro' OU se o último resultado foi 'errado' E não foi 'superado'.
+            const ehErroAtivo = h.status === 'erro' || (h.ultimaResposta === 'errado' && h.status !== 'superado');
+            const temAnotacao = h.anotacao && String(h.anotacao).trim().length > 0;
+
+            if (ehErroAtivo || temAnotacao) {
                 qtdCadernoErros++;
             }
         }
@@ -192,7 +199,7 @@ function renderizarDesempenhoMaterias(materiasMap) {
     containerMaterias.innerHTML = html;
 }
 
-// ---------- RENDERIZACAO DE QUESTOES ----------
+// ---------- RENDERIZAÇÃO DE QUESTÕES ----------
 export function renderizarQuestoes(container, lista, historico, mensagemVazia = "Nenhuma questão encontrada.") {
     container.innerHTML = "";
     if (lista.length === 0) {

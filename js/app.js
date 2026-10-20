@@ -2,7 +2,7 @@
 // js/app.js - Orquestrador Principal do FocoPro
 // ============================================================
 
-// ---------- IMPORTAÇÕES DE MÓDULOS ----------
+// ---------- 1. IMPORTAÇÕES DE MÓDULOS ----------
 import { carregarHistorico, salvarHistorico } from './storage.js';
 import {
     esc,
@@ -24,21 +24,21 @@ import {
 import { showToast, showConfirmModal } from './notifications.js';
 import { carregarQuestoes } from './api.js';
 
-// ---------- ESTADO GLOBAL ----------
+// ---------- 2. ESTADO GLOBAL ----------
 let historico = carregarHistorico();
 let questoes = [];
 let porId = new Map();
 let tagSelecionada = "";
 let simulado = null;
 
-// ---------- ELEMENTOS DO DOM ----------
+// ---------- 3. ELEMENTOS DO DOM ----------
 const container = document.getElementById("container-questoes");
 const selectBanca = document.getElementById("filtro-banca");
 const selectMateria = document.getElementById("filtro-materia");
 const inputBusca = document.getElementById("filtro-busca");
 const displayCronometro = document.getElementById("display-cronometro");
 
-// ---------- ELEMENTOS DINÂMICOS DA SIDEBAR ----------
+// ---------- 4. ELEMENTOS DINÂMICOS DA SIDEBAR ----------
 const chipTag = document.createElement("div");
 chipTag.className = "chip-tag";
 chipTag.hidden = true;
@@ -63,7 +63,7 @@ const btnImportar = criarBotaoSidebar("📂 Importar Histórico");
 const btnLimpar = document.getElementById("btn-limpar-dados");
 if (btnLimpar) btnLimpar.before(btnExportar, btnImportar);
 
-// ---------- UTILITÁRIOS ----------
+// ---------- 5. UTILITÁRIOS E VALIDAÇÃO ----------
 function embaralharArray(array) {
     const a = [...array];
     for (let i = a.length - 1; i > 0; i--) {
@@ -76,12 +76,12 @@ function embaralharArray(array) {
 function validarQuestoes() {
     const ids = new Set();
     questoes.forEach(q => {
-        if (ids.has(String(q.id))) console.warn('ID duplicado:', q.id);
+        if (ids.has(String(q.id))) console.warn('ID duplicado detectado:', q.id);
         ids.add(String(q.id));
     });
 }
 
-// ---------- FILTROS ----------
+// ---------- 6. GERENCIAMENTO DE FILTROS ----------
 function filtrarQuestoes() {
     const banca = selectBanca.value;
     const materia = selectMateria.value;
@@ -109,8 +109,7 @@ function aplicarFiltros() {
     renderizarQuestoes(container, filtrarQuestoes(), historico);
 }
 
-// ---------- RESPOSTAS E PONTUAÇÃO ----------
-// ---------- RESPOSTA DE QUESTÕES (REGISTRO DUPLO DE SIMULADO) ----------
+// ---------- 7. LÓGICA DE RESPOSTA E PONTUAÇÃO ----------
 function responder(card, botao) {
     if (simulado && simulado.finalizado) return;
     if (!simulado && card.dataset.respondida) return;
@@ -121,6 +120,7 @@ function responder(card, botao) {
     const letraEscolhida = letraDe(botao.dataset.letra || botao.innerText);
     const gabaritoOficial = gabaritoDe(q);
 
+    // MODO SIMULADO: Apenas registra a intenção sem revelar gabarito
     if (simulado) {
         const idStr = String(q.id);
         simulado.respostas[idStr] = letraEscolhida;
@@ -137,6 +137,7 @@ function responder(card, botao) {
         return; 
     }
 
+    // MODO ESTUDO / REVISÃO: Processamento imediato
     card.dataset.respondida = "1";
     botao.classList.add("selecionada"); 
 
@@ -144,21 +145,33 @@ function responder(card, botao) {
     const idChave = String(q.id);
 
     if (!historico[idChave]) {
-        historico[idChave] = { acertos: 0, erros: 0, tentativas: 0, ultimaResposta: null, recentes: [] };
+        historico[idChave] = { acertos: 0, erros: 0, tentativas: 0, ultimaResposta: null, recentes: [], status: 'novo' };
     }
     const h = historico[idChave];
     if (!Array.isArray(h.recentes)) h.recentes = [];
 
     h.tentativas = (h.tentativas || 0) + 1;
-    if (acertou) h.acertos = (h.acertos || 0) + 1;
-    else h.erros = (h.erros || 0) + 1;
+    if (acertou) {
+        h.acertos = (h.acertos || 0) + 1;
+        // Se a questão estava pendente no Caderno de Erros e foi acertada, é promovida a 'superado'
+        if (h.status === 'erro' || h.ultimaResposta === 'errado') {
+            h.status = 'superado';
+        } else {
+            h.status = 'acerto';
+        }
+    } else {
+        h.erros = (h.erros || 0) + 1;
+        h.status = 'erro';
+    }
     
     h.ultimaResposta = acertou ? 'certo' : 'errado';
     h.recentes.push(acertou ? 1 : 0);
     if (h.recentes.length > 5) h.recentes.shift();
     h.ultimaData = Date.now();
+    
     salvarHistorico(historico);
 
+    // Revela feedback e atualiza badge visual no card
     revelar(card, q, letraEscolhida);
 
     const status = classificarStatus(idChave, historico);
@@ -167,12 +180,14 @@ function responder(card, botao) {
         badge.className = `badge ${status.classe}`;
         badge.innerText = status.texto;
     }
-    card.querySelector(".tentativas").innerText = `Tentativas: ${h.tentativas}`;
+    const elemTentativas = card.querySelector(".tentativas");
+    if (elemTentativas) elemTentativas.innerText = `Tentativas: ${h.tentativas}`;
 
+    // Atualiza placar global e mapa de matérias no painel lateral
     atualizarPlacar(historico, questoes);
 }
 
-// ---------- EXPORTAR E IMPORTAR ----------
+// ---------- 8. EXPORTAÇÃO E IMPORTAÇÃO DE BACKUP ----------
 function exportarHistorico() {
     const blob = new Blob([JSON.stringify(historico, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -210,15 +225,15 @@ function importarHistorico(arquivo) {
             aplicarFiltros();
             showToast("Histórico importado com sucesso!", "sucesso");
         } catch (e) {
-            showToast("Arquivo JSON inválido. Use um backup do FocoPro.", "erro");
+            showToast("Arquivo JSON inválido. Use um backup original do FocoPro.", "erro");
         }
     };
     leitor.readAsText(arquivo);
 }
 
-// ---------- ESCUTADORES DE EVENTOS ----------
+// ---------- 9. DELEGAÇÃO E ESCUTADORES DE EVENTOS ----------
 container.addEventListener("click", e => {
-    // 1. Responder
+    // 1. Responder Questão
     const opcao = e.target.closest(".btn-opcao");
     if (opcao && !opcao.disabled) {
         responder(opcao.closest(".questao-card"), opcao);
@@ -232,13 +247,13 @@ container.addEventListener("click", e => {
         return;
     }
 
-    // 3. Finalizar Simulado
+    // 3. Finalizar Simulado Manualmente
     if (e.target.closest("#btn-finalizar")) {
         finalizarSimulado(simulado, container, porId, historico, questoes, false);
         return;
     }
 
-    // 4. Toggle Anotação
+    // 4. Toggle Caixa de Anotação
     const btnToggleAnotacao = e.target.closest(".btn-anotacao-toggle");
     if (btnToggleAnotacao) {
         const card = btnToggleAnotacao.closest(".questao-card");
@@ -247,7 +262,7 @@ container.addEventListener("click", e => {
         return;
     }
 
-    // 5. Salvar Anotação
+    // 5. Salvar Anotação Pessoal
     const btnSalvarAnotacao = e.target.closest(".btn-salvar-anotacao");
     if (btnSalvarAnotacao) {
         const card = btnSalvarAnotacao.closest(".questao-card");
@@ -255,12 +270,13 @@ container.addEventListener("click", e => {
         const texto = card.querySelector(".input-anotacao").value.trim();
 
         if (!historico[qId]) {
-            historico[qId] = { acertos: 0, erros: 0, tentativas: 0, ultimaResposta: null, recentes: [] };
+            historico[qId] = { acertos: 0, erros: 0, tentativas: 0, ultimaResposta: null, recentes: [], status: 'novo' };
         }
 
         historico[qId].anotacao = texto;
         salvarHistorico(historico);
         
+        atualizarPlacar(historico, questoes);
         showToast("Anotação salva no seu Caderno de Erros!", "sucesso");
         
         const spanBtn = card.querySelector(".btn-anotacao-toggle span");
@@ -276,6 +292,7 @@ inputBusca.addEventListener("input", aplicarFiltros);
 selectBanca.addEventListener("change", aplicarFiltros);
 selectMateria.addEventListener("change", aplicarFiltros);
 
+// Modo Simulado
 document.getElementById("btn-simulado").addEventListener("click", () => {
     const qtd = parseInt(document.getElementById("qtd-simulado").value) || 10;
     const tempo = parseInt(document.getElementById("tempo-simulado").value);
@@ -301,6 +318,7 @@ document.getElementById("btn-simulado").addEventListener("click", () => {
     }
 });
 
+// Limpar Filtros
 document.getElementById("btn-todas").addEventListener("click", () => {
     selectBanca.value = "";
     selectMateria.value = "";
@@ -313,7 +331,7 @@ document.getElementById("btn-todas").addEventListener("click", () => {
     showToast("Exibindo todas as questões.", "info");
 });
 
-// ---------- BOTÃO MODO REVISÃO / CADERNO DE ERROS ----------
+// Modo Revisão / Caderno de Erros
 document.getElementById("btn-modo-revisao").addEventListener("click", () => {
     simulado = null;
     pararCronometro(displayCronometro);
@@ -322,19 +340,24 @@ document.getElementById("btn-modo-revisao").addEventListener("click", () => {
         const idStr = String(q.id);
         const h = historico[idStr] || historico[q.id];
         if (!h) return false;
-        return h.ultimaResposta === 'errado' || (h.anotacao && h.anotacao.trim().length > 0);
+        
+        const ehErroAtivo = h.status === 'erro' || (h.ultimaResposta === 'errado' && h.status !== 'superado');
+        const temAnotacao = h.anotacao && String(h.anotacao).trim().length > 0;
+        
+        return ehErroAtivo || temAnotacao;
     });
 
     renderizarQuestoes(
         container, 
         cadernoDeErros, 
         historico, 
-        "Seu Caderno de Erros está vazio! Nenhuma questão pendente para revisão ou com anotações salvas."
+        "Seu Caderno de Erros está limpo! Nenhuma questão pendente para revisão no momento."
     );
     
     showToast(`Carregadas ${cadernoDeErros.length} questões no Caderno de Erros.`, "info");
 });
 
+// Zerar Histórico Geral
 if (btnLimpar) {
     btnLimpar.addEventListener("click", async () => {
         const confirmado = await showConfirmModal({
@@ -362,7 +385,7 @@ inputImportar.addEventListener("change", () => {
     inputImportar.value = "";
 });
 
-// ---------- CARGA INICIAL ASSÍNCRONA ----------
+// ---------- 10. CARGA INICIAL ASSÍNCRONA ----------
 async function iniciarApp() {
     questoes = await carregarQuestoes();
     porId = new Map(questoes.map(q => [String(q.id), q]));
@@ -374,3 +397,11 @@ async function iniciarApp() {
 }
 
 iniciarApp();
+// ---------- REGISTRO DO SERVICE WORKER (PWA) ----------
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js')
+            .then(reg => console.log('Service Worker registrado com sucesso! Escopo:', reg.scope))
+            .catch(err => console.error('Falha ao registrar Service Worker:', err));
+    });
+}

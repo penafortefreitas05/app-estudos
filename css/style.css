@@ -1,12 +1,17 @@
+/* ============================================================
+   css/style.css - Estilos Gerais FocoPro (Dark Mode Premium)
+   ============================================================ */
+
+/* ---------- 1. RESET E ESTRUTURA BASE ---------- */
 * { 
     margin: 0; 
     padding: 0; 
     box-sizing: border-box; 
-    font-family: 'Inter', sans-serif; 
+    font-family: 'Inter', system-ui, -apple-system, sans-serif; 
 }
 
 body { 
-    background-color: #020617; /* Fundo extremamente escuro */
+    background-color: #020617; /* Fundo extremamente escuro (slate-950) */
     color: #cbd5e1; 
     height: 100vh; 
     overflow: hidden; 
@@ -18,7 +23,11 @@ body {
     width: 100vw; 
 }
 
-/* ================= PAINEL LATERAL ================= */
+.hidden {
+    display: none !important;
+}
+
+/* ---------- 2. PAINEL LATERAL (SIDEBAR) ---------- */
 .sidebar { 
     width: 280px; 
     background-color: #0f172a; 
@@ -95,22 +104,58 @@ body {
     font-weight: bold; 
 }
 
-.dashboard-container h4 { color: #f8fafc; font-size: 0.9rem; margin-top: 1rem; margin-bottom: 1rem; }
-.materia-stat { margin-bottom: 0.8rem; }
-.materia-header { display: flex; justify-content: space-between; font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.3rem; }
-.barra-fundo { background: #1e293b; height: 6px; border-radius: 3px; overflow: hidden; }
-.barra-progresso { height: 100%; }
-.excelente { background: #10b981; }
-.atencao { background: #f59e0b; }
-.critico { background: #ef4444; }
+/* ---------- 3. PAINEL DE DESEMPENHO POR MATÉRIA ---------- */
+.painel-desempenho-materias {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    margin-top: 1.2rem;
+    padding-top: 1rem;
+    border-top: 1px dashed #334155;
+}
 
-/* ================= ÁREA PRINCIPAL ================= */
+.materia-stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.materia-stat-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #cbd5e1;
+    font-weight: 500;
+}
+
+.materia-taxa {
+    color: #38bdf8;
+    font-weight: 600;
+}
+
+.barra-progresso-bg {
+    width: 100%;
+    height: 6px;
+    background: #0f172a;
+    border-radius: 3px;
+    overflow: hidden;
+    border: 1px solid #334155;
+}
+
+.barra-progresso-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #10b981);
+    border-radius: 3px;
+    transition: width 0.4s ease-in-out;
+}
+
+/* ---------- 4. ÁREA PRINCIPAL E BARRA SUPERIOR DE FILTROS ---------- */
 .main-content { 
     flex: 1; 
     display: flex; 
     flex-direction: column; 
     background: #020617; 
-    background-image: radial-gradient(circle at top right, #1e3a8a15, transparent 50%); 
+    background-image: radial-gradient(circle at top right, rgba(30, 58, 138, 0.15), transparent 50%); 
 }
 
 .top-bar { 
@@ -163,7 +208,32 @@ body {
 }
 .btn-secondary:hover { background: #1e293b; border-color: #475569; }
 
-/* ================= CARTÕES DE QUESTÕES ================= */
+/* ---------- 5. CHIP DE FILTRO POR TAG ---------- */
+.chip-tag {
+    background: #0f172a;
+    border: 1px solid #334155;
+    color: #f8fafc;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    margin: 1rem 2rem 0 2rem;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.btn-limpar-tag {
+    background: transparent;
+    border: none;
+    color: #f87171;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-left: 0.5rem;
+}
+.btn-limpar-tag:hover { text-decoration: underline; }
+
+/* ---------- 6. GRID E CARTÕES DE QUESTÕES ---------- */
 .questoes-grid { 
     padding: 2rem; 
     overflow-y: auto; 
@@ -191,6 +261,7 @@ body {
     font-size: 0.85rem; 
 }
 
+/* Badges de Status (Normalizados) */
 .badge { 
     padding: 0.25rem 0.75rem; 
     border-radius: 12px; 
@@ -199,18 +270,20 @@ body {
     text-transform: uppercase; 
     letter-spacing: 0.5px; 
 }
-.aprendizado { background: #1e3a8a; color: #93c5fd; }
-.dominada { background: #064e3b; color: #6ee7b7; }
-.alerta { background: #7f1d1d; color: #fca5a5; }
+.badge-sucesso, .badge.dominada { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981; }
+.badge-perigo, .badge.alerta { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #ef4444; }
+.badge-alerta, .badge.aprendizado { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid #f59e0b; }
+.badge-neutro { background: #1e293b; color: #94a3b8; border: 1px solid #334155; }
 
 .container-tags { margin-bottom: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap; }
 .tag-item { background: #1e293b; color: #38bdf8; font-size: 0.75rem; padding: 0.3rem 0.8rem; border-radius: 12px; transition: 0.2s; cursor: pointer; }
 .tag-item:hover { background: #38bdf8; color: #020617; }
 
-.questao-card p { font-size: 1rem; line-height: 1.6; color: #f8fafc; margin-bottom: 1.5rem; }
+.questao-card p.enunciado { font-size: 1rem; line-height: 1.6; color: #f8fafc; margin-bottom: 1.5rem; }
 
-/* Alternativas Redesenhadas */
+/* ---------- 7. ALTERNATIVAS E FEEDBACK ---------- */
 .opcoes-resposta { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
+
 .btn-opcao { 
     background: #020617; 
     border: 1px solid #1e293b; 
@@ -224,12 +297,38 @@ body {
 }
 .btn-opcao:hover { border-color: #3b82f6; background: #0f172a; }
 
-/* Feedback e Cronômetro */
-.feedback { margin-top: 1rem; padding: 1rem; border-radius: 8px; font-weight: 600; font-size: 0.9rem; }
-.feedback.certo { background: #064e3b20; color: #34d399; border: 1px solid #064e3b; }
-.feedback.errado { background: #7f1d1d20; color: #f87171; border: 1px solid #7f1d1d; }
+.btn-opcao.selecionada { 
+    border-color: #2563eb !important; 
+    background: #1e293b !important; 
+    color: #f8fafc !important; 
+}
 
-.cronometro-box { 
+.btn-opcao.correta { 
+    background-color: rgba(16, 185, 129, 0.2) !important; 
+    border-color: #10b981 !important; 
+    color: #34d399 !important; 
+}
+
+.btn-opcao.incorreta { 
+    background-color: rgba(239, 68, 68, 0.2) !important; 
+    border-color: #ef4444 !important; 
+    color: #f87171 !important; 
+}
+
+.feedback-area { 
+    margin-top: 1rem; 
+    padding: 0.75rem 1rem; 
+    border-radius: 8px; 
+    font-size: 0.9rem; 
+    line-height: 1.5; 
+}
+
+.feedback.correto { background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; color: #34d399; }
+.feedback.incorreto { background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; color: #f87171; }
+.feedback.neutro { background: rgba(59, 130, 246, 0.1); border: 1px solid #3b82f6; color: #60a5fa; }
+
+/* ---------- 8. CRONÔMETRO DO SIMULADO ---------- */
+.cronometro-box, .simulado-bar { 
     text-align: center; 
     padding: 1rem; 
     background: #0f172a; 
@@ -239,144 +338,10 @@ body {
     align-items: center; 
     gap: 1rem; 
 }
+
 .tempo-valor { font-size: 1.5rem; font-weight: 700; color: #3b82f6; font-variant-numeric: tabular-nums; }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: #020617; }
-::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: #334155; }
-
-/* ============================================================
-   TOASTS E MODAIS - FocoPro Dark Mode Premium
-   ============================================================ */
-
-/* Container fixo para notificações */
-.toast-container {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    pointer-events: none;
-}
-
-/* Cartão do Toast */
-.toast {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 20px;
-    background: #1e293b;
-    border: 1px solid #334155;
-    border-radius: 10px;
-    color: #f8fafc;
-    font-size: 0.9rem;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    transform: translateY(20px) scale(0.95);
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    pointer-events: auto;
-    max-width: 380px;
-}
-
-.toast.visible {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-}
-
-.toast-icone { font-weight: bold; font-size: 1.1rem; }
-
-.toast-sucesso { border-left: 4px solid #10b981; }
-.toast-sucesso .toast-icone { color: #34d399; }
-
-.toast-erro { border-left: 4px solid #ef4444; }
-.toast-erro .toast-icone { color: #f87171; }
-
-.toast-alerta { border-left: 4px solid #f59e0b; }
-.toast-alerta .toast-icone { color: #fbbf24; }
-
-.toast-info { border-left: 4px solid #3b82f6; }
-.toast-info .toast-icone { color: #60a5fa; }
-
-
-/* Overlay escuro do Modal */
-.modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(15, 23, 42, 0.75);
-    backdrop-filter: blur(6px);
-    z-index: 9998;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.5rem;
-    opacity: 0;
-    pointer-events: none; /* Evita que a camada invisível bloqueie cliques na página */
-    transition: opacity 0.2s ease-in-out;
-}
-
-.modal-overlay.visible {
-    opacity: 1;
-    pointer-events: auto; /* Libera a interação com os botões quando o modal abre */
-}
-
-.modal-overlay.visible {
-    opacity: 1;
-}
-
-/* Cartão do Modal */
-.modal-card {
-    background: #0f172a;
-    border: 1px solid #1e293b;
-    border-radius: 14px;
-    padding: 1.75rem;
-    max-width: 440px;
-    width: 100%;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
-    transform: scale(0.92);
-    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.modal-overlay.visible .modal-card {
-    transform: scale(1);
-}
-
-.modal-titulo {
-    color: #f8fafc;
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: 0.75rem;
-}
-
-.modal-mensagem {
-    color: #94a3b8;
-    font-size: 0.92rem;
-    line-height: 1.5;
-    margin-bottom: 1.75rem;
-}
-
-.modal-acoes {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.75rem;
-}
-
-.btn-danger {
-    background-color: #ef4444 !important;
-    border-color: #ef4444 !important;
-    color: #ffffff !important;
-}
-.btn-danger:hover {
-    background-color: #dc2626 !important;
-}
-
-/* ============================================================
-   CADERNO DE ERROS E ANOTAÇÕES - FocoPro Dark Mode
-   ============================================================ */
-
+/* ---------- 9. ÁREA DE ANOTAÇÃO E CADERNO DE ERROS ---------- */
 .area-anotacao {
     margin-top: 1rem;
     padding-top: 0.75rem;
@@ -396,11 +361,7 @@ body {
     gap: 0.4rem;
     transition: color 0.2s ease;
 }
-
-.btn-anotacao-toggle:hover {
-    color: #7dd3fc;
-    text-decoration: underline;
-}
+.btn-anotacao-toggle:hover { color: #7dd3fc; text-decoration: underline; }
 
 .box-anotacao {
     margin-top: 0.6rem;
@@ -430,60 +391,55 @@ body {
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
 
-.acoes-anotacao {
+.acoes-anotacao { display: flex; justify-content: flex-end; }
+.btn-salvar-anotacao { font-size: 0.8rem; padding: 0.4rem 0.8rem; }
+
+/* ---------- 10. TOAST NOTIFICATIONS E MODAIS ---------- */
+.toast-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
     display: flex;
-    justify-content: flex-end;
+    flex-direction: column;
+    gap: 12px;
+    pointer-events: none;
 }
 
-.btn-salvar-anotacao {
-    font-size: 0.8rem;
-    padding: 0.4rem 0.8rem;
-}
-/* ============================================================
-   ESTILOS DE FEEDBACK DE RESPOSTAS E MODAIS - FocoPro
-   ============================================================ */
-
-/* Estilos de Botão Correto/Incorreto */
-.btn-opcao.correta {
-    background-color: rgba(16, 185, 129, 0.2) !important;
-    border-color: #10b981 !important;
-    color: #34d399 !important;
-}
-
-.btn-opcao.incorreta {
-    background-color: rgba(239, 68, 68, 0.2) !important;
-    border-color: #ef4444 !important;
-    color: #f87171 !important;
-}
-
-/* Feedback Area */
-.feedback-area {
-    margin-top: 1rem;
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    color: #f8fafc;
     font-size: 0.9rem;
-    line-height: 1.5;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: auto;
+    max-width: 380px;
 }
 
-.feedback.correto {
-    background: rgba(16, 185, 129, 0.1);
-    border: 1px solid #10b981;
-    color: #34d399;
-}
+.toast.visible { opacity: 1; transform: translateY(0) scale(1); }
+.toast-icone { font-weight: bold; font-size: 1.1rem; }
 
-.feedback.incorreto {
-    background: rgba(239, 68, 68, 0.1);
-    border: 1px solid #ef4444;
-    color: #f87171;
-}
+.toast-sucesso { border-left: 4px solid #10b981; }
+.toast-sucesso .toast-icone { color: #34d399; }
 
-.feedback.neutro {
-    background: rgba(59, 130, 246, 0.1);
-    border: 1px solid #3b82f6;
-    color: #60a5fa;
-}
+.toast-erro { border-left: 4px solid #ef4444; }
+.toast-erro .toast-icone { color: #f87171; }
 
-/* Modais de Confirmação com Pointer-Events Seguros */
+.toast-alerta { border-left: 4px solid #f59e0b; }
+.toast-alerta .toast-icone { color: #fbbf24; }
+
+.toast-info { border-left: 4px solid #3b82f6; }
+.toast-info .toast-icone { color: #60a5fa; }
+
+/* Overlay do Modal */
 .modal-overlay {
     position: fixed;
     inset: 0;
@@ -499,103 +455,31 @@ body {
     transition: opacity 0.2s ease-in-out;
 }
 
-.modal-overlay.visible {
-    opacity: 1;
-    pointer-events: auto;
-}
-/* ============================================================
-   PAINEL DE DESEMPENHO POR MATÉRIA - FocoPro Dark Mode
-   ============================================================ */
+.modal-overlay.visible { opacity: 1; pointer-events: auto; }
 
-.painel-desempenho-materias {
-    display: flex;
-    flex-direction: column;
-    gap: 0.85rem;
-    margin-top: 1rem;
-    background: #1e293b;
-    padding: 1.1rem;
-    border-radius: 10px;
-    border: 1px solid #334155;
-}
-
-.materia-stat-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-}
-
-.materia-stat-header {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.85rem;
-    color: #f8fafc;
-    font-weight: 500;
-}
-
-.materia-taxa {
-    color: #38bdf8;
-    font-weight: 600;
-}
-
-.barra-progresso-bg {
-    width: 100%;
-    height: 8px;
+.modal-card {
     background: #0f172a;
-    border-radius: 4px;
-    overflow: hidden;
-    border: 1px solid #334155;
-}
-
-.barra-progresso-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #3b82f6, #10b981);
-    border-radius: 4px;
-    transition: width 0.4s ease-in-out;
-}
-/* ============================================================
-   PAINEL DE DESEMPENHO POR MATÉRIA NA SIDEBAR
-   ============================================================ */
-
-.painel-desempenho-materias {
-    display: flex;
-    flex-direction: column;
-    gap: 0.85rem;
-    margin-top: 1.2rem;
-    padding-top: 1rem;
-    border-top: 1px dashed #334155;
-}
-
-.materia-stat-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-}
-
-.materia-stat-header {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.8rem;
-    color: #cbd5e1;
-    font-weight: 500;
-}
-
-.materia-taxa {
-    color: #38bdf8;
-    font-weight: 600;
-}
-
-.barra-progresso-bg {
+    border: 1px solid #1e293b;
+    border-radius: 14px;
+    padding: 1.75rem;
+    max-width: 440px;
     width: 100%;
-    height: 6px;
-    background: #0f172a;
-    border-radius: 3px;
-    overflow: hidden;
-    border: 1px solid #334155;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+    transform: scale(0.92);
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.barra-progresso-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #3b82f6, #10b981);
-    border-radius: 3px;
-    transition: width 0.4s ease-in-out;
-}
+.modal-overlay.visible .modal-card { transform: scale(1); }
+
+.modal-titulo { color: #f8fafc; font-size: 1.2rem; font-weight: 600; margin-bottom: 0.75rem; }
+.modal-mensagem { color: #94a3b8; font-size: 0.92rem; line-height: 1.5; margin-bottom: 1.75rem; }
+.modal-acoes { display: flex; justify-content: flex-end; gap: 0.75rem; }
+
+.btn-danger { background-color: #ef4444 !important; border-color: #ef4444 !important; color: #ffffff !important; }
+.btn-danger:hover { background-color: #dc2626 !important; }
+
+/* ---------- 11. BARRA DE ROLAGEM PERSONALIZADA ---------- */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #020617; }
+::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #334155; }
