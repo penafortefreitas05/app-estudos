@@ -3,6 +3,8 @@
 // ============================================================
 
 // ---------- 1. IMPORTAÇÕES DE MÓDULOS ----------
+import { supabase } from './supabase.js';
+import { criarConta, entrar, sair } from './auth.js';
 import { carregarHistorico, salvarHistorico } from './storage.js';
 import {
     obterOpcoes,
@@ -443,7 +445,97 @@ inputImportar.addEventListener("change", () => {
     if (inputImportar.files[0]) importarHistorico(inputImportar.files[0]);
     inputImportar.value = "";
 });
+// ============================================================
+// 12. SISTEMA DE AUTENTICAÇÃO E MODAL
+// ============================================================
+const modalAuth = document.getElementById('modal-auth');
+const formAuth = document.getElementById('form-auth');
+const btnAuthAcao = document.getElementById('btn-auth-acao');
+const btnAlternarAuth = document.getElementById('btn-alternar-auth');
+const authTitulo = document.getElementById('auth-titulo');
+const authSubtitulo = document.getElementById('auth-subtitulo');
+const btnSubmitAuth = document.getElementById('btn-submit-auth');
+const authTextoAlternar = document.getElementById('auth-texto-alternar');
+const userEmail = document.getElementById('user-email');
+const userAvatar = document.getElementById('user-avatar');
 
+let isCadastro = false;
+export let usuarioAtual = null;
+
+// Escuta mudanças de sessão em tempo real (Login / Logout)
+supabase.auth.onAuthStateChange((event, session) => {
+    usuarioAtual = session?.user || null;
+    
+    if (usuarioAtual) {
+        userEmail.innerText = usuarioAtual.email;
+        userAvatar.innerText = usuarioAtual.email.charAt(0).toUpperCase();
+        btnAuthAcao.innerText = "Sair";
+        if (modalAuth) modalAuth.classList.remove('visible');
+    } else {
+        userEmail.innerText = "Visitante";
+        userAvatar.innerText = "?";
+        btnAuthAcao.innerText = "Fazer Login";
+    }
+});
+
+// Abrir Modal ou Sair da Conta
+if (btnAuthAcao) {
+    btnAuthAcao.addEventListener('click', () => {
+        if (usuarioAtual) {
+            sair();
+        } else {
+            modalAuth.classList.add('visible');
+        }
+    });
+}
+
+// Fechar modal ao clicar fora dele
+if (modalAuth) {
+    modalAuth.addEventListener('click', (e) => {
+        if (e.target === modalAuth) modalAuth.classList.remove('visible');
+    });
+}
+
+// Alternar formulário entre Entrar e Cadastrar
+if (btnAlternarAuth) {
+    btnAlternarAuth.addEventListener('click', () => {
+        isCadastro = !isCadastro;
+        if (isCadastro) {
+            authTitulo.innerText = "Criar nova conta";
+            authSubtitulo.innerText = "Comece a salvar seu progresso na nuvem.";
+            btnSubmitAuth.innerText = "Cadastrar";
+            authTextoAlternar.innerText = "Já tem uma conta?";
+            btnAlternarAuth.innerText = "Fazer login";
+        } else {
+            authTitulo.innerText = "Entrar no FocoPro";
+            authSubtitulo.innerText = "Sincronize seu histórico e caderno de erros.";
+            btnSubmitAuth.innerText = "Entrar";
+            authTextoAlternar.innerText = "Não tem uma conta?";
+            btnAlternarAuth.innerText = "Criar conta";
+        }
+    });
+}
+
+// Submeter o Formulário
+if (formAuth) {
+    formAuth.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('auth-email').value.trim();
+        const senha = document.getElementById('auth-senha').value;
+        
+        btnSubmitAuth.disabled = true;
+        btnSubmitAuth.innerText = "Aguarde...";
+
+        if (isCadastro) {
+            await criarConta(email, senha);
+        } else {
+            await entrar(email, senha);
+        }
+
+        btnSubmitAuth.disabled = false;
+        btnSubmitAuth.innerText = isCadastro ? "Cadastrar" : "Entrar";
+    });
+}
 // ---------- 10. CARGA INICIAL ASSÍNCRONA ----------
 async function iniciarApp() {
     pararCronometro(displayCronometro);

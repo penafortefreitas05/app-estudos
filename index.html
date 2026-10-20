@@ -24,6 +24,14 @@
                 <h2>FocoPro ✦</h2>
                 <p>Foco total na aprovação</p>
             </div>
+            <!-- Perfil do Usuário -->
+            <div class="user-profile" id="user-profile-container">
+                <div class="user-avatar" id="user-avatar">?</div>
+                <div class="user-info">
+                    <span id="user-email" style="display: block; font-weight: 600; font-size: 0.8rem; overflow: hidden; text-overflow: ellipsis; max-width: 180px;">Visitante</span>
+                    <button type="button" id="btn-auth-acao" class="btn-link" style="font-size: 0.75rem; margin-left: 0;">Fazer Login</button>
+                </div>
+            </div>
 
             <div class="menu-item active">
                 🏠 Meu Desempenho
@@ -95,6 +103,25 @@
                 <!-- Renderizado via js/ui.js -->
             </section>
         </main>
+    </div>
+    <!-- Modal de Autenticação -->
+    <div id="modal-auth" class="modal-overlay">
+        <div class="modal-card">
+            <h3 class="modal-titulo" id="auth-titulo">Entrar no FocoPro</h3>
+            <p class="modal-mensagem" id="auth-subtitulo">Sincronize seu histórico e caderno de erros na nuvem.</p>
+
+            <form id="form-auth" class="form-auth">
+                <input type="email" id="auth-email" class="input-dark" placeholder="Seu e-mail" required>
+                <input type="password" id="auth-senha" class="input-dark" placeholder="Sua senha (mín. 6 caracteres)" required minlength="6">
+                
+                <button type="submit" class="btn-primary" id="btn-submit-auth" style="width: 100%; margin-top: 0.5rem;">Entrar</button>
+            </form>
+
+            <div class="auth-alternar">
+                <span id="auth-texto-alternar">Não tem uma conta?</span>
+                <button type="button" id="btn-alternar-auth" class="btn-link">Criar conta</button>
+            </div>
+        </div>
     </div>
 
     <!-- 4. CARREGAMENTO DOS ES6 MODULES -->
