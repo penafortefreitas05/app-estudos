@@ -2,16 +2,11 @@
 // js/app.js - Orquestrador Principal do FocoPro
 // ============================================================
 
-// ---------- 1. IMPORTAÇÕES DE MÓDULOS ----------
+// ==================== INÍCIO: 1. IMPORTAÇÕES DE MÓDULOS ====================
+
+// ---------- 1.1 Interface (ui.js) ----------
 import {
-    esc,                 // <- adicione esta linha
-    gabaritoDe,
-    // ... o resto da sua lista continua igual
-} from './ui.js';
-import { supabaseClient, salvarRespostaNoHistorico, salvarQuestoesEmMassa, carregarTodasQuestoes } from './supabase.js';
-import { criarConta, entrar, sair } from './auth.js';
-import { carregarHistorico, salvarHistorico, salvarQuestoesLocais, carregarQuestoesLocais } from './storage.js';
-import {
+    esc,                    // escapa HTML (usado em formatarExplicacaoIA)
     obterOpcoes,
     gabaritoDe,
     preencherSelect,
@@ -21,15 +16,41 @@ import {
     revelar,
     classificarStatus
 } from './ui.js';
+
+// ---------- 1.2 Supabase (banco e cliente) ----------
+import {
+    supabaseClient,
+    salvarRespostaNoHistorico,
+    salvarQuestoesEmMassa,
+    carregarTodasQuestoes
+} from './supabase.js';
+
+// ---------- 1.3 Autenticação ----------
+import { criarConta, entrar, sair } from './auth.js';
+
+// ---------- 1.4 Armazenamento local (localStorage) ----------
+import {
+    carregarHistorico,
+    salvarHistorico,
+    salvarQuestoesLocais,
+    carregarQuestoesLocais
+} from './storage.js';
+
+// ---------- 1.5 Simulado (cronômetro e finalização) ----------
 import {
     iniciarCronometro,
     pararCronometro,
     adicionarBotaoFinalizar,
     finalizarSimulado
 } from './simulado.js';
+
+// ---------- 1.6 Notificações (toast e modal) ----------
 import { showToast, showConfirmModal } from './notifications.js';
+
+// ---------- 1.7 API de questões ----------
 import { carregarQuestoes, normalizarQuestao } from './api.js';
 
+// ==================== FIM: 1. IMPORTAÇÕES DE MÓDULOS ====================
 // ---------- 2. ESTADO GLOBAL ----------
 let historico = {};
 let questoes = [];
