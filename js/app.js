@@ -3,6 +3,11 @@
 // ============================================================
 
 // ---------- 1. IMPORTAÇÕES DE MÓDULOS ----------
+import {
+    esc,                 // <- adicione esta linha
+    gabaritoDe,
+    // ... o resto da sua lista continua igual
+} from './ui.js';
 import { supabaseClient, salvarRespostaNoHistorico, salvarQuestoesEmMassa, carregarTodasQuestoes } from './supabase.js';
 import { criarConta, entrar, sair } from './auth.js';
 import { carregarHistorico, salvarHistorico, salvarQuestoesLocais, carregarQuestoesLocais } from './storage.js';
