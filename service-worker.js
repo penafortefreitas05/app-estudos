@@ -2,7 +2,7 @@
 // service-worker.js - Gerenciador de Cache e Offline (FocoPro)
 // ============================================================
 
-const CACHE_NAME = 'focopro-v2';
+const CACHE_NAME = 'focopro-v3'; 
 
 const RECURSOS_ESTATICOS = [
     './',

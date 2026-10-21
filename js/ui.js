@@ -424,13 +424,13 @@ export function revelar(card, q, letraEscolhida) {
         }
         // Injeta o botão de IA apenas quando o utilizador erra a questão
     if (!acertou && letraEscolhida && gabaritoDiv) {
-        gabaritoDiv.innerHTML += `
-            <div style="margin-top: 10px;">
-                <button type="button" class="btn-ia-explicar" data-id="${esc(q.id)}" style="background: #6366f1; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 5px;">
+                gabaritoDiv.innerHTML += `
+            <div class="ia-acoes">
+                <button type="button" class="btn-ia-explicar" data-id="${esc(q.id)}">
                     ✨ Entender meu erro com IA
                 </button>
             </div>
-            <div class="ia-resposta-container" style="margin-top: 12px; font-size: 0.9rem; line-height: 1.5; color: #334155; display: none; padding: 10px; background: #f8fafc; border-left: 3px solid #6366f1; border-radius: 4px;"></div>
+            <div class="ia-resposta-container"></div>
         `;
     }
     }

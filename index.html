@@ -113,25 +113,19 @@
             </section>
         </main>
     </div>
-    <!-- Modal de Autenticação -->
-    <div id="modal-auth" class="modal-overlay">
-        <div class="modal-card">
-            <h3 class="modal-titulo" id="auth-titulo">Entrar no FocoPro</h3>
-            <p class="modal-mensagem" id="auth-subtitulo">Sincronize seu histórico e caderno de erros na nuvem.</p>
-
-            <form id="form-auth" class="form-auth">
-                <input type="email" id="auth-email" class="input-dark" placeholder="Seu e-mail" required>
-                <input type="password" id="auth-senha" class="input-dark" placeholder="Sua senha (mín. 6 caracteres)" required minlength="6">
-                
-                <button type="submit" class="btn-primary" id="btn-submit-auth" style="width: 100%; margin-top: 0.5rem;">Entrar</button>
-            </form>
-
-            <div class="auth-alternar">
-                <span id="auth-texto-alternar">Não tem uma conta?</span>
-                <button type="button" id="btn-alternar-auth" class="btn-link">Criar conta</button>
+        <!-- ==================== INÍCIO: MODAL DE IMPORTAÇÃO EM MASSA ==================== -->
+    <div id="modalImportar" class="modal">
+        <div class="modal-conteudo">
+            <h3>Importação em Massa</h3>
+            <p>Cole o seu bloco de questões em formato JSON abaixo:</p>
+            <textarea id="textoJsonQuestoes" rows="10" placeholder='[{"pergunta": "..."}]'></textarea>
+            <div class="modal-botoes">
+                <button type="button" id="btnFecharImportar" class="btn-secondary">Cancelar</button>
+                <button type="button" id="btnProcessarImportacao" class="btn-primary">Processar</button>
             </div>
         </div>
     </div>
+    <!-- ==================== FIM: MODAL DE IMPORTAÇÃO EM MASSA ==================== -->
     <!-- Modal de Importação -->
 <!-- Modal Importar (Solto no final do body para pegar a tela toda) -->
     <div id="modalImportar" class="modal" style="display: none;">

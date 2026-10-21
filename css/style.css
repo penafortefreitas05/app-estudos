@@ -805,42 +805,98 @@ body {
 #btnAbrirImportar:hover {
     background-color: #1d4ed8; /* Azul mais escuro no hover */
 }
-/* =========================================
-   Modal de Importação em Massa (Camada Forçada)
-   ========================================= */
-
+/* ==================== INÍCIO: MODAL DE IMPORTAÇÃO EM MASSA ==================== */
 #modalImportar {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    background-color: rgba(0, 0, 0, 0.75) !important;
-    display: none; /* Controlado via JS */
-    justify-content: center !important;
-    align-items: center !important;
-    z-index: 999999 !important; /* Fica acima de qualquer outro elemento */
+    position: fixed;
+    inset: 0;
+    background: rgba(2, 6, 23, 0.78);
+    backdrop-filter: blur(6px);
+    display: none; /* controlado via JS (style.display = 'flex' / 'none') */
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
+    z-index: 9990; /* abaixo do toast (9999) e do modal de confirmação (9998) */
 }
 
 #modalImportar .modal-conteudo {
-    background-color: #ffffff !important;
-    padding: 30px !important;
-    border-radius: 8px !important;
-    width: 90% !important;
-    max-width: 600px !important;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
-    position: relative !important;
-    z-index: 1000000 !important;
+    background: #0f172a;
+    border: 1px solid #1e293b;
+    border-radius: 14px;
+    padding: 1.75rem;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
 }
 
+#modalImportar h3 { color: #f8fafc; font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem; }
+#modalImportar p  { color: #94a3b8; font-size: 0.92rem; line-height: 1.5; }
+
 #textoJsonQuestoes {
-    width: 100% !important;
-    box-sizing: border-box !important;
-    min-height: 200px !important;
-    margin: 15px 0 !important;
-    padding: 10px !important;
-    font-family: monospace !important;
-    font-size: 13px !important;
-    border: 1px solid #ccc !important;
-    border-radius: 4px !important;
+    width: 100%;
+    min-height: 220px;
+    margin: 1rem 0 1.25rem;
+    padding: 0.85rem;
+    background: #020617;
+    color: #e2e8f0;
+    border: 1px solid #1e293b;
+    border-radius: 8px;
+    font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
+#textoJsonQuestoes:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25); }
+#textoJsonQuestoes::placeholder { color: #475569; }
+
+#modalImportar .modal-botoes { display: flex; justify-content: flex-end; gap: 0.75rem; }
+/* ==================== FIM: MODAL DE IMPORTAÇÃO EM MASSA ==================== */
+
+
+/* ==================== INÍCIO: BOTÃO E CAIXA DA IA ==================== */
+.ia-acoes { margin-top: 0.75rem; }
+
+.btn-ia-explicar {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: linear-gradient(135deg, #6366f1, #2563eb);
+    color: #ffffff;
+    border: none;
+    padding: 0.5rem 0.95rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    box-shadow: 0 2px 10px rgba(99, 102, 241, 0.35);
+    transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
+}
+.btn-ia-explicar:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(99, 102, 241, 0.5); }
+.btn-ia-explicar:disabled { opacity: 0.65; cursor: wait; }
+
+.ia-resposta-container {
+    display: none; /* o JS mostra com style.display = 'block' */
+    margin-top: 0.85rem;
+    padding: 0.9rem 1rem;
+    background: rgba(99, 102, 241, 0.08);
+    border: 1px solid rgba(99, 102, 241, 0.35);
+    border-left: 3px solid #6366f1;
+    border-radius: 8px;
+    color: #e2e8f0;
+    font-size: 0.9rem;
+    line-height: 1.65;
+}
+.ia-resposta-container::before {
+    content: "✨ Explicação da IA";
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #a5b4fc;
+}
+.ia-resposta-container strong { color: #f8fafc; font-weight: 700; }
+.ia-resposta-container em { color: #94a3b8; }
+/* ==================== FIM: BOTÃO E CAIXA DA IA ==================== */
