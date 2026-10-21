@@ -363,6 +363,78 @@ if (container) {
     });
 
     container.addEventListener("click", (e) => {
+        // >>>>>>>>>> INÍCIO BLOCO A: HELPERS DA IA >>>>>>>>>>
+const IA_MSG_PADRAO = "Não foi possível gerar a explicação agora. Tente novamente em instantes.";
+
+// Escapa TUDO primeiro e só depois aplica **negrito**, "- item" e quebras de linha
+function formatarExplicacaoIA(texto) {
+    return esc(String(texto ?? ""))
+        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+        .replace(/^\s*[-•]\s+/gm, "• ")
+        .replace(/\n/g, "<br>");
+}
+
+// invoke() devolve FunctionsHttpError em status != 2xx; a mensagem do servidor está em error.context
+async function extrairMensagemErroIA(error) {
+    if (!navigator.onLine) return "Sem conexão com a internet. Verifique e tente novamente.";
+    try {
+        if (error && error.context && typeof error.context.json === "function") {
+            const corpo = await error.context.json();
+            if (corpo && typeof corpo.message === "string") return corpo.message;
+        }
+    } catch (_) { /* corpo não era JSON: usa a mensagem padrão */ }
+    return IA_MSG_PADRAO;
+}
+
+async function solicitarExplicacaoIA(btnIA) {
+    if (btnIA.disabled) return; // evita clique duplo (cobrança dupla na API)
+
+    const card = btnIA.closest(".card-questao");
+    if (!card) return;
+
+    const qId = String(card.dataset.id);
+    const q = porId.get(qId);
+    const h = historico[qId];
+    const caixa = card.querySelector(".ia-resposta-container");
+    if (!q || !h || !caixa) return;
+
+    btnIA.disabled = true;
+    btnIA.textContent = "⏳ Processando com IA...";
+    caixa.style.display = "block";
+    caixa.innerHTML = "<em>A IA está analisando a questão e a sua resposta...</em>";
+
+    try {
+        const { data, error } = await supabaseClient.functions.invoke("super-function", {
+            body: {
+                pergunta: q.enunciado || q.pergunta,
+                alternativas: obterOpcoes(q),
+                respostaUsuario: h.ultimaEscolha,
+                gabarito: gabaritoDe(q)
+            }
+        });
+        if (error) throw error;
+        if (!data || data.ok !== true || typeof data.explicacao !== "string") {
+            throw new Error("Resposta inesperada da função");
+        }
+
+        caixa.innerHTML = formatarExplicacaoIA(data.explicacao);
+        btnIA.style.display = "none";
+    } catch (erro) {
+        console.error("Erro na chamada da IA:", erro);
+        const msg = await extrairMensagemErroIA(erro);
+
+        // textContent: a mensagem nunca é interpretada como HTML
+        caixa.textContent = "";
+        const aviso = document.createElement("span");
+        aviso.style.color = "#f87171";
+        aviso.textContent = "⚠️ " + msg;
+        caixa.appendChild(aviso);
+
+        btnIA.disabled = false;
+        btnIA.textContent = "✨ Tentar novamente";
+    }
+}
+// <<<<<<<<<< FIM BLOCO A <<<<<<<<<<
         const btnResponder = e.target.closest(".btn-responder");
         if (btnResponder) {
             const card = btnResponder.closest(".card-questao");
@@ -376,6 +448,15 @@ if (container) {
             if (card) destravarCardParaRefazer(card);
             return;
         }
+
+       // >>>>>>>>>> INÍCIO BLOCO B: CLIQUE NO BOTÃO DE IA >>>>>>>>>>
+        // --- BOTÃO: ENTENDER MEU ERRO COM IA ---
+        const btnIA = e.target.closest(".btn-ia-explicar");
+        if (btnIA) {
+            solicitarExplicacaoIA(btnIA);
+            return;
+        }
+// <<<<<<<<<< FIM BLOCO B <<<<<<<<<<
 
         const elemTag = e.target.closest(".tag-item");
         if (elemTag) {
@@ -423,7 +504,6 @@ if (container) {
         }
     });
 }
-
 chipTag.addEventListener("click", e => {
     if (e.target.id === "btn-limpar-tag") definirTag("");
 });
