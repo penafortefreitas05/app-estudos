@@ -57,6 +57,8 @@ const MAPA_MATERIAS_MACRO = {
     "api rest": "Desenvolvimento, POO & Linguagens",
     "algoritmos": "Desenvolvimento, POO & Linguagens",
     "estruturas de dados": "Desenvolvimento, POO & Linguagens",
+    "controle de versão": "Desenvolvimento, POO & Linguagens",
+    "git": "Desenvolvimento, POO & Linguagens",
 
     // 5. Banco de Dados & Dados
     "banco de dados": "Banco de Dados & Dados",
@@ -133,10 +135,47 @@ const MAPA_MATERIAS_MACRO = {
     "hardware": "Sistemas Operacionais & Hardware"
 };
 
-function normalizarMateriaEAgruparTags(questao) {
-    if (!questao || !questao.materia) return questao;
+function gerarIdEstavel(texto, indexFallback = 0) {
+    const str = String(texto || "").trim();
+    if (!str) return `q_${indexFallback}`;
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        hash = ((hash << 5) - hash) + str.charCodeAt(i);
+        hash |= 0;
+    }
+    return `q_${Math.abs(hash)}`;
+}
 
-    const materiaOriginal = String(questao.materia).trim();
+export function normalizarMateriaEAgruparTags(questao, index = 0) {
+    if (!questao || typeof questao !== "object") return questao;
+
+    // 1. Garante que enunciado e pergunta sempre existam
+    const textoEnunciado = String(questao.enunciado || questao.pergunta || questao.texto || "").trim();
+    questao.enunciado = textoEnunciado;
+    questao.pergunta = textoEnunciado;
+
+    // 2. Garante ID estável (não muda a cada F5)
+    if (questao.id === undefined || questao.id === null || String(questao.id).trim() === "") {
+        questao.id = gerarIdEstavel(textoEnunciado, index);
+    } else {
+        questao.id = String(questao.id).trim();
+    }
+
+    // 3. Garante alternativas padronizadas
+    if (!questao.alternativas && questao.opcoes) {
+        questao.alternativas = questao.opcoes;
+    }
+
+    // 4. Garante gabarito e resposta_correta sincronizados
+    const gabaritoBruto = String(questao.resposta_correta || questao.gabarito || "A").trim();
+    questao.gabarito = gabaritoBruto;
+    questao.resposta_correta = gabaritoBruto;
+
+    // 5. Preserva explicação / comentário se existir
+    questao.explicacao = String(questao.explicacao || questao.comentario || questao.justificativa || "").trim();
+
+    // 6. Normalização de Matéria e Tags
+    const materiaOriginal = String(questao.materia || questao.disciplina || "Geral").trim();
     const materiaLower = materiaOriginal.toLowerCase();
 
     let materiaMacro = MAPA_MATERIAS_MACRO[materiaLower];
@@ -148,7 +187,7 @@ function normalizarMateriaEAgruparTags(questao) {
             materiaMacro = "Raciocínio Lógico & Matemática";
         } else if (materiaLower.includes("scrum") || materiaLower.includes("agil") || materiaLower.includes("requisito") || materiaLower.includes("uml") || materiaLower.includes("software")) {
             materiaMacro = "Engenharia de Software & Agilidade";
-        } else if (materiaLower.includes("prog") || materiaLower.includes("desenv") || materiaLower.includes("orienta") || materiaLower.includes("objetos") || materiaLower.includes("poo") || materiaLower.includes("portal") || materiaLower.includes("acessibil") || materiaLower.includes("java") || materiaLower.includes("python") || materiaLower.includes("web")) {
+        } else if (materiaLower.includes("prog") || materiaLower.includes("desenv") || materiaLower.includes("orienta") || materiaLower.includes("objetos") || materiaLower.includes("poo") || materiaLower.includes("portal") || materiaLower.includes("acessibil") || materiaLower.includes("java") || materiaLower.includes("python") || materiaLower.includes("web") || materiaLower.includes("git")) {
             materiaMacro = "Desenvolvimento, POO & Linguagens";
         } else if (materiaLower.includes("banco") || materiaLower.includes("sql") || materiaLower.includes("dado") || materiaLower.includes("bi") || materiaLower.includes("busca")) {
             materiaMacro = "Banco de Dados & Dados";
@@ -175,8 +214,12 @@ function normalizarMateriaEAgruparTags(questao) {
     }
 
     questao.materia = materiaMacro;
+    questao.banca = String(questao.banca || "Não informada").trim();
+
     return questao;
 }
+
+export const normalizarQuestao = normalizarMateriaEAgruparTags;
 
 export async function carregarQuestoes() {
     try {
@@ -186,9 +229,10 @@ export async function carregarQuestoes() {
         }
 
         const questoes = await resposta.json();
-        return questoes.map(q => normalizarMateriaEAgruparTags(q));
+        if (!Array.isArray(questoes)) return [];
+        return questoes.map((q, idx) => normalizarMateriaEAgruparTags(q, idx));
     } catch (erro) {
-        console.error('Falha ao carregar banco de questões em js/api.js:', erro);
+        console.warn('Aviso ao carregar ./data/questoes.json em js/api.js:', erro.message);
         return [];
     }
 }

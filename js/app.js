@@ -3,9 +3,9 @@
 // ============================================================
 
 // ---------- 1. IMPORTAÇÕES DE MÓDULOS ----------
-import { supabaseClient, salvarRespostaNoHistorico, carregarHistoricoDoUsuario, salvarQuestoesEmMassa, carregarTodasQuestoes } from './supabase.js';
+import { supabaseClient, salvarRespostaNoHistorico, salvarQuestoesEmMassa, carregarTodasQuestoes } from './supabase.js';
 import { criarConta, entrar, sair } from './auth.js';
-import { carregarHistorico, salvarHistorico } from './storage.js';
+import { carregarHistorico, salvarHistorico, salvarQuestoesLocais, carregarQuestoesLocais } from './storage.js';
 import {
     obterOpcoes,
     gabaritoDe,
@@ -23,10 +23,10 @@ import {
     finalizarSimulado
 } from './simulado.js';
 import { showToast, showConfirmModal } from './notifications.js';
-import { carregarQuestoes } from './api.js';
+import { carregarQuestoes, normalizarQuestao } from './api.js';
 
 // ---------- 2. ESTADO GLOBAL ----------
-let historico = {}; // Alterado para objeto para compatibilidade com o formato de armazenamento local
+let historico = {};
 let questoes = [];
 let porId = new Map();
 let tagSelecionada = "";
@@ -37,18 +37,24 @@ export let usuarioAtual = null;
 const questoesPadrao = [
     {
         id: "git_01",
+        enunciado: "Qual comando do Git envia os commits do repositório local para o remoto?",
         pergunta: "Qual comando do Git envia os commits do repositório local para o remoto?",
         alternativas: ["git pull", "git push", "git commit", "git fetch"],
+        gabarito: "B",
         resposta_correta: "B",
-        materia: "Controle de Versão",
+        explicacao: "O comando git push envia (empurra) as alterações confirmadas localmente para o repositório remoto (como o GitHub).",
+        materia: "Desenvolvimento, POO & Linguagens",
         banca: "Cesgranrio"
     },
     {
         id: "bd_01",
+        enunciado: "No modelo relacional de banco de dados, qual chave identifica unicamente cada registro em uma tabela?",
         pergunta: "No modelo relacional de banco de dados, qual chave identifica unicamente cada registro em uma tabela?",
         alternativas: ["Chave Estrangeira", "Chave Primária", "Chave Candidata", "Chave Substituta"],
+        gabarito: "B",
         resposta_correta: "B",
-        materia: "Banco de Dados",
+        explicacao: "A Chave Primária (Primary Key) identifica de forma única cada tupla (linha) de uma relação, não permitindo valores nulos.",
+        materia: "Banco de Dados & Dados",
         banca: "Cesgranrio"
     }
 ];
@@ -97,13 +103,36 @@ function embaralharArray(array) {
     return a;
 }
 
-function validarQuestoes() {
-    const ids = new Set();
-    questoes.forEach(q => {
-        const idStr = String(q.id);
-        if (ids.has(idStr)) console.warn('[FocoPro] ID duplicado detectado:', q.id);
-        ids.add(idStr);
+function mesclarQuestoes(...listas) {
+    const mapa = new Map();
+    let contador = 0;
+
+    listas.forEach(lista => {
+        if (!Array.isArray(lista)) return;
+        lista.forEach(item => {
+            if (!item || typeof item !== "object") return;
+            const qNorm = normalizarQuestao({ ...item }, contador++);
+            if (!qNorm.enunciado && !qNorm.pergunta) return;
+
+            const idStr = String(qNorm.id);
+            if (!mapa.has(idStr)) {
+                mapa.set(idStr, qNorm);
+            } else {
+                const existente = mapa.get(idStr);
+                mapa.set(idStr, {
+                    ...existente,
+                    ...qNorm,
+                    enunciado: qNorm.enunciado || existente.enunciado,
+                    pergunta: qNorm.pergunta || existente.pergunta,
+                    explicacao: qNorm.explicacao || existente.explicacao || "",
+                    ano: qNorm.ano || existente.ano || "",
+                    orgao: qNorm.orgao || existente.orgao || null
+                });
+            }
+        });
     });
+
+    return Array.from(mapa.values());
 }
 
 // ---------- 6. GERENCIAMENTO DE FILTROS ----------
@@ -121,7 +150,7 @@ function filtrarQuestoes() {
         if (termo) {
             const textoOpcoes = obterOpcoes(q).map(op => op.texto).join(" ");
             const textoTags = (q.tags || []).join(" ");
-            const alvoBusca = `${q.enunciado || ""} ${textoOpcoes} ${textoTags} ${q.banca || ""} ${q.orgao || ""}`.toLowerCase();
+            const alvoBusca = `${q.enunciado || q.pergunta || ""} ${textoOpcoes} ${textoTags} ${q.banca || ""} ${q.orgao || ""}`.toLowerCase();
             if (!alvoBusca.includes(termo)) return false;
         }
         return true;
@@ -137,9 +166,7 @@ function definirTag(tag) {
 function aplicarFiltros() {
     simulado = null;
     pararCronometro(displayCronometro);
-    if (typeof renderizarQuestoes === 'function') {
-        renderizarQuestoes(container, filtrarQuestoes(), historico);
-    }
+    renderizarQuestoes(container, filtrarQuestoes(), historico);
 }
 
 // ---------- 7. LÓGICA DE RESPOSTA E PONTUAÇÃO ----------
@@ -162,10 +189,10 @@ async function responder(card, botao) {
     const gabaritoOficial = gabaritoDe(q);
     const acertou = (letraEscolhida === gabaritoOficial);
 
-    // MODO SIMULADO: Registra a resposta sem revelar o gabarito
+    // 1. MODO SIMULADO: registra sem revelar o gabarito
     if (simulado) {
         simulado.respostas[idChave] = letraEscolhida;
-        simulado.respostas[q.id] = letraEscolhida;
+        if (q.id) simulado.respostas[q.id] = letraEscolhida;
 
         card.querySelectorAll(".opcao-item").forEach(op => op.classList.remove("selecionada"));
         const labelPai = radioSelecionado.closest(".opcao-item");
@@ -175,6 +202,7 @@ async function responder(card, botao) {
         if (fbContainer) {
             fbContainer.classList.remove("oculta", "correto", "incorreto");
             fbContainer.classList.add("neutro");
+            fbContainer.style.display = "block";
             const gabaritoDiv = fbContainer.querySelector(".gabarito-resposta");
             if (gabaritoDiv) {
                 gabaritoDiv.innerHTML = `📌 Alternativa <strong>(${letraEscolhida})</strong> registrada no simulado. Você pode alterar antes de finalizar.`;
@@ -184,24 +212,22 @@ async function responder(card, botao) {
         return;
     }
 
-    // MODO ESTUDO / REVISÃO: Processamento imediato
+    // 2. MODO ESTUDO / REVISÃO
     card.dataset.respondida = "1";
     if (botao) botao.disabled = true;
 
-    // PERSISTÊNCIA NO SUPABASE (Se a função existir)
-    if (typeof salvarRespostaNoHistorico === 'function') {
-        await salvarRespostaNoHistorico({
-            questaoId: idChave,
-            materia: q.materia || q.disciplina || 'Geral',
-            banca: q.banca || 'Não informada',
-            acertou: acertou,
-            respostaEscolhida: letraEscolhida
-        });
-    }
-
-    // Atualização do Histórico Local
+    // 3. ATUALIZAÇÃO DO HISTÓRICO LOCAL IMEDIATA (Garante persistência no F5)
     if (!historico[idChave]) {
-        historico[idChave] = { acertos: 0, erros: 0, tentativas: 0, ultimaResposta: null, recentes: [], status: 'novo' };
+        historico[idChave] = {
+            acertos: 0,
+            erros: 0,
+            tentativas: 0,
+            ultimaResposta: null,
+            ultimaEscolha: null,
+            recentes: [],
+            status: 'novo',
+            anotacao: ""
+        };
     }
     const h = historico[idChave];
     if (!Array.isArray(h.recentes)) h.recentes = [];
@@ -209,30 +235,27 @@ async function responder(card, botao) {
     h.tentativas = (h.tentativas || 0) + 1;
     if (acertou) {
         h.acertos = (h.acertos || 0) + 1;
-        if (h.status === 'erro' || h.ultimaResposta === 'errado') {
-            h.status = 'superado';
-        } else {
-            h.status = 'acerto';
-        }
+        h.status = (h.status === 'erro' || h.ultimaResposta === 'errado') ? 'superado' : 'acerto';
     } else {
         h.erros = (h.erros || 0) + 1;
         h.status = 'erro';
     }
 
     h.ultimaResposta = acertou ? 'certo' : 'errado';
+    h.ultimaEscolha = letraEscolhida;
+    h.materia = q.materia || 'Geral';
     h.recentes.push(acertou ? 1 : 0);
     if (h.recentes.length > 5) h.recentes.shift();
     h.ultimaData = Date.now();
 
     salvarHistorico(historico);
 
-    // Revela feedback oficial e destaca alternativas no card
+    // 4. REVELAR O GABARITO NA TELA E ATUALIZAR PLACAR
     revelar(card, q, letraEscolhida);
 
-    // Atualiza badge de status e contador de tentativas no card
     const status = classificarStatus(idChave, historico);
     const badge = card.querySelector(".badge");
-    if (badge) {
+    if (badge && status) {
         badge.className = `badge ${status.classe}`;
         badge.innerText = status.texto;
     }
@@ -242,8 +265,48 @@ async function responder(card, botao) {
         elemTentativas.innerText = `Tentativas: ${h.tentativas}`;
     }
 
-    // Atualiza placar global e mapa de matérias na sidebar
     atualizarPlacar(historico, questoes);
+
+    // 5. PERSISTÊNCIA NO SUPABASE EM SEGUNDO PLANO
+    salvarRespostaNoHistorico({
+        questaoId: idChave,
+        materia: q.materia || q.disciplina || 'Geral',
+        banca: q.banca || 'Não informada',
+        acertou: acertou,
+        respostaEscolhida: letraEscolhida
+    });
+}
+
+function destravarCardParaRefazer(card) {
+    if (!card) return;
+    delete card.dataset.respondida;
+
+    card.querySelectorAll(".opcao-item").forEach(label => {
+        label.classList.remove("selecionada", "correta", "incorreta", "desabilitada");
+        const radio = label.querySelector(".radio-opcao");
+        if (radio) {
+            radio.disabled = false;
+            radio.checked = false;
+        }
+    });
+
+    const btnResponder = card.querySelector(".btn-responder");
+    if (btnResponder) {
+        btnResponder.disabled = false;
+        btnResponder.innerText = "✔ Responder";
+    }
+
+    const btnRefazer = card.querySelector(".btn-refazer");
+    if (btnRefazer) {
+        btnRefazer.hidden = true;
+    }
+
+    const fbContainer = card.querySelector(".feedback-container");
+    if (fbContainer) {
+        fbContainer.classList.add("oculta");
+        fbContainer.classList.remove("correto", "incorreto", "neutro");
+        fbContainer.style.display = "";
+    }
 }
 
 // ---------- 8. EXPORTAÇÃO E IMPORTAÇÃO DE BACKUP ----------
@@ -307,6 +370,13 @@ if (container) {
             return;
         }
 
+        const btnRefazer = e.target.closest(".btn-refazer");
+        if (btnRefazer) {
+            const card = btnRefazer.closest(".card-questao");
+            if (card) destravarCardParaRefazer(card);
+            return;
+        }
+
         const elemTag = e.target.closest(".tag-item");
         if (elemTag) {
             const tagTexto = elemTag.dataset.tag || elemTag.innerText.replace(/^#/, "").trim();
@@ -362,27 +432,27 @@ if (inputBusca) inputBusca.addEventListener("input", aplicarFiltros);
 if (selectBanca) selectBanca.addEventListener("change", aplicarFiltros);
 if (selectMateria) selectMateria.addEventListener("change", aplicarFiltros);
 
-// Modo Simulado
+// ---------- 10. MODO SIMULADO ----------
 const btnSimulado = document.getElementById("btn-simulado");
 if (btnSimulado) {
     btnSimulado.addEventListener("click", () => {
         const inputQtd = document.getElementById("qtd-simulado");
         const inputTempo = document.getElementById("tempo-simulado");
         const qtd = parseInt(inputQtd ? inputQtd.value : 10) || 10;
-        const tempo = parseInt(inputTempo ? inputTempo.value : 0);
+        const tempo = parseInt(inputTempo ? inputTempo.value : 0) || 0;
 
         const filtradas = filtrarQuestoes();
         pararCronometro(displayCronometro);
 
         if (filtradas.length === 0) {
             simulado = null;
-            if (typeof renderizarQuestoes === 'function') renderizarQuestoes(container, [], historico);
+            renderizarQuestoes(container, [], historico);
             return;
         }
 
         const sorteadas = embaralharArray(filtradas).slice(0, qtd);
         simulado = { ids: sorteadas.map(q => q.id), respostas: {}, inicio: Date.now(), finalizado: false };
-        if (typeof renderizarQuestoes === 'function') renderizarQuestoes(container, sorteadas, historico);
+        renderizarQuestoes(container, sorteadas, historico);
         adicionarBotaoFinalizar(container);
 
         showToast(`Simulado iniciado com ${sorteadas.length} questões!`, "info");
@@ -415,7 +485,7 @@ if (btnTodas) {
     });
 }
 
-// Modo Revisão / Caderno de Erros
+// ---------- 11. MODO REVISÃO / CADERNO DE ERROS ----------
 const btnModoRevisao = document.getElementById("btn-modo-revisao");
 if (btnModoRevisao) {
     btnModoRevisao.addEventListener("click", () => {
@@ -423,8 +493,7 @@ if (btnModoRevisao) {
         pararCronometro(displayCronometro);
 
         const cadernoDeErros = questoes.filter(q => {
-            const idStr = String(q.id);
-            const h = historico[idStr] || historico[q.id];
+            const h = historico[String(q.id)];
             if (!h) return false;
 
             const ehErroAtivo = h.status === 'erro' || (h.ultimaResposta === 'errado' && h.status !== 'superado');
@@ -433,14 +502,12 @@ if (btnModoRevisao) {
             return ehErroAtivo || temAnotacao;
         });
 
-        if (typeof renderizarQuestoes === 'function') {
-            renderizarQuestoes(
-                container,
-                cadernoDeErros,
-                historico,
-                "Seu Caderno de Erros está limpo! Nenhuma questão pendente para revisão no momento."
-            );
-        }
+        renderizarQuestoes(
+            container,
+            cadernoDeErros,
+            historico,
+            "Seu Caderno de Erros está limpo! Nenhuma questão pendente para revisão no momento."
+        );
 
         showToast(`Carregadas ${cadernoDeErros.length} questões no Caderno de Erros.`, "info");
     });
@@ -491,19 +558,24 @@ const userAvatar = document.getElementById('user-avatar');
 
 let isCadastro = false;
 
-// Escuta mudanças de sessão em tempo real (Login / Logout)
-supabaseClient.auth.onAuthStateChange((event, session) => {
+supabaseClient.auth.onAuthStateChange(async (event, session) => {
     usuarioAtual = session?.user || null;
-    
+
     if (usuarioAtual) {
-        userEmail.innerText = usuarioAtual.email;
-        userAvatar.innerText = usuarioAtual.email.charAt(0).toUpperCase();
-        btnAuthAcao.innerText = "Sair";
+        if (userEmail) userEmail.innerText = usuarioAtual.email;
+        if (userAvatar) userAvatar.innerText = usuarioAtual.email.charAt(0).toUpperCase();
+        if (btnAuthAcao) btnAuthAcao.innerText = "Sair";
         if (modalAuth) modalAuth.classList.remove('visible');
+
+        if (event === 'SIGNED_IN') {
+            historico = await carregarHistorico();
+            atualizarPlacar(historico, questoes);
+            aplicarFiltros();
+        }
     } else {
-        userEmail.innerText = "Visitante";
-        userAvatar.innerText = "?";
-        btnAuthAcao.innerText = "Fazer Login";
+        if (userEmail) userEmail.innerText = "Visitante";
+        if (userAvatar) userAvatar.innerText = "?";
+        if (btnAuthAcao) btnAuthAcao.innerText = "Fazer Login";
     }
 });
 
@@ -511,7 +583,7 @@ if (btnAuthAcao) {
     btnAuthAcao.addEventListener('click', () => {
         if (usuarioAtual) {
             sair();
-        } else {
+        } else if (modalAuth) {
             modalAuth.classList.add('visible');
         }
     });
@@ -547,125 +619,122 @@ if (formAuth) {
         e.preventDefault();
         const email = document.getElementById('auth-email').value.trim();
         const senha = document.getElementById('auth-senha').value;
-        
+
         btnSubmitAuth.disabled = true;
         btnSubmitAuth.innerText = "Aguarde...";
 
-        if (isCadastro) {
-            await criarConta(email, senha);
-        } else {
-            await entrar(email, senha);
+        try {
+            if (isCadastro) {
+                await criarConta(email, senha);
+            } else {
+                await entrar(email, senha);
+            }
+        } finally {
+            btnSubmitAuth.disabled = false;
+            btnSubmitAuth.innerText = isCadastro ? "Cadastrar" : "Entrar";
         }
-
-        btnSubmitAuth.disabled = false;
-        btnSubmitAuth.innerText = isCadastro ? "Cadastrar" : "Entrar";
     });
 }
 
 // ============================================================
-// 13. LÓGICA DE IMPORTAÇÃO EM MASSA DE QUESTÕES
+// 13. IMPORTAÇÃO EM MASSA DE QUESTÕES
 // ============================================================
-console.log("-> Módulo app.js carregado. Inicializando importador...");
-
 const modalImportar = document.getElementById('modalImportar');
 const btnAbrirImportar = document.getElementById('btnAbrirImportar');
 const btnFecharImportar = document.getElementById('btnFecharImportar');
 const btnProcessarImportacao = document.getElementById('btnProcessarImportacao');
 const textoJsonQuestoes = document.getElementById('textoJsonQuestoes');
 
+if (btnAbrirImportar && modalImportar) {
+    btnAbrirImportar.addEventListener('click', () => { modalImportar.style.display = 'flex'; });
+}
+if (btnFecharImportar && modalImportar) {
+    btnFecharImportar.addEventListener('click', () => { modalImportar.style.display = 'none'; });
+}
+
 if (btnProcessarImportacao && textoJsonQuestoes && modalImportar) {
-    // ATENÇÃO: O 'async' aqui é obrigatório para podermos usar o 'await' lá dentro
     btnProcessarImportacao.addEventListener('click', async () => {
         try {
             const jsonBruto = textoJsonQuestoes.value.trim();
             if (!jsonBruto) {
-                alert('Cole o conteúdo JSON antes de prosseguir.');
+                showToast('Cole o conteúdo JSON antes de prosseguir.', 'alerta');
                 return;
             }
 
-            const novasQuestoes = JSON.parse(jsonBruto);
-
-            if (!Array.isArray(novasQuestoes)) {
-                alert('O formato deve ser uma lista (array) de questões válida.');
+            const novasQuestoesBrutas = JSON.parse(jsonBruto);
+            if (!Array.isArray(novasQuestoesBrutas)) {
+                showToast('O formato deve ser uma lista (array) de questões válida.', 'erro');
                 return;
             }
 
-            novasQuestoes.forEach((q, index) => {
-                if (!q.id) q.id = `importada_${Date.now()}_${index}`;
-                questoes.push(q);
-                porId.set(String(q.id), q);
-            });
+            const novasNormalizadas = novasQuestoesBrutas.map((q, idx) => normalizarQuestao(q, questoes.length + idx));
 
-            // Salva as questões no Supabase
-            await salvarQuestoesEmMassa(novasQuestoes);
+            // Salva no cache local imediatamente e mescla com as questões em tela
+            salvarQuestoesLocais(novasNormalizadas);
+            questoes = mesclarQuestoes(questoes, novasNormalizadas);
+            porId = new Map(questoes.map(q => [String(q.id), q]));
 
-            alert(`Sucesso! ${novasQuestoes.length} questões foram adicionadas e salvas na nuvem.`);
-            
+            // Tenta sincronizar com o Supabase
+            try {
+                await salvarQuestoesEmMassa(novasNormalizadas);
+                showToast(`Sucesso! ${novasNormalizadas.length} questões adicionadas e sincronizadas na nuvem.`, 'sucesso');
+            } catch (erroNuvem) {
+                showToast(`${novasNormalizadas.length} questões salvas localmente (aguardando permissão da nuvem).`, 'alerta');
+            }
+
             modalImportar.style.display = 'none';
             textoJsonQuestoes.value = '';
 
+            preencherSelect(selectBanca, "🏛️ Todas as Bancas", "banca", questoes);
+            preencherSelect(selectMateria, "📖 Todas as Matérias", "materia", questoes);
+            atualizarPlacar(historico, questoes);
             aplicarFiltros();
 
         } catch (erro) {
             console.error('Erro ao processar JSON:', erro);
-            alert('Erro no formato do JSON. Verifique as aspas e vírgulas.');
+            showToast('Erro no formato do JSON. Verifique as aspas e vírgulas.', 'erro');
         }
     });
 }
 
 // ============================================================
-// 14. CARGA INICIAL DA APLICAÇÃO (Executado por último)
+// 14. CARGA INICIAL DA APLICAÇÃO
 // ============================================================
-// ATENÇÃO: A função tem que ser 'async'
 async function iniciarApp() {
-    pararCronometro(displayCronometro);
-    
-    // 1. Carrega as questões da nuvem
-    const bancoNuvem = await carregarTodasQuestoes();
-    questoes = (bancoNuvem && bancoNuvem.length > 0) ? bancoNuvem : questoesPadrao;
-    
-    porId = new Map(questoes.map(q => [String(q.id), q]));
-    validarQuestoes();
-
-    // 2. Recupera histórico local básico
-    historico = carregarHistorico() || {};
-    
-    // 3. RECUPERA O HISTÓRICO DA NUVEM (SUPABASE)
-    const historicoSupabase = await carregarHistoricoDoUsuario();
-    
-    if (historicoSupabase && historicoSupabase.length > 0) {
-        historicoSupabase.forEach(registro => {
-            const qId = String(registro.questao_id);
-            
-            if (!historico[qId]) {
-                historico[qId] = { acertos: 0, erros: 0, tentativas: 0, ultimaResposta: null, recentes: [], status: 'novo' };
-            }
-            
-            const h = historico[qId];
-            h.tentativas = 1;
-            
-            if (registro.acertou) {
-                h.acertos = 1;
-                h.status = 'acerto';
-                h.ultimaResposta = 'certo';
-            } else {
-                h.erros = 1;
-                h.status = 'erro';
-                h.ultimaResposta = 'errado';
-            }
-            
-            const questaoLocal = porId.get(qId);
-            if (questaoLocal) questaoLocal.respondida = "1";
-        });
-        
-        salvarHistorico(historico);
+    // 1. Verifica sessão ativa antes de puxar histórico
+    try {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        usuarioAtual = session?.user || null;
+    } catch (e) {
+        usuarioAtual = null;
     }
 
-    // 4. Prepara a Interface
+    // 2. Carrega histórico (LocalStorage + Supabase historico_respostas)
+    try {
+        historico = await carregarHistorico();
+    } catch (e) {
+        console.warn("[FocoPro] Erro ao carregar histórico:", e);
+        historico = {};
+    }
+
+    // 3. Carrega e mescla questões de todas as fontes (JSON Local + Cache Importadas + Supabase)
+    const [daApiLocal, daNuvem] = await Promise.all([
+        carregarQuestoes(),
+        carregarTodasQuestoes()
+    ]);
+    const doCacheImportadas = carregarQuestoesLocais();
+
+    const mescladas = mesclarQuestoes(daApiLocal, doCacheImportadas, daNuvem);
+    questoes = mescladas.length > 0 ? mescladas : mesclarQuestoes(questoesPadrao);
+
+    // 4. Índice por ID
+    porId = new Map(questoes.map(q => [String(q.id), q]));
+
+    // 5. Prepara a Interface
     preencherSelect(selectBanca, "🏛️ Todas as Bancas", "banca", questoes);
     preencherSelect(selectMateria, "📖 Todas as Matérias", "materia", questoes);
     atualizarPlacar(historico, questoes);
-    aplicarFiltros(); 
+    aplicarFiltros();
 }
 
 iniciarApp();

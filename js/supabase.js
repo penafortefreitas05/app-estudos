@@ -3,6 +3,8 @@
 // ============================================================
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { normalizarQuestao } from './api.js';
+import { gabaritoDe } from './ui.js';
 
 const supabaseUrl = 'https://fghcoxferprkzsemicnw.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZnaGNveGZlcnBya3pzZW1pY253Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI1MDg2ODYsImV4cCI6MjEwODA4NDY4Nn0.o2LRgl3s3rL_tYsLE8Ujk_GLWVQj0fPwZv-bgtEP7i4';
@@ -13,25 +15,17 @@ export const supabase = supabaseClient;
 
 /**
  * Regista o resultado da resolução de uma questão na base de dados
- * @param {Object} dadosResposta
- * @param {string} dadosResposta.questaoId - Identificador único da questão
- * @param {string} dadosResposta.materia - Disciplina associada
- * @param {string} dadosResposta.banca - Banca examinadora
- * @param {boolean} dadosResposta.acertou - Se o utilizador acertou ou errou
- * @param {string} dadosResposta.respostaEscolhida - Opção selecionada pelo utilizador
  */
 export async function salvarRespostaNoHistorico({ questaoId, materia, banca, acertou, respostaEscolhida }) {
     try {
-        // Obtém a sessão do utilizador atualmente autenticado
-        const { data: { user }, error: erroAuth } = await supabaseClient.auth.getUser();
+        const { data: { session }, error: erroAuth } = await supabaseClient.auth.getSession();
+        const user = session?.user;
 
         if (erroAuth || !user) {
-            console.warn("Utilizador não autenticado. A resposta não foi gravada na base de dados.");
             return;
         }
 
-        // Insere o registo na tabela historico_respostas
-        const { data, error } = await supabaseClient
+        const { error } = await supabaseClient
             .from('historico_respostas')
             .insert([
                 {
@@ -39,18 +33,14 @@ export async function salvarRespostaNoHistorico({ questaoId, materia, banca, ace
                     questao_id: String(questaoId),
                     materia: materia || 'Geral',
                     banca: banca || 'Não informada',
-                    acertou: acertou,
+                    acertou: Boolean(acertou),
                     resposta_usuario: String(respostaEscolhida)
                 }
             ]);
 
-        if (error) {
-            throw error;
-        }
-
-        console.log("Resposta persistida no Supabase com sucesso.");
+        if (error) throw error;
     } catch (erro) {
-        console.error("Erro ao gravar resolução no Supabase:", erro.message);
+        console.warn("Aviso ao gravar resolução no Supabase:", erro.message);
     }
 }
 
@@ -59,8 +49,9 @@ export async function salvarRespostaNoHistorico({ questaoId, materia, banca, ace
  */
 export async function carregarHistoricoDoUsuario() {
     try {
-        const { data: { user }, error: erroAuth } = await supabaseClient.auth.getUser();
-        
+        const { data: { session }, error: erroAuth } = await supabaseClient.auth.getSession();
+        const user = session?.user;
+
         if (erroAuth || !user) {
             return [];
         }
@@ -68,48 +59,50 @@ export async function carregarHistoricoDoUsuario() {
         const { data, error } = await supabaseClient
             .from('historico_respostas')
             .select('*')
+            .eq('user_id', user.id)
             .order('created_at', { ascending: true });
 
         if (error) throw error;
-
-        console.log(`Histórico carregado com sucesso: ${data.length} registros encontrados.`);
-        return data;
+        return data || [];
     } catch (erro) {
-        console.error("Erro ao carregar histórico do Supabase:", erro.message);
+        console.warn("Aviso ao carregar histórico do Supabase:", erro.message);
         return [];
     }
 }
-/**
- * Salva uma lista de questões importadas na tabela 'questoes'
- */
+
 /**
  * Salva uma lista de questões importadas na tabela 'questoes'
  */
 export async function salvarQuestoesEmMassa(arrayDeQuestoes) {
     try {
-        // Filtra objetos vazios e adapta os nomes das chaves (aceita pergunta ou enunciado)
         const payload = arrayDeQuestoes
-            .filter(q => q.pergunta || q.enunciado) // Impede envio de objetos sem texto
-            .map(q => ({
-                id: String(q.id),
-                pergunta: q.pergunta || q.enunciado, 
-                alternativas: q.alternativas || q.opcoes || [],
-                resposta_correta: q.resposta_correta || q.gabarito || 'A',
-                materia: q.materia || q.disciplina || 'Geral',
-                banca: q.banca || 'Não informada',
-                orgao: q.orgao || null,
-                tags: q.tags || []
-            }));
+            .filter(q => q && (q.pergunta || q.enunciado))
+            .map((q, idx) => {
+                const qNorm = normalizarQuestao({ ...q }, idx);
+                const alternativasArray = Array.isArray(qNorm.alternativas)
+                    ? qNorm.alternativas
+                    : Object.values(qNorm.alternativas || {});
+                const letraGabarito = gabaritoDe(qNorm) || 'A';
 
-        const { error } = await supabaseClient
-            .from('questoes')
-            .upsert(payload);
+                return {
+                    id: String(qNorm.id),
+                    pergunta: qNorm.pergunta || qNorm.enunciado,
+                    alternativas: alternativasArray,
+                    resposta_correta: letraGabarito,
+                    materia: qNorm.materia || 'Geral',
+                    banca: qNorm.banca || 'Não informada',
+                    orgao: qNorm.orgao || null,
+                    tags: Array.isArray(qNorm.tags) ? qNorm.tags : []
+                };
+            });
 
+        if (payload.length === 0) return;
+
+        const { error } = await supabaseClient.from('questoes').upsert(payload);
         if (error) throw error;
-        console.log(`${payload.length} questões salvas no Supabase com sucesso.`);
     } catch (erro) {
-        console.error("Erro ao salvar questões em massa:", erro.message);
-        throw erro; // Repassa o erro para o app.js ver
+        console.error("Erro ao salvar questões em massa no Supabase:", erro.message);
+        throw erro;
     }
 }
 
@@ -123,11 +116,10 @@ export async function carregarTodasQuestoes() {
             .select('*');
 
         if (error) throw error;
-        
-        console.log(`Foram carregadas ${data.length} questões da nuvem.`);
-        return data || [];
+
+        return (data || []).map((q, idx) => normalizarQuestao(q, idx));
     } catch (erro) {
-        console.error("Erro ao buscar questões:", erro.message);
+        console.warn("Aviso ao buscar questões da nuvem:", erro.message);
         return [];
     }
 }

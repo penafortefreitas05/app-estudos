@@ -22,11 +22,12 @@ export function formatarTempo(segundos) {
 
 // ---------- 2. NORMALIZADOR UNIVERSAL DE ALTERNATIVAS E GABARITO ----------
 export function obterOpcoes(q) {
-    if (!q || !q.alternativas) return [];
+    const fonteAlternativas = q ? (q.alternativas || q.opcoes) : null;
+    if (!fonteAlternativas) return [];
 
     // Caso 1: Alternativas em formato de Array
-    if (Array.isArray(q.alternativas)) {
-        const textosLimpos = q.alternativas.map(x => String(x).trim());
+    if (Array.isArray(fonteAlternativas)) {
+        const textosLimpos = fonteAlternativas.map(x => String(x).trim());
         const lowers = textosLimpos.map(x => x.toLowerCase());
 
         // Detecta questões de Certo / Errado em Array
@@ -50,9 +51,9 @@ export function obterOpcoes(q) {
         });
     }
 
-    // Caso 2: Alternativas em formato de Objeto { A: "...", B: "..." } ou { C: "Certo", E: "Errado" }
-    if (typeof q.alternativas === "object") {
-        return Object.entries(q.alternativas).map(([letra, texto]) => ({
+    // Caso 2: Alternativas em formato de Objeto { A: "...", B: "..." }
+    if (typeof fonteAlternativas === "object") {
+        return Object.entries(fonteAlternativas).map(([letra, texto]) => ({
             letra: String(letra).trim().toUpperCase(),
             texto: String(texto).trim()
         }));
@@ -77,29 +78,30 @@ export function letraDe(alt) {
 }
 
 export function gabaritoDe(q) {
-    if (!q || !q.gabarito) return "";
+    if (!q) return "A";
+    const gabFonte = q.gabarito || q.resposta_correta;
+    if (!gabFonte) return "A";
+
     const opcoes = obterOpcoes(q);
-    const gabRaw = String(q.gabarito).trim();
+    const gabRaw = String(gabFonte).trim();
     const gabLower = gabRaw.toLowerCase();
 
-    // 1. Compara pelo texto completo da alternativa (Questões 1 a 101)
+    // 1. Compara pelo texto completo da alternativa
     const porTexto = opcoes.find(op => op.texto.toLowerCase() === gabLower);
     if (porTexto) return porTexto.letra;
 
-    // 2. Compara pela letra exata da opção (Questões 102 a 105)
+    // 2. Compara pela letra exata da opção
     const porLetra = opcoes.find(op => op.letra === gabRaw.toUpperCase());
     if (porLetra) return porLetra.letra;
 
     // 3. Sinônimos de Certo / Errado
     if (gabLower === "certo" || gabLower === "correto" || gabLower === "c") {
         const opC = opcoes.find(op => op.letra === "C" || op.texto.toLowerCase() === "certo");
-        if (opC) return opC.letra;
-        return "C";
+        return opC ? opC.letra : "C";
     }
     if (gabLower === "errado" || gabLower === "incorreto" || gabLower === "e") {
         const opE = opcoes.find(op => op.letra === "E" || op.texto.toLowerCase() === "errado");
-        if (opE) return opE.letra;
-        return "E";
+        return opE ? opE.letra : "E";
     }
 
     // 4. Fallback caso o gabarito venha como "A) Texto"
@@ -114,11 +116,11 @@ export function textoGabaritoDe(q) {
     const letra = gabaritoDe(q);
     const opCorreta = opcoes.find(op => op.letra === letra);
     if (opCorreta) {
-        return opCorreta.letra === opCorreta.texto.charAt(0).toUpperCase() && (opCorreta.texto === "Certo" || opCorreta.texto === "Errado")
+        return (opCorreta.texto === "Certo" || opCorreta.texto === "Errado")
             ? opCorreta.texto
             : `${opCorreta.letra}) ${opCorreta.texto}`;
     }
-    return String(q.gabarito || "");
+    return String(q.gabarito || q.resposta_correta || letra);
 }
 
 // ---------- 3. COMPONENTES DE INTERFACE ----------
@@ -179,41 +181,44 @@ export function atualizarPlacar(historico, questoes) {
     let qtdCadernoErros = 0;
     const materiasMap = {};
 
-    const histMap = new Map();
-    Object.entries(historico).forEach(([k, v]) => {
-        histMap.set(String(k), v);
-    });
-
+    const questoesPorId = new Map();
     questoes.forEach(q => {
         const idStr = String(q.id);
-        const h = histMap.get(idStr);
+        questoesPorId.set(idStr, q);
         const mat = q.materia || "Geral";
-
         if (!materiasMap[mat]) {
             materiasMap[mat] = { respondidas: 0, acertos: 0, erros: 0, total: 0 };
         }
         materiasMap[mat].total++;
+    });
 
-        if (h) {
-            const ac = Number(h.acertos || 0);
-            const er = Number(h.erros || 0);
-            const tent = Number(h.tentativas || 0);
+    // Contabiliza todo o histórico (mesmo se alguma questão for de outra lista)
+    Object.entries(historico).forEach(([idKey, h]) => {
+        if (!h || typeof h !== 'object') return;
+        const ac = Number(h.acertos || 0);
+        const er = Number(h.erros || 0);
+        const tent = Number(h.tentativas || 0);
 
-            if (tent > 0 || ac > 0 || er > 0 || h.ultimaResposta) {
-                totalAcertos += ac;
-                totalErros += er;
+        const qAssociada = questoesPorId.get(String(idKey));
+        const mat = qAssociada ? (qAssociada.materia || "Geral") : (h.materia || "Geral");
 
-                materiasMap[mat].respondidas++;
-                materiasMap[mat].acertos += ac;
-                materiasMap[mat].erros += er;
+        if (tent > 0 || ac > 0 || er > 0 || h.ultimaResposta) {
+            totalAcertos += ac;
+            totalErros += er;
+
+            if (!materiasMap[mat]) {
+                materiasMap[mat] = { respondidas: 0, acertos: 0, erros: 0, total: 1 };
             }
+            materiasMap[mat].respondidas++;
+            materiasMap[mat].acertos += ac;
+            materiasMap[mat].erros += er;
+        }
 
-            const ehErroAtivo = h.status === 'erro' || (h.ultimaResposta === 'errado' && h.status !== 'superado');
-            const temAnotacao = h.anotacao && String(h.anotacao).trim().length > 0;
+        const ehErroAtivo = h.status === 'erro' || (h.ultimaResposta === 'errado' && h.status !== 'superado');
+        const temAnotacao = h.anotacao && String(h.anotacao).trim().length > 0;
 
-            if (ehErroAtivo || temAnotacao) {
-                qtdCadernoErros++;
-            }
+        if ((ehErroAtivo || temAnotacao) && qAssociada) {
+            qtdCadernoErros++;
         }
     });
 
@@ -280,6 +285,7 @@ export function renderizarQuestoes(container, lista, historico = {}, mensagemVaz
         const tentativas = regHist.tentativas || 0;
         const anotacao = regHist.anotacao || "";
         const status = classificarStatus(idStr, historico);
+        const textoEnunciado = q.enunciado || q.pergunta || q.texto || "Enunciado não disponível.";
 
         const htmlAlternativas = opcoes.map(({ letra, texto }) => `
             <label class="opcao-item" data-letra="${esc(letra)}">
@@ -301,13 +307,13 @@ export function renderizarQuestoes(container, lista, historico = {}, mensagemVaz
             <article class="card-questao questao-card" data-id="${esc(idStr)}">
                 <div class="card-header">
                     <div class="header-info">
-                        <span class="badge-materia">${esc(q.materia)}</span>
+                        <span class="badge-materia">${esc(q.materia || 'Geral')}</span>
                         <span class="badge-info">${infoExtra}</span>
                     </div>
                     <span class="badge ${status.classe}">${status.texto}</span>
                 </div>
 
-                <p class="enunciado">${esc(q.enunciado)}</p>
+                <p class="enunciado">${esc(textoEnunciado)}</p>
 
                 <div class="opcoes-container">
                     ${htmlAlternativas}
@@ -318,6 +324,7 @@ export function renderizarQuestoes(container, lista, historico = {}, mensagemVaz
                 <div class="card-footer">
                     <div class="card-actions-row">
                         <button type="button" class="btn-primary btn-responder" data-id="${esc(idStr)}">✔ Responder</button>
+                        <button type="button" class="btn-sidebar btn-refazer" data-id="${esc(idStr)}" hidden style="margin-left: 8px;">🔄 Resolver Novamente</button>
                         <small class="tentativas">Tentativas: ${tentativas}</small>
                     </div>
 
@@ -342,6 +349,21 @@ export function renderizarQuestoes(container, lista, historico = {}, mensagemVaz
         `;
 
         container.insertAdjacentHTML('beforeend', cardHTML);
+
+        // Se a questão já foi respondida antes (ex: após dar F5), restaura o estado visual na tela!
+        if (tentativas > 0 && (regHist.ultimaEscolha || regHist.ultimaResposta)) {
+            const cardInserido = container.lastElementChild;
+            if (cardInserido) {
+                const gabaritoLetra = gabaritoDe(q);
+                const letraParaRestaurar = regHist.ultimaEscolha || (regHist.ultimaResposta === 'certo' ? gabaritoLetra : '');
+                if (letraParaRestaurar) {
+                    const radio = cardInserido.querySelector(`.radio-opcao[value="${CSS.escape(letraParaRestaurar)}"]`);
+                    if (radio) radio.checked = true;
+                    cardInserido.dataset.respondida = "1";
+                    revelar(cardInserido, q, letraParaRestaurar);
+                }
+            }
+        }
     });
 }
 
@@ -353,7 +375,7 @@ export function revelar(card, q, letraEscolhida) {
     const textoCorreto = textoGabaritoDe(q);
     const acertou = (letraEscolhida === gabaritoLetra);
 
-    // 1. Destaca as opções (verde para gabarito, vermelho se marcou errada)
+    // 1. Destaca as opções visualmente (Verde/Vermelho)
     card.querySelectorAll(".opcao-item").forEach(label => {
         const opLetra = label.dataset.letra;
         const radio = label.querySelector(".radio-opcao");
@@ -369,39 +391,47 @@ export function revelar(card, q, letraEscolhida) {
         }
     });
 
-    // 2. Desabilita o botão Responder
+    // 2. Desabilita o botão Responder e exibe o botão Resolver Novamente
     const btnResponder = card.querySelector(".btn-responder");
     if (btnResponder) {
         btnResponder.disabled = true;
         btnResponder.innerText = acertou ? "✔ Respondida (Acerto)" : "✖ Respondida (Erro)";
     }
 
-    // 3. Exibe o container de feedback
+    const btnRefazer = card.querySelector(".btn-refazer");
+    if (btnRefazer) {
+        btnRefazer.hidden = false;
+    }
+
+    // 3. Exibe o container de feedback de forma garantida
     const fbContainer = card.querySelector(".feedback-container");
     if (!fbContainer) return;
 
     fbContainer.classList.remove("oculta", "correto", "incorreto", "neutro");
     fbContainer.classList.add(acertou ? "correto" : "incorreto");
+    fbContainer.style.display = "block";
 
     const gabaritoDiv = fbContainer.querySelector(".gabarito-resposta");
     const explicacaoDiv = fbContainer.querySelector(".explicacao-texto");
 
     if (gabaritoDiv) {
-        if (letraEscolhida === null || letraEscolhida === undefined) {
+        if (letraEscolhida === null || letraEscolhida === undefined || letraEscolhida === "") {
             gabaritoDiv.innerHTML = `⚠️ <strong>Questão em branco.</strong> Gabarito oficial: <strong>${esc(textoCorreto)}</strong>`;
         } else if (acertou) {
-            gabaritoDiv.innerHTML = `✔ <strong>Resposta Correta!</strong> Alternativa <strong>${esc(gabaritoLetra)}</strong>.`;
+            gabaritoDiv.innerHTML = `✔ <strong>Resposta Correta!</strong> Gabarito oficial: <strong>${esc(textoCorreto)}</strong>`;
         } else {
-            gabaritoDiv.innerHTML = `✖ <strong>Resposta Incorreta.</strong> Você marcou (${esc(letraEscolhida)}). O gabarito é: <strong>${esc(textoCorreto)}</strong>`;
+            gabaritoDiv.innerHTML = `✖ <strong>Resposta Incorreta.</strong> Você marcou <strong>(${esc(letraEscolhida)})</strong>. O gabarito oficial é: <strong>${esc(textoCorreto)}</strong>`;
         }
     }
 
     if (explicacaoDiv) {
-        if (q.explicacao && String(q.explicacao).trim() !== "") {
-            explicacaoDiv.innerHTML = q.explicacao;
+        const textoExplicacao = q.explicacao || q.comentario || q.justificativa || "";
+        if (String(textoExplicacao).trim() !== "") {
+            explicacaoDiv.innerHTML = `<div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(148, 163, 184, 0.25);"><strong>📘 Comentário:</strong> ${textoExplicacao}</div>`;
             explicacaoDiv.style.display = "block";
         } else {
-            explicacaoDiv.style.display = "none";
+            explicacaoDiv.innerHTML = `<div style="margin-top: 6px; font-size: 0.85em; opacity: 0.85;">💡 <em>Use "Adicionar Anotação Pessoal" abaixo para registrar seu resumo sobre esta questão.</em></div>`;
+            explicacaoDiv.style.display = "block";
         }
     }
 }
