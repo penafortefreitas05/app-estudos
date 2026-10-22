@@ -1,0 +1,26 @@
+# ============================================================
+# .gitignore - FocoPro
+# ============================================================
+
+# Arquivos de ambiente e segredos (NUNCA versionar chaves/API keys)
+.env
+.env.local
+.env.*.local
+
+# Dependências (caso algum dia adicione npm/node)
+node_modules/
+
+# Arquivos de sistema operacional
+.DS_Store
+Thumbs.db
+
+# Configurações locais do VS Code (opcional - cada dev tem as suas)
+.vscode/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Supabase CLI (arquivos locais de desenvolvimento, não o código das functions)
+supabase/.temp/
+supabase/.branches/
