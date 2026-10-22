@@ -5,6 +5,7 @@
 import { supabase } from './supabase.js';
 import { showToast } from './notifications.js';
 
+
 // Cria uma nova conta no Supabase
 export async function criarConta(email, senha) {
     const { data, error } = await supabase.auth.signUp({
@@ -16,9 +17,17 @@ export async function criarConta(email, senha) {
         showToast("Erro ao criar conta: " + error.message, "erro");
         return null;
     }
+
+    // Com a confirmação de e-mail ativada, o cadastro não gera sessão até o link ser confirmado.
+    if (data.user && !data.session) {
+        showToast("Quase lá! Enviamos um link de confirmação para o seu e-mail. Confirme e depois faça login.", "info", 7000);
+        return "confirmacao_pendente";
+    }
+
     showToast("Conta criada com sucesso! Bem-vindo ao FocoPro.", "sucesso");
     return data.user;
 }
+
 
 // Faz o login do usuário existente
 export async function entrar(email, senha) {

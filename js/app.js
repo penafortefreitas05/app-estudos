@@ -816,7 +816,16 @@ if (formAuth) {
 
         try {
             if (isCadastro) {
-                await criarConta(email, senha);
+                const resultado = await criarConta(email, senha);
+                if (resultado === "confirmacao_pendente") {
+                    // Já deixa a tela pronta para o login, que é o próximo passo depois de confirmar o e-mail
+                    isCadastro = false;
+                    authTitulo.innerText = "Entrar no FocoPro";
+                    authSubtitulo.innerText = "Sincronize seu histórico e caderno de erros.";
+                    btnSubmitAuth.innerText = "Entrar";
+                    authTextoAlternar.innerText = "Não tem uma conta?";
+                    btnAlternarAuth.innerText = "Criar conta";
+                }
             } else {
                 await entrar(email, senha);
             }
