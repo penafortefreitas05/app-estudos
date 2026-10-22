@@ -496,8 +496,9 @@ async function solicitarExplicacaoIA(btnIA) {
     caixa.innerHTML = "<em>A IA está analisando a questão e a sua resposta...</em>";
 
     try {
-        const { data, error } = await supabaseClient.functions.invoke("super-function", {
+                const { data, error } = await supabaseClient.functions.invoke("super-function", {
             body: {
+                questaoId: qId,
                 pergunta: q.enunciado || q.pergunta,
                 alternativas: obterOpcoes(q),
                 respostaUsuario: h.ultimaEscolha,
