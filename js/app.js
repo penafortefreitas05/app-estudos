@@ -4,18 +4,21 @@
 
 // ==================== INÍCIO: 1. IMPORTAÇÕES DE MÓDULOS ====================
 
-// ---------- 1.1 Interface (ui.js) ----------
+// ==================== INÍCIO: SUBSTITUIR O IMPORT DE './ui.js' ====================
 import {
     esc,                    // escapa HTML (usado em formatarExplicacaoIA)
     obterOpcoes,
     gabaritoDe,
     preencherSelect,
+    preencherSelectTags,
     atualizarChipTag,
     atualizarPlacar,
     renderizarQuestoes,
     revelar,
-    classificarStatus
+    classificarStatus,
+    obterCategoriaStatus
 } from './ui.js';
+// ==================== FIM ====================
 
 // ---------- 1.2 Supabase (banco e cliente) ----------
 import {
@@ -88,11 +91,17 @@ const questoesPadrao = [
 ];
 
 // ---------- 3. ELEMENTOS DO DOM ----------
+
 const container = document.getElementById("container-questoes");
 const selectBanca = document.getElementById("filtro-banca");
 const selectMateria = document.getElementById("filtro-materia");
+const selectTag = document.getElementById("filtro-tag");
+const selectAno = document.getElementById("filtro-ano");
+const selectStatus = document.getElementById("filtro-status");
+const checkFavoritas = document.getElementById("filtro-favoritas");
 const inputBusca = document.getElementById("filtro-busca");
 const displayCronometro = document.getElementById("display-cronometro");
+
 
 // ---------- 4. ELEMENTOS DINÂMICOS DA SIDEBAR ----------
 const chipTag = document.createElement("div");
@@ -227,17 +236,32 @@ function mesclarQuestoes(...listas) {
     return Array.from(mapa.values());
 }
 
+// ==================== INÍCIO: SUBSTITUIR filtrarQuestoes E definirTag ====================
 // ---------- 6. GERENCIAMENTO DE FILTROS ----------
 function filtrarQuestoes() {
     const banca = selectBanca ? selectBanca.value : "";
     const materia = selectMateria ? selectMateria.value : "";
     const termo = inputBusca ? inputBusca.value.trim().toLowerCase() : "";
     const tag = tagSelecionada.toLowerCase();
+    const ano = selectAno ? selectAno.value : "";
+    const statusFiltro = selectStatus ? selectStatus.value : "";
+    const soFavoritas = checkFavoritas ? checkFavoritas.checked : false;
 
     return questoes.filter(q => {
         if (banca && q.banca !== banca) return false;
         if (materia && q.materia !== materia) return false;
         if (tag && !(q.tags || []).some(t => String(t).toLowerCase() === tag)) return false;
+        if (ano && String(q.ano || "") !== ano) return false;
+
+        if (statusFiltro) {
+            const categoria = obterCategoriaStatus(q.id, historico);
+            if (categoria !== statusFiltro) return false;
+        }
+
+        if (soFavoritas) {
+            const h = historico[String(q.id)];
+            if (!h || !h.favorito) return false;
+        }
 
         if (termo) {
             const textoOpcoes = obterOpcoes(q).map(op => op.texto).join(" ");
@@ -252,15 +276,17 @@ function filtrarQuestoes() {
 function definirTag(tag) {
     tagSelecionada = tag;
     atualizarChipTag(chipTag, tagSelecionada);
+    if (selectTag && selectTag.value !== tag) selectTag.value = tag;
     aplicarFiltros();
 }
 
-function aplicarFiltros() {
-    simulado = null;
-    pararCronometro(displayCronometro);
-    renderizarQuestoes(container, filtrarQuestoes(), historico);
-}
 
+// ==================== FIM ====================
+function aplicarFiltros() {
+    const filtradas = filtrarQuestoes();
+    renderizarQuestoes(container, filtradas, historico);
+    atualizarPlacar(historico, questoes);
+}
 // ---------- 7. LÓGICA DE RESPOSTA E PONTUAÇÃO ----------
 async function responder(card, botao) {
     if (!card) return;
@@ -445,6 +471,7 @@ function importarHistorico(arquivo) {
 }
 
 // ---------- 9. DELEGAÇÃO E ESCUTADORES DE EVENTOS ----------
+
 if (container) {
     container.addEventListener("change", (e) => {
         if (e.target.classList.contains("radio-opcao") && simulado && !simulado.finalizado) {
@@ -455,6 +482,24 @@ if (container) {
     });
 
     container.addEventListener("click", (e) => {
+        const btnFavoritar = e.target.closest(".btn-favoritar");
+        if (btnFavoritar) {
+            const card = btnFavoritar.closest(".card-questao");
+            if (!card) return;
+            const qId = String(card.dataset.id);
+
+            if (!historico[qId]) {
+                historico[qId] = { acertos: 0, erros: 0, tentativas: 0, ultimaResposta: null, recentes: [], status: 'novo', anotacao: "" };
+            }
+            historico[qId].favorito = !historico[qId].favorito;
+            salvarHistorico(historico);
+
+            btnFavoritar.classList.toggle("ativo", historico[qId].favorito);
+            btnFavoritar.textContent = historico[qId].favorito ? "★" : "☆";
+            showToast(historico[qId].favorito ? "Questão adicionada aos favoritos." : "Questão removida dos favoritos.", "info", 1500);
+                       return;
+        }
+
         // >>>>>>>>>> INÍCIO BLOCO A: HELPERS DA IA >>>>>>>>>>
 const IA_MSG_PADRAO = "Não foi possível gerar a explicação agora. Tente novamente em instantes.";
 
@@ -601,11 +646,16 @@ chipTag.addEventListener("click", e => {
     if (e.target.id === "btn-limpar-tag") definirTag("");
 });
 
+// ==================== INÍCIO: SUBSTITUIR OS 3 LISTENERS DE FILTRO ====================
 if (inputBusca) inputBusca.addEventListener("input", aplicarFiltros);
 if (selectBanca) selectBanca.addEventListener("change", aplicarFiltros);
 if (selectMateria) selectMateria.addEventListener("change", aplicarFiltros);
+if (selectAno) selectAno.addEventListener("change", aplicarFiltros);
+if (selectStatus) selectStatus.addEventListener("change", aplicarFiltros);
+if (checkFavoritas) checkFavoritas.addEventListener("change", aplicarFiltros);
+if (selectTag) selectTag.addEventListener("change", () => definirTag(selectTag.value));
 
-// ==================== INÍCIO: SUBSTITUIR O BLOCO "10. MODO SIMULADO" ====================
+
 // ---------- 10. MODO SIMULADO ----------
 const btnSimulado = document.getElementById("btn-simulado");
 if (btnSimulado) {
@@ -662,6 +712,9 @@ if (btnTodas) {
     btnTodas.addEventListener("click", () => {
         if (selectBanca) selectBanca.value = "";
         if (selectMateria) selectMateria.value = "";
+        if (selectAno) selectAno.value = "";
+        if (selectStatus) selectStatus.value = "";
+        if (checkFavoritas) checkFavoritas.checked = false;
         if (inputBusca) inputBusca.value = "";
 
         const inputQtd = document.getElementById("qtd-simulado");
@@ -671,10 +724,12 @@ if (btnTodas) {
 
         tagSelecionada = "";
         atualizarChipTag(chipTag, tagSelecionada);
+        if (selectTag) selectTag.value = "";
         aplicarFiltros();
         showToast("Exibindo todas as questões.", "info");
     });
 }
+// ==================== FIM ====================
 
 // ---------- 11. MODO REVISÃO / CADERNO DE ERROS ----------
 const btnModoRevisao = document.getElementById("btn-modo-revisao");
@@ -891,9 +946,13 @@ if (btnProcessarImportacao && textoJsonQuestoes && modalImportar) {
             modalImportar.style.display = 'none';
             textoJsonQuestoes.value = '';
 
+           // ==================== INÍCIO: SUBSTITUIR OS preencherSelect DA IMPORTAÇÃO ====================
             preencherSelect(selectBanca, "🏛️ Todas as Bancas", "banca", questoes);
             preencherSelect(selectMateria, "📖 Todas as Matérias", "materia", questoes);
+            preencherSelect(selectAno, "📅 Todos os Anos", "ano", questoes);
+            preencherSelectTags(selectTag, "🏷️ Todos os Assuntos", questoes);
             aplicarFiltros();
+
 
         } catch (erro) {
             showToast('Erro ao processar o JSON. Verifique o formato.', 'erro');
@@ -938,8 +997,12 @@ async function iniciarApp() {
     porId = new Map(questoes.map(q => [String(q.id), q]));
 
     // 5. Prepara a Interface
+   // ==================== INÍCIO: SUBSTITUIR OS 2 preencherSelect DO iniciarApp ====================
     preencherSelect(selectBanca, "🏛️ Todas as Bancas", "banca", questoes);
     preencherSelect(selectMateria, "📖 Todas as Matérias", "materia", questoes);
+    preencherSelect(selectAno, "📅 Todos os Anos", "ano", questoes);
+    preencherSelectTags(selectTag, "🏷️ Todos os Assuntos", questoes);
+
     atualizarPlacar(historico, questoes);
     aplicarFiltros();
 }

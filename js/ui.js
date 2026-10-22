@@ -143,6 +143,40 @@ export function preencherSelect(selectElement, textoPadrao, propriedade, listaQu
         });
 }
 
+
+// Preenche um <select> a partir de um campo que é uma LISTA por questão (como "tags"),
+// contando quantas vezes cada valor aparece no total.
+export function preencherSelectTags(selectElement, textoPadrao, listaQuestoes) {
+    if (!selectElement) return;
+    const contagem = {};
+    listaQuestoes.forEach(q => {
+        (q.tags || []).forEach(t => {
+            const val = String(t).trim();
+            if (val) contagem[val] = (contagem[val] || 0) + 1;
+        });
+    });
+
+    selectElement.innerHTML = `<option value="">${esc(textoPadrao)}</option>`;
+    Object.keys(contagem)
+        .sort((a, b) => a.localeCompare(b, 'pt-BR'))
+        .forEach(valor => {
+            const opt = document.createElement("option");
+            opt.value = valor;
+            opt.textContent = `${valor} (${contagem[valor]})`;
+            selectElement.appendChild(opt);
+        });
+}
+
+// Classifica a questão em 3 categorias simples para o filtro de status:
+// "nao-respondida", "acertei" ou "errei" (questão superada depois de errar conta como "acertei").
+export function obterCategoriaStatus(qId, historico) {
+    const h = historico[String(qId)] || historico[qId];
+    if (!h || !h.tentativas) return 'nao-respondida';
+    const ehErroAtivo = h.status === 'erro' || (h.ultimaResposta === 'errado' && h.status !== 'superado');
+    return ehErroAtivo ? 'errei' : 'acertei';
+}
+// ==================== FIM ====================
+
 export function atualizarChipTag(chipTagElement, tag) {
     if (!chipTagElement) return;
     if (!tag) {
@@ -281,9 +315,10 @@ export function renderizarQuestoes(container, lista, historico = {}, mensagemVaz
     lista.forEach(q => {
         const idStr = String(q.id);
         const opcoes = obterOpcoes(q);
-        const regHist = historico[idStr] || historico[q.id] || {};
+               const regHist = historico[idStr] || historico[q.id] || {};
         const tentativas = regHist.tentativas || 0;
         const anotacao = regHist.anotacao || "";
+        const favorito = regHist.favorito || false;
         const status = classificarStatus(idStr, historico);
         const textoEnunciado = q.enunciado || q.pergunta || q.texto || "Enunciado não disponível.";
 
@@ -305,12 +340,15 @@ export function renderizarQuestoes(container, lista, historico = {}, mensagemVaz
 
         const cardHTML = `
             <article class="card-questao questao-card" data-id="${esc(idStr)}">
-                <div class="card-header">
+               <div class="card-header">
                     <div class="header-info">
                         <span class="badge-materia">${esc(q.materia || 'Geral')}</span>
                         <span class="badge-info">${infoExtra}</span>
                     </div>
-                    <span class="badge ${status.classe}">${status.texto}</span>
+                    <div class="header-acoes">
+                        <button type="button" class="btn-favoritar ${favorito ? 'ativo' : ''}" data-id="${esc(idStr)}" title="${favorito ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}">${favorito ? '★' : '☆'}</button>
+                        <span class="badge ${status.classe}">${status.texto}</span>
+                    </div>
                 </div>
 
                 <p class="enunciado">${esc(textoEnunciado)}</p>
