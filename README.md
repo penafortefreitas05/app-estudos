@@ -38,6 +38,6 @@ focopro/
 │   ├── notifications.js  # Sistema de Toasts e Modais assíncronos (Promises)
 │   └── api.js            # Fetch de questões e normalizador macro de matérias
 │
-└── icons/                # Ícones PWA para desktop e mobile
+└── icons/                # Ícones PWA para desktop e mobile.
     ├── android-chrome-192x192.png
     └── android-chrome-512x512.png
