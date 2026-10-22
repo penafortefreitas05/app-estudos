@@ -57,6 +57,8 @@ let questoes = [];
 let porId = new Map();
 let tagSelecionada = "";
 let simulado = null;
+const ADMIN_UID = '82cc7c31-2be4-4aba-8eb9-80067f545f3e'; // mesmo UUID usado nas políticas de RLS da tabela questoes
+
 export let usuarioAtual = null;
 
 // Questões padrão para a tela nunca iniciar vazia
@@ -128,6 +130,70 @@ function embaralharArray(array) {
     }
     return a;
 }
+// ==================== INÍCIO: COLAR DEPOIS DE embaralharArray ====================
+
+// Distribui as questões (já embaralhadas/priorizadas) intercalando entre as matérias,
+// para o simulado não vir concentrado numa matéria só quando o filtro é "Todas"
+function distribuirPorMateria(pool, qtd) {
+    const porMateria = new Map();
+    pool.forEach(q => {
+        const m = q.materia || "Geral";
+        if (!porMateria.has(m)) porMateria.set(m, []);
+        porMateria.get(m).push(q);
+    });
+
+    const materias = [...porMateria.keys()];
+    const resultado = [];
+
+    while (resultado.length < qtd) {
+        let adicionouAlgum = false;
+        for (const m of materias) {
+            if (resultado.length >= qtd) break;
+            const lista = porMateria.get(m);
+            if (lista.length > 0) {
+                resultado.push(lista.shift());
+                adicionouAlgum = true;
+            }
+        }
+        if (!adicionouAlgum) break; // esgotou as questões de todas as matérias
+    }
+    return resultado;
+}
+
+// Monta a lista final do simulado aplicando as opções marcadas pelo usuário:
+// só novas, priorizar erros e/ou equilibrar por matéria.
+function sortearSimulado(filtradas, qtd, historicoAtual, opcoes = {}) {
+    let pool = filtradas;
+
+    if (opcoes.somenteNovas) {
+        pool = pool.filter(q => {
+            const h = historicoAtual[String(q.id)];
+            return !h || !h.tentativas;
+        });
+    }
+
+    if (pool.length === 0) return [];
+
+    if (opcoes.priorizarErros) {
+        const comErro = [];
+        const resto = [];
+        pool.forEach(q => {
+            const h = historicoAtual[String(q.id)];
+            if (h && h.status === "erro") comErro.push(q);
+            else resto.push(q);
+        });
+        pool = [...embaralharArray(comErro), ...embaralharArray(resto)];
+    } else {
+        pool = embaralharArray(pool);
+    }
+
+    if (opcoes.equilibrar) {
+        return distribuirPorMateria(pool, qtd);
+    }
+
+    return pool.slice(0, qtd);
+}
+// ==================== FIM ====================
 
 function mesclarQuestoes(...listas) {
     const mapa = new Map();
@@ -538,6 +604,7 @@ if (inputBusca) inputBusca.addEventListener("input", aplicarFiltros);
 if (selectBanca) selectBanca.addEventListener("change", aplicarFiltros);
 if (selectMateria) selectMateria.addEventListener("change", aplicarFiltros);
 
+// ==================== INÍCIO: SUBSTITUIR O BLOCO "10. MODO SIMULADO" ====================
 // ---------- 10. MODO SIMULADO ----------
 const btnSimulado = document.getElementById("btn-simulado");
 if (btnSimulado) {
@@ -547,16 +614,32 @@ if (btnSimulado) {
         const qtd = parseInt(inputQtd ? inputQtd.value : 10) || 10;
         const tempo = parseInt(inputTempo ? inputTempo.value : 0) || 0;
 
+        const checkEquilibrar = document.getElementById("check-equilibrar");
+        const checkNovas = document.getElementById("check-novas");
+        const checkPriorizarErros = document.getElementById("check-priorizar-erros");
+        const opcoesSimulado = {
+            equilibrar: checkEquilibrar ? checkEquilibrar.checked : false,
+            somenteNovas: checkNovas ? checkNovas.checked : false,
+            priorizarErros: checkPriorizarErros ? checkPriorizarErros.checked : false
+        };
+
         const filtradas = filtrarQuestoes();
         pararCronometro(displayCronometro);
 
-        if (filtradas.length === 0) {
+        const sorteadas = sortearSimulado(filtradas, qtd, historico, opcoesSimulado);
+
+        if (sorteadas.length === 0) {
             simulado = null;
             renderizarQuestoes(container, [], historico);
+            showToast(
+                opcoesSimulado.somenteNovas
+                    ? "Não há questões novas com esse filtro. Desmarque 'Só questões novas' ou mude o filtro."
+                    : "Nenhuma questão encontrada com esse filtro.",
+                "alerta"
+            );
             return;
         }
 
-        const sorteadas = embaralharArray(filtradas).slice(0, qtd);
         simulado = { ids: sorteadas.map(q => q.id), respostas: {}, inicio: Date.now(), finalizado: false };
         renderizarQuestoes(container, sorteadas, historico);
         adicionarBotaoFinalizar(container);
@@ -570,6 +653,7 @@ if (btnSimulado) {
         }
     });
 }
+// ==================== FIM ====================
 
 // Limpar Filtros / Ver Todas
 const btnTodas = document.getElementById("btn-todas");
@@ -742,6 +826,7 @@ if (formAuth) {
     });
 }
 
+// ==================== INÍCIO: SUBSTITUIR TODA A SEÇÃO 13 (até antes de "14. CARGA INICIAL") ====================
 // ============================================================
 // 13. IMPORTAÇÃO EM MASSA DE QUESTÕES
 // ============================================================
@@ -781,11 +866,16 @@ if (btnProcessarImportacao && textoJsonQuestoes && modalImportar) {
             porId = new Map(questoes.map(q => [String(q.id), q]));
 
             // Tenta sincronizar com o Supabase
+            const ehAdmin = usuarioAtual && usuarioAtual.id === ADMIN_UID;
             try {
                 await salvarQuestoesEmMassa(novasNormalizadas);
                 showToast(`Sucesso! ${novasNormalizadas.length} questões adicionadas e sincronizadas na nuvem.`, 'sucesso');
             } catch (erroNuvem) {
-                showToast(`${novasNormalizadas.length} questões salvas localmente (aguardando permissão da nuvem).`, 'alerta');
+                if (ehAdmin) {
+                    showToast(`Falha ao sincronizar com a nuvem: ${erroNuvem.message || 'erro desconhecido'}.`, 'erro');
+                } else {
+                    showToast(`${novasNormalizadas.length} questões salvas apenas neste navegador. Só o administrador pode publicar questões novas para todos os usuários.`, 'alerta', 6000);
+                }
             }
 
             modalImportar.style.display = 'none';
@@ -793,15 +883,16 @@ if (btnProcessarImportacao && textoJsonQuestoes && modalImportar) {
 
             preencherSelect(selectBanca, "🏛️ Todas as Bancas", "banca", questoes);
             preencherSelect(selectMateria, "📖 Todas as Matérias", "materia", questoes);
-            atualizarPlacar(historico, questoes);
             aplicarFiltros();
 
         } catch (erro) {
-            console.error('Erro ao processar JSON:', erro);
-            showToast('Erro no formato do JSON. Verifique as aspas e vírgulas.', 'erro');
+            showToast('Erro ao processar o JSON. Verifique o formato.', 'erro');
+            console.error('[FocoPro] Erro ao importar questões:', erro);
         }
     });
 }
+
+
 
 // ============================================================
 // 14. CARGA INICIAL DA APLICAÇÃO
