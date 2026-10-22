@@ -93,14 +93,35 @@
                     <label for="menu-toggle" class="btn-menu" aria-label="Abrir menu">☰</label>
                     <span class="top-bar-brand">FocoPro ✦</span>
                 </div>
+                <!-- ==================== INÍCIO: SUBSTITUIR .filtros-container ==================== -->
                 <div class="filtros-container">
                     <select id="filtro-banca" class="input-dark">
                         <option value="">🏛️ Todas as Bancas</option>
                     </select>
-                    
+
                     <select id="filtro-materia" class="input-dark">
                         <option value="">📖 Todas as Matérias</option>
                     </select>
+
+                    <select id="filtro-tag" class="input-dark">
+                        <option value="">🏷️ Todos os Assuntos</option>
+                    </select>
+
+                    <select id="filtro-ano" class="input-dark">
+                        <option value="">📅 Todos os Anos</option>
+                    </select>
+
+                    <select id="filtro-status" class="input-dark">
+                        <option value="">📊 Qualquer Status</option>
+                        <option value="nao-respondida">⬜ Não Respondidas</option>
+                        <option value="acertei">✅ Acertei</option>
+                        <option value="errei">❌ Errei</option>
+                    </select>
+
+                    <label class="opcao-checkbox">
+                        <input type="checkbox" id="filtro-favoritas">
+                        ⭐ Só Favoritas
+                    </label>
 
                     <div class="search-box">
                         <span class="search-icon">🔍</span>
@@ -113,6 +134,7 @@
                     <button id="btn-simulado" class="btn-primary">▶ Gerar Simulado</button>
                     <button id="btn-todas" class="btn-secondary">⚙️ Ver Todas</button>
                 </div>
+<!-- ==================== FIM ==================== -->
 
                 <!-- Opções do Simulado: equilibrar matérias, só novas, priorizar erros -->
                 <div class="opcoes-simulado">
