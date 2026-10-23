@@ -2684,103 +2684,6 @@
     ]
   },
   {
-    "id": 130,
-    "banca": "CEBRASPE",
-    "materia": "Banco de Dados & Dados",
-    "tipo": "certo_errado",
-    "origem": "Inédita no estilo CEBRASPE — tema cobrado na prova Bacen 2024 (Analista - TI)",
-    "enunciado": "Em modelos de linguagem de grande porte (LLMs), reduzir o valor do parâmetro temperature tende a tornar as respostas mais determinísticas e menos variadas.",
-    "alternativas": {
-      "C": "Certo",
-      "E": "Errado"
-    },
-    "gabarito": "C",
-    "explicacao": "Temperature baixa concentra a probabilidade nos tokens mais prováveis (respostas mais previsíveis). Temperature alta espalha a distribuição (mais aleatoriedade e criatividade).",
-    "tags": [
-      "llm",
-      "ia-generativa",
-      "temperature"
-    ]
-  },
-  {
-    "id": 131,
-    "banca": "CEBRASPE",
-    "materia": "Banco de Dados & Dados",
-    "tipo": "certo_errado",
-    "origem": "Inédita no estilo CEBRASPE — tema cobrado na prova Bacen 2024 (Analista - TI)",
-    "enunciado": "Na validação cruzada k-fold com k = 5, o modelo é treinado cinco vezes, utilizando em cada rodada um quinto dos dados para treino e os quatro quintos restantes para validação.",
-    "alternativas": {
-      "C": "Certo",
-      "E": "Errado"
-    },
-    "gabarito": "E",
-    "explicacao": "É o contrário: em cada rodada, 4 partes (80%) servem para treino e 1 parte (20%) para validação. Ao final, as métricas das 5 rodadas são combinadas (média).",
-    "tags": [
-      "machine-learning",
-      "k-fold",
-      "validacao-cruzada",
-      "pegadinha"
-    ]
-  },
-  {
-    "id": 132,
-    "banca": "CEBRASPE",
-    "materia": "Redes & Segurança da Informação",
-    "tipo": "certo_errado",
-    "origem": "Inédita no estilo CEBRASPE — tema cobrado na prova Bacen 2024 (Analista - TI)",
-    "enunciado": "Em um fluxo de single sign-on baseado em SAML 2.0, o provedor de serviços (SP) é o responsável por autenticar o usuário e emitir as asserções que serão consumidas pelo provedor de identidade (IdP).",
-    "alternativas": {
-      "C": "Certo",
-      "E": "Errado"
-    },
-    "gabarito": "E",
-    "explicacao": "Os papéis estão invertidos. O IdP autentica o usuário e emite as asserções SAML; o SP (a aplicação) confia nessas asserções para liberar o acesso.",
-    "tags": [
-      "saml",
-      "sso",
-      "autenticacao",
-      "pegadinha"
-    ]
-  },
-  {
-    "id": 133,
-    "banca": "CEBRASPE",
-    "materia": "Desenvolvimento, POO & Linguagens",
-    "tipo": "certo_errado",
-    "origem": "Inédita no estilo CEBRASPE — tema cobrado na prova Bacen 2024 (Analista - TI)",
-    "enunciado": "O HTTP/2 permite a multiplexação de várias requisições e respostas sobre uma única conexão TCP, o que reduz a necessidade de abrir múltiplas conexões paralelas, comum no HTTP/1.1.",
-    "alternativas": {
-      "C": "Certo",
-      "E": "Errado"
-    },
-    "gabarito": "C",
-    "explicacao": "O HTTP/2 divide mensagens em frames binários de streams independentes na mesma conexão. No HTTP/1.1, os navegadores abriam várias conexões para contornar o bloqueio de cabeça de fila.",
-    "tags": [
-      "http2",
-      "web",
-      "protocolos"
-    ]
-  },
-  {
-    "id": 134,
-    "banca": "CEBRASPE",
-    "materia": "Desenvolvimento, POO & Linguagens",
-    "tipo": "certo_errado",
-    "origem": "Inédita no estilo CEBRASPE — tema cobrado na prova Bacen 2024 (Analista - TI)",
-    "enunciado": "O gRPC utiliza o HTTP/2 como protocolo de transporte e, por padrão, Protocol Buffers para serializar as mensagens.",
-    "alternativas": {
-      "C": "Certo",
-      "E": "Errado"
-    },
-    "gabarito": "C",
-    "explicacao": "gRPC = HTTP/2 + Protocol Buffers (binário e compacto), o que viabiliza streaming bidirecional. É muito usado na comunicação entre microsserviços.",
-    "tags": [
-      "grpc",
-      "microsservicos",
-      "http2"
-    ]
-  },
-  {
     "id": 135,
     "banca": "CEBRASPE",
     "materia": "Arquitetura de TI & Nuvem",
@@ -2797,64 +2700,6 @@
       "prometheus",
       "observabilidade",
       "monitoramento"
-    ]
-  },
-  {
-    "id": 136,
-    "banca": "CEBRASPE",
-    "materia": "Engenharia de Software & Agilidade",
-    "tipo": "certo_errado",
-    "origem": "Inédita no estilo CEBRASPE — tema cobrado na prova Bacen 2024 (Analista - TI)",
-    "enunciado": "No desenvolvimento orientado a testes (TDD), o teste automatizado é escrito antes do código de produção, devendo inicialmente falhar, para só então ser implementado o código mínimo que o faça passar.",
-    "alternativas": {
-      "C": "Certo",
-      "E": "Errado"
-    },
-    "gabarito": "C",
-    "explicacao": "Ciclo red → green → refactor: escreve o teste (falha), implementa o mínimo para passar e depois refatora mantendo os testes verdes.",
-    "tags": [
-      "tdd",
-      "testes",
-      "agil"
-    ]
-  },
-  {
-    "id": 137,
-    "banca": "CEBRASPE",
-    "materia": "Arquitetura de TI & Nuvem",
-    "tipo": "certo_errado",
-    "origem": "Inédita no estilo CEBRASPE — tema cobrado na prova Bacen 2024 (Analista - TI)",
-    "enunciado": "No Kubernetes, o kube-scheduler é o componente responsável por aumentar automaticamente o número de réplicas de um Deployment quando o uso de CPU dos pods ultrapassa um limite definido.",
-    "alternativas": {
-      "C": "Certo",
-      "E": "Errado"
-    },
-    "gabarito": "E",
-    "explicacao": "O kube-scheduler apenas decide em qual nó cada pod novo vai rodar. Escalar réplicas por métricas é papel do Horizontal Pod Autoscaler (HPA). Quem executa os pods no nó é o kubelet.",
-    "tags": [
-      "kubernetes",
-      "containers",
-      "escalabilidade",
-      "pegadinha"
-    ]
-  },
-  {
-    "id": 138,
-    "banca": "CEBRASPE",
-    "materia": "Arquitetura de TI & Nuvem",
-    "tipo": "certo_errado",
-    "origem": "Inédita no estilo CEBRASPE — tema cobrado na prova Bacen 2024 (Analista - TI)",
-    "enunciado": "Em soluções de alta disponibilidade, failback corresponde ao retorno das operações para o sistema primário após sua recuperação, enquanto failover é a transferência das operações para o sistema secundário quando o primário falha.",
-    "alternativas": {
-      "C": "Certo",
-      "E": "Errado"
-    },
-    "gabarito": "C",
-    "explicacao": "Failover = primário cai, o secundário assume. Failback = primário volta e reassume. Analogia de aviação: passar para o sistema reserva é o failover; voltar ao principal depois de reparado é o failback.",
-    "tags": [
-      "alta-disponibilidade",
-      "failover",
-      "tolerancia-a-falhas"
     ]
   },
   {
@@ -2877,22 +2722,1408 @@
     ]
   },
   {
-    "id": 140,
+    "id": 141,
     "banca": "CEBRASPE",
-    "materia": "Redes & Segurança da Informação",
+    "materia": "Banco de Dados & Dados",
     "tipo": "certo_errado",
-    "origem": "Inédita no estilo CEBRASPE — tema cobrado na prova Bacen 2024 (Analista - TI)",
-    "enunciado": "Codificar a saída (output encoding) de dados fornecidos pelo usuário antes de inseri-los em páginas HTML é uma medida eficaz de prevenção contra ataques de cross-site scripting (XSS).",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 51. Gabarito oficial definitivo.",
+    "enunciado": "A respeito de aprendizagem de máquina, deep learning e processamento de linguagem natural, julgue os itens seguintes.\n\nBoW (bag of words) é uma técnica de processamento de linguagem natural que transforma um texto em um vetor, considerando a frequência e a ordem ou o contexto das palavras presentes.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "O BoW transforma o texto num vetor de frequências, mas IGNORA a ordem e o contexto das palavras: 'o cão mordeu o homem' e 'o homem mordeu o cão' viram o mesmo vetor. Considerar contexto é o que fazem n-gramas, embeddings e transformers.",
+    "tags": [
+      "pln",
+      "bag-of-words",
+      "pegadinha"
+    ]
+  },
+  {
+    "id": 142,
+    "banca": "CEBRASPE",
+    "materia": "Banco de Dados & Dados",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 52. Gabarito oficial definitivo.",
+    "enunciado": "A respeito de aprendizagem de máquina, deep learning e processamento de linguagem natural, julgue os itens seguintes.\n\nA validação cruzada é uma técnica utilizada para prover a generalização de um modelo treinado, aprimorando seu desempenho e identificando problemas potenciais, como overfitting e underfitting.",
     "alternativas": {
       "C": "Certo",
       "E": "Errado"
     },
     "gabarito": "C",
-    "explicacao": "XSS ocorre quando entrada não confiável é interpretada como script no navegador. Codificar a saída conforme o contexto (HTML, atributo, JS), validar a entrada e usar Content Security Policy são as defesas recomendadas pela OWASP.",
+    "explicacao": "A validação cruzada avalia o modelo em várias partições dos dados, o que revela se ele generaliza bem e expõe overfitting ou underfitting. A banca aceitou que, ao orientar a escolha de modelo e hiperparâmetros, ela ajuda a melhorar o desempenho.",
+    "tags": [
+      "validacao-cruzada",
+      "overfitting",
+      "underfitting"
+    ]
+  },
+  {
+    "id": 143,
+    "banca": "CEBRASPE",
+    "materia": "Banco de Dados & Dados",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 54. Gabarito oficial definitivo.",
+    "enunciado": "A respeito de aprendizagem de máquina, deep learning e processamento de linguagem natural, julgue os itens seguintes.\n\nNa validação cruzada K-fold em que k = 5, os dados são divididos em 5 partes, sendo um subconjunto de tamanho k − 1 para teste e o restante para validação, o que resulta em uma métrica de avaliação média para o modelo.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "Em cada rodada, k − 1 partes (4) servem para TREINO e 1 parte para teste/validação. A banca inverteu os papéis e ainda falou em 'teste e validação', sem mencionar o treino. A média das 5 rodadas é a métrica final.",
+    "tags": [
+      "k-fold",
+      "validacao-cruzada",
+      "pegadinha"
+    ]
+  },
+  {
+    "id": 144,
+    "banca": "CEBRASPE",
+    "materia": "Banco de Dados & Dados",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 57. Gabarito oficial definitivo.",
+    "enunciado": "A respeito dos tipos de aprendizado de máquina, julgue os itens a seguir.\n\nO agrupamento é um método de aprendizado não supervisionado que busca a similaridade entre os dados e, uma vez identificada tal similaridade, organiza os itens em clusters específicos.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "Agrupamento (clustering) é o exemplo clássico de aprendizado não supervisionado: sem rótulos, ele junta os itens parecidos em clusters (ex.: K-means, DBSCAN, hierárquico).",
+    "tags": [
+      "aprendizado-nao-supervisionado",
+      "clustering"
+    ]
+  },
+  {
+    "id": 145,
+    "banca": "CEBRASPE",
+    "materia": "Banco de Dados & Dados",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 58. Gabarito oficial definitivo.",
+    "enunciado": "A respeito dos tipos de aprendizado de máquina, julgue os itens a seguir.\n\nO aprendizado por transferência transdutiva ocorre quando os domínios de origem e alvo são os mesmos, mas as tarefas que o modelo deve concluir são diferentes.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "Na transferência TRANSDUTIVA, a TAREFA é a mesma e os DOMÍNIOS são diferentes (ex.: classificar sentimento em resenhas de filmes e depois em resenhas de produtos). Mesmo domínio com tarefas diferentes é a transferência INDUTIVA.",
+    "tags": [
+      "transfer-learning",
+      "pegadinha"
+    ]
+  },
+  {
+    "id": 146,
+    "banca": "CEBRASPE",
+    "materia": "Banco de Dados & Dados",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 59. Gabarito oficial definitivo.",
+    "enunciado": "Em relação aos grandes modelos de linguagem (LLM) e à inteligência artificial generativa, julgue os itens subsequentes.\n\nO parâmetro temperature em LLM regula a amplitude da diversidade e criatividade nas previsões produzidas pelo modelo.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "Temperature ajusta a distribuição de probabilidade dos próximos tokens: valores baixos deixam as respostas mais previsíveis; valores altos, mais diversas e criativas.",
+    "tags": [
+      "llm",
+      "ia-generativa",
+      "temperature"
+    ]
+  },
+  {
+    "id": 147,
+    "banca": "CEBRASPE",
+    "materia": "Banco de Dados & Dados",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 60. Gabarito oficial definitivo.",
+    "enunciado": "Em relação aos grandes modelos de linguagem (LLM) e à inteligência artificial generativa, julgue os itens subsequentes.\n\nUma thread representa uma entidade que pode ser configurada para responder às mensagens de um usuário a partir de vários parâmetros, como modelo, instruções e ferramentas.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "Na terminologia de assistentes de IA (como a Assistants API), quem é configurado com modelo, instruções e ferramentas é o ASSISTENTE. A THREAD é apenas a conversa, o histórico de mensagens de uma sessão.",
+    "tags": [
+      "llm",
+      "ia-generativa",
+      "assistants-api"
+    ]
+  },
+  {
+    "id": 148,
+    "banca": "CEBRASPE",
+    "materia": "Banco de Dados & Dados",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 62. Gabarito oficial definitivo.",
+    "enunciado": "Julgue os itens subsecutivos, relativos a versionamento e automação do ciclo de produção de modelos de aprendizado de máquina em operações de aprendizado de máquina (MLOps).\n\nA automação do ciclo de produção de modelos de aprendizado de máquina percorre diversas etapas, desde a ingestão de dados até a implantação, e inclui atividades como pré-processamento, treinamento de modelos e validação.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "MLOps automatiza o pipeline inteiro: ingestão → pré-processamento → treinamento → validação → implantação → monitoramento. É o 'DevOps' dos modelos de ML.",
+    "tags": [
+      "mlops",
+      "pipeline"
+    ]
+  },
+  {
+    "id": 149,
+    "banca": "CEBRASPE",
+    "materia": "Banco de Dados & Dados",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 63. Gabarito oficial definitivo.",
+    "enunciado": "Julgue os itens subsecutivos, relativos a versionamento e automação do ciclo de produção de modelos de aprendizado de máquina em operações de aprendizado de máquina (MLOps).\n\nEm MLOps, o controle de versão abrange o monitoramento das mudanças nos ativos de aprendizado de máquina, visando assegurar a reprodutibilidade e a auditabilidade dos treinamentos desses modelos.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "Em MLOps, versiona-se não só o código, mas também os dados, os modelos e os hiperparâmetros (ex.: DVC, MLflow). Isso permite reproduzir e auditar qualquer treinamento.",
+    "tags": [
+      "mlops",
+      "versionamento"
+    ]
+  },
+  {
+    "id": 150,
+    "banca": "CEBRASPE",
+    "materia": "Banco de Dados & Dados",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 64. Gabarito oficial definitivo.",
+    "enunciado": "Em relação à privacidade em governança e ética de inteligência artificial, julgue o item seguinte.\n\nDe acordo com os princípios de governança e ética relativos à inteligência artificial, a opacidade sobre os algoritmos é encorajada como prática padrão para garantir a eficácia dos sistemas.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "Os princípios de IA responsável pedem TRANSPARÊNCIA e explicabilidade, não opacidade. Modelos opacos ('caixa-preta') são justamente um risco que a governança de IA tenta reduzir.",
+    "tags": [
+      "etica-ia",
+      "governanca-ia",
+      "transparencia"
+    ]
+  },
+  {
+    "id": 151,
+    "banca": "CEBRASPE",
+    "materia": "Redes & Segurança da Informação",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 65. Gabarito oficial definitivo.",
+    "enunciado": "A respeito do SAML 2.0, julgue os itens a seguir.\n\nO SAML é considerado o principal padrão de autenticação, sendo o OAuth2 a sua correspondente implementação.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "SAML e OAuth2 são padrões independentes. SAML (XML) é usado para autenticação federada e SSO; OAuth2 é um framework de AUTORIZAÇÃO (delegação de acesso). OAuth2 não é implementação do SAML (o par certo para autenticação sobre OAuth2 é o OpenID Connect).",
+    "tags": [
+      "saml",
+      "oauth2",
+      "autenticacao"
+    ]
+  },
+  {
+    "id": 152,
+    "banca": "CEBRASPE",
+    "materia": "Redes & Segurança da Informação",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 66. Gabarito oficial definitivo.",
+    "enunciado": "A respeito do SAML 2.0, julgue os itens a seguir.\n\nO sujeito, o provedor de identidade e o provedor de serviços são as partes envolvidas em um processo do tipo autenticação, considerando-se o SAML e o início de sessão única (SSO).",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "No SAML há três papéis: o sujeito (usuário), o provedor de identidade (IdP, que autentica e emite a asserção) e o provedor de serviços (SP, a aplicação que confia na asserção).",
+    "tags": [
+      "saml",
+      "sso"
+    ]
+  },
+  {
+    "id": 153,
+    "banca": "CEBRASPE",
+    "materia": "Redes & Segurança da Informação",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 67. Gabarito oficial definitivo.",
+    "enunciado": "Em relação aos principais tipos de ataques a aplicações web e a sua prevenção, julgue os seguintes itens.\n\nFuzzing é um tipo de teste de prevenção de ataques que consiste na inserção de poucos dados não aleatórios em uma aplicação web com a expectativa de se obter um código de erro 500.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "Fuzzing envia uma GRANDE quantidade de entradas inválidas, inesperadas ou ALEATÓRIAS para descobrir falhas (travamentos, exceções, vazamentos). 'Poucos dados não aleatórios' é o contrário da técnica, e o objetivo não é obter um erro 500 específico.",
+    "tags": [
+      "fuzzing",
+      "testes-de-seguranca",
+      "pegadinha"
+    ]
+  },
+  {
+    "id": 154,
+    "banca": "CEBRASPE",
+    "materia": "Redes & Segurança da Informação",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 68. Gabarito oficial definitivo.",
+    "enunciado": "Em relação aos principais tipos de ataques a aplicações web e a sua prevenção, julgue os seguintes itens.\n\nXSS (Cross-site scripting) é um tipo de ataque por meio do qual o atacante explora erros nos códigos de entrada de dados, e a prevenção de ataques XSS requer sanitização das entradas de dados, de maneira a impedir a injeção de códigos maliciosos.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "No XSS, o atacante injeta script em entradas mal tratadas, e o script roda no navegador de outros usuários. A prevenção passa por validar e sanitizar as entradas e codificar as saídas (output encoding), além de usar CSP.",
     "tags": [
       "xss",
       "owasp",
+      "sanitizacao"
+    ]
+  },
+  {
+    "id": 155,
+    "banca": "CEBRASPE",
+    "materia": "Redes & Segurança da Informação",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 69. Gabarito oficial definitivo.",
+    "enunciado": "A respeito de múltiplos fatores de autenticação (MFA), julgue os próximos itens.\n\nMFA adaptativa é uma variação de MFA em que se pode considerar o número de tentativas de login ou até a localização geográfica do usuário.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "A MFA adaptativa (baseada em risco) usa contexto: localização, dispositivo, horário, tentativas falhas. Se o risco sobe, ela pede fatores extras; se o contexto é conhecido, pode simplificar.",
+    "tags": [
+      "mfa",
+      "autenticacao-adaptativa"
+    ]
+  },
+  {
+    "id": 156,
+    "banca": "CEBRASPE",
+    "materia": "Redes & Segurança da Informação",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 70. Gabarito oficial definitivo.",
+    "enunciado": "A respeito de múltiplos fatores de autenticação (MFA), julgue os próximos itens.\n\nMFA é um processo que requer uma etapa de variação criptográfica da senha do usuário por diferenciação de chave pública.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "MFA é exigir dois ou mais fatores de categorias diferentes (algo que você sabe, tem ou é). Não existe 'variação criptográfica da senha por diferenciação de chave pública' como requisito: a frase mistura termos para soar técnica.",
+    "tags": [
+      "mfa",
+      "autenticacao"
+    ]
+  },
+  {
+    "id": 157,
+    "banca": "CEBRASPE",
+    "materia": "Redes & Segurança da Informação",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 71. Gabarito oficial definitivo.",
+    "enunciado": "Acerca do NIST CSF 2.0, julgue o item a seguir.\n\nO núcleo da estrutura do NIST CSF 2.0 está organizado em torno de três funções principais: identificar, proteger e detectar.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "O núcleo do NIST CSF 2.0 tem SEIS funções: Governar (nova na 2.0), Identificar, Proteger, Detectar, Responder e Recuperar.",
+    "tags": [
+      "nist-csf",
+      "governanca-seguranca"
+    ]
+  },
+  {
+    "id": 158,
+    "banca": "CEBRASPE",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 72. Gabarito oficial definitivo.",
+    "enunciado": "No que diz respeito à arquitetura de sistemas web, julgue os itens a seguir.\n\nNo WebSocket, utiliza-se um fluxo de bytes no lugar de um fluxo de mensagens para fornecer comunicações completas em uma conexão TCP.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "É o contrário: o TCP já é um fluxo de bytes, e o WebSocket acrescenta, por cima dele, um fluxo de MENSAGENS (frames), com comunicação full-duplex numa única conexão.",
+    "tags": [
+      "websocket",
+      "protocolos",
+      "pegadinha"
+    ]
+  },
+  {
+    "id": 159,
+    "banca": "CEBRASPE",
+    "materia": "Arquitetura de TI & Nuvem",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 73. Gabarito oficial definitivo.",
+    "enunciado": "No que diz respeito à arquitetura de sistemas web, julgue os itens a seguir.\n\nCom o balanceamento de carga no modo espera ativa, uma instância do controlador de entrega de aplicações é colocada online quando houver falha no nó principal.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "No modo ativo-passivo (espera ativa/standby), uma instância fica de reserva e só assume quando o nó principal falha. No modo ativo-ativo, todas atendem ao mesmo tempo.",
+    "tags": [
+      "balanceamento-de-carga",
+      "alta-disponibilidade"
+    ]
+  },
+  {
+    "id": 160,
+    "banca": "CEBRASPE",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 74. Gabarito oficial definitivo.",
+    "enunciado": "No que diz respeito à arquitetura de sistemas web, julgue os itens a seguir.\n\nNo HTTP/2, são utilizadas conexões persistentes para o atendimento a diversas solicitações em sequência, ao passo que, no HTTP/1, as conexões atendem a várias solicitações simultâneas.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "A banca inverteu. No HTTP/1.1, a conexão persistente atende às requisições EM SEQUÊNCIA (uma após a outra). No HTTP/2, a multiplexação permite várias requisições SIMULTÂNEAS na mesma conexão.",
+    "tags": [
+      "http2",
+      "protocolos",
+      "pegadinha"
+    ]
+  },
+  {
+    "id": 161,
+    "banca": "CEBRASPE",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 75. Gabarito oficial definitivo.",
+    "enunciado": "No que diz respeito à arquitetura de sistemas web, julgue os itens a seguir.\n\nNo gRPC, o protocolo de transporte utilizado é o HTTP/2.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "O gRPC roda sobre HTTP/2 e usa Protocol Buffers para serializar as mensagens, o que permite streaming bidirecional e baixa latência entre microsserviços.",
+    "tags": [
+      "grpc",
+      "http2",
+      "microsservicos"
+    ]
+  },
+  {
+    "id": 162,
+    "banca": "CEBRASPE",
+    "materia": "Engenharia de Software & Agilidade",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 76. Gabarito oficial definitivo.",
+    "enunciado": "Acerca dos princípios e das práticas de DevOps e DevSecOps, integração e entrega contínuas, julgue os seguintes itens.\n\nA realização de testes no DevSecOps apoia-se no uso de ferramentas de teste dinâmico de segurança de aplicativos (DAST) com base nas recomendações do OWASP.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "No DevSecOps, a esteira inclui testes de segurança automatizados: SAST (análise do código parado), DAST (ataque à aplicação rodando, ex.: OWASP ZAP) e SCA (dependências), seguindo referências da OWASP.",
+    "tags": [
+      "devsecops",
+      "dast",
+      "owasp"
+    ]
+  },
+  {
+    "id": 163,
+    "banca": "CEBRASPE",
+    "materia": "Engenharia de Software & Agilidade",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 77. Gabarito oficial definitivo.",
+    "enunciado": "Acerca dos princípios e das práticas de DevOps e DevSecOps, integração e entrega contínuas, julgue os seguintes itens.\n\nIntegração, entrega e implementação contínuas e com segurança em todo o ciclo de vida do desenvolvimento de software são os princípios básicos do DevOps.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "CI/CD são PRÁTICAS do DevOps, não seus princípios básicos. Os princípios costumam ser resumidos em cultura de colaboração, automação, medição e compartilhamento (CALMS). E 'segurança em todo o ciclo' é a marca do DevSecOps, não do DevOps.",
+    "tags": [
+      "devops",
+      "ci-cd"
+    ]
+  },
+  {
+    "id": 164,
+    "banca": "CEBRASPE",
+    "materia": "Redes & Segurança da Informação",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 78. Gabarito oficial definitivo.",
+    "enunciado": "No que se refere a técnicas de desenvolvimento seguro, julgue os itens que se seguem.\n\nA redução de velocidade de resposta do servidor é uma forma de prevenção de ataques como o que causa o erro HTTP 429.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "HTTP 429 (Too Many Requests) aparece quando um cliente excede o limite de requisições. Limitar ou desacelerar as respostas (rate limiting/throttling) é a defesa contra força bruta e abuso de API que causam esse cenário.",
+    "tags": [
+      "rate-limiting",
+      "http-429",
       "desenvolvimento-seguro"
+    ]
+  },
+  {
+    "id": 165,
+    "banca": "CEBRASPE",
+    "materia": "Redes & Segurança da Informação",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 79. Gabarito oficial definitivo.",
+    "enunciado": "No que se refere a técnicas de desenvolvimento seguro, julgue os itens que se seguem.\n\nXSS (Cross-site scripting) e entidades externas de XML são exemplos de controles e boas práticas para o desenvolvimento seguro.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "XSS e XXE (XML External Entities) são VULNERABILIDADES/ataques, não controles. Os controles são o que os previne: codificar a saída, sanitizar a entrada, desabilitar entidades externas no parser XML.",
+    "tags": [
+      "xss",
+      "xxe",
+      "owasp",
+      "pegadinha"
+    ]
+  },
+  {
+    "id": 166,
+    "banca": "CEBRASPE",
+    "materia": "Engenharia de Software & Agilidade",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 80. Gabarito oficial definitivo.",
+    "enunciado": "Julgue os itens subsequentes, acerca de testes de software.\n\nNo BDD, os nomes dos métodos de testes não são códigos, mas frases com significado real, a exemplo das histórias de usuários.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "No BDD, os cenários são escritos em linguagem de negócio (Dado/Quando/Então, Gherkin), como frases que descrevem comportamento, próximas das histórias de usuário.",
+    "tags": [
+      "bdd",
+      "testes"
+    ]
+  },
+  {
+    "id": 167,
+    "banca": "CEBRASPE",
+    "materia": "Engenharia de Software & Agilidade",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 81. Gabarito oficial definitivo.",
+    "enunciado": "Julgue os itens subsequentes, acerca de testes de software.\n\nO TDD (test driven development) é um tipo de teste unitário em que a especificação de teste é escrita logo após o código para validar o comportamento desejado.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "Dois erros: TDD é uma prática de DESENVOLVIMENTO (não um tipo de teste), e o teste é escrito ANTES do código (ciclo red → green → refactor).",
+    "tags": [
+      "tdd",
+      "testes",
+      "pegadinha"
+    ]
+  },
+  {
+    "id": 168,
+    "banca": "CEBRASPE",
+    "materia": "Arquitetura de TI & Nuvem",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 82. Gabarito oficial definitivo.",
+    "enunciado": "A área de tecnologia da informação e comunicação (TIC) do Banco Central do Brasil (BCB) necessita disponibilizar determinado aplicativo para transações digitais que o BCB vem desenvolvendo, utilizando contêineres no Kubernetes junto ao seu provedor de nuvem. Existe o requisito de que essa aplicação seja gerida no modo serverless.\n\nTendo como referência a situação hipotética apresentada, julgue os próximos itens, relativos a microsserviços e serverless.\n\nNa orquestração de serviços em cluster kubernetes, um pod sempre será executado em um nó, ainda que seja em uma máquina física.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "Todo pod é agendado e executado num nó (node) do cluster, que pode ser uma máquina virtual ou física.",
+    "tags": [
+      "kubernetes",
+      "pod",
+      "no"
+    ]
+  },
+  {
+    "id": 169,
+    "banca": "CEBRASPE",
+    "materia": "Arquitetura de TI & Nuvem",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 83. Gabarito oficial definitivo.",
+    "enunciado": "A área de tecnologia da informação e comunicação (TIC) do Banco Central do Brasil (BCB) necessita disponibilizar determinado aplicativo para transações digitais que o BCB vem desenvolvendo, utilizando contêineres no Kubernetes junto ao seu provedor de nuvem. Existe o requisito de que essa aplicação seja gerida no modo serverless.\n\nTendo como referência a situação hipotética apresentada, julgue os próximos itens, relativos a microsserviços e serverless.\n\nNo caso hipotético em tela, a área de TIC deve dimensionar a quantidade de pods de acordo com a demanda esperada, uma vez que os pods nesse modo são o ponto focal para avaliação de performance. Isso se deve ao fato de que, ao se utilizar o Kubernetes no modo serverless, cada pod gerencia os kubelets e os contêineres que estiverem contidos nos nós do cluster.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "No modo serverless, o dimensionamento é automático (a equipe não calcula pods manualmente). Além disso, a relação está invertida: o kubelet é o agente do NÓ que gerencia os pods, e não o pod que gerencia kubelets.",
+    "tags": [
+      "kubernetes",
+      "serverless",
+      "kubelet",
+      "pegadinha"
+    ]
+  },
+  {
+    "id": 170,
+    "banca": "CEBRASPE",
+    "materia": "Arquitetura de TI & Nuvem",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 84. Gabarito oficial definitivo.",
+    "enunciado": "A área de tecnologia da informação e comunicação (TIC) do Banco Central do Brasil (BCB) necessita disponibilizar determinado aplicativo para transações digitais que o BCB vem desenvolvendo, utilizando contêineres no Kubernetes junto ao seu provedor de nuvem. Existe o requisito de que essa aplicação seja gerida no modo serverless.\n\nTendo como referência a situação hipotética apresentada, julgue os próximos itens, relativos a microsserviços e serverless.\n\nNa situação em apreço, se a equipe de TIC estiver usando o modelo serverless, não haverá necessidade de o BCB gerenciar servidores, uma vez que, nesse caso, cabe ao provedor de nuvem gerenciar a infraestrutura da nuvem e escalar as aplicações, dimensionando e gerenciando automaticamente a infraestrutura necessária para executar o código.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "Essa é a definição de serverless: os servidores existem, mas são do provedor, que provisiona, escala e mantém a infraestrutura. O cliente cuida só do código.",
+    "tags": [
+      "serverless",
+      "nuvem"
+    ]
+  },
+  {
+    "id": 171,
+    "banca": "CEBRASPE",
+    "materia": "Arquitetura de TI & Nuvem",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 85. Gabarito oficial definitivo.",
+    "enunciado": "A área de tecnologia da informação e comunicação (TIC) do Banco Central do Brasil (BCB) necessita disponibilizar determinado aplicativo para transações digitais que o BCB vem desenvolvendo, utilizando contêineres no Kubernetes junto ao seu provedor de nuvem. Existe o requisito de que essa aplicação seja gerida no modo serverless.\n\nTendo como referência a situação hipotética apresentada, julgue os próximos itens, relativos a microsserviços e serverless.\n\nNo cenário em questão, sendo utilizado o modelo serverless, os desenvolvedores têm acesso, no BaaS (backend as a service), a serviços e aplicações de terceiros, tais como serviços de autenticação, banco de dados e criptografia, que podem ser acionados por meio de APIs.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "BaaS entrega o back-end pronto (autenticação, banco, armazenamento, notificações) consumido por API. O Supabase, que você usa no FocoPro, é um exemplo de BaaS.",
+    "tags": [
+      "serverless",
+      "baas"
+    ]
+  },
+  {
+    "id": 172,
+    "banca": "CEBRASPE",
+    "materia": "Arquitetura de TI & Nuvem",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 86. Gabarito oficial definitivo.",
+    "enunciado": "A área de tecnologia da informação e comunicação (TIC) do Banco Central do Brasil (BCB) necessita disponibilizar determinado aplicativo para transações digitais que o BCB vem desenvolvendo, utilizando contêineres no Kubernetes junto ao seu provedor de nuvem. Existe o requisito de que essa aplicação seja gerida no modo serverless.\n\nTendo como referência a situação hipotética apresentada, julgue os próximos itens, relativos a microsserviços e serverless.\n\nNo modelo FaaS (function as a service), os recursos de computação necessários para executar a lógica do aplicativo em resposta às solicitações são executados de forma orientada a eventos em contêineres stateless, totalmente gerenciados pelo provedor de serviços de nuvem.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "FaaS executa funções sob demanda, disparadas por eventos, em contêineres efêmeros e sem estado, gerenciados pelo provedor (ex.: AWS Lambda, e as Edge Functions do Supabase).",
+    "tags": [
+      "serverless",
+      "faas"
+    ]
+  },
+  {
+    "id": 173,
+    "banca": "CEBRASPE",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 87. Gabarito oficial definitivo.",
+    "enunciado": "No que se refere a programação assíncrona, UX design e UI design, julgue os itens a seguir.\n\nConsiderando-se que o trecho de código a seguir tenha sido desenvolvido em Python e que seja executado em um ambiente multithreading, é correto afirmar que este é um exemplo de programação assíncrona, uma vez que as três funções não dependem umas das outras para serem executadas, ainda que não possam ser executadas simultaneamente.\n\ndef a():\n    print(\"Banco\")\n\ndef b():\n    print(\"Central\")\n\ndef c():\n    print(\"do Brasil\")\n\na()\nb()\nc()",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "O código é SÍNCRONO: chama a(), depois b(), depois c(), em sequência, sem async/await, threads ou callbacks. Rodar 'num ambiente multithreading' não torna o código assíncrono, e funções independentes não bastam para caracterizar assincronia.",
+    "tags": [
+      "python",
+      "programacao-assincrona"
+    ]
+  },
+  {
+    "id": 174,
+    "banca": "CEBRASPE",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 88. Gabarito oficial definitivo.",
+    "enunciado": "No que se refere a programação assíncrona, UX design e UI design, julgue os itens a seguir.\n\nConsidere que a área de TIC do BCB precise desenvolver uma solução voltada a um aplicativo que o BCB vem desenvolvendo e que, nesse projeto, haja as seguintes demandas: a) projetar a interatividade, a aparência e a sensação da tela do aplicativo; b) desenvolver a interação do usuário com o serviço, assegurando que ela ocorra da forma mais estável possível. Nessa situação hipotética, as demandas “a” e “b” são afetas, respectivamente, às práticas de UI design e UX design.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "UI design cuida da interface: aparência, elementos visuais, interatividade da tela. UX design cuida da experiência completa do usuário com o serviço, ou seja, se a jornada é fluida e estável.",
+    "tags": [
+      "ui-design",
+      "ux-design"
+    ]
+  },
+  {
+    "id": 175,
+    "banca": "CEBRASPE",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 89. Gabarito oficial definitivo.",
+    "enunciado": "A equipe de TIC do BCB necessita desenvolver uma API a ser utilizada em uma solução que o BCB vem desenvolvendo e que será disponibilizada pelo órgão. Como requisitos, tal API deve apresentar: solicitações gerenciadas por HTTP; possibilidade de os clientes solicitarem recursos em qualquer ordem; e isolamento de cada solicitação em relação às outras solicitações.\n\nConsiderando a situação hipotética anterior, julgue os itens que se seguem, relativos a RESTful e GraphQL.\n\nNa situação em apreço, caso seja necessário que a API consulte dados em uma base de dados relacional compatível com a linguagem SQL, poder-se-á utilizar a GraphQL para obter dados nos servidores em questão, uma vez que a GraphQL executa comandos SQL em arquiteturas RESTful diretamente no(s) sistema(s) de gerenciamento de banco de dados (SGBD) atrelado(s) à solução.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "GraphQL é uma linguagem de consulta para APIs, uma alternativa ao REST, e não executa SQL diretamente no SGBD. Quem busca os dados são os resolvers no servidor, que podem consultar qualquer fonte (SQL, NoSQL, outras APIs).",
+    "tags": [
+      "graphql",
+      "rest",
+      "api"
+    ]
+  },
+  {
+    "id": 176,
+    "banca": "CEBRASPE",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 90. Gabarito oficial definitivo.",
+    "enunciado": "A equipe de TIC do BCB necessita desenvolver uma API a ser utilizada em uma solução que o BCB vem desenvolvendo e que será disponibilizada pelo órgão. Como requisitos, tal API deve apresentar: solicitações gerenciadas por HTTP; possibilidade de os clientes solicitarem recursos em qualquer ordem; e isolamento de cada solicitação em relação às outras solicitações.\n\nConsiderando a situação hipotética anterior, julgue os itens que se seguem, relativos a RESTful e GraphQL.\n\nCaso seja utilizada a arquitetura RESTful, a citada API, além de atender aos requisitos descritos, será stateless, ou seja, o servidor completará cada solicitação do cliente independentemente de todas as solicitações anteriores, e todas as solicitações serão separadas e desconectadas entre si.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "Stateless é uma das restrições do REST: cada requisição traz tudo de que o servidor precisa, e o servidor não guarda estado de sessão entre requisições.",
+    "tags": [
+      "rest",
+      "stateless",
+      "api"
+    ]
+  },
+  {
+    "id": 177,
+    "banca": "CEBRASPE",
+    "materia": "Engenharia de Software & Agilidade",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 91. Gabarito oficial definitivo.",
+    "enunciado": "Julgue os itens subsequentes, relativos a padrões GoF.\n\nOs padrões abstract factory e facade são, respectivamente, de criação e estrutural, uma vez que o abstract factory fornece uma interface para criação de famílias de objetos relacionados, ao passo que o facade separa a construção de um objeto complexo da sua representação.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "A classificação está certa (Abstract Factory = criação; Facade = estrutural), mas a justificativa do Facade está errada: 'separar a construção de um objeto complexo da sua representação' é o BUILDER. O Facade oferece uma interface simplificada para um subsistema.",
+    "tags": [
+      "gof",
+      "padroes-de-projeto",
+      "pegadinha"
+    ]
+  },
+  {
+    "id": 178,
+    "banca": "CEBRASPE",
+    "materia": "Engenharia de Software & Agilidade",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 92. Gabarito oficial definitivo.",
+    "enunciado": "Julgue os itens subsequentes, relativos a padrões GoF.\n\nO padrão composite atribui responsabilidades adicionais a um objeto dinamicamente e o memento, sem violar o encapsulamento, captura e externaliza um estado interno de um objeto, de modo que este possa, posteriormente, ser restaurado para aquele estado.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "O Memento está bem descrito, mas 'atribuir responsabilidades adicionais a um objeto dinamicamente' é o DECORATOR. O Composite compõe objetos em árvore (parte-todo) e trata objetos individuais e composições de forma uniforme.",
+    "tags": [
+      "gof",
+      "padroes-de-projeto",
+      "pegadinha"
+    ]
+  },
+  {
+    "id": 179,
+    "banca": "CEBRASPE",
+    "materia": "Redes & Segurança da Informação",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 93. Gabarito oficial definitivo.",
+    "enunciado": "Julgue o item seguinte, acerca de DLT (distributed ledger technology).\n\nUma DLT é uma tecnologia de criptografia de chave assimétrica em que as chaves pública e privada ficam separadas, sendo utilizada para proteger livros-razão em blockchain, em que os dados são armazenados em blocos interligados em uma cadeia.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "DLT é um livro-razão DISTRIBUÍDO, replicado entre vários nós com consenso. Ela USA criptografia (hashes, assinaturas), mas não é 'uma tecnologia de criptografia'. Blockchain é um tipo de DLT.",
+    "tags": [
+      "dlt",
+      "blockchain"
+    ]
+  },
+  {
+    "id": 180,
+    "banca": "CEBRASPE",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 94. Gabarito oficial definitivo.",
+    "enunciado": "Julgue os itens a seguir, relativos a Python e Java.\n\nConsidere o seguinte código desenvolvido em Java.\n\npublic class Main {\n  public static void main(String[] args) {\n    int resultado = fun(3);\n    System.out.println(resultado);\n  }\n  public static int fun(int y) {\n    if (y > 1) {\n      return y + fun(y - 1);\n    } else {\n      return 0;\n    }\n  }\n}\n\nAo ser executado, esse código apresentará o seguinte resultado.\n\n6",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "Teste de mesa: fun(3) = 3 + fun(2); fun(2) = 2 + fun(1); fun(1) = 0, porque 1 > 1 é falso. Total = 3 + 2 + 0 = 5, e não 6. A pegadinha é o caso base devolver 0, e não 1.",
+    "tags": [
+      "java",
+      "recursao",
+      "teste-de-mesa",
+      "pegadinha"
+    ]
+  },
+  {
+    "id": 181,
+    "banca": "CEBRASPE",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 95. Gabarito oficial definitivo.",
+    "enunciado": "Julgue os itens a seguir, relativos a Python e Java.\n\nConsidere o seguinte código desenvolvido em Python.\n\nprint(len(\"Banco\"))\nprint(len([\"Banco\", \"Central\", \"do Brasil\"]))\nprint(len({\"Presidente\": \"Roberto Campos Neto\", \"Email\": \"presidencia@bcb.gov.br\"}))\n\nAo ser executado, esse código apresentará o seguinte resultado.\n\n5\n3\n2",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "len conta: caracteres numa string ('Banco' = 5), elementos numa lista (3) e pares chave-valor num dicionário (2).",
+    "tags": [
+      "python",
+      "len"
+    ]
+  },
+  {
+    "id": 182,
+    "banca": "CEBRASPE",
+    "materia": "Arquitetura de TI & Nuvem",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 96. Gabarito oficial definitivo.",
+    "enunciado": "A respeito de infraestrutura como código, Docker e Kubernetes, julgue os itens a seguir.\n\nAo se executar o arquivo YAML descrito a seguir, será criado um deployment com uma imagem do NGINX.\n\napiVersion: v1\nkind: Service\nmetadata:\n  name: my-nginx-svc\n  labels:\n    app: nginx\nspec:\n  type: LoadBalancer\n  ports:\n  - port: 80\n  selector:\n    app: nginx",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "O manifesto é kind: Service (tipo LoadBalancer): ele expõe os pods com o rótulo app: nginx, mas não cria pods nem define imagem. Para criar a aplicação seria preciso um kind: Deployment com spec.template.spec.containers e a image: nginx.",
+    "tags": [
+      "kubernetes",
+      "yaml",
+      "service"
+    ]
+  },
+  {
+    "id": 183,
+    "banca": "CEBRASPE",
+    "materia": "Arquitetura de TI & Nuvem",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 97. Gabarito oficial definitivo.",
+    "enunciado": "A respeito de infraestrutura como código, Docker e Kubernetes, julgue os itens a seguir.\n\nNo modelo de infraestrutura como código, é possível a implantação de uma infraestrutura com definição de sub-redes, balanceadores de carga e máquinas virtuais com a utilização de código, sem a necessidade de configurações manuais.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "Infraestrutura como código (Terraform, CloudFormation, Ansible) descreve redes, balanceadores e VMs em arquivos versionados, provisionados automaticamente e de forma repetível.",
+    "tags": [
+      "iac",
+      "terraform"
+    ]
+  },
+  {
+    "id": 184,
+    "banca": "CEBRASPE",
+    "materia": "Arquitetura de TI & Nuvem",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 98. Gabarito oficial definitivo.",
+    "enunciado": "A respeito de infraestrutura como código, Docker e Kubernetes, julgue os itens a seguir.\n\nO kube-scheduler é o escalonador do Kubernetes e sua função consiste em controlar o aumento e a diminuição da quantidade de pods de acordo com as configurações de consumo.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "O kube-scheduler decide EM QUAL NÓ cada pod novo vai rodar. Quem aumenta ou diminui a quantidade de pods conforme o consumo é o Horizontal Pod Autoscaler (HPA).",
+    "tags": [
+      "kubernetes",
+      "kube-scheduler",
+      "hpa",
+      "pegadinha"
+    ]
+  },
+  {
+    "id": 185,
+    "banca": "CEBRASPE",
+    "materia": "Arquitetura de TI & Nuvem",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 99. Gabarito oficial definitivo.",
+    "enunciado": "A respeito de infraestrutura como código, Docker e Kubernetes, julgue os itens a seguir.\n\nO Kubernetes pode operar sem usar o Docker e suporta a execução com CRI-O e Containerd.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "O Kubernetes conversa com qualquer runtime compatível com a CRI (Container Runtime Interface). Desde a versão 1.24, o dockershim foi removido, e containerd e CRI-O são os runtimes mais usados.",
+    "tags": [
+      "kubernetes",
+      "container-runtime"
+    ]
+  },
+  {
+    "id": 186,
+    "banca": "CEBRASPE",
+    "materia": "Arquitetura de TI & Nuvem",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 100. Gabarito oficial definitivo.",
+    "enunciado": "Acerca de monitoramento e observabilidade de sistemas de TI, julgue os itens subsequentes.\n\nO Grafana é capaz de fazer queries em diferentes tipos de data source, transformar os dados obtidos e gerar a visualização em forma de dashboard.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "O Grafana conecta-se a várias fontes (Prometheus, Elasticsearch, bancos SQL, Loki), aplica transformações e monta dashboards.",
+    "tags": [
+      "grafana",
+      "observabilidade"
+    ]
+  },
+  {
+    "id": 187,
+    "banca": "CEBRASPE",
+    "materia": "Arquitetura de TI & Nuvem",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 102. Gabarito oficial definitivo.",
+    "enunciado": "Acerca de monitoramento e observabilidade de sistemas de TI, julgue os itens subsequentes.\n\nUma ferramenta de APM é capaz de capturar traces de uma aplicação e registrar a taxa de erros de requisições com retorno HTTP 500.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "Ferramentas de APM (Application Performance Monitoring) coletam traces distribuídos, latência, throughput e taxa de erro (como os 5xx).",
+    "tags": [
+      "apm",
+      "observabilidade",
+      "tracing"
+    ]
+  },
+  {
+    "id": 188,
+    "banca": "CEBRASPE",
+    "materia": "Redes & Segurança da Informação",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 103. Gabarito oficial definitivo.",
+    "enunciado": "Em relação a protocolos de aplicação, julgue os itens seguintes.\n\nO protocolo HTTP funciona na camada de aplicação do protocolo TCP/IP, sendo capaz de fornecer acesso a páginas web e de também enviar e receber emails, estabelecendo comunicação com servidores de email.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "O HTTP é de aplicação e serve páginas web, mas quem envia e recebe e-mails com os servidores de e-mail é SMTP (envio) e POP3/IMAP (recebimento). O webmail usa HTTP só entre o navegador e o site.",
+    "tags": [
+      "http",
+      "smtp",
+      "protocolos"
+    ]
+  },
+  {
+    "id": 189,
+    "banca": "CEBRASPE",
+    "materia": "Redes & Segurança da Informação",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 104. Gabarito oficial definitivo.",
+    "enunciado": "Em relação a protocolos de aplicação, julgue os itens seguintes.\n\nO LDAP é comumente utilizado em serviços de diretório como o Microsoft Active Directory, sendo capaz de autenticar usuários em aplicativos.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "O LDAP é o protocolo de acesso a serviços de diretório; o Active Directory o implementa, e aplicações podem autenticar usuários contra o diretório via LDAP bind.",
+    "tags": [
+      "ldap",
+      "active-directory",
+      "autenticacao"
+    ]
+  },
+  {
+    "id": 190,
+    "banca": "CEBRASPE",
+    "materia": "Arquitetura de TI & Nuvem",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 105. Gabarito oficial definitivo.",
+    "enunciado": "Julgue os próximos itens, relativos a tolerância a falhas e continuidade de operação, implantação e administração de serviços de nuvem e administração e gerenciamento de ambiente de virtualização.\n\nCom a virtualização de máquinas em nuvens IaaS, pode-se fazer a migração de máquinas virtuais enquanto elas ainda são operacionais, utilizando-se técnicas como a migração de memória com pré-cópia, conhecida como migração viva (live migration).",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "Na live migration com pré-cópia, as páginas de memória são copiadas enquanto a VM continua rodando; só no fim há uma pausa curtíssima para copiar o que mudou.",
+    "tags": [
+      "virtualizacao",
+      "live-migration"
+    ]
+  },
+  {
+    "id": 191,
+    "banca": "CEBRASPE",
+    "materia": "Arquitetura de TI & Nuvem",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 106. Gabarito oficial definitivo.",
+    "enunciado": "Julgue os próximos itens, relativos a tolerância a falhas e continuidade de operação, implantação e administração de serviços de nuvem e administração e gerenciamento de ambiente de virtualização.\n\nA categoria de serviço em nuvem IaaS oferta uma plataforma robusta, flexível, que permite a execução e o desenvolvimento de serviços de aplicação (middleware), gestão de processos de negócio e serviço de banco de dados.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "Plataforma pronta para desenvolver e executar aplicações, com middleware e banco gerenciado, é PaaS. IaaS entrega infraestrutura bruta (VMs, rede, armazenamento), e o cliente instala o resto.",
+    "tags": [
+      "iaas",
+      "paas",
+      "pegadinha"
+    ]
+  },
+  {
+    "id": 192,
+    "banca": "CEBRASPE",
+    "materia": "Arquitetura de TI & Nuvem",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 107. Gabarito oficial definitivo.",
+    "enunciado": "Julgue os próximos itens, relativos a tolerância a falhas e continuidade de operação, implantação e administração de serviços de nuvem e administração e gerenciamento de ambiente de virtualização.\n\nEm TI, a alta disponibilidade de um serviço caracteriza-se por ele estar continuamente disponível para o cliente, havendo pouco downtime e recuperação rápida.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "Alta disponibilidade significa operar continuamente, com o mínimo de indisponibilidade (medida em 'noves', ex.: 99,99%), com redundância e recuperação rápida.",
+    "tags": [
+      "alta-disponibilidade"
+    ]
+  },
+  {
+    "id": 193,
+    "banca": "CEBRASPE",
+    "materia": "Arquitetura de TI & Nuvem",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 108. Gabarito oficial definitivo.",
+    "enunciado": "Julgue os próximos itens, relativos a tolerância a falhas e continuidade de operação, implantação e administração de serviços de nuvem e administração e gerenciamento de ambiente de virtualização.\n\nA capacidade de alternar para um servidor, sistema ou rede redundante ou em standby, mediante a falha ou o desligamento de um ativo existente, é chamada de failback.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "Passar para o redundante quando o principal falha é FAILOVER. FAILBACK é o retorno ao sistema principal depois de restaurado.",
+    "tags": [
+      "failover",
+      "failback",
+      "pegadinha"
+    ]
+  },
+  {
+    "id": 194,
+    "banca": "CEBRASPE",
+    "materia": "Redes & Segurança da Informação",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 109. Gabarito oficial definitivo.",
+    "enunciado": "Julgue os itens subsequentes, relacionados à administração e à operação do Microsoft Windows Server e do Linux e a conceitos de LAN, WAN e SDN.\n\nAs principais desvantagens na implementação de uma rede SDN são alto custo de manutenção, baixa flexibilidade e escalabilidade, e alto grau de dificuldade de gerenciamento.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "A SDN separa o plano de controle do plano de dados e centraliza o controle, justamente para ganhar flexibilidade, escalabilidade e facilidade de gerenciamento. O item lista como desvantagens exatamente as vantagens.",
+    "tags": [
+      "sdn",
+      "redes"
+    ]
+  },
+  {
+    "id": 195,
+    "banca": "CEBRASPE",
+    "materia": "Sistemas Operacionais & Hardware",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 110. Gabarito oficial definitivo.",
+    "enunciado": "Julgue os itens subsequentes, relacionados à administração e à operação do Microsoft Windows Server e do Linux e a conceitos de LAN, WAN e SDN.\n\nO Windows Admin Center é um conjunto de ferramentas com interface baseada em um navegador web, usadas, entre outras finalidades, para a configuração de recursos de administração quando da implementação de clusters hiperconvergentes.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "O Windows Admin Center é a console web da Microsoft para administrar Windows Server, clusters e infraestrutura hiperconvergente (Storage Spaces Direct).",
+    "tags": [
+      "windows-server",
+      "windows-admin-center"
+    ]
+  },
+  {
+    "id": 196,
+    "banca": "CEBRASPE",
+    "materia": "Redes & Segurança da Informação",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 111. Gabarito oficial definitivo.",
+    "enunciado": "Julgue os itens subsequentes, relacionados à administração e à operação do Microsoft Windows Server e do Linux e a conceitos de LAN, WAN e SDN.\n\nUma rede LAN é formada por computadores interligados por cabos ou ondas de rádio, em que todos pertencem a um mesmo local físico, e uma rede WAN é formada pela interligação de pequenas ou grandes redes LAN.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "LAN é a rede local (cabo ou Wi-Fi) num mesmo local físico. WAN cobre grandes distâncias e interliga redes locais (ex.: filiais de uma empresa, ou a própria Internet).",
+    "tags": [
+      "lan",
+      "wan",
+      "redes"
+    ]
+  },
+  {
+    "id": 197,
+    "banca": "CEBRASPE",
+    "materia": "Sistemas Operacionais & Hardware",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 112. Gabarito oficial definitivo.",
+    "enunciado": "Julgue os itens subsequentes, relacionados à administração e à operação do Microsoft Windows Server e do Linux e a conceitos de LAN, WAN e SDN.\n\nNo Linux, ao se executar o comando dpkg, todas as dependências do pacote solicitado são instaladas, sem a necessidade de confirmação do administrador.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "O dpkg instala um .deb, mas NÃO resolve dependências: se faltar alguma, ele acusa erro. Quem resolve e baixa dependências é o apt (ou apt-get), que normalmente pede confirmação.",
+    "tags": [
+      "linux",
+      "dpkg",
+      "apt"
+    ]
+  },
+  {
+    "id": 198,
+    "banca": "CEBRASPE",
+    "materia": "Banco de Dados & Dados",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 113. Gabarito oficial definitivo.",
+    "enunciado": "Julgue os próximos itens, relativos a bancos de dados.\n\nUm dos objetivos do sharding de arquivos em bancos de dados NoSQL é melhorar o balanceamento de carga entre os nós da aplicação.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "Sharding particiona os dados horizontalmente entre nós, distribuindo armazenamento e carga de leitura e escrita (escala horizontal).",
+    "tags": [
+      "nosql",
+      "sharding",
+      "escalabilidade"
+    ]
+  },
+  {
+    "id": 199,
+    "banca": "CEBRASPE",
+    "materia": "Banco de Dados & Dados",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 114. Gabarito oficial definitivo.",
+    "enunciado": "Julgue os próximos itens, relativos a bancos de dados.\n\nQuando utilizado o comando SELECT, podem-se incluir várias subqueries internas na mesma instrução.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "Um SELECT pode ter várias subconsultas: no WHERE, no FROM (tabelas derivadas), no SELECT (escalares) e no HAVING, inclusive aninhadas.",
+    "tags": [
+      "sql",
+      "subquery"
+    ]
+  },
+  {
+    "id": 200,
+    "banca": "CEBRASPE",
+    "materia": "Banco de Dados & Dados",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 115. Gabarito oficial definitivo.",
+    "enunciado": "Julgue os próximos itens, relativos a bancos de dados.\n\nConsidera-se que uma tabela está na terceira forma normal (3FN) quando não existem dependências multivaloradas, ou seja, campos que se repetem em relação à chave primária.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "3FN = 2FN + nenhuma dependência TRANSITIVA (atributo não chave dependendo de outro não chave). Eliminar dependências MULTIVALORADAS é a 4FN, e grupos repetidos são resolvidos na 1FN.",
+    "tags": [
+      "normalizacao",
+      "3fn",
+      "pegadinha"
+    ]
+  },
+  {
+    "id": 201,
+    "banca": "CEBRASPE",
+    "materia": "Banco de Dados & Dados",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 116. Gabarito oficial definitivo.",
+    "enunciado": "Julgue os próximos itens, relativos a bancos de dados.\n\nEm um data warehouse, a ocorrência de deadlocks causados por grande fluxo de dados é um fator crítico para o desempenho.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "Um DW é voltado à leitura analítica (OLAP), com cargas em lote (ETL). Deadlocks são típicos de ambientes OLTP, com muitas transações concorrentes de escrita, e não são um fator crítico típico de DW.",
+    "tags": [
+      "data-warehouse",
+      "olap",
+      "deadlock"
+    ]
+  },
+  {
+    "id": 202,
+    "banca": "CEBRASPE",
+    "materia": "Engenharia de Software & Agilidade",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 117. Gabarito oficial definitivo.",
+    "enunciado": "Julgue os próximos itens, relativos a Kanban e Scrum.\n\nNa sprint planning, o product owner é o responsável, para cada item do product backlog, por planejar e definir a forma como será executado o trabalho necessário para criar um incremento que atenda à definição de pronto no Scrum.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "E",
+    "explicacao": "Pelo Guia do Scrum, decidir COMO o trabalho será feito é responsabilidade dos DEVELOPERS. O Product Owner responde pelo valor e pela ordem do Product Backlog (o porquê e o quê).",
+    "tags": [
+      "scrum",
+      "sprint-planning",
+      "product-owner"
+    ]
+  },
+  {
+    "id": 203,
+    "banca": "CEBRASPE",
+    "materia": "Engenharia de Software & Agilidade",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 118. Gabarito oficial definitivo.",
+    "enunciado": "Julgue os próximos itens, relativos a Kanban e Scrum.\n\nO Kanban é uma ferramenta que prevê o progresso de uma sprint no Scrum.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "Item polêmico: o gabarito preliminar era Errado e a Cebraspe mudou para Certo no definitivo. A banca aceitou que o quadro Kanban pode ser usado dentro do Scrum para visualizar e acompanhar o progresso do trabalho da sprint. Guarde a posição final da banca.",
+    "tags": [
+      "kanban",
+      "scrum",
+      "polemica"
+    ]
+  },
+  {
+    "id": 204,
+    "banca": "CEBRASPE",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 119. Gabarito oficial definitivo.",
+    "enunciado": "No que concerne a governança de dados e ITIL v4, julgue os itens a seguir.\n\nEntender as necessidades estratégicas de dados da empresa e desenvolver e manter uma estratégia de dados são exemplos de objetivos na atividade planejamento da gestão de dados de governança de dados.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "No DMBOK, a governança de dados começa pelo planejamento: entender as necessidades estratégicas de dados da organização e definir e manter a estratégia de dados.",
+    "tags": [
+      "governanca-de-dados",
+      "dmbok"
+    ]
+  },
+  {
+    "id": 205,
+    "banca": "CEBRASPE",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "tipo": "certo_errado",
+    "ano": 2024,
+    "orgao": "Bacen",
+    "cargo": "Analista - Tecnologia da Informação",
+    "origem": "CEBRASPE 2024 — Banco Central, Analista – Tecnologia da Informação, item 120. Gabarito oficial definitivo.",
+    "enunciado": "No que concerne a governança de dados e ITIL v4, julgue os itens a seguir.\n\nNo ITIL v4, a prática gerenciamento de risco visa garantir que a organização entenda e lide com os riscos de forma eficaz, como, por exemplo, no gerenciamento do nível de serviço, em que se deve identificar e gerenciar os riscos que possam afetar os níveis de serviço, bem como relatar esses riscos aos clientes e a outras partes interessadas.",
+    "alternativas": {
+      "C": "Certo",
+      "E": "Errado"
+    },
+    "gabarito": "C",
+    "explicacao": "No ITIL 4, o gerenciamento de risco é uma prática geral que permeia as demais, como o gerenciamento de nível de serviço, que deve identificar riscos aos níveis acordados e comunicá-los às partes interessadas.",
+    "tags": [
+      "itil4",
+      "gerenciamento-de-risco"
     ]
   }
 ]
