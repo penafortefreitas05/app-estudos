@@ -51,7 +51,7 @@ import {
 import { showToast, showConfirmModal } from './notifications.js';
 
 // ---------- 1.7 API de questões ----------
-import { carregarQuestoes, normalizarQuestao } from './api.js';
+import { normalizarQuestao } from './api.js';
 
 // ==================== FIM: 1. IMPORTAÇÕES DE MÓDULOS ====================
 // ---------- 2. ESTADO GLOBAL ----------
@@ -813,15 +813,21 @@ supabaseClient.auth.onAuthStateChange(async (event, session) => {
         if (btnAuthAcao) btnAuthAcao.innerText = "Sair";
         if (modalAuth) modalAuth.classList.remove('visible');
 
-        if (event === 'SIGNED_IN') {
+                if (event === 'SIGNED_IN') {
             historico = await carregarHistorico();
-            atualizarPlacar(historico, questoes);
-            aplicarFiltros();
+            await carregarBancoDeQuestoes();
         }
     } else {
         if (userEmail) userEmail.innerText = "Visitante";
         if (userAvatar) userAvatar.innerText = "?";
         if (btnAuthAcao) btnAuthAcao.innerText = "Fazer Login";
+
+        if (event === 'SIGNED_OUT') {
+            historico = {};
+            simulado = null;
+            pararCronometro(displayCronometro);
+            await carregarBancoDeQuestoes();
+        }
     }
 });
 
@@ -964,10 +970,57 @@ if (btnProcessarImportacao && textoJsonQuestoes && modalImportar) {
 
 
 // ============================================================
-// 14. CARGA INICIAL DA APLICAÇÃO
+// 14. CARGA DO BANCO DE QUESTÕES (SÓ PARA USUÁRIO LOGADO) E CARGA INICIAL
 // ============================================================
+
+// Carrega (ou esconde) o banco de questões de acordo com o login.
+// Chamada no início do app e sempre que o estado de login mudar (login/logout).
+async function carregarBancoDeQuestoes() {
+    // Visitante sem login: nenhuma questão é buscada nem exibida.
+    if (!usuarioAtual) {
+        questoes = [];
+        porId = new Map();
+
+        preencherSelect(selectBanca, "🏛️ Todas as Bancas", "banca", questoes);
+        preencherSelect(selectMateria, "📖 Todas as Matérias", "materia", questoes);
+        preencherSelect(selectAno, "📅 Todos os Anos", "ano", questoes);
+        preencherSelectTags(selectTag, "🏷️ Todos os Assuntos", questoes);
+
+        atualizarPlacar(historico, questoes);
+        renderizarQuestoes(
+            container,
+            [],
+            historico,
+            "🔒 Faça login para acessar o banco de questões do FocoPro."
+        );
+        return;
+    }
+
+    // Usuário logado: busca só da nuvem (Supabase) + cache local de importações próprias.
+    let daNuvem = [];
+    try {
+        daNuvem = await carregarTodasQuestoes();
+    } catch (e) {
+        console.warn("[FocoPro] Erro ao buscar questões da nuvem:", e);
+    }
+    const doCacheImportadas = carregarQuestoesLocais();
+
+    const mescladas = mesclarQuestoes(doCacheImportadas, daNuvem);
+    questoes = mescladas.length > 0 ? mescladas : mesclarQuestoes(questoesPadrao);
+
+    porId = new Map(questoes.map(q => [String(q.id), q]));
+
+    preencherSelect(selectBanca, "🏛️ Todas as Bancas", "banca", questoes);
+    preencherSelect(selectMateria, "📖 Todas as Matérias", "materia", questoes);
+    preencherSelect(selectAno, "📅 Todos os Anos", "ano", questoes);
+    preencherSelectTags(selectTag, "🏷️ Todos os Assuntos", questoes);
+
+    atualizarPlacar(historico, questoes);
+    aplicarFiltros();
+}
+
 async function iniciarApp() {
-    // 1. Verifica sessão ativa antes de puxar histórico
+    // 1. Verifica sessão ativa antes de puxar histórico/questões
     try {
         const { data: { session } } = await supabaseClient.auth.getSession();
         usuarioAtual = session?.user || null;
@@ -983,28 +1036,8 @@ async function iniciarApp() {
         historico = {};
     }
 
-    // 3. Carrega e mescla questões de todas as fontes (JSON Local + Cache Importadas + Supabase)
-    const [daApiLocal, daNuvem] = await Promise.all([
-        carregarQuestoes(),
-        carregarTodasQuestoes()
-    ]);
-    const doCacheImportadas = carregarQuestoesLocais();
-
-    const mescladas = mesclarQuestoes(daApiLocal, doCacheImportadas, daNuvem);
-    questoes = mescladas.length > 0 ? mescladas : mesclarQuestoes(questoesPadrao);
-
-    // 4. Índice por ID
-    porId = new Map(questoes.map(q => [String(q.id), q]));
-
-    // 5. Prepara a Interface
-   // ==================== INÍCIO: SUBSTITUIR OS 2 preencherSelect DO iniciarApp ====================
-    preencherSelect(selectBanca, "🏛️ Todas as Bancas", "banca", questoes);
-    preencherSelect(selectMateria, "📖 Todas as Matérias", "materia", questoes);
-    preencherSelect(selectAno, "📅 Todos os Anos", "ano", questoes);
-    preencherSelectTags(selectTag, "🏷️ Todos os Assuntos", questoes);
-
-    atualizarPlacar(historico, questoes);
-    aplicarFiltros();
+    // 3. Carrega o banco de questões (ou mostra o aviso de login)
+    await carregarBancoDeQuestoes();
 }
 
 iniciarApp();

@@ -220,19 +220,3 @@ export function normalizarMateriaEAgruparTags(questao, index = 0) {
 }
 
 export const normalizarQuestao = normalizarMateriaEAgruparTags;
-
-export async function carregarQuestoes() {
-    try {
-        const resposta = await fetch('./data/questoes.json');
-        if (!resposta.ok) {
-            throw new Error(`Erro de HTTP ao carregar questões: ${resposta.status}`);
-        }
-
-        const questoes = await resposta.json();
-        if (!Array.isArray(questoes)) return [];
-        return questoes.map((q, idx) => normalizarMateriaEAgruparTags(q, idx));
-    } catch (erro) {
-        console.warn('Aviso ao carregar ./data/questoes.json em js/api.js:', erro.message);
-        return [];
-    }
-}

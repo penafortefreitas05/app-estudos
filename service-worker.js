@@ -2,7 +2,7 @@
 // service-worker.js - Gerenciador de Cache e Offline (FocoPro)
 // ============================================================
 
-const CACHE_NAME = 'focopro-v3'; 
+const CACHE_NAME = 'focopro-v4';
 
 const RECURSOS_ESTATICOS = [
     './',
@@ -14,8 +14,7 @@ const RECURSOS_ESTATICOS = [
     './js/simulado.js',
     './js/storage.js',
     './js/notifications.js',
-    './js/api.js',
-    './data/questoes.json'
+    './js/api.js'
 ];
 
 self.addEventListener('install', (event) => {
