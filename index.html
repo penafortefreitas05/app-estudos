@@ -43,42 +43,48 @@
                 <span>📲 Instalar App no Celular</span>
             </button>
 
-            <div class="menu-item active">
+                        <div class="menu-item active">
                 🏠 Meu Desempenho
             </div>
 
-            <!-- Card: Acertos Totais -->
-            <div class="stat-card">
-                <span class="stat-title">🎯 Acertos Totais</span>
-                <span class="stat-value text-blue" id="stat-acertos">0</span>
-                <div class="progress-bar-mini blue"></div>
+            <!-- Cards de Acertos/Erros, lado a lado e compactos -->
+            <div class="stats-row">
+                <div class="stat-card">
+                    <span class="stat-title">🎯 Acertos</span>
+                    <span class="stat-value text-blue" id="stat-acertos">0</span>
+                    <div class="progress-bar-mini blue"></div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-title">🔄 Erros</span>
+                    <span class="stat-value text-orange" id="stat-erros">0</span>
+                    <div class="progress-bar-mini orange"></div>
+                </div>
             </div>
 
-            <!-- Card: Erros Totais -->
-            <div class="stat-card">
-                <span class="stat-title">🔄 Erros Totais</span>
-                <span class="stat-value text-orange" id="stat-erros">0</span>
-                <div class="progress-bar-mini orange"></div>
-            </div>
-
-            <!-- Botão: Caderno de Erros / Modo Revisão -->
+            <!-- Botão: Caderno de Erros / Modo Revisão (uso diário, fica visível) -->
             <button id="btn-modo-revisao" class="btn-sidebar">
                 <span>📑 Revisar Erros</span>
                 <span class="badge-count" id="contador-revisao">0</span>
             </button>
-            <!-- Botão para abrir o modal de importação -->
-             <div>
-               <button id="btnAbrirImportar" class="btn-acao" onclick="document.getElementById('modalImportar').style.display = 'flex'">
-                Importar Questões em Massa
-                </button>
-             </div>
 
-            <!-- Botão: Zerar Histórico -->
-            <button id="btn-limpar-dados" class="btn-sidebar danger">
-                <span>❌ Zerar Histórico</span>
-            </button>
+            <!-- Gaveta de ferramentas: ações raras de manutenção, fechada por padrão -->
+            <details class="gaveta-ferramentas">
+                <summary>⚙️ Ferramentas e Backup</summary>
+                <div class="gaveta-ferramentas-conteudo">
+                    <button id="btnAbrirImportar" class="btn-sidebar" onclick="document.getElementById('modalImportar').style.display = 'flex'">
+                        <span>📥 Importar Questões em Massa</span>
+                    </button>
 
-            <!-- Container Dinâmico do Desempenho por Matéria -->
+                    <!-- Botão: Zerar Histórico (só o cache deste navegador; a nuvem não é afetada) -->
+                    <button id="btn-limpar-dados" class="btn-sidebar danger" title="Limpa só o cache deste navegador. Se você estiver logado, seu progresso salvo na nuvem continua intacto.">
+                        <span>❌ Zerar Histórico (local)</span>
+                    </button>
+                    <!-- js/app.js insere aqui, dinamicamente: Exportar Histórico, Importar Histórico e Apagar TUDO -->
+                </div>
+            </details>
+
+            <!-- Painel de Desempenho por Matéria: o bloco principal, com mais espaço agora -->
+            <h3 class="dashboard-titulo">📊 Seu Desempenho por Matéria</h3>
             <div class="dashboard-container" id="dashboard-materias">
                 <!-- Renderizado via js/ui.js -->
             </div>

@@ -45,6 +45,27 @@ export async function salvarRespostaNoHistorico({ questaoId, materia, banca, ace
 }
 
 /**
+ /**
+ * Apaga TODAS as linhas de histórico_respostas do usuário logado (irreversível).
+ * Exige RLS: política DELETE restrita a auth.uid() = user_id.
+ */
+export async function apagarHistoricoDoUsuario() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    const user = session?.user;
+    if (!user) {
+        throw new Error("Você precisa estar logado para apagar o histórico da nuvem.");
+    }
+
+    const { error } = await supabaseClient
+        .from('historico_respostas')
+        .delete()
+        .eq('user_id', user.id);
+
+    if (error) throw error;
+}
+
+/**
+/**
  * Recupera o histórico de resoluções gravado no Supabase para o usuário logado
  */
 export async function carregarHistoricoDoUsuario() {
@@ -69,6 +90,10 @@ export async function carregarHistoricoDoUsuario() {
         return [];
     }
 }
+
+/**
+ * Salva uma lista de questões importadas na tabela 'questoes'
+ */
 
 /**
  * Salva uma lista de questões importadas na tabela 'questoes'

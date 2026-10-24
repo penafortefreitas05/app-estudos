@@ -25,7 +25,8 @@ import {
     supabaseClient,
     salvarRespostaNoHistorico,
     salvarQuestoesEmMassa,
-    carregarTodasQuestoes
+    carregarTodasQuestoes,
+    apagarHistoricoDoUsuario
 } from './supabase.js';
 
 // ---------- 1.3 Autenticação ----------
@@ -130,6 +131,10 @@ const btnImportar = criarBotaoSidebar("📂 Importar Histórico");
 const btnLimpar = document.getElementById("btn-limpar-dados");
 if (btnLimpar) btnLimpar.before(btnExportar, btnImportar);
 
+// Botão "de verdade": apaga a nuvem inteira, não só o cache deste navegador
+const btnApagarTudo = criarBotaoSidebar("🔥 Apagar TUDO (nuvem + local)");
+btnApagarTudo.classList.add("danger");
+if (btnLimpar) btnLimpar.after(btnApagarTudo);
 // ---------- 5. UTILITÁRIOS E VALIDAÇÃO ----------
 function embaralharArray(array) {
     const a = [...array];
@@ -773,12 +778,51 @@ if (btnLimpar) {
         if (confirmado) {
             localStorage.removeItem('appEstudos_Historico');
             historico = {};
-            atualizarPlacar(historico, questoes);
+           atualizarPlacar(historico, questoes);
             aplicarFiltros();
-            showToast("Seu histórico de progresso foi zerado.", "alerta");
+            showToast("Cache local zerado. Se você estiver logado, seu progresso na nuvem continua intacto.", "alerta", 5000);
         }
     });
 }
+
+// Backup (Exportar / Importar)
+// Apagar TUDO (nuvem + local) — irreversível, duas confirmações
+btnApagarTudo.addEventListener("click", async () => {
+    if (!usuarioAtual) {
+        showToast("Faça login para apagar o histórico da nuvem.", "alerta");
+        return;
+    }
+
+    const primeiraConfirmacao = await showConfirmModal({
+        titulo: "Apagar TODO o histórico",
+        mensagem: "Isso vai apagar seu progresso (acertos, erros, anotações) deste navegador E da nuvem, de forma definitiva — inclusive em outros dispositivos onde você estiver logado. Quer continuar?",
+        textoConfirmar: "Continuar",
+        textoCancelar: "Cancelar",
+        corPerigo: true
+    });
+    if (!primeiraConfirmacao) return;
+
+    const segundaConfirmacao = await showConfirmModal({
+        titulo: "Tem certeza absoluta?",
+        mensagem: "Essa ação é IRREVERSÍVEL. Todo o seu histórico de estudo será perdido para sempre, em todos os dispositivos. Confirma mesmo assim?",
+        textoConfirmar: "Sim, apagar tudo",
+        textoCancelar: "Cancelar",
+        corPerigo: true
+    });
+    if (!segundaConfirmacao) return;
+
+    try {
+        await apagarHistoricoDoUsuario();
+        localStorage.removeItem('appEstudos_Historico');
+        historico = {};
+        atualizarPlacar(historico, questoes);
+        aplicarFiltros();
+        showToast("Histórico apagado da nuvem e deste navegador.", "alerta");
+    } catch (erro) {
+        console.error("Erro ao apagar histórico na nuvem:", erro);
+        showToast("Não foi possível apagar o histórico na nuvem. Tente novamente.", "erro");
+    }
+});
 
 // Backup (Exportar / Importar)
 btnExportar.addEventListener("click", exportarHistorico);
