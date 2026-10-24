@@ -852,25 +852,6 @@ body {
     color: #7dd3fc;
     text-decoration: underline;
 }
-/* Botão de Importar Questões */
-#btnAbrirImportar {
-    background-color: #2563eb; /* Azul moderno */
-    color: white;
-    padding: 12px 15px;
-    border: none;
-    border-radius: 6px;
-    font-size: 15px;
-    font-weight: bold;
-    cursor: pointer;
-    width: 100%;
-    margin-bottom: 20px;
-    transition: background-color 0.2s ease-in-out;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-#btnAbrirImportar:hover {
-    background-color: #1d4ed8; /* Azul mais escuro no hover */
-}
 /* ==================== INÍCIO: MODAL DE IMPORTAÇÃO EM MASSA ==================== */
 #modalImportar {
     position: fixed;

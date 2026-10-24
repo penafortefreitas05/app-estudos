@@ -36,8 +36,7 @@ import { criarConta, entrar, sair } from './auth.js';
 import {
     carregarHistorico,
     salvarHistorico,
-    salvarQuestoesLocais,
-    carregarQuestoesLocais
+    limparCacheAntigoDeQuestoes
 } from './storage.js';
 
 // ---------- 1.5 Simulado (cronômetro e finalização) ----------
@@ -64,6 +63,11 @@ let simulado = null;
 const ADMIN_UID = '82cc7c31-2be4-4aba-8eb9-80067f545f3e'; // mesmo UUID usado nas políticas de RLS da tabela questoes
 
 export let usuarioAtual = null;
+
+// Só serve para mostrar/esconder botões. Quem bloqueia de verdade é a RLS no Supabase.
+function ehAdministrador() {
+    return Boolean(usuarioAtual && usuarioAtual.id === ADMIN_UID);
+}
 
 // Questões padrão para a tela nunca iniciar vazia
 const questoesPadrao = [
@@ -328,7 +332,7 @@ async function responder(card, botao) {
             fbContainer.style.display = "block";
             const gabaritoDiv = fbContainer.querySelector(".gabarito-resposta");
             if (gabaritoDiv) {
-                gabaritoDiv.innerHTML = `📌 Alternativa <strong>(${letraEscolhida})</strong> registrada no simulado. Você pode alterar antes de finalizar.`;
+                gabaritoDiv.innerHTML = `📌 Alternativa <strong>(${esc(letraEscolhida)})</strong> registrada no simulado. Você pode alterar antes de finalizar.`;
             }
         }
         showToast(`Questão registrada: alternativa ${letraEscolhida}`, "info", 1800);
@@ -546,13 +550,12 @@ async function solicitarExplicacaoIA(btnIA) {
     caixa.innerHTML = "<em>A IA está analisando a questão e a sua resposta...</em>";
 
     try {
-                const { data, error } = await supabaseClient.functions.invoke("super-function", {
+        // Só o id e a letra marcada: a função busca enunciado, alternativas e gabarito no banco
+        // (não confia no que o navegador manda — isso impede envenenar o cache da IA)
+        const { data, error } = await supabaseClient.functions.invoke("super-function", {
             body: {
                 questaoId: qId,
-                pergunta: q.enunciado || q.pergunta,
-                alternativas: obterOpcoes(q),
-                respostaUsuario: h.ultimaEscolha,
-                gabarito: gabaritoDe(q)
+                respostaUsuario: h.ultimaEscolha
             }
         });
         if (error) throw error;
@@ -973,37 +976,26 @@ if (btnProcessarImportacao && textoJsonQuestoes && modalImportar) {
                 return;
             }
 
+            // Só o admin publica questões (a RLS da tabela também garante isso no servidor)
+            if (!ehAdministrador()) {
+                showToast('Só o administrador pode importar questões.', 'erro');
+                return;
+            }
+
             const novasNormalizadas = novasQuestoesBrutas.map((q, idx) => normalizarQuestao(q, questoes.length + idx));
 
-            // Salva no cache local imediatamente e mescla com as questões em tela
-            salvarQuestoesLocais(novasNormalizadas);
-            questoes = mesclarQuestoes(questoes, novasNormalizadas);
-            porId = new Map(questoes.map(q => [String(q.id), q]));
-
-            // Tenta sincronizar com o Supabase
-            const ehAdmin = usuarioAtual && usuarioAtual.id === ADMIN_UID;
+            // Grava direto na nuvem e recarrega o banco de lá: a nuvem é a única fonte das questões
             try {
                 await salvarQuestoesEmMassa(novasNormalizadas);
-                showToast(`Sucesso! ${novasNormalizadas.length} questões adicionadas e sincronizadas na nuvem.`, 'sucesso');
             } catch (erroNuvem) {
-                if (ehAdmin) {
-                    showToast(`Falha ao sincronizar com a nuvem: ${erroNuvem.message || 'erro desconhecido'}.`, 'erro');
-                } else {
-                    showToast(`${novasNormalizadas.length} questões salvas apenas neste navegador. Só o administrador pode publicar questões novas para todos os usuários.`, 'alerta', 6000);
-                }
+                showToast(`Falha ao salvar na nuvem: ${erroNuvem.message || 'erro desconhecido'}. Nada foi importado.`, 'erro', 6000);
+                return;
             }
 
             modalImportar.style.display = 'none';
             textoJsonQuestoes.value = '';
-
-           // ==================== INÍCIO: SUBSTITUIR OS preencherSelect DA IMPORTAÇÃO ====================
-            preencherSelect(selectBanca, "🏛️ Todas as Bancas", "banca", questoes);
-            preencherSelect(selectMateria, "📖 Todas as Matérias", "materia", questoes);
-            preencherSelect(selectAno, "📅 Todos os Anos", "ano", questoes);
-            preencherSelectTags(selectTag, "🏷️ Todos os Assuntos", questoes);
-            aplicarFiltros();
-
-
+            await carregarBancoDeQuestoes();
+            showToast(`Sucesso! ${novasNormalizadas.length} questões salvas na nuvem.`, 'sucesso');
         } catch (erro) {
             showToast('Erro ao processar o JSON. Verifique o formato.', 'erro');
             console.error('[FocoPro] Erro ao importar questões:', erro);
@@ -1020,6 +1012,10 @@ if (btnProcessarImportacao && textoJsonQuestoes && modalImportar) {
 // Carrega (ou esconde) o banco de questões de acordo com o login.
 // Chamada no início do app e sempre que o estado de login mudar (login/logout).
 async function carregarBancoDeQuestoes() {
+    // O botão de importar questões só aparece para o admin
+    const botaoImportarQuestoes = document.getElementById('btnAbrirImportar');
+    if (botaoImportarQuestoes) botaoImportarQuestoes.hidden = !ehAdministrador();
+
     // Visitante sem login: nenhuma questão é buscada nem exibida.
     if (!usuarioAtual) {
         questoes = [];
@@ -1040,16 +1036,15 @@ async function carregarBancoDeQuestoes() {
         return;
     }
 
-    // Usuário logado: busca só da nuvem (Supabase) + cache local de importações próprias.
+    // Usuário logado: a nuvem (Supabase) é a única fonte das questões.
     let daNuvem = [];
     try {
         daNuvem = await carregarTodasQuestoes();
     } catch (e) {
         console.warn("[FocoPro] Erro ao buscar questões da nuvem:", e);
     }
-    const doCacheImportadas = carregarQuestoesLocais();
 
-    const mescladas = mesclarQuestoes(doCacheImportadas, daNuvem);
+    const mescladas = mesclarQuestoes(daNuvem);
     questoes = mescladas.length > 0 ? mescladas : mesclarQuestoes(questoesPadrao);
 
     porId = new Map(questoes.map(q => [String(q.id), q]));
@@ -1064,6 +1059,9 @@ async function carregarBancoDeQuestoes() {
 }
 
 async function iniciarApp() {
+    // 0. Remove do navegador o cache antigo de questões importadas (não é mais usado)
+    limparCacheAntigoDeQuestoes();
+
     // 1. Verifica sessão ativa antes de puxar histórico/questões
     try {
         const { data: { session } } = await supabaseClient.auth.getSession();

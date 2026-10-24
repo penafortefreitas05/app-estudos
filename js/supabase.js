@@ -2,19 +2,40 @@
 // js/supabase.js - Conexão com o Banco de Dados na Nuvem
 // ============================================================
 
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+// supabase-js 2.117.3 empacotado num arquivo só e servido pelo próprio site
+// (antes vinha do esm.sh sem versão fixa: ~20 arquivos em cascata). Ver README > Dependências.
+import { createClient } from './vendor/supabase-js-2.117.3.min.js';
 import { normalizarQuestao } from './api.js';
 import { gabaritoDe } from './ui.js';
 
 const supabaseUrl = 'https://fghcoxferprkzsemicnw.supabase.co';
+// Chave "anon": é pública por definição. Quem protege os dados é a RLS de cada tabela.
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZnaGNveGZlcnBya3pzZW1pY253Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI1MDg2ODYsImV4cCI6MjEwODA4NDY4Nn0.o2LRgl3s3rL_tYsLE8Ujk_GLWVQj0fPwZv-bgtEP7i4';
 
 // Instância única de conexão com o Supabase
 export const supabaseClient = createClient(supabaseUrl, supabaseKey);
 export const supabase = supabaseClient;
 
+// A API do Supabase devolve no máximo 1000 linhas por consulta (Settings > API > Max Rows).
+// Se esse valor for alterado no painel, ajuste aqui também.
+const TAMANHO_PAGINA = 1000;
+
+// Busca todas as linhas de uma consulta, de página em página.
+// "montarConsulta" precisa devolver uma consulta NOVA a cada chamada, já com .order() definido.
+async function buscarTodasAsPaginas(montarConsulta) {
+    const todas = [];
+    for (let inicio = 0; ; inicio += TAMANHO_PAGINA) {
+        const { data, error } = await montarConsulta().range(inicio, inicio + TAMANHO_PAGINA - 1);
+        if (error) throw error;
+        const pagina = data || [];
+        todas.push(...pagina);
+        if (pagina.length < TAMANHO_PAGINA) break;
+    }
+    return todas;
+}
+
 /**
- * Regista o resultado da resolução de uma questão na base de dados
+ * Registra o resultado da resolução de uma questão na base de dados
  */
 export async function salvarRespostaNoHistorico({ questaoId, materia, banca, acertou, respostaEscolhida }) {
     try {
@@ -45,8 +66,7 @@ export async function salvarRespostaNoHistorico({ questaoId, materia, banca, ace
 }
 
 /**
- /**
- * Apaga TODAS as linhas de histórico_respostas do usuário logado (irreversível).
+ * Apaga TODAS as linhas de historico_respostas do usuário logado (irreversível).
  * Exige RLS: política DELETE restrita a auth.uid() = user_id.
  */
 export async function apagarHistoricoDoUsuario() {
@@ -65,8 +85,7 @@ export async function apagarHistoricoDoUsuario() {
 }
 
 /**
-/**
- * Recupera o histórico de resoluções gravado no Supabase para o usuário logado
+ * Recupera TODO o histórico de resoluções do usuário logado (paginado, sem o corte de 1000 linhas)
  */
 export async function carregarHistoricoDoUsuario() {
     try {
@@ -77,14 +96,12 @@ export async function carregarHistoricoDoUsuario() {
             return [];
         }
 
-        const { data, error } = await supabaseClient
+        // Só as colunas que o app usa: payload menor a cada abertura
+        return await buscarTodasAsPaginas(() => supabaseClient
             .from('historico_respostas')
-            .select('*')
+            .select('questao_id, acertou, resposta_usuario, created_at')
             .eq('user_id', user.id)
-            .order('created_at', { ascending: true });
-
-        if (error) throw error;
-        return data || [];
+            .order('created_at', { ascending: true }));
     } catch (erro) {
         console.warn("Aviso ao carregar histórico do Supabase:", erro.message);
         return [];
@@ -92,11 +109,7 @@ export async function carregarHistoricoDoUsuario() {
 }
 
 /**
- * Salva uma lista de questões importadas na tabela 'questoes'
- */
-
-/**
- * Salva uma lista de questões importadas na tabela 'questoes'
+ * Salva uma lista de questões importadas na tabela 'questoes' (a RLS só permite ao admin)
  */
 export async function salvarQuestoesEmMassa(arrayDeQuestoes) {
     try {
@@ -132,17 +145,16 @@ export async function salvarQuestoesEmMassa(arrayDeQuestoes) {
 }
 
 /**
- * Puxa todas as questões salvas no banco de dados para a tela
+ * Puxa TODAS as questões do banco (paginado, sem o corte de 1000 linhas)
  */
 export async function carregarTodasQuestoes() {
     try {
-        const { data, error } = await supabaseClient
+        const data = await buscarTodasAsPaginas(() => supabaseClient
             .from('questoes')
-            .select('*');
+            .select('*')
+            .order('id', { ascending: true }));
 
-        if (error) throw error;
-
-        return (data || []).map((q, idx) => normalizarQuestao(q, idx));
+        return data.map((q, idx) => normalizarQuestao(q, idx));
     } catch (erro) {
         console.warn("Aviso ao buscar questões da nuvem:", erro.message);
         return [];

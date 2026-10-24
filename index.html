@@ -71,7 +71,7 @@
             <details class="gaveta-ferramentas">
                 <summary>⚙️ Ferramentas e Backup</summary>
                 <div class="gaveta-ferramentas-conteudo">
-                    <button id="btnAbrirImportar" class="btn-sidebar" onclick="document.getElementById('modalImportar').style.display = 'flex'">
+                    <button type="button" id="btnAbrirImportar" class="btn-sidebar" hidden>
                         <span>📥 Importar Questões em Massa</span>
                     </button>
 
@@ -160,7 +160,7 @@
             </header>
 
             <!-- Cronômetro Ativo do Simulado -->
-            <div id="display-cronometro" class="cronometro-box">00:00</div>
+            <div id="display-cronometro" class="cronometro-box" hidden>00:00</div>
 
             <!-- Feed Central de Questões -->
             <section id="container-questoes" class="questoes-grid">
@@ -213,65 +213,10 @@
 </div>
 <!-- ==================== FIM: MODAL DE LOGIN / CADASTRO ==================== -->
 
-    <!-- Fecha a gaveta do menu (celular) ao tocar num botão dela + Registro do Service Worker + Botão de Instalar o App -->
-    <script>
-        document.querySelector('.sidebar').addEventListener('click', function (e) {
-            if (e.target.closest('button')) document.getElementById('menu-toggle').checked = false;
-        });
+    <!-- Menu do celular, Service Worker e botão "Instalar App" -->
+    <script src="js/pwa.js"></script>
 
-        // Registra o Service Worker: necessário para o navegador considerar o app "instalável"
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./service-worker.js')
-                    .catch((erro) => console.error('Falha ao registrar Service Worker:', erro));
-            });
-        }
-
-        // Lógica do botão "Instalar App no Celular"
-        let deferredPrompt = null;
-        const btnInstalar = document.getElementById('btn-instalar-app');
-        const ehIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-        const jaInstalado = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-
-        // Android/Chrome/Edge: o navegador avisa quando pode instalar
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            if (btnInstalar && !jaInstalado) btnInstalar.hidden = false;
-        });
-
-        // iPhone/iPad: não existe esse aviso automático, então mostramos o botão sempre (com instrução manual)
-        if (ehIOS && !jaInstalado && btnInstalar) {
-            btnInstalar.hidden = false;
-        }
-
-        if (btnInstalar) {
-            btnInstalar.addEventListener('click', async () => {
-                if (ehIOS) {
-                    alert('Para instalar no iPhone/iPad:\n\n1. Toque no ícone de Compartilhar (□ com seta para cima) na barra do Safari.\n2. Toque em "Adicionar à Tela de Início".');
-                    return;
-                }
-                if (!deferredPrompt) {
-                    alert('Seu navegador não ofereceu a instalação automática aqui. Procure no menu do navegador por "Instalar app" ou "Adicionar à tela inicial".');
-                    return;
-                }
-                deferredPrompt.prompt();
-                await deferredPrompt.userChoice;
-                deferredPrompt = null;
-                btnInstalar.hidden = true;
-            });
-        }
-
-        window.addEventListener('appinstalled', () => {
-            if (btnInstalar) btnInstalar.hidden = true;
-            deferredPrompt = null;
-        });
-    </script>
-
-    <!-- Scripts com type="module" OBRIGATÓRIO -->
-    <script type="module" src="js/supabase.js"></script>
-    <script type="module" src="js/auth.js"></script>
-    <script type="module" src="js/storage.js"></script>
+    <!-- Aplicação: o app.js importa os demais módulos (supabase, auth, storage, ui...) -->
     <script type="module" src="js/app.js"></script>
 </body>
 </html>

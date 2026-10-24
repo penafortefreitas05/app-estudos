@@ -113,28 +113,12 @@ export function salvarHistorico(historico) {
     }
 }
 
-// Salva questões importadas localmente como garantia extra contra F5
-export function salvarQuestoesLocais(listaQuestoes) {
-    if (!Array.isArray(listaQuestoes)) return;
+// O banco de questões agora vem só da nuvem. O antigo cache local de importações
+// trazia de volta questões apagadas de propósito; esta função o remove do navegador.
+export function limparCacheAntigoDeQuestoes() {
     try {
-        const atuais = carregarQuestoesLocais();
-        const mapa = new Map(atuais.map(q => [String(q.id), q]));
-        listaQuestoes.forEach(q => {
-            if (q && q.id) mapa.set(String(q.id), q);
-        });
-        localStorage.setItem(CHAVE_QUESTOES_IMPORTADAS, JSON.stringify(Array.from(mapa.values())));
+        localStorage.removeItem(CHAVE_QUESTOES_IMPORTADAS);
     } catch (e) {
-        console.warn('Não foi possível salvar cache local de questões importadas:', e);
-    }
-}
-
-export function carregarQuestoesLocais() {
-    try {
-        const bruto = localStorage.getItem(CHAVE_QUESTOES_IMPORTADAS);
-        if (!bruto) return [];
-        const lista = JSON.parse(bruto);
-        return Array.isArray(lista) ? lista : [];
-    } catch (e) {
-        return [];
+        /* navegador sem acesso ao localStorage: nada a limpar */
     }
 }

@@ -82,8 +82,7 @@ export function finalizarSimulado(simulado, container, porId, historico, questoe
         const q = porId.get(idStr);
         if (!q) return;
 
-        const card = container.querySelector(`.card-questao[data-id="${idStr}"]`) ||
-                     container.querySelector(`.questao-card[data-id="${idStr}"]`);
+        const card = container.querySelector(`.card-questao[data-id="${CSS.escape(idStr)}"]`);
 
         // Verifica resposta registrada ou radio marcado diretamente no card
         const radioMarcado = card ? card.querySelector(".radio-opcao:checked") : null;
@@ -116,6 +115,7 @@ export function finalizarSimulado(simulado, container, porId, historico, questoe
             }
 
             h.ultimaResposta = acertou ? 'certo' : 'errado';
+            h.ultimaEscolha = letraDada; // usada pelo botão "Entender meu erro com IA"
             h.recentes.push(acertou ? 1 : 0);
             if (h.recentes.length > 5) h.recentes.shift();
             h.ultimaData = Date.now();

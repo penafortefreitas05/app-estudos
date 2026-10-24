@@ -476,7 +476,9 @@ export function revelar(card, q, letraEscolhida) {
     if (explicacaoDiv) {
         const textoExplicacao = q.explicacao || q.comentario || q.justificativa || "";
         if (String(textoExplicacao).trim() !== "") {
-            explicacaoDiv.innerHTML = `<div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(148, 163, 184, 0.25);"><strong>📘 Comentário:</strong> ${textoExplicacao}</div>`;
+            // Escapa o comentário: o texto vem do banco e NUNCA pode virar HTML/código na tela
+            const textoSeguro = esc(String(textoExplicacao)).replace(/\n/g, "<br>");
+            explicacaoDiv.innerHTML = `<div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(148, 163, 184, 0.25);"><strong>📘 Comentário:</strong> ${textoSeguro}</div>`;
             explicacaoDiv.style.display = "block";
         } else {
             explicacaoDiv.innerHTML = `<div style="margin-top: 6px; font-size: 0.85em; opacity: 0.85;">💡 <em>Use "Adicionar Anotação Pessoal" abaixo para registrar seu resumo sobre esta questão.</em></div>`;

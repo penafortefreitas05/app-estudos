@@ -6,12 +6,13 @@
 
 ## 🚀 Diferenciais & Funcionalidades
 
-- **Zero Frameworks / Pure Vanilla JS:** Construído em ES6 Modules, sem overhead de dependências pesadas, garantindo carregamento ultrarrápido.
-- **PWA (Progressive Web App):** Aplicação instalável em desktop e mobile com suporte **100% offline** via *Service Worker*.
-- **9 Pilares Macro de TI:** Agrupamento automático de matérias hiperespecíficas em categorias consolidadas do edital, mantendo o tópico original como `#tag` pesquisável.
-- **Caderno de Erros Inteligente:** Registro automático de falhas e anotações teóricas com transição de status (`erro` ➔ `superado` ⚡) ao acertar a questão na revisão.
-- **Modo Simulado com Cronômetro:** Processamento de respostas em lote, ocultação de gabarito imediato e temporizador regressivo/progressivo.
-- **Backup & Portabilidade:** Importação e exportação do histórico completo em JSON para migração entre dispositivos sem perda de estado.
+- **Zero Frameworks / Pure Vanilla JS:** ES6 Modules, sem build, carregamento rápido.
+- **Acesso autenticado:** o banco de questões fica no Supabase, protegido por RLS, e só é carregado para usuários logados.
+- **PWA (Progressive Web App):** instalável em desktop e celular. Os arquivos do app ficam em cache; as questões e o histórico exigem conexão.
+- **9 Pilares Macro de TI:** matérias específicas agrupadas em categorias do edital, com o tópico original como `#tag` pesquisável.
+- **Caderno de Erros:** registro de erros e anotações, com transição de status (`erro` ➔ `superado` ⚡) ao acertar na revisão.
+- **Modo Simulado com Cronômetro:** respostas em lote, gabarito oculto até finalizar, tempo regressivo.
+- **Explicação com IA:** Edge Function do Supabase (Gemini) com login obrigatório, limite de uso por usuário e cache de explicações.
 
 ---
 
@@ -19,25 +20,52 @@
 
 ```text
 focopro/
-├── index.html            # Estrutura DOM com seletores unificados
-├── manifest.json         # Configuração de instalação PWA e tema Dark Mode
-├── service-worker.js     # Estratégia de cache híbrida e interceptação de rede
-├── README.md             # Documentação técnica do repositório
+├── index.html              # Estrutura da página
+├── manifest.json           # Instalação PWA
+├── service-worker.js       # Cache só dos arquivos do site (nunca da API)
+├── vercel.json             # Cabeçalhos de segurança (CSP, anti-iframe etc.)
 │
 ├── css/
-│   └── style.css         # Estilos Dark Mode, componentes, badges e modais
-│
-├── data/
-│   └── questoes.json     # Banco de dados de questões normalizadas
+│   └── style.css           # Estilos Dark Mode
 │
 ├── js/
-│   ├── app.js            # Orquestrador principal, inicializador e escutadores
-│   ├── ui.js             # Manipulação DOM, placas, badges e renderização
-│   ├── simulado.js       # Gerenciamento do cronômetro e processamento em lote
-│   ├── storage.js        # Leitura e gravação no localStorage
-│   ├── notifications.js  # Sistema de Toasts e Modais assíncronos (Promises)
-│   └── api.js            # Fetch de questões e normalizador macro de matérias
+│   ├── app.js              # Orquestrador: estado, eventos e carga inicial
+│   ├── ui.js               # Renderização das questões, placar e desempenho
+│   ├── simulado.js         # Cronômetro e correção do simulado
+│   ├── storage.js          # Histórico: localStorage + nuvem
+│   ├── supabase.js         # Conexão e consultas ao Supabase (paginadas)
+│   ├── auth.js             # Login, cadastro e logout
+│   ├── notifications.js    # Toasts e modais de confirmação
+│   ├── api.js              # Normalização de questões (matéria, gabarito, IDs)
+│   ├── pwa.js              # Menu do celular, Service Worker e botão "Instalar"
+│   └── vendor/
+│       └── supabase-js-2.117.3.min.js   # Biblioteca do Supabase empacotada
 │
-└── icons/                # Ícones PWA para desktop e mobile.
-    ├── android-chrome-192x192.png
-    └── android-chrome-512x512.png
+├── supabase/functions/super-function/
+│   └── index.ts            # Edge Function da explicação com IA
+│
+└── icons/                  # Ícones PWA
+```
+
+---
+
+## 🔒 Segurança
+
+- **RLS no Supabase:** `questoes` só pode ser lida por usuário logado e só o admin insere/atualiza; `historico_respostas` só é lido, gravado e apagado pelo próprio dono.
+- **Edge Function:** recebe só `{ questaoId, respostaUsuario }`; enunciado, alternativas e gabarito são lidos do banco no servidor.
+- **Front:** todo texto vindo do banco é escapado antes de ir para a tela.
+- **CSP:** ativa em modo relatório (`Content-Security-Policy-Report-Only`) no `vercel.json`; passa a bloquear depois de um período sem violações.
+
+---
+
+## 📦 Dependências
+
+`js/vendor/supabase-js-2.117.3.min.js` é o `@supabase/supabase-js@2.117.3` empacotado num arquivo só com o esbuild. Para atualizar:
+
+```bash
+npm install @supabase/supabase-js@<versao> esbuild
+echo "export { createClient } from '@supabase/supabase-js';" > entry.js
+npx esbuild entry.js --bundle --format=esm --minify --platform=browser --target=es2020 --legal-comments=none --outfile=supabase-js-<versao>.min.js
+```
+
+Depois troque o nome do arquivo em `js/supabase.js` e em `service-worker.js` (e suba o `CACHE_NAME`).
