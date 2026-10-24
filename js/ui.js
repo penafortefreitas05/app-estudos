@@ -262,6 +262,12 @@ export function atualizarPlacar(historico, questoes) {
 
     if (elAcertos) elAcertos.innerText = totalAcertos;
     if (elErros) elErros.innerText = totalErros;
+
+    // Placar rápido do topo (celular)
+    const elMiniAcertos = document.getElementById("mini-acertos");
+    const elMiniErros = document.getElementById("mini-erros");
+    if (elMiniAcertos) elMiniAcertos.textContent = totalAcertos;
+    if (elMiniErros) elMiniErros.textContent = totalErros;
     if (elContadorRevisao) elContadorRevisao.innerText = qtdCadernoErros;
 
     renderizarDesempenhoMaterias(materiasMap);

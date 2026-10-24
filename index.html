@@ -95,67 +95,97 @@
             
             <!-- Barra Superior de Filtros e Simulado -->
             <header class="top-bar">
+                <!-- Linha do celular: menu, marca e placar rápido -->
                 <div class="top-bar-mobile">
                     <label for="menu-toggle" class="btn-menu" aria-label="Abrir menu">☰</label>
                     <span class="top-bar-brand">FocoPro ✦</span>
+                    <span class="placar-mini" title="Seus acertos e erros">
+                        <span class="placar-mini-acertos" id="mini-acertos">0</span>
+                        <span class="placar-mini-erros" id="mini-erros">0</span>
+                    </span>
                 </div>
-                <!-- ==================== INÍCIO: SUBSTITUIR .filtros-container ==================== -->
-                <div class="filtros-container">
-                    <select id="filtro-banca" class="input-dark">
-                        <option value="">🏛️ Todas as Bancas</option>
-                    </select>
 
-                    <select id="filtro-materia" class="input-dark">
+                <!-- Barra principal: só o essencial à vista (busca + matéria + 2 botões) -->
+                <div class="barra-principal">
+                    <div class="search-box">
+                        <span class="search-icon" aria-hidden="true">🔍</span>
+                        <input type="search" id="filtro-busca" class="input-dark" placeholder="Buscar palavra..." aria-label="Buscar palavra" autocomplete="off" enterkeyhint="search">
+                    </div>
+
+                    <select id="filtro-materia" class="input-dark" aria-label="Matéria">
                         <option value="">📖 Todas as Matérias</option>
                     </select>
 
-                    <select id="filtro-tag" class="input-dark">
-                        <option value="">🏷️ Todos os Assuntos</option>
-                    </select>
-
-                    <select id="filtro-ano" class="input-dark">
-                        <option value="">📅 Todos os Anos</option>
-                    </select>
-
-                    <select id="filtro-status" class="input-dark">
-                        <option value="">📊 Qualquer Status</option>
-                        <option value="nao-respondida">⬜ Não Respondidas</option>
-                        <option value="acertei">✅ Acertei</option>
-                        <option value="errei">❌ Errei</option>
-                    </select>
-
-                    <label class="opcao-checkbox">
-                        <input type="checkbox" id="filtro-favoritas">
-                        ⭐ Só Favoritas
-                    </label>
-
-                    <div class="search-box">
-                        <span class="search-icon">🔍</span>
-                        <input type="text" id="filtro-busca" class="input-dark" placeholder="Buscar palavra...">
+                    <div class="barra-botoes">
+                        <button type="button" id="btn-painel-filtros" class="btn-painel" aria-expanded="false" aria-controls="painel-filtros">
+                            🎛️ Filtros <span class="badge-filtros" id="badge-filtros" hidden>0</span>
+                        </button>
+                        <button type="button" id="btn-painel-simulado" class="btn-painel" aria-expanded="false" aria-controls="painel-simulado">
+                            ⏱️ Simulado
+                        </button>
                     </div>
-
-                    <input type="number" id="qtd-simulado" class="input-dark num-input" placeholder="Qtd" min="1" max="100" title="Quantidade de questões">
-                    <input type="number" id="tempo-simulado" class="input-dark num-input" placeholder="Min" min="1" max="240" title="Tempo em minutos">
-                    
-                    <button id="btn-simulado" class="btn-primary">▶ Gerar Simulado</button>
-                    <button id="btn-todas" class="btn-secondary">⚙️ Ver Todas</button>
                 </div>
-<!-- ==================== FIM ==================== -->
 
-                <!-- Opções do Simulado: equilibrar matérias, só novas, priorizar erros -->
-                <div class="opcoes-simulado">
-                    <label class="opcao-checkbox">
-                        <input type="checkbox" id="check-equilibrar">
-                        ⚖️ Equilibrar matérias
-                    </label>
-                    <label class="opcao-checkbox">
-                        <input type="checkbox" id="check-novas">
-                        🆕 Só questões novas
-                    </label>
-                    <label class="opcao-checkbox">
-                        <input type="checkbox" id="check-priorizar-erros">
-                        🎯 Priorizar meus erros
-                    </label>
+                <!-- Painel de filtros extras: fechado por padrão -->
+                <div id="painel-filtros" class="painel-topo" hidden>
+                    <div class="painel-grade">
+                        <select id="filtro-banca" class="input-dark" aria-label="Banca">
+                            <option value="">🏛️ Todas as Bancas</option>
+                        </select>
+
+                        <select id="filtro-tag" class="input-dark" aria-label="Assunto">
+                            <option value="">🏷️ Todos os Assuntos</option>
+                        </select>
+
+                        <!-- Some sozinho enquanto as questões não tiverem o campo "ano" -->
+                        <select id="filtro-ano" class="input-dark" aria-label="Ano" hidden>
+                            <option value="">📅 Todos os Anos</option>
+                        </select>
+
+                        <select id="filtro-status" class="input-dark" aria-label="Status">
+                            <option value="">📊 Qualquer Status</option>
+                            <option value="nao-respondida">⬜ Não Respondidas</option>
+                            <option value="acertei">✅ Acertei</option>
+                            <option value="errei">❌ Errei</option>
+                        </select>
+                    </div>
+                    <div class="painel-rodape">
+                        <label class="opcao-checkbox">
+                            <input type="checkbox" id="filtro-favoritas">
+                            ⭐ Só Favoritas
+                        </label>
+                        <button type="button" id="btn-todas" class="btn-link-limpar">Limpar filtros</button>
+                    </div>
+                </div>
+
+                <!-- Painel do simulado: fechado por padrão -->
+                <div id="painel-simulado" class="painel-topo" hidden>
+                    <p class="painel-dica">Usa os filtros atuais. Deixe em branco para 10 questões, sem tempo.</p>
+                    <div class="painel-grade painel-grade-num">
+                        <label class="campo-num">
+                            <span>Questões</span>
+                            <input type="number" id="qtd-simulado" class="input-dark num-input" placeholder="10" min="1" max="100" inputmode="numeric">
+                        </label>
+                        <label class="campo-num">
+                            <span>Minutos</span>
+                            <input type="number" id="tempo-simulado" class="input-dark num-input" placeholder="—" min="1" max="240" inputmode="numeric">
+                        </label>
+                    </div>
+                    <div class="opcoes-simulado">
+                        <label class="opcao-checkbox">
+                            <input type="checkbox" id="check-equilibrar">
+                            ⚖️ Equilibrar matérias
+                        </label>
+                        <label class="opcao-checkbox">
+                            <input type="checkbox" id="check-novas">
+                            🆕 Só questões novas
+                        </label>
+                        <label class="opcao-checkbox">
+                            <input type="checkbox" id="check-priorizar-erros">
+                            🎯 Priorizar meus erros
+                        </label>
+                    </div>
+                    <button type="button" id="btn-simulado" class="btn-primary btn-largo">▶ Gerar Simulado</button>
                 </div>
             </header>
 

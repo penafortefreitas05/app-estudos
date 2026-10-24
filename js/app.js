@@ -295,6 +295,43 @@ function aplicarFiltros() {
     const filtradas = filtrarQuestoes();
     renderizarQuestoes(container, filtradas, historico);
     atualizarPlacar(historico, questoes);
+    atualizarBadgeFiltros();
+}
+
+// ---------- 6b. PAINÉIS DO TOPO (Filtros / Simulado) ----------
+// Só um painel aberto por vez; tocar no mesmo botão fecha.
+const paineisTopo = [
+    { botao: document.getElementById("btn-painel-filtros"), painel: document.getElementById("painel-filtros") },
+    { botao: document.getElementById("btn-painel-simulado"), painel: document.getElementById("painel-simulado") }
+].filter(p => p.botao && p.painel);
+
+function alternarPainel(alvo, abrir) {
+    paineisTopo.forEach(p => {
+        const deveAbrir = p === alvo && (abrir ?? p.painel.hidden);
+        p.painel.hidden = !deveAbrir;
+        p.botao.setAttribute("aria-expanded", String(deveAbrir));
+    });
+}
+
+function fecharPaineis() {
+    alternarPainel(null, false);
+}
+
+paineisTopo.forEach(p => p.botao.addEventListener("click", () => alternarPainel(p)));
+
+// Número no botão "Filtros" = quantos filtros escondidos no painel estão ativos
+function atualizarBadgeFiltros() {
+    const badge = document.getElementById("badge-filtros");
+    if (!badge) return;
+    const ativos = [
+        selectBanca && selectBanca.value,
+        tagSelecionada,
+        selectAno && selectAno.value,
+        selectStatus && selectStatus.value,
+        checkFavoritas && checkFavoritas.checked
+    ].filter(Boolean).length;
+    badge.textContent = ativos;
+    badge.hidden = ativos === 0;
 }
 // ---------- 7. LÓGICA DE RESPOSTA E PONTUAÇÃO ----------
 async function responder(card, botao) {
@@ -703,6 +740,9 @@ if (btnSimulado) {
         renderizarQuestoes(container, sorteadas, historico);
         adicionarBotaoFinalizar(container);
 
+        fecharPaineis();
+        const mainContent = document.querySelector(".main-content");
+        if (mainContent) mainContent.scrollTo({ top: 0, behavior: "smooth" });
         showToast(`Simulado iniciado com ${sorteadas.length} questões!`, "info");
 
         if (tempo > 0) {
@@ -734,7 +774,7 @@ if (btnTodas) {
         atualizarChipTag(chipTag, tagSelecionada);
         if (selectTag) selectTag.value = "";
         aplicarFiltros();
-        showToast("Exibindo todas as questões.", "info");
+        showToast("Filtros limpos: exibindo todas as questões.", "info");
     });
 }
 // ==================== FIM ====================
@@ -1053,6 +1093,8 @@ async function carregarBancoDeQuestoes() {
     preencherSelect(selectMateria, "📖 Todas as Matérias", "materia", questoes);
     preencherSelect(selectAno, "📅 Todos os Anos", "ano", questoes);
     preencherSelectTags(selectTag, "🏷️ Todos os Assuntos", questoes);
+    // Filtro de ano só aparece quando alguma questão tem ano cadastrado
+    if (selectAno) selectAno.hidden = selectAno.options.length <= 1;
 
     atualizarPlacar(historico, questoes);
     aplicarFiltros();
