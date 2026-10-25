@@ -34,35 +34,111 @@ async function buscarTodasAsPaginas(montarConsulta) {
     return todas;
 }
 
-/**
- * Registra o resultado da resolução de uma questão na base de dados
- */
-export async function salvarRespostaNoHistorico({ questaoId, materia, banca, acertou, respostaEscolhida }) {
+// ---------- Gravação de respostas (com fila para quando a internet falhar) ----------
+// Toda resposta vira uma linha em historico_respostas. Se o envio falhar (sem sinal, voo,
+// Supabase fora do ar), a linha vai para uma fila no aparelho e é reenviada depois,
+// com a data original da resposta. Assim nenhuma resposta se perde da nuvem.
+const CHAVE_FILA_NUVEM = 'appEstudos_FilaNuvem';
+
+function lerFila() {
     try {
-        const { data: { session }, error: erroAuth } = await supabaseClient.auth.getSession();
-        const user = session?.user;
-
-        if (erroAuth || !user) {
-            return;
-        }
-
-        const { error } = await supabaseClient
-            .from('historico_respostas')
-            .insert([
-                {
-                    user_id: user.id,
-                    questao_id: String(questaoId),
-                    materia: materia || 'Geral',
-                    banca: banca || 'Não informada',
-                    acertou: Boolean(acertou),
-                    resposta_usuario: String(respostaEscolhida)
-                }
-            ]);
-
-        if (error) throw error;
-    } catch (erro) {
-        console.warn("Aviso ao gravar resolução no Supabase:", erro.message);
+        const fila = JSON.parse(localStorage.getItem(CHAVE_FILA_NUVEM) || '[]');
+        return Array.isArray(fila) ? fila : [];
+    } catch (e) {
+        return [];
     }
+}
+
+function gravarFila(fila) {
+    try {
+        if (fila.length) localStorage.setItem(CHAVE_FILA_NUVEM, JSON.stringify(fila.slice(-5000)));
+        else localStorage.removeItem(CHAVE_FILA_NUVEM);
+    } catch (e) { /* sem localStorage: a fila só não persiste */ }
+}
+
+function montarLinha(userId, { questaoId, materia, banca, acertou, respostaEscolhida, momento }) {
+    return {
+        user_id: userId,
+        questao_id: String(questaoId),
+        materia: materia || 'Geral',
+        banca: banca || 'Não informada',
+        acertou: Boolean(acertou),
+        resposta_usuario: String(respostaEscolhida),
+        created_at: new Date(momento || Date.now()).toISOString()
+    };
+}
+
+/**
+ * Grava várias respostas de uma vez (simulado) ou uma só (modo estudo).
+ * Cada item: { questaoId, materia, banca, acertou, respostaEscolhida, momento? }
+ * Devolve true se tudo foi para a nuvem agora; false se ficou na fila (ou se não há login).
+ */
+export async function salvarRespostasEmLote(respostas) {
+    if (!Array.isArray(respostas) || respostas.length === 0) return true;
+
+    let user = null;
+    try {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        user = session?.user || null;
+    } catch (e) { /* segue sem usuário */ }
+    if (!user) return false; // visitante: só o histórico local
+
+    const linhas = respostas.map(r => montarLinha(user.id, r));
+    try {
+        const { error } = await supabaseClient.from('historico_respostas').insert(linhas);
+        if (error) throw error;
+        enviarFilaPendente(); // aproveita que a conexão está boa
+        return true;
+    } catch (erro) {
+        console.warn("[FocoPro] Sem conexão com a nuvem; respostas guardadas para reenviar:", erro.message);
+        gravarFila([...lerFila(), ...linhas]);
+        return false;
+    }
+}
+
+export async function salvarRespostaNoHistorico(resposta) {
+    return salvarRespostasEmLote([resposta]);
+}
+
+let enviandoFila = false;
+
+/**
+ * Reenvia as respostas que ficaram na fila. Só manda as do usuário logado agora.
+ * Chamada ao abrir o app, ao fazer login e quando o navegador volta a ficar online.
+ */
+export async function enviarFilaPendente() {
+    if (enviandoFila) return;
+    const fila = lerFila();
+    if (fila.length === 0) return;
+
+    enviandoFila = true;
+    try {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        const user = session?.user;
+        if (!user) return;
+
+        const minhas = fila.filter(l => l.user_id === user.id);
+        const outras = fila.filter(l => l.user_id !== user.id);
+        if (minhas.length === 0) return;
+
+        const { error } = await supabaseClient.from('historico_respostas').insert(minhas);
+        if (error) throw error;
+        gravarFila(outras);
+        console.info(`[FocoPro] ${minhas.length} resposta(s) pendente(s) enviadas para a nuvem.`);
+    } catch (erro) {
+        console.warn("[FocoPro] Fila de respostas continua pendente:", erro.message);
+    } finally {
+        enviandoFila = false;
+    }
+}
+
+// "Apagar TUDO": respostas pendentes não podem voltar para a nuvem depois de apagadas
+export function limparFilaPendente() {
+    gravarFila([]);
+}
+
+if (typeof window !== 'undefined') {
+    window.addEventListener('online', () => enviarFilaPendente());
 }
 
 /**
@@ -147,16 +223,13 @@ export async function salvarQuestoesEmMassa(arrayDeQuestoes) {
 /**
  * Puxa TODAS as questões do banco (paginado, sem o corte de 1000 linhas)
  */
+// Lança o erro em caso de falha: quem chama (app.js) mostra o aviso com "Tentar de novo".
+// (Antes devolvia [] e o app não tinha como diferenciar "banco vazio" de "sem conexão".)
 export async function carregarTodasQuestoes() {
-    try {
-        const data = await buscarTodasAsPaginas(() => supabaseClient
-            .from('questoes')
-            .select('*')
-            .order('id', { ascending: true }));
+    const data = await buscarTodasAsPaginas(() => supabaseClient
+        .from('questoes')
+        .select('*')
+        .order('id', { ascending: true }));
 
-        return data.map((q, idx) => normalizarQuestao(q, idx));
-    } catch (erro) {
-        console.warn("Aviso ao buscar questões da nuvem:", erro.message);
-        return [];
-    }
+    return data.map((q, idx) => normalizarQuestao(q, idx));
 }

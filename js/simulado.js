@@ -4,6 +4,7 @@
 
 import { formatarTempo, gabaritoDe, classificarStatus, atualizarPlacar, revelar } from './ui.js';
 import { salvarHistorico, registrarDiaDeEstudo } from './storage.js';
+import { salvarRespostasEmLote } from './supabase.js';
 import { showToast } from './notifications.js';
 
 // ---------- 1. CONTROLE DO TEMPO E CRONÔMETRO ----------
@@ -74,6 +75,7 @@ export function finalizarSimulado(simulado, container, porId, historico, questoe
     }
 
     let acertosSimulado = 0;
+    const respostasParaNuvem = [];
     const totalQuestoes = simulado.ids ? simulado.ids.length : 0;
     if (totalQuestoes === 0) return;
 
@@ -120,6 +122,14 @@ export function finalizarSimulado(simulado, container, porId, historico, questoe
             if (h.recentes.length > 5) h.recentes.shift();
             h.ultimaData = Date.now();
             registrarDiaDeEstudo();
+            respostasParaNuvem.push({
+                questaoId: idStr,
+                materia: q.materia || 'Geral',
+                banca: q.banca || 'Não informada',
+                acertou,
+                respostaEscolhida: letraDada,
+                momento: h.ultimaData
+            });
 
             revelar(card, q, letraDada);
 
@@ -138,6 +148,9 @@ export function finalizarSimulado(simulado, container, porId, historico, questoe
 
     salvarHistorico(historico);
     atualizarPlacar(historico, questoes);
+
+    // Antes, as respostas do simulado ficavam só neste aparelho
+    salvarRespostasEmLote(respostasParaNuvem);
 
     const taxa = totalQuestoes > 0 ? ((acertosSimulado / totalQuestoes) * 100).toFixed(1) : 0;
     const msgTempo = porTempo ? " (Tempo Esgotado)" : "";
