@@ -24,6 +24,8 @@ import {
 import {
     supabaseClient,
     salvarRespostaNoHistorico,
+    enviarFilaPendente,
+    limparFilaPendente,
     salvarQuestoesEmMassa,
     carregarTodasQuestoes,
     apagarHistoricoDoUsuario
@@ -70,32 +72,6 @@ export let usuarioAtual = null;
 function ehAdministrador() {
     return Boolean(usuarioAtual && usuarioAtual.id === ADMIN_UID);
 }
-
-// Questões padrão para a tela nunca iniciar vazia
-const questoesPadrao = [
-    {
-        id: "git_01",
-        enunciado: "Qual comando do Git envia os commits do repositório local para o remoto?",
-        pergunta: "Qual comando do Git envia os commits do repositório local para o remoto?",
-        alternativas: ["git pull", "git push", "git commit", "git fetch"],
-        gabarito: "B",
-        resposta_correta: "B",
-        explicacao: "O comando git push envia (empurra) as alterações confirmadas localmente para o repositório remoto (como o GitHub).",
-        materia: "Desenvolvimento, POO & Linguagens",
-        banca: "Cesgranrio"
-    },
-    {
-        id: "bd_01",
-        enunciado: "No modelo relacional de banco de dados, qual chave identifica unicamente cada registro em uma tabela?",
-        pergunta: "No modelo relacional de banco de dados, qual chave identifica unicamente cada registro em uma tabela?",
-        alternativas: ["Chave Estrangeira", "Chave Primária", "Chave Candidata", "Chave Substituta"],
-        gabarito: "B",
-        resposta_correta: "B",
-        explicacao: "A Chave Primária (Primary Key) identifica de forma única cada tupla (linha) de uma relação, não permitindo valores nulos.",
-        materia: "Banco de Dados & Dados",
-        banca: "Cesgranrio"
-    }
-];
 
 // ---------- 3. ELEMENTOS DO DOM ----------
 
@@ -294,6 +270,13 @@ function definirTag(tag) {
 
 // ==================== FIM ====================
 function aplicarFiltros() {
+    // Trocar filtro, limpar filtros etc. redesenha a lista: o simulado em curso não sobrevive a isso.
+    // Antes ele continuava "ativo" por trás (cronômetro correndo, respostas sumindo).
+    if (simulado) {
+        if (!simulado.finalizado) showToast("Simulado encerrado sem correção.", "alerta");
+        simulado = null;
+        pararCronometro(displayCronometro);
+    }
     const filtradas = filtrarQuestoes();
     renderizarQuestoes(container, filtradas, historico);
     atualizarPlacar(historico, questoes);
@@ -459,7 +442,8 @@ async function responder(card, botao) {
         materia: q.materia || q.disciplina || 'Geral',
         banca: q.banca || 'Não informada',
         acertou: acertou,
-        respostaEscolhida: letraEscolhida
+        respostaEscolhida: letraEscolhida,
+        momento: h.ultimaData
     });
 }
 
@@ -833,9 +817,9 @@ if (btnModoRevisao) {
 if (btnLimpar) {
     btnLimpar.addEventListener("click", async () => {
         const confirmado = await showConfirmModal({
-            titulo: "Zerar Histórico",
-            mensagem: "Tem certeza que deseja apagar todo o seu progresso? Esta ação não pode ser desfeita.",
-            textoConfirmar: "Sim, Apagar Tudo",
+            titulo: "Zerar histórico deste aparelho",
+            mensagem: "Limpa o histórico guardado neste aparelho, incluindo favoritos e anotações, que ainda não vão para a nuvem e serão perdidos. Suas respostas salvas na nuvem não são apagadas e voltam ao reabrir o app.",
+            textoConfirmar: "Zerar este aparelho",
             textoCancelar: "Cancelar",
             corPerigo: true
         });
@@ -879,6 +863,7 @@ btnApagarTudo.addEventListener("click", async () => {
 
     try {
         await apagarHistoricoDoUsuario();
+        limparFilaPendente();
         localStorage.removeItem('appEstudos_Historico');
         apagarDiasDeEstudo();
         historico = {};
@@ -915,7 +900,13 @@ const userAvatar = document.getElementById('user-avatar');
 
 let isCadastro = false;
 
-supabaseClient.auth.onAuthStateChange(async (event, session) => {
+// De quem são os dados que estão na tela agora (null = visitante)
+let idUsuarioCarregado = undefined;
+
+// O Supabase dispara SIGNED_IN também quando a aba volta a ficar visível e quando renova o token.
+// Antes, isso recarregava tudo e apagava o simulado em andamento. Agora só recarrega
+// quando a pessoa logada muda de fato (login, logout ou troca de conta).
+supabaseClient.auth.onAuthStateChange((event, session) => {
     usuarioAtual = session?.user || null;
 
     if (usuarioAtual) {
@@ -923,23 +914,31 @@ supabaseClient.auth.onAuthStateChange(async (event, session) => {
         if (userAvatar) userAvatar.innerText = usuarioAtual.email.charAt(0).toUpperCase();
         if (btnAuthAcao) btnAuthAcao.innerText = "Sair";
         if (modalAuth) modalAuth.classList.remove('visible');
-
-                if (event === 'SIGNED_IN') {
-            historico = await carregarHistorico();
-            await carregarBancoDeQuestoes();
-        }
     } else {
         if (userEmail) userEmail.innerText = "Visitante";
         if (userAvatar) userAvatar.innerText = "?";
         if (btnAuthAcao) btnAuthAcao.innerText = "Fazer Login";
-
-        if (event === 'SIGNED_OUT') {
-            historico = {};
-            simulado = null;
-            pararCronometro(displayCronometro);
-            await carregarBancoDeQuestoes();
-        }
     }
+
+    // Antes do iniciarApp terminar, quem carrega é ele
+    if (idUsuarioCarregado === undefined) return;
+
+    const idAgora = usuarioAtual ? usuarioAtual.id : null;
+    if (idAgora === idUsuarioCarregado) return;
+    idUsuarioCarregado = idAgora;
+
+    // setTimeout: chamar o Supabase de dentro deste evento pode travar o cliente (aviso da documentação)
+    setTimeout(async () => {
+        simulado = null;
+        pararCronometro(displayCronometro);
+        if (idAgora) {
+            await enviarFilaPendente();
+            historico = await carregarHistorico();
+        } else {
+            historico = {};
+        }
+        await carregarBancoDeQuestoes();
+    }, 0);
 });
 
 if (btnAuthAcao) {
@@ -1101,15 +1100,18 @@ async function carregarBancoDeQuestoes() {
     }
 
     // Usuário logado: a nuvem (Supabase) é a única fonte das questões.
-    let daNuvem = [];
+    // Se ela falhar, o app diz isso (antes mostrava 2 questões de exemplo como se fossem o banco).
+    let daNuvem;
+    container.innerHTML = '<p class="aviso-vazio">Carregando questões...</p>';
     try {
         daNuvem = await carregarTodasQuestoes();
     } catch (e) {
         console.warn("[FocoPro] Erro ao buscar questões da nuvem:", e);
+        mostrarErroDeCarga();
+        return;
     }
 
-    const mescladas = mesclarQuestoes(daNuvem);
-    questoes = mescladas.length > 0 ? mescladas : mesclarQuestoes(questoesPadrao);
+    questoes = mesclarQuestoes(daNuvem);
 
     porId = new Map(questoes.map(q => [String(q.id), q]));
 
@@ -1124,6 +1126,26 @@ async function carregarBancoDeQuestoes() {
     aplicarFiltros();
 }
 
+// Falha ao buscar o banco: aviso + botão para tentar de novo
+function mostrarErroDeCarga() {
+    questoes = [];
+    porId = new Map();
+    container.innerHTML = `
+        <div class="aviso-erro-carga">
+            <p><strong>Não foi possível carregar as questões.</strong></p>
+            <p>Confira sua internet e tente de novo. Seu histórico continua salvo.</p>
+            <button type="button" class="btn-primary" id="btn-tentar-carregar">Tentar de novo</button>
+        </div>`;
+    const botao = document.getElementById("btn-tentar-carregar");
+    if (botao) {
+        botao.addEventListener("click", async () => {
+            botao.disabled = true;
+            botao.textContent = "Carregando...";
+            await carregarBancoDeQuestoes();
+        });
+    }
+}
+
 async function iniciarApp() {
     // 0. Remove do navegador o cache antigo de questões importadas (não é mais usado)
     limparCacheAntigoDeQuestoes();
@@ -1136,7 +1158,10 @@ async function iniciarApp() {
         usuarioAtual = null;
     }
 
-    // 2. Carrega histórico (LocalStorage + Supabase historico_respostas)
+    // 2. Reenvia respostas que ficaram pendentes (sem internet) antes de ler o histórico da nuvem
+    await enviarFilaPendente();
+
+    // 3. Carrega histórico (LocalStorage + Supabase historico_respostas)
     try {
         historico = await carregarHistorico();
     } catch (e) {
@@ -1144,8 +1169,9 @@ async function iniciarApp() {
         historico = {};
     }
 
-    // 3. Carrega o banco de questões (ou mostra o aviso de login)
+    // 4. Carrega o banco de questões (ou mostra o aviso de login)
     await carregarBancoDeQuestoes();
+    idUsuarioCarregado = usuarioAtual ? usuarioAtual.id : null;
 }
 
 iniciarApp();

@@ -8,7 +8,8 @@
 
 - **Zero Frameworks / Pure Vanilla JS:** ES6 Modules, sem build, carregamento rápido.
 - **Acesso autenticado:** o banco de questões fica no Supabase, protegido por RLS, e só é carregado para usuários logados.
-- **PWA (Progressive Web App):** instalável em desktop e celular. Os arquivos do app ficam em cache; as questões e o histórico exigem conexão.
+- **PWA (Progressive Web App):** instalável em desktop e celular. Os arquivos do app ficam em cache; as questões exigem conexão ao abrir.
+- **Nenhuma resposta se perde:** respostas dadas sem internet ficam numa fila no aparelho e sobem para a nuvem, com a data original, quando a conexão volta.
 - **9 Pilares Macro de TI:** matérias específicas agrupadas em categorias do edital, com o tópico original como `#tag` pesquisável.
 - **Caderno de Erros:** registro de erros e anotações, com transição de status (`erro` ➔ `superado` ⚡) ao acertar na revisão.
 - **Modo Simulado com Cronômetro:** respostas em lote, gabarito oculto até finalizar, tempo regressivo.

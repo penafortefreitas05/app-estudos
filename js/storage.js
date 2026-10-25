@@ -135,11 +135,13 @@ export async function carregarHistorico() {
                 if (!local) {
                     historicoLocal[qId] = dadosNuvem;
                 } else {
-                    // Mantém o que tiver mais tentativas e preserva anotações pessoais locais
+                    // Mantém o que tiver mais tentativas e preserva o que só existe neste aparelho
+                    // (favorito e anotação ainda não vão para a nuvem; antes o favorito sumia no login)
                     const usarNuvem = (dadosNuvem.tentativas || 0) > (local.tentativas || 0);
                     historicoLocal[qId] = {
                         ...(usarNuvem ? dadosNuvem : local),
                         anotacao: local.anotacao || dadosNuvem.anotacao || "",
+                        favorito: Boolean(local.favorito),
                         ultimaEscolha: local.ultimaEscolha || dadosNuvem.ultimaEscolha || null
                     };
                 }

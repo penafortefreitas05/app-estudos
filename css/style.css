@@ -1225,3 +1225,21 @@ body {
 .btn-favoritar.ativo {
     color: #fbbf24;
 }
+
+/* ==================== AVISO: FALHA AO CARREGAR O BANCO ==================== */
+.aviso-erro-carga {
+    max-width: 420px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    text-align: center;
+    color: #cbd5e1;
+    background: #0f172a;
+    border: 1px solid rgba(251, 146, 60, 0.4);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    align-items: center;
+}
+.aviso-erro-carga strong { color: #fb923c; }
+
