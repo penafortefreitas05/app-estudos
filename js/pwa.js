@@ -13,10 +13,51 @@
         });
     }
 
-    // Registra o Service Worker: necessário para o navegador considerar o app "instalável"
+    // Registra o Service Worker: o app abre do cache e funciona sem internet
     if ('serviceWorker' in navigator) {
+        let recarregando = false;
+        // Versão nova assumiu (depois do "Atualizar"): recarrega uma vez com os arquivos novos
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (recarregando) return;
+            recarregando = true;
+            window.location.reload();
+        });
+
+        const avisarVersaoNova = (worker) => {
+            if (!worker || document.getElementById('aviso-versao-nova')) return;
+            const aviso = document.createElement('div');
+            aviso.id = 'aviso-versao-nova';
+            aviso.className = 'aviso-versao-nova';
+            aviso.setAttribute('role', 'status');
+            aviso.innerHTML = '<span>✨ Nova versão do FocoPro disponível.</span>' +
+                '<button type="button" class="btn-primary">Atualizar</button>' +
+                '<button type="button" class="btn-fechar-aviso" aria-label="Depois">✕</button>';
+            aviso.querySelector('.btn-primary').addEventListener('click', () => {
+                worker.postMessage({ tipo: 'ativar-versao-nova' });
+            });
+            aviso.querySelector('.btn-fechar-aviso').addEventListener('click', () => aviso.remove());
+            document.body.appendChild(aviso);
+        };
+
+        // Só avisa se já havia uma versão rodando (no primeiro acesso não há o que atualizar)
+        const acompanhar = (reg) => {
+            if (reg.waiting && navigator.serviceWorker.controller) avisarVersaoNova(reg.waiting);
+            reg.addEventListener('updatefound', () => {
+                const nova = reg.installing;
+                if (!nova) return;
+                nova.addEventListener('statechange', () => {
+                    if (nova.state === 'installed' && navigator.serviceWorker.controller) avisarVersaoNova(nova);
+                });
+            });
+            // App aberto há tempo (PWA no celular fica dias em segundo plano): confere ao voltar
+            document.addEventListener('visibilitychange', () => {
+                if (document.visibilityState === 'visible') reg.update().catch(() => {});
+            });
+        };
+
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('./service-worker.js')
+                .then(acompanhar)
                 .catch((erro) => console.error('Falha ao registrar Service Worker:', erro));
         });
     }

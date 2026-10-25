@@ -389,9 +389,17 @@ function renderizarDesempenhoMaterias(materiasMap) {
 // opcoes.restaurarRespostas: no modo estudo, questão já respondida volta com a resposta marcada.
 // No simulado e na revisão vem em branco: lá a questão precisa ser respondida de novo
 // (antes o simulado mostrava o gabarito em verde/vermelho nas questões já feitas).
+// opcoes.paginar: desenha 20 por vez e o resto conforme a pessoa rola (lista principal).
+// Simulado e revisão desenham tudo: a correção do simulado lê todos os cards da tela.
+const TAMANHO_LOTE = 20;
+
 export function renderizarQuestoes(container, lista, historico = {}, mensagemVazia = "Nenhuma questão encontrada.", opcoes = {}) {
-    const { restaurarRespostas = true } = opcoes;
+    const { restaurarRespostas = true, paginar = false } = opcoes;
     if (!container) return;
+    if (container._observadorLote) {
+        container._observadorLote.disconnect();
+        container._observadorLote = null;
+    }
     container.innerHTML = "";
 
     if (!lista || lista.length === 0) {
@@ -399,6 +407,46 @@ export function renderizarQuestoes(container, lista, historico = {}, mensagemVaz
         return;
     }
 
+    let proxima = 0;
+    const desenharLote = () => {
+        const fim = paginar ? Math.min(proxima + TAMANHO_LOTE, lista.length) : lista.length;
+        // Pula questão que já está na tela (ex.: aberta antes como "questão-irmã")
+        const fatia = lista.slice(proxima, fim).filter(q =>
+            !container.querySelector(`.card-questao[data-id="${CSS.escape(String(q.id))}"]`));
+        proxima = fim;
+        desenharCards(container, fatia, historico, restaurarRespostas);
+        colocarBotaoMais();
+    };
+
+    const colocarBotaoMais = () => {
+        const restantes = lista.length - proxima;
+        if (restantes <= 0) return;
+        const botao = document.createElement('button');
+        botao.type = 'button';
+        botao.className = 'btn-sidebar btn-mais-questoes';
+        botao.textContent = `Mostrar mais ${Math.min(TAMANHO_LOTE, restantes)} (faltam ${restantes})`;
+        const continuar = () => {
+            if (!botao.isConnected) return;
+            if (container._observadorLote) container._observadorLote.disconnect();
+            botao.remove();
+            desenharLote();
+        };
+        botao.addEventListener('click', continuar);
+        container.appendChild(botao);
+        // Chegando perto do fim da lista, o próximo lote entra sozinho
+        if ('IntersectionObserver' in window) {
+            const obs = new IntersectionObserver((entradas) => {
+                if (entradas.some(e => e.isIntersecting)) continuar();
+            }, { rootMargin: '600px 0px' });
+            obs.observe(botao);
+            container._observadorLote = obs;
+        }
+    };
+
+    desenharLote();
+}
+
+function desenharCards(container, lista, historico, restaurarRespostas) {
     lista.forEach(q => {
         const idStr = String(q.id);
         const opcoes = obterOpcoes(q);

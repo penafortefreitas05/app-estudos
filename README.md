@@ -10,6 +10,7 @@
 - **Acesso autenticado:** o banco de questões fica no Supabase, protegido por RLS, e só é carregado para usuários logados.
 - **PWA (Progressive Web App):** instalável em desktop e celular. Os arquivos do app ficam em cache; as questões exigem conexão ao abrir.
 - **Nenhuma resposta se perde:** respostas dadas sem internet ficam numa fila no aparelho e sobem para a nuvem, com a data original, quando a conexão volta.
+- **Abre rápido:** os arquivos do site vêm do cache do aparelho; questões e histórico são buscados ao mesmo tempo; do histórico, só baixa o que é novo desde a última abertura (com conferência pela contagem total; se não bater, baixa tudo); a lista desenha 20 questões por vez.
 - **9 Pilares Macro de TI:** matérias específicas agrupadas em categorias do edital, com o tópico original como `#tag` pesquisável.
 - **Revisão espaçada:** questão errada (ou acertada na dúvida) volta em 1, 3, 7 e 21 dias; "Revisar hoje" mostra só o que vence no dia. Só vira Superada/Dominada acertando em dias diferentes.
 - **Certeza ou dúvida:** cada resposta diz se foi com certeza; chute certo não conta como domínio e erro com certeza ganha destaque.
@@ -26,7 +27,7 @@
 focopro/
 ├── index.html              # Estrutura da página
 ├── manifest.json           # Instalação PWA
-├── service-worker.js       # Cache só dos arquivos do site (nunca da API)
+├── service-worker.js       # Cache só dos arquivos do site (nunca da API); abre do cache e avisa versão nova
 ├── vercel.json             # Cabeçalhos de segurança (CSP, anti-iframe etc.)
 │
 ├── css/
@@ -74,3 +75,8 @@ npx esbuild entry.js --bundle --format=esm --minify --platform=browser --target=
 ```
 
 Depois troque o nome do arquivo em `js/supabase.js` e em `service-worker.js` (e suba o `CACHE_NAME`).
+
+
+## Publicando uma versão nova
+
+O app abre do cache do aparelho. A cada publicação que muda **qualquer** arquivo do site, suba o número do `CACHE_NAME` em `service-worker.js` (ex.: `focopro-v12` → `focopro-v13`). É isso que faz o celular baixar a versão nova e mostrar "Nova versão do FocoPro disponível". Sem subir o número, quem já tem o app continua na versão antiga.
