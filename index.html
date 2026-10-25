@@ -11,9 +11,7 @@
     <link rel="icon" href="data:,">
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="css/style.css">
-    
-    <!-- Tipografia Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 </head>
 <body>
     <!-- Controle do menu lateral no celular (abre/fecha pelo botão ☰) -->
@@ -112,19 +110,19 @@
         <!-- 3. ÁREA PRINCIPAL DE ESTUDOS -->
         <main class="main-content">
             
+            <!-- Linha do celular: menu, marca e placar rápido (fica fixa no topo ao rolar) -->
+            <div class="top-bar-mobile">
+                <label for="menu-toggle" class="btn-menu" aria-label="Abrir menu">☰</label>
+                <span class="top-bar-brand">FocoPro ✦</span>
+                <span class="placar-mini" title="Sequência de dias, acertos e erros">
+                    <span class="placar-mini-sequencia apagada" id="mini-sequencia">0</span>
+                    <span class="placar-mini-acertos" id="mini-acertos">0</span>
+                    <span class="placar-mini-erros" id="mini-erros">0</span>
+                </span>
+            </div>
+
             <!-- Barra Superior de Filtros e Simulado -->
             <header class="top-bar">
-                <!-- Linha do celular: menu, marca e placar rápido -->
-                <div class="top-bar-mobile">
-                    <label for="menu-toggle" class="btn-menu" aria-label="Abrir menu">☰</label>
-                    <span class="top-bar-brand">FocoPro ✦</span>
-                    <span class="placar-mini" title="Sequência de dias, acertos e erros">
-                        <span class="placar-mini-sequencia apagada" id="mini-sequencia">0</span>
-                        <span class="placar-mini-acertos" id="mini-acertos">0</span>
-                        <span class="placar-mini-erros" id="mini-erros">0</span>
-                    </span>
-                </div>
-
                 <!-- Barra principal: só o essencial à vista (busca + matéria + 2 botões) -->
                 <div class="barra-principal">
                     <div class="search-box">

@@ -41,6 +41,7 @@ import {
     limparCacheAntigoDeQuestoes,
     registrarDiaDeEstudo,
     apagarDiasDeEstudo,
+    apagarCacheNuvem,
     diaLocal
 } from './storage.js';
 
@@ -316,7 +317,7 @@ function aplicarFiltros() {
         pararCronometro(displayCronometro);
     }
     const filtradas = ordenarParaEstudo(filtrarQuestoes());
-    renderizarQuestoes(container, filtradas, historico);
+    renderizarQuestoes(container, filtradas, historico, undefined, { paginar: true });
     atualizarPlacar(historico, questoes);
     atualizarBadgeFiltros();
 }
@@ -661,6 +662,10 @@ function formatarExplicacaoIA(texto) {
 // invoke() devolve FunctionsHttpError em status != 2xx; a mensagem do servidor está em error.context
 async function extrairMensagemErroIA(error) {
     if (!navigator.onLine) return "Sem conexão com a internet. Verifique e tente novamente.";
+    // A chamada nem chegou à função: rede caiu, ou o servidor recusou este endereço do site (CORS)
+    if (error && error.name === "FunctionsFetchError") {
+        return "Não foi possível falar com o servidor da IA. Se você está numa versão de teste, ela pode não estar autorizada; no app oficial deve funcionar.";
+    }
     try {
         if (error && error.context && typeof error.context.json === "function") {
             const corpo = await error.context.json();
@@ -793,7 +798,14 @@ chipTag.addEventListener("click", e => {
 });
 
 // ==================== INÍCIO: SUBSTITUIR OS 3 LISTENERS DE FILTRO ====================
-if (inputBusca) inputBusca.addEventListener("input", aplicarFiltros);
+// Busca espera a pausa na digitação (antes redesenhava a lista inteira a cada tecla)
+let esperaBusca = null;
+if (inputBusca) {
+    inputBusca.addEventListener("input", () => {
+        clearTimeout(esperaBusca);
+        esperaBusca = setTimeout(aplicarFiltros, 250);
+    });
+}
 if (selectBanca) selectBanca.addEventListener("change", aplicarFiltros);
 if (selectMateria) selectMateria.addEventListener("change", aplicarFiltros);
 if (selectAno) selectAno.addEventListener("change", aplicarFiltros);
@@ -961,6 +973,7 @@ btnApagarTudo.addEventListener("click", async () => {
     try {
         await apagarHistoricoDoUsuario();
         limparFilaPendente();
+        apagarCacheNuvem();
         localStorage.removeItem('appEstudos_Historico');
         apagarDiasDeEstudo();
         historico = {};
@@ -1029,12 +1042,14 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
         simulado = null;
         pararCronometro(displayCronometro);
         if (idAgora) {
+            const questoesChegando = buscarQuestoes();
             await enviarFilaPendente();
             historico = await carregarHistorico();
+            await carregarBancoDeQuestoes(questoesChegando);
         } else {
             historico = {};
+            await carregarBancoDeQuestoes();
         }
-        await carregarBancoDeQuestoes();
     }, 0);
 });
 
@@ -1171,7 +1186,17 @@ if (btnProcessarImportacao && textoJsonQuestoes && modalImportar) {
 
 // Carrega (ou esconde) o banco de questões de acordo com o login.
 // Chamada no início do app e sempre que o estado de login mudar (login/logout).
-async function carregarBancoDeQuestoes() {
+// Começa a baixar as questões já, sem esperar o histórico (as duas buscas correm juntas).
+// Devolve { questoes } ou { erro }: nunca rejeita, para não virar erro solto no console.
+function buscarQuestoes() {
+    return carregarTodasQuestoes().then(
+        (lista) => ({ questoes: lista }),
+        (erro) => ({ erro })
+    );
+}
+
+// questoesChegando: a busca já iniciada por buscarQuestoes() (opcional)
+async function carregarBancoDeQuestoes(questoesChegando = null) {
     // O botão de importar questões só aparece para o admin
     const botaoImportarQuestoes = document.getElementById('btnAbrirImportar');
     if (botaoImportarQuestoes) botaoImportarQuestoes.hidden = !ehAdministrador();
@@ -1198,15 +1223,14 @@ async function carregarBancoDeQuestoes() {
 
     // Usuário logado: a nuvem (Supabase) é a única fonte das questões.
     // Se ela falhar, o app diz isso (antes mostrava 2 questões de exemplo como se fossem o banco).
-    let daNuvem;
     container.innerHTML = '<p class="aviso-vazio">Carregando questões...</p>';
-    try {
-        daNuvem = await carregarTodasQuestoes();
-    } catch (e) {
-        console.warn("[FocoPro] Erro ao buscar questões da nuvem:", e);
+    const resultado = await (questoesChegando || buscarQuestoes());
+    if (resultado.erro) {
+        console.warn("[FocoPro] Erro ao buscar questões da nuvem:", resultado.erro);
         mostrarErroDeCarga();
         return;
     }
+    const daNuvem = resultado.questoes;
 
     questoes = mesclarQuestoes(daNuvem);
 
@@ -1255,7 +1279,10 @@ async function iniciarApp() {
         usuarioAtual = null;
     }
 
-    // 2. Reenvia respostas que ficaram pendentes (sem internet) antes de ler o histórico da nuvem
+    // 2. As questões começam a chegar já; enquanto isso, reenvia respostas pendentes
+    //    (sem internet) e lê o histórico. Antes era tudo em fila, um depois do outro.
+    const questoesChegando = usuarioAtual ? buscarQuestoes() : null;
+    if (usuarioAtual) container.innerHTML = '<p class="aviso-vazio">Carregando questões...</p>';
     await enviarFilaPendente();
 
     // 3. Carrega histórico (LocalStorage + Supabase historico_respostas)
@@ -1266,8 +1293,8 @@ async function iniciarApp() {
         historico = {};
     }
 
-    // 4. Carrega o banco de questões (ou mostra o aviso de login)
-    await carregarBancoDeQuestoes();
+    // 4. Desenha o banco de questões (ou mostra o aviso de login)
+    await carregarBancoDeQuestoes(questoesChegando);
     idUsuarioCarregado = usuarioAtual ? usuarioAtual.id : null;
 }
 

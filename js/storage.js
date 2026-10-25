@@ -2,12 +2,35 @@
 // js/storage.js - Gerenciamento Híbrido (Local / Supabase)
 // ============================================================
 
-import { carregarHistoricoDoUsuario } from './supabase.js';
+import { carregarHistoricoIncremental } from './supabase.js';
 import { aplicarResposta, novoRegistro, normalizarRegistroAntigo } from './revisao.js';
 
 const CHAVE_HISTORICO = 'appEstudos_Historico';
 const CHAVE_QUESTOES_IMPORTADAS = 'appEstudos_QuestoesImportadas';
 const CHAVE_DIAS_ESTUDO = 'appEstudos_DiasEstudo';
+// Resumo do histórico da nuvem já lido (uma entrada por questão) + até onde já foi lido.
+// Ao abrir, o app só baixa as respostas novas desde então (antes baixava a vida inteira).
+const CHAVE_CACHE_NUVEM = 'appEstudos_ResumoNuvem';
+
+function lerCacheNuvem() {
+    try {
+        const c = JSON.parse(localStorage.getItem(CHAVE_CACHE_NUVEM) || 'null');
+        return (c && typeof c === 'object' && c.mapa && typeof c.mapa === 'object') ? c : null;
+    } catch (e) {
+        return null;
+    }
+}
+
+function gravarCacheNuvem(cache) {
+    try {
+        localStorage.setItem(CHAVE_CACHE_NUVEM, JSON.stringify(cache));
+    } catch (e) { /* sem espaço: na próxima abertura baixa tudo de novo, sem perder nada */ }
+}
+
+// "Apagar TUDO" e logout de outra conta: o resumo guardado não vale mais
+export function apagarCacheNuvem() {
+    try { localStorage.removeItem(CHAVE_CACHE_NUVEM); } catch (e) { /* nada a apagar */ }
+}
 
 // ---------- Dias de estudo (para a sequência 🔥) ----------
 // Guarda só as datas ("2026-10-25") em que pelo menos uma questão foi respondida.
@@ -57,11 +80,10 @@ export function apagarDiasDeEstudo() {
  * Converte a lista de linhas da tabela 'historico_respostas' do Supabase
  * no objeto consolidado usado pelo FocoPro
  */
-function consolidarRegistrosNuvem(registrosNuvem) {
+function consolidarRegistrosNuvem(registrosNuvem, mapaNuvem = {}) {
     // As linhas chegam em ordem de data: cada resposta é reaplicada com a regra de revisão
     // espaçada (js/revisao.js), na data em que foi dada. Assim a agenda de revisão é a mesma
-    // em qualquer aparelho.
-    const mapaNuvem = {};
+    // em qualquer aparelho. mapaNuvem: o resumo já guardado (só as linhas novas são aplicadas).
     if (!Array.isArray(registrosNuvem)) return mapaNuvem;
 
     registrosNuvem.forEach(reg => {
@@ -102,19 +124,26 @@ export async function carregarHistorico() {
     // 1b. Dias de estudo a partir da última resposta de cada questão (cobre históricos antigos)
     adicionarDias(Object.values(historicoLocal).map(h => (h && h.ultimaData) ? diaLocal(h.ultimaData) : null));
 
-    // 2. Se o usuário estiver logado, busca da tabela historico_respostas e mescla
+    // 2. Se o usuário estiver logado, busca na nuvem só o que é novo e mescla
     try {
-        const registrosNuvem = await carregarHistoricoDoUsuario();
-        if (Array.isArray(registrosNuvem) && registrosNuvem.length > 0) {
-            // Cada resposta na nuvem tem data: recupera todos os dias de estudo, de qualquer aparelho
-            adicionarDias(registrosNuvem.map(reg => reg.created_at ? diaLocal(reg.created_at) : null));
+        const cacheAnterior = lerCacheNuvem();
+        const resultado = await carregarHistoricoIncremental(cacheAnterior);
+        if (resultado) {
+            const { modo, linhas, total, userId } = resultado;
+            // Cada resposta na nuvem tem data: recupera os dias de estudo, de qualquer aparelho
+            adicionarDias(linhas.map(reg => reg.created_at ? diaLocal(reg.created_at) : null));
 
-            const historicoNuvem = consolidarRegistrosNuvem(registrosNuvem);
+            const base = modo === 'incremental' ? cacheAnterior.mapa : {};
+            const historicoNuvem = consolidarRegistrosNuvem(linhas, base);
+            const ultima = linhas.length ? linhas[linhas.length - 1].created_at : null;
+            const cursor = ultima || (modo === 'incremental' ? cacheAnterior.cursor : null);
+            if (cursor) gravarCacheNuvem({ userId, cursor, total, mapa: historicoNuvem });
+            else apagarCacheNuvem(); // nuvem vazia
 
             Object.entries(historicoNuvem).forEach(([qId, dadosNuvem]) => {
                 const local = historicoLocal[qId];
                 if (!local) {
-                    historicoLocal[qId] = dadosNuvem;
+                    historicoLocal[qId] = { ...dadosNuvem };
                 } else {
                     // A nuvem é a fonte (tem a data de cada resposta); o local só vence se tiver
                     // MAIS tentativas (respostas ainda na fila offline). Preserva o que só existe

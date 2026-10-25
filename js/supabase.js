@@ -182,33 +182,67 @@ export async function apagarHistoricoDoUsuario() {
 }
 
 /**
- * Recupera TODO o histórico de resoluções do usuário logado (paginado, sem o corte de 1000 linhas)
+ * Busca só o que mudou desde a última abertura (item 14 do roadmap).
+ * cache: { userId, cursor (created_at da última linha já lida), total (linhas já lidas) } ou null.
+ * Devolve:
+ *   { modo: 'incremental', linhas: [novas], total, userId }  -> aplicar as novas sobre o resumo guardado
+ *   { modo: 'completo',    linhas: [todas], total, userId }  -> refazer o resumo do zero
+ *   null                                                      -> sem login ou sem conexão (usar o local)
+ * Conferência: o total de linhas na nuvem precisa bater com (já lidas + novas). Se não bater
+ * (resposta offline de outro aparelho chegou com data antiga, histórico apagado etc.), baixa tudo.
  */
-export async function carregarHistoricoDoUsuario() {
+export async function carregarHistoricoIncremental(cache) {
+    let user = null;
     try {
-        const { data: { session }, error: erroAuth } = await supabaseClient.auth.getSession();
-        const user = session?.user;
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        user = session?.user || null;
+    } catch (e) { /* sem sessão */ }
+    if (!user) return null;
 
-        if (erroAuth || !user) {
-            return [];
-        }
+    const colunasCompletas = 'questao_id, acertou, resposta_usuario, created_at, confianca';
+    const colunasSemConfianca = 'questao_id, acertou, resposta_usuario, created_at';
 
-        // Só as colunas que o app usa: payload menor a cada abertura
-        const buscar = (colunas) => buscarTodasAsPaginas(() => supabaseClient
-            .from('historico_respostas')
-            .select(colunas)
-            .eq('user_id', user.id)
-            .order('created_at', { ascending: true }));
+    const buscarLinhas = async (aPartirDe) => {
+        const buscar = (colunas) => buscarTodasAsPaginas(() => {
+            let consulta = supabaseClient
+                .from('historico_respostas')
+                .select(colunas)
+                .eq('user_id', user.id);
+            if (aPartirDe) consulta = consulta.gt('created_at', aPartirDe);
+            return consulta.order('created_at', { ascending: true });
+        });
+        if (!colunaConfiancaExiste) return buscar(colunasSemConfianca);
         try {
-            return await buscar('questao_id, acertou, resposta_usuario, created_at, confianca');
+            return await buscar(colunasCompletas);
         } catch (erro) {
             if (!erroDeColunaConfianca(erro)) throw erro;
             colunaConfiancaExiste = false;
-            return await buscar('questao_id, acertou, resposta_usuario, created_at');
+            return buscar(colunasSemConfianca);
         }
+    };
+
+    try {
+        const cacheValido = cache && cache.userId === user.id && cache.cursor && Number.isFinite(cache.total);
+        if (cacheValido) {
+            // As duas consultas saem juntas: as linhas novas e a contagem total (só o número, sem dados)
+            const [novas, contagem] = await Promise.all([
+                buscarLinhas(cache.cursor),
+                supabaseClient
+                    .from('historico_respostas')
+                    .select('questao_id', { count: 'exact', head: true })
+                    .eq('user_id', user.id)
+            ]);
+            if (contagem.error) throw contagem.error;
+            if (contagem.count === cache.total + novas.length) {
+                return { modo: 'incremental', linhas: novas, total: contagem.count, userId: user.id };
+            }
+            console.info('[FocoPro] Histórico da nuvem mudou fora da ordem; recarregando tudo.');
+        }
+        const todas = await buscarLinhas(null);
+        return { modo: 'completo', linhas: todas, total: todas.length, userId: user.id };
     } catch (erro) {
-        console.warn("Aviso ao carregar histórico do Supabase:", erro.message);
-        return [];
+        console.warn('[FocoPro] Sem conexão com o histórico da nuvem:', erro.message);
+        return null;
     }
 }
 
