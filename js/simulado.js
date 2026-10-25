@@ -3,7 +3,7 @@
 // ============================================================
 
 import { formatarTempo, gabaritoDe, classificarStatus, atualizarPlacar, revelar } from './ui.js';
-import { salvarHistorico } from './storage.js';
+import { salvarHistorico, registrarDiaDeEstudo } from './storage.js';
 import { showToast } from './notifications.js';
 
 // ---------- 1. CONTROLE DO TEMPO E CRONÔMETRO ----------
@@ -119,6 +119,7 @@ export function finalizarSimulado(simulado, container, porId, historico, questoe
             h.recentes.push(acertou ? 1 : 0);
             if (h.recentes.length > 5) h.recentes.shift();
             h.ultimaData = Date.now();
+            registrarDiaDeEstudo();
 
             revelar(card, q, letraDada);
 

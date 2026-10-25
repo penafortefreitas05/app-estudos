@@ -6,6 +6,51 @@ import { carregarHistoricoDoUsuario } from './supabase.js';
 
 const CHAVE_HISTORICO = 'appEstudos_Historico';
 const CHAVE_QUESTOES_IMPORTADAS = 'appEstudos_QuestoesImportadas';
+const CHAVE_DIAS_ESTUDO = 'appEstudos_DiasEstudo';
+
+// ---------- Dias de estudo (para a sequência 🔥) ----------
+// Guarda só as datas ("2026-10-25") em que pelo menos uma questão foi respondida.
+
+// Data local no formato AAAA-MM-DD (fuso do aparelho, não UTC)
+export function diaLocal(momento = Date.now()) {
+    const d = new Date(momento);
+    const mes = String(d.getMonth() + 1).padStart(2, '0');
+    const dia = String(d.getDate()).padStart(2, '0');
+    return `${d.getFullYear()}-${mes}-${dia}`;
+}
+
+export function carregarDiasDeEstudo() {
+    try {
+        const lista = JSON.parse(localStorage.getItem(CHAVE_DIAS_ESTUDO) || '[]');
+        return new Set(Array.isArray(lista) ? lista : []);
+    } catch (e) {
+        return new Set();
+    }
+}
+
+function gravarDiasDeEstudo(dias) {
+    try {
+        // Mantém só o último ano e pouco: suficiente para qualquer sequência real
+        const lista = [...dias].sort().slice(-400);
+        localStorage.setItem(CHAVE_DIAS_ESTUDO, JSON.stringify(lista));
+    } catch (e) { /* sem localStorage: a sequência só não persiste */ }
+}
+
+function adicionarDias(novos) {
+    const dias = carregarDiasDeEstudo();
+    const antes = dias.size;
+    novos.forEach(d => d && dias.add(d));
+    if (dias.size !== antes) gravarDiasDeEstudo(dias);
+}
+
+// Chamada a cada questão respondida (modo estudo e simulado)
+export function registrarDiaDeEstudo() {
+    adicionarDias([diaLocal()]);
+}
+
+export function apagarDiasDeEstudo() {
+    try { localStorage.removeItem(CHAVE_DIAS_ESTUDO); } catch (e) { /* nada a apagar */ }
+}
 
 /**
  * Converte a lista de linhas da tabela 'historico_respostas' do Supabase
@@ -73,10 +118,16 @@ export async function carregarHistorico() {
         console.warn('Histórico local vazio ou ilegível:', e);
     }
 
+    // 1b. Dias de estudo a partir da última resposta de cada questão (cobre históricos antigos)
+    adicionarDias(Object.values(historicoLocal).map(h => (h && h.ultimaData) ? diaLocal(h.ultimaData) : null));
+
     // 2. Se o usuário estiver logado, busca da tabela historico_respostas e mescla
     try {
         const registrosNuvem = await carregarHistoricoDoUsuario();
         if (Array.isArray(registrosNuvem) && registrosNuvem.length > 0) {
+            // Cada resposta na nuvem tem data: recupera todos os dias de estudo, de qualquer aparelho
+            adicionarDias(registrosNuvem.map(reg => reg.created_at ? diaLocal(reg.created_at) : null));
+
             const historicoNuvem = consolidarRegistrosNuvem(registrosNuvem);
 
             Object.entries(historicoNuvem).forEach(([qId, dadosNuvem]) => {

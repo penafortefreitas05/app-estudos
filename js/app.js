@@ -36,7 +36,9 @@ import { criarConta, entrar, sair } from './auth.js';
 import {
     carregarHistorico,
     salvarHistorico,
-    limparCacheAntigoDeQuestoes
+    limparCacheAntigoDeQuestoes,
+    registrarDiaDeEstudo,
+    apagarDiasDeEstudo
 } from './storage.js';
 
 // ---------- 1.5 Simulado (cronômetro e finalização) ----------
@@ -298,6 +300,25 @@ function aplicarFiltros() {
     atualizarBadgeFiltros();
 }
 
+// ---------- 6a. TOCAR NUMA MATÉRIA DO PAINEL DE DESEMPENHO = TREINAR ELA ----------
+const dashboardMaterias = document.getElementById("dashboard-materias");
+if (dashboardMaterias) {
+    dashboardMaterias.addEventListener("click", (e) => {
+        const item = e.target.closest(".materia-stat-item[data-materia]");
+        if (!item || !selectMateria) return;
+        const materia = item.dataset.materia;
+        // Só filtra se a matéria existir no filtro (questões de outra lista não têm opção)
+        if (![...selectMateria.options].some(opt => opt.value === materia)) return;
+        simulado = null;
+        pararCronometro(displayCronometro);
+        selectMateria.value = materia;
+        aplicarFiltros();
+        const mainContent = document.querySelector(".main-content");
+        if (mainContent) mainContent.scrollTo({ top: 0, behavior: "smooth" });
+        showToast(`Treinando: ${materia}`, "info", 1800);
+    });
+}
+
 // ---------- 6b. PAINÉIS DO TOPO (Filtros / Simulado) ----------
 // Só um painel aberto por vez; tocar no mesmo botão fecha.
 const paineisTopo = [
@@ -413,6 +434,7 @@ async function responder(card, botao) {
     h.ultimaData = Date.now();
 
     salvarHistorico(historico);
+    registrarDiaDeEstudo();
 
     // 4. REVELAR O GABARITO NA TELA E ATUALIZAR PLACAR
     revelar(card, q, letraEscolhida);
@@ -820,6 +842,7 @@ if (btnLimpar) {
 
         if (confirmado) {
             localStorage.removeItem('appEstudos_Historico');
+            apagarDiasDeEstudo();
             historico = {};
            atualizarPlacar(historico, questoes);
             aplicarFiltros();
@@ -857,6 +880,7 @@ btnApagarTudo.addEventListener("click", async () => {
     try {
         await apagarHistoricoDoUsuario();
         localStorage.removeItem('appEstudos_Historico');
+        apagarDiasDeEstudo();
         historico = {};
         atualizarPlacar(historico, questoes);
         aplicarFiltros();

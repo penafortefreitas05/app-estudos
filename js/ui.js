@@ -2,6 +2,13 @@
 // js/ui.js - Renderização e Manipulação da Interface (FocoPro)
 // ============================================================
 
+import { carregarDiasDeEstudo, diaLocal } from './storage.js';
+
+// Matéria "a reforçar": abaixo deste % de acerto, com pelo menos esta quantidade de respostas
+// (sem o mínimo, 1 erro em 1 questão já marcaria a matéria como crítica)
+const LIMITE_CRITICO = 60;
+const MIN_RESPOSTAS_CRITICO = 5;
+
 // ---------- 1. UTILITÁRIOS DE TEXTO E SEGURANÇA ----------
 export function esc(texto) {
     if (texto === null || texto === undefined) return "";
@@ -270,7 +277,76 @@ export function atualizarPlacar(historico, questoes) {
     if (elMiniErros) elMiniErros.textContent = totalErros;
     if (elContadorRevisao) elContadorRevisao.innerText = qtdCadernoErros;
 
+    // --- Os 3 números: sequência, cobertura e matérias a reforçar ---
+    const sequencia = calcularSequencia(carregarDiasDeEstudo());
+    const cobertura = calcularCobertura(questoes, historico);
+    const criticas = Object.keys(materiasMap).filter(mat => ehMateriaCritica(materiasMap[mat]));
+
+    definirTexto("stat-sequencia", sequencia.atual);
+    definirTexto("stat-sequencia-detalhe",
+        sequencia.atual > 0 && !sequencia.estudouHoje ? "responda hoje!" : `recorde ${sequencia.recorde}`);
+    definirTexto("mini-sequencia", sequencia.atual);
+    const miniSeq = document.getElementById("mini-sequencia");
+    if (miniSeq) miniSeq.classList.toggle("apagada", !sequencia.estudouHoje);
+
+    definirTexto("stat-cobertura", cobertura.total ? `${cobertura.percentual}%` : "—");
+    definirTexto("stat-cobertura-detalhe", `${cobertura.feitas} de ${cobertura.total} feitas`);
+
+    definirTexto("stat-criticas", criticas.length);
+    definirTexto("stat-criticas-detalhe", criticas.length ? "abaixo de 60%" : "nenhuma");
+    const cardCriticas = document.getElementById("card-criticas");
+    if (cardCriticas) cardCriticas.classList.toggle("alerta", criticas.length > 0);
+
     renderizarDesempenhoMaterias(materiasMap);
+}
+
+function definirTexto(id, valor) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = valor;
+}
+
+function ehMateriaCritica(dados) {
+    const respostas = dados.acertos + dados.erros;
+    return respostas >= MIN_RESPOSTAS_CRITICO && (dados.acertos / respostas) * 100 < LIMITE_CRITICO;
+}
+
+// Dias seguidos com pelo menos 1 questão respondida.
+// Se hoje ainda não teve resposta, a sequência de ontem continua valendo (até o fim do dia).
+export function calcularSequencia(dias, agora = new Date()) {
+    const resultado = { atual: 0, recorde: 0, estudouHoje: dias.has(diaLocal(agora)) };
+    if (dias.size === 0) return resultado;
+
+    // Recorde: maior corrida de dias consecutivos na lista inteira
+    const emDias = (txt) => { const [a, m, d] = txt.split('-').map(Number); return Date.UTC(a, m - 1, d) / 86400000; };
+    const ordenados = [...dias].map(emDias).sort((a, b) => a - b);
+    let corrida = 1;
+    resultado.recorde = 1;
+    for (let i = 1; i < ordenados.length; i++) {
+        corrida = (ordenados[i] - ordenados[i - 1] === 1) ? corrida + 1 : 1;
+        if (corrida > resultado.recorde) resultado.recorde = corrida;
+    }
+
+    // Atual: conta para trás a partir de hoje (ou de ontem)
+    const cursor = new Date(agora);
+    if (!resultado.estudouHoje) cursor.setDate(cursor.getDate() - 1);
+    while (dias.has(diaLocal(cursor))) {
+        resultado.atual++;
+        cursor.setDate(cursor.getDate() - 1);
+    }
+    return resultado;
+}
+
+// % das questões do banco já respondidas pelo menos uma vez.
+// (As tags atuais são livres demais para medir "assuntos": 376 tags para 194 questões,
+// com marcadores como "pegadinha". Quando o banco tiver um campo de assunto padronizado,
+// esta conta passa a ser a cobertura do edital.)
+export function calcularCobertura(questoes, historico) {
+    const total = questoes.length;
+    const feitas = questoes.filter(q => {
+        const h = historico[String(q.id)];
+        return Boolean(h && (Number(h.tentativas) > 0 || Number(h.acertos) > 0 || Number(h.erros) > 0));
+    }).length;
+    return { total, feitas, percentual: total ? Math.round((feitas / total) * 100) : 0 };
 }
 
 function renderizarDesempenhoMaterias(materiasMap) {
@@ -284,24 +360,31 @@ function renderizarDesempenhoMaterias(materiasMap) {
         return;
     }
 
+    // Matérias a reforçar primeiro; dentro de cada grupo, ordem alfabética
+    materiasComAtividade.sort((a, b) =>
+        (ehMateriaCritica(materiasMap[b]) - ehMateriaCritica(materiasMap[a])) || a.localeCompare(b, 'pt-BR'));
+
     let html = '<div class="painel-desempenho-materias">';
-    materiasComAtividade.sort((a, b) => a.localeCompare(b, 'pt-BR')).forEach(mat => {
+    materiasComAtividade.forEach(mat => {
         const dados = materiasMap[mat];
         const somaResp = dados.acertos + dados.erros;
         const taxa = somaResp > 0
             ? ((dados.acertos / somaResp) * 100).toFixed(0)
             : 0;
+        const critica = ehMateriaCritica(dados);
 
+        // Botão: tocar na matéria filtra as questões dela
         html += `
-            <div class="materia-stat-item">
-                <div class="materia-stat-header">
-                    <span class="materia-nome">📖 ${esc(mat)}</span>
+            <button type="button" class="materia-stat-item${critica ? ' critica' : ''}" data-materia="${esc(mat)}" title="Ver questões de ${esc(mat)}">
+                <span class="materia-stat-header">
+                    <span class="materia-nome">${critica ? '⚠️' : '📖'} ${esc(mat)}</span>
                     <span class="materia-taxa">${taxa}% (${dados.acertos}/${somaResp})</span>
-                </div>
-                <div class="barra-progresso-bg">
-                    <div class="barra-progresso-fill" style="width: ${taxa}%;"></div>
-                </div>
-            </div>
+                </span>
+                <span class="barra-progresso-bg">
+                    <span class="barra-progresso-fill" style="width: ${taxa}%;"></span>
+                </span>
+                ${critica ? '<span class="materia-reforcar">Reforçar · toque para treinar</span>' : ''}
+            </button>
         `;
     });
     html += '</div>';
