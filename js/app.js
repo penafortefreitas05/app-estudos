@@ -743,7 +743,7 @@ if (btnSimulado) {
         }
 
         simulado = { ids: sorteadas.map(q => q.id), respostas: {}, inicio: Date.now(), finalizado: false };
-        renderizarQuestoes(container, sorteadas, historico);
+        renderizarQuestoes(container, sorteadas, historico, undefined, { restaurarRespostas: false });
         adicionarBotaoFinalizar(container);
 
         fecharPaineis();
@@ -806,7 +806,8 @@ if (btnModoRevisao) {
             container,
             cadernoDeErros,
             historico,
-            "Seu Caderno de Erros está limpo! Nenhuma questão pendente para revisão no momento."
+            "Seu Caderno de Erros está limpo! Nenhuma questão pendente para revisão no momento.",
+            { restaurarRespostas: false }
         );
 
         showToast(`Carregadas ${cadernoDeErros.length} questões no Caderno de Erros.`, "info");
