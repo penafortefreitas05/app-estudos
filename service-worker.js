@@ -6,7 +6,7 @@
 // antes, o banco inteiro e o histórico ficavam no cache do navegador mesmo após o logout.
 // Ao mudar a lista abaixo ou publicar uma versão nova, suba o número do CACHE_NAME.
 
-const CACHE_NAME = 'focopro-v10';
+const CACHE_NAME = 'focopro-v11';
 
 const RECURSOS_ESTATICOS = [
     './',

@@ -122,6 +122,10 @@ body {
 .btn-sidebar.danger:hover { background-color: #7f1d1d40; }
 
 /* ---------- 2.1 GAVETA DE FERRAMENTAS (exportar/importar/zerar/apagar) ---------- */
+/* Itens do menu nunca encolhem: quando o menu passa da altura da tela, ele rola.
+   (Sem isso, a gaveta abaixo era espremida e escondia "Zerar" e "Apagar TUDO".) */
+.sidebar > * { flex-shrink: 0; }
+
 .gaveta-ferramentas {
     border: 1px solid #1e293b;
     border-radius: 8px;
