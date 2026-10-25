@@ -392,7 +392,11 @@ function renderizarDesempenhoMaterias(materiasMap) {
 }
 
 // ---------- 5. RENDERIZAÇÃO DE QUESTÕES ----------
-export function renderizarQuestoes(container, lista, historico = {}, mensagemVazia = "Nenhuma questão encontrada.") {
+// opcoes.restaurarRespostas: no modo estudo, questão já respondida volta com a resposta marcada.
+// No simulado e na revisão vem em branco: lá a questão precisa ser respondida de novo
+// (antes o simulado mostrava o gabarito em verde/vermelho nas questões já feitas).
+export function renderizarQuestoes(container, lista, historico = {}, mensagemVazia = "Nenhuma questão encontrada.", opcoes = {}) {
+    const { restaurarRespostas = true } = opcoes;
     if (!container) return;
     container.innerHTML = "";
 
@@ -478,7 +482,7 @@ export function renderizarQuestoes(container, lista, historico = {}, mensagemVaz
         container.insertAdjacentHTML('beforeend', cardHTML);
 
         // Se a questão já foi respondida antes (ex: após dar F5), restaura o estado visual na tela!
-        if (tentativas > 0 && (regHist.ultimaEscolha || regHist.ultimaResposta)) {
+        if (restaurarRespostas && tentativas > 0 && (regHist.ultimaEscolha || regHist.ultimaResposta)) {
             const cardInserido = container.lastElementChild;
             if (cardInserido) {
                 const gabaritoLetra = gabaritoDe(q);
