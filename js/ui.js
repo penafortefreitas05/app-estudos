@@ -3,6 +3,7 @@
 // ============================================================
 
 import { carregarDiasDeEstudo, diaLocal } from './storage.js';
+import { venceHoje } from './revisao.js';
 
 // Matéria "a reforçar": abaixo deste % de acerto, com pelo menos esta quantidade de respostas
 // (sem o mínimo, 1 erro em 1 questão já marcaria a matéria como crítica)
@@ -199,16 +200,11 @@ export function classificarStatus(qId, historico) {
     const h = historico[String(qId)] || historico[qId];
     if (!h || !h.tentativas) return { texto: "Não Respondida", classe: "badge-neutro" };
 
+    if (venceHoje(h)) return { texto: "Revisar hoje 🔁", classe: "badge-alerta" };
+    if (h.status === 'erro') return { texto: "Caderno de Erros ❌", classe: "badge-perigo" };
+    if (h.status === 'dominada') return { texto: "Dominada 🎯", classe: "badge-sucesso" };
     if (h.status === 'superado') return { texto: "Superada ⚡", classe: "badge-sucesso" };
-
-    const recentes = Array.isArray(h.recentes) ? h.recentes : [];
-    const ultimosCinco = recentes.slice(-5);
-    const taxaRecente = ultimosCinco.length > 0
-        ? (ultimosCinco.reduce((acc, v) => acc + v, 0) / ultimosCinco.length) * 100
-        : ((h.acertos || 0) / h.tentativas) * 100;
-
-    if (h.tentativas >= 3 && taxaRecente >= 80) return { texto: "Dominada 🎯", classe: "badge-sucesso" };
-    if (taxaRecente <= 40 || h.status === 'erro' || h.ultimaResposta === 'errado') return { texto: "Caderno de Erros ❌", classe: "badge-perigo" };
+    if (h.status === 'duvida') return { texto: "Acertou na dúvida 🤔", classe: "badge-alerta" };
     return { texto: "Em Aprendizado 📘", classe: "badge-alerta" };
 }
 
@@ -255,10 +251,8 @@ export function atualizarPlacar(historico, questoes) {
             materiasMap[mat].erros += er;
         }
 
-        const ehErroAtivo = h.status === 'erro' || (h.ultimaResposta === 'errado' && h.status !== 'superado');
-        const temAnotacao = h.anotacao && String(h.anotacao).trim().length > 0;
-
-        if ((ehErroAtivo || temAnotacao) && qAssociada) {
+        // Contador do botão "Revisar hoje": questões cuja revisão vence hoje (ou já venceu)
+        if (qAssociada && venceHoje(h)) {
             qtdCadernoErros++;
         }
     });
@@ -454,7 +448,10 @@ export function renderizarQuestoes(container, lista, historico = {}, mensagemVaz
 
                 <div class="card-footer">
                     <div class="card-actions-row">
-                        <button type="button" class="btn-primary btn-responder" data-id="${esc(idStr)}">✔ Responder</button>
+                        <div class="botoes-resposta">
+                            <button type="button" class="btn-primary btn-responder" data-confianca="certeza" data-id="${esc(idStr)}">✔ Tenho certeza</button>
+                            <button type="button" class="btn-responder btn-duvida" data-confianca="duvida" data-id="${esc(idStr)}">🤔 Na dúvida</button>
+                        </div>
                         <button type="button" class="btn-sidebar btn-refazer" data-id="${esc(idStr)}" hidden style="margin-left: 8px;">🔄 Resolver Novamente</button>
                         <small class="tentativas">Tentativas: ${tentativas}</small>
                     </div>
@@ -499,7 +496,8 @@ export function renderizarQuestoes(container, lista, historico = {}, mensagemVaz
 }
 
 // ---------- 6. REVELAÇÃO DO GABARITO E FEEDBACK VISUAL ----------
-export function revelar(card, q, letraEscolhida) {
+// info.confianca ('certeza' | 'duvida'): só na hora da resposta, para o aviso abaixo do gabarito
+export function revelar(card, q, letraEscolhida, info = {}) {
     if (!card || !q) return;
 
     const gabaritoLetra = gabaritoDe(q);
@@ -523,11 +521,11 @@ export function revelar(card, q, letraEscolhida) {
     });
 
     // 2. Desabilita o botão Responder e exibe o botão Resolver Novamente
-    const btnResponder = card.querySelector(".btn-responder");
-    if (btnResponder) {
-        btnResponder.disabled = true;
-        btnResponder.innerText = acertou ? "✔ Respondida (Acerto)" : "✖ Respondida (Erro)";
-    }
+    card.querySelectorAll(".btn-responder").forEach(btn => {
+        btn.disabled = true;
+        if (btn.dataset.confianca === 'duvida') btn.hidden = true;
+        else btn.innerText = acertou ? "✔ Respondida (Acerto)" : "✖ Respondida (Erro)";
+    });
 
     const btnRefazer = card.querySelector(".btn-refazer");
     if (btnRefazer) {
@@ -552,6 +550,15 @@ export function revelar(card, q, letraEscolhida) {
             gabaritoDiv.innerHTML = `✔ <strong>Resposta Correta!</strong> Gabarito oficial: <strong>${esc(textoCorreto)}</strong>`;
         } else {
             gabaritoDiv.innerHTML = `✖ <strong>Resposta Incorreta.</strong> Você marcou <strong>(${esc(letraEscolhida)})</strong>. O gabarito oficial é: <strong>${esc(textoCorreto)}</strong>`;
+        }
+
+        // Metacognição: o que a confiança diz sobre essa resposta
+        if (letraEscolhida && info.confianca === 'certeza' && !acertou) {
+            gabaritoDiv.innerHTML += `<p class="aviso-confianca forte">⚠️ <strong>Você tinha certeza.</strong> Isso indica um conceito aprendido errado, não distração. Vale ler a explicação com calma. Ela volta amanhã na revisão.</p>`;
+        } else if (letraEscolhida && info.confianca === 'duvida' && acertou) {
+            gabaritoDiv.innerHTML += `<p class="aviso-confianca">🤔 <strong>Acertou na dúvida.</strong> Ainda não conta como sabida: ela volta amanhã para confirmar.</p>`;
+        } else if (letraEscolhida && !acertou && info.confianca === 'duvida') {
+            gabaritoDiv.innerHTML += `<p class="aviso-confianca">🔁 Ela volta amanhã na revisão.</p>`;
         }
         // Injeta o botão de IA apenas quando o utilizador erra a questão
     if (!acertou && letraEscolhida && gabaritoDiv) {

@@ -11,7 +11,10 @@
 - **PWA (Progressive Web App):** instalável em desktop e celular. Os arquivos do app ficam em cache; as questões exigem conexão ao abrir.
 - **Nenhuma resposta se perde:** respostas dadas sem internet ficam numa fila no aparelho e sobem para a nuvem, com a data original, quando a conexão volta.
 - **9 Pilares Macro de TI:** matérias específicas agrupadas em categorias do edital, com o tópico original como `#tag` pesquisável.
-- **Caderno de Erros:** registro de erros e anotações, com transição de status (`erro` ➔ `superado` ⚡) ao acertar na revisão.
+- **Revisão espaçada:** questão errada (ou acertada na dúvida) volta em 1, 3, 7 e 21 dias; "Revisar hoje" mostra só o que vence no dia. Só vira Superada/Dominada acertando em dias diferentes.
+- **Certeza ou dúvida:** cada resposta diz se foi com certeza; chute certo não conta como domínio e erro com certeza ganha destaque.
+- **Questão-irmã:** depois de um erro, "Outra do mesmo assunto" traz uma questão parecida logo abaixo.
+- **Matérias misturadas:** sem matéria escolhida, a lista alterna temas (como na prova).
 - **Modo Simulado com Cronômetro:** respostas em lote, gabarito oculto até finalizar, tempo regressivo.
 - **Explicação com IA:** Edge Function do Supabase (Gemini) com login obrigatório, limite de uso por usuário e cache de explicações.
 
@@ -34,6 +37,7 @@ focopro/
 │   ├── ui.js               # Renderização das questões, placar e desempenho
 │   ├── simulado.js         # Cronômetro e correção do simulado
 │   ├── storage.js          # Histórico: localStorage + nuvem
+│   ├── revisao.js          # Regra da revisão espaçada e dos status
 │   ├── supabase.js         # Conexão e consultas ao Supabase (paginadas)
 │   ├── auth.js             # Login, cadastro e logout
 │   ├── notifications.js    # Toasts e modais de confirmação

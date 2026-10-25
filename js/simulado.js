@@ -5,6 +5,7 @@
 import { formatarTempo, gabaritoDe, classificarStatus, atualizarPlacar, revelar } from './ui.js';
 import { salvarHistorico, registrarDiaDeEstudo } from './storage.js';
 import { salvarRespostasEmLote } from './supabase.js';
+import { aplicarResposta, novoRegistro } from './revisao.js';
 import { showToast } from './notifications.js';
 
 // ---------- 1. CONTROLE DO TEMPO E CRONÔMETRO ----------
@@ -96,31 +97,12 @@ export function finalizarSimulado(simulado, container, porId, historico, questoe
             const gabaritoOficial = gabaritoDe(q);
             const acertou = (letraDada === gabaritoOficial);
 
-            if (!historico[idStr]) {
-                historico[idStr] = { acertos: 0, erros: 0, tentativas: 0, ultimaResposta: null, recentes: [], status: 'novo' };
-            }
+            const confianca = (simulado.confiancas && simulado.confiancas[idStr]) || 'certeza';
+            if (acertou) acertosSimulado++;
+
+            if (!historico[idStr]) historico[idStr] = novoRegistro();
             const h = historico[idStr];
-            if (!Array.isArray(h.recentes)) h.recentes = [];
-
-            h.tentativas = (h.tentativas || 0) + 1;
-            if (acertou) {
-                h.acertos = (h.acertos || 0) + 1;
-                acertosSimulado++;
-                if (h.status === 'erro' || h.ultimaResposta === 'errado') {
-                    h.status = 'superado';
-                } else {
-                    h.status = 'acerto';
-                }
-            } else {
-                h.erros = (h.erros || 0) + 1;
-                h.status = 'erro';
-            }
-
-            h.ultimaResposta = acertou ? 'certo' : 'errado';
-            h.ultimaEscolha = letraDada; // usada pelo botão "Entender meu erro com IA"
-            h.recentes.push(acertou ? 1 : 0);
-            if (h.recentes.length > 5) h.recentes.shift();
-            h.ultimaData = Date.now();
+            aplicarResposta(h, { acertou, confianca, momento: Date.now(), letra: letraDada });
             registrarDiaDeEstudo();
             respostasParaNuvem.push({
                 questaoId: idStr,
@@ -128,10 +110,11 @@ export function finalizarSimulado(simulado, container, porId, historico, questoe
                 banca: q.banca || 'Não informada',
                 acertou,
                 respostaEscolhida: letraDada,
-                momento: h.ultimaData
+                momento: h.ultimaData,
+                confianca
             });
 
-            revelar(card, q, letraDada);
+            revelar(card, q, letraDada, { confianca });
 
             const status = classificarStatus(idStr, historico);
             const badge = card.querySelector(".badge");
