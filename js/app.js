@@ -662,6 +662,10 @@ function formatarExplicacaoIA(texto) {
 // invoke() devolve FunctionsHttpError em status != 2xx; a mensagem do servidor está em error.context
 async function extrairMensagemErroIA(error) {
     if (!navigator.onLine) return "Sem conexão com a internet. Verifique e tente novamente.";
+    // A chamada nem chegou à função: rede caiu, ou o servidor recusou este endereço do site (CORS)
+    if (error && error.name === "FunctionsFetchError") {
+        return "Não foi possível falar com o servidor da IA. Se você está numa versão de teste, ela pode não estar autorizada; no app oficial deve funcionar.";
+    }
     try {
         if (error && error.context && typeof error.context.json === "function") {
             const corpo = await error.context.json();

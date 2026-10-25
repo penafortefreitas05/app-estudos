@@ -1127,7 +1127,15 @@ body {
     .main-content > * { flex-shrink: 0; }
 
     .top-bar { padding: 0.75rem 1rem 1rem; }
-    .top-bar-mobile { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
+    /* Linha do menu fixa no topo ao rolar (só CSS: não pesa nada). Busca e filtros rolam junto
+       com as questões, para não roubar espaço da tela. */
+    .top-bar-mobile {
+        display: flex; align-items: center; gap: 0.75rem;
+        position: sticky; top: 0; z-index: 30;
+        padding: 0.6rem 1rem;
+        background: #020617; /* sólido: efeito de desfoque pesaria na rolagem de celular simples */
+        border-bottom: 1px solid #1e293b;
+    }
     .btn-menu {
         width: 44px; height: 44px;
         display: flex; align-items: center; justify-content: center;
