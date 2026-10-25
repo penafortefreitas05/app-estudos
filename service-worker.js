@@ -6,7 +6,7 @@
 // antes, o banco inteiro e o histórico ficavam no cache do navegador mesmo após o logout.
 // Ao mudar a lista abaixo ou publicar uma versão nova, suba o número do CACHE_NAME.
 
-const CACHE_NAME = 'focopro-v9';
+const CACHE_NAME = 'focopro-v11';
 
 const RECURSOS_ESTATICOS = [
     './',
@@ -22,6 +22,7 @@ const RECURSOS_ESTATICOS = [
     './js/auth.js',
     './js/supabase.js',
     './js/pwa.js',
+    './js/revisao.js',
     './js/vendor/supabase-js-2.117.3.min.js',
     './icons/android-chrome-192x192.png',
     './icons/android-chrome-512x512.png'

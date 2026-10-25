@@ -56,8 +56,8 @@ function gravarFila(fila) {
     } catch (e) { /* sem localStorage: a fila só não persiste */ }
 }
 
-function montarLinha(userId, { questaoId, materia, banca, acertou, respostaEscolhida, momento }) {
-    return {
+function montarLinha(userId, { questaoId, materia, banca, acertou, respostaEscolhida, momento, confianca }) {
+    const linha = {
         user_id: userId,
         questao_id: String(questaoId),
         materia: materia || 'Geral',
@@ -66,6 +66,29 @@ function montarLinha(userId, { questaoId, materia, banca, acertou, respostaEscol
         resposta_usuario: String(respostaEscolhida),
         created_at: new Date(momento || Date.now()).toISOString()
     };
+    if (confianca === 'certeza' || confianca === 'duvida') linha.confianca = confianca;
+    return linha;
+}
+
+// A coluna "confianca" existe no banco? Enquanto o SQL não for rodado, o app segue sem ela
+// (sem isso, toda resposta ficaria presa na fila offline por causa de uma coluna inexistente).
+let colunaConfiancaExiste = true;
+
+function erroDeColunaConfianca(erro) {
+    return Boolean(erro) && /confianca/i.test(`${erro.message || ''} ${erro.details || ''} ${erro.hint || ''}`);
+}
+
+async function inserirLinhas(linhas) {
+    const enviar = colunaConfiancaExiste
+        ? linhas
+        : linhas.map(({ confianca, ...resto }) => resto);
+    const { error } = await supabaseClient.from('historico_respostas').insert(enviar);
+    if (error && colunaConfiancaExiste && erroDeColunaConfianca(error)) {
+        colunaConfiancaExiste = false;
+        console.warn("[FocoPro] Coluna 'confianca' ainda não existe no Supabase; enviando sem ela.");
+        return inserirLinhas(linhas);
+    }
+    if (error) throw error;
 }
 
 /**
@@ -85,8 +108,7 @@ export async function salvarRespostasEmLote(respostas) {
 
     const linhas = respostas.map(r => montarLinha(user.id, r));
     try {
-        const { error } = await supabaseClient.from('historico_respostas').insert(linhas);
-        if (error) throw error;
+        await inserirLinhas(linhas);
         enviarFilaPendente(); // aproveita que a conexão está boa
         return true;
     } catch (erro) {
@@ -121,8 +143,7 @@ export async function enviarFilaPendente() {
         const outras = fila.filter(l => l.user_id !== user.id);
         if (minhas.length === 0) return;
 
-        const { error } = await supabaseClient.from('historico_respostas').insert(minhas);
-        if (error) throw error;
+        await inserirLinhas(minhas);
         gravarFila(outras);
         console.info(`[FocoPro] ${minhas.length} resposta(s) pendente(s) enviadas para a nuvem.`);
     } catch (erro) {
@@ -173,11 +194,18 @@ export async function carregarHistoricoDoUsuario() {
         }
 
         // Só as colunas que o app usa: payload menor a cada abertura
-        return await buscarTodasAsPaginas(() => supabaseClient
+        const buscar = (colunas) => buscarTodasAsPaginas(() => supabaseClient
             .from('historico_respostas')
-            .select('questao_id, acertou, resposta_usuario, created_at')
+            .select(colunas)
             .eq('user_id', user.id)
             .order('created_at', { ascending: true }));
+        try {
+            return await buscar('questao_id, acertou, resposta_usuario, created_at, confianca');
+        } catch (erro) {
+            if (!erroDeColunaConfianca(erro)) throw erro;
+            colunaConfiancaExiste = false;
+            return await buscar('questao_id, acertou, resposta_usuario, created_at');
+        }
     } catch (erro) {
         console.warn("Aviso ao carregar histórico do Supabase:", erro.message);
         return [];

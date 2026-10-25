@@ -3,6 +3,7 @@
 // ============================================================
 
 import { carregarHistoricoDoUsuario } from './supabase.js';
+import { aplicarResposta, novoRegistro, normalizarRegistroAntigo } from './revisao.js';
 
 const CHAVE_HISTORICO = 'appEstudos_Historico';
 const CHAVE_QUESTOES_IMPORTADAS = 'appEstudos_QuestoesImportadas';
@@ -57,45 +58,22 @@ export function apagarDiasDeEstudo() {
  * no objeto consolidado usado pelo FocoPro
  */
 function consolidarRegistrosNuvem(registrosNuvem) {
+    // As linhas chegam em ordem de data: cada resposta é reaplicada com a regra de revisão
+    // espaçada (js/revisao.js), na data em que foi dada. Assim a agenda de revisão é a mesma
+    // em qualquer aparelho.
     const mapaNuvem = {};
     if (!Array.isArray(registrosNuvem)) return mapaNuvem;
 
     registrosNuvem.forEach(reg => {
         const id = String(reg.questao_id || "").trim();
         if (!id) return;
-
-        if (!mapaNuvem[id]) {
-            mapaNuvem[id] = {
-                acertos: 0,
-                erros: 0,
-                tentativas: 0,
-                ultimaResposta: null,
-                ultimaEscolha: null,
-                recentes: [],
-                status: 'novo',
-                anotacao: ""
-            };
-        }
-
-        const item = mapaNuvem[id];
-        const acertou = Boolean(reg.acertou);
-
-        item.tentativas += 1;
-        if (acertou) {
-            item.acertos += 1;
-            item.status = (item.status === 'erro' || item.ultimaResposta === 'errado') ? 'superado' : 'acerto';
-        } else {
-            item.erros += 1;
-            item.status = 'erro';
-        }
-
-        item.ultimaResposta = acertou ? 'certo' : 'errado';
-        if (reg.resposta_usuario) {
-            item.ultimaEscolha = String(reg.resposta_usuario).trim().toUpperCase();
-        }
-        item.recentes.push(acertou ? 1 : 0);
-        if (item.recentes.length > 5) item.recentes.shift();
-        item.ultimaData = reg.created_at ? new Date(reg.created_at).getTime() : Date.now();
+        if (!mapaNuvem[id]) mapaNuvem[id] = novoRegistro();
+        aplicarResposta(mapaNuvem[id], {
+            acertou: Boolean(reg.acertou),
+            confianca: reg.confianca || 'certeza',
+            momento: reg.created_at ? new Date(reg.created_at).getTime() : Date.now(),
+            letra: reg.resposta_usuario || null
+        });
     });
 
     return mapaNuvem;
@@ -118,6 +96,9 @@ export async function carregarHistorico() {
         console.warn('Histórico local vazio ou ilegível:', e);
     }
 
+    // 1a. Históricos de antes da revisão espaçada ganham agenda (erros entram na revisão de hoje)
+    Object.values(historicoLocal).forEach(normalizarRegistroAntigo);
+
     // 1b. Dias de estudo a partir da última resposta de cada questão (cobre históricos antigos)
     adicionarDias(Object.values(historicoLocal).map(h => (h && h.ultimaData) ? diaLocal(h.ultimaData) : null));
 
@@ -135,9 +116,10 @@ export async function carregarHistorico() {
                 if (!local) {
                     historicoLocal[qId] = dadosNuvem;
                 } else {
-                    // Mantém o que tiver mais tentativas e preserva o que só existe neste aparelho
-                    // (favorito e anotação ainda não vão para a nuvem; antes o favorito sumia no login)
-                    const usarNuvem = (dadosNuvem.tentativas || 0) > (local.tentativas || 0);
+                    // A nuvem é a fonte (tem a data de cada resposta); o local só vence se tiver
+                    // MAIS tentativas (respostas ainda na fila offline). Preserva o que só existe
+                    // neste aparelho: favorito e anotação ainda não vão para a nuvem.
+                    const usarNuvem = (dadosNuvem.tentativas || 0) >= (local.tentativas || 0);
                     historicoLocal[qId] = {
                         ...(usarNuvem ? dadosNuvem : local),
                         anotacao: local.anotacao || dadosNuvem.anotacao || "",

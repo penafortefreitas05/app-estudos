@@ -40,8 +40,12 @@ import {
     salvarHistorico,
     limparCacheAntigoDeQuestoes,
     registrarDiaDeEstudo,
-    apagarDiasDeEstudo
+    apagarDiasDeEstudo,
+    diaLocal
 } from './storage.js';
+
+// ---------- 1.45 Revisão espaçada ----------
+import { aplicarResposta, novoRegistro, venceHoje, formatarDiaCurto } from './revisao.js';
 
 // ---------- 1.5 Simulado (cronômetro e finalização) ----------
 import {
@@ -175,7 +179,8 @@ function sortearSimulado(filtradas, qtd, historicoAtual, opcoes = {}) {
         const resto = [];
         pool.forEach(q => {
             const h = historicoAtual[String(q.id)];
-            if (h && h.status === "erro") comErro.push(q);
+            // Erros e tudo que vence hoje na revisão (inclui acertos na dúvida)
+            if (h && (h.status === "erro" || venceHoje(h))) comErro.push(q);
             else resto.push(q);
         });
         pool = [...embaralharArray(comErro), ...embaralharArray(resto)];
@@ -269,6 +274,39 @@ function definirTag(tag) {
 
 
 // ==================== FIM ====================
+
+// ---------- 6c. ORDEM DA LISTA ----------
+// Primeiro o que vence hoje na revisão, depois as inéditas, por último as já feitas.
+// Sem matéria (ou assunto) escolhido, as matérias vêm MISTURADAS: alternar temas treina
+// a reconhecer o tipo de questão, como na prova (interleaving). A mistura muda uma vez
+// por dia, para a lista não pular de lugar a cada filtro ou busca.
+function posicaoDoDia(id) {
+    let hash = 2166136261; // FNV-1a
+    const texto = `${diaLocal()}|${id}`;
+    for (let i = 0; i < texto.length; i++) {
+        hash ^= texto.charCodeAt(i);
+        hash = Math.imul(hash, 16777619);
+    }
+    return hash >>> 0;
+}
+
+function ordenarParaEstudo(lista) {
+    const hoje = diaLocal();
+    const misturar = !(selectMateria && selectMateria.value) && !tagSelecionada;
+    const grupo = (q) => {
+        const h = historico[String(q.id)];
+        if (venceHoje(h, hoje)) return 0;
+        if (!h || !h.tentativas) return 1;
+        return 2;
+    };
+    const chaves = new Map(lista.map(q => [q, [grupo(q), misturar ? posicaoDoDia(String(q.id)) : 0]]));
+    // sort estável: com uma matéria escolhida, cada grupo mantém a ordem do banco (em bloco)
+    return [...lista].sort((a, b) => {
+        const ka = chaves.get(a), kb = chaves.get(b);
+        return (ka[0] - kb[0]) || (ka[1] - kb[1]);
+    });
+}
+
 function aplicarFiltros() {
     // Trocar filtro, limpar filtros etc. redesenha a lista: o simulado em curso não sobrevive a isso.
     // Antes ele continuava "ativo" por trás (cronômetro correndo, respostas sumindo).
@@ -277,7 +315,7 @@ function aplicarFiltros() {
         simulado = null;
         pararCronometro(displayCronometro);
     }
-    const filtradas = filtrarQuestoes();
+    const filtradas = ordenarParaEstudo(filtrarQuestoes());
     renderizarQuestoes(container, filtradas, historico);
     atualizarPlacar(historico, questoes);
     atualizarBadgeFiltros();
@@ -356,11 +394,17 @@ async function responder(card, botao) {
     const letraEscolhida = radioSelecionado.value;
     const gabaritoOficial = gabaritoDe(q);
     const acertou = (letraEscolhida === gabaritoOficial);
+    // Qual botão foi tocado: "Tenho certeza" ou "Na dúvida"
+    const confianca = (botao && botao.dataset.confianca === 'duvida') ? 'duvida' : 'certeza';
 
     // 1. MODO SIMULADO: registra sem revelar o gabarito
     if (simulado) {
         simulado.respostas[idChave] = letraEscolhida;
         if (q.id) simulado.respostas[q.id] = letraEscolhida;
+        if (!simulado.confiancas) simulado.confiancas = {};
+        // Trocar só a alternativa mantém a confiança já escolhida
+        if (botao) simulado.confiancas[idChave] = confianca;
+        const confiancaAtual = simulado.confiancas[idChave] || 'certeza';
 
         card.querySelectorAll(".opcao-item").forEach(op => op.classList.remove("selecionada"));
         const labelPai = radioSelecionado.closest(".opcao-item");
@@ -373,7 +417,7 @@ async function responder(card, botao) {
             fbContainer.style.display = "block";
             const gabaritoDiv = fbContainer.querySelector(".gabarito-resposta");
             if (gabaritoDiv) {
-                gabaritoDiv.innerHTML = `📌 Alternativa <strong>(${esc(letraEscolhida)})</strong> registrada no simulado. Você pode alterar antes de finalizar.`;
+                gabaritoDiv.innerHTML = `📌 Alternativa <strong>(${esc(letraEscolhida)})</strong> registrada${confiancaAtual === 'duvida' ? ' <strong>na dúvida</strong>' : ''}. Você pode alterar antes de finalizar.`;
             }
         }
         showToast(`Questão registrada: alternativa ${letraEscolhida}`, "info", 1800);
@@ -385,42 +429,18 @@ async function responder(card, botao) {
     if (botao) botao.disabled = true;
 
     // 3. ATUALIZAÇÃO DO HISTÓRICO LOCAL IMEDIATA (Garante persistência no F5)
-    if (!historico[idChave]) {
-        historico[idChave] = {
-            acertos: 0,
-            erros: 0,
-            tentativas: 0,
-            ultimaResposta: null,
-            ultimaEscolha: null,
-            recentes: [],
-            status: 'novo',
-            anotacao: ""
-        };
-    }
+    // A regra de revisão espaçada (agenda, status) fica toda em js/revisao.js
+    if (!historico[idChave]) historico[idChave] = novoRegistro();
     const h = historico[idChave];
-    if (!Array.isArray(h.recentes)) h.recentes = [];
-
-    h.tentativas = (h.tentativas || 0) + 1;
-    if (acertou) {
-        h.acertos = (h.acertos || 0) + 1;
-        h.status = (h.status === 'erro' || h.ultimaResposta === 'errado') ? 'superado' : 'acerto';
-    } else {
-        h.erros = (h.erros || 0) + 1;
-        h.status = 'erro';
-    }
-
-    h.ultimaResposta = acertou ? 'certo' : 'errado';
-    h.ultimaEscolha = letraEscolhida;
+    aplicarResposta(h, { acertou, confianca, momento: Date.now(), letra: letraEscolhida });
     h.materia = q.materia || 'Geral';
-    h.recentes.push(acertou ? 1 : 0);
-    if (h.recentes.length > 5) h.recentes.shift();
-    h.ultimaData = Date.now();
 
     salvarHistorico(historico);
     registrarDiaDeEstudo();
 
     // 4. REVELAR O GABARITO NA TELA E ATUALIZAR PLACAR
-    revelar(card, q, letraEscolhida);
+    revelar(card, q, letraEscolhida, { confianca });
+    if (!acertou) oferecerQuestaoIrma(card, q);
 
     const status = classificarStatus(idChave, historico);
     const badge = card.querySelector(".badge");
@@ -443,7 +463,81 @@ async function responder(card, botao) {
         banca: q.banca || 'Não informada',
         acertou: acertou,
         respostaEscolhida: letraEscolhida,
-        momento: h.ultimaData
+        momento: h.ultimaData,
+        confianca
+    });
+}
+
+// ---------- 7b. QUESTÃO-IRMÃ: depois de um erro, outra do mesmo assunto ----------
+// Corrigir o conceito logo após o erro, numa questão diferente (transferência), antes que a
+// ideia errada se fixe. Usa as tags: o 1º assunto da questão pesa mais.
+const irmasJaMostradas = new Set();
+
+function escolherQuestaoIrma(q) {
+    const tagsQ = (q.tags || []).map(t => String(t).trim().toLowerCase()).filter(Boolean);
+    let melhor = null;
+    let melhorPontos = 3; // precisa de mais que 1 tag solta em comum (ex.: "pegadinha")
+
+    questoes.forEach(o => {
+        const idO = String(o.id);
+        if (idO === String(q.id) || irmasJaMostradas.has(idO)) return;
+        const tagsO = (o.tags || []).map(t => String(t).trim().toLowerCase());
+        let pontos = 0;
+        if (tagsQ[0] && tagsO.includes(tagsQ[0])) pontos += 10;
+        pontos += tagsO.filter(t => tagsQ.includes(t)).length * 3;
+        if (o.materia === q.materia) pontos += 1;
+        const h = historico[idO];
+        if (!h || !h.tentativas) pontos += 2;          // prefere inédita
+        else if (h.status === 'dominada') pontos -= 2; // e evita a que você já domina
+        if (pontos > melhorPontos) {
+            melhor = o;
+            melhorPontos = pontos;
+        }
+    });
+    return melhor;
+}
+
+function oferecerQuestaoIrma(card, q) {
+    if (simulado || !escolherQuestaoIrma(q)) return;
+    const fb = card.querySelector(".feedback-container");
+    if (!fb || fb.querySelector(".acoes-irma")) return;
+    fb.insertAdjacentHTML("beforeend",
+        `<div class="acoes-irma"><button type="button" class="btn-irma">↻ Outra do mesmo assunto</button></div>`);
+}
+
+function mostrarQuestaoIrma(card) {
+    const q = porId.get(String(card.dataset.id));
+    const irma = q ? escolherQuestaoIrma(q) : null;
+    const botao = card.querySelector(".btn-irma");
+    if (!irma) {
+        if (botao) botao.closest(".acoes-irma").remove();
+        showToast("Não há outra questão desse assunto no banco.", "info");
+        return;
+    }
+    irmasJaMostradas.add(String(irma.id));
+
+    // Desenha a irmã em branco e coloca logo abaixo (se ela já estava na lista, sai de lá)
+    const temp = document.createElement("div");
+    renderizarQuestoes(temp, [irma], historico, "", { restaurarRespostas: false });
+    const novoCard = temp.firstElementChild;
+    if (!novoCard) return;
+    novoCard.classList.add("card-irma");
+    container.querySelectorAll(`.card-questao[data-id="${CSS.escape(String(irma.id))}"]`).forEach(c => c.remove());
+    card.after(novoCard);
+
+    if (botao) {
+        botao.disabled = true;
+        botao.textContent = "↓ Logo abaixo";
+    }
+    novoCard.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+if (container) {
+    container.addEventListener("click", (e) => {
+        const botao = e.target.closest(".btn-irma");
+        if (!botao || botao.disabled) return;
+        const card = botao.closest(".card-questao");
+        if (card) mostrarQuestaoIrma(card);
     });
 }
 
@@ -460,11 +554,13 @@ function destravarCardParaRefazer(card) {
         }
     });
 
-    const btnResponder = card.querySelector(".btn-responder");
-    if (btnResponder) {
-        btnResponder.disabled = false;
-        btnResponder.innerText = "✔ Responder";
-    }
+    card.querySelectorAll(".btn-responder").forEach(btn => {
+        btn.disabled = false;
+        btn.hidden = false;
+        btn.innerText = btn.dataset.confianca === 'duvida' ? "🤔 Na dúvida" : "✔ Tenho certeza";
+    });
+    const irma = card.querySelector(".acoes-irma");
+    if (irma) irma.remove();
 
     const btnRefazer = card.querySelector(".btn-refazer");
     if (btnRefazer) {
@@ -528,8 +624,7 @@ if (container) {
     container.addEventListener("change", (e) => {
         if (e.target.classList.contains("radio-opcao") && simulado && !simulado.finalizado) {
             const card = e.target.closest(".card-questao");
-            const btn = card ? card.querySelector(".btn-responder") : null;
-            if (card) responder(card, btn);
+            if (card) responder(card, null); // só a alternativa mudou; a confiança fica a que já era
         }
     });
 
@@ -792,25 +887,26 @@ if (btnModoRevisao) {
         simulado = null;
         pararCronometro(displayCronometro);
 
-        const cadernoDeErros = questoes.filter(q => {
-            const h = historico[String(q.id)];
-            if (!h) return false;
+        // Só o que vence hoje (ou já venceu), dos mais atrasados para os mais recentes
+        const hoje = diaLocal();
+        const paraHoje = questoes
+            .filter(q => venceHoje(historico[String(q.id)], hoje))
+            .sort((a, b) => historico[String(a.id)].revisaoEm.localeCompare(historico[String(b.id)].revisaoEm));
 
-            const ehErroAtivo = h.status === 'erro' || (h.ultimaResposta === 'errado' && h.status !== 'superado');
-            const temAnotacao = h.anotacao && String(h.anotacao).trim().length > 0;
+        if (paraHoje.length === 0) {
+            // Mostra quando é a próxima, para não parecer que a revisão sumiu
+            const futuras = Object.values(historico).map(h => h && h.revisaoEm).filter(Boolean).sort();
+            const msg = futuras.length
+                ? `Nada para revisar hoje. Próxima revisão em ${formatarDiaCurto(futuras[0])} (${futuras.filter(d => d === futuras[0]).length} questão(ões)).`
+                : "Nada para revisar. Questões que você errar ou acertar na dúvida aparecem aqui no dia certo.";
+            renderizarQuestoes(container, [], historico, msg);
+            showToast(msg, "info", 4000);
+            return;
+        }
 
-            return ehErroAtivo || temAnotacao;
-        });
-
-        renderizarQuestoes(
-            container,
-            cadernoDeErros,
-            historico,
-            "Seu Caderno de Erros está limpo! Nenhuma questão pendente para revisão no momento.",
-            { restaurarRespostas: false }
-        );
-
-        showToast(`Carregadas ${cadernoDeErros.length} questões no Caderno de Erros.`, "info");
+        renderizarQuestoes(container, paraHoje, historico, "", { restaurarRespostas: false });
+        const atrasadas = paraHoje.filter(q => historico[String(q.id)].revisaoEm < hoje).length;
+        showToast(`${paraHoje.length} para revisar hoje${atrasadas ? ` (${atrasadas} atrasada${atrasadas > 1 ? 's' : ''})` : ''}. Responda sem olhar o gabarito.`, "info");
     });
 }
 
