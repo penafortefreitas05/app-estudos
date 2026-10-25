@@ -76,6 +76,25 @@ body {
 .text-blue { color: #3b82f6; }
 .text-orange { color: #f59e0b; }
 
+/* --- Os 3 números: sequência, cobertura, reforçar --- */
+.resumo-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.4rem; }
+.resumo-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+    padding: 0.5rem 0.45rem;
+    background-color: #020617;
+    border: 1px solid #1e293b;
+    border-radius: 10px;
+}
+.resumo-titulo { font-size: 0.64rem; color: #94a3b8; font-weight: 600; white-space: nowrap; }
+.resumo-valor { font-size: 1.15rem; font-weight: 700; color: #f8fafc; font-variant-numeric: tabular-nums; }
+.resumo-valor small { font-size: 0.7rem; font-weight: 500; color: #94a3b8; }
+.resumo-detalhe { font-size: 0.62rem; color: #64748b; line-height: 1.25; }
+.resumo-card.alerta { border-color: rgba(251, 146, 60, 0.45); background: rgba(251, 146, 60, 0.06); }
+.resumo-card.alerta .resumo-valor { color: #fb923c; }
+
 .progress-bar-mini { height: 4px; border-radius: 2px; width: 100%; opacity: 0.3; }
 .progress-bar-mini.blue { background-color: #3b82f6; }
 .progress-bar-mini.orange { background-color: #f59e0b; }
@@ -158,17 +177,31 @@ body {
 .painel-desempenho-materias {
     display: flex;
     flex-direction: column;
-    gap: 0.85rem;
-    margin-top: 1.2rem;
-    padding-top: 1rem;
-    border-top: 1px dashed #334155;
+    gap: 0.4rem;
 }
 
 .materia-stat-item {
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
+    width: 100%;
+    padding: 0.45rem 0.5rem;
+    box-sizing: border-box;
+    background: none;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font: inherit;
+    text-align: left;
+    color: inherit;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
 }
+.materia-stat-item:hover { background: rgba(30, 41, 59, 0.5); }
+.materia-stat-item.critica { border-color: rgba(251, 146, 60, 0.35); background: rgba(251, 146, 60, 0.06); }
+.materia-stat-item.critica .materia-taxa { color: #fb923c; }
+.materia-stat-item.critica .barra-progresso-fill { background: linear-gradient(90deg, #f97316, #fb923c); }
+.materia-reforcar { font-size: 0.68rem; font-weight: 600; color: #fb923c; }
+.materia-stat-item .barra-progresso-bg, .materia-stat-item .barra-progresso-fill { display: block; }
 
 .materia-stat-header {
     display: flex;
@@ -324,6 +357,10 @@ body {
 }
 .placar-mini-acertos { color: #60a5fa; }
 .placar-mini-erros { color: #fb923c; }
+.placar-mini-sequencia { color: #fbbf24; }
+.placar-mini-sequencia::before { content: "🔥 "; }
+.placar-mini-sequencia.apagada { color: #64748b; }
+.placar-mini-sequencia.apagada::before { filter: grayscale(1); opacity: 0.6; }
 .placar-mini-acertos::before { content: "✓ "; }
 .placar-mini-erros::before { content: "✗ "; }
 
