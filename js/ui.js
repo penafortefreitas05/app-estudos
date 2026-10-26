@@ -551,6 +551,9 @@ const SQL_NAS_TAGS = /(^|-)(sql|join|joins|ddl|dml|dql|subconsulta|subquery|grou
 
 export function ehQuestaoSQL(q) {
     if (!q) return false;
+    // A questão já veio com o esquema próprio (campo "laboratorio" do banco): mostra sempre,
+    // sem depender de regex no enunciado ou nas tags.
+    if (q.laboratorio && q.laboratorio.tipo === 'sql' && q.laboratorio.esquema) return true;
     const tags = (q.tags || []).map(String);
     // SQL injection é assunto de segurança: rodar a consulta não ajuda a responder
     if (tags.some(t => /injection|injecao|injeção/i.test(t))) return false;

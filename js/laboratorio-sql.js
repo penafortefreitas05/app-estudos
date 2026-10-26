@@ -206,8 +206,29 @@ function montarPainel(card, q) {
     const enunciado = q.enunciado || q.pergunta || '';
     const sqlEnunciado = extrairSqlDoEnunciado(enunciado);
     const criaTabelas = /\bcreate\s+table\b/i.test(sqlEnunciado);
-    const base = criaTabelas ? 'vazio' : 'empresa';
-    const inicial = criaTabelas ? sqlEnunciado : 'SELECT * FROM empregado;';
+
+    // Se a questão trouxer seu próprio esquema (campo "laboratorio" do banco), ele tem prioridade
+    // sobre a extração por regex do enunciado: é o esquema que o autor da questão validou.
+    const labQuestao = q.laboratorio && q.laboratorio.tipo === 'sql' && q.laboratorio.esquema
+        ? q.laboratorio
+        : null;
+    let base, inicial, chaveLabQuestao = null;
+    if (labQuestao) {
+        chaveLabQuestao = `questao_${q.id}`;
+        BANCOS[chaveLabQuestao] = { rotulo: 'Banco desta questão', sql: labQuestao.esquema };
+        base = chaveLabQuestao;
+        inicial = labQuestao.consulta_inicial || '';
+    } else {
+        base = criaTabelas ? 'vazio' : 'empresa';
+        inicial = criaTabelas ? sqlEnunciado : 'SELECT * FROM empregado;';
+    }
+
+    const avisoLab = labQuestao
+        ? `<div class="lab-dialeto">
+            ${labQuestao.lab_adaptado ? `<p>💡 ${esc(labQuestao.observacao || 'Este laboratório foi adaptado para o SQLite: o dialeto da prova original é diferente.')}</p>` : ''}
+            ${labQuestao.resultado_esperado ? `<p>🎯 Resultado esperado: <strong>${esc(labQuestao.resultado_esperado)}</strong></p>` : ''}
+        </div>`
+        : '';
 
     const painel = document.createElement('div');
     painel.className = 'lab-sql';
@@ -215,10 +236,12 @@ function montarPainel(card, q) {
         <div class="lab-topo">
             <strong>🧪 Laboratório SQL</strong>
             <select class="input-dark lab-base" aria-label="Banco de partida">
-                ${Object.entries(BANCOS).map(([chave, b]) =>
+                ${chaveLabQuestao ? `<option value="${chaveLabQuestao}" selected>${esc(BANCOS[chaveLabQuestao].rotulo)}</option>` : ''}
+                ${Object.entries(BANCOS).filter(([chave]) => chave !== chaveLabQuestao && !chave.startsWith('questao_')).map(([chave, b]) =>
                     `<option value="${chave}" ${chave === base ? 'selected' : ''}>${esc(b.rotulo)}</option>`).join('')}
             </select>
         </div>
+        ${avisoLab}
         <p class="lab-nota">SQLite rodando aqui no aparelho. Cada execução começa do banco original. Ctrl+Enter executa.</p>
         <textarea class="lab-editor" rows="6" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Comandos SQL"></textarea>
         <div class="lab-botoes">
