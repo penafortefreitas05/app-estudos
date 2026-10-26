@@ -543,6 +543,22 @@ function desenharCards(container, lista, historico, restaurarRespostas) {
     });
 }
 
+// ---------- 5b. QUESTÃO DE SQL? ----------
+// Mostra o laboratório quando a questão traz código SQL ou é marcada com um assunto de SQL.
+// ("select ... from" e não só "select", para não pegar o <select> do HTML.)
+const SQL_NO_TEXTO = /\b(create\s+table|insert\s+into|delete\s+from|truncate\s+table|alter\s+table|group\s+by|order\s+by|(inner|left|right|full)\s+(outer\s+)?join|update\s+\w+\s+set)\b|\bselect\b[\s\S]{1,300}?\bfrom\b/i;
+const SQL_NAS_TAGS = /(^|-)(sql|join|joins|ddl|dml|dql|subconsulta|subquery|group-by|having|consultas?)($|-)/i;
+
+export function ehQuestaoSQL(q) {
+    if (!q) return false;
+    const tags = (q.tags || []).map(String);
+    // SQL injection é assunto de segurança: rodar a consulta não ajuda a responder
+    if (tags.some(t => /injection|injecao|injeção/i.test(t))) return false;
+    if (tags.some(t => SQL_NAS_TAGS.test(t))) return true;
+    const alternativas = obterOpcoes(q).map(o => o.texto).join(" ");
+    return SQL_NO_TEXTO.test(`${q.enunciado || q.pergunta || ""} ${alternativas}`);
+}
+
 // ---------- 6. REVELAÇÃO DO GABARITO E FEEDBACK VISUAL ----------
 // info.confianca ('certeza' | 'duvida'): só na hora da resposta, para o aviso abaixo do gabarito
 export function revelar(card, q, letraEscolhida, info = {}) {
@@ -623,13 +639,19 @@ export function revelar(card, q, letraEscolhida, info = {}) {
 
     if (explicacaoDiv) {
         const textoExplicacao = q.explicacao || q.comentario || q.justificativa || "";
+        // Questão de SQL: depois de responder, dá para testar o código de verdade (js/laboratorio-sql.js)
+        const htmlLab = ehQuestaoSQL(q) ? `
+            <div class="lab-sql-acao">
+                <button type="button" class="btn-sidebar btn-lab-sql" data-id="${esc(q.id)}">🧪 Testar no laboratório SQL</button>
+            </div>
+            <div class="lab-sql-container"></div>` : "";
         if (String(textoExplicacao).trim() !== "") {
             // Escapa o comentário: o texto vem do banco e NUNCA pode virar HTML/código na tela
             const textoSeguro = esc(String(textoExplicacao)).replace(/\n/g, "<br>");
-            explicacaoDiv.innerHTML = `<div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(148, 163, 184, 0.25);"><strong>📘 Comentário:</strong> ${textoSeguro}</div>`;
+            explicacaoDiv.innerHTML = `<div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(148, 163, 184, 0.25);"><strong>📘 Comentário:</strong> ${textoSeguro}</div>${htmlLab}`;
             explicacaoDiv.style.display = "block";
         } else {
-            explicacaoDiv.innerHTML = `<div style="margin-top: 6px; font-size: 0.85em; opacity: 0.85;">💡 <em>Use "Adicionar Anotação Pessoal" abaixo para registrar seu resumo sobre esta questão.</em></div>`;
+            explicacaoDiv.innerHTML = `<div style="margin-top: 6px; font-size: 0.85em; opacity: 0.85;">💡 <em>Use "Adicionar Anotação Pessoal" abaixo para registrar seu resumo sobre esta questão.</em></div>${htmlLab}`;
             explicacaoDiv.style.display = "block";
         }
     }

@@ -1337,3 +1337,46 @@ body {
     cursor: pointer;
     padding: 0.3rem;
 }
+
+/* ---------- Laboratório SQL ---------- */
+.lab-sql-acao { margin-top: 0.75rem; }
+.lab-sql {
+    margin-top: 0.75rem;
+    padding: 0.9rem;
+    background: #020617;
+    border: 1px solid #1e3a5f;
+    border-radius: 10px;
+    min-width: 0;
+}
+.lab-topo { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem; color: #e2e8f0; }
+.lab-topo .lab-base { flex: 1 1 200px; max-width: 320px; font-size: 0.8rem; padding: 0.4rem 0.6rem; }
+.lab-nota { color: #94a3b8; font-size: 0.75rem; margin: 0.5rem 0; }
+.lab-editor {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 7.5rem;
+    resize: vertical;
+    background: #0b1220;
+    color: #e2e8f0;
+    border: 1px solid #1e293b;
+    border-radius: 8px;
+    padding: 0.6rem 0.7rem;
+    font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
+    font-size: 0.85rem;
+    line-height: 1.45;
+    tab-size: 4;
+}
+.lab-editor:focus { outline: none; border-color: #3b82f6; }
+.lab-botoes { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.6rem; }
+.lab-botoes button { flex: 0 1 auto; }
+.lab-saida { margin-top: 0.75rem; min-width: 0; }
+.lab-tabela-rolagem { overflow-x: auto; max-width: 100%; border: 1px solid #1e293b; border-radius: 8px; }
+.lab-tabela { border-collapse: collapse; width: 100%; font-size: 0.8rem; font-variant-numeric: tabular-nums; }
+.lab-tabela th, .lab-tabela td { padding: 0.35rem 0.6rem; border-bottom: 1px solid #1e293b; text-align: left; white-space: nowrap; color: #e2e8f0; }
+.lab-tabela th { background: #0f172a; color: #93c5fd; font-weight: 600; }
+.lab-tabela .lab-nulo { color: #64748b; font-style: italic; }
+.lab-titulo-tabela { color: #93c5fd; font-size: 0.8rem; font-weight: 600; margin: 0.75rem 0 0.35rem; }
+.lab-erro { color: #fca5a5; font-size: 0.85rem; }
+.lab-ok { color: #86efac; font-size: 0.85rem; }
+.lab-dialeto { background: rgba(234, 179, 8, 0.08); border: 1px solid rgba(234, 179, 8, 0.3); border-radius: 8px; padding: 0.4rem 0.7rem; margin-bottom: 0.6rem; }
+.lab-dialeto p { color: #fde68a; font-size: 0.8rem; margin: 0.25rem 0; }

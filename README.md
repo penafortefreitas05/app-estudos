@@ -10,6 +10,7 @@
 - **Acesso autenticado:** o banco de questões fica no Supabase, protegido por RLS, e só é carregado para usuários logados.
 - **PWA (Progressive Web App):** instalável em desktop e celular. Os arquivos do app ficam em cache; as questões exigem conexão ao abrir.
 - **Nenhuma resposta se perde:** respostas dadas sem internet ficam numa fila no aparelho e sobem para a nuvem, com a data original, quando a conexão volta.
+- **Laboratório SQL:** em questões de SQL, depois de responder, dá para rodar o código de verdade (SQLite no próprio aparelho, sem servidor), num banco de exemplo estilo prova ou no script do enunciado, com dicas das diferenças entre SQL Server, Oracle, MySQL e SQLite. O motor (~650 KB) só é baixado por quem abre o laboratório.
 - **Abre rápido:** os arquivos do site vêm do cache do aparelho; questões e histórico são buscados ao mesmo tempo; do histórico, só baixa o que é novo desde a última abertura (com conferência pela contagem total; se não bater, baixa tudo); a lista desenha 20 questões por vez.
 - **9 Pilares Macro de TI:** matérias específicas agrupadas em categorias do edital, com o tópico original como `#tag` pesquisável.
 - **Revisão espaçada:** questão errada (ou acertada na dúvida) volta em 1, 3, 7 e 21 dias; "Revisar hoje" mostra só o que vence no dia. Só vira Superada/Dominada acertando em dias diferentes.
@@ -43,6 +44,7 @@ focopro/
 │   ├── auth.js             # Login, cadastro e logout
 │   ├── notifications.js    # Toasts e modais de confirmação
 │   ├── api.js              # Normalização de questões (matéria, gabarito, IDs)
+│   ├── laboratorio-sql.js  # Laboratório SQL (carregado só ao abrir); motor em js/vendor/sqljs-1.14.2 (MIT)
 │   ├── pwa.js              # Menu do celular, Service Worker e botão "Instalar"
 │   └── vendor/
 │       └── supabase-js-2.117.3.min.js   # Biblioteca do Supabase empacotada

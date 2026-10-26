@@ -740,6 +740,22 @@ async function solicitarExplicacaoIA(btnIA) {
 
        // >>>>>>>>>> INÍCIO BLOCO B: CLIQUE NO BOTÃO DE IA >>>>>>>>>>
         // --- BOTÃO: ENTENDER MEU ERRO COM IA ---
+        // Laboratório SQL: o motor (~650 KB) só é baixado quando alguém abre
+        const btnLab = e.target.closest(".btn-lab-sql");
+        if (btnLab) {
+            const card = btnLab.closest(".card-questao");
+            const q = card ? porId.get(String(card.dataset.id)) : null;
+            if (card && q) {
+                import("./laboratorio-sql.js")
+                    .then(m => m.alternarLaboratorio(card, q))
+                    .catch(err => {
+                        console.error("[FocoPro] Laboratório SQL não carregou:", err);
+                        showToast("Não foi possível abrir o laboratório SQL. Confira a internet.", "erro");
+                    });
+            }
+            return;
+        }
+
         const btnIA = e.target.closest(".btn-ia-explicar");
         if (btnIA) {
             solicitarExplicacaoIA(btnIA);

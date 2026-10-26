@@ -41,6 +41,7 @@
 
         // Só avisa se já havia uma versão rodando (no primeiro acesso não há o que atualizar)
         const acompanhar = (reg) => {
+            if (!reg) return; // navegador com service worker bloqueado
             if (reg.waiting && navigator.serviceWorker.controller) avisarVersaoNova(reg.waiting);
             reg.addEventListener('updatefound', () => {
                 const nova = reg.installing;
