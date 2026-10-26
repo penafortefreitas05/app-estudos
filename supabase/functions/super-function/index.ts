@@ -21,6 +21,11 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
 const MODELO_PADRAO = "gemini-3.8-flash";
 const MODELOS_RESERVA = ["gemini-3.5-flash-lite", "gemini-3.1-flash-lite"];
 const MAX_OUTPUT_TOKENS = 500;
+// Sobe este número sempre que o texto de PROMPT_SISTEMA mudar (lá embaixo). O cache
+// (explicacoes_ia_cache) guarda esta versão junto: uma explicação gerada com o prompt antigo
+// nunca mais é devolvida para ninguém depois da subida — a próxima pessoa que errar essa
+// questão aciona a IA de novo, com o prompt novo.
+const PROMPT_VERSAO = 2;
 const TIMEOUT_TENTATIVA_MS = 12_000;
 const PRAZO_TOTAL_MS = 30_000;
 
@@ -272,18 +277,35 @@ async function obterUsuario(req: Request, admin: ReturnType<typeof criarClienteA
   return data.user;
 }
 
-// Busca uma explicação já gerada para esta questão + resposta errada + gabarito ATUAL.
-// Se o gabarito da questão foi corrigido, a explicação antiga não é mais usada.
+// A coluna "prompt_versao" existe no banco? Enquanto a SQL não for rodada, o cache funciona
+// do jeito antigo (sem versão) — mesma estratégia já usada para a coluna "confianca" em
+// historico_respostas (js/supabase.js).
+let colunaPromptVersaoExiste = true;
+
+function erroDeColunaPromptVersao(erro: { message?: string; details?: string; hint?: string } | null): boolean {
+  return Boolean(erro) && /prompt_versao/i.test(`${erro?.message ?? ""} ${erro?.details ?? ""} ${erro?.hint ?? ""}`);
+}
+
+// Busca uma explicação já gerada para esta questão + resposta errada + gabarito ATUAL,
+// pelo prompt ATUAL. Se o gabarito mudou (questão corrigida) ou o prompt mudou (PROMPT_VERSAO
+// subiu), a explicação antiga não é devolvida: a IA é chamada de novo.
 async function buscarNoCache(admin: ReturnType<typeof criarClienteAdmin>, entrada: Entrada): Promise<string | null> {
-  const { data, error } = await admin
+  let consulta = admin
     .from("explicacoes_ia_cache")
     .select("explicacao")
     .eq("questao_id", entrada.questaoId)
     .eq("resposta_errada", entrada.respostaUsuario)
-    .eq("gabarito", entrada.gabarito)
-    .limit(1);
+    .eq("gabarito", entrada.gabarito);
+  if (colunaPromptVersaoExiste) consulta = consulta.eq("prompt_versao", PROMPT_VERSAO);
+
+  const { data, error } = await consulta.limit(1);
 
   if (error) {
+    if (colunaPromptVersaoExiste && erroDeColunaPromptVersao(error)) {
+      colunaPromptVersaoExiste = false;
+      console.warn("[FocoPro] Coluna 'prompt_versao' ainda não existe no Supabase; cache sem versão por ora.");
+      return buscarNoCache(admin, entrada);
+    }
     console.error("Erro ao consultar explicacoes_ia_cache:", error.message);
     return null; // falha no cache não deve travar o fluxo normal
   }
@@ -292,12 +314,20 @@ async function buscarNoCache(admin: ReturnType<typeof criarClienteAdmin>, entrad
 
 // Salva a explicação recém-gerada para reaproveitar depois (upsert: se já existir, atualiza).
 async function salvarNoCache(admin: ReturnType<typeof criarClienteAdmin>, entrada: Entrada, explicacao: string) {
-  const { error } = await admin.from("explicacoes_ia_cache").upsert({
+  const linha: Record<string, unknown> = {
     questao_id: entrada.questaoId,
     resposta_errada: entrada.respostaUsuario,
     gabarito: entrada.gabarito,
     explicacao,
-  });
+  };
+  if (colunaPromptVersaoExiste) linha.prompt_versao = PROMPT_VERSAO;
+
+  const { error } = await admin.from("explicacoes_ia_cache").upsert(linha);
+  if (error && colunaPromptVersaoExiste && erroDeColunaPromptVersao(error)) {
+    colunaPromptVersaoExiste = false;
+    console.warn("[FocoPro] Coluna 'prompt_versao' ainda não existe no Supabase; gravando sem ela por ora.");
+    return salvarNoCache(admin, entrada, explicacao);
+  }
   if (error) console.error("Erro ao salvar explicacoes_ia_cache:", error.message);
 }
 
