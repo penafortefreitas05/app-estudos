@@ -268,7 +268,16 @@ export async function salvarQuestoesEmMassa(arrayDeQuestoes) {
                     materia: qNorm.materia || 'Geral',
                     banca: qNorm.banca || 'Não informada',
                     orgao: qNorm.orgao || null,
-                    tags: Array.isArray(qNorm.tags) ? qNorm.tags : []
+                    tags: Array.isArray(qNorm.tags) ? qNorm.tags : [],
+                    explicacao: qNorm.explicacao || null,
+                    assunto: qNorm.assunto || null,
+                    ano: qNorm.ano ?? null,
+                    cargo: qNorm.cargo || null,
+                    origem: qNorm.origem || null,
+                    fonte: qNorm.fonte || null,
+                    tipo: qNorm.tipo || null,
+                    versao_referencia: qNorm.versao_referencia || null,
+                    laboratorio: qNorm.laboratorio || null
                 };
             });
 
