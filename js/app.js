@@ -2401,6 +2401,14 @@ async function obterResumoDoAssunto(materia, nome) {
     return resumosPorAssunto.get(`${materia}|${nome}`) || null;
 }
 
+// Molde v2 (aprovado em 28/10): resumo + nao_confundir + palavras_chave + pegadinha.
+// O campo "modelo" troca só os rótulos: "conceito" (matérias de TI) ou "regra" (Português, RLM).
+// Textos no formato antigo (ideia_central/exemplo) continuam funcionando.
+const ROTULOS_RESUMO = {
+    conceito: { comparar: "🔀 Não confundir", chave: "🔑 Palavras-chave", pegadinha: "⚠️ Pegadinha" },
+    regra: { comparar: "✅ Certo × errado", chave: "💡 Teste rápido", pegadinha: "⚠️ Erro mais comum" }
+};
+
 function cardResumo(r) {
     const card = document.createElement("article");
     card.className = "card-questao card-foco card-exemplo card-resumo";
@@ -2408,11 +2416,33 @@ function cardResumo(r) {
     card.dataset.respondida = "1";
     const bloco = (rotulo, texto) => texto && String(texto).trim()
         ? `<div class="resumo-bloco"><p class="resumo-rotulo">${rotulo}</p><p>${esc(texto)}</p></div>` : "";
-    card.innerHTML = `
-        <p class="exemplo-faixa">💡 Entenda em 1 minuto · leia e siga para o exemplo.</p>
-        <p class="resumo-central">${esc(r.ideia_central)}</p>
-        ${bloco("Exemplo", r.exemplo)}
-        ${bloco("⚠️ Pegadinha", r.pegadinha)}`;
+    const faixa = `<p class="exemplo-faixa">💡 Entenda em 1 minuto · leia e siga para o exemplo.</p>`;
+
+    if (typeof r.resumo !== "string") {
+        card.innerHTML = `${faixa}
+            <p class="resumo-central">${esc(r.ideia_central)}</p>
+            ${bloco("Exemplo", r.exemplo)}
+            ${bloco("⚠️ Pegadinha", r.pegadinha)}`;
+        return card;
+    }
+
+    const rotulos = ROTULOS_RESUMO[r.modelo] || ROTULOS_RESUMO.conceito;
+    // A frase central vem em destaque; o "Ex.:" do resumo fica logo abaixo, em texto normal
+    const corte = r.resumo.indexOf(" Ex.:");
+    const central = corte > 0 ? r.resumo.slice(0, corte) : r.resumo;
+    const exemplo = corte > 0 ? r.resumo.slice(corte + 1) : "";
+    const pares = Array.isArray(r.nao_confundir) ? r.nao_confundir.filter(p => p && p.conceito) : [];
+    const comparar = pares.length
+        ? `<div class="resumo-bloco"><p class="resumo-rotulo">${rotulos.comparar}</p>
+            <ul class="resumo-pares">${pares.map(p =>
+                `<li><strong>${esc(p.conceito)}</strong> → ${esc(p.faz)}</li>`).join("")}</ul></div>`
+        : "";
+    card.innerHTML = `${faixa}
+        <p class="resumo-central">${esc(central)}</p>
+        ${exemplo ? `<p class="resumo-exemplo">${esc(exemplo)}</p>` : ""}
+        ${comparar}
+        ${bloco(rotulos.chave, r.palavras_chave)}
+        ${bloco(rotulos.pegadinha, r.pegadinha)}`;
     return card;
 }
 
