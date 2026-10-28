@@ -17,6 +17,8 @@
 - **Certeza ou dúvida:** cada resposta diz se foi com certeza; chute certo não conta como domínio e erro com certeza ganha destaque.
 - **Questão-irmã:** depois de um erro, "Outra do mesmo assunto" traz uma questão parecida logo abaixo.
 - **Matérias misturadas:** sem matéria escolhida, a lista alterna temas (como na prova).
+- **Modo Foco:** uma questão por vez, sem a barra de filtros. Teclado: A–E escolhe, Enter responde com certeza, Shift+Enter na dúvida, Enter de novo ou → vai para a próxima, ← volta, Esc sai. No fim, mostra quantas acertou na sessão.
+- **Responder pelo teclado:** na lista normal, Tab chega nas alternativas, as setas trocam e Enter responde.
 - **Modo Simulado com Cronômetro:** respostas em lote, gabarito oculto até finalizar, tempo regressivo.
 - **Explicação com IA:** Edge Function do Supabase (Gemini) com login obrigatório, limite de uso por usuário e cache de explicações.
 

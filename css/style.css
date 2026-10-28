@@ -807,8 +807,20 @@ body {
     border-color: #60a5fa;
 }
 
+/* Radio nativo invisível, mas ainda focável pelo teclado (item 23): com display:none
+   não dava para chegar nas alternativas com Tab nem trocar com as setas */
 .radio-opcao {
-    display: none; /* Esconde o radio nativo para usar a badge */
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    pointer-events: none;
+}
+.opcao-item { position: relative; }
+.opcao-item:has(.radio-opcao:focus-visible) {
+    outline: 2px solid #60a5fa;
+    outline-offset: 2px;
 }
 
 .letra-badge {
@@ -1201,7 +1213,7 @@ body {
     .barra-principal { flex-wrap: wrap; gap: 0.6rem; }
     .barra-principal .search-box,
     .barra-principal #filtro-materia { flex: 1 1 100%; }
-    .barra-botoes { flex: 1 1 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .barra-botoes { flex: 1 1 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .btn-painel { min-height: 44px; }
 
     .input-dark { font-size: 16px; min-height: 44px; } /* 16px evita o zoom automático do iPhone */
@@ -1433,3 +1445,46 @@ body {
 .lab-ok { color: #86efac; font-size: 0.85rem; }
 .lab-dialeto { background: rgba(234, 179, 8, 0.08); border: 1px solid rgba(234, 179, 8, 0.3); border-radius: 8px; padding: 0.4rem 0.7rem; margin-bottom: 0.6rem; }
 .lab-dialeto p { color: #fde68a; font-size: 0.8rem; margin: 0.25rem 0; }
+
+/* ==================== MODO FOCO (U1) ==================== */
+/* Uma questão por vez: some a barra de busca/filtros e o cronômetro */
+body.modo-foco .top-bar,
+body.modo-foco #display-cronometro { display: none !important; }
+.btn-foco[aria-pressed="true"] { background: #172554; border-color: #3b82f6; color: #f8fafc; }
+
+body.modo-foco .questoes-grid { max-width: 860px; width: 100%; margin: 0 auto; }
+
+.foco-barra {
+    display: flex; align-items: center; gap: 0.5rem;
+    position: sticky; top: 0; z-index: 5;
+    background: #020617; padding: 0.25rem 0 0.5rem;
+}
+.foco-barra .foco-anterior,
+.foco-barra .foco-proxima { min-width: 44px; font-size: 1rem; }
+.foco-barra .foco-posicao { flex: 1; text-align: center; color: #94a3b8; font-size: 0.85rem; font-variant-numeric: tabular-nums; }
+.btn-painel:disabled { opacity: 0.4; cursor: default; }
+
+.card-foco .enunciado { font-size: 1.05rem; }
+.card-foco .opcao-texto { font-size: 1rem; }
+
+.foco-rodape { display: flex; flex-direction: column; gap: 0.6rem; }
+.foco-atalhos { color: #64748b; font-size: 0.78rem; text-align: center; margin: 0; }
+.foco-atalhos kbd {
+    background: #0f172a; border: 1px solid #334155; border-bottom-width: 2px; border-radius: 4px;
+    padding: 0 0.3rem; font-family: inherit; font-size: 0.75rem; color: #cbd5e1;
+}
+/* Tela de toque não tem teclado: esconde a dica */
+@media (hover: none) { .foco-atalhos { display: none; } }
+
+.foco-resumo {
+    background: #0f172a; border: 1px solid #1e293b; border-radius: 12px;
+    padding: 1.5rem; text-align: center; display: flex; flex-direction: column; gap: 0.75rem;
+}
+.foco-resumo-titulo { color: #f8fafc; font-size: 1.2rem; font-weight: 600; margin: 0; }
+.foco-resumo p { margin: 0; }
+.foco-resumo-acoes { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
+
+@media (max-width: 768px) {
+    /* No celular quem rola é a página: a barra do foco gruda logo abaixo da linha do menu */
+    .foco-barra { top: 61px; padding-top: 0.5rem; }
+}
