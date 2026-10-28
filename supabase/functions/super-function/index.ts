@@ -145,7 +145,7 @@ type ResultadoBusca = { entrada: Entrada } | { erro: "nao_encontrada" | "invalid
 async function montarEntradaDoBanco(admin: ReturnType<typeof criarClienteAdmin>, pedido: Pedido): Promise<ResultadoBusca> {
   const { data, error } = await admin
     .from("questoes")
-    .select("id, pergunta, alternativas, resposta_correta")
+    .select("id, pergunta, alternativas")
     .eq("id", pedido.questaoId)
     .maybeSingle();
 
@@ -155,11 +155,25 @@ async function montarEntradaDoBanco(admin: ReturnType<typeof criarClienteAdmin>,
   }
   if (!data) return { erro: "nao_encontrada" };
 
+  // U9 (Fase 2): o gabarito mora só em questoes_gabarito (a coluna questoes.resposta_correta
+  // foi apagada). A chave de serviço desta função ignora a RLS, então ela lê direto.
+  const { data: linhaGabarito, error: erroGabarito } = await admin
+    .from("questoes_gabarito")
+    .select("resposta_correta")
+    .eq("questao_id", pedido.questaoId)
+    .maybeSingle();
+
+  if (erroGabarito) {
+    console.error("Erro ao ler o gabarito em questoes_gabarito:", erroGabarito.message);
+    return { erro: "falha" };
+  }
+  if (!linhaGabarito) return { erro: "invalida" };
+
   const pergunta = String(data.pergunta ?? "").trim().slice(0, LIMITE.pergunta);
   const alternativas = normalizarAlternativas(data.alternativas)
     .slice(0, LIMITE.alternativas)
     .map((a) => ({ letra: a.letra.slice(0, LIMITE.rotulo), texto: a.texto.slice(0, LIMITE.textoAlternativa) }));
-  const gabarito = normalizarGabarito(data.resposta_correta, alternativas);
+  const gabarito = normalizarGabarito(linhaGabarito.resposta_correta, alternativas);
 
   if (!pergunta || alternativas.length < 2 || !gabarito) return { erro: "invalida" };
   if (!alternativas.some((a) => a.letra === pedido.respostaUsuario)) return { erro: "invalida" };
