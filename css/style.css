@@ -754,6 +754,20 @@ body {
     letter-spacing: 0.05em;
 }
 
+/* Nível da questão: verde → azul → âmbar → roxo, do mais fácil ao mais difícil */
+.badge-nivel {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.22rem 0.55rem;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    white-space: nowrap;
+}
+.badge-nivel.nivel-1 { background: #052e1680; color: #86efac; border-color: #166534; }
+.badge-nivel.nivel-2 { background: #0c4a6e80; color: #7dd3fc; border-color: #075985; }
+.badge-nivel.nivel-3 { background: #78350f60; color: #fcd34d; border-color: #92400e; }
+.badge-nivel.nivel-4 { background: #4c1d9580; color: #d8b4fe; border-color: #6b21a8; }
+
 .badge-info {
     color: #94a3b8; /* Slate 400 */
     font-size: 0.85rem;
