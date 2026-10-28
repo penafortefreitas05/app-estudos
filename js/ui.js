@@ -531,12 +531,15 @@ function renderizarDesempenhoMaterias(materiasMap, questoes = [], historico = {}
             <button type="button" class="materia-stat-item${critica ? ' critica' : ''}${comecou ? '' : ' nao-comecou'}" data-materia="${esc(mat)}" title="Ver questões de ${esc(mat)}">
                 <span class="materia-stat-header">
                     ${iconeSvg}
-                    <span class="materia-nome">${esc(mat)}</span>
+                    <span class="materia-titulo">
+                        <span class="materia-nome">${esc(mat)}</span>
+                        ${comecou ? '' : '<span class="materia-nao-comecou">não começou</span>'}
+                    </span>
                     ${comecou ? `<span class="materia-taxa">${taxa}%</span>` : ''}
                 </span>
                 <span class="barra-progresso-bg"><span class="barra-progresso-fill ${taxa >= 70 ? 'alta' : (taxa >= 50 ? 'media' : 'baixa')}" style="width: ${comecou ? taxa : 0}%;"></span></span>
                 <span class="materia-niveis">${niveis}</span>
-                ${comecou ? revisar : '<span class="materia-nao-comecou">não começou</span>'}
+                ${revisar}
                 ${critica ? '<span class="materia-reforcar">Reforçar · toque para treinar</span>' : ''}
             </button>
         `;
