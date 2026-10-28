@@ -1,0 +1,163 @@
+[
+ {
+  "materia": "Banco de Dados & Dados",
+  "assunto": "Conceitos de SGBD",
+  "ideia_central": "O SGBD é o programa que guarda os dados do banco e controla quem pode ler e alterar, mesmo com muita gente usando ao mesmo tempo.",
+  "exemplo": "PostgreSQL e MySQL são SGBDs. No sistema de matrícula de uma faculdade, os dados dos alunos são o banco de dados; o PostgreSQL é quem guarda esses dados, aplica as regras e deixa 500 alunos se matricularem ao mesmo tempo sem bagunça. Para conversar com ele, usa-se a linguagem SQL.",
+  "pegadinha": "Misturar servidores web (IIS, Nginx, Tomcat) numa lista de SGBDs: eles entregam páginas e aplicações, não gerenciam bancos de dados."
+ },
+ {
+  "materia": "Banco de Dados & Dados",
+  "assunto": "Modelagem de dados (MER e relacional)",
+  "ideia_central": "Modelar é desenhar, antes de criar as tabelas, o que o sistema vai registrar (entidades), as características de cada coisa (atributos) e como elas se ligam (relacionamentos).",
+  "exemplo": "Numa loja, Cliente e Pedido são entidades; nome e CPF são atributos de Cliente. Um cliente faz vários pedidos, e cada pedido é de um só cliente: relacionamento 1:N. Na hora de virar tabelas, Pedido passa a guardar o código do cliente.",
+  "pegadinha": "Errar o que é entidade fraca: não é a que tem poucos atributos, e sim a que não tem identificador próprio e depende de outra (Dependente só existe ligado a um Funcionário)."
+ },
+ {
+  "materia": "Banco de Dados & Dados",
+  "assunto": "Normalização",
+  "ideia_central": "Normalizar é organizar as tabelas para que cada informação fique guardada em um lugar só, evitando repetição e dados contraditórios.",
+  "exemplo": "Se a tabela Funcionário repete o nome do departamento em mil linhas, mudar esse nome exige mil alterações, e basta esquecer uma para o banco ficar contraditório. Normalizando, o nome fica só na tabela Departamento, e Funcionário guarda apenas o código. A escada é: 1FN (um valor por célula), 2FN (nada depende de só uma parte da chave) e 3FN (nada depende de outra coluna que não seja a chave).",
+  "pegadinha": "Trocar as formas normais: vários valores na mesma célula é problema da 1FN, enquanto a 3FN trata de coluna que depende de outra coluna que não é a chave."
+ },
+ {
+  "materia": "Banco de Dados & Dados",
+  "assunto": "SQL — DDL e restrições",
+  "ideia_central": "DDL é a parte do SQL que cria e altera a estrutura do banco (tabelas, colunas e regras), e não os dados guardados nelas.",
+  "exemplo": "CREATE TABLE Aluno (cpf CHAR(11) PRIMARY KEY, nome VARCHAR(100) NOT NULL) cria a tabela: o CPF vira chave primária (não pode repetir nem ficar vazio) e o nome passa a ser obrigatório. Para incluir uma coluna depois, usa-se ALTER TABLE Aluno ADD email VARCHAR(100). Para apagar a tabela inteira, DROP TABLE Aluno.",
+  "pegadinha": "Esquecer a palavra TABLE: \"ALTER PROCESSO ADD STATUS CHAR(1)\" está errado, e o certo é \"ALTER TABLE PROCESSO ADD STATUS CHAR(1)\"."
+ },
+ {
+  "materia": "Banco de Dados & Dados",
+  "assunto": "SQL — DML (INSERT, UPDATE, DELETE, TRUNCATE)",
+  "ideia_central": "DML é a parte do SQL que mexe nos dados das tabelas: INSERT inclui linhas, UPDATE altera e DELETE apaga.",
+  "exemplo": "INSERT INTO Aluno VALUES ('12345678900', 'Ana') cadastra a Ana. UPDATE Aluno SET nome = 'Ana Lima' WHERE cpf = '12345678900' corrige o nome só dela. DELETE FROM Aluno WHERE cpf = '12345678900' remove essa linha; sem o WHERE, apagaria todos os alunos, mas a tabela continuaria existindo, vazia (TRUNCATE TABLE Aluno também esvazia a tabela inteira de uma vez).",
+  "pegadinha": "Achar que um INSERT pode deixar de fora uma coluna NOT NULL que não tem valor padrão: o SGBD recusa a linha inteira."
+ },
+ {
+  "materia": "Banco de Dados & Dados",
+  "assunto": "SQL — Consultas, JOIN e subconsultas",
+  "ideia_central": "O SELECT busca dados: você diz quais colunas quer, de qual tabela e com qual filtro; o JOIN junta tabelas relacionadas na mesma consulta.",
+  "exemplo": "SELECT nome FROM Cliente WHERE cidade = 'Recife' ORDER BY nome traz só os nomes dos clientes de Recife, em ordem alfabética. Para ver também os pedidos, junta-se Cliente com Pedido pelo código do cliente. O INNER JOIN mostra só quem tem pedido; o LEFT JOIN mostra todos os clientes, mesmo os que nunca compraram.",
+  "pegadinha": "Trocar INNER JOIN por LEFT JOIN: só o LEFT JOIN mantém no resultado os clientes que não têm nenhum pedido."
+ },
+ {
+  "materia": "Banco de Dados & Dados",
+  "assunto": "SQL — Agrupamento e agregação",
+  "ideia_central": "Agregar é resumir muitas linhas em um número (contagem, soma, média); o GROUP BY faz esse resumo separado por grupo.",
+  "exemplo": "SELECT depto, COUNT(*) FROM Funcionario GROUP BY depto mostra quantos funcionários há em cada departamento. Para ver só os departamentos com 3 ou mais pessoas, acrescenta-se HAVING COUNT(*) >= 3. O WHERE filtra as linhas antes de agrupar; o HAVING filtra os grupos depois.",
+  "pegadinha": "Filtrar resultado de COUNT, SUM ou AVG com WHERE: filtro sobre grupo é com HAVING."
+ },
+ {
+  "materia": "Banco de Dados & Dados",
+  "assunto": "SQL — DCL e controle de acesso",
+  "ideia_central": "DCL é a parte do SQL que controla quem pode fazer o quê no banco: GRANT dá a permissão e REVOKE tira.",
+  "exemplo": "GRANT SELECT ON Salario TO ana deixa a Ana consultar a tabela de salários, sem poder alterá-la. Se ela mudar de setor, REVOKE SELECT ON Salario FROM ana retira o acesso. Com WITH GRANT OPTION no fim do GRANT, a Ana também poderia repassar essa permissão a outros usuários.",
+  "pegadinha": "Achar que quem recebeu uma permissão pode repassá-la a outros: isso só vale se o GRANT tiver WITH GRANT OPTION."
+ },
+ {
+  "materia": "Banco de Dados & Dados",
+  "assunto": "Transações, concorrência e otimização",
+  "ideia_central": "Transação é um conjunto de operações que o banco trata como um bloco só: ou tudo é gravado (COMMIT), ou tudo é desfeito (ROLLBACK).",
+  "exemplo": "Numa transferência de R$ 100, debitar da conta A e creditar na conta B formam uma transação: se o sistema cair no meio, nenhum dos dois vale. Isso é a atomicidade, o A do ACID. As outras letras são consistência (as regras do banco continuam valendo), isolamento (uma transação não enxerga a outra pela metade) e durabilidade (depois do COMMIT, nada se perde, nem com queda de energia).",
+  "pegadinha": "Trocar as letras do ACID: \"tudo ou nada\" é atomicidade, e \"não se perde depois do COMMIT\" é durabilidade."
+ },
+ {
+  "materia": "Banco de Dados & Dados",
+  "assunto": "Objetos de banco (views, triggers, procedures, sequences)",
+  "ideia_central": "Além das tabelas, o banco guarda objetos prontos: consulta salva (view), código que dispara sozinho (trigger), rotina chamada pelo nome (procedure) e contador (sequence).",
+  "exemplo": "A view Clientes_Ativos guarda a consulta, e não os dados: cada SELECT nela roda a consulta de novo. Um trigger pode gravar um registro de auditoria toda vez que alguém alterar um salário, sem ninguém chamá-lo. Uma sequence entrega 1, 2, 3... para os códigos dos pedidos (no PostgreSQL, com nextval).",
+  "pegadinha": "Achar que basta dizer o evento ao criar um trigger: é obrigatório informar o momento (BEFORE ou AFTER), o evento (INSERT, UPDATE ou DELETE) e a tabela."
+ },
+ {
+  "materia": "Banco de Dados & Dados",
+  "assunto": "SQL — Funções",
+  "ideia_central": "Funções fazem contas e ajustes dentro da consulta: umas tratam cada linha (UPPER, SUBSTRING, COALESCE), outras resumem várias linhas em um valor (SUM, COUNT).",
+  "exemplo": "UPPER('recife') devolve 'RECIFE'. SUBSTRING(nome, 1, 5) pega os 5 primeiros caracteres do nome. COALESCE(telefone, 'sem telefone') mostra o aviso quando o telefone está vazio (NULL).",
+  "pegadinha": "Inverter os números do SUBSTRING: o primeiro é a posição de início, e o segundo é a quantidade de caracteres."
+ },
+ {
+  "materia": "Banco de Dados & Dados",
+  "assunto": "NoSQL",
+  "ideia_central": "NoSQL (\"não só SQL\") são bancos que guardam os dados fora do formato de tabelas, como documentos, pares chave-valor ou grafos.",
+  "exemplo": "O MongoDB guarda cada cliente como um documento, parecido com JSON, e dois clientes podem ter campos diferentes. O Redis guarda pares chave-valor e é muito usado para cache e sessão de login. O Neo4j guarda grafos, ideais para \"amigos dos meus amigos\" numa rede social.",
+  "pegadinha": "Dizer que o MongoDB guarda os dados em XML: ele usa documentos no estilo JSON (internamente, no formato BSON)."
+ },
+ {
+  "materia": "Banco de Dados & Dados",
+  "assunto": "Data warehouse, OLAP e BI",
+  "ideia_central": "O data warehouse junta, em um só lugar, dados históricos de vários sistemas, já limpos, para análise e relatórios, e não para o dia a dia.",
+  "exemplo": "O sistema de vendas (OLTP) grava cada venda na hora. Toda noite essas vendas vão para o DW (data warehouse), junto com dados do estoque e do RH. Lá a gerência pergunta \"quanto vendemos por região nos últimos 3 anos\" (OLAP): a tabela fato guarda os números, como valor e quantidade, e as dimensões dão o contexto, como produto, loja e data.",
+  "pegadinha": "Inverter DW e data mart: o data mart é a parte menor, voltada a uma área, e não algo que reúne vários DWs."
+ },
+ {
+  "materia": "Banco de Dados & Dados",
+  "assunto": "Engenharia de dados (ETL, ELT, data lake)",
+  "ideia_central": "Engenharia de dados é levar os dados das fontes até onde serão usados: extrair, limpar e carregar no destino (ETL).",
+  "exemplo": "Um pipeline extrai as vendas do sistema da loja, transforma (padroniza datas, tira repetidos) e carrega no DW: isso é ETL. No ELT, o dado bruto é carregado primeiro, num data lake ou num DW na nuvem, e transformado lá dentro. O data lake aceita qualquer formato (tabelas, JSON, logs, imagens) e só aplica estrutura na hora de ler.",
+  "pegadinha": "Achar que o data lake exige um esquema definido antes de gravar: ele guarda o dado bruto, e quem exige o esquema antes é o data warehouse."
+ },
+ {
+  "materia": "Banco de Dados & Dados",
+  "assunto": "Mineração de dados",
+  "ideia_central": "Minerar dados é usar algoritmos para descobrir, em grandes volumes de dados, padrões úteis que ninguém conseguiria achar olhando à mão.",
+  "exemplo": "O supermercado descobre que quem compra pão costuma levar manteiga (regra de associação) e coloca os dois perto. O banco usa uma árvore de decisão, uma sequência de perguntas como \"a renda passa de X?\", para aprovar ou negar crédito.",
+  "pegadinha": ""
+ },
+ {
+  "materia": "Banco de Dados & Dados",
+  "assunto": "Dados abertos",
+  "ideia_central": "Dados abertos são dados que qualquer pessoa pode acessar, usar e compartilhar livremente, em um formato que um programa consiga ler.",
+  "exemplo": "Uma prefeitura publica a tabela de gastos em CSV, com licença aberta, e qualquer cidadão pode baixar e analisar. Se publicasse só em PDF, teria 1 estrela na escala de 5 estrelas; em planilha do Excel, 2; em CSV, chegaria a 3, por ser formato não proprietário.",
+  "pegadinha": "Achar que planilha XLSX já é formato aberto: ela é estruturada, mas proprietária; é o CSV que leva à 3ª estrela."
+ },
+ {
+  "materia": "Banco de Dados & Dados",
+  "assunto": "Machine learning — conceitos e tipos de aprendizado",
+  "ideia_central": "No machine learning, o computador aprende padrões a partir de exemplos, em vez de seguir regras escritas uma a uma pelo programador.",
+  "exemplo": "Supervisionado: o modelo treina com e-mails já marcados como spam ou não, e aprende a classificar os novos. Não supervisionado: sem nenhuma marcação, ele separa os clientes em grupos parecidos. Por reforço: um robô aprende a andar por tentativa e erro, ganhando pontos quando avança.",
+  "pegadinha": "Classificar o aprendizado por reforço como não supervisionado: ele é um tipo à parte, que aprende por recompensa e punição, e não por descobrir grupos."
+ },
+ {
+  "materia": "Banco de Dados & Dados",
+  "assunto": "Machine learning — algoritmos",
+  "ideia_central": "Cada algoritmo resolve um tipo de problema: a regressão linear prevê números, o Naive Bayes classifica e o K-means agrupa.",
+  "exemplo": "A regressão linear traça uma reta nos dados para prever, por exemplo, o preço de um imóvel pela área. O Naive Bayes aprende, com e-mails já rotulados, quais palavras aparecem mais em spam. O K-means separa os clientes em K grupos, e quem escolhe o K, antes de rodar, é você.",
+  "pegadinha": "Dizer que o K-means descobre sozinho quantos grupos existem: o K é definido antes de rodar o algoritmo."
+ },
+ {
+  "materia": "Banco de Dados & Dados",
+  "assunto": "Machine learning — avaliação de modelos",
+  "ideia_central": "Avaliar um modelo é testá-lo com dados que ele nunca viu, para saber se aprendeu de verdade ou só decorou o treino.",
+  "exemplo": "Separa-se uma parte dos dados só para teste. Se o modelo acerta 99% no treino e 60% no teste, ele decorou: é overfitting. Num antifraude, marcar como fraude um relatório legítimo é falso positivo; deixar passar uma fraude real é falso negativo.",
+  "pegadinha": "Achar que a acurácia no próprio treino basta para avaliar o modelo: é no teste, com dados novos, que se vê se ele aprendeu."
+ },
+ {
+  "materia": "Banco de Dados & Dados",
+  "assunto": "Deep learning e PLN",
+  "ideia_central": "Deep learning usa redes neurais com muitas camadas; PLN é a área que faz o computador entender e produzir linguagem humana.",
+  "exemplo": "Uma rede convolucional (CNN) reconhece placas de carro em fotos, detectando primeiro bordas, depois formas, depois letras. No PLN, tradutores e chatbots transformam palavras em números (embeddings), e neles \"rei\" fica perto de \"rainha\". A técnica mais simples, o bag of words, só conta as palavras e perde a ordem.",
+  "pegadinha": "Trocar os tipos de rede: a CNN (convolucional) é para imagens, e a LSTM (recorrente) é para sequências, como texto."
+ },
+ {
+  "materia": "Banco de Dados & Dados",
+  "assunto": "IA generativa e LLMs",
+  "ideia_central": "IA generativa cria conteúdo novo; um LLM gera texto escolhendo, pedaço por pedaço (token), o que é mais provável vir em seguida.",
+  "exemplo": "Quando você pede um resumo a um chatbot, ele não busca uma resposta pronta: vai montando o texto token a token. Por isso pode inventar, com toda a confiança, uma lei que não existe, o que se chama alucinação. A temperatura controla a variação: baixa para respostas técnicas, alta para ideias criativas.",
+  "pegadinha": "Inverter a temperatura: mais alta deixa as respostas mais variadas e criativas, e mais baixa, mais previsíveis."
+ },
+ {
+  "materia": "Banco de Dados & Dados",
+  "assunto": "MLOps",
+  "ideia_central": "MLOps é aplicar ao machine learning as práticas do DevOps (automação, versões e monitoramento) para pôr modelos em produção e mantê-los funcionando bem.",
+  "exemplo": "Um modelo de crédito é treinado, registrado como versão 3 e colocado em produção numa API (deploy). Meses depois, o perfil dos clientes muda e o modelo passa a errar: isso é drift. O monitoramento percebe a queda, e a equipe retreina o modelo ou volta para a versão anterior.",
+  "pegadinha": "Achar que o trabalho termina no treinamento: o ciclo inclui deploy, monitoramento e retreino."
+ },
+ {
+  "materia": "Banco de Dados & Dados",
+  "assunto": "Ética e governança de IA",
+  "ideia_central": "Ética e governança de IA é garantir que sistemas de IA sejam justos, explicáveis e transparentes, com supervisão humana nas decisões que afetam pessoas.",
+  "exemplo": "Um modelo de contratação treinado com um histórico em que quase só homens foram contratados tende a repetir isso: é viés algorítmico. Se um banco nega crédito por uma decisão só automática, a LGPD (art. 20) dá à pessoa o direito de pedir revisão e de saber os critérios usados.",
+  "pegadinha": "Dizer que a opacidade dos algoritmos é boa prática: os princípios de IA responsável pedem o contrário, transparência."
+ }
+]
