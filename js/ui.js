@@ -524,22 +524,19 @@ function renderizarDesempenhoMaterias(materiasMap, questoes = [], historico = {}
                 </span>`;
             }).join('');
         const revisar = info.revisarHoje
-            ? `<span class="materia-revisar" title="Vencem na revisão hoje">${info.revisarHoje} para revisar hoje</span>` : '';
-        const iconeSvg = `<span class="materia-icone" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${ICONE_MATERIA[mat] || ICONE_PADRAO}"/></svg></span>`;
+            ? `<span class="materia-revisar" title="${info.revisarHoje} para revisar hoje">${info.revisarHoje} 🔁</span>` : '';
+        const iconeSvg = `<span class="materia-icone" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${ICONE_MATERIA[mat] || ICONE_PADRAO}"/></svg></span>`;
 
         html += `
             <button type="button" class="materia-stat-item${critica ? ' critica' : ''}${comecou ? '' : ' nao-comecou'}" data-materia="${esc(mat)}" title="Ver questões de ${esc(mat)}">
                 <span class="materia-stat-header">
                     ${iconeSvg}
-                    <span class="materia-titulo">
-                        <span class="materia-nome">${esc(mat)}</span>
-                        ${comecou ? '' : '<span class="materia-nao-comecou">não começou</span>'}
-                    </span>
-                    ${comecou ? `<span class="materia-taxa">${taxa}%</span>` : ''}
+                    <span class="materia-nome">${esc(mat)}</span>
+                    ${revisar}
+                    <span class="materia-taxa">${comecou ? `${taxa}%` : 'não começou'}</span>
                 </span>
                 <span class="barra-progresso-bg"><span class="barra-progresso-fill ${taxa >= 70 ? 'alta' : (taxa >= 50 ? 'media' : 'baixa')}" style="width: ${comecou ? taxa : 0}%;"></span></span>
                 <span class="materia-niveis">${niveis}</span>
-                ${revisar}
                 ${critica ? '<span class="materia-reforcar">Reforçar · toque para treinar</span>' : ''}
             </button>
         `;
