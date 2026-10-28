@@ -6,6 +6,7 @@ import { carregarDiasDeEstudo, diaLocal } from './storage.js';
 import { venceHoje, somarDias } from './revisao.js';
 import { NIVEIS, ORDEM_MACROS } from './api.js';
 import { atualizarMetaNaTela } from './primeiros-passos.js';
+import { resumoDasTrilhas } from './aprender.js';
 
 // Matéria "a reforçar": abaixo deste % de acerto, com pelo menos esta quantidade de respostas
 // (sem o mínimo, 1 erro em 1 questão já marcaria a matéria como crítica)
@@ -477,6 +478,7 @@ function renderizarDesempenhoMaterias(materiasMap, questoes = [], historico = {}
         if (h && Number(h.tentativas) > 0) extra[mat].niveis[n].feitas++;
     });
 
+    const trilhas = resumoDasTrilhas(questoes, historico); // assuntos aprendidos (Aprender)
     const comQuestoes = ORDEM_MACROS.filter(m => materiasMap[m] && materiasMap[m].total > 0);
     const outras = Object.keys(materiasMap)
         .filter(m => !ORDEM_MACROS.includes(m) && materiasMap[m].total > 0)
@@ -499,6 +501,8 @@ function renderizarDesempenhoMaterias(materiasMap, questoes = [], historico = {}
         const niveis = Object.keys(info.niveis).map(Number).sort((a, b) => a - b)
             .map(n => `${NOME_CURTO_NIVEL[n] || NIVEIS[n] || n} ${info.niveis[n].feitas}/${info.niveis[n].total}`)
             .join(' · ');
+        const trilha = trilhas[mat];
+        const textoTrilha = trilha && trilha.total ? `Assuntos ${trilha.aprendidos}/${trilha.total} · ` : '';
         const icone = critica ? '⚠️' : (comecou ? '📖' : '○');
         const revisar = info.revisarHoje
             ? `<span class="materia-revisar" title="Vencem na revisão hoje">${info.revisarHoje} 🔁</span>` : '';
@@ -511,7 +515,7 @@ function renderizarDesempenhoMaterias(materiasMap, questoes = [], historico = {}
                 </span>
                 ${comecou ? `<span class="barra-progresso-bg"><span class="barra-progresso-fill" style="width: ${taxa}%;"></span></span>` : ''}
                 <span class="materia-rodape">
-                    <span class="materia-niveis">${esc(niveis)}</span>
+                    <span class="materia-niveis">${esc(textoTrilha + niveis)}</span>
                     ${revisar}
                 </span>
                 ${critica ? '<span class="materia-reforcar">Reforçar · toque para treinar</span>' : ''}

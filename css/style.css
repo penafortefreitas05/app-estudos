@@ -1561,3 +1561,21 @@ body.modo-foco .cartao-hoje { display: none; }
 .gaveta-desempenho .resumo-row { gap: 0.3rem; }
 .gaveta-desempenho .resumo-card { padding: 0.5rem 0.35rem; }
 .gaveta-desempenho .resumo-titulo { font-size: 0.6rem; overflow: hidden; text-overflow: ellipsis; }
+
+/* ==================== APRENDER (Fase 1) ==================== */
+.card-exemplo { border-color: #1e3a8a; }
+.exemplo-faixa {
+    margin: -0.25rem 0 0.9rem; padding: 0.45rem 0.7rem; border-radius: 8px;
+    background: rgba(37, 99, 235, 0.12); border: 1px solid #1e3a8a;
+    color: #bfdbfe; font-size: 0.82rem; font-weight: 600;
+}
+.hoje-botoes { display: flex; gap: 0.5rem; flex-shrink: 0; }
+.hoje-botoes .btn-secondary { min-height: 44px; padding: 0 1rem; font-size: 0.95rem; white-space: nowrap; }
+.aprender-estado { color: #cbd5e1; }
+.aprender-estado.ok { color: #34d399; }
+.aprender-progresso { color: #94a3b8; font-size: 0.85rem; }
+.bv-opcao:disabled { opacity: 0.5; cursor: default; }
+@media (max-width: 768px) {
+    .hoje-botoes { flex-direction: column; }
+    .hoje-botoes .btn-secondary { width: 100%; min-height: 48px; }
+}

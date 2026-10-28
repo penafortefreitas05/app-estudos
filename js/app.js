@@ -18,8 +18,10 @@ import {
     renderizarCoberturaEdital,
     temGabarito,
     preencherSelectAssunto,
-    calcularSequencia
+    calcularSequencia,
+    textoGabaritoDe
 } from './ui.js';
+import { montarTrilha, proximoAssunto, resumoDasTrilhas, questaoPonte } from './aprender.js';
 // ==================== FIM ====================
 
 // ---------- 1.2 Supabase (banco e cliente) ----------
@@ -1099,7 +1101,12 @@ function entrarFoco(lista, opcoes = {}) {
         simulado = null;
         pararCronometro(displayCronometro);
     }
-    foco = { lista: [...lista], indice: 0, cards: new Map(), titulo: opcoes.titulo || "", guiada: Boolean(opcoes.guiada) };
+    foco = {
+        lista: [...lista], indice: 0, cards: new Map(),
+        titulo: opcoes.titulo || "", guiada: Boolean(opcoes.guiada),
+        exemplos: opcoes.exemplos || new Set(), // ids mostrados como exemplo resolvido (Aprender)
+        aprender: opcoes.aprender || null       // { materia, nome } do assunto em estudo
+    };
     document.body.classList.add("modo-foco");
     if (btnModoFoco) btnModoFoco.setAttribute("aria-pressed", "true");
     fecharPaineis();
@@ -1138,6 +1145,9 @@ function atualizarListaFoco(lista) {
 
 function cardDoFoco(q) {
     const id = String(q.id);
+    if (!foco.cards.has(id) && foco.exemplos.has(id)) {
+        foco.cards.set(id, cardExemplo(q));
+    }
     if (!foco.cards.has(id)) {
         const temp = document.createElement("div");
         // Em branco: no foco a questão é sempre para responder agora (como na revisão)
@@ -1158,7 +1168,7 @@ function desenharFoco() {
     barra.className = "foco-barra";
     barra.innerHTML = `
         <button type="button" class="btn-painel foco-anterior" ${foco.indice === 0 ? "disabled" : ""} aria-label="Questão anterior">←</button>
-        <span class="foco-posicao" aria-live="polite">${foco.titulo ? `<span class="foco-titulo">${esc(foco.titulo)}</span>` : ""}${fim ? "Fim da lista" : `Questão ${foco.indice + 1} de ${total}`}</span>
+        <span class="foco-posicao" aria-live="polite">${foco.titulo ? `<span class="foco-titulo">${esc(foco.titulo)}</span>` : ""}${fim ? "Fim da lista" : (foco.exemplos.has(String(foco.lista[foco.indice].id)) ? "Exemplo resolvido" : `Questão ${foco.indice + 1} de ${total}`)}</span>
         <button type="button" class="btn-painel foco-proxima" ${fim ? "disabled" : ""} aria-label="Próxima questão">→</button>
         <button type="button" class="btn-painel foco-sair">✕ Sair do foco</button>`;
 
@@ -1175,6 +1185,7 @@ function desenharFoco() {
         partes.push(rodape);
     }
     container.replaceChildren(...partes);
+    if (foco.aprender && !fim && !foco.exemplos.has(String(foco.lista[foco.indice].id))) mostrarDica("antes-de-responder");
     // Rola para o topo nos dois casos: no computador quem rola é a lista; no celular, a página
     container.scrollTop = 0;
     const mainContent = document.querySelector(".main-content");
@@ -1186,7 +1197,7 @@ function resumoFoco() {
     let respondidas = 0, acertos = 0, voltamAmanha = 0;
     const amanha = somarDias(diaLocal(), 1);
     foco.cards.forEach((card, id) => {
-        if (!card || card.dataset.respondida !== "1") return;
+        if (!card || card.dataset.respondida !== "1" || card.dataset.exemplo === "1") return;
         respondidas++;
         if (!card.querySelector(".opcao-item.incorreta")) acertos++;
         const h = historico[id];
@@ -1203,11 +1214,11 @@ function resumoFoco() {
     const caixa = document.createElement("div");
     caixa.className = "foco-resumo";
     caixa.innerHTML = `
-        <p class="foco-resumo-titulo">🎯 Fim da lista</p>
+        <p class="foco-resumo-titulo">${foco.aprender ? "📖 Fim do assunto" : "🎯 Fim da lista"}</p>
         <p>${respondidas
             ? `Você respondeu <strong>${respondidas}</strong> nesta sessão e acertou <strong>${acertos}</strong> (${Math.round(acertos * 100 / respondidas)}%).`
             : "Nenhuma questão respondida nesta sessão."}</p>
-        ${textoAmanha}${textoGuiada}
+        ${textoAmanha}${textoGuiada}${textoAprender()}
         <div class="foco-resumo-acoes">
             <button type="button" class="btn-painel foco-anterior">← Voltar para a última</button>
             <button type="button" class="btn-primary foco-sair">Sair do foco</button>
@@ -1310,7 +1321,7 @@ document.addEventListener("keydown", (e) => {
         irPara(foco.indice - 1);
     } else if (e.key === "Enter") {
         e.preventDefault();
-        const corrigida = card && card.querySelector(".btn-refazer:not([hidden])");
+        const corrigida = card && (card.dataset.exemplo === "1" || card.querySelector(".btn-refazer:not([hidden])"));
         if (card && card.dataset.respondida === "1" && !corrigida) return; // ainda corrigindo no servidor
         if (!card || corrigida) irPara(foco.indice + 1);
         else if (!card.querySelector(".radio-opcao:checked")) showToast("Escolha uma alternativa (A–E) antes de responder.", "alerta", 1800);
@@ -2006,32 +2017,10 @@ function abrirBoasVindasCompleta() {
         onConcluir: ({ perfil, materia }) => {
             salvarPerfil(usuarioAtual.id, perfil);
             aplicarFiltros(); // a ordem das questões depende do perfil
-            if (materia) iniciarSessaoGuiada(materia);
+            if (materia) iniciarAprender(materia, null, { guiada: true });
             else mostrarDica("antes-de-responder");
         }
     });
-}
-
-// Sessão guiada: 10 questões de Iniciante da matéria, nos 2 primeiros assuntos dela (5 + 5),
-// na ordem em que o banco foi escrito (a numeração das autorais segue a ordem didática).
-// Conceito novo em bloco primeiro; a mistura vem depois, na lista normal.
-function iniciarSessaoGuiada(materia) {
-    const pool = questoes.filter(q => q.materia === materia && Number(q.nivel) === 1 && !jaRespondeu(q.id));
-    const porAssunto = new Map();
-    pool.forEach(q => {
-        const assunto = q.assunto || materia;
-        if (!porAssunto.has(assunto)) porAssunto.set(assunto, []);
-        porAssunto.get(assunto).push(q);
-    });
-    const lista = [];
-    [...porAssunto.values()].filter(qs => qs.length >= 3).slice(0, 2).forEach(qs => lista.push(...qs.slice(0, 5)));
-    if (lista.length < 10) lista.push(...pool.filter(q => !lista.includes(q)).slice(0, 10 - lista.length));
-    if (!lista.length) {
-        showToast("Não há questões de Iniciante novas nessa matéria.", "alerta");
-        return;
-    }
-    entrarFoco(lista, { titulo: `Primeira sessão · ${materia}`, guiada: true, silencioso: true });
-    setTimeout(() => mostrarDica("antes-de-responder"), 300);
 }
 
 // Depois de cada resposta no modo estudo: dicas da primeira vez e aviso da meta batida
@@ -2186,7 +2175,10 @@ function colocarCartaoHoje() {
                 <h2 class="hoje-titulo">${esc(titulo)}</h2>
                 <p class="hoje-texto">${esc(texto)}</p>
             </div>
-            <button type="button" class="btn-primary hoje-continuar">▶ Continuar</button>
+            <div class="hoje-botoes">
+                <button type="button" class="btn-primary hoje-continuar">▶ Continuar</button>
+                <button type="button" class="btn-secondary hoje-aprender">📖 Aprender</button>
+            </div>
         </div>
         <div class="hoje-chips">${chips}</div>
         ${textoSemana}`;
@@ -2210,6 +2202,7 @@ function continuarHoje() {
 if (container) {
     container.addEventListener("click", (e) => {
         if (e.target.closest(".hoje-continuar")) { continuarHoje(); return; }
+        if (e.target.closest(".hoje-aprender")) { abrirEscolhaAprender(); return; }
         const fechar = e.target.closest(".hoje-semana-fechar");
         if (fechar) {
             try { localStorage.setItem(CHAVE_SEMANA_DISPENSADA, fechar.dataset.chave); } catch (err) { /* segue */ }
@@ -2248,3 +2241,155 @@ explicacoesDesempenho.forEach(el => {
     });
 });
 // ==================== FIM: 16. HOJE ====================
+
+// ==================== INÍCIO: 17. APRENDER (cartão de dois lados por assunto) ====================
+// Lado 1, Aprenda: a 1ª questão do assunto, já resolvida, com o comentário.
+// Lado 2, Prove: as outras questões Iniciante do mesmo assunto, uma por vez, no Modo Foco.
+// As regras (ordem, estado de cada assunto, ponte para a prova) ficam em js/aprender.js.
+const CHAVE_ULTIMA_MATERIA_APRENDER = "appEstudos_UltimaMateriaAprender";
+
+function iniciarAprender(materia, nomeAssunto = null, opcoes = {}) {
+    const trilha = montarTrilha(materia, questoes, historico);
+    const assunto = nomeAssunto ? trilha.find(a => a.nome === nomeAssunto) : proximoAssunto(trilha);
+    if (!assunto) {
+        showToast(trilha.length ? `Você já aprendeu todos os assuntos de ${materia}. 🎉` : "Essa matéria ainda não tem questões de Iniciante.", "info", 4000);
+        return;
+    }
+    try { localStorage.setItem(CHAVE_ULTIMA_MATERIA_APRENDER, materia); } catch (e) { /* segue */ }
+    const lista = [...(assunto.exemplo ? [assunto.exemplo] : []), ...assunto.prova];
+    entrarFoco(lista, {
+        titulo: `Aprender · ${assunto.nome}`,
+        exemplos: new Set(assunto.exemplo ? [String(assunto.exemplo.id)] : []),
+        aprender: { materia, nome: assunto.nome },
+        guiada: Boolean(opcoes.guiada),
+        silencioso: true
+    });
+    setTimeout(() => mostrarDica("aprender"), 300);
+}
+
+// Exemplo resolvido: a questão com a resposta certa marcada e o comentário, sem botões de resposta.
+// O gabarito vem do servidor só desta questão (U9: o app não recebe o banco com gabaritos).
+function cardExemplo(q) {
+    const temp = document.createElement("div");
+    renderizarQuestoes(temp, [q], historico, "", { restaurarRespostas: false });
+    const card = temp.firstElementChild;
+    if (!card) return card;
+    card.classList.add("card-foco", "card-exemplo");
+    card.dataset.exemplo = "1";
+    card.dataset.respondida = "1";
+    card.querySelectorAll(".radio-opcao").forEach(r => { r.disabled = true; });
+    const botoes = card.querySelector(".botoes-resposta");
+    if (botoes) botoes.hidden = true;
+    const tentativas = card.querySelector(".tentativas");
+    if (tentativas) tentativas.hidden = true;
+    card.insertAdjacentHTML("afterbegin",
+        `<p class="exemplo-faixa">📖 Exemplo resolvido · leia com calma. Depois é a sua vez.</p>`);
+
+    const fb = card.querySelector(".feedback-container");
+    const gabaritoDiv = fb && fb.querySelector(".gabarito-resposta");
+    if (fb) {
+        fb.classList.remove("oculta");
+        fb.classList.add("neutro");
+        fb.style.display = "block";
+    }
+    if (gabaritoDiv) gabaritoDiv.textContent = "Carregando a resolução...";
+
+    const letraQualquer = (obterOpcoes(q)[0] || {}).letra || "A";
+    corrigirResposta(q, letraQualquer).then(({ gabarito }) => {
+        q.gabarito = gabarito;
+        revelar(card, q, gabarito);
+        const div = card.querySelector(".gabarito-resposta");
+        if (div) div.innerHTML = `📖 <strong>Resposta certa:</strong> ${esc(textoGabaritoDe(q))}`;
+        const refazer = card.querySelector(".btn-refazer");
+        if (refazer) refazer.hidden = true;
+    }).catch(() => {
+        // Sem o gabarito, o comentário ainda ensina (ele explica cada alternativa)
+        const div = card.querySelector(".gabarito-resposta");
+        if (div) div.textContent = "Não foi possível carregar a resposta agora. Leia o comentário:";
+        const explicacao = card.querySelector(".explicacao-texto");
+        if (explicacao) explicacao.innerHTML = `<div style="margin-top: 8px;"><strong>📘 Comentário:</strong> ${esc(q.explicacao || "")}</div>`;
+    });
+    return card;
+}
+
+// Texto do fim da sessão de Aprender: o estado do assunto e o que fazer em seguida
+function textoAprender() {
+    if (!foco || !foco.aprender) return "";
+    const { materia, nome } = foco.aprender;
+    const trilha = montarTrilha(materia, questoes, historico);
+    const assunto = trilha.find(a => a.nome === nome);
+    if (!assunto) return "";
+    const proximo = trilha.find(a => a.estado === "nao-visto" && a.nome !== nome);
+    const aprendidos = trilha.filter(a => a.estado === "aprendido").length;
+    const ponte = assunto.estado === "aprendido" ? questaoPonte(assunto, questoes, historico) : null;
+
+    const estado = assunto.estado === "aprendido"
+        ? `<p class="aprender-estado ok">✓ <strong>${esc(nome)}</strong>: aprendido. Acerte as questões dele de novo, com certeza, em outro dia, e elas viram Dominadas.</p>`
+        : `<p class="aprender-estado"><strong>${esc(nome)}</strong>: ${assunto.certas} de ${assunto.total} certas. Com ${assunto.minimo} certas ele conta como aprendido. As que você errou voltam amanhã.</p>`;
+    const progresso = `<p class="aprender-progresso">${esc(materia)}: ${aprendidos} de ${trilha.length} assuntos aprendidos.</p>`;
+    const botoes = [
+        ponte ? `<button type="button" class="btn-secondary aprender-ponte" data-id="${esc(ponte.id)}">🎯 Tentar 1 questão ${Number(ponte.nivel) === 2 ? "do Intermediário" : "de prova"} desse assunto</button>` : "",
+        proximo ? `<button type="button" class="btn-primary aprender-proximo" data-materia="${esc(materia)}" data-assunto="${esc(proximo.nome)}">📖 Próximo: ${esc(proximo.nome)}</button>` : ""
+    ].join("");
+    return `${estado}${progresso}${botoes ? `<div class="foco-resumo-acoes">${botoes}</div>` : ""}`;
+}
+
+if (container) {
+    container.addEventListener("click", (e) => {
+        const proximo = e.target.closest(".aprender-proximo");
+        if (proximo) { iniciarAprender(proximo.dataset.materia, proximo.dataset.assunto); return; }
+        const ponte = e.target.closest(".aprender-ponte");
+        if (ponte) {
+            const q = porId.get(String(ponte.dataset.id));
+            if (q) entrarFoco([q], { titulo: `Desafio · ${q.assunto || q.materia}`, silencioso: true });
+        }
+    });
+}
+
+// "📖 Aprender" no cartão Hoje: escolher a matéria (a última usada vem primeiro)
+function abrirEscolhaAprender() {
+    const resumo = resumoDasTrilhas(questoes, historico);
+    let ultima = null;
+    try { ultima = localStorage.getItem(CHAVE_ULTIMA_MATERIA_APRENDER); } catch (e) { /* segue */ }
+    const ordem = [...new Set([ultima, ...MATERIAS_PARA_COMECAR, ...ORDEM_MACROS, ...Object.keys(resumo)])]
+        .filter(m => m && resumo[m] && resumo[m].total > 0);
+    if (!ordem.length) {
+        showToast("Ainda não há questões de Iniciante para aprender.", "info");
+        return;
+    }
+
+    const overlay = document.createElement("div");
+    overlay.className = "modal-overlay boas-vindas escolha-aprender";
+    overlay.innerHTML = `
+        <div class="modal-card boas-vindas-card" role="dialog" aria-modal="true" aria-labelledby="ea-titulo">
+            <h3 id="ea-titulo" class="modal-titulo">📖 O que aprender agora?</h3>
+            <p class="modal-mensagem">Um assunto por vez: um exemplo resolvido e depois a sua vez.</p>
+            <div class="bv-opcoes">${ordem.map(m => {
+                const r = resumo[m];
+                const detalhe = r.proximo
+                    ? `Próximo: ${r.proximo.nome} · ${r.aprendidos} de ${r.total} assuntos`
+                    : `Tudo aprendido ✓ · ${r.total} assuntos`;
+                return `<button type="button" class="bv-opcao" data-materia="${esc(m)}" ${r.proximo ? "" : "disabled"}>
+                    <span class="bv-opcao-texto">${esc(m)}</span><span class="bv-opcao-detalhe">${esc(detalhe)}</span></button>`;
+            }).join("")}</div>
+            <div class="modal-acoes"><button type="button" class="btn-secondary ea-cancelar">Cancelar</button></div>
+        </div>`;
+    document.body.appendChild(overlay);
+    requestAnimationFrame(() => overlay.classList.add("visible"));
+    const primeira = overlay.querySelector(".bv-opcao:not([disabled])");
+    if (primeira) primeira.focus({ preventScroll: true });
+
+    const fechar = () => {
+        overlay.classList.remove("visible");
+        document.removeEventListener("keydown", aoTeclar);
+        setTimeout(() => overlay.remove(), 200);
+    };
+    const aoTeclar = (e) => { if (e.key === "Escape") fechar(); };
+    document.addEventListener("keydown", aoTeclar);
+    overlay.addEventListener("click", (e) => {
+        const op = e.target.closest(".bv-opcao[data-materia]");
+        if (op && !op.disabled) { fechar(); iniciarAprender(op.dataset.materia); return; }
+        if (e.target === overlay || e.target.closest(".ea-cancelar")) fechar();
+    });
+}
+// ==================== FIM: 17. APRENDER ====================
