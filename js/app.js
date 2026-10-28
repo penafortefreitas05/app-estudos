@@ -65,7 +65,7 @@ import {
 import { showToast, showConfirmModal } from './notifications.js';
 
 // ---------- 1.7 API de questões ----------
-import { normalizarQuestao, ORDEM_MACROS, NIVEIS } from './api.js';
+import { normalizarQuestao, ORDEM_MACROS, NIVEIS, nivelInformadoEhInvalido } from './api.js';
 
 // Filtro de nível: mostra o nome ("Iniciante") e ordena 1→4
 const OPCOES_SELECT_NIVEL = { rotulo: (v) => NIVEIS[v] || v, numerico: true };
@@ -1301,6 +1301,14 @@ if (btnProcessarImportacao && textoJsonQuestoes && modalImportar) {
             const novasQuestoesBrutas = JSON.parse(jsonBruto);
             if (!Array.isArray(novasQuestoesBrutas)) {
                 showToast('O formato deve ser uma lista (array) de questões válida.', 'erro');
+                return;
+            }
+
+            // Nível inválido (ex.: 7) não vira "Avançado" calado: barra o lote inteiro e diz quais
+            const nivelRuim = novasQuestoesBrutas.filter(q => q && nivelInformadoEhInvalido(q.nivel));
+            if (nivelRuim.length > 0) {
+                const ids = nivelRuim.slice(0, 5).map(q => `${q.id ?? '(sem id)'}: "${q.nivel}"`).join(', ');
+                showToast(`${nivelRuim.length} questão(ões) com nível inválido (use 1 a 4 ou Iniciante/Intermediário/Avançado/Especialista): ${ids}. Nada foi salvo.`, 'erro', 9000);
                 return;
             }
 

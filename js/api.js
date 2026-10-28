@@ -218,6 +218,16 @@ export function normalizarNivel(valor) {
     return NIVEL_POR_NOME[nome] || NIVEL_PADRAO;
 }
 
+// Usado na importação: nível ausente é aceito (vira 3), mas um valor preenchido que não
+// seja 1–4 nem um nome conhecido é erro de digitação e não pode virar "Avançado" calado.
+export function nivelInformadoEhInvalido(valor) {
+    if (valor === undefined || valor === null || String(valor).trim() === '') return false;
+    const n = Number(valor);
+    if (Number.isInteger(n) && NIVEIS[n]) return false;
+    const nome = String(valor).trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    return !NIVEL_POR_NOME[nome];
+}
+
 function gerarIdEstavel(texto, indexFallback = 0) {
     const str = String(texto || "").trim();
     if (!str) return `q_${indexFallback}`;
