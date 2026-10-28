@@ -78,6 +78,7 @@ let questoes = [];
 let porId = new Map();
 let tagSelecionada = "";
 let simulado = null;
+let foco = null; // Modo Foco (U1): { lista, indice, cards } — ver seção 12
 const ADMIN_UID = '82cc7c31-2be4-4aba-8eb9-80067f545f3e'; // mesmo UUID usado nas políticas de RLS da tabela questoes
 
 export let usuarioAtual = null;
@@ -346,7 +347,12 @@ function aplicarFiltros() {
         pararCronometro(displayCronometro);
     }
     const filtradas = ordenarParaEstudo(filtrarQuestoes());
-    renderizarQuestoes(container, filtradas, historico, undefined, { paginar: true });
+    // Modo Foco (U1) ativo: a lista nova vira a fila do foco, sem sair dele
+    if (foco) {
+        atualizarListaFoco(filtradas);
+    } else {
+        renderizarQuestoes(container, filtradas, historico, undefined, { paginar: true });
+    }
     atualizarPlacar(historico, questoes);
     atualizarBadgeFiltros();
 }
@@ -568,6 +574,16 @@ function mostrarQuestaoIrma(card) {
         return;
     }
     irmasJaMostradas.add(String(irma.id));
+
+    // Modo Foco: a irmã vira a próxima da fila (não cabe "logo abaixo" com uma questão por vez)
+    if (foco) {
+        if (botao) {
+            botao.disabled = true;
+            botao.textContent = "→ É a próxima";
+        }
+        colocarIrmaNoFoco(irma);
+        return;
+    }
 
     // Desenha a irmã em branco e coloca logo abaixo (se ela já estava na lista, sai de lá)
     const temp = document.createElement("div");
@@ -910,6 +926,7 @@ if (btnSimulado) {
 
         const filtradas = filtrarQuestoes();
         pararCronometro(displayCronometro);
+        if (foco) sairFoco({ silencioso: true }); // simulado é sempre em lista, com correção no fim
 
         const sorteadas = sortearSimulado(filtradas, qtd, historico, opcoesSimulado);
 
@@ -988,12 +1005,15 @@ if (btnModoRevisao) {
             const msg = futuras.length
                 ? `Nada para revisar hoje. Próxima revisão em ${formatarDiaCurto(futuras[0])} (${futuras.filter(d => d === futuras[0]).length} questão(ões)).`
                 : "Nada para revisar. Questões que você errar ou acertar na dúvida aparecem aqui no dia certo.";
+            if (foco) sairFoco({ silencioso: true });
             renderizarQuestoes(container, [], historico, msg);
             showToast(msg, "info", 4000);
             return;
         }
 
-        renderizarQuestoes(container, paraHoje, historico, "", { restaurarRespostas: false });
+        // No Modo Foco, a revisão do dia vira a fila do foco (uma por vez)
+        if (foco) entrarFoco(paraHoje, { silencioso: true });
+        else renderizarQuestoes(container, paraHoje, historico, "", { restaurarRespostas: false });
         const atrasadas = paraHoje.filter(q => historico[String(q.id)].revisaoEm < hoje).length;
         showToast(`${paraHoje.length} para revisar hoje${atrasadas ? ` (${atrasadas} atrasada${atrasadas > 1 ? 's' : ''})` : ''}. Responda sem olhar o gabarito.`, "info");
     });
@@ -1072,6 +1092,232 @@ inputImportar.addEventListener("change", () => {
     if (inputImportar.files[0]) importarHistorico(inputImportar.files[0]);
     inputImportar.value = "";
 });
+
+// ==================== INÍCIO: 12. MODO FOCO (U1) ====================
+// Uma questão por vez, sem a barra de filtros. Usa a mesma lista que estaria na tela
+// (filtros + ordem de estudo) ou a revisão do dia. Teclado:
+//   A–E (ou 1–5) escolhe · Enter = "Tenho certeza" · Shift+Enter = "Na dúvida"
+//   Enter de novo (depois de responder) ou → = próxima · ← = anterior · Esc = sair
+// Cada card desenhado fica guardado (foco.cards): voltar para uma questão já respondida
+// mostra ela como ficou, sem responder de novo.
+const btnModoFoco = document.getElementById("btn-modo-foco");
+
+function entrarFoco(lista, opcoes = {}) {
+    if (!lista || lista.length === 0) {
+        showToast("Nenhuma questão com esses filtros para o Modo Foco.", "alerta");
+        return;
+    }
+    if (simulado) {
+        if (!simulado.finalizado) showToast("Simulado encerrado sem correção.", "alerta");
+        simulado = null;
+        pararCronometro(displayCronometro);
+    }
+    foco = { lista: [...lista], indice: 0, cards: new Map() };
+    document.body.classList.add("modo-foco");
+    if (btnModoFoco) btnModoFoco.setAttribute("aria-pressed", "true");
+    fecharPaineis();
+    desenharFoco();
+    if (!opcoes.silencioso) showToast("Modo Foco: uma questão por vez. Esc para sair.", "info", 2200);
+}
+
+function sairFoco(opcoes = {}) {
+    if (!foco) return;
+    const idAtual = foco.lista[foco.indice] ? String(foco.lista[foco.indice].id) : "";
+    foco = null;
+    document.body.classList.remove("modo-foco");
+    if (btnModoFoco) btnModoFoco.setAttribute("aria-pressed", "false");
+    if (opcoes.silencioso) return; // quem chamou vai desenhar outra coisa no lugar
+    aplicarFiltros();
+    // Volta a lista no ponto onde o foco parou, se a questão estiver no primeiro lote
+    const card = idAtual && container.querySelector(`.card-questao[data-id="${CSS.escape(idAtual)}"]`);
+    if (card) card.scrollIntoView({ block: "start" });
+}
+
+// Filtro mudou com o foco aberto (ex.: tocar numa matéria do painel): troca a fila e
+// continua na mesma questão se ela ainda estiver na lista nova.
+function atualizarListaFoco(lista) {
+    if (!lista.length) {
+        sairFoco({ silencioso: true });
+        renderizarQuestoes(container, [], historico, undefined, { paginar: true });
+        showToast("Nenhuma questão com esses filtros.", "alerta");
+        return;
+    }
+    const idAtual = foco.lista[foco.indice] ? String(foco.lista[foco.indice].id) : "";
+    foco.lista = [...lista];
+    const pos = foco.lista.findIndex(q => String(q.id) === idAtual);
+    foco.indice = pos >= 0 ? pos : 0;
+    desenharFoco();
+}
+
+function cardDoFoco(q) {
+    const id = String(q.id);
+    if (!foco.cards.has(id)) {
+        const temp = document.createElement("div");
+        // Em branco: no foco a questão é sempre para responder agora (como na revisão)
+        renderizarQuestoes(temp, [q], historico, "", { restaurarRespostas: false });
+        const card = temp.firstElementChild;
+        if (card) card.classList.add("card-foco");
+        foco.cards.set(id, card);
+    }
+    return foco.cards.get(id);
+}
+
+function desenharFoco() {
+    if (!foco) return;
+    const total = foco.lista.length;
+    const fim = foco.indice >= total;
+
+    const barra = document.createElement("div");
+    barra.className = "foco-barra";
+    barra.innerHTML = `
+        <button type="button" class="btn-painel foco-anterior" ${foco.indice === 0 ? "disabled" : ""} aria-label="Questão anterior">←</button>
+        <span class="foco-posicao" aria-live="polite">${fim ? "Fim da lista" : `Questão ${foco.indice + 1} de ${total}`}</span>
+        <button type="button" class="btn-painel foco-proxima" ${fim ? "disabled" : ""} aria-label="Próxima questão">→</button>
+        <button type="button" class="btn-painel foco-sair">✕ Sair do foco</button>`;
+
+    const partes = [barra];
+    if (fim) {
+        partes.push(resumoFoco());
+    } else {
+        partes.push(cardDoFoco(foco.lista[foco.indice]));
+        const rodape = document.createElement("div");
+        rodape.className = "foco-rodape";
+        rodape.innerHTML = `
+            <button type="button" class="btn-primary btn-largo foco-proxima">Próxima questão →</button>
+            <p class="foco-atalhos">Teclado: <kbd>A</kbd>–<kbd>E</kbd> escolhe · <kbd>Enter</kbd> tenho certeza · <kbd>Shift</kbd>+<kbd>Enter</kbd> na dúvida · <kbd>→</kbd> próxima · <kbd>Esc</kbd> sai</p>`;
+        partes.push(rodape);
+    }
+    container.replaceChildren(...partes);
+    // Rola para o topo nos dois casos: no computador quem rola é a lista; no celular, a página
+    container.scrollTop = 0;
+    const mainContent = document.querySelector(".main-content");
+    if (mainContent) mainContent.scrollTop = 0;
+}
+
+// Tela final: quantas desta sessão de foco foram respondidas e quantas certas
+function resumoFoco() {
+    let respondidas = 0, acertos = 0;
+    foco.cards.forEach(card => {
+        if (!card || card.dataset.respondida !== "1") return;
+        respondidas++;
+        if (!card.querySelector(".opcao-item.incorreta")) acertos++;
+    });
+    const caixa = document.createElement("div");
+    caixa.className = "foco-resumo";
+    caixa.innerHTML = `
+        <p class="foco-resumo-titulo">🎯 Fim da lista</p>
+        <p>${respondidas
+            ? `Você respondeu <strong>${respondidas}</strong> nesta sessão e acertou <strong>${acertos}</strong> (${Math.round(acertos * 100 / respondidas)}%).`
+            : "Nenhuma questão respondida nesta sessão."}</p>
+        <div class="foco-resumo-acoes">
+            <button type="button" class="btn-painel foco-anterior">← Voltar para a última</button>
+            <button type="button" class="btn-primary foco-sair">Sair do foco</button>
+        </div>`;
+    return caixa;
+}
+
+function irPara(indice) {
+    if (!foco) return;
+    foco.indice = Math.max(0, Math.min(indice, foco.lista.length)); // == length é a tela final
+    desenharFoco();
+}
+
+// Questão-irmã no foco: entra logo depois da atual (sai de onde estava, se já estava na fila)
+function colocarIrmaNoFoco(irma) {
+    const id = String(irma.id);
+    const atual = foco.lista[foco.indice];
+    foco.lista = foco.lista.filter(q => String(q.id) !== id);
+    const posAtual = foco.lista.indexOf(atual);
+    foco.lista.splice(posAtual + 1, 0, irma);
+    foco.indice = posAtual;
+    foco.cards.delete(id); // sempre em branco, mesmo que já tenha aparecido antes
+    showToast("A questão do mesmo assunto é a próxima (→).", "info", 1800);
+    // Atualiza só a barra (contador), sem perder o feedback da questão atual
+    const posicao = container.querySelector(".foco-posicao");
+    if (posicao) posicao.textContent = `Questão ${foco.indice + 1} de ${foco.lista.length}`;
+}
+
+if (btnModoFoco) {
+    btnModoFoco.addEventListener("click", () => {
+        if (foco) sairFoco();
+        else entrarFoco(ordenarParaEstudo(filtrarQuestoes()));
+    });
+}
+
+if (container) {
+    container.addEventListener("click", (e) => {
+        if (!foco) return;
+        if (e.target.closest(".foco-proxima")) irPara(foco.indice + 1);
+        else if (e.target.closest(".foco-anterior")) irPara(foco.indice - 1);
+        else if (e.target.closest(".foco-sair")) sairFoco();
+    });
+}
+
+function cardAtualDoFoco() {
+    return foco ? container.querySelector(".card-questao.card-foco") : null;
+}
+
+// Marca a alternativa pela letra (A–E, ou C/E nas de Certo/Errado) ou pela posição (1–5)
+function escolherAlternativa(card, tecla) {
+    if (!card || card.dataset.respondida === "1") return false;
+    const radios = [...card.querySelectorAll(".radio-opcao:not(:disabled)")];
+    let alvo = radios.find(r => r.value === tecla.toUpperCase());
+    if (!alvo && /^[1-9]$/.test(tecla)) alvo = radios[Number(tecla) - 1];
+    if (!alvo) return false;
+    alvo.checked = true;
+    alvo.focus({ preventScroll: true });
+    return true;
+}
+
+function responderPeloTeclado(card, naDuvida) {
+    const botao = card.querySelector(`.btn-responder[data-confianca="${naDuvida ? "duvida" : "certeza"}"]`);
+    if (botao && !botao.disabled) responder(card, botao);
+}
+
+document.addEventListener("keydown", (e) => {
+    if (e.ctrlKey || e.metaKey || e.altKey || e.isComposing) return;
+    const alvo = e.target;
+    // Digitando (anotação, busca, login...) ou com um aviso aberto: o teclado é do campo
+    if (alvo.closest && alvo.closest("textarea, select, [contenteditable='true'], input:not(.radio-opcao)")) return;
+    if (document.querySelector(".modal-overlay.visible, .modal.visible, #modalImportar[style*='flex']")) return;
+
+    // Item 23 (fora do foco): Enter numa alternativa focada responde aquela questão
+    if (!foco) {
+        if (e.key === "Enter" && alvo.classList && alvo.classList.contains("radio-opcao")) {
+            const card = alvo.closest(".card-questao");
+            if (card && !simulado) {
+                e.preventDefault();
+                responderPeloTeclado(card, e.shiftKey);
+            }
+        }
+        return;
+    }
+
+    // Enter/Espaço num botão focado (ex.: "Entender meu erro com IA") fica com o botão
+    if (alvo.closest && alvo.closest("button, a, summary") && (e.key === "Enter" || e.key === " ")) return;
+
+    const card = cardAtualDoFoco();
+    if (e.key === "Escape") {
+        e.preventDefault();
+        sairFoco();
+    } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        irPara(foco.indice + 1);
+    } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        irPara(foco.indice - 1);
+    } else if (e.key === "Enter") {
+        e.preventDefault();
+        const corrigida = card && card.querySelector(".btn-refazer:not([hidden])");
+        if (card && card.dataset.respondida === "1" && !corrigida) return; // ainda corrigindo no servidor
+        if (!card || corrigida) irPara(foco.indice + 1);
+        else if (!card.querySelector(".radio-opcao:checked")) showToast("Escolha uma alternativa (A–E) antes de responder.", "alerta", 1800);
+        else responderPeloTeclado(card, e.shiftKey);
+    } else if (e.key.length === 1 && escolherAlternativa(card, e.key)) {
+        e.preventDefault();
+    }
+});
+// ==================== FIM: 12. MODO FOCO (U1) ====================
 
 // ============================================================
 // 12. SISTEMA DE AUTENTICAÇÃO E MODAL
