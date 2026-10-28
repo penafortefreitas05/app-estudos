@@ -2,9 +2,9 @@
 // js/simulado.js - Processamento de Simulados Blindado (FocoPro)
 // ============================================================
 
-import { formatarTempo, gabaritoDe, classificarStatus, atualizarPlacar, revelar } from './ui.js';
+import { formatarTempo, classificarStatus, atualizarPlacar, revelar } from './ui.js';
 import { salvarHistorico, registrarDiaDeEstudo } from './storage.js';
-import { salvarRespostasEmLote } from './supabase.js';
+import { salvarRespostasEmLote, corrigirResposta } from './supabase.js';
 import { aplicarResposta, novoRegistro } from './revisao.js';
 import { showToast } from './notifications.js';
 
@@ -65,44 +65,70 @@ export function adicionarBotaoFinalizar(container) {
 }
 
 // ---------- 3. PROCESSAMENTO E CONTABILIZAÇÃO EM LOTE ----------
-export function finalizarSimulado(simulado, container, porId, historico, questoes, porTempo = false) {
+// Assíncrona (U9): o gabarito de cada questão só vem do servidor na hora de finalizar,
+// corrigido via RPC — nenhuma questão do simulado leva o gabarito consigo antes disso.
+export async function finalizarSimulado(simulado, container, porId, historico, questoes, porTempo = false) {
     if (!simulado || simulado.finalizado) return;
     simulado.finalizado = true;
 
     const btnFinalizar = document.getElementById("btn-finalizar-simulado") || document.getElementById("btn-finalizar");
     if (btnFinalizar) {
         btnFinalizar.disabled = true;
-        btnFinalizar.innerText = "✓ Simulado Finalizado";
+        btnFinalizar.innerText = "Corrigindo...";
     }
 
-    let acertosSimulado = 0;
-    const respostasParaNuvem = [];
     const totalQuestoes = simulado.ids ? simulado.ids.length : 0;
     if (totalQuestoes === 0) return;
 
-    simulado.ids.forEach(id => {
+    // 1ª passada: reúne o que cada questão tem (respondida ou não) sem corrigir ainda
+    const itens = simulado.ids.map(id => {
         const idStr = String(id);
         const q = porId.get(idStr);
-        if (!q) return;
+        if (!q) return null;
 
         const card = container.querySelector(`.card-questao[data-id="${CSS.escape(idStr)}"]`);
-
-        // Verifica resposta registrada ou radio marcado diretamente no card
         const radioMarcado = card ? card.querySelector(".radio-opcao:checked") : null;
         const respostaDada = simulado.respostas[idStr] || simulado.respostas[q.id] || (radioMarcado ? radioMarcado.value : null);
         const temResposta = (respostaDada !== undefined && respostaDada !== null && String(respostaDada).trim() !== "");
+        return { idStr, q, card, temResposta, letraDada: temResposta ? String(respostaDada).trim().toUpperCase() : null };
+    }).filter(Boolean);
+
+    // Corrige todas de uma vez, em paralelo (mesmo as não respondidas, só pra revelar o
+    // gabarito delas no resultado). Uma falha isolada não trava as outras.
+    const correcoes = await Promise.all(itens.map(async it => {
+        try {
+            return await corrigirResposta(it.q, it.letraDada || "");
+        } catch (erro) {
+            console.warn(`[FocoPro] Não foi possível corrigir a questão ${it.idStr} agora:`, erro.message);
+            return null;
+        }
+    }));
+
+    let acertosSimulado = 0;
+    let falhasDeCorrecao = 0;
+    const respostasParaNuvem = [];
+
+    itens.forEach((it, i) => {
+        const { idStr, q, card, temResposta, letraDada } = it;
+        const resultado = correcoes[i];
+
+        if (!resultado) {
+            falhasDeCorrecao++;
+            if (card) revelar(card, q, temResposta ? letraDada : null);
+            return;
+        }
+
+        q.gabarito = resultado.gabarito; // fica em memória pra qualquer novo render usar
 
         if (card && temResposta) {
-            const letraDada = String(respostaDada).trim().toUpperCase();
-            const gabaritoOficial = gabaritoDe(q);
-            const acertou = (letraDada === gabaritoOficial);
-
+            const acertou = resultado.acertou;
             const confianca = (simulado.confiancas && simulado.confiancas[idStr]) || 'certeza';
             if (acertou) acertosSimulado++;
 
             if (!historico[idStr]) historico[idStr] = novoRegistro();
             const h = historico[idStr];
             aplicarResposta(h, { acertou, confianca, momento: Date.now(), letra: letraDada });
+            h.gabaritoRevelado = resultado.gabarito; // sobrevive ao F5 e viaja pra nuvem (U9)
             registrarDiaDeEstudo();
             respostasParaNuvem.push({
                 questaoId: idStr,
@@ -111,7 +137,8 @@ export function finalizarSimulado(simulado, container, porId, historico, questoe
                 acertou,
                 respostaEscolhida: letraDada,
                 momento: h.ultimaData,
-                confianca
+                confianca,
+                gabarito: resultado.gabarito
             });
 
             revelar(card, q, letraDada, { confianca });
@@ -135,7 +162,12 @@ export function finalizarSimulado(simulado, container, porId, historico, questoe
     // Antes, as respostas do simulado ficavam só neste aparelho
     salvarRespostasEmLote(respostasParaNuvem);
 
+    if (btnFinalizar) btnFinalizar.innerText = "✓ Simulado Finalizado";
+
     const taxa = totalQuestoes > 0 ? ((acertosSimulado / totalQuestoes) * 100).toFixed(1) : 0;
     const msgTempo = porTempo ? " (Tempo Esgotado)" : "";
-    showToast(`Simulado finalizado${msgTempo}! Nota: ${acertosSimulado}/${totalQuestoes} (${taxa}%)`, "sucesso", 5000);
+    const avisoFalhas = falhasDeCorrecao > 0
+        ? ` (${falhasDeCorrecao} questão${falhasDeCorrecao > 1 ? "ões" : ""} não puderam ser corrigidas agora — recarregue a página)`
+        : "";
+    showToast(`Simulado finalizado${msgTempo}! Nota: ${acertosSimulado}/${totalQuestoes} (${taxa}%)${avisoFalhas}`, "sucesso", 6000);
 }
