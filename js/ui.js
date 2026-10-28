@@ -3,7 +3,7 @@
 // ============================================================
 
 import { carregarDiasDeEstudo, diaLocal } from './storage.js';
-import { venceHoje } from './revisao.js';
+import { venceHoje, somarDias } from './revisao.js';
 import { NIVEIS } from './api.js';
 
 // Matéria "a reforçar": abaixo deste % de acerto, com pelo menos esta quantidade de respostas
@@ -274,7 +274,8 @@ export function classificarStatus(qId, historico) {
     if (!h || !h.tentativas) return { texto: "Não Respondida", classe: "badge-neutro" };
 
     if (venceHoje(h)) return { texto: "Revisar hoje 🔁", classe: "badge-alerta" };
-    if (h.status === 'erro') return { texto: "Caderno de Erros ❌", classe: "badge-perigo" };
+    // Errou: diz o que vai acontecer, sem julgar (antes: "Caderno de Erros ❌" em vermelho)
+    if (h.status === 'erro') return { texto: h.revisaoEm === somarDias(diaLocal(), 1) ? "Volta amanhã 🔁" : "Na revisão 🔁", classe: "badge-alerta" };
     if (h.status === 'dominada') return { texto: "Dominada 🎯", classe: "badge-sucesso" };
     if (h.status === 'superado') return { texto: "Superada ⚡", classe: "badge-sucesso" };
     if (h.status === 'duvida') return { texto: "Acertou na dúvida 🤔", classe: "badge-alerta" };
@@ -351,7 +352,8 @@ export function atualizarPlacar(historico, questoes) {
 
     definirTexto("stat-sequencia", sequencia.atual);
     definirTexto("stat-sequencia-detalhe",
-        sequencia.atual > 0 && !sequencia.estudouHoje ? "responda hoje!" : `recorde ${sequencia.recorde}`);
+        sequencia.atual > 0 && !sequencia.estudouHoje ? "responda hoje!"
+            : sequencia.folgaRecente ? "folga da semana usada" : `recorde ${sequencia.recorde}`);
     definirTexto("mini-sequencia", sequencia.atual);
     const miniSeq = document.getElementById("mini-sequencia");
     if (miniSeq) miniSeq.classList.toggle("apagada", !sequencia.estudouHoje);
@@ -377,29 +379,60 @@ function ehMateriaCritica(dados) {
     return respostas >= MIN_RESPOSTAS_CRITICO && (dados.acertos / respostas) * 100 < LIMITE_CRITICO;
 }
 
-// Dias seguidos com pelo menos 1 questão respondida.
-// Se hoje ainda não teve resposta, a sequência de ontem continua valendo (até o fim do dia).
+// Dias seguidos com pelo menos 1 questão respondida, com 1 FOLGA por semana:
+// um dia isolado sem estudo não zera a sequência, desde que a folga anterior tenha sido há
+// 7 dias ou mais. Dois dias seguidos sem estudo zeram. (Faltar 1 dia não atrapalha a formação
+// de um hábito; zerar por isso é o que faz muita gente largar — ver a análise de 28/10/2026.)
+// "atual" e "recorde" contam dias ESTUDADOS (a folga não soma).
+// Hoje ainda sem resposta não é folga: o dia não acabou.
+export const DIAS_ENTRE_FOLGAS = 7;
+
 export function calcularSequencia(dias, agora = new Date()) {
-    const resultado = { atual: 0, recorde: 0, estudouHoje: dias.has(diaLocal(agora)) };
+    const resultado = { atual: 0, recorde: 0, estudouHoje: dias.has(diaLocal(agora)), folgaRecente: false };
     if (dias.size === 0) return resultado;
 
-    // Recorde: maior corrida de dias consecutivos na lista inteira
+    // Recorde: maior corrida na lista inteira, com a mesma regra da folga
     const emDias = (txt) => { const [a, m, d] = txt.split('-').map(Number); return Date.UTC(a, m - 1, d) / 86400000; };
     const ordenados = [...dias].map(emDias).sort((a, b) => a - b);
     let corrida = 1;
+    let ultimaFolga = -Infinity;
     resultado.recorde = 1;
     for (let i = 1; i < ordenados.length; i++) {
-        corrida = (ordenados[i] - ordenados[i - 1] === 1) ? corrida + 1 : 1;
+        const salto = ordenados[i] - ordenados[i - 1];
+        const folga = ordenados[i] - 1;
+        if (salto === 1) {
+            corrida++;
+        } else if (salto === 2 && folga - ultimaFolga >= DIAS_ENTRE_FOLGAS) {
+            corrida++;
+            ultimaFolga = folga;
+        } else {
+            corrida = 1;
+            ultimaFolga = -Infinity;
+        }
         if (corrida > resultado.recorde) resultado.recorde = corrida;
     }
 
-    // Atual: conta para trás a partir de hoje (ou de ontem)
+    // Atual: anda para trás a partir de hoje (ou de ontem, se hoje ainda não estudou)
     const cursor = new Date(agora);
     if (!resultado.estudouHoje) cursor.setDate(cursor.getDate() - 1);
-    while (dias.has(diaLocal(cursor))) {
-        resultado.atual++;
+    let diasAtras = resultado.estudouHoje ? 0 : 1;
+    let folgaMaisRecente = null; // em "dias atrás"
+    for (;;) {
+        if (dias.has(diaLocal(cursor))) {
+            resultado.atual++;
+        } else {
+            const anterior = new Date(cursor);
+            anterior.setDate(anterior.getDate() - 1);
+            const podeFolgar = resultado.atual > 0 || !resultado.estudouHoje;
+            const longeDaUltima = folgaMaisRecente === null || diasAtras - folgaMaisRecente >= DIAS_ENTRE_FOLGAS;
+            if (!podeFolgar || !longeDaUltima || !dias.has(diaLocal(anterior))) break;
+            if (folgaMaisRecente === null) folgaMaisRecente = diasAtras;
+        }
         cursor.setDate(cursor.getDate() - 1);
+        diasAtras++;
     }
+    resultado.folgaRecente = resultado.atual > 0 && folgaMaisRecente !== null && folgaMaisRecente < DIAS_ENTRE_FOLGAS;
+    if (resultado.atual > resultado.recorde) resultado.recorde = resultado.atual;
     return resultado;
 }
 
@@ -574,11 +607,11 @@ function desenharCards(container, lista, historico, restaurarRespostas) {
                 <div class="card-footer">
                     <div class="card-actions-row">
                         <div class="botoes-resposta">
-                            <button type="button" class="btn-primary btn-responder" data-confianca="certeza" data-id="${esc(idStr)}">✔ Tenho certeza</button>
+                            <button type="button" class="btn-responder btn-certeza" data-confianca="certeza" data-id="${esc(idStr)}">✔ Tenho certeza</button>
                             <button type="button" class="btn-responder btn-duvida" data-confianca="duvida" data-id="${esc(idStr)}">🤔 Na dúvida</button>
                         </div>
                         <button type="button" class="btn-sidebar btn-refazer" data-id="${esc(idStr)}" hidden style="margin-left: 8px;">🔄 Resolver Novamente</button>
-                        <small class="tentativas">Tentativas: ${tentativas}</small>
+                        <small class="tentativas" ${tentativas ? '' : 'hidden'}>Tentativas: ${tentativas}</small>
                     </div>
 
                     <div class="feedback-container oculta" id="feedback_${esc(idStr)}">
@@ -645,6 +678,10 @@ export function ehQuestaoSQL(q) {
 }
 
 // ---------- 6. REVELAÇÃO DO GABARITO E FEEDBACK VISUAL ----------
+function ehAutoralOuInedita(q) {
+    return q.ehInedita || String(q.origem || '').toLowerCase() === 'autoral' || String(q.banca || '').toLowerCase() === 'focopro';
+}
+
 // info.confianca ('certeza' | 'duvida'): só na hora da resposta, para o aviso abaixo do gabarito
 export function revelar(card, q, letraEscolhida, info = {}) {
     if (!card || !q) return;
@@ -653,6 +690,8 @@ export function revelar(card, q, letraEscolhida, info = {}) {
     const gabaritoLetra = gabaritoDe(q);
     const textoCorreto = textoGabaritoDe(q);
     const acertou = (letraEscolhida === gabaritoLetra);
+    // "Gabarito oficial" só em questão de prova; autoral e inédita não têm gabarito de banca
+    const nomeGabarito = ehAutoralOuInedita(q) ? "Resposta certa" : "Gabarito oficial";
 
     // 1. Destaca as opções visualmente (Verde/Vermelho)
     card.querySelectorAll(".opcao-item").forEach(label => {
@@ -695,16 +734,16 @@ export function revelar(card, q, letraEscolhida, info = {}) {
 
     if (gabaritoDiv) {
         if (letraEscolhida === null || letraEscolhida === undefined || letraEscolhida === "") {
-            gabaritoDiv.innerHTML = `⚠️ <strong>Questão em branco.</strong> Gabarito oficial: <strong>${esc(textoCorreto)}</strong>`;
+            gabaritoDiv.innerHTML = `⚠️ <strong>Questão em branco.</strong> ${nomeGabarito}: <strong>${esc(textoCorreto)}</strong>`;
         } else if (acertou) {
-            gabaritoDiv.innerHTML = `✔ <strong>Resposta Correta!</strong> Gabarito oficial: <strong>${esc(textoCorreto)}</strong>`;
+            gabaritoDiv.innerHTML = `✔ <strong>Resposta Correta!</strong> ${nomeGabarito}: <strong>${esc(textoCorreto)}</strong>`;
         } else {
-            gabaritoDiv.innerHTML = `✖ <strong>Resposta Incorreta.</strong> Você marcou <strong>(${esc(letraEscolhida)})</strong>. O gabarito oficial é: <strong>${esc(textoCorreto)}</strong>`;
+            gabaritoDiv.innerHTML = `✖ <strong>Resposta Incorreta.</strong> Você marcou <strong>(${esc(letraEscolhida)})</strong>. ${nomeGabarito}: <strong>${esc(textoCorreto)}</strong>`;
         }
 
         // Metacognição: o que a confiança diz sobre essa resposta
         if (letraEscolhida && info.confianca === 'certeza' && !acertou) {
-            gabaritoDiv.innerHTML += `<p class="aviso-confianca forte">⚠️ <strong>Você tinha certeza.</strong> Isso indica um conceito aprendido errado, não distração. Vale ler a explicação com calma. Ela volta amanhã na revisão.</p>`;
+            gabaritoDiv.innerHTML += `<p class="aviso-confianca forte">💡 <strong>Você tinha certeza.</strong> Esses são os erros que mais se corrigem depois de ler a explicação com calma. Ela volta amanhã na revisão.</p>`;
         } else if (letraEscolhida && info.confianca === 'duvida' && acertou) {
             gabaritoDiv.innerHTML += `<p class="aviso-confianca">🤔 <strong>Acertou na dúvida.</strong> Ainda não conta como sabida: ela volta amanhã para confirmar.</p>`;
         } else if (letraEscolhida && !acertou && info.confianca === 'duvida') {
