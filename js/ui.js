@@ -6,7 +6,6 @@ import { carregarDiasDeEstudo, diaLocal } from './storage.js';
 import { venceHoje, somarDias } from './revisao.js';
 import { NIVEIS, ORDEM_MACROS } from './api.js';
 import { atualizarMetaNaTela } from './primeiros-passos.js';
-import { resumoDasTrilhas } from './aprender.js';
 
 // Matéria "a reforçar": abaixo deste % de acerto, com pelo menos esta quantidade de respostas
 // (sem o mínimo, 1 erro em 1 questão já marcaria a matéria como crítica)
@@ -459,7 +458,8 @@ export function calcularCobertura(questoes, historico) {
 // não muda). Cada linha mostra o % de acerto, quantas vencem na revisão hoje e quanto de cada
 // nível já foi feito. As ainda não começadas aparecem como "não começou": dá para ver os buracos.
 // Tocar numa matéria filtra as questões dela (app.js).
-const NOME_CURTO_NIVEL = { 1: 'Inic.', 2: 'Interm.', 3: 'Prova', 4: 'Espec.' };
+// Cada nível vira um quadradinho com a letra e a cor dele (as mesmas das etiquetas das questões)
+const LETRA_NIVEL = { 1: 'I', 2: 'M', 3: 'A', 4: 'E' };
 
 function renderizarDesempenhoMaterias(materiasMap, questoes = [], historico = {}) {
     const containerMaterias = document.getElementById("dashboard-materias");
@@ -478,7 +478,6 @@ function renderizarDesempenhoMaterias(materiasMap, questoes = [], historico = {}
         if (h && Number(h.tentativas) > 0) extra[mat].niveis[n].feitas++;
     });
 
-    const trilhas = resumoDasTrilhas(questoes, historico); // assuntos aprendidos (Aprender)
     const comQuestoes = ORDEM_MACROS.filter(m => materiasMap[m] && materiasMap[m].total > 0);
     const outras = Object.keys(materiasMap)
         .filter(m => !ORDEM_MACROS.includes(m) && materiasMap[m].total > 0)
@@ -490,7 +489,10 @@ function renderizarDesempenhoMaterias(materiasMap, questoes = [], historico = {}
         return;
     }
 
-    let html = '<div class="painel-desempenho-materias">';
+    const presentes = [...new Set(Object.values(extra).flatMap(e => Object.keys(e.niveis).map(Number)))].sort((a, b) => a - b);
+    const legenda = presentes.map(n => `<span class="nv-chip"><b class="nv-letra nv-${n}">${LETRA_NIVEL[n] || n}</b>${esc(NIVEIS[n] || n)}</span>`).join('');
+    let html = `<p class="legenda-niveis" aria-label="Legenda dos níveis">${legenda}<span class="legenda-nota">respondidas/total</span></p>`;
+    html += '<div class="painel-desempenho-materias">';
     materias.forEach(mat => {
         const dados = materiasMap[mat];
         const somaResp = dados.acertos + dados.erros;
@@ -499,10 +501,10 @@ function renderizarDesempenhoMaterias(materiasMap, questoes = [], historico = {}
         const critica = ehMateriaCritica(dados);
         const info = extra[mat] || { revisarHoje: 0, niveis: {} };
         const niveis = Object.keys(info.niveis).map(Number).sort((a, b) => a - b)
-            .map(n => `${NOME_CURTO_NIVEL[n] || NIVEIS[n] || n} ${info.niveis[n].feitas}/${info.niveis[n].total}`)
-            .join(' · ');
-        const trilha = trilhas[mat];
-        const textoTrilha = trilha && trilha.total ? `Assuntos ${trilha.aprendidos}/${trilha.total} · ` : '';
+            .map(n => {
+                const { feitas, total } = info.niveis[n];
+                return `<span class="nv-chip" title="${esc(NIVEIS[n] || n)}: ${feitas} de ${total} respondidas"><b class="nv-letra nv-${n}">${LETRA_NIVEL[n] || n}</b>${feitas}/${total}</span>`;
+            }).join('');
         const icone = critica ? '⚠️' : (comecou ? '📖' : '○');
         const revisar = info.revisarHoje
             ? `<span class="materia-revisar" title="Vencem na revisão hoje">${info.revisarHoje} 🔁</span>` : '';
@@ -515,7 +517,7 @@ function renderizarDesempenhoMaterias(materiasMap, questoes = [], historico = {}
                 </span>
                 ${comecou ? `<span class="barra-progresso-bg"><span class="barra-progresso-fill" style="width: ${taxa}%;"></span></span>` : ''}
                 <span class="materia-rodape">
-                    <span class="materia-niveis">${esc(textoTrilha + niveis)}</span>
+                    <span class="materia-niveis">${niveis}</span>
                     ${revisar}
                 </span>
                 ${critica ? '<span class="materia-reforcar">Reforçar · toque para treinar</span>' : ''}
