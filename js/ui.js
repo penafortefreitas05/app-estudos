@@ -5,6 +5,7 @@
 import { carregarDiasDeEstudo, diaLocal } from './storage.js';
 import { venceHoje, somarDias } from './revisao.js';
 import { NIVEIS } from './api.js';
+import { atualizarMetaNaTela } from './primeiros-passos.js';
 
 // Matéria "a reforçar": abaixo deste % de acerto, com pelo menos esta quantidade de respostas
 // (sem o mínimo, 1 erro em 1 questão já marcaria a matéria como crítica)
@@ -367,6 +368,7 @@ export function atualizarPlacar(historico, questoes) {
     if (cardCriticas) cardCriticas.classList.toggle("alerta", criticas.length > 0);
 
     renderizarDesempenhoMaterias(materiasMap);
+    atualizarMetaNaTela(historico); // meta diária (some quando não há meta definida)
 }
 
 function definirTexto(id, valor) {

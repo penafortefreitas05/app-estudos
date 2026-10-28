@@ -13,7 +13,7 @@
 // POR ISSO: a cada publicação que muda qualquer arquivo do site, suba o número do CACHE_NAME.
 // Sem isso, quem já tem o app continua na versão antiga.
 
-const CACHE_NAME = 'focopro-v32';
+const CACHE_NAME = 'focopro-v33';
 
 const RECURSOS_ESTATICOS = [
     './',
@@ -30,6 +30,7 @@ const RECURSOS_ESTATICOS = [
     './js/supabase.js',
     './js/pwa.js',
     './js/revisao.js',
+    './js/primeiros-passos.js',
     './js/laboratorio-sql.js',
     // O motor do laboratório SQL (js/vendor/sqljs-*) NÃO entra aqui: ~650 KB que só quem usa
     // baixa. Na primeira abertura ele vai para o cache sozinho (regra do fetch abaixo).
