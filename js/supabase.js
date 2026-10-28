@@ -158,6 +158,11 @@ export function limparFilaPendente() {
     gravarFila([]);
 }
 
+// "Apagar TUDO": favoritos/anotações pendentes não podem voltar para a nuvem depois de apagados
+export function limparFilaFavoritosPendente() {
+    gravarFilaFavoritos([]);
+}
+
 if (typeof window !== 'undefined') {
     window.addEventListener('online', () => enviarFilaPendente());
 }
@@ -179,6 +184,27 @@ export async function apagarHistoricoDoUsuario() {
         .eq('user_id', user.id);
 
     if (error) throw error;
+}
+
+/**
+ * Apaga TODOS os favoritos/anotações do usuário logado na nuvem (irreversível).
+ * Se a tabela ainda não existir no Supabase, não há nada para apagar lá: não trava o "Apagar TUDO".
+ */
+export async function apagarFavoritosDoUsuario() {
+    if (!tabelaFavoritosExiste) return;
+
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    const user = session?.user;
+    if (!user) {
+        throw new Error("Você precisa estar logado para apagar favoritos/anotações da nuvem.");
+    }
+
+    const { error } = await supabaseClient
+        .from('favoritos_anotacoes')
+        .delete()
+        .eq('user_id', user.id);
+
+    if (error && !erroDeTabelaFavoritos(error)) throw error;
 }
 
 /**
@@ -242,6 +268,169 @@ export async function carregarHistoricoIncremental(cache) {
         return { modo: 'completo', linhas: todas, total: todas.length, userId: user.id };
     } catch (erro) {
         console.warn('[FocoPro] Sem conexão com o histórico da nuvem:', erro.message);
+        return null;
+    }
+}
+
+// ---------- Favoritos e anotações pessoais na nuvem (U3) ----------
+// Tabela 'favoritos_anotacoes': 1 linha por (usuário, questão), com um carimbo de hora
+// PRÓPRIO para cada campo (favorito_em / anotacao_em). Ao reabrir em outro aparelho, quem
+// tiver o carimbo mais novo em cada campo vence — dá pra favoritar no celular e escrever a
+// anotação no computador sem um apagar o outro. Se a internet falhar na hora, a mudança
+// fica numa fila local e é reenviada depois (mesma ideia da fila de historico_respostas).
+const CHAVE_FILA_FAVORITOS = 'appEstudos_FilaFavoritosAnotacoes';
+
+function lerFilaFavoritos() {
+    try {
+        const fila = JSON.parse(localStorage.getItem(CHAVE_FILA_FAVORITOS) || '[]');
+        return Array.isArray(fila) ? fila : [];
+    } catch (e) {
+        return [];
+    }
+}
+
+function gravarFilaFavoritos(fila) {
+    try {
+        if (fila.length) localStorage.setItem(CHAVE_FILA_FAVORITOS, JSON.stringify(fila.slice(-2000)));
+        else localStorage.removeItem(CHAVE_FILA_FAVORITOS);
+    } catch (e) { /* sem localStorage: a fila só não persiste */ }
+}
+
+// A tabela existe no Supabase? Enquanto o SQL não for rodado, favoritos e anotações
+// continuam funcionando normalmente, só que sem sair deste aparelho.
+let tabelaFavoritosExiste = true;
+
+function erroDeTabelaFavoritos(erro) {
+    return Boolean(erro) && /favoritos_anotacoes/i.test(`${erro?.message || ''} ${erro?.details || ''} ${erro?.hint || ''}`);
+}
+
+async function enviarUpsertFavorito(linha) {
+    const { error } = await supabaseClient
+        .from('favoritos_anotacoes')
+        .upsert(linha, { onConflict: 'user_id,questao_id' });
+
+    if (error) {
+        if (erroDeTabelaFavoritos(error)) {
+            tabelaFavoritosExiste = false;
+            console.warn("[FocoPro] Tabela 'favoritos_anotacoes' ainda não existe no Supabase; favoritos e anotações continuam só neste aparelho por ora.");
+            return;
+        }
+        throw error;
+    }
+}
+
+let enviandoFilaFavoritos = false;
+
+/**
+ * Reenvia favoritos/anotações que ficaram pendentes (sem internet no momento, etc.).
+ * Chamada ao carregar o histórico e quando o navegador volta a ficar online.
+ */
+export async function enviarFilaFavoritosPendente() {
+    if (enviandoFilaFavoritos || !tabelaFavoritosExiste) return;
+    const fila = lerFilaFavoritos();
+    if (fila.length === 0) return;
+
+    enviandoFilaFavoritos = true;
+    try {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        const user = session?.user;
+        if (!user) return;
+
+        const minhas = fila.filter(l => l.user_id === user.id);
+        const outras = fila.filter(l => l.user_id !== user.id);
+        if (minhas.length === 0) return;
+
+        for (const linha of minhas) {
+            await enviarUpsertFavorito(linha);
+            if (!tabelaFavoritosExiste) {
+                gravarFilaFavoritos([...outras, ...minhas]); // tabela ainda não existe: devolve tudo pra fila
+                return;
+            }
+        }
+        gravarFilaFavoritos(outras);
+        console.info(`[FocoPro] ${minhas.length} favorito(s)/anotação(ões) pendente(s) enviados para a nuvem.`);
+    } catch (erro) {
+        console.warn("[FocoPro] Fila de favoritos/anotações continua pendente:", erro.message);
+    } finally {
+        enviandoFilaFavoritos = false;
+    }
+}
+
+if (typeof window !== 'undefined') {
+    window.addEventListener('online', () => enviarFilaFavoritosPendente());
+}
+
+async function salvarCampoFavoritoNaNuvem(questaoId, camposValor, campoCarimbo, momento) {
+    let user = null;
+    try {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        user = session?.user || null;
+    } catch (e) { /* segue sem usuário */ }
+    if (!user) return; // visitante: fica só no aparelho
+
+    const linha = {
+        user_id: user.id,
+        questao_id: String(questaoId),
+        ...camposValor,
+        [campoCarimbo]: new Date(momento).toISOString()
+    };
+
+    try {
+        await enviarUpsertFavorito(linha);
+    } catch (erro) {
+        console.warn("[FocoPro] Sem conexão para salvar na nuvem agora; tentando de novo mais tarde:", erro.message);
+        gravarFilaFavoritos([...lerFilaFavoritos(), linha]);
+    }
+}
+
+// Salva (ou desfaz) o favorito na nuvem, em segundo plano.
+export function salvarFavoritoNaNuvem(questaoId, favorito, momento = Date.now()) {
+    return salvarCampoFavoritoNaNuvem(questaoId, { favorito: Boolean(favorito) }, 'favorito_em', momento);
+}
+
+// Salva a anotação pessoal na nuvem, em segundo plano.
+export function salvarAnotacaoNaNuvem(questaoId, anotacao, momento = Date.now()) {
+    return salvarCampoFavoritoNaNuvem(questaoId, { anotacao: String(anotacao || '') }, 'anotacao_em', momento);
+}
+
+/**
+ * Busca favoritos e anotações salvos na nuvem para o usuário logado.
+ * Devolve um mapa { questaoId: { favorito, anotacao, favoritoEm, anotacaoEm } },
+ * ou null (visitante, tabela ainda não existe, ou sem conexão agora).
+ */
+export async function carregarFavoritosEAnotacoes() {
+    if (!tabelaFavoritosExiste) return null;
+
+    let user = null;
+    try {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        user = session?.user || null;
+    } catch (e) { /* sem sessão */ }
+    if (!user) return null;
+
+    try {
+        const linhas = await buscarTodasAsPaginas(() => supabaseClient
+            .from('favoritos_anotacoes')
+            .select('questao_id, favorito, anotacao, favorito_em, anotacao_em')
+            .eq('user_id', user.id));
+
+        const mapa = {};
+        linhas.forEach(l => {
+            mapa[String(l.questao_id)] = {
+                favorito: Boolean(l.favorito),
+                anotacao: l.anotacao || '',
+                favoritoEm: l.favorito_em ? new Date(l.favorito_em).getTime() : 0,
+                anotacaoEm: l.anotacao_em ? new Date(l.anotacao_em).getTime() : 0
+            };
+        });
+        return mapa;
+    } catch (erro) {
+        if (erroDeTabelaFavoritos(erro)) {
+            tabelaFavoritosExiste = false;
+            console.warn("[FocoPro] Tabela 'favoritos_anotacoes' ainda não existe no Supabase; favoritos e anotações continuam só neste aparelho por ora.");
+            return null;
+        }
+        console.warn("[FocoPro] Sem conexão com favoritos/anotações da nuvem:", erro.message);
         return null;
     }
 }

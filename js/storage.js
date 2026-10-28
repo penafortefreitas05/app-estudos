@@ -2,7 +2,7 @@
 // js/storage.js - Gerenciamento Híbrido (Local / Supabase)
 // ============================================================
 
-import { carregarHistoricoIncremental } from './supabase.js';
+import { carregarHistoricoIncremental, carregarFavoritosEAnotacoes, enviarFilaFavoritosPendente } from './supabase.js';
 import { aplicarResposta, novoRegistro, normalizarRegistroAntigo } from './revisao.js';
 
 const CHAVE_HISTORICO = 'appEstudos_Historico';
@@ -125,6 +125,12 @@ export async function carregarHistorico() {
     adicionarDias(Object.values(historicoLocal).map(h => (h && h.ultimaData) ? diaLocal(h.ultimaData) : null));
 
     // 2. Se o usuário estiver logado, busca na nuvem só o que é novo e mescla
+    // (favoritos/anotações saem na mesma hora, em paralelo — ver etapa 3)
+    const promessaFavoritos = carregarFavoritosEAnotacoes().catch(err => {
+        console.warn("Favoritos/anotações: usando só o que está neste aparelho:", err.message);
+        return null;
+    });
+
     try {
         const cacheAnterior = lerCacheNuvem();
         const resultado = await carregarHistoricoIncremental(cacheAnterior);
@@ -146,13 +152,16 @@ export async function carregarHistorico() {
                     historicoLocal[qId] = { ...dadosNuvem };
                 } else {
                     // A nuvem é a fonte (tem a data de cada resposta); o local só vence se tiver
-                    // MAIS tentativas (respostas ainda na fila offline). Preserva o que só existe
-                    // neste aparelho: favorito e anotação ainda não vão para a nuvem.
+                    // MAIS tentativas (respostas ainda na fila offline). Favorito e anotação são
+                    // resolvidos à parte, na etapa 3 abaixo (carimbo de hora por campo); aqui só
+                    // preserva o que já tinha localmente para não desaparecer antes dessa etapa.
                     const usarNuvem = (dadosNuvem.tentativas || 0) >= (local.tentativas || 0);
                     historicoLocal[qId] = {
                         ...(usarNuvem ? dadosNuvem : local),
                         anotacao: local.anotacao || dadosNuvem.anotacao || "",
                         favorito: Boolean(local.favorito),
+                        favoritoEm: local.favoritoEm || 0,
+                        anotacaoEm: local.anotacaoEm || 0,
                         ultimaEscolha: local.ultimaEscolha || dadosNuvem.ultimaEscolha || null
                     };
                 }
@@ -163,6 +172,29 @@ export async function carregarHistorico() {
     } catch (err) {
         console.warn("Usando apenas histórico local:", err.message);
     }
+
+    // 3. Favoritos e anotações da nuvem (U3): o campo (favorito OU anotação) com o carimbo
+    // de hora mais novo vence — favoritar no celular e anotar no computador não se cancelam.
+    const favoritosNuvem = await promessaFavoritos;
+    if (favoritosNuvem) {
+        Object.entries(favoritosNuvem).forEach(([qId, nuvem]) => {
+            if (!historicoLocal[qId]) historicoLocal[qId] = novoRegistro();
+            const local = historicoLocal[qId];
+
+            if (nuvem.favoritoEm >= (local.favoritoEm || 0)) {
+                local.favorito = nuvem.favorito;
+                local.favoritoEm = nuvem.favoritoEm;
+            }
+            if (nuvem.anotacaoEm >= (local.anotacaoEm || 0)) {
+                local.anotacao = nuvem.anotacao;
+                local.anotacaoEm = nuvem.anotacaoEm;
+            }
+        });
+        localStorage.setItem(CHAVE_HISTORICO, JSON.stringify(historicoLocal));
+    }
+
+    // 4. Reenvia favoritos/anotações que ficaram pendentes (sem internet no momento, etc.)
+    enviarFilaFavoritosPendente();
 
     return historicoLocal;
 }
