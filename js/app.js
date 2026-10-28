@@ -64,7 +64,7 @@ import {
 import { showToast, showConfirmModal } from './notifications.js';
 
 // ---------- 1.7 API de questões ----------
-import { normalizarQuestao, TOPICOS_POR_MACRO } from './api.js';
+import { normalizarQuestao, ORDEM_MACROS } from './api.js';
 
 // ==================== FIM: 1. IMPORTAÇÕES DE MÓDULOS ====================
 // ---------- 2. ESTADO GLOBAL ----------
@@ -1247,7 +1247,7 @@ const btnFecharCobertura = document.getElementById('btn-fechar-cobertura');
 
 if (btnCoberturaEdital) {
     btnCoberturaEdital.addEventListener('click', () => {
-        renderizarCoberturaEdital(listaCoberturaEdital, TOPICOS_POR_MACRO, questoes);
+        renderizarCoberturaEdital(listaCoberturaEdital, ORDEM_MACROS, questoes);
         if (modalCobertura) modalCobertura.classList.add('visible');
     });
 }

@@ -665,15 +665,6 @@ body {
 .btn-danger:hover { background-color: #dc2626 !important; }
 
 /* ---------- Cobertura do Edital (U11) ---------- */
-.cobertura-aviso {
-    color: #fbbf24;
-    font-size: 0.85rem;
-    background: #78350f30;
-    border: 1px solid #78350f;
-    border-radius: 8px;
-    padding: 0.6rem 0.8rem;
-    margin-bottom: 1rem;
-}
 .cobertura-macro {
     border: 1px solid #1e293b;
     border-radius: 10px;
@@ -702,7 +693,6 @@ body {
     color: #cbd5e1;
     border-top: 1px solid #1e293b;
 }
-.cobertura-lista li.cobertura-vazio { color: #f87171; }
 .cobertura-contagem {
     font-size: 0.78rem;
     color: #94a3b8;

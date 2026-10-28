@@ -199,36 +199,46 @@ export function atualizarChipTag(chipTagElement, tag) {
 // ---------- Cobertura do Edital (U11) ----------
 // Mostra, por matéria macro, quantas questões o banco já tem em cada tópico padronizado
 // (questao.assunto). Tópicos com 0 questões ficam destacados: são os buracos do edital.
-export function renderizarCoberturaEdital(container, topicosPorMacro, listaQuestoes) {
+// ordemMacros: array com o nome das 9 matérias-macro, só pra decidir a ordem de exibição.
+// A contagem em si vem 100% das questões carregadas — cada assunto que já existe no banco
+// aparece com a contagem real, em vez de comparar contra uma lista fixa de tópicos (que não
+// tem como acompanhar assuntos já ricos e específicos vindos prontos da importação).
+export function renderizarCoberturaEdital(container, ordemMacros, listaQuestoes) {
     if (!container) return;
 
-    const contagem = {};
-    let semTopicoFino = 0;
+    const porMacro = {}; // { macro: { assunto: contagem } }
     listaQuestoes.forEach(q => {
-        const assunto = String(q.assunto || '').trim();
-        if (!assunto) return;
-        contagem[assunto] = (contagem[assunto] || 0) + 1;
-        if (assunto === q.materia) semTopicoFino++; // assunto caiu na matéria macro: não bateu com nenhum tópico
+        const macro = String(q.materia || 'Geral').trim() || 'Geral';
+        const assunto = String(q.assunto || '').trim() || macro;
+        if (!porMacro[macro]) porMacro[macro] = {};
+        porMacro[macro][assunto] = (porMacro[macro][assunto] || 0) + 1;
     });
 
-    const partes = [];
-    if (semTopicoFino > 0) {
-        partes.push(`<p class="cobertura-aviso">⚠️ ${semTopicoFino} questão(ões) ainda sem tópico fino (ficaram só na matéria macro).</p>`);
+    if (Object.keys(porMacro).length === 0) {
+        container.innerHTML = `<p class="modal-mensagem">Nenhuma questão carregada ainda.</p>`;
+        return;
     }
 
-    Object.entries(topicosPorMacro).forEach(([macro, topicos]) => {
-        const totalMacro = topicos.reduce((soma, t) => soma + (contagem[t] || 0), 0);
-        const linhas = topicos.map(topico => {
-            const n = contagem[topico] || 0;
-            const classe = n === 0 ? 'cobertura-vazio' : '';
-            return `<li class="${classe}"><span>${esc(topico)}</span><span class="cobertura-contagem">${n}</span></li>`;
-        }).join('');
-        partes.push(`
+    // As 9 matérias-macro conhecidas vêm primeiro, na ordem de sempre; qualquer matéria
+    // "extra" que apareça nas questões (fora das 9) vai depois, em ordem alfabética.
+    const extras = Object.keys(porMacro)
+        .filter(m => !ordemMacros.includes(m))
+        .sort((a, b) => a.localeCompare(b, 'pt-BR'));
+    const macrosOrdenadas = [...ordemMacros.filter(m => porMacro[m]), ...extras];
+
+    const partes = macrosOrdenadas.map(macro => {
+        const assuntos = porMacro[macro];
+        const totalMacro = Object.values(assuntos).reduce((a, b) => a + b, 0);
+        const linhas = Object.entries(assuntos)
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'pt-BR'))
+            .map(([assunto, n]) => `<li><span>${esc(assunto)}</span><span class="cobertura-contagem">${n}</span></li>`)
+            .join('');
+        return `
             <details class="cobertura-macro">
                 <summary>${esc(macro)} <span class="cobertura-contagem">${totalMacro}</span></summary>
                 <ul class="cobertura-lista">${linhas}</ul>
             </details>
-        `);
+        `;
     });
 
     container.innerHTML = partes.join('');
