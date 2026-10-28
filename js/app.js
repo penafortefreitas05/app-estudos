@@ -2441,3 +2441,20 @@ function abrirEscolhaAprender() {
     });
 }
 // ==================== FIM: 17. APRENDER ====================
+
+// ==================== INÍCIO: 18. BARRA RECOLHÍVEL (computador) ====================
+// Um clique recolhe a barra inteira (fica só a área das questões); o botão "F" traz de volta.
+// O app lembra a escolha. No celular a barra já é uma gaveta (☰), então isto só vale no computador.
+const CHAVE_BARRA_RECOLHIDA = "appEstudos_BarraRecolhida";
+const btnRecolherBarra = document.getElementById("btn-recolher-barra");
+const btnAbrirBarra = document.getElementById("btn-abrir-barra");
+
+function aplicarBarraRecolhida(recolhida) {
+    document.body.classList.toggle("barra-recolhida", recolhida);
+    if (btnAbrirBarra) btnAbrirBarra.hidden = !recolhida;
+    try { localStorage.setItem(CHAVE_BARRA_RECOLHIDA, recolhida ? "1" : "0"); } catch (e) { /* segue */ }
+}
+try { aplicarBarraRecolhida(localStorage.getItem(CHAVE_BARRA_RECOLHIDA) === "1"); } catch (e) { /* segue aberta */ }
+if (btnRecolherBarra) btnRecolherBarra.addEventListener("click", () => aplicarBarraRecolhida(true));
+if (btnAbrirBarra) btnAbrirBarra.addEventListener("click", () => aplicarBarraRecolhida(false));
+// ==================== FIM: 18. BARRA RECOLHÍVEL ====================
