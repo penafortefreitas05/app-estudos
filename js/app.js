@@ -16,7 +16,8 @@ import {
     classificarStatus,
     obterCategoriaStatus,
     renderizarCoberturaEdital,
-    temGabarito
+    temGabarito,
+    preencherSelectAssunto
 } from './ui.js';
 // ==================== FIM ====================
 
@@ -254,7 +255,9 @@ function filtrarQuestoes() {
         if (banca && (q.bancaExibida || q.banca) !== banca) return false;
         if (materia && q.materia !== materia) return false;
         // "tag" aqui é o assunto padronizado (U11), não mais a tag livre — ver js/api.js
-        if (tag && String(q.assunto || "").toLowerCase() !== tag) return false;
+        // (clicar numa #tag do card também cai aqui: vale a tag livre da questão)
+        if (tag && String(q.assunto || "").toLowerCase() !== tag
+            && !(q.tags || []).some(t => String(t).toLowerCase() === tag)) return false;
         if (ano && String(q.ano || "") !== ano) return false;
         if (nivel && String(q.nivel || "") !== nivel) return false;
 
@@ -276,6 +279,20 @@ function filtrarQuestoes() {
         }
         return true;
     });
+}
+
+// Reconstrói o filtro de assunto para a matéria escolhida. Se o assunto marcado não
+// pertence à matéria nova, ele é desmarcado (senão a lista ficaria vazia sem explicação).
+function atualizarSelectAssunto() {
+    const materia = selectMateria ? selectMateria.value : "";
+    const aindaExiste = preencherSelectAssunto(selectTag, questoes, materia, ORDEM_MACROS, tagSelecionada);
+    const ehTagLivre = tagSelecionada && questoes.some(q =>
+        (!materia || q.materia === materia) &&
+        (q.tags || []).some(t => String(t).toLowerCase() === tagSelecionada.toLowerCase()));
+    if (tagSelecionada && !aindaExiste && !ehTagLivre) {
+        tagSelecionada = "";
+        atualizarChipTag(chipTag, tagSelecionada);
+    }
 }
 
 function definirTag(tag) {
@@ -346,6 +363,7 @@ if (dashboardMaterias) {
         simulado = null;
         pararCronometro(displayCronometro);
         selectMateria.value = materia;
+        atualizarSelectAssunto();
         aplicarFiltros();
         const mainContent = document.querySelector(".main-content");
         if (mainContent) mainContent.scrollTo({ top: 0, behavior: "smooth" });
@@ -864,7 +882,7 @@ if (inputBusca) {
     });
 }
 if (selectBanca) selectBanca.addEventListener("change", aplicarFiltros);
-if (selectMateria) selectMateria.addEventListener("change", aplicarFiltros);
+if (selectMateria) selectMateria.addEventListener("change", () => { atualizarSelectAssunto(); aplicarFiltros(); });
 if (selectAno) selectAno.addEventListener("change", aplicarFiltros);
 if (selectNivel) selectNivel.addEventListener("change", aplicarFiltros);
 if (selectStatus) selectStatus.addEventListener("change", aplicarFiltros);
@@ -944,7 +962,7 @@ if (btnTodas) {
 
         tagSelecionada = "";
         atualizarChipTag(chipTag, tagSelecionada);
-        if (selectTag) selectTag.value = "";
+        atualizarSelectAssunto();
         aplicarFiltros();
         showToast("Filtros limpos: exibindo todas as questões.", "info");
     });
@@ -1379,7 +1397,7 @@ async function carregarBancoDeQuestoes(questoesChegando = null) {
         preencherSelect(selectMateria, "📖 Todas as Matérias", "materia", questoes);
         preencherSelect(selectAno, "📅 Todos os Anos", "ano", questoes);
         preencherSelect(selectNivel, "📶 Todos os Níveis", "nivel", questoes, OPCOES_SELECT_NIVEL);
-        preencherSelect(selectTag, "🏷️ Todos os Assuntos", "assunto", questoes);
+        atualizarSelectAssunto();
 
         atualizarPlacar(historico, questoes);
         renderizarQuestoes(
@@ -1418,7 +1436,7 @@ async function carregarBancoDeQuestoes(questoesChegando = null) {
     preencherSelect(selectMateria, "📖 Todas as Matérias", "materia", questoes);
     preencherSelect(selectAno, "📅 Todos os Anos", "ano", questoes);
     preencherSelect(selectNivel, "📶 Todos os Níveis", "nivel", questoes, OPCOES_SELECT_NIVEL);
-    preencherSelect(selectTag, "🏷️ Todos os Assuntos", "assunto", questoes);
+    atualizarSelectAssunto();
     // Filtro de ano só aparece quando alguma questão tem ano cadastrado
     if (selectAno) selectAno.hidden = selectAno.options.length <= 1;
     // Nível: só aparece quando o banco tiver mais de um nível (antes disso, todo mundo é "Avançado")
