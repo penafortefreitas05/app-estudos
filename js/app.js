@@ -1145,6 +1145,9 @@ function atualizarListaFoco(lista) {
 
 function cardDoFoco(q) {
     const id = String(q.id);
+    if (!foco.cards.has(id) && q.resumo) {
+        foco.cards.set(id, cardResumo(q.resumo));
+    }
     if (!foco.cards.has(id) && foco.exemplos.has(id)) {
         foco.cards.set(id, cardExemplo(q));
     }
@@ -1159,6 +1162,15 @@ function cardDoFoco(q) {
     return foco.cards.get(id);
 }
 
+// "Questão 2 de 4": conta só as questões de verdade (o resumo e o exemplo resolvido não entram)
+function rotuloPosicaoFoco() {
+    const atual = foco.lista[foco.indice];
+    if (atual && foco.exemplos.has(String(atual.id))) return atual.resumo ? "Entenda em 1 minuto" : "Exemplo resolvido";
+    const reais = foco.lista.filter(q => !foco.exemplos.has(String(q.id)));
+    const numero = reais.indexOf(atual) + 1;
+    return `Questão ${numero} de ${reais.length}`;
+}
+
 function desenharFoco() {
     if (!foco) return;
     const total = foco.lista.length;
@@ -1168,7 +1180,7 @@ function desenharFoco() {
     barra.className = "foco-barra";
     barra.innerHTML = `
         <button type="button" class="btn-painel foco-anterior" ${foco.indice === 0 ? "disabled" : ""} aria-label="Questão anterior">←</button>
-        <span class="foco-posicao" aria-live="polite">${foco.titulo ? `<span class="foco-titulo">${esc(foco.titulo)}</span>` : ""}${fim ? "Fim da lista" : (foco.exemplos.has(String(foco.lista[foco.indice].id)) ? "Exemplo resolvido" : `Questão ${foco.indice + 1} de ${total}`)}</span>
+        <span class="foco-posicao" aria-live="polite">${foco.titulo ? `<span class="foco-titulo">${esc(foco.titulo)}</span>` : ""}${fim ? "Fim da lista" : rotuloPosicaoFoco()}</span>
         <button type="button" class="btn-painel foco-proxima" ${fim ? "disabled" : ""} aria-label="Próxima questão">→</button>
         <button type="button" class="btn-painel foco-sair">✕ Sair do foco</button>`;
 
@@ -1244,7 +1256,7 @@ function colocarIrmaNoFoco(irma) {
     showToast("A questão do mesmo assunto é a próxima (→).", "info", 1800);
     // Atualiza só a barra (contador), sem perder o feedback da questão atual
     const posicao = container.querySelector(".foco-posicao");
-    if (posicao) posicao.textContent = `Questão ${foco.indice + 1} de ${foco.lista.length}`;
+    if (posicao) posicao.textContent = rotuloPosicaoFoco();
 }
 
 if (btnModoFoco) {
@@ -2248,7 +2260,7 @@ explicacoesDesempenho.forEach(el => {
 // As regras (ordem, estado de cada assunto, ponte para a prova) ficam em js/aprender.js.
 const CHAVE_ULTIMA_MATERIA_APRENDER = "appEstudos_UltimaMateriaAprender";
 
-function iniciarAprender(materia, nomeAssunto = null, opcoes = {}) {
+async function iniciarAprender(materia, nomeAssunto = null, opcoes = {}) {
     const trilha = montarTrilha(materia, questoes, historico);
     const assunto = nomeAssunto ? trilha.find(a => a.nome === nomeAssunto) : proximoAssunto(trilha);
     if (!assunto) {
@@ -2256,15 +2268,51 @@ function iniciarAprender(materia, nomeAssunto = null, opcoes = {}) {
         return;
     }
     try { localStorage.setItem(CHAVE_ULTIMA_MATERIA_APRENDER, materia); } catch (e) { /* segue */ }
-    const lista = [...(assunto.exemplo ? [assunto.exemplo] : []), ...assunto.prova];
+    // Fase 2: "Entenda em 1 minuto" abre o assunto, se já existir texto para ele
+    const resumo = await obterResumoDoAssunto(materia, assunto.nome);
+    const cartaoResumo = resumo ? { id: `resumo:${materia}|${assunto.nome}`, resumo } : null;
+    const lista = [...(cartaoResumo ? [cartaoResumo] : []), ...(assunto.exemplo ? [assunto.exemplo] : []), ...assunto.prova];
+    const idsDeLeitura = [cartaoResumo, assunto.exemplo].filter(Boolean).map(x => String(x.id));
     entrarFoco(lista, {
         titulo: `Aprender · ${assunto.nome}`,
-        exemplos: new Set(assunto.exemplo ? [String(assunto.exemplo.id)] : []),
+        exemplos: new Set(idsDeLeitura),
         aprender: { materia, nome: assunto.nome },
         guiada: Boolean(opcoes.guiada),
         silencioso: true
     });
     setTimeout(() => mostrarDica("aprender"), 300);
+}
+
+// "Entenda em 1 minuto" (Fase 2): um texto curto por assunto, em data/resumos-assunto.json.
+// Arquivo estático (não tem gabarito, não precisa de banco). Se não carregar, o Aprender
+// segue sem o cartão, como na Fase 1.
+let resumosPorAssunto = null;
+async function obterResumoDoAssunto(materia, nome) {
+    if (!resumosPorAssunto) {
+        try {
+            const resp = await fetch("./data/resumos-assunto.json");
+            const lista = resp.ok ? await resp.json() : [];
+            resumosPorAssunto = new Map(lista.map(r => [`${r.materia}|${r.assunto}`, r]));
+        } catch (e) {
+            return null; // tenta de novo na próxima vez
+        }
+    }
+    return resumosPorAssunto.get(`${materia}|${nome}`) || null;
+}
+
+function cardResumo(r) {
+    const card = document.createElement("article");
+    card.className = "card-questao card-foco card-exemplo card-resumo";
+    card.dataset.exemplo = "1";
+    card.dataset.respondida = "1";
+    const bloco = (rotulo, texto) => texto && String(texto).trim()
+        ? `<div class="resumo-bloco"><p class="resumo-rotulo">${rotulo}</p><p>${esc(texto)}</p></div>` : "";
+    card.innerHTML = `
+        <p class="exemplo-faixa">💡 Entenda em 1 minuto · leia e siga para o exemplo.</p>
+        <p class="resumo-central">${esc(r.ideia_central)}</p>
+        ${bloco("Exemplo", r.exemplo)}
+        ${bloco("⚠️ Pegadinha", r.pegadinha)}`;
+    return card;
 }
 
 // Exemplo resolvido: a questão com a resposta certa marcada e o comentário, sem botões de resposta.

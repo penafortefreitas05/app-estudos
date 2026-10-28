@@ -1579,3 +1579,13 @@ body.modo-foco .cartao-hoje { display: none; }
     .hoje-botoes { flex-direction: column; }
     .hoje-botoes .btn-secondary { width: 100%; min-height: 48px; }
 }
+
+/* ==================== APRENDER (Fase 2): Entenda em 1 minuto ==================== */
+.card-resumo { padding-bottom: 1.1rem; }
+.resumo-central {
+    margin: 0 0 1rem; font-size: 1.15rem; line-height: 1.5; font-weight: 600; color: #f1f5f9;
+}
+.resumo-bloco { margin: 0 0 0.85rem; color: #cbd5e1; line-height: 1.55; }
+.resumo-bloco p { margin: 0; }
+.resumo-rotulo { margin-bottom: 0.2rem !important; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #93c5fd; }
+@media (max-width: 768px) { .resumo-central { font-size: 1.05rem; } }
