@@ -550,7 +550,7 @@ function desenharCards(container, lista, historico, restaurarRespostas) {
             ]).filter(Boolean).join(' • ');
 
         const cardHTML = `
-            <article class="card-questao questao-card" data-id="${esc(idStr)}">
+            <article class="card-questao" data-id="${esc(idStr)}">
                <div class="card-header">
                     <div class="header-info">
                         <span class="badge-materia">${esc(q.materia || 'Geral')}</span>

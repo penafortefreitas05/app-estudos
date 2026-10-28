@@ -113,12 +113,6 @@ if (container && container.parentNode) {
     container.parentNode.insertBefore(chipTag, container);
 }
 
-const inputImportar = document.createElement("input");
-inputImportar.type = "file";
-inputImportar.accept = "application/json,.json";
-inputImportar.hidden = true;
-document.body.appendChild(inputImportar);
-
 function criarBotaoSidebar(texto) {
     const btn = document.createElement("button");
     btn.type = "button";
@@ -127,15 +121,18 @@ function criarBotaoSidebar(texto) {
     return btn;
 }
 
-const btnExportar = criarBotaoSidebar("💾 Exportar Histórico");
-const btnImportar = criarBotaoSidebar("📂 Importar Histórico");
-const btnLimpar = document.getElementById("btn-limpar-dados");
-if (btnLimpar) btnLimpar.before(btnExportar, btnImportar);
+// Gaveta "Ferramentas e Backup": só dois botões de histórico, os dois com nome claro.
+// ("Importar Histórico" e "Zerar (local)" saíram: o primeiro sobrescrevia tudo sem aviso do
+// que se perdia e o segundo parecia apagar tudo, mas só limpava o cache deste aparelho.)
+const gavetaFerramentas = document.querySelector(".gaveta-ferramentas-conteudo");
+const btnExportar = criarBotaoSidebar("💾 Exportar meus dados (LGPD)");
+btnExportar.title = "Baixa um arquivo com todo o seu histórico de estudo";
+if (gavetaFerramentas) gavetaFerramentas.append(btnExportar);
 
 // Botão "de verdade": apaga a nuvem inteira, não só o cache deste navegador
 const btnApagarTudo = criarBotaoSidebar("🔥 Apagar TUDO (nuvem + local)");
 btnApagarTudo.classList.add("danger");
-if (btnLimpar) btnLimpar.after(btnApagarTudo);
+if (gavetaFerramentas) gavetaFerramentas.append(btnApagarTudo);
 // ---------- 5. UTILITÁRIOS E VALIDAÇÃO ----------
 function embaralharArray(array) {
     const a = [...array];
@@ -647,7 +644,7 @@ function destravarCardParaRefazer(card) {
     }
 }
 
-// ---------- 8. EXPORTAÇÃO E IMPORTAÇÃO DE BACKUP ----------
+// ---------- 8. EXPORTAÇÃO DO HISTÓRICO (LGPD) ----------
 function exportarHistorico() {
     const blob = new Blob([JSON.stringify(historico, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -659,35 +656,6 @@ function exportarHistorico() {
     a.remove();
     URL.revokeObjectURL(url);
     showToast("Download do histórico iniciado!", "sucesso");
-}
-
-function importarHistorico(arquivo) {
-    const leitor = new FileReader();
-    leitor.onload = async () => {
-        try {
-            const dados = JSON.parse(leitor.result);
-            const valido = dados && typeof dados === 'object' && !Array.isArray(dados);
-            if (!valido) throw new Error("formato inválido");
-
-            const confirmado = await showConfirmModal({
-                titulo: "Importar Histórico",
-                mensagem: `Deseja importar o progresso de ${Object.keys(dados).length} questões e substituir o histórico atual?`,
-                textoConfirmar: "Substituir Dados",
-                corPerigo: true
-            });
-
-            if (!confirmado) return;
-
-            historico = dados;
-            salvarHistorico(historico);
-            atualizarPlacar(historico, questoes);
-            aplicarFiltros();
-            showToast("Histórico importado com sucesso!", "sucesso");
-        } catch (e) {
-            showToast("Arquivo JSON inválido. Use um backup original do FocoPro.", "erro");
-        }
-    };
-    leitor.readAsText(arquivo);
 }
 
 // ---------- 9. DELEGAÇÃO E ESCUTADORES DE EVENTOS ----------
@@ -1022,29 +990,6 @@ if (btnModoRevisao) {
     });
 }
 
-// Zerar Histórico Geral
-if (btnLimpar) {
-    btnLimpar.addEventListener("click", async () => {
-        const confirmado = await showConfirmModal({
-            titulo: "Zerar histórico deste aparelho",
-            mensagem: "Limpa o histórico guardado neste aparelho, incluindo favoritos e anotações, que ainda não vão para a nuvem e serão perdidos. Suas respostas salvas na nuvem não são apagadas e voltam ao reabrir o app.",
-            textoConfirmar: "Zerar este aparelho",
-            textoCancelar: "Cancelar",
-            corPerigo: true
-        });
-
-        if (confirmado) {
-            localStorage.removeItem('appEstudos_Historico');
-            apagarDiasDeEstudo();
-            historico = {};
-           atualizarPlacar(historico, questoes);
-            aplicarFiltros();
-            showToast("Cache local zerado. Se você estiver logado, seu progresso na nuvem continua intacto.", "alerta", 5000);
-        }
-    });
-}
-
-// Backup (Exportar / Importar)
 // Apagar TUDO (nuvem + local) — irreversível, duas confirmações
 btnApagarTudo.addEventListener("click", async () => {
     if (!usuarioAtual) {
@@ -1088,13 +1033,8 @@ btnApagarTudo.addEventListener("click", async () => {
     }
 });
 
-// Backup (Exportar / Importar)
+// Backup (Exportar)
 btnExportar.addEventListener("click", exportarHistorico);
-btnImportar.addEventListener("click", () => inputImportar.click());
-inputImportar.addEventListener("change", () => {
-    if (inputImportar.files[0]) importarHistorico(inputImportar.files[0]);
-    inputImportar.value = "";
-});
 
 // ==================== INÍCIO: 12. MODO FOCO (U1) ====================
 // Uma questão por vez, sem a barra de filtros. Usa a mesma lista que estaria na tela
