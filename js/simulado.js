@@ -94,18 +94,34 @@ export async function finalizarSimulado(simulado, container, porId, historico, q
     }).filter(Boolean);
 
     // Corrige todas de uma vez, em paralelo (mesmo as não respondidas, só pra revelar o
-    // gabarito delas no resultado). Uma falha isolada não trava as outras.
+    // gabarito delas no resultado). Corrigir é só leitura no servidor: nada foi salvo ainda.
+    let falhaDeConexao = false;
     const correcoes = await Promise.all(itens.map(async it => {
         try {
             return await corrigirResposta(it.q, it.letraDada || "");
         } catch (erro) {
             console.warn(`[FocoPro] Não foi possível corrigir a questão ${it.idStr} agora:`, erro.message);
+            if (!erro.semGabarito) falhaDeConexao = true;
             return null;
         }
     }));
 
+    // Tudo ou nada: com falha de conexão, não aplica nenhuma correção (nota pela metade
+    // seria enganosa). Respostas e marcações continuam na tela; dá pra tentar de novo.
+    if (falhaDeConexao) {
+        simulado.finalizado = false;
+        // Tempo esgotado: trava as marcações, pra não dar pra mudar resposta enquanto espera
+        if (porTempo) container.querySelectorAll(".radio-opcao").forEach(r => { r.disabled = true; });
+        if (btnFinalizar) {
+            btnFinalizar.disabled = false;
+            btnFinalizar.innerText = "🔁 Tentar corrigir de novo";
+        }
+        showToast("Sem conexão com o servidor para corrigir o simulado. Suas respostas continuam aqui — confira a internet e toque em \"Tentar corrigir de novo\".", "erro", 8000);
+        return;
+    }
+
     let acertosSimulado = 0;
-    let falhasDeCorrecao = 0;
+    let falhasDeCorrecao = 0; // só questões sem gabarito cadastrado (problema do dado)
     const respostasParaNuvem = [];
 
     itens.forEach((it, i) => {
@@ -114,8 +130,7 @@ export async function finalizarSimulado(simulado, container, porId, historico, q
 
         if (!resultado) {
             falhasDeCorrecao++;
-            if (card) revelar(card, q, temResposta ? letraDada : null);
-            return;
+            return; // sem gabarito: não pinta nada como certo
         }
 
         q.gabarito = resultado.gabarito; // fica em memória pra qualquer novo render usar
@@ -167,7 +182,7 @@ export async function finalizarSimulado(simulado, container, porId, historico, q
     const taxa = totalQuestoes > 0 ? ((acertosSimulado / totalQuestoes) * 100).toFixed(1) : 0;
     const msgTempo = porTempo ? " (Tempo Esgotado)" : "";
     const avisoFalhas = falhasDeCorrecao > 0
-        ? ` (${falhasDeCorrecao} questão${falhasDeCorrecao > 1 ? "ões" : ""} não puderam ser corrigidas agora — recarregue a página)`
+        ? ` (${falhasDeCorrecao} questão${falhasDeCorrecao > 1 ? "ões" : ""} sem gabarito cadastrado, fora da correção)`
         : "";
     showToast(`Simulado finalizado${msgTempo}! Nota: ${acertosSimulado}/${totalQuestoes} (${taxa}%)${avisoFalhas}`, "sucesso", 6000);
 }

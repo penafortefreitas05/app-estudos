@@ -15,7 +15,8 @@ import {
     revelar,
     classificarStatus,
     obterCategoriaStatus,
-    renderizarCoberturaEdital
+    renderizarCoberturaEdital,
+    temGabarito
 } from './ui.js';
 // ==================== FIM ====================
 
@@ -440,7 +441,9 @@ async function responder(card, botao) {
         resultado = await corrigirResposta(q, letraEscolhida);
     } catch (erro) {
         console.warn("[FocoPro] Não foi possível corrigir a resposta agora:", erro.message);
-        showToast("Não foi possível corrigir agora. Tente de novo em instantes.", "erro");
+        showToast(erro.semGabarito
+            ? "Esta questão está sem gabarito cadastrado. Avise o administrador."
+            : "Não foi possível corrigir agora. Confira a internet e tente de novo.", "erro");
         card.dataset.respondida = ""; // libera pra tentar de novo
         if (botao) botao.disabled = false;
         return;
@@ -1299,6 +1302,14 @@ if (btnProcessarImportacao && textoJsonQuestoes && modalImportar) {
             }
 
             const novasNormalizadas = novasQuestoesBrutas.map((q, idx) => normalizarQuestao(q, questoes.length + idx));
+
+            // Sem gabarito não entra: antes virava "A" sem aviso e a questão nascia errada
+            const semGabarito = novasNormalizadas.filter(q => !temGabarito(q));
+            if (semGabarito.length > 0) {
+                showToast(`${semGabarito.length} questão(ões) do JSON estão sem gabarito ("gabarito" ou "resposta_correta"). Corrija e importe de novo — nada foi salvo.`, 'erro', 8000);
+                console.warn('[FocoPro] Questões sem gabarito no JSON:', semGabarito.map(q => q.id));
+                return;
+            }
 
             // Grava direto na nuvem e recarrega o banco de lá: a nuvem é a única fonte das questões
             try {

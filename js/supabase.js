@@ -482,7 +482,7 @@ function erroDeColunaRespostaObrigatoria(erro) {
 
 function comGabaritoEmQuestoes(payload, gabaritos) {
     const porId = new Map(gabaritos.map(g => [g.questao_id, g.resposta_correta]));
-    return payload.map(q => ({ ...q, resposta_correta: porId.get(q.id) || 'A' }));
+    return payload.map(q => ({ ...q, resposta_correta: porId.get(q.id) }));
 }
 
 async function upsertQuestoesComPlanoB(payload, gabaritos) {
@@ -517,14 +517,21 @@ async function upsertQuestoesComPlanoB(payload, gabaritos) {
 export async function salvarQuestoesEmMassa(arrayDeQuestoes) {
     try {
         const gabaritos = [];
+        // Questão sem gabarito não entra (antes virava "A" silenciosamente). A tela de
+        // importação já barra isso antes; aqui é a segunda trava.
         const payload = arrayDeQuestoes
             .filter(q => q && (q.pergunta || q.enunciado))
-            .map((q, idx) => {
-                const qNorm = normalizarQuestao({ ...q }, idx);
+            .map((q, idx) => normalizarQuestao({ ...q }, idx))
+            .filter(qNorm => {
+                if (qNorm.gabarito) return true;
+                console.warn(`[FocoPro] Questão ${qNorm.id} sem gabarito: não foi importada.`);
+                return false;
+            })
+            .map(qNorm => {
                 const alternativasArray = Array.isArray(qNorm.alternativas)
                     ? qNorm.alternativas
                     : Object.values(qNorm.alternativas || {});
-                const letraGabarito = gabaritoDe(qNorm) || 'A';
+                const letraGabarito = gabaritoDe(qNorm);
                 const idQuestao = String(qNorm.id);
                 gabaritos.push({ questao_id: idQuestao, resposta_correta: letraGabarito });
 
@@ -570,8 +577,10 @@ function erroDeRpcInexistente(erro) {
     return Boolean(erro) && (erro.code === 'PGRST202' || /verificar_resposta/i.test(`${erro?.message || ''} ${erro?.hint || ''}`));
 }
 
+// Erros com semGabarito = true: a questão não tem gabarito em lugar nenhum (problema do dado,
+// não da conexão). Os outros erros são de conexão/servidor e valem "tente de novo".
 export async function corrigirResposta(questao, respostaEscolhida) {
-    let ultimoErro = null;
+    let motivo;
     try {
         const { data, error } = await supabaseClient.rpc('verificar_resposta', {
             p_questao_id: String(questao.id),
@@ -582,23 +591,30 @@ export async function corrigirResposta(questao, respostaEscolhida) {
         if (linha && linha.gabarito) {
             return { acertou: Boolean(linha.acertou), gabarito: String(linha.gabarito).toUpperCase() };
         }
-        ultimoErro = new Error("O servidor não encontrou o gabarito desta questão.");
+        motivo = 'nao-encontrada'; // função existe, mas essa questão não está em questoes_gabarito
     } catch (erro) {
-        ultimoErro = erro;
         if (!erroDeRpcInexistente(erro)) {
-            console.warn("[FocoPro] Falha ao corrigir no servidor; tentando o plano B:", erro.message);
+            // Internet caiu, servidor fora, sessão expirada...: NÃO corrige com gabarito local.
+            // Quem chama mostra "tente de novo" — corrigir errado é pior do que esperar.
+            throw erro;
         }
+        motivo = 'rpc-inexistente';
     }
 
-    // Plano B: só funciona enquanto a questão ainda carregar o gabarito localmente (fase de
-    // transição, antes da coluna antiga ser esvaziada). Sem ele, melhor avisar do que inventar.
-    const gabaritoLocal = questao.gabarito || questao.resposta_correta;
+    // Plano B (só nos dois casos acima): usa o gabarito que a questão ainda traz da coluna
+    // antiga. Ele é real (não existe mais padrão "A" na normalização) e deixa de existir
+    // sozinho quando a Fase 2 do U9 apagar a coluna.
+    const gabaritoLocal = String(questao.gabarito || questao.resposta_correta || '').trim();
     if (gabaritoLocal) {
         const gabarito = gabaritoDe(questao);
         return { acertou: String(respostaEscolhida).trim().toUpperCase() === gabarito, gabarito };
     }
 
-    throw ultimoErro || new Error("Não foi possível corrigir esta resposta agora.");
+    const erro = new Error(motivo === 'nao-encontrada'
+        ? "Esta questão está sem gabarito cadastrado."
+        : "Não foi possível corrigir esta resposta agora.");
+    erro.semGabarito = motivo === 'nao-encontrada';
+    throw erro;
 }
 
 /**
