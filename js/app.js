@@ -138,12 +138,14 @@ function criarBotaoSidebar(texto) {
 const gavetaFerramentas = document.querySelector(".gaveta-ferramentas-conteudo");
 const btnExportar = criarBotaoSidebar("💾 Exportar meus dados (LGPD)");
 btnExportar.title = "Baixa um arquivo com todo o seu histórico de estudo";
-if (gavetaFerramentas) gavetaFerramentas.append(btnExportar);
+// Ficam antes do "Sair", que é sempre o último item de "Minha conta"
+const antesDoSair = document.getElementById("btn-auth-acao");
+if (gavetaFerramentas) gavetaFerramentas.insertBefore(btnExportar, antesDoSair);
 
 // Botão "de verdade": apaga a nuvem inteira, não só o cache deste navegador
 const btnApagarTudo = criarBotaoSidebar("🔥 Apagar TUDO (nuvem + local)");
 btnApagarTudo.classList.add("danger");
-if (gavetaFerramentas) gavetaFerramentas.append(btnApagarTudo);
+if (gavetaFerramentas) gavetaFerramentas.insertBefore(btnApagarTudo, antesDoSair);
 // ---------- 5. UTILITÁRIOS E VALIDAÇÃO ----------
 function embaralharArray(array) {
     const a = [...array];
@@ -1394,13 +1396,15 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
     if (usuarioAtual) {
         if (userEmail) userEmail.innerText = usuarioAtual.email;
         if (userAvatar) userAvatar.innerText = usuarioAtual.email.charAt(0).toUpperCase();
-        if (btnAuthAcao) btnAuthAcao.innerText = "Sair";
         if (modalAuth) modalAuth.classList.remove('visible');
     } else {
         if (userEmail) userEmail.innerText = "Visitante";
         if (userAvatar) userAvatar.innerText = "?";
-        if (btnAuthAcao) btnAuthAcao.innerText = "Fazer Login";
+        const conta = document.getElementById("conta");
+        if (conta) conta.open = false;
     }
+    const contaDica = document.getElementById("conta-dica");
+    if (contaDica) contaDica.textContent = usuarioAtual ? "Minha conta" : "Entrar ou criar conta";
 
     // O link de "esqueci minha senha" traz a pessoa de volta já autenticada, numa sessão
     // temporária só para isso. Força a troca de senha antes de liberar o resto do app.
@@ -2043,3 +2047,30 @@ if (btnPerfilMeta) {
     });
 }
 // ==================== FIM: 14. PRIMEIRA SESSÃO ====================
+
+// ==================== INÍCIO: 15. BARRA LATERAL (Minha conta e Meu desempenho) ====================
+// Visitante: tocar no cartão do avatar abre o login, em vez de abrir uma gaveta vazia
+const cartaoConta = document.getElementById("user-profile-container");
+if (cartaoConta) {
+    cartaoConta.addEventListener("click", (e) => {
+        if (usuarioAtual || !modalAuth) return;
+        e.preventDefault();
+        aplicarModoAuth("login");
+        modalAuth.classList.add("visible");
+        if (inputAuthEmail) inputAuthEmail.focus();
+    });
+}
+
+// "Meu desempenho" lembra se você deixou aberto ou fechado (neste aparelho)
+const gavetaDesempenho = document.getElementById("gaveta-desempenho");
+const CHAVE_GAVETA_DESEMPENHO = "appEstudos_GavetaDesempenhoAberta";
+if (gavetaDesempenho) {
+    try {
+        const salvo = localStorage.getItem(CHAVE_GAVETA_DESEMPENHO);
+        if (salvo !== null) gavetaDesempenho.open = salvo === "1";
+    } catch (e) { /* sem localStorage: fica aberta */ }
+    gavetaDesempenho.addEventListener("toggle", () => {
+        try { localStorage.setItem(CHAVE_GAVETA_DESEMPENHO, gavetaDesempenho.open ? "1" : "0"); } catch (e) { /* segue */ }
+    });
+}
+// ==================== FIM: 15. BARRA LATERAL ====================

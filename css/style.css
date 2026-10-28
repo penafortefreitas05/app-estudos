@@ -42,37 +42,6 @@ body {
 .brand h2 { color: #f8fafc; font-size: 1.5rem; margin-bottom: 0.2rem; }
 .brand p { color: #64748b; font-size: 0.75rem; margin-bottom: 1.5rem; }
 
-.menu-item { 
-    background-color: #2563eb; /* Azul elétrico */
-    color: white; 
-    padding: 0.85rem 1rem; 
-    border-radius: 8px; 
-    font-weight: 600; 
-    font-size: 0.9rem; 
-    display: flex; 
-    align-items: center; 
-    gap: 0.5rem; 
-}
-
-.stats-row {
-    display: flex;
-    gap: 0.6rem;
-}
-
-.stat-card { 
-    background-color: #020617; 
-    border: 1px solid #1e293b; 
-    padding: 0.65rem 0.8rem; 
-    border-radius: 12px; 
-    display: flex; 
-    flex-direction: column; 
-    gap: 0.3rem; 
-    flex: 1;
-    min-width: 0;
-}
-
-.stat-title { font-size: 0.72rem; color: #94a3b8; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.stat-value { font-size: 1.4rem; font-weight: 700; }
 .text-blue { color: #3b82f6; }
 .text-orange { color: #f59e0b; }
 
@@ -94,10 +63,6 @@ body {
 .resumo-detalhe { font-size: 0.62rem; color: #64748b; line-height: 1.25; }
 .resumo-card.alerta { border-color: rgba(251, 146, 60, 0.45); background: rgba(251, 146, 60, 0.06); }
 .resumo-card.alerta .resumo-valor { color: #fb923c; }
-
-.progress-bar-mini { height: 4px; border-radius: 2px; width: 100%; opacity: 0.3; }
-.progress-bar-mini.blue { background-color: #3b82f6; }
-.progress-bar-mini.orange { background-color: #f59e0b; }
 
 .btn-sidebar { 
     background-color: transparent; 
@@ -121,36 +86,10 @@ body {
 }
 .btn-sidebar.danger:hover { background-color: #7f1d1d40; }
 
-/* ---------- 2.1 GAVETA DE FERRAMENTAS (exportar/apagar) ---------- */
+/* ---------- 2.1 GAVETAS DA BARRA LATERAL ---------- */
 /* Itens do menu nunca encolhem: quando o menu passa da altura da tela, ele rola.
    (Sem isso, a gaveta abaixo era espremida e escondia "Apagar TUDO".) */
 .sidebar > * { flex-shrink: 0; }
-
-.gaveta-ferramentas {
-    border: 1px solid #1e293b;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.gaveta-ferramentas summary {
-    cursor: pointer;
-    padding: 0.7rem 1rem;
-    font-weight: 500;
-    font-size: 0.85rem;
-    color: #94a3b8;
-    list-style: none;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    user-select: none;
-}
-.gaveta-ferramentas summary::-webkit-details-marker { display: none; }
-.gaveta-ferramentas summary::after {
-    content: '▾';
-    transition: transform 0.2s;
-}
-.gaveta-ferramentas[open] summary::after { transform: rotate(180deg); }
-.gaveta-ferramentas summary:hover { background-color: #1e293b; }
 
 .gaveta-ferramentas-conteudo {
     padding: 0.75rem;
@@ -1540,3 +1479,48 @@ body.visitante .top-bar { display: none; }
 }
 .foco-barra .foco-posicao { min-width: 0; }
 .foco-titulo { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ==================== BARRA LATERAL NOVA (28/10) ==================== */
+/* Minha conta: o cartão do avatar é o botão que abre a gaveta */
+.conta { border-radius: 10px; }
+.conta > summary { list-style: none; cursor: pointer; user-select: none; margin-bottom: 0; }
+.conta > summary::-webkit-details-marker { display: none; }
+.conta > summary::after { content: '▾'; color: #94a3b8; transition: transform 0.2s; margin-left: auto; }
+.conta[open] > summary::after { transform: rotate(180deg); }
+.conta > summary:hover { border-color: #475569; }
+.conta[open] > summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.conta-dica { display: block; font-size: 0.72rem; color: #60a5fa; }
+.conta-conteudo { border: 1px solid #334155; border-top: 0; border-radius: 0 0 8px 8px; background: #0b1222; }
+.conta-conteudo .btn-sidebar { padding: 0.65rem 0.85rem; font-size: 0.85rem; }
+.btn-sair { color: #94a3b8; }
+
+/* Revisar hoje: a ação do dia */
+.btn-revisar { border-color: #1e3a8a; background: rgba(37, 99, 235, 0.08); color: #e2e8f0; font-weight: 600; }
+.btn-revisar:hover { background: rgba(37, 99, 235, 0.18); }
+
+/* Meu desempenho: gaveta */
+.gaveta-desempenho { border: 1px solid #1e293b; border-radius: 10px; }
+.gaveta-desempenho > summary {
+    list-style: none; cursor: pointer; user-select: none;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.7rem 0.9rem; font-weight: 700; font-size: 0.9rem; color: #f8fafc;
+}
+.gaveta-desempenho > summary::-webkit-details-marker { display: none; }
+.gaveta-desempenho > summary::after { content: '▾'; color: #94a3b8; transition: transform 0.2s; }
+.gaveta-desempenho[open] > summary::after { transform: rotate(180deg); }
+.gaveta-desempenho > summary:hover { background: #1e293b; border-radius: 10px; }
+.gaveta-desempenho-conteudo { padding: 0 0.6rem 0.7rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.totais-linha { display: flex; justify-content: space-between; font-size: 0.75rem; margin: 0; padding: 0 0.2rem; }
+.totais-linha strong { font-variant-numeric: tabular-nums; }
+
+/* Por matéria */
+.materia-taxa small { color: #64748b; font-weight: 500; }
+.materia-rodape { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
+.materia-niveis { font-size: 0.66rem; color: #64748b; font-variant-numeric: tabular-nums; }
+.materia-revisar { font-size: 0.7rem; font-weight: 700; color: #fbbf24; white-space: nowrap; }
+.materia-stat-item.nao-comecou .materia-nome { color: #94a3b8; }
+.materia-stat-item.nao-comecou .materia-taxa { color: #64748b; font-weight: 500; font-size: 0.72rem; }
+.link-cobertura { align-self: flex-start; font-size: 0.78rem; margin-left: 0.5rem; }
+.painel-vazio { font-size: 0.8rem; color: #64748b; }
+.materia-stat-header { gap: 0.5rem; }
+.materia-stat-header .materia-taxa { white-space: nowrap; flex-shrink: 0; text-align: right; }
