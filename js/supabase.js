@@ -56,7 +56,7 @@ function gravarFila(fila) {
     } catch (e) { /* sem localStorage: a fila só não persiste */ }
 }
 
-function montarLinha(userId, { questaoId, materia, banca, acertou, respostaEscolhida, momento, confianca }) {
+function montarLinha(userId, { questaoId, materia, banca, acertou, respostaEscolhida, momento, confianca, gabarito }) {
     const linha = {
         user_id: userId,
         questao_id: String(questaoId),
@@ -67,28 +67,44 @@ function montarLinha(userId, { questaoId, materia, banca, acertou, respostaEscol
         created_at: new Date(momento || Date.now()).toISOString()
     };
     if (confianca === 'certeza' || confianca === 'duvida') linha.confianca = confianca;
+    // Guardar o gabarito na própria resposta (U9) é o que permite mostrá-lo de novo depois
+    // (revisão, outro aparelho) sem chamar o servidor outra vez — só pra quem já respondeu.
+    if (gabarito) linha.gabarito = String(gabarito).toUpperCase();
     return linha;
 }
 
-// A coluna "confianca" existe no banco? Enquanto o SQL não for rodado, o app segue sem ela
-// (sem isso, toda resposta ficaria presa na fila offline por causa de uma coluna inexistente).
+// As colunas "confianca" e "gabarito" existem no banco? Enquanto o SQL não for rodado, o
+// app segue sem elas (sem isso, toda resposta ficaria presa na fila por uma coluna inexistente).
 let colunaConfiancaExiste = true;
+let colunaGabaritoExiste = true;
 
 function erroDeColunaConfianca(erro) {
     return Boolean(erro) && /confianca/i.test(`${erro.message || ''} ${erro.details || ''} ${erro.hint || ''}`);
 }
 
+function erroDeColunaGabarito(erro) {
+    return Boolean(erro) && /\bgabarito\b/i.test(`${erro.message || ''} ${erro.details || ''} ${erro.hint || ''}`);
+}
+
 async function inserirLinhas(linhas) {
-    const enviar = colunaConfiancaExiste
-        ? linhas
-        : linhas.map(({ confianca, ...resto }) => resto);
+    let enviar = linhas;
+    if (!colunaConfiancaExiste) enviar = enviar.map(({ confianca, ...resto }) => resto);
+    if (!colunaGabaritoExiste) enviar = enviar.map(({ gabarito, ...resto }) => resto);
+
     const { error } = await supabaseClient.from('historico_respostas').insert(enviar);
-    if (error && colunaConfiancaExiste && erroDeColunaConfianca(error)) {
-        colunaConfiancaExiste = false;
-        console.warn("[FocoPro] Coluna 'confianca' ainda não existe no Supabase; enviando sem ela.");
-        return inserirLinhas(linhas);
+    if (error) {
+        if (colunaConfiancaExiste && erroDeColunaConfianca(error)) {
+            colunaConfiancaExiste = false;
+            console.warn("[FocoPro] Coluna 'confianca' ainda não existe no Supabase; enviando sem ela.");
+            return inserirLinhas(linhas);
+        }
+        if (colunaGabaritoExiste && erroDeColunaGabarito(error)) {
+            colunaGabaritoExiste = false;
+            console.warn("[FocoPro] Coluna 'gabarito' ainda não existe no Supabase; enviando sem ela.");
+            return inserirLinhas(linhas);
+        }
+        throw error;
     }
-    if (error) throw error;
 }
 
 /**
@@ -225,8 +241,15 @@ export async function carregarHistoricoIncremental(cache) {
     } catch (e) { /* sem sessão */ }
     if (!user) return null;
 
-    const colunasCompletas = 'questao_id, acertou, resposta_usuario, created_at, confianca';
-    const colunasSemConfianca = 'questao_id, acertou, resposta_usuario, created_at';
+    // Colunas opcionais (confianca, gabarito): monta a lista a partir do que ainda não falhou,
+    // e desliga a que faltar, tentando de novo sem ela — no máximo 1 tentativa por coluna.
+    const colunasBase = 'questao_id, acertou, resposta_usuario, created_at';
+    function colunasParaSelecionar() {
+        let cols = colunasBase;
+        if (colunaConfiancaExiste) cols += ', confianca';
+        if (colunaGabaritoExiste) cols += ', gabarito';
+        return cols;
+    }
 
     const buscarLinhas = async (aPartirDe) => {
         const buscar = (colunas) => buscarTodasAsPaginas(() => {
@@ -237,13 +260,20 @@ export async function carregarHistoricoIncremental(cache) {
             if (aPartirDe) consulta = consulta.gt('created_at', aPartirDe);
             return consulta.order('created_at', { ascending: true });
         });
-        if (!colunaConfiancaExiste) return buscar(colunasSemConfianca);
-        try {
-            return await buscar(colunasCompletas);
-        } catch (erro) {
-            if (!erroDeColunaConfianca(erro)) throw erro;
-            colunaConfiancaExiste = false;
-            return buscar(colunasSemConfianca);
+        for (let tentativa = 0; tentativa < 3; tentativa++) {
+            try {
+                return await buscar(colunasParaSelecionar());
+            } catch (erro) {
+                if (colunaConfiancaExiste && erroDeColunaConfianca(erro)) {
+                    colunaConfiancaExiste = false;
+                    continue;
+                }
+                if (colunaGabaritoExiste && erroDeColunaGabarito(erro)) {
+                    colunaGabaritoExiste = false;
+                    continue;
+                }
+                throw erro;
+            }
         }
     };
 
@@ -435,11 +465,58 @@ export async function carregarFavoritosEAnotacoes() {
     }
 }
 
+// A tabela 'questoes_gabarito' existe e a coluna 'resposta_correta' de 'questoes' já é
+// opcional? Enquanto a SQL do U9 não for rodada (as duas coisas vêm juntas nela), o gabarito
+// continua indo para a coluna antiga em 'questoes' — nada quebra, nenhuma importação falha.
+let tabelaGabaritoExiste = true;
+
+function erroDeTabelaGabarito(erro) {
+    return Boolean(erro) && /questoes_gabarito/i.test(`${erro?.message || ''} ${erro?.details || ''} ${erro?.hint || ''}`);
+}
+
+// Postgres 23502 = violação de NOT NULL: a coluna 'resposta_correta' ainda exige valor
+// (a SQL do U9, que a torna opcional, não rodou ainda).
+function erroDeColunaRespostaObrigatoria(erro) {
+    return Boolean(erro) && erro.code === '23502' && /resposta_correta/i.test(`${erro?.message || ''} ${erro?.details || ''}`);
+}
+
+function comGabaritoEmQuestoes(payload, gabaritos) {
+    const porId = new Map(gabaritos.map(g => [g.questao_id, g.resposta_correta]));
+    return payload.map(q => ({ ...q, resposta_correta: porId.get(q.id) || 'A' }));
+}
+
+async function upsertQuestoesComPlanoB(payload, gabaritos) {
+    const { error } = await supabaseClient.from('questoes').upsert(payload);
+    if (error) {
+        if (tabelaGabaritoExiste && erroDeColunaRespostaObrigatoria(error)) {
+            tabelaGabaritoExiste = false;
+            console.warn("[FocoPro] Coluna 'resposta_correta' de 'questoes' ainda exige valor (SQL do U9 não rodou); salvando do jeito antigo por ora.");
+            return upsertQuestoesComPlanoB(comGabaritoEmQuestoes(payload, gabaritos), gabaritos);
+        }
+        throw error;
+    }
+
+    if (!tabelaGabaritoExiste) return; // plano B: o gabarito já foi em 'questoes', não precisa da tabela nova
+
+    const { error: erroGabarito } = await supabaseClient.from('questoes_gabarito').upsert(gabaritos);
+    if (erroGabarito) {
+        if (erroDeTabelaGabarito(erroGabarito)) {
+            tabelaGabaritoExiste = false;
+            console.warn("[FocoPro] Tabela 'questoes_gabarito' ainda não existe no Supabase; gabarito reenviado para 'questoes' por ora (rode a SQL do U9).");
+            return upsertQuestoesComPlanoB(comGabaritoEmQuestoes(payload, gabaritos), gabaritos);
+        }
+        throw erroGabarito;
+    }
+}
+
 /**
- * Salva uma lista de questões importadas na tabela 'questoes' (a RLS só permite ao admin)
+ * Salva uma lista de questões importadas na tabela 'questoes' (a RLS só permite ao admin).
+ * O gabarito (U9) vai para 'questoes_gabarito', uma tabela separada que só o admin lê —
+ * 'questoes' não leva mais a resposta certa para quem só está estudando.
  */
 export async function salvarQuestoesEmMassa(arrayDeQuestoes) {
     try {
+        const gabaritos = [];
         const payload = arrayDeQuestoes
             .filter(q => q && (q.pergunta || q.enunciado))
             .map((q, idx) => {
@@ -448,12 +525,13 @@ export async function salvarQuestoesEmMassa(arrayDeQuestoes) {
                     ? qNorm.alternativas
                     : Object.values(qNorm.alternativas || {});
                 const letraGabarito = gabaritoDe(qNorm) || 'A';
+                const idQuestao = String(qNorm.id);
+                gabaritos.push({ questao_id: idQuestao, resposta_correta: letraGabarito });
 
-                return {
-                    id: String(qNorm.id),
+                const linha = {
+                    id: idQuestao,
                     pergunta: qNorm.pergunta || qNorm.enunciado,
                     alternativas: alternativasArray,
-                    resposta_correta: letraGabarito,
                     materia: qNorm.materia || 'Geral',
                     banca: qNorm.banca || 'Não informada',
                     orgao: qNorm.orgao || null,
@@ -468,16 +546,59 @@ export async function salvarQuestoesEmMassa(arrayDeQuestoes) {
                     versao_referencia: qNorm.versao_referencia || null,
                     laboratorio: qNorm.laboratorio || null
                 };
+                // Plano B já ativo (de uma tentativa anterior nesta mesma sessão): manda do jeito antigo direto
+                if (!tabelaGabaritoExiste) linha.resposta_correta = letraGabarito;
+                return linha;
             });
 
         if (payload.length === 0) return;
 
-        const { error } = await supabaseClient.from('questoes').upsert(payload);
-        if (error) throw error;
+        await upsertQuestoesComPlanoB(payload, gabaritos);
     } catch (erro) {
         console.error("Erro ao salvar questões em massa no Supabase:", erro.message);
         throw erro;
     }
+}
+
+// ---------- Correção de resposta no servidor (U9) ----------
+// O RPC 'verificar_resposta' lê o gabarito de 'questoes_gabarito' (RLS: só o admin lê direto)
+// e só devolve a letra depois de receber a resposta do usuário — ninguém baixa o gabarito de
+// uma questão que ainda não respondeu. PGRST202 = PostgREST não achou a função (SQL do U9
+// ainda não rodou): nesse caso corrige no navegador, com o gabarito que a questão ainda traz
+// (plano B da transição — para de funcionar sozinho quando a coluna antiga for esvaziada).
+function erroDeRpcInexistente(erro) {
+    return Boolean(erro) && (erro.code === 'PGRST202' || /verificar_resposta/i.test(`${erro?.message || ''} ${erro?.hint || ''}`));
+}
+
+export async function corrigirResposta(questao, respostaEscolhida) {
+    let ultimoErro = null;
+    try {
+        const { data, error } = await supabaseClient.rpc('verificar_resposta', {
+            p_questao_id: String(questao.id),
+            p_resposta: String(respostaEscolhida)
+        });
+        if (error) throw error;
+        const linha = Array.isArray(data) ? data[0] : data;
+        if (linha && linha.gabarito) {
+            return { acertou: Boolean(linha.acertou), gabarito: String(linha.gabarito).toUpperCase() };
+        }
+        ultimoErro = new Error("O servidor não encontrou o gabarito desta questão.");
+    } catch (erro) {
+        ultimoErro = erro;
+        if (!erroDeRpcInexistente(erro)) {
+            console.warn("[FocoPro] Falha ao corrigir no servidor; tentando o plano B:", erro.message);
+        }
+    }
+
+    // Plano B: só funciona enquanto a questão ainda carregar o gabarito localmente (fase de
+    // transição, antes da coluna antiga ser esvaziada). Sem ele, melhor avisar do que inventar.
+    const gabaritoLocal = questao.gabarito || questao.resposta_correta;
+    if (gabaritoLocal) {
+        const gabarito = gabaritoDe(questao);
+        return { acertou: String(respostaEscolhida).trim().toUpperCase() === gabarito, gabarito };
+    }
+
+    throw ultimoErro || new Error("Não foi possível corrigir esta resposta agora.");
 }
 
 /**

@@ -96,6 +96,9 @@ function consolidarRegistrosNuvem(registrosNuvem, mapaNuvem = {}) {
             momento: reg.created_at ? new Date(reg.created_at).getTime() : Date.now(),
             letra: reg.resposta_usuario || null
         });
+        // U9: o gabarito revelado nesta resposta (se o servidor já mandava a coluna) viaja
+        // com o histórico — assim outro aparelho não precisa corrigir de novo pra mostrá-lo.
+        if (reg.gabarito) mapaNuvem[id].gabaritoRevelado = String(reg.gabarito).toUpperCase();
     });
 
     return mapaNuvem;
@@ -162,7 +165,9 @@ export async function carregarHistorico() {
                         favorito: Boolean(local.favorito),
                         favoritoEm: local.favoritoEm || 0,
                         anotacaoEm: local.anotacaoEm || 0,
-                        ultimaEscolha: local.ultimaEscolha || dadosNuvem.ultimaEscolha || null
+                        ultimaEscolha: local.ultimaEscolha || dadosNuvem.ultimaEscolha || null,
+                        // U9: qualquer um dos dois lados que já tiver o gabarito revelado basta
+                        gabaritoRevelado: local.gabaritoRevelado || dadosNuvem.gabaritoRevelado || null
                     };
                 }
             });

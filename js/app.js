@@ -8,7 +8,6 @@
 import {
     esc,                    // escapa HTML (usado em formatarExplicacaoIA)
     obterOpcoes,
-    gabaritoDe,
     preencherSelect,
     atualizarChipTag,
     atualizarPlacar,
@@ -32,7 +31,8 @@ import {
     salvarFavoritoNaNuvem,
     salvarAnotacaoNaNuvem,
     apagarFavoritosDoUsuario,
-    limparFilaFavoritosPendente
+    limparFilaFavoritosPendente,
+    corrigirResposta
 } from './supabase.js';
 
 // ---------- 1.3 Autenticação ----------
@@ -398,12 +398,10 @@ async function responder(card, botao) {
     }
 
     const letraEscolhida = radioSelecionado.value;
-    const gabaritoOficial = gabaritoDe(q);
-    const acertou = (letraEscolhida === gabaritoOficial);
     // Qual botão foi tocado: "Tenho certeza" ou "Na dúvida"
     const confianca = (botao && botao.dataset.confianca === 'duvida') ? 'duvida' : 'certeza';
 
-    // 1. MODO SIMULADO: registra sem revelar o gabarito
+    // 1. MODO SIMULADO: registra sem revelar o gabarito (a correção roda ao finalizar — simulado.js)
     if (simulado) {
         simulado.respostas[idChave] = letraEscolhida;
         if (q.id) simulado.respostas[q.id] = letraEscolhida;
@@ -430,9 +428,25 @@ async function responder(card, botao) {
         return;
     }
 
-    // 2. MODO ESTUDO / REVISÃO
+    // 2. MODO ESTUDO / REVISÃO: corrige no servidor antes de revelar qualquer coisa (U9) —
+    // o front não guarda mais o gabarito de uma questão que ainda não foi respondida.
+    // Trava já (antes do await) pra um segundo clique ("Tenho certeza"/"Na dúvida") não
+    // disparar duas correções em paralelo pro mesmo card.
     card.dataset.respondida = "1";
     if (botao) botao.disabled = true;
+
+    let resultado;
+    try {
+        resultado = await corrigirResposta(q, letraEscolhida);
+    } catch (erro) {
+        console.warn("[FocoPro] Não foi possível corrigir a resposta agora:", erro.message);
+        showToast("Não foi possível corrigir agora. Tente de novo em instantes.", "erro");
+        card.dataset.respondida = ""; // libera pra tentar de novo
+        if (botao) botao.disabled = false;
+        return;
+    }
+    const { acertou, gabarito: gabaritoOficial } = resultado;
+    q.gabarito = gabaritoOficial; // fica em memória: revelar() e qualquer novo render usam isto
 
     // 3. ATUALIZAÇÃO DO HISTÓRICO LOCAL IMEDIATA (Garante persistência no F5)
     // A regra de revisão espaçada (agenda, status) fica toda em js/revisao.js
@@ -440,6 +454,7 @@ async function responder(card, botao) {
     const h = historico[idChave];
     aplicarResposta(h, { acertou, confianca, momento: Date.now(), letra: letraEscolhida });
     h.materia = q.materia || 'Geral';
+    h.gabaritoRevelado = gabaritoOficial; // sobrevive ao F5 e viaja pra nuvem (U9)
 
     salvarHistorico(historico);
     registrarDiaDeEstudo();
@@ -470,7 +485,8 @@ async function responder(card, botao) {
         acertou: acertou,
         respostaEscolhida: letraEscolhida,
         momento: h.ultimaData,
-        confianca
+        confianca,
+        gabarito: gabaritoOficial
     });
 }
 
@@ -1360,6 +1376,14 @@ async function carregarBancoDeQuestoes(questoesChegando = null) {
     questoes = mesclarQuestoes(daNuvem);
 
     porId = new Map(questoes.map(q => [String(q.id), q]));
+
+    // U9: o front não traz mais o gabarito de quem ainda não respondeu. Pra quem já respondeu
+    // antes (neste aparelho ou em outro, via histórico sincronizado), devolve o gabarito já
+    // revelado pra memória — sem isso, reabrir o app faria a revisão/"ver gabarito" sumir.
+    questoes.forEach(q => {
+        const h = historico[String(q.id)];
+        if (h && h.gabaritoRevelado) q.gabarito = h.gabaritoRevelado;
+    });
 
     preencherSelect(selectBanca, "🏛️ Todas as Bancas", "banca", questoes);
     preencherSelect(selectMateria, "📖 Todas as Matérias", "materia", questoes);
