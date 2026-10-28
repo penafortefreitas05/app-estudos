@@ -23,8 +23,12 @@
         <!-- 2. PAINEL LATERAL (SIDEBAR & DESEMPENHO) -->
         <aside class="sidebar">
             <div class="brand">
-                <h2>FocoPro ✦</h2>
-                <p>Foco total na aprovação</p>
+                <div>
+                    <h2>FocoPro ✦</h2>
+                    <p>Foco total na aprovação</p>
+                </div>
+                <!-- Só no computador: recolhe a barra inteira para ficar só com as questões -->
+                <button type="button" id="btn-recolher-barra" class="btn-recolher-barra" title="Recolher a barra e ficar só com as questões" aria-label="Recolher a barra lateral">«</button>
             </div>
             <!-- Minha conta: o avatar abre as ações da conta (raras), que antes ficavam soltas no menu.
                  Visitante: tocar no cartão abre o login (app.js). -->
@@ -62,12 +66,6 @@
                     </button>
                 </div>
             </details>
-
-            <!-- Só no computador: recolhe a barra inteira para ficar só com as questões -->
-            <div class="barra-topo">
-                <span class="barra-topo-marca">FocoPro ✦</span>
-                <button type="button" id="btn-recolher-barra" class="btn-recolher-barra" title="Recolher a barra e ficar só com as questões" aria-label="Recolher a barra lateral">«</button>
-            </div>
 
             <!-- A ação do dia, sempre à vista -->
             <button id="btn-modo-revisao" class="btn-sidebar btn-revisar" title="Questões que você errou ou acertou na dúvida voltam em 1, 3, 7 e 21 dias">
