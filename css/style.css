@@ -1435,3 +1435,43 @@ body.modo-foco .questoes-grid { max-width: 860px; width: 100%; margin: 0 auto; }
 .reporte-item p { color: #cbd5e1; font-size: 0.85rem; margin: 0.3rem 0 0; white-space: pre-wrap; word-break: break-word; }
 .reporte-acoes { display: flex; gap: 0.4rem; align-items: flex-start; }
 .reporte-acoes .btn-sidebar { width: auto; padding: 0.35rem 0.7rem; font-size: 0.78rem; }
+
+/* ==================== PRIMEIRA IMPRESSÃO (pacote 1) ==================== */
+/* "Tenho certeza" e "Na dúvida" com o mesmo peso: a escolha tem que ser consciente,
+   não o clique no botão azul que chama mais atenção */
+.btn-responder.btn-certeza {
+    background: transparent;
+    color: #93c5fd;
+    border: 1px solid rgba(96, 165, 250, 0.55);
+}
+.btn-responder.btn-certeza:hover { background: rgba(96, 165, 250, 0.1); }
+.btn-responder.btn-certeza:disabled { background: #1e293b; color: #cbd5e1; border-color: #334155; }
+
+/* Visitante: sem login não há questões, então a barra de busca/filtros sai */
+body.visitante .top-bar { display: none; }
+
+.entrada-visitante {
+    max-width: 620px;
+    margin: 2rem auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+.entrada-marca { color: #60a5fa; font-weight: 700; letter-spacing: 0.02em; margin: 0; }
+.entrada-titulo { color: #f8fafc; font-size: clamp(1.5rem, 4.5vw, 2rem); line-height: 1.25; margin: 0; text-wrap: balance; }
+.entrada-lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+.entrada-lista li {
+    color: #cbd5e1;
+    line-height: 1.5;
+    padding: 0.85rem 1rem;
+    background: #0f172a;
+    border: 1px solid #1e293b;
+    border-radius: 10px;
+}
+.entrada-lista strong { color: #f8fafc; }
+.entrada-acoes { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.btn-entrada { min-height: 48px; padding: 0 1.5rem; font-size: 1rem; }
+@media (max-width: 768px) {
+    .entrada-visitante { margin: 0.5rem auto 1.5rem; }
+    .entrada-acoes .btn-entrada { flex: 1 1 100%; }
+}

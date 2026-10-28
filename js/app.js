@@ -307,7 +307,8 @@ function definirTag(tag) {
 // ==================== FIM ====================
 
 // ---------- 6c. ORDEM DA LISTA ----------
-// Primeiro o que vence hoje na revisão, depois as inéditas, por último as já feitas.
+// Primeiro o que vence hoje na revisão, depois as ainda não feitas (Iniciante primeiro),
+// por último as já feitas.
 // Sem matéria (ou assunto) escolhido, as matérias vêm MISTURADAS: alternar temas treina
 // a reconhecer o tipo de questão, como na prova (interleaving). A mistura muda uma vez
 // por dia, para a lista não pular de lugar a cada filtro ou busca.
@@ -330,11 +331,18 @@ function ordenarParaEstudo(lista) {
         if (!h || !h.tentativas) return 1;
         return 2;
     };
-    const chaves = new Map(lista.map(q => [q, [grupo(q), misturar ? posicaoDoDia(String(q.id)) : 0]]));
+    // Entre as ainda não feitas, o nível mais básico vem antes: Iniciante → Intermediário →
+    // prova. Um iniciante não cai mais numa questão do BACEN na 1ª tela; quem quer prova
+    // escolhe "Avançado" no filtro de nível. Dentro de cada nível, as matérias seguem misturadas.
+    const nivelDe = (q) => Number(q.nivel) || 3;
+    const chaves = new Map(lista.map(q => {
+        const g = grupo(q);
+        return [q, [g, g === 1 ? nivelDe(q) : 0, misturar ? posicaoDoDia(String(q.id)) : 0]];
+    }));
     // sort estável: com uma matéria escolhida, cada grupo mantém a ordem do banco (em bloco)
     return [...lista].sort((a, b) => {
         const ka = chaves.get(a), kb = chaves.get(b);
-        return (ka[0] - kb[0]) || (ka[1] - kb[1]);
+        return (ka[0] - kb[0]) || (ka[1] - kb[1]) || (ka[2] - kb[2]);
     });
 }
 
@@ -507,6 +515,7 @@ async function responder(card, botao) {
     const elemTentativas = card.querySelector(".tentativas");
     if (elemTentativas) {
         elemTentativas.innerText = `Tentativas: ${h.tentativas}`;
+        elemTentativas.hidden = false;
     }
 
     atualizarPlacar(historico, questoes);
@@ -1297,7 +1306,7 @@ function aplicarModoAuth(modo) {
     switch (modo) {
         case 'cadastro':
             authTitulo.innerText = "Criar nova conta";
-            authSubtitulo.innerText = "Comece a salvar seu progresso na nuvem.";
+            authSubtitulo.innerText = "Você começa pelo nível Iniciante e o app guarda seu progresso.";
             btnSubmitAuth.innerText = "Cadastrar";
             authTextoAlternar.innerText = "Já tem uma conta?";
             btnAlternarAuth.innerText = "Fazer login";
@@ -1334,7 +1343,7 @@ function aplicarModoAuth(modo) {
             break;
         default: // 'login'
             authTitulo.innerText = "Entrar no FocoPro";
-            authSubtitulo.innerText = "Sincronize seu histórico e caderno de erros.";
+            authSubtitulo.innerText = "Entre para continuar de onde parou.";
             btnSubmitAuth.innerText = "Entrar";
             authTextoAlternar.innerText = "Não tem uma conta?";
             btnAlternarAuth.innerText = "Criar conta";
@@ -1590,14 +1599,10 @@ async function carregarBancoDeQuestoes(questoesChegando = null) {
         atualizarSelectAssunto();
 
         atualizarPlacar(historico, questoes);
-        renderizarQuestoes(
-            container,
-            [],
-            historico,
-            "🔒 Faça login para acessar o banco de questões do FocoPro."
-        );
+        mostrarEntradaVisitante();
         return;
     }
+    document.body.classList.remove("visitante");
 
     // Usuário logado: a nuvem (Supabase) é a única fonte das questões.
     // Se ela falhar, o app diz isso (antes mostrava 2 questões de exemplo como se fossem o banco).
@@ -1634,6 +1639,38 @@ async function carregarBancoDeQuestoes(questoesChegando = null) {
 
     atualizarPlacar(historico, questoes);
     aplicarFiltros();
+}
+
+// ---------- Tela de entrada do visitante ----------
+// Antes era só "Faça login..." e, no celular, nenhum botão na tela (o login ficava no menu ☰).
+// Agora diz o que é o FocoPro e tem as duas ações à vista. A barra de busca/filtros some
+// (body.visitante), porque sem login não há questões para filtrar.
+function mostrarEntradaVisitante() {
+    document.body.classList.add("visitante");
+    container.innerHTML = `
+        <section class="entrada-visitante" aria-labelledby="entrada-titulo">
+            <p class="entrada-marca">FocoPro ✦</p>
+            <h1 id="entrada-titulo" class="entrada-titulo">Estude para concursos de TI, do zero até o nível da prova.</h1>
+            <ul class="entrada-lista">
+                <li><strong>Comece pelo básico.</strong> As questões vêm em níveis: Iniciante, Intermediário e de prova.</li>
+                <li><strong>Revisão no dia certo.</strong> O que você errar volta amanhã, depois em 3, 7 e 21 dias.</li>
+                <li><strong>Entenda o erro.</strong> Toda questão tem explicação, e a IA explica o seu erro quando você pedir.</li>
+            </ul>
+            <div class="entrada-acoes">
+                <button type="button" class="btn-primary btn-entrada" data-modo-auth="cadastro">Criar conta</button>
+                <button type="button" class="btn-secondary btn-entrada" data-modo-auth="login">Já tenho conta</button>
+            </div>
+        </section>`;
+}
+
+if (container) {
+    container.addEventListener("click", (e) => {
+        const botao = e.target.closest(".btn-entrada[data-modo-auth]");
+        if (!botao || !modalAuth) return;
+        aplicarModoAuth(botao.dataset.modoAuth);
+        modalAuth.classList.add("visible");
+        if (inputAuthEmail) inputAuthEmail.focus();
+    });
 }
 
 // Falha ao buscar o banco: aviso + botão para tentar de novo
