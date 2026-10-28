@@ -631,8 +631,8 @@ body {
 }
 .badge-nivel.nivel-1 { background: #052e1680; color: #86efac; border-color: #166534; }
 .badge-nivel.nivel-2 { background: #0c4a6e80; color: #7dd3fc; border-color: #075985; }
-.badge-nivel.nivel-3 { background: #78350f60; color: #fcd34d; border-color: #92400e; }
-.badge-nivel.nivel-4 { background: #4c1d9580; color: #d8b4fe; border-color: #6b21a8; }
+.badge-nivel.nivel-3 { background: #78350f60; color: #fdba74; border-color: #9a3412; }
+.badge-nivel.nivel-4 { background: #7f1d1d80; color: #fca5a5; border-color: #991b1b; }
 
 .badge-info {
     color: #94a3b8; /* Slate 400 */
@@ -1516,7 +1516,19 @@ body.visitante .top-bar { display: none; }
 /* Por matéria */
 .materia-taxa small { color: #64748b; font-weight: 500; }
 .materia-rodape { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
-.materia-niveis { font-size: 0.66rem; color: #64748b; font-variant-numeric: tabular-nums; }
+.materia-niveis { display: flex; flex-wrap: wrap; gap: 0.2rem 0.55rem; font-size: 0.68rem; color: #94a3b8; font-variant-numeric: tabular-nums; }
+.nv-chip { display: inline-flex; align-items: center; gap: 0.25rem; white-space: nowrap; }
+.nv-letra {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 1.05rem; height: 1.05rem; border-radius: 4px; border: 1px solid;
+    font-size: 0.62rem; font-weight: 800; line-height: 1;
+}
+.nv-letra.nv-1 { background: #052e1680; color: #86efac; border-color: #166534; }
+.nv-letra.nv-2 { background: #0c4a6e80; color: #7dd3fc; border-color: #075985; }
+.nv-letra.nv-3 { background: #78350f60; color: #fdba74; border-color: #9a3412; }
+.nv-letra.nv-4 { background: #7f1d1d80; color: #fca5a5; border-color: #991b1b; }
+.legenda-niveis { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 0.6rem; margin: 0 0 0.5rem; padding: 0 0.2rem; font-size: 0.68rem; color: #94a3b8; }
+.legenda-nota { margin-left: auto; color: #64748b; }
 .materia-revisar { font-size: 0.7rem; font-weight: 700; color: #fbbf24; white-space: nowrap; }
 .materia-stat-item.nao-comecou .materia-nome { color: #94a3b8; }
 .materia-stat-item.nao-comecou .materia-taxa { color: #64748b; font-weight: 500; font-size: 0.72rem; }
