@@ -586,6 +586,10 @@ function desenharCards(container, lista, historico, restaurarRespostas) {
                         <div class="explicacao-texto"></div>
                     </div>
 
+                    <div class="area-reporte">
+                        <button type="button" class="btn-reportar" data-id="${esc(idStr)}" title="Gabarito errado, enunciado confuso, questão desatualizada...">🚩 Reportar problema</button>
+                    </div>
+
                     <div class="area-anotacao">
                         <button type="button" class="btn-anotacao-toggle">
                             📝 <span>${anotacao ? 'Editar Anotação Pessoal' : 'Adicionar Anotação Pessoal'}</span>
