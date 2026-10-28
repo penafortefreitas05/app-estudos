@@ -1524,3 +1524,40 @@ body.visitante .top-bar { display: none; }
 .painel-vazio { font-size: 0.8rem; color: #64748b; }
 .materia-stat-header { gap: 0.5rem; }
 .materia-stat-header .materia-taxa { white-space: nowrap; flex-shrink: 0; text-align: right; }
+
+/* ==================== HOJE (pacote 3) ==================== */
+.cartao-hoje {
+    background: linear-gradient(180deg, rgba(37, 99, 235, 0.12), rgba(15, 23, 42, 0.9));
+    border: 1px solid #1e3a8a; border-radius: 12px; padding: 1.1rem 1.25rem;
+    display: flex; flex-direction: column; gap: 0.75rem;
+}
+.hoje-topo { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.hoje-rotulo { color: #60a5fa; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 0.2rem; }
+.hoje-titulo { color: #f8fafc; font-size: 1.1rem; margin: 0 0 0.25rem; }
+.hoje-texto { color: #94a3b8; font-size: 0.85rem; margin: 0; }
+.hoje-continuar { min-height: 44px; padding: 0 1.25rem; font-size: 0.95rem; white-space: nowrap; flex-shrink: 0; }
+.hoje-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.hoje-chip { font-size: 0.75rem; font-weight: 600; color: #cbd5e1; background: #0f172a; border: 1px solid #1e293b; border-radius: 99px; padding: 0.2rem 0.6rem; }
+.hoje-chip.ok { color: #34d399; border-color: rgba(16, 185, 129, 0.4); }
+.hoje-semana { display: flex; gap: 0.5rem; align-items: flex-start; border-top: 1px solid #1e293b; padding-top: 0.6rem; }
+.hoje-semana p { margin: 0; color: #cbd5e1; font-size: 0.82rem; line-height: 1.45; flex: 1; }
+body.modo-foco .cartao-hoje { display: none; }
+@media (max-width: 768px) {
+    .hoje-topo { flex-direction: column; align-items: stretch; }
+    .hoje-continuar { width: 100%; min-height: 48px; }
+}
+
+/* Explicações no toque */
+.info-i { color: #64748b; font-size: 0.85em; margin-left: 0.1rem; }
+[data-explicacao] { cursor: pointer; }
+[data-explicacao][aria-expanded="true"] { border-color: #3b82f6; }
+.explicacao-desempenho { margin: 0; font-size: 0.75rem; line-height: 1.45; color: #cbd5e1; background: #0b1222; border: 1px solid #1e3a8a; border-radius: 8px; padding: 0.5rem 0.6rem; }
+.btn-limpar-vazio { font-size: inherit; }
+/* ⓘ no canto do cartão, para não empurrar o título (os 3 cartões são estreitos) */
+.resumo-card { position: relative; }
+.resumo-card .info-i { position: absolute; top: 4px; right: 6px; font-size: 0.62rem; margin: 0; }
+.explicacao-desempenho.dica-toque { background: none; border-color: transparent; color: #64748b; padding: 0 0.2rem; font-size: 0.7rem; }
+.gaveta-desempenho-conteudo { padding: 0 0.5rem 0.7rem; }
+.gaveta-desempenho .resumo-row { gap: 0.3rem; }
+.gaveta-desempenho .resumo-card { padding: 0.5rem 0.35rem; }
+.gaveta-desempenho .resumo-titulo { font-size: 0.6rem; overflow: hidden; text-overflow: ellipsis; }

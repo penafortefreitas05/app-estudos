@@ -74,9 +74,9 @@
                 <summary>📊 Meu desempenho</summary>
                 <div class="gaveta-desempenho-conteudo">
                     <!-- Meta diária (some enquanto não houver meta no perfil) -->
-                    <div class="meta-hoje" id="meta-hoje" hidden>
+                    <div class="meta-hoje" id="meta-hoje" hidden role="button" tabindex="0" aria-expanded="false" data-explicacao="Meta de hoje: questões diferentes que você respondeu hoje. Para mudar a meta, abra Minha conta e toque em Meta diária e perfil.">
                         <div class="meta-hoje-topo">
-                            <span>🎯 Meta de hoje</span>
+                            <span>🎯 Meta de hoje <span class="info-i" aria-hidden="true">ⓘ</span></span>
                             <span id="meta-hoje-valor">0 de 10</span>
                         </div>
                         <div class="meta-hoje-barra"><span id="meta-hoje-fill"></span></div>
@@ -84,22 +84,23 @@
 
                     <!-- Os 3 números que mostram se o estudo está no rumo -->
                     <div class="resumo-row">
-                        <div class="resumo-card" title="Dias seguidos com pelo menos 1 questão respondida. Um dia de folga por semana não zera a sequência.">
+                        <div class="resumo-card" role="button" tabindex="0" aria-expanded="false" data-explicacao="🔥 Dias: dias seguidos com pelo menos 1 questão respondida. Um dia sem estudo por semana não zera a sequência; dois seguidos zeram.">
                             <span class="resumo-titulo">🔥 Dias</span>
                             <span class="resumo-valor" id="stat-sequencia">0</span>
                             <span class="resumo-detalhe" id="stat-sequencia-detalhe">recorde: 0</span>
                         </div>
-                        <div class="resumo-card" title="Quantas questões do app você já respondeu pelo menos uma vez">
+                        <div class="resumo-card" role="button" tabindex="0" aria-expanded="false" data-explicacao="🗺️ Feitas: quanto do banco de questões você já respondeu pelo menos uma vez.">
                             <span class="resumo-titulo">🗺️ Feitas</span>
                             <span class="resumo-valor" id="stat-cobertura">—</span>
                             <span class="resumo-detalhe" id="stat-cobertura-detalhe">0 de 0 feitas</span>
                         </div>
-                        <div class="resumo-card" id="card-criticas" title="Matérias com menos de 60% de acerto (mínimo de 5 respostas)">
+                        <div class="resumo-card" id="card-criticas" role="button" tabindex="0" aria-expanded="false" data-explicacao="⚠️ Reforçar: matérias com menos de 60% de acerto, contando só as que já têm 5 respostas ou mais. Elas aparecem com ⚠️ em Por matéria; toque nelas para treinar.">
                             <span class="resumo-titulo">⚠️ Reforçar</span>
                             <span class="resumo-valor" id="stat-criticas">0</span>
                             <span class="resumo-detalhe" id="stat-criticas-detalhe">nenhuma</span>
                         </div>
                     </div>
+                    <p class="explicacao-desempenho dica-toque" id="explicacao-desempenho" aria-live="polite">ⓘ Toque num número para entender o que ele mostra.</p>
 
                     <!-- Acertos e erros totais: discretos, numa linha -->
                     <p class="totais-linha">
