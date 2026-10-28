@@ -32,7 +32,7 @@ import {
 } from './supabase.js';
 
 // ---------- 1.3 Autenticação ----------
-import { criarConta, entrar, sair } from './auth.js';
+import { criarConta, entrar, sair, enviarLinkRedefinicao, redefinirSenha } from './auth.js';
 
 // ---------- 1.4 Armazenamento local (localStorage) ----------
 import {
@@ -1021,13 +1021,79 @@ const authTitulo = document.getElementById('auth-titulo');
 const authSubtitulo = document.getElementById('auth-subtitulo');
 const btnSubmitAuth = document.getElementById('btn-submit-auth');
 const authTextoAlternar = document.getElementById('auth-texto-alternar');
+const authAreaAlternar = document.getElementById('auth-area-alternar');
+const campoAuthEmail = document.getElementById('campo-auth-email');
+const campoAuthSenha = document.getElementById('campo-auth-senha');
+const campoEsqueciLink = document.getElementById('campo-esqueci-link');
+const btnEsqueciSenha = document.getElementById('btn-esqueci-senha');
+const inputAuthEmail = document.getElementById('auth-email');
+const inputAuthSenha = document.getElementById('auth-senha');
 const userEmail = document.getElementById('user-email');
 const userAvatar = document.getElementById('user-avatar');
 
-let isCadastro = false;
+// Modo atual do modal de autenticação: 'login' | 'cadastro' | 'esqueci' | 'nova-senha'
+let modoAuth = 'login';
 
 // De quem são os dados que estão na tela agora (null = visitante)
 let idUsuarioCarregado = undefined;
+
+// Ajusta título, textos e quais campos aparecem no modal de autenticação,
+// de acordo com o modo. Centraliza aqui para não espalhar if/else pelos handlers.
+function aplicarModoAuth(modo) {
+    modoAuth = modo;
+
+    switch (modo) {
+        case 'cadastro':
+            authTitulo.innerText = "Criar nova conta";
+            authSubtitulo.innerText = "Comece a salvar seu progresso na nuvem.";
+            btnSubmitAuth.innerText = "Cadastrar";
+            authTextoAlternar.innerText = "Já tem uma conta?";
+            btnAlternarAuth.innerText = "Fazer login";
+            campoAuthEmail.style.display = '';
+            campoAuthSenha.style.display = '';
+            campoEsqueciLink.style.display = 'none';
+            authAreaAlternar.style.display = '';
+            inputAuthEmail.required = true;
+            inputAuthSenha.required = true;
+            break;
+        case 'esqueci':
+            authTitulo.innerText = "Recuperar senha";
+            authSubtitulo.innerText = "Informe seu e-mail e enviaremos um link para redefinir a senha.";
+            btnSubmitAuth.innerText = "Enviar link";
+            authTextoAlternar.innerText = "Lembrou a senha?";
+            btnAlternarAuth.innerText = "Fazer login";
+            campoAuthEmail.style.display = '';
+            campoAuthSenha.style.display = 'none';
+            campoEsqueciLink.style.display = 'none';
+            authAreaAlternar.style.display = '';
+            inputAuthEmail.required = true;
+            inputAuthSenha.required = false;
+            break;
+        case 'nova-senha':
+            authTitulo.innerText = "Defina sua nova senha";
+            authSubtitulo.innerText = "O link do e-mail confirmou quem você é. Escolha uma senha nova para continuar.";
+            btnSubmitAuth.innerText = "Salvar nova senha";
+            campoAuthEmail.style.display = 'none';
+            campoAuthSenha.style.display = '';
+            campoEsqueciLink.style.display = 'none';
+            authAreaAlternar.style.display = 'none';
+            inputAuthEmail.required = false;
+            inputAuthSenha.required = true;
+            break;
+        default: // 'login'
+            authTitulo.innerText = "Entrar no FocoPro";
+            authSubtitulo.innerText = "Sincronize seu histórico e caderno de erros.";
+            btnSubmitAuth.innerText = "Entrar";
+            authTextoAlternar.innerText = "Não tem uma conta?";
+            btnAlternarAuth.innerText = "Criar conta";
+            campoAuthEmail.style.display = '';
+            campoAuthSenha.style.display = '';
+            campoEsqueciLink.style.display = '';
+            authAreaAlternar.style.display = '';
+            inputAuthEmail.required = true;
+            inputAuthSenha.required = true;
+    }
+}
 
 // O Supabase dispara SIGNED_IN também quando a aba volta a ficar visível e quando renova o token.
 // Antes, isso recarregava tudo e apagava o simulado em andamento. Agora só recarrega
@@ -1044,6 +1110,13 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
         if (userEmail) userEmail.innerText = "Visitante";
         if (userAvatar) userAvatar.innerText = "?";
         if (btnAuthAcao) btnAuthAcao.innerText = "Fazer Login";
+    }
+
+    // O link de "esqueci minha senha" traz a pessoa de volta já autenticada, numa sessão
+    // temporária só para isso. Força a troca de senha antes de liberar o resto do app.
+    if (event === 'PASSWORD_RECOVERY') {
+        aplicarModoAuth('nova-senha');
+        if (modalAuth) modalAuth.classList.add('visible');
     }
 
     // Antes do iniciarApp terminar, quem carrega é ele
@@ -1087,50 +1160,46 @@ if (modalAuth) {
 
 if (btnAlternarAuth) {
     btnAlternarAuth.addEventListener('click', () => {
-        isCadastro = !isCadastro;
-        if (isCadastro) {
-            authTitulo.innerText = "Criar nova conta";
-            authSubtitulo.innerText = "Comece a salvar seu progresso na nuvem.";
-            btnSubmitAuth.innerText = "Cadastrar";
-            authTextoAlternar.innerText = "Já tem uma conta?";
-            btnAlternarAuth.innerText = "Fazer login";
-        } else {
-            authTitulo.innerText = "Entrar no FocoPro";
-            authSubtitulo.innerText = "Sincronize seu histórico e caderno de erros.";
-            btnSubmitAuth.innerText = "Entrar";
-            authTextoAlternar.innerText = "Não tem uma conta?";
-            btnAlternarAuth.innerText = "Criar conta";
-        }
+        // De 'login' vai para 'cadastro'; de 'cadastro' ou 'esqueci' volta para 'login'.
+        aplicarModoAuth(modoAuth === 'login' ? 'cadastro' : 'login');
     });
+}
+
+if (btnEsqueciSenha) {
+    btnEsqueciSenha.addEventListener('click', () => aplicarModoAuth('esqueci'));
 }
 
 if (formAuth) {
     formAuth.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const email = document.getElementById('auth-email').value.trim();
-        const senha = document.getElementById('auth-senha').value;
+        const email = inputAuthEmail.value.trim();
+        const senha = inputAuthSenha.value;
 
         btnSubmitAuth.disabled = true;
         btnSubmitAuth.innerText = "Aguarde...";
 
         try {
-            if (isCadastro) {
+            if (modoAuth === 'cadastro') {
                 const resultado = await criarConta(email, senha);
-                if (resultado === "confirmacao_pendente") {
-                    // Já deixa a tela pronta para o login, que é o próximo passo depois de confirmar o e-mail
-                    isCadastro = false;
-                    authTitulo.innerText = "Entrar no FocoPro";
-                    authSubtitulo.innerText = "Sincronize seu histórico e caderno de erros.";
-                    btnSubmitAuth.innerText = "Entrar";
-                    authTextoAlternar.innerText = "Não tem uma conta?";
-                    btnAlternarAuth.innerText = "Criar conta";
+                // Já deixa a tela pronta para o login, que é o próximo passo depois de confirmar o e-mail
+                if (resultado === "confirmacao_pendente") aplicarModoAuth('login');
+            } else if (modoAuth === 'esqueci') {
+                const enviado = await enviarLinkRedefinicao(email);
+                if (enviado) aplicarModoAuth('login');
+            } else if (modoAuth === 'nova-senha') {
+                const ok = await redefinirSenha(senha);
+                if (ok) {
+                    modalAuth.classList.remove('visible');
+                    aplicarModoAuth('login');
                 }
             } else {
                 await entrar(email, senha);
             }
         } finally {
             btnSubmitAuth.disabled = false;
-            btnSubmitAuth.innerText = isCadastro ? "Cadastrar" : "Entrar";
+            // Recalcula o texto do botão a partir do modo atual (pode ter mudado acima)
+            const textoPorModo = { login: "Entrar", cadastro: "Cadastrar", esqueci: "Enviar link", "nova-senha": "Salvar nova senha" };
+            btnSubmitAuth.innerText = textoPorModo[modoAuth];
         }
     });
 }

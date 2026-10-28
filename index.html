@@ -240,17 +240,20 @@
         <p id="auth-subtitulo" class="modal-mensagem">Sincronize seu histórico e caderno de erros.</p>
 
         <form id="form-auth">
-            <div style="margin-bottom: 1rem;">
+            <div style="margin-bottom: 1rem;" id="campo-auth-email">
                 <label for="auth-email" style="display:block; font-size:0.85rem; color:#94a3b8; margin-bottom:0.35rem;">E-mail</label>
                 <input type="email" id="auth-email" class="input-dark" style="width:100%;" placeholder="seu@email.com" required>
             </div>
-            <div style="margin-bottom: 1.5rem;">
+            <div style="margin-bottom: 0.5rem;" id="campo-auth-senha">
                 <label for="auth-senha" style="display:block; font-size:0.85rem; color:#94a3b8; margin-bottom:0.35rem;">Senha</label>
                 <input type="password" id="auth-senha" class="input-dark" style="width:100%;" placeholder="••••••••" minlength="6" required>
             </div>
+            <div style="margin-bottom: 1rem; text-align:right;" id="campo-esqueci-link">
+                <button type="button" id="btn-esqueci-senha" class="btn-link" style="font-size:0.78rem;">Esqueci minha senha</button>
+            </div>
 
             <div class="modal-acoes" style="justify-content: space-between; align-items: center;">
-                <span style="font-size:0.85rem; color:#94a3b8;">
+                <span style="font-size:0.85rem; color:#94a3b8;" id="auth-area-alternar">
                     <span id="auth-texto-alternar">Não tem uma conta?</span>
                     <button type="button" id="btn-alternar-auth" class="btn-link" style="margin-left:0.3rem;">Criar conta</button>
                 </span>
