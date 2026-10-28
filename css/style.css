@@ -1601,3 +1601,21 @@ body.modo-foco .cartao-hoje { display: none; }
 .resumo-bloco p { margin: 0; }
 .resumo-rotulo { margin-bottom: 0.2rem !important; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #93c5fd; }
 @media (max-width: 768px) { .resumo-central { font-size: 1.05rem; } }
+
+/* ==================== BARRA RECOLHÍVEL (só no computador) ==================== */
+.barra-topo { display: flex; align-items: center; justify-content: space-between; margin: -0.4rem 0 -0.2rem; }
+.barra-topo-marca { font-weight: 800; color: #f8fafc; font-size: 1.05rem; letter-spacing: 0.01em; }
+.btn-recolher-barra, .btn-abrir-barra {
+    border: 1px solid #1e293b; background: #0f172a; color: #cbd5e1; cursor: pointer;
+    border-radius: 8px; font-weight: 800; line-height: 1;
+}
+.btn-recolher-barra { width: 2rem; height: 2rem; font-size: 1.1rem; }
+.btn-abrir-barra { position: fixed; top: 0.7rem; left: 0.6rem; z-index: 30; width: 2.4rem; height: 2.4rem; font-size: 1rem; color: #93c5fd; border-color: #1e3a8a; }
+.btn-recolher-barra:hover, .btn-abrir-barra:hover { background: #1e293b; color: #f8fafc; }
+@media (min-width: 769px) {
+    body.barra-recolhida .sidebar { display: none; }
+    body.barra-recolhida .main-content { padding-left: 3.4rem; }
+}
+@media (max-width: 768px) {
+    .barra-topo, .btn-abrir-barra { display: none !important; }
+}
