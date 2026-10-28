@@ -461,6 +461,20 @@ export function calcularCobertura(questoes, historico) {
 // Cada nível vira um quadradinho com a letra e a cor dele (as mesmas das etiquetas das questões)
 const LETRA_NIVEL = { 1: 'I', 2: 'M', 3: 'A', 4: 'E' };
 
+// Ícone de cada matéria (traços de um SVG 24x24; só desenho, sem texto)
+const ICONE_MATERIA = {
+    'Português': 'M4 20 12 4l8 16M7 14h10',
+    'Raciocínio Lógico & Matemática': 'M5 4h14v16H5zM8 8h8M8 12h2M12 12h2M8 16h2M12 16h2',
+    'Engenharia de Software & Agilidade': 'm8 8-4 4 4 4M16 8l4 4-4 4M14 5l-4 14',
+    'Desenvolvimento, POO & Linguagens': 'M9 4C6 4 6 6 6 8s0 3-2 4c2 1 2 2 2 4s0 4 3 4M15 4c3 0 3 2 3 4s0 3 2 4c-2 1-2 2-2 4s0 4-3 4',
+    'Banco de Dados & Dados': 'M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3zM4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3',
+    'Arquitetura de TI & Nuvem': 'M7 18a4 4 0 0 1-.5-8A6 6 0 0 1 18 9a4.5 4.5 0 0 1-.5 9z',
+    'Redes & Segurança da Informação': 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18',
+    'Governança, Gestão & Projetos de TI': 'M9 4h6v3H9zM6 6h12v15H6zM9 12h6M9 16h4',
+    'Sistemas Operacionais & Hardware': 'M7 7h10v10H7zM10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4'
+};
+const ICONE_PADRAO = 'M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM4 19V5';
+
 function renderizarDesempenhoMaterias(materiasMap, questoes = [], historico = {}) {
     const containerMaterias = document.getElementById("dashboard-materias");
     if (!containerMaterias) return;
@@ -503,23 +517,26 @@ function renderizarDesempenhoMaterias(materiasMap, questoes = [], historico = {}
         const niveis = Object.keys(info.niveis).map(Number).sort((a, b) => a - b)
             .map(n => {
                 const { feitas, total } = info.niveis[n];
-                return `<span class="nv-chip" title="${esc(NIVEIS[n] || n)}: ${feitas} de ${total} respondidas"><b class="nv-letra nv-${n}">${LETRA_NIVEL[n] || n}</b>${feitas}/${total}</span>`;
+                const pct = total ? Math.round((feitas / total) * 100) : 0;
+                return `<span class="nv-col" title="${esc(NIVEIS[n] || n)}: ${feitas} de ${total} respondidas">
+                    <span class="nv-chip"><b class="nv-letra nv-${n}">${LETRA_NIVEL[n] || n}</b>${feitas}/${total}</span>
+                    <span class="nv-barra"><span class="nv-barra-fill nv-${n}" style="width: ${pct}%;"></span></span>
+                </span>`;
             }).join('');
-        const icone = critica ? '⚠️' : (comecou ? '📖' : '○');
         const revisar = info.revisarHoje
-            ? `<span class="materia-revisar" title="Vencem na revisão hoje">${info.revisarHoje} 🔁</span>` : '';
+            ? `<span class="materia-revisar" title="Vencem na revisão hoje">${info.revisarHoje} para revisar hoje</span>` : '';
+        const iconeSvg = `<span class="materia-icone" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${ICONE_MATERIA[mat] || ICONE_PADRAO}"/></svg></span>`;
 
         html += `
             <button type="button" class="materia-stat-item${critica ? ' critica' : ''}${comecou ? '' : ' nao-comecou'}" data-materia="${esc(mat)}" title="Ver questões de ${esc(mat)}">
                 <span class="materia-stat-header">
-                    <span class="materia-nome">${icone} ${esc(mat)}</span>
-                    <span class="materia-taxa">${comecou ? `${taxa}% <small>(${dados.acertos}/${somaResp})</small>` : 'não começou'}</span>
+                    ${iconeSvg}
+                    <span class="materia-nome">${esc(mat)}</span>
+                    ${comecou ? `<span class="materia-taxa">${taxa}%</span>` : ''}
                 </span>
-                ${comecou ? `<span class="barra-progresso-bg"><span class="barra-progresso-fill" style="width: ${taxa}%;"></span></span>` : ''}
-                <span class="materia-rodape">
-                    <span class="materia-niveis">${niveis}</span>
-                    ${revisar}
-                </span>
+                <span class="barra-progresso-bg"><span class="barra-progresso-fill ${taxa >= 70 ? 'alta' : (taxa >= 50 ? 'media' : 'baixa')}" style="width: ${comecou ? taxa : 0}%;"></span></span>
+                <span class="materia-niveis">${niveis}</span>
+                ${comecou ? revisar : '<span class="materia-nao-comecou">não começou</span>'}
                 ${critica ? '<span class="materia-reforcar">Reforçar · toque para treinar</span>' : ''}
             </button>
         `;
