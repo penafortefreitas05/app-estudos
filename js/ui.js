@@ -119,6 +119,13 @@ export function gabaritoDe(q) {
     return gabRaw.charAt(0).toUpperCase();
 }
 
+// U9: a questão só conhece o gabarito depois de corrigida no servidor (ou se o histórico já
+// guardou o gabarito revelado). Sem ele, nada deve ser pintado como "certo" — gabaritoDe()
+// ainda devolve "A" por compatibilidade, então quem revela precisa conferir isto antes.
+export function temGabarito(q) {
+    return Boolean(q && String(q.gabarito || q.resposta_correta || '').trim());
+}
+
 export function textoGabaritoDe(q) {
     const opcoes = obterOpcoes(q);
     const letra = gabaritoDe(q);
@@ -575,7 +582,8 @@ function desenharCards(container, lista, historico, restaurarRespostas) {
         container.insertAdjacentHTML('beforeend', cardHTML);
 
         // Se a questão já foi respondida antes (ex: após dar F5), restaura o estado visual na tela!
-        if (restaurarRespostas && tentativas > 0 && (regHist.ultimaEscolha || regHist.ultimaResposta)) {
+        // (Só com gabarito conhecido: sem ele, o card fica aberto pra responder de novo.)
+        if (restaurarRespostas && tentativas > 0 && temGabarito(q) && (regHist.ultimaEscolha || regHist.ultimaResposta)) {
             const cardInserido = container.lastElementChild;
             if (cardInserido) {
                 const gabaritoLetra = gabaritoDe(q);
@@ -614,6 +622,7 @@ export function ehQuestaoSQL(q) {
 // info.confianca ('certeza' | 'duvida'): só na hora da resposta, para o aviso abaixo do gabarito
 export function revelar(card, q, letraEscolhida, info = {}) {
     if (!card || !q) return;
+    if (!temGabarito(q)) return; // nunca pinta um gabarito inventado
 
     const gabaritoLetra = gabaritoDe(q);
     const textoCorreto = textoGabaritoDe(q);

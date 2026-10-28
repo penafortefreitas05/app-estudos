@@ -226,9 +226,11 @@ export function normalizarMateriaEAgruparTags(questao, index = 0) {
     }
 
     // 4. Garante gabarito e resposta_correta sincronizados
-    const gabaritoBruto = String(questao.resposta_correta || questao.gabarito || "A").trim();
-    questao.gabarito = gabaritoBruto;
-    questao.resposta_correta = gabaritoBruto;
+    // Sem padrão "A": desde o U9 o gabarito não vem mais junto com a questão. Inventar um "A"
+    // aqui fazia o app corrigir contra uma resposta falsa se o servidor falhasse.
+    const gabaritoBruto = String(questao.resposta_correta || questao.gabarito || "").trim();
+    questao.gabarito = gabaritoBruto || null;
+    questao.resposta_correta = gabaritoBruto || null;
 
     // 5. Preserva explicação / comentário se existir
     questao.explicacao = String(questao.explicacao || questao.comentario || questao.justificativa || "").trim();
