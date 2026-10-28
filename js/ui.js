@@ -162,6 +162,42 @@ export function preencherSelect(selectElement, textoPadrao, propriedade, listaQu
         });
 }
 
+// Filtro de assunto dependente da matéria. Com matéria escolhida: só os assuntos dela.
+// Sem matéria: todos, agrupados por matéria (<optgroup>), na ordem dos 9 pilares.
+// Devolve true se o assunto "selecionado" continua existindo na lista nova.
+export function preencherSelectAssunto(selectElement, listaQuestoes, materia, ordemMacros, selecionado = "") {
+    if (!selectElement) return false;
+    const base = materia ? listaQuestoes.filter(q => q.materia === materia) : listaQuestoes;
+
+    const porMacro = {}; // { macro: { assunto: contagem } }
+    base.forEach(q => {
+        const assunto = String(q.assunto || '').trim();
+        if (!assunto) return;
+        const macro = q.materia || 'Geral';
+        if (!porMacro[macro]) porMacro[macro] = {};
+        porMacro[macro][assunto] = (porMacro[macro][assunto] || 0) + 1;
+    });
+
+    const ordenarAssuntos = obj => Object.entries(obj).sort((a, b) => a[0].localeCompare(b[0], 'pt-BR'));
+    const opcao = ([assunto, n]) => `<option value="${esc(assunto)}">${esc(assunto)} (${n})</option>`;
+
+    let html = `<option value="">🏷️ Todos os Assuntos (${base.length})</option>`;
+    if (materia) {
+        html += ordenarAssuntos(porMacro[materia] || {}).map(opcao).join('');
+    } else {
+        const extras = Object.keys(porMacro).filter(m => !ordemMacros.includes(m)).sort((a, b) => a.localeCompare(b, 'pt-BR'));
+        [...ordemMacros.filter(m => porMacro[m]), ...extras].forEach(macro => {
+            html += `<optgroup label="${esc(macro)}">${ordenarAssuntos(porMacro[macro]).map(opcao).join('')}</optgroup>`;
+        });
+    }
+    selectElement.innerHTML = html;
+
+    const alvo = String(selecionado || '').toLowerCase();
+    const existe = !alvo || [...selectElement.options].some(o => o.value.toLowerCase() === alvo);
+    if (alvo && existe) selectElement.value = [...selectElement.options].find(o => o.value.toLowerCase() === alvo).value;
+    return existe;
+}
+
 // Classifica a questão em 3 categorias simples para o filtro de status:
 // "nao-respondida", "acertei" ou "errei" (questão superada depois de errar conta como "acertei").
 export function obterCategoriaStatus(qId, historico) {
