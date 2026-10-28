@@ -652,3 +652,47 @@ export async function carregarTodasQuestoes() {
 
     return data.map((q, idx) => normalizarQuestao(q, idx));
 }
+
+// ---------- Reportar problema numa questão (U5) ----------
+// Tabela 'reportes_questao' (SQL em docs/sql/u5-reportes-questao.sql). Cada pessoa vê só os
+// próprios reportes; o admin vê e fecha todos (RLS).
+// Os erros viram um objeto simples {ok, motivo} para a tela mostrar a mensagem certa:
+// 'sem-tabela' (SQL ainda não rodou), 'duplicado' (já reportou isso), 'sem-login' ou 'rede'.
+function motivoDeErroReporte(erro) {
+    if (!erro) return 'rede';
+    if (erro.code === '23505') return 'duplicado';
+    if (erro.code === '42P01' || erro.code === 'PGRST205' || /reportes_questao/i.test(`${erro.message || ''}`)) return 'sem-tabela';
+    if (erro.code === '42501') return 'sem-login';
+    return 'rede';
+}
+
+export async function enviarReporteDeQuestao({ questaoId, tipo, comentario }) {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (!session) return { ok: false, motivo: 'sem-login' };
+    const { error } = await supabaseClient.from('reportes_questao').insert({
+        user_id: session.user.id,
+        questao_id: String(questaoId),
+        tipo,
+        comentario: String(comentario || '').trim().slice(0, 600)
+    });
+    return error ? { ok: false, motivo: motivoDeErroReporte(error) } : { ok: true };
+}
+
+// Só o admin enxerga mais que os próprios (a RLS decide); a tela só oferece isso ao admin.
+export async function listarReportesAbertos() {
+    const { data, error } = await supabaseClient
+        .from('reportes_questao')
+        .select('id, questao_id, tipo, comentario, criado_em')
+        .eq('status', 'aberto')
+        .order('criado_em', { ascending: true })
+        .limit(500);
+    return error ? { ok: false, motivo: motivoDeErroReporte(error) } : { ok: true, reportes: data || [] };
+}
+
+export async function fecharReporte(id, status) {
+    const { error } = await supabaseClient
+        .from('reportes_questao')
+        .update({ status, resolvido_em: new Date().toISOString() })
+        .eq('id', id);
+    return error ? { ok: false, motivo: motivoDeErroReporte(error) } : { ok: true };
+}

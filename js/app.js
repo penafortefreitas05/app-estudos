@@ -34,7 +34,10 @@ import {
     salvarAnotacaoNaNuvem,
     apagarFavoritosDoUsuario,
     limparFilaFavoritosPendente,
-    corrigirResposta
+    corrigirResposta,
+    enviarReporteDeQuestao,
+    listarReportesAbertos,
+    fecharReporte
 } from './supabase.js';
 
 // ---------- 1.3 Autenticação ----------
@@ -1633,6 +1636,7 @@ async function carregarBancoDeQuestoes(questoesChegando = null) {
     // O botão de importar questões só aparece para o admin
     const botaoImportarQuestoes = document.getElementById('btnAbrirImportar');
     if (botaoImportarQuestoes) botaoImportarQuestoes.hidden = !ehAdministrador();
+    atualizarBotaoReportesAdmin();
 
     // Visitante sem login: nenhuma questão é buscada nem exibida.
     if (!usuarioAtual) {
@@ -1744,3 +1748,184 @@ async function iniciarApp() {
 }
 
 iniciarApp();
+// ==================== INÍCIO: 13. REPORTAR PROBLEMA NA QUESTÃO (U5) ====================
+// Qualquer pessoa logada reporta; o admin vê a fila em "Ferramentas e Backup > Reportes".
+const NOMES_TIPO_REPORTE = {
+    gabarito: "Gabarito errado",
+    enunciado: "Enunciado",
+    alternativas: "Alternativas",
+    desatualizada: "Desatualizada",
+    outro: "Outro"
+};
+const modalReporte = document.getElementById("modal-reporte");
+const formReporte = document.getElementById("form-reporte");
+const selectTipoReporte = document.getElementById("reporte-tipo");
+const textoReporte = document.getElementById("reporte-comentario");
+let questaoEmReporte = null;
+let enviandoReporte = false;
+
+function resumoDaQuestao(q, tamanho = 110) {
+    const enunciado = String(q.enunciado || q.pergunta || "").replace(/\s+/g, " ").trim();
+    return enunciado.length > tamanho ? enunciado.slice(0, tamanho) + "…" : enunciado;
+}
+
+function abrirReporte(q) {
+    if (!usuarioAtual) {
+        showToast("Entre na sua conta para reportar um problema.", "alerta");
+        return;
+    }
+    questaoEmReporte = q;
+    document.getElementById("reporte-questao-resumo").textContent = `${q.id} · ${resumoDaQuestao(q)}`;
+    if (selectTipoReporte) selectTipoReporte.value = "gabarito";
+    if (textoReporte) textoReporte.value = "";
+    document.getElementById("reporte-contador").textContent = "0";
+    modalReporte.classList.add("visible");
+    if (selectTipoReporte) selectTipoReporte.focus();
+}
+
+function fecharReporteModal() {
+    modalReporte.classList.remove("visible");
+    questaoEmReporte = null;
+}
+
+const MENSAGEM_ERRO_REPORTE = {
+    duplicado: "Você já reportou esse problema nesta questão. Obrigado, já está na fila.",
+    "sem-tabela": "O envio de reportes ainda não foi ativado no banco. Avise o administrador.",
+    "sem-login": "Sua sessão expirou. Entre de novo e tente outra vez.",
+    rede: "Não foi possível enviar agora. Confira a internet e tente de novo."
+};
+
+if (modalReporte && formReporte) {
+    // O botão 🚩 está dentro do card; pelo foco ou pela lista, a delegação serve aos dois
+    document.addEventListener("click", (e) => {
+        const botao = e.target.closest(".btn-reportar");
+        if (!botao) return;
+        const q = porId.get(String(botao.dataset.id));
+        if (q) abrirReporte(q);
+    });
+
+    textoReporte.addEventListener("input", () => {
+        document.getElementById("reporte-contador").textContent = textoReporte.value.length;
+    });
+    document.getElementById("btn-reporte-cancelar").addEventListener("click", fecharReporteModal);
+    modalReporte.addEventListener("click", (e) => { if (e.target === modalReporte) fecharReporteModal(); });
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && modalReporte.classList.contains("visible")) fecharReporteModal();
+    });
+
+    formReporte.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (enviandoReporte || !questaoEmReporte) return;
+        enviandoReporte = true;
+        const botaoEnviar = document.getElementById("btn-reporte-enviar");
+        botaoEnviar.disabled = true;
+        botaoEnviar.textContent = "Enviando...";
+        const resultado = await enviarReporteDeQuestao({
+            questaoId: questaoEmReporte.id,
+            tipo: selectTipoReporte.value,
+            comentario: textoReporte.value
+        });
+        enviandoReporte = false;
+        botaoEnviar.disabled = false;
+        botaoEnviar.textContent = "Enviar";
+        if (resultado.ok) {
+            fecharReporteModal();
+            showToast("Reporte enviado. Obrigado por ajudar a melhorar o banco!", "sucesso");
+            atualizarBotaoReportesAdmin();
+        } else {
+            showToast(MENSAGEM_ERRO_REPORTE[resultado.motivo] || MENSAGEM_ERRO_REPORTE.rede,
+                resultado.motivo === "duplicado" ? "info" : "erro", 4000);
+            if (resultado.motivo === "duplicado") fecharReporteModal();
+        }
+    });
+}
+
+// ---- Fila do admin ----
+const btnReportesAdmin = document.getElementById("btn-reportes-admin");
+const modalReportesAdmin = document.getElementById("modal-reportes-admin");
+const listaReportesAdmin = document.getElementById("lista-reportes-admin");
+
+async function atualizarBotaoReportesAdmin() {
+    if (!btnReportesAdmin) return;
+    btnReportesAdmin.hidden = !ehAdministrador();
+    if (!ehAdministrador()) return;
+    const r = await listarReportesAbertos();
+    const contador = document.getElementById("contador-reportes");
+    if (contador) contador.textContent = r.ok ? r.reportes.length : "–";
+}
+
+async function abrirReportesAdmin() {
+    modalReportesAdmin.classList.add("visible");
+    listaReportesAdmin.innerHTML = `<p class="modal-mensagem">Carregando...</p>`;
+    const r = await listarReportesAbertos();
+    if (!r.ok) {
+        listaReportesAdmin.innerHTML = `<p class="modal-mensagem">${esc(r.motivo === "sem-tabela"
+            ? "A tabela reportes_questao ainda não existe. Rode docs/sql/u5-reportes-questao.sql no Supabase."
+            : "Não foi possível carregar agora.")}</p>`;
+        return;
+    }
+    desenharReportesAdmin(r.reportes);
+}
+
+function desenharReportesAdmin(reportes) {
+    const contador = document.getElementById("contador-reportes");
+    if (contador) contador.textContent = reportes.length;
+    if (!reportes.length) {
+        listaReportesAdmin.innerHTML = `<p class="modal-mensagem">Nenhum reporte aberto. 🎉</p>`;
+        return;
+    }
+    // Várias pessoas reportando a mesma questão ficam juntas: é o sinal mais forte de problema
+    const porQuestao = new Map();
+    reportes.forEach(r => {
+        if (!porQuestao.has(r.questao_id)) porQuestao.set(r.questao_id, []);
+        porQuestao.get(r.questao_id).push(r);
+    });
+    const grupos = [...porQuestao.entries()].sort((a, b) => b[1].length - a[1].length);
+    listaReportesAdmin.innerHTML = grupos.map(([questaoId, lista]) => {
+        const q = porId.get(String(questaoId));
+        const itens = lista.map(r => `
+            <li class="reporte-item" data-reporte="${esc(r.id)}">
+                <div>
+                    <strong>${esc(NOMES_TIPO_REPORTE[r.tipo] || r.tipo)}</strong>
+                    <small>${esc(new Date(r.criado_em).toLocaleDateString("pt-BR"))}</small>
+                    ${r.comentario ? `<p>${esc(r.comentario)}</p>` : ""}
+                </div>
+                <div class="reporte-acoes">
+                    <button type="button" class="btn-sidebar btn-reporte-fechar" data-status="resolvido" data-id="${esc(r.id)}">✔ Resolvido</button>
+                    <button type="button" class="btn-sidebar btn-reporte-fechar" data-status="descartado" data-id="${esc(r.id)}">Descartar</button>
+                </div>
+            </li>`).join("");
+        return `
+            <section class="reporte-grupo">
+                <h4>${esc(questaoId)} <span class="badge-count">${lista.length}</span></h4>
+                <p class="reporte-enunciado">${q ? esc(`${q.materia || ""} · ${resumoDaQuestao(q, 160)}`) : "(questão não está mais no banco)"}</p>
+                <ul class="reporte-lista">${itens}</ul>
+            </section>`;
+    }).join("");
+}
+
+if (btnReportesAdmin && modalReportesAdmin) {
+    btnReportesAdmin.addEventListener("click", abrirReportesAdmin);
+    document.getElementById("btn-fechar-reportes").addEventListener("click", () => modalReportesAdmin.classList.remove("visible"));
+    modalReportesAdmin.addEventListener("click", (e) => { if (e.target === modalReportesAdmin) modalReportesAdmin.classList.remove("visible"); });
+    listaReportesAdmin.addEventListener("click", async (e) => {
+        const botao = e.target.closest(".btn-reporte-fechar");
+        if (!botao || botao.disabled) return;
+        botao.disabled = true;
+        const r = await fecharReporte(botao.dataset.id, botao.dataset.status);
+        if (!r.ok) {
+            botao.disabled = false;
+            showToast("Não foi possível atualizar o reporte.", "erro");
+            return;
+        }
+        const item = botao.closest(".reporte-item");
+        const grupo = botao.closest(".reporte-grupo");
+        if (item) item.remove();
+        if (grupo && !grupo.querySelector(".reporte-item")) grupo.remove();
+        const restantes = listaReportesAdmin.querySelectorAll(".reporte-item").length;
+        const contador = document.getElementById("contador-reportes");
+        if (contador) contador.textContent = restantes;
+        if (!restantes) listaReportesAdmin.innerHTML = `<p class="modal-mensagem">Nenhum reporte aberto. 🎉</p>`;
+    });
+}
+// ==================== FIM: 13. REPORTAR PROBLEMA NA QUESTÃO (U5) ====================

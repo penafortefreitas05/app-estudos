@@ -97,6 +97,12 @@
                         <span>📥 Importar Questões em Massa</span>
                     </button>
 
+                    <!-- U5: só o admin vê (app.js) -->
+                    <button type="button" id="btn-reportes-admin" class="btn-sidebar" hidden>
+                        <span>🚩 Reportes de questões</span>
+                        <span class="badge-count" id="contador-reportes">0</span>
+                    </button>
+
                     <!-- Botão: Zerar Histórico (só o cache deste navegador; a nuvem não é afetada) -->
                     <button id="btn-limpar-dados" class="btn-sidebar danger" title="Limpa só o cache deste navegador. Se você estiver logado, seu progresso salvo na nuvem continua intacto.">
                         <span>❌ Zerar Histórico (local)</span>
@@ -290,6 +296,41 @@
     </div>
 </div>
 <!-- ==================== FIM: MODAL DE LOGIN / CADASTRO ==================== -->
+
+    <!-- ==================== INÍCIO: MODAIS DE REPORTE (U5) ==================== -->
+<div id="modal-reporte" class="modal-overlay">
+    <form class="modal-card" id="form-reporte">
+        <h3 class="modal-titulo">🚩 Reportar problema</h3>
+        <p class="modal-mensagem" id="reporte-questao-resumo"></p>
+        <label for="reporte-tipo" class="campo-rotulo">O que há de errado?</label>
+        <select id="reporte-tipo" class="input-dark campo-cheio" required>
+            <option value="gabarito">O gabarito está errado</option>
+            <option value="enunciado">Enunciado confuso ou com erro</option>
+            <option value="alternativas">Alternativas com erro ou repetidas</option>
+            <option value="desatualizada">Questão desatualizada</option>
+            <option value="outro">Outro</option>
+        </select>
+        <label for="reporte-comentario" class="campo-rotulo">Detalhe (opcional)</label>
+        <textarea id="reporte-comentario" class="input-dark campo-cheio" rows="4" maxlength="600" placeholder="Ex.: acho que a correta é a C, porque..."></textarea>
+        <small class="campo-contador"><span id="reporte-contador">0</span>/600</small>
+        <div class="modal-acoes">
+            <button type="button" id="btn-reporte-cancelar" class="btn-secondary">Cancelar</button>
+            <button type="submit" id="btn-reporte-enviar" class="btn-primary">Enviar</button>
+        </div>
+    </form>
+</div>
+
+<div id="modal-reportes-admin" class="modal-overlay">
+    <div class="modal-card" style="max-width: 680px; max-height: 82vh; overflow-y: auto;">
+        <h3 class="modal-titulo">🚩 Reportes de questões</h3>
+        <p class="modal-mensagem">Abertos, do mais antigo para o mais novo. Para corrigir o gabarito: reimporte a questão com o mesmo id.</p>
+        <div id="lista-reportes-admin"></div>
+        <div class="modal-acoes">
+            <button type="button" id="btn-fechar-reportes" class="btn-secondary">Fechar</button>
+        </div>
+    </div>
+</div>
+<!-- ==================== FIM: MODAIS DE REPORTE ==================== -->
 
     <!-- Menu do celular, Service Worker e botão "Instalar App" -->
     <script src="js/pwa.js"></script>
