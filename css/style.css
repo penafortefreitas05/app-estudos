@@ -186,10 +186,43 @@ body {
 .input-dark:focus { border-color: #3b82f6; }
 
 /* --- Barra principal: busca + matéria + botões dos painéis --- */
-.barra-principal { display: flex; align-items: center; flex-wrap: wrap; gap: 0.75rem; }
-.barra-principal .search-box { flex: 1 1 200px; min-width: 0; }
-.barra-principal #filtro-materia { flex: 0 1 280px; min-width: 0; }
+.barra-linha1 { display: flex; align-items: center; flex-wrap: wrap; gap: 0.75rem 1rem; }
+.barra-linha2 { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.7rem; }
+.barra-linha2 .search-box { flex: 0 1 170px; min-width: 130px; }
+.barra-titulo-bloco { flex: 1 1 160px; min-width: 0; }
+.barra-titulo { margin: 0; font-size: 1.15rem; font-weight: 800; color: #f8fafc; line-height: 1.25; }
+.barra-contagem { margin: 0.15rem 0 0; font-size: 0.78rem; color: #94a3b8; }
 .barra-botoes { display: flex; gap: 0.5rem; flex-shrink: 0; }
+.filtros-fonte { display: none; }
+
+/* Placar do dia: meta, revisão e dias seguidos (antes ficavam na barra lateral) */
+.placar-dia { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; padding: 0.35rem 0.7rem; border-radius: 10px; background: #0f172a; border: 1px solid #1e293b; }
+.placar-dia .meta-hoje { background: none; border: none; padding: 0; width: 150px; gap: 0.3rem; }
+.placar-dia .meta-hoje-topo { font-size: 0.74rem; white-space: nowrap; }
+.placar-item { font: inherit; font-size: 0.82rem; color: #cbd5e1; background: none; border: none; padding: 0.25rem 0; white-space: nowrap; }
+.placar-item strong { color: #f8fafc; font-variant-numeric: tabular-nums; }
+.placar-revisar { cursor: pointer; border-radius: 6px; }
+.placar-revisar:hover strong, .placar-revisar:hover { color: #fbbf24; }
+.placar-revisar strong { color: #fbbf24; }
+.placar-detalhe { font-size: 0.72rem; color: #94a3b8; }
+
+/* Filtros rápidos: nível e situação como botões */
+.chips-barra { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.chip-filtro {
+    display: inline-flex; align-items: center; gap: 0.4rem; min-height: 2.4rem; padding: 0 0.7rem; white-space: nowrap;
+    font: inherit; font-size: 0.82rem; font-weight: 600; color: #cbd5e1; cursor: pointer;
+    background: #0f172a; border: 1px solid #1e293b; border-radius: 10px;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.chip-filtro:hover { border-color: #334155; color: #f8fafc; }
+.chip-filtro[aria-pressed="true"] { background: #1e293b; border-color: #475569; color: #f8fafc; }
+.nv-chip-btn.nv-1[aria-pressed="true"] { background: #052e1680; border-color: #166534; color: #86efac; }
+.nv-chip-btn.nv-2[aria-pressed="true"] { background: #0c4a6e80; border-color: #075985; color: #7dd3fc; }
+.nv-chip-btn.nv-3[aria-pressed="true"] { background: #78350f60; border-color: #9a3412; color: #fdba74; }
+.nv-chip-btn.nv-4[aria-pressed="true"] { background: #7f1d1d80; border-color: #991b1b; color: #fca5a5; }
+.segmentado { gap: 0; border: 1px solid #1e293b; border-radius: 10px; overflow: hidden; flex-wrap: nowrap; }
+.segmentado .chip-filtro { border: none; border-right: 1px solid #1e293b; border-radius: 0; min-height: calc(2.4rem - 2px); }
+.segmentado .chip-filtro:last-child { border-right: none; }
 
 .search-box { position: relative; display: flex; align-items: center; }
 .search-icon { position: absolute; left: 0.8rem; font-size: 0.8rem; opacity: 0.5; pointer-events: none; }
@@ -1054,10 +1087,13 @@ body {
     }
     .top-bar-brand { color: #f8fafc; font-weight: 700; font-size: 1.15rem; }
 
-    /* --- Barra principal empilhada: busca, matéria e os 2 botões lado a lado --- */
-    .barra-principal { flex-wrap: wrap; gap: 0.6rem; }
-    .barra-principal .search-box,
-    .barra-principal #filtro-materia { flex: 1 1 100%; }
+    /* --- Barra empilhada: título, placar, 3 botões, busca e filtros rápidos --- */
+    .barra-linha1 { gap: 0.6rem; }
+    .placar-dia { flex: 1 1 100%; justify-content: space-between; }
+    .barra-linha2 { gap: 0.5rem; }
+    .barra-linha2 .search-box { flex: 1 1 100%; }
+    .barra-linha2 .btn-painel { flex: 1 1 100%; }
+    .segmentado { flex-wrap: wrap; }
     .barra-botoes { flex: 1 1 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .btn-painel { min-height: 44px; }
 
@@ -1525,9 +1561,6 @@ body.visitante .top-bar { display: none; }
 .hoje-titulo { color: #f8fafc; font-size: 1.1rem; margin: 0 0 0.25rem; }
 .hoje-texto { color: #94a3b8; font-size: 0.85rem; margin: 0; }
 .hoje-continuar { min-height: 44px; padding: 0 1.25rem; font-size: 0.95rem; white-space: nowrap; flex-shrink: 0; }
-.hoje-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-.hoje-chip { font-size: 0.75rem; font-weight: 600; color: #cbd5e1; background: #0f172a; border: 1px solid #1e293b; border-radius: 99px; padding: 0.2rem 0.6rem; }
-.hoje-chip.ok { color: #34d399; border-color: rgba(16, 185, 129, 0.4); }
 .hoje-semana { display: flex; gap: 0.5rem; align-items: flex-start; border-top: 1px solid #1e293b; padding-top: 0.6rem; }
 .hoje-semana p { margin: 0; color: #cbd5e1; font-size: 0.82rem; line-height: 1.45; flex: 1; }
 body.modo-foco .cartao-hoje { display: none; }

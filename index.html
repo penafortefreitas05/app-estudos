@@ -67,32 +67,12 @@
                 </div>
             </details>
 
-            <!-- A ação do dia, sempre à vista -->
-            <button id="btn-modo-revisao" class="btn-sidebar btn-revisar" title="Questões que você errou ou acertou na dúvida voltam em 1, 3, 7 e 21 dias">
-                <span>🔁 Revisar hoje</span>
-                <span class="badge-count" id="contador-revisao">0</span>
-            </button>
-
             <!-- Meu desempenho: abre e fecha; o app lembra a escolha (app.js) -->
             <details class="gaveta-desempenho" id="gaveta-desempenho" open>
                 <summary>📊 Meu desempenho</summary>
                 <div class="gaveta-desempenho-conteudo">
-                    <!-- Meta diária (some enquanto não houver meta no perfil) -->
-                    <div class="meta-hoje" id="meta-hoje" hidden role="button" tabindex="0" aria-expanded="false" data-explicacao="Meta de hoje: questões diferentes que você respondeu hoje. Para mudar a meta, abra Minha conta e toque em Meta diária e perfil.">
-                        <div class="meta-hoje-topo">
-                            <span>🎯 Meta de hoje <span class="info-i" aria-hidden="true">ⓘ</span></span>
-                            <span id="meta-hoje-valor">0 de 10</span>
-                        </div>
-                        <div class="meta-hoje-barra"><span id="meta-hoje-fill"></span></div>
-                    </div>
-
-                    <!-- Os 3 números que mostram se o estudo está no rumo -->
+                    <!-- Os 2 números de acompanhamento (meta, dias e revisão ficam na barra de cima) -->
                     <div class="resumo-row">
-                        <div class="resumo-card" role="button" tabindex="0" aria-expanded="false" data-explicacao="🔥 Dias: dias seguidos com pelo menos 1 questão respondida. Um dia sem estudo por semana não zera a sequência; dois seguidos zeram.">
-                            <span class="resumo-titulo">🔥 Dias</span>
-                            <span class="resumo-valor" id="stat-sequencia">0</span>
-                            <span class="resumo-detalhe" id="stat-sequencia-detalhe">recorde: 0</span>
-                        </div>
                         <div class="resumo-card" role="button" tabindex="0" aria-expanded="false" data-explicacao="🗺️ Feitas: quanto do banco de questões você já respondeu pelo menos uma vez.">
                             <span class="resumo-titulo">🗺️ Feitas</span>
                             <span class="resumo-valor" id="stat-cobertura">—</span>
@@ -141,24 +121,36 @@
 
             <!-- Barra Superior de Filtros e Simulado -->
             <header class="top-bar">
-                <!-- Barra principal: só o essencial à vista (busca + matéria + 2 botões) -->
-                <div class="barra-principal">
-                    <div class="search-box">
-                        <span class="search-icon" aria-hidden="true">🔍</span>
-                        <input type="search" id="filtro-busca" class="input-dark" placeholder="Buscar palavra..." aria-label="Buscar palavra" autocomplete="off" enterkeyhint="search">
+                <!-- Linha 1: onde você está + placar do dia + ações -->
+                <div class="barra-linha1">
+                    <div class="barra-titulo-bloco">
+                        <h2 class="barra-titulo" id="barra-titulo">Todas as matérias</h2>
+                        <p class="barra-contagem" id="barra-contagem" aria-live="polite"></p>
                     </div>
 
-                    <select id="filtro-materia" class="input-dark" aria-label="Matéria">
-                        <option value="">📖 Todas as Matérias</option>
-                    </select>
+                    <div class="placar-dia">
+                        <div class="meta-hoje" id="meta-hoje" hidden title="Meta de hoje: questões diferentes que você respondeu hoje. Para mudar a meta, abra Minha conta e toque em Meta diária e perfil.">
+                            <div class="meta-hoje-topo">
+                                <span>🎯 Meta de hoje</span>
+                                <span id="meta-hoje-valor">0 de 10</span>
+                            </div>
+                            <div class="meta-hoje-barra"><span id="meta-hoje-fill"></span></div>
+                        </div>
+                        <button type="button" id="btn-modo-revisao" class="placar-item placar-revisar" title="Questões que você errou ou acertou na dúvida voltam em 1, 3, 7 e 21 dias. Toque para revisar as de hoje.">
+                            🔁 <strong id="contador-revisao">0</strong> para revisar
+                        </button>
+                        <span class="placar-item" title="Dias seguidos com pelo menos 1 questão respondida. Um dia sem estudo por semana não zera a sequência; dois seguidos zeram.">
+                            🔥 <strong id="stat-sequencia">0</strong> dias <span class="placar-detalhe" id="stat-sequencia-detalhe" hidden></span>
+                        </span>
+                    </div>
 
                     <div class="barra-botoes">
+                        <button type="button" id="btn-aprender-barra" class="btn-painel" title="Um assunto por vez: entenda, veja um exemplo resolvido e prove que aprendeu">
+                            📖 Aprender
+                        </button>
                         <!-- Modo Foco (U1): uma questão por vez, com atalhos de teclado -->
                         <button type="button" id="btn-modo-foco" class="btn-painel btn-foco" aria-pressed="false" title="Uma questão por vez. Teclas A–E, Enter responde, → próxima, Esc sai">
                             🎯 Foco
-                        </button>
-                        <button type="button" id="btn-painel-filtros" class="btn-painel" aria-expanded="false" aria-controls="painel-filtros">
-                            🎛️ Filtros <span class="badge-filtros" id="badge-filtros" hidden>0</span>
                         </button>
                         <button type="button" id="btn-painel-simulado" class="btn-painel" aria-expanded="false" aria-controls="painel-simulado">
                             ⏱️ Simulado
@@ -166,9 +158,38 @@
                     </div>
                 </div>
 
+                <!-- Linha 2: busca e filtros rápidos (nível e status viram botões) -->
+                <div class="barra-linha2">
+                    <div class="search-box">
+                        <span class="search-icon" aria-hidden="true">🔍</span>
+                        <input type="search" id="filtro-busca" class="input-dark" placeholder="Buscar... (/)" aria-label="Buscar palavra" autocomplete="off" enterkeyhint="search">
+                    </div>
+                    <div class="chips-barra" id="chips-nivel" role="group" aria-label="Filtrar por nível" hidden></div>
+                    <div class="chips-barra segmentado" id="chips-status" role="group" aria-label="Filtrar por situação"></div>
+                    <button type="button" id="btn-painel-filtros" class="btn-painel" aria-expanded="false" aria-controls="painel-filtros">
+                        🎛️ Mais filtros <span class="badge-filtros" id="badge-filtros" hidden>0</span>
+                    </button>
+                </div>
+
+                <!-- Fonte dos filtros rápidos: os botões da linha 2 mexem nestes campos -->
+                <div class="filtros-fonte" hidden>
+                    <select id="filtro-nivel" aria-label="Nível"><option value="">📶 Todos os Níveis</option></select>
+                    <select id="filtro-status" aria-label="Status">
+                        <option value="">📊 Qualquer Status</option>
+                        <option value="nao-respondida">⬜ Não Respondidas</option>
+                        <option value="acertei">✅ Acertei</option>
+                        <option value="errei">❌ Errei</option>
+                    </select>
+                    <input type="checkbox" id="filtro-favoritas">
+                </div>
+
                 <!-- Painel de filtros extras: fechado por padrão -->
                 <div id="painel-filtros" class="painel-topo" hidden>
                     <div class="painel-grade">
+                        <select id="filtro-materia" class="input-dark" aria-label="Matéria">
+                            <option value="">📖 Todas as Matérias</option>
+                        </select>
+
                         <select id="filtro-banca" class="input-dark" aria-label="Banca">
                             <option value="">🏛️ Todas as Bancas</option>
                         </select>
@@ -177,28 +198,13 @@
                             <option value="">🏷️ Todos os Assuntos</option>
                         </select>
 
-                        <!-- Some sozinho enquanto o banco inteiro estiver num nível só -->
-                        <select id="filtro-nivel" class="input-dark" aria-label="Nível" hidden>
-                            <option value="">📶 Todos os Níveis</option>
-                        </select>
-
                         <!-- Some sozinho enquanto as questões não tiverem o campo "ano" -->
                         <select id="filtro-ano" class="input-dark" aria-label="Ano" hidden>
                             <option value="">📅 Todos os Anos</option>
                         </select>
-
-                        <select id="filtro-status" class="input-dark" aria-label="Status">
-                            <option value="">📊 Qualquer Status</option>
-                            <option value="nao-respondida">⬜ Não Respondidas</option>
-                            <option value="acertei">✅ Acertei</option>
-                            <option value="errei">❌ Errei</option>
-                        </select>
                     </div>
                     <div class="painel-rodape">
-                        <label class="opcao-checkbox">
-                            <input type="checkbox" id="filtro-favoritas">
-                            ⭐ Só Favoritas
-                        </label>
+                        <span class="painel-dica">Nível, situação e favoritas ficam nos botões da barra.</span>
                         <button type="button" id="btn-todas" class="btn-link-limpar">Limpar filtros</button>
                     </div>
                 </div>
