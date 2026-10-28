@@ -55,7 +55,7 @@ import {
 } from './storage.js';
 
 // ---------- 1.45 Revisão espaçada ----------
-import { aplicarResposta, novoRegistro, venceHoje, formatarDiaCurto } from './revisao.js';
+import { aplicarResposta, novoRegistro, venceHoje, formatarDiaCurto, somarDias } from './revisao.js';
 
 // ---------- 1.5 Simulado (cronômetro e finalização) ----------
 import {
@@ -67,6 +67,17 @@ import {
 
 // ---------- 1.6 Notificações (toast e modal) ----------
 import { showToast, showConfirmModal } from './notifications.js';
+import {
+    carregarPerfil,
+    salvarPerfil,
+    obterPerfilAtivo,
+    abrirBoasVindas,
+    mostrarDica,
+    marcarTodasDicasComoVistas,
+    dicasJaForamDecididas,
+    atualizarMetaNaTela,
+    metaBatidaAgora
+} from './primeiros-passos.js';
 
 // ---------- 1.7 API de questões ----------
 import { normalizarQuestao, ORDEM_MACROS, NIVEIS, nivelInformadoEhInvalido } from './api.js';
@@ -334,7 +345,9 @@ function ordenarParaEstudo(lista) {
     // Entre as ainda não feitas, o nível mais básico vem antes: Iniciante → Intermediário →
     // prova. Um iniciante não cai mais numa questão do BACEN na 1ª tela; quem quer prova
     // escolhe "Avançado" no filtro de nível. Dentro de cada nível, as matérias seguem misturadas.
-    const nivelDe = (q) => Number(q.nivel) || 3;
+    // Quem disse nas boas-vindas que já trabalha na área vê todos os níveis misturados.
+    const porNivel = !(obterPerfilAtivo() && obterPerfilAtivo().experiencia === 'trabalho');
+    const nivelDe = (q) => porNivel ? (Number(q.nivel) || 3) : 0;
     const chaves = new Map(lista.map(q => {
         const g = grupo(q);
         return [q, [g, g === 1 ? nivelDe(q) : 0, misturar ? posicaoDoDia(String(q.id)) : 0]];
@@ -519,6 +532,7 @@ async function responder(card, botao) {
     }
 
     atualizarPlacar(historico, questoes);
+    reagirAPrimeirosPassos({ acertou, confianca });
 
     // 5. PERSISTÊNCIA NO SUPABASE EM SEGUNDO PLANO
     salvarRespostaNoHistorico({
@@ -1064,7 +1078,7 @@ function entrarFoco(lista, opcoes = {}) {
         simulado = null;
         pararCronometro(displayCronometro);
     }
-    foco = { lista: [...lista], indice: 0, cards: new Map() };
+    foco = { lista: [...lista], indice: 0, cards: new Map(), titulo: opcoes.titulo || "", guiada: Boolean(opcoes.guiada) };
     document.body.classList.add("modo-foco");
     if (btnModoFoco) btnModoFoco.setAttribute("aria-pressed", "true");
     fecharPaineis();
@@ -1123,7 +1137,7 @@ function desenharFoco() {
     barra.className = "foco-barra";
     barra.innerHTML = `
         <button type="button" class="btn-painel foco-anterior" ${foco.indice === 0 ? "disabled" : ""} aria-label="Questão anterior">←</button>
-        <span class="foco-posicao" aria-live="polite">${fim ? "Fim da lista" : `Questão ${foco.indice + 1} de ${total}`}</span>
+        <span class="foco-posicao" aria-live="polite">${foco.titulo ? `<span class="foco-titulo">${esc(foco.titulo)}</span>` : ""}${fim ? "Fim da lista" : `Questão ${foco.indice + 1} de ${total}`}</span>
         <button type="button" class="btn-painel foco-proxima" ${fim ? "disabled" : ""} aria-label="Próxima questão">→</button>
         <button type="button" class="btn-painel foco-sair">✕ Sair do foco</button>`;
 
@@ -1148,12 +1162,23 @@ function desenharFoco() {
 
 // Tela final: quantas desta sessão de foco foram respondidas e quantas certas
 function resumoFoco() {
-    let respondidas = 0, acertos = 0;
-    foco.cards.forEach(card => {
+    let respondidas = 0, acertos = 0, voltamAmanha = 0;
+    const amanha = somarDias(diaLocal(), 1);
+    foco.cards.forEach((card, id) => {
         if (!card || card.dataset.respondida !== "1") return;
         respondidas++;
         if (!card.querySelector(".opcao-item.incorreta")) acertos++;
+        const h = historico[id];
+        if (h && h.revisaoEm === amanha) voltamAmanha++;
     });
+    // Diz o que acontece amanhã: era o elo que faltava entre a 1ª sessão e a revisão
+    const textoAmanha = voltamAmanha
+        ? `<p>${voltamAmanha === 1 ? "<strong>1 questão volta</strong>" : `<strong>${voltamAmanha} questões voltam</strong>`} amanhã em <strong>🔁 Revisar hoje</strong>: as que você errou ou acertou na dúvida.</p>`
+        : (respondidas ? "<p>Nenhuma volta amanhã: você acertou todas com certeza.</p>" : "");
+    const textoGuiada = foco.guiada && respondidas
+        ? "<p>Amanhã é só abrir o app: primeiro a revisão, depois as questões novas, até bater a meta do dia.</p>"
+        : "";
+    if (foco.guiada && respondidas) setTimeout(() => mostrarDica("tres-numeros"), 400);
     const caixa = document.createElement("div");
     caixa.className = "foco-resumo";
     caixa.innerHTML = `
@@ -1161,6 +1186,7 @@ function resumoFoco() {
         <p>${respondidas
             ? `Você respondeu <strong>${respondidas}</strong> nesta sessão e acertou <strong>${acertos}</strong> (${Math.round(acertos * 100 / respondidas)}%).`
             : "Nenhuma questão respondida nesta sessão."}</p>
+        ${textoAmanha}${textoGuiada}
         <div class="foco-resumo-acoes">
             <button type="button" class="btn-painel foco-anterior">← Voltar para a última</button>
             <button type="button" class="btn-primary foco-sair">Sair do foco</button>
@@ -1637,8 +1663,10 @@ async function carregarBancoDeQuestoes(questoesChegando = null) {
     // Nível: só aparece quando o banco tiver mais de um nível (antes disso, todo mundo é "Avançado")
     if (selectNivel) selectNivel.hidden = selectNivel.options.length <= 2;
 
+    carregarPerfil(usuarioAtual.id);
     atualizarPlacar(historico, questoes);
     aplicarFiltros();
+    iniciarPrimeirosPassos();
 }
 
 // ---------- Tela de entrada do visitante ----------
@@ -1906,3 +1934,109 @@ if (btnReportesAdmin && modalReportesAdmin) {
     });
 }
 // ==================== FIM: 13. REPORTAR PROBLEMA NA QUESTÃO (U5) ====================
+
+// ==================== INÍCIO: 14. PRIMEIRA SESSÃO (boas-vindas, sessão guiada, dicas, meta) ====================
+// Itens B, C, D e Q da Análise da primeira experiência. As telas ficam em js/primeiros-passos.js;
+// aqui fica o que depende das questões, do histórico e do Modo Foco.
+const MATERIAS_PARA_COMECAR = [
+    "Banco de Dados & Dados",
+    "Redes & Segurança da Informação",
+    "Engenharia de Software & Agilidade"
+];
+let boasVindasAbertaNestaCarga = false;
+
+function jaRespondeu(id) {
+    const h = historico[String(id)];
+    return Boolean(h && Number(h.tentativas) > 0);
+}
+
+function temHistorico() {
+    return Object.values(historico).some(h => h && Number(h.tentativas) > 0);
+}
+
+// Matérias com pelo menos 5 questões de Iniciante ainda não feitas, a recomendada primeiro
+function materiasParaPrimeiraSessao() {
+    const contagem = {};
+    questoes.forEach(q => {
+        if (Number(q.nivel) === 1 && !jaRespondeu(q.id)) contagem[q.materia] = (contagem[q.materia] || 0) + 1;
+    });
+    const ordem = [...MATERIAS_PARA_COMECAR, ...ORDEM_MACROS.filter(m => !MATERIAS_PARA_COMECAR.includes(m))];
+    return ordem.filter(m => (contagem[m] || 0) >= 5).map(nome => ({ nome, disponiveis: contagem[nome] }));
+}
+
+// Chamado ao fim de cada carga do banco (usuário logado)
+function iniciarPrimeirosPassos() {
+    if (!usuarioAtual) return;
+    // Quem já estudava antes deste pacote não recebe as dicas de iniciante
+    if (temHistorico() && !dicasJaForamDecididas()) marcarTodasDicasComoVistas();
+    if (obterPerfilAtivo() || temHistorico() || boasVindasAbertaNestaCarga) return;
+    boasVindasAbertaNestaCarga = true;
+    abrirBoasVindasCompleta();
+}
+
+function abrirBoasVindasCompleta() {
+    abrirBoasVindas({
+        materias: materiasParaPrimeiraSessao(),
+        onConcluir: ({ perfil, materia }) => {
+            salvarPerfil(usuarioAtual.id, perfil);
+            aplicarFiltros(); // a ordem das questões depende do perfil
+            if (materia) iniciarSessaoGuiada(materia);
+            else mostrarDica("antes-de-responder");
+        }
+    });
+}
+
+// Sessão guiada: 10 questões de Iniciante da matéria, nos 2 primeiros assuntos dela (5 + 5),
+// na ordem em que o banco foi escrito (a numeração das autorais segue a ordem didática).
+// Conceito novo em bloco primeiro; a mistura vem depois, na lista normal.
+function iniciarSessaoGuiada(materia) {
+    const pool = questoes.filter(q => q.materia === materia && Number(q.nivel) === 1 && !jaRespondeu(q.id));
+    const porAssunto = new Map();
+    pool.forEach(q => {
+        const assunto = q.assunto || materia;
+        if (!porAssunto.has(assunto)) porAssunto.set(assunto, []);
+        porAssunto.get(assunto).push(q);
+    });
+    const lista = [];
+    [...porAssunto.values()].filter(qs => qs.length >= 3).slice(0, 2).forEach(qs => lista.push(...qs.slice(0, 5)));
+    if (lista.length < 10) lista.push(...pool.filter(q => !lista.includes(q)).slice(0, 10 - lista.length));
+    if (!lista.length) {
+        showToast("Não há questões de Iniciante novas nessa matéria.", "alerta");
+        return;
+    }
+    entrarFoco(lista, { titulo: `Primeira sessão · ${materia}`, guiada: true, silencioso: true });
+    setTimeout(() => mostrarDica("antes-de-responder"), 300);
+}
+
+// Depois de cada resposta no modo estudo: dicas da primeira vez e aviso da meta batida
+function reagirAPrimeirosPassos({ acertou, confianca }) {
+    if (!acertou) mostrarDica("primeiro-erro");
+    else if (confianca === "duvida") mostrarDica("primeira-duvida");
+    if (Object.values(historico).filter(h => h && Number(h.tentativas) > 0).length >= 10) mostrarDica("tres-numeros");
+
+    const estado = atualizarMetaNaTela(historico);
+    if (metaBatidaAgora(estado)) {
+        showToast(`🎯 Meta de hoje batida: ${estado.feitas} questões. Pode parar por aqui ou continuar.`, "sucesso", 5000);
+    }
+}
+
+// "Meta diária e perfil" na gaveta: as 3 perguntas de novo, com as respostas atuais marcadas
+const btnPerfilMeta = document.getElementById("btn-perfil-meta");
+if (btnPerfilMeta) {
+    btnPerfilMeta.addEventListener("click", () => {
+        if (!usuarioAtual) {
+            showToast("Entre na sua conta para definir sua meta.", "alerta");
+            return;
+        }
+        abrirBoasVindas({
+            materias: [],
+            perfilAtual: obterPerfilAtivo(),
+            onConcluir: ({ perfil }) => {
+                salvarPerfil(usuarioAtual.id, perfil);
+                aplicarFiltros();
+                showToast(`Perfil salvo. Meta: ${perfil.meta} questões por dia.`, "sucesso");
+            }
+        });
+    });
+}
+// ==================== FIM: 14. PRIMEIRA SESSÃO ====================

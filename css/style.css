@@ -1475,3 +1475,68 @@ body.visitante .top-bar { display: none; }
     .entrada-visitante { margin: 0.5rem auto 1.5rem; }
     .entrada-acoes .btn-entrada { flex: 1 1 100%; }
 }
+
+/* ==================== PRIMEIRA SESSÃO (pacote 2) ==================== */
+/* Meta diária no menu lateral */
+.meta-hoje { background: #0f172a; border: 1px solid #1e293b; border-radius: 10px; padding: 0.65rem 0.8rem; display: flex; flex-direction: column; gap: 0.45rem; }
+.meta-hoje-topo { display: flex; justify-content: space-between; gap: 0.5rem; font-size: 0.8rem; color: #cbd5e1; font-weight: 600; }
+#meta-hoje-valor { color: #93c5fd; font-variant-numeric: tabular-nums; }
+.meta-hoje-barra { height: 6px; background: #1e293b; border-radius: 99px; overflow: hidden; }
+#meta-hoje-fill { display: block; height: 100%; width: 0; background: #3b82f6; border-radius: 99px; transition: width 0.3s ease; }
+.meta-hoje.batida #meta-hoje-valor { color: #34d399; }
+.meta-hoje.batida #meta-hoje-fill { background: #10b981; }
+.placar-mini-meta { color: #93c5fd; }
+.placar-mini-meta::before { content: "🎯 "; }
+.placar-mini-meta.batida { color: #34d399; }
+
+/* Título da sessão no Modo Foco ("Primeira sessão · Banco de Dados") */
+.foco-titulo { display: block; color: #93c5fd; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.1rem; }
+
+/* Boas-vindas */
+.boas-vindas-card { max-width: 480px; }
+.bv-progresso { color: #64748b; font-size: 0.75rem; font-weight: 600; margin: 0 0 0.5rem; letter-spacing: 0.04em; }
+.boas-vindas .modal-mensagem { margin-bottom: 1rem; }
+.bv-opcoes { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.25rem; }
+.bv-opcoes-linha { flex-direction: row; }
+.bv-opcoes-linha .bv-opcao { flex: 1; justify-content: center; text-align: center; }
+.bv-opcao {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 0.15rem;
+    text-align: left; width: 100%; min-height: 48px;
+    background: #1e293b; border: 1px solid #334155; border-radius: 10px;
+    color: #e2e8f0; font: inherit; font-size: 0.95rem; padding: 0.7rem 0.9rem; cursor: pointer;
+}
+.bv-opcao:hover { border-color: #60a5fa; }
+.bv-opcao.marcada { background: #1e3a8a; border-color: #3b82f6; color: #fff; }
+.bv-opcao-texto { font-weight: 600; }
+.bv-opcao-detalhe { color: #94a3b8; font-size: 0.8rem; }
+.bv-opcao.marcada .bv-opcao-detalhe { color: #bfdbfe; }
+.bv-acoes { align-items: center; }
+.bv-acoes .bv-pular { margin-right: auto; color: #94a3b8; }
+.bv-avancar:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* Dica que aparece uma vez */
+.dica-card {
+    position: fixed; z-index: 9997;
+    left: calc(280px + 24px); bottom: 24px;
+    width: min(420px, calc(100vw - 32px));
+    background: #0f172a; border: 1px solid #3b82f6; border-radius: 12px;
+    box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.7);
+    padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: 0.5rem;
+    opacity: 0; transform: translateY(8px); transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.dica-card.visivel { opacity: 1; transform: none; }
+.dica-titulo { color: #f8fafc; font-weight: 600; margin: 0; }
+.dica-texto { color: #cbd5e1; font-size: 0.88rem; line-height: 1.5; margin: 0; }
+.dica-ok { align-self: flex-end; }
+@media (max-width: 768px) {
+    .dica-card { left: 16px; right: 16px; width: auto; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
+    .bv-opcoes-linha { flex-direction: column; }
+}
+/* Celular com meta: o 🎯 ocupa o lugar de ✓ e ✗ no placar do topo (eles seguem no menu ☰),
+   senão o nome do app quebra em duas linhas. O título da sessão no Foco fica numa linha só. */
+@media (max-width: 768px) {
+    .placar-mini:has(#mini-meta:not([hidden])) .placar-mini-acertos,
+    .placar-mini:has(#mini-meta:not([hidden])) .placar-mini-erros { display: none; }
+}
+.foco-barra .foco-posicao { min-width: 0; }
+.foco-titulo { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
