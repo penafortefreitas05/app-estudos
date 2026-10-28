@@ -123,6 +123,10 @@ export function metaBatidaAgora(estado) {
 
 // ---------- Dicas que aparecem uma vez (D) ----------
 export const DICAS = {
+    'aprender': {
+        titulo: 'Aprender: um assunto por vez',
+        texto: 'Primeiro vem um exemplo resolvido: leia a questão e o comentário com calma. Depois vêm outras questões do mesmo assunto para você provar que aprendeu.'
+    },
     'antes-de-responder': {
         titulo: 'Como responder',
         texto: 'Escolha a alternativa e diga se tem certeza. Se chutou, use “Na dúvida”: a questão volta amanhã para você confirmar. Errar aqui faz parte do método: é lendo a explicação depois do erro que se aprende.'
@@ -248,7 +252,7 @@ export function abrirBoasVindas({ materias = [], perfilAtual = null, onConcluir 
                 <div class="bv-opcoes bv-opcoes-linha">${OPCOES_META.map(n => opcao('meta', n, `${n} questões`)).join('')}</div>`;
         } else {
             corpo = `<h3 id="bv-titulo" class="modal-titulo">Por onde começar?</h3>
-                <p class="modal-mensagem">Uma primeira sessão de 10 questões, uma por vez, em 2 assuntos da matéria.</p>
+                <p class="modal-mensagem">Um assunto por vez: primeiro um exemplo resolvido, depois questões para você provar que aprendeu.</p>
                 <div class="bv-opcoes">${materias.map((m, i) => `
                     <button type="button" class="bv-opcao bv-materia" data-materia="${esc(m.nome)}">
                         <span class="bv-opcao-texto">${esc(m.nome)}</span>
