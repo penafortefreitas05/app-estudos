@@ -314,6 +314,17 @@ export function normalizarMateriaEAgruparTags(questao, index = 0) {
     questao.materia = materiaMacro;
     questao.banca = String(questao.banca || "Não informada").trim();
 
+    // 7b. Banca que aparece na tela. Questão inédita (origem = 'inedita') não saiu em prova:
+    // mostrar "FGV" nela enganaria. O campo banca continua intacto no banco (é o estilo
+    // em que foi escrita) — só a exibição e o filtro mudam.
+    questao.ehInedita = /^in[eé]dita$/i.test(String(questao.origem || '').trim());
+    if (questao.ehInedita) {
+        const estilo = /in[eé]dita|n[aã]o informada/i.test(questao.banca) ? '' : questao.banca;
+        questao.bancaExibida = estilo ? `Inédita · estilo ${estilo}` : 'Inédita';
+    } else {
+        questao.bancaExibida = questao.banca;
+    }
+
     // 8. Nível (1 Iniciante · 2 Intermediário · 3 Avançado · 4 Especialista)
     questao.nivel = normalizarNivel(questao.nivel);
 

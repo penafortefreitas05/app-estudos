@@ -502,11 +502,14 @@ function desenharCards(container, lista, historico, restaurarRespostas) {
 
         const htmlTags = (q.tags || []).map(t => `<span class="tag-item" data-tag="${esc(t)}">#${esc(t)}</span>`).join('');
 
-        const infoExtra = [
-            q.banca ? esc(q.banca) : '',
-            q.ano ? esc(q.ano) : '',
-            q.orgao ? esc(q.orgao) : ''
-        ].filter(Boolean).join(' • ');
+        // Inédita: só o rótulo — ano e órgão ao lado sugeririam uma prova que não existiu
+        const infoExtra = (q.ehInedita
+            ? [esc(q.bancaExibida)]
+            : [
+                q.banca ? esc(q.banca) : '',
+                q.ano ? esc(q.ano) : '',
+                q.orgao ? esc(q.orgao) : ''
+            ]).filter(Boolean).join(' • ');
 
         const cardHTML = `
             <article class="card-questao questao-card" data-id="${esc(idStr)}">

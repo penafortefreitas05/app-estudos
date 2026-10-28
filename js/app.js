@@ -251,7 +251,7 @@ function filtrarQuestoes() {
     const soFavoritas = checkFavoritas ? checkFavoritas.checked : false;
 
     return questoes.filter(q => {
-        if (banca && q.banca !== banca) return false;
+        if (banca && (q.bancaExibida || q.banca) !== banca) return false;
         if (materia && q.materia !== materia) return false;
         // "tag" aqui é o assunto padronizado (U11), não mais a tag livre — ver js/api.js
         if (tag && String(q.assunto || "").toLowerCase() !== tag) return false;
@@ -271,7 +271,7 @@ function filtrarQuestoes() {
         if (termo) {
             const textoOpcoes = obterOpcoes(q).map(op => op.texto).join(" ");
             const textoTags = (q.tags || []).join(" ");
-            const alvoBusca = `${q.enunciado || q.pergunta || ""} ${textoOpcoes} ${textoTags} ${q.banca || ""} ${q.orgao || ""}`.toLowerCase();
+            const alvoBusca = `${q.enunciado || q.pergunta || ""} ${textoOpcoes} ${textoTags} ${q.bancaExibida || q.banca || ""} ${q.orgao || ""}`.toLowerCase();
             if (!alvoBusca.includes(termo)) return false;
         }
         return true;
@@ -1375,7 +1375,7 @@ async function carregarBancoDeQuestoes(questoesChegando = null) {
         questoes = [];
         porId = new Map();
 
-        preencherSelect(selectBanca, "🏛️ Todas as Bancas", "banca", questoes);
+        preencherSelect(selectBanca, "🏛️ Todas as Bancas", "bancaExibida", questoes);
         preencherSelect(selectMateria, "📖 Todas as Matérias", "materia", questoes);
         preencherSelect(selectAno, "📅 Todos os Anos", "ano", questoes);
         preencherSelect(selectNivel, "📶 Todos os Níveis", "nivel", questoes, OPCOES_SELECT_NIVEL);
@@ -1414,7 +1414,7 @@ async function carregarBancoDeQuestoes(questoesChegando = null) {
         if (h && h.gabaritoRevelado) q.gabarito = h.gabaritoRevelado;
     });
 
-    preencherSelect(selectBanca, "🏛️ Todas as Bancas", "banca", questoes);
+    preencherSelect(selectBanca, "🏛️ Todas as Bancas", "bancaExibida", questoes);
     preencherSelect(selectMateria, "📖 Todas as Matérias", "materia", questoes);
     preencherSelect(selectAno, "📅 Todos os Anos", "ano", questoes);
     preencherSelect(selectNivel, "📶 Todos os Níveis", "nivel", questoes, OPCOES_SELECT_NIVEL);
