@@ -142,16 +142,18 @@ export function textoGabaritoDe(q) {
 // ---------- 3. COMPONENTES DE INTERFACE ----------
 // opcoes.rotulo(valor): texto mostrado no lugar do valor cru (ex.: nível 1 → "Iniciante")
 // opcoes.numerico: ordena 1, 2, 3... em vez de alfabético
+// opcoes.mostrarTotal: põe o total de questões na opção "Todos" (só o filtro de nível usa,
+// para o número não se repetir em todos os filtros)
 export function preencherSelect(selectElement, textoPadrao, propriedade, listaQuestoes, opcoes = {}) {
     if (!selectElement) return;
-    const { rotulo = (v) => v, numerico = false } = opcoes;
+    const { rotulo = (v) => v, numerico = false, mostrarTotal = false } = opcoes;
     const contagem = {};
     listaQuestoes.forEach(q => {
         const val = q[propriedade];
         if (val) contagem[val] = (contagem[val] || 0) + 1;
     });
 
-    selectElement.innerHTML = `<option value="">${esc(textoPadrao)} (${listaQuestoes.length})</option>`;
+    selectElement.innerHTML = `<option value="">${esc(textoPadrao)}${mostrarTotal ? ` (${listaQuestoes.length})` : ''}</option>`;
     Object.keys(contagem)
         .sort((a, b) => numerico ? Number(a) - Number(b) : a.localeCompare(b, 'pt-BR'))
         .forEach(valor => {
@@ -181,7 +183,7 @@ export function preencherSelectAssunto(selectElement, listaQuestoes, materia, or
     const ordenarAssuntos = obj => Object.entries(obj).sort((a, b) => a[0].localeCompare(b[0], 'pt-BR'));
     const opcao = ([assunto, n]) => `<option value="${esc(assunto)}">${esc(assunto)} (${n})</option>`;
 
-    let html = `<option value="">🏷️ Todos os Assuntos (${base.length})</option>`;
+    let html = `<option value="">🏷️ Todos os Assuntos</option>`;
     if (materia) {
         html += ordenarAssuntos(porMacro[materia] || {}).map(opcao).join('');
     } else {

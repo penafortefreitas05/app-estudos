@@ -69,7 +69,7 @@ import { showToast, showConfirmModal } from './notifications.js';
 import { normalizarQuestao, ORDEM_MACROS, NIVEIS, nivelInformadoEhInvalido } from './api.js';
 
 // Filtro de nível: mostra o nome ("Iniciante") e ordena 1→4
-const OPCOES_SELECT_NIVEL = { rotulo: (v) => NIVEIS[v] || v, numerico: true };
+const OPCOES_SELECT_NIVEL = { rotulo: (v) => NIVEIS[v] || v, numerico: true, mostrarTotal: true };
 
 // ==================== FIM: 1. IMPORTAÇÕES DE MÓDULOS ====================
 // ---------- 2. ESTADO GLOBAL ----------
