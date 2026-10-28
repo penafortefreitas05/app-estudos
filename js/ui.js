@@ -4,7 +4,7 @@
 
 import { carregarDiasDeEstudo, diaLocal } from './storage.js';
 import { venceHoje, somarDias } from './revisao.js';
-import { NIVEIS } from './api.js';
+import { NIVEIS, ORDEM_MACROS } from './api.js';
 import { atualizarMetaNaTela } from './primeiros-passos.js';
 
 // Matéria "a reforçar": abaixo deste % de acerto, com pelo menos esta quantidade de respostas
@@ -367,7 +367,7 @@ export function atualizarPlacar(historico, questoes) {
     const cardCriticas = document.getElementById("card-criticas");
     if (cardCriticas) cardCriticas.classList.toggle("alerta", criticas.length > 0);
 
-    renderizarDesempenhoMaterias(materiasMap);
+    renderizarDesempenhoMaterias(materiasMap, questoes, historico);
     atualizarMetaNaTela(historico); // meta diária (some quando não há meta definida)
 }
 
@@ -451,39 +451,65 @@ export function calcularCobertura(questoes, historico) {
     return { total, feitas, percentual: total ? Math.round((feitas / total) * 100) : 0 };
 }
 
-function renderizarDesempenhoMaterias(materiasMap) {
+// Painel "Por matéria": as 9 matérias sempre, na mesma ordem (é um mapa: o lugar de cada uma
+// não muda). Cada linha mostra o % de acerto, quantas vencem na revisão hoje e quanto de cada
+// nível já foi feito. As ainda não começadas aparecem como "não começou": dá para ver os buracos.
+// Tocar numa matéria filtra as questões dela (app.js).
+const NOME_CURTO_NIVEL = { 1: 'Inic.', 2: 'Interm.', 3: 'Prova', 4: 'Espec.' };
+
+function renderizarDesempenhoMaterias(materiasMap, questoes = [], historico = {}) {
     const containerMaterias = document.getElementById("dashboard-materias");
     if (!containerMaterias) return;
 
-    const materiasComAtividade = Object.keys(materiasMap).filter(mat => materiasMap[mat].respondidas > 0);
+    // Por matéria: revisões que vencem hoje e progresso por nível
+    const extra = {};
+    questoes.forEach(q => {
+        const mat = q.materia || "Geral";
+        if (!extra[mat]) extra[mat] = { revisarHoje: 0, niveis: {} };
+        const h = historico[String(q.id)];
+        if (venceHoje(h)) extra[mat].revisarHoje++;
+        const n = Number(q.nivel) || 3;
+        if (!extra[mat].niveis[n]) extra[mat].niveis[n] = { total: 0, feitas: 0 };
+        extra[mat].niveis[n].total++;
+        if (h && Number(h.tentativas) > 0) extra[mat].niveis[n].feitas++;
+    });
 
-    if (materiasComAtividade.length === 0) {
-        containerMaterias.innerHTML = '<p class="aviso-vazio" style="color: #64748b; font-size: 0.8rem; margin-top: 1.2rem; text-align: center;">Responda questões para visualizar seu desempenho por matéria.</p>';
+    const comQuestoes = ORDEM_MACROS.filter(m => materiasMap[m] && materiasMap[m].total > 0);
+    const outras = Object.keys(materiasMap)
+        .filter(m => !ORDEM_MACROS.includes(m) && materiasMap[m].total > 0)
+        .sort((a, b) => a.localeCompare(b, 'pt-BR'));
+    const materias = [...comQuestoes, ...outras];
+
+    if (materias.length === 0) {
+        containerMaterias.innerHTML = '<p class="aviso-vazio painel-vazio">As matérias aparecem aqui quando o banco de questões carregar.</p>';
         return;
     }
 
-    // Matérias a reforçar primeiro; dentro de cada grupo, ordem alfabética
-    materiasComAtividade.sort((a, b) =>
-        (ehMateriaCritica(materiasMap[b]) - ehMateriaCritica(materiasMap[a])) || a.localeCompare(b, 'pt-BR'));
-
     let html = '<div class="painel-desempenho-materias">';
-    materiasComAtividade.forEach(mat => {
+    materias.forEach(mat => {
         const dados = materiasMap[mat];
         const somaResp = dados.acertos + dados.erros;
-        const taxa = somaResp > 0
-            ? ((dados.acertos / somaResp) * 100).toFixed(0)
-            : 0;
+        const comecou = dados.respondidas > 0 && somaResp > 0;
+        const taxa = comecou ? Math.round((dados.acertos / somaResp) * 100) : 0;
         const critica = ehMateriaCritica(dados);
+        const info = extra[mat] || { revisarHoje: 0, niveis: {} };
+        const niveis = Object.keys(info.niveis).map(Number).sort((a, b) => a - b)
+            .map(n => `${NOME_CURTO_NIVEL[n] || NIVEIS[n] || n} ${info.niveis[n].feitas}/${info.niveis[n].total}`)
+            .join(' · ');
+        const icone = critica ? '⚠️' : (comecou ? '📖' : '○');
+        const revisar = info.revisarHoje
+            ? `<span class="materia-revisar" title="Vencem na revisão hoje">${info.revisarHoje} 🔁</span>` : '';
 
-        // Botão: tocar na matéria filtra as questões dela
         html += `
-            <button type="button" class="materia-stat-item${critica ? ' critica' : ''}" data-materia="${esc(mat)}" title="Ver questões de ${esc(mat)}">
+            <button type="button" class="materia-stat-item${critica ? ' critica' : ''}${comecou ? '' : ' nao-comecou'}" data-materia="${esc(mat)}" title="Ver questões de ${esc(mat)}">
                 <span class="materia-stat-header">
-                    <span class="materia-nome">${critica ? '⚠️' : '📖'} ${esc(mat)}</span>
-                    <span class="materia-taxa">${taxa}% (${dados.acertos}/${somaResp})</span>
+                    <span class="materia-nome">${icone} ${esc(mat)}</span>
+                    <span class="materia-taxa">${comecou ? `${taxa}% <small>(${dados.acertos}/${somaResp})</small>` : 'não começou'}</span>
                 </span>
-                <span class="barra-progresso-bg">
-                    <span class="barra-progresso-fill" style="width: ${taxa}%;"></span>
+                ${comecou ? `<span class="barra-progresso-bg"><span class="barra-progresso-fill" style="width: ${taxa}%;"></span></span>` : ''}
+                <span class="materia-rodape">
+                    <span class="materia-niveis">${esc(niveis)}</span>
+                    ${revisar}
                 </span>
                 ${critica ? '<span class="materia-reforcar">Reforçar · toque para treinar</span>' : ''}
             </button>
