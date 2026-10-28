@@ -1610,6 +1610,11 @@ body.modo-foco .cartao-hoje { display: none; }
 .resumo-bloco { margin: 0 0 0.85rem; color: #cbd5e1; line-height: 1.55; }
 .resumo-bloco p { margin: 0; }
 .resumo-rotulo { margin-bottom: 0.2rem !important; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #93c5fd; }
+.resumo-central + .resumo-exemplo { margin-top: -0.6rem; }
+.resumo-exemplo { margin: 0 0 1rem; color: #cbd5e1; line-height: 1.5; font-style: italic; }
+.resumo-pares { margin: 0; padding-left: 1.1rem; color: #cbd5e1; line-height: 1.5; }
+.resumo-pares li { margin-bottom: 0.25rem; }
+.resumo-pares strong { color: #f1f5f9; }
 @media (max-width: 768px) { .resumo-central { font-size: 1.05rem; } }
 
 /* ==================== BARRA RECOLHÍVEL (só no computador) ==================== */
