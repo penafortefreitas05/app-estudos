@@ -1,50 +1,36 @@
 # FocoPro — Próximos passos
 
-Atualizado em 28/10/2026 (fim do dia). A lista viva, com caixinhas, é o artefato "Checklist FocoPro".
+Atualizado em 28/10/2026 (fim do dia).
 
-## Estado atual
-- U6 Esqueci minha senha: no ar.
-- U3 Favoritos e anotações na nuvem: no ar.
-- U11 Assunto padronizado + Cobertura do Edital: no ar (conta os assuntos reais do banco).
-- U9 Correção no servidor: no ar, SQL da Fase 1 rodada. Em 28/10 corrigido o furo do gabarito "A" inventado (commit 6bed25c).
-- Níveis Fase A: no ar (commit 12be502). Campo `nivel`, filtro "📶 Todos os Níveis", selo colorido no card, importação gravando o nível. Importação recusa nível inválido.
-- Inéditas rotuladas pela origem (v26): aparecem como "Inédita · estilo X".
-- Filtro de assunto depende da matéria (v27). Total só em "Todos os Níveis" (v28).
-- **Banco em 28/10 (fim do dia): 985 questões.** 382 reais (339 de prova + 43 inéditas) e 603 autorais FocoPro: 573 no nível 1 (Iniciante, as 9 matérias) e 30 no nível 2 (Banco de Dados). Nenhuma autoral caiu em nível 3. Conferido no banco por prefixo de id.
-- RLM ganhou 8 assuntos novos (agora 11 assuntos) — conferir a Cobertura do Edital.
-- Os JSONs de todos os lotes estão salvos no computador do Nathan.
+## Entregue hoje (28/10)
+- Modo Foco com teclado, reportar problema na questão (U5), explicações em todas as questões (U12), limpeza de CSS.
+- Primeira experiência: entrada do visitante, boas-vindas em 3 perguntas, sessão guiada, dicas de uma vez, meta diária, sequência com folga semanal, cartão Hoje com Continuar, resumo da semana.
+- Aprender Fase 1 (exemplo resolvido + prova por assunto) e Fase 2 para Banco de Dados ("Entenda em 1 minuto", 23 assuntos).
+- Visual: painel Por matéria em cartões, barra lateral larga e recolhível, barra de cima em duas linhas com filtros rápidos. Cache v43.
+- Estado anterior mantido: U6, U3, U11, U9 Fase 1, níveis Fase A, inéditas rotuladas. Banco com 985 questões.
 
-## 1. Níveis de questão e trilha
-Decidido em 28/10:
-- Nomes: 1 Iniciante · 2 Intermediário · 3 Avançado (prova) · 4 Especialista.
-- Progressão por matéria, não por conta. Nível de conta vem depois, como resumo.
-- Recomendar o próximo nível, sem trancar.
-- Subir em níveis: encher o Iniciante primeiro (feito em 28/10), depois o Intermediário.
+## Amanhã, por prioridade
+1. **Nathan, 10 min: abrir o app no celular de verdade** e olhar as telas novas (barra de cima, gaveta ☰, Hoje, Aprender com "Entenda em 1 minuto"). Só foram testadas no computador e em celular simulado.
+2. **Nathan, 5 min: confirmar o backup do banco no Supabase.** Há 603 questões autorais e o histórico de estudo; saber o que o plano cobre.
+3. **Nathan: testar uma amostra do Iniciante nas outras matérias** e reportar o que estiver errado (botão 🚩). Só Português e Banco de Dados foram testados. Começar por RLM e Governança (CNJ). Correção = reimportar com o mesmo id e a mesma letra correta.
+4. **Aprender Fase 2 em Redes e Engenharia de Software.** Nathan pede os textos no chat do banco (uma matéria por vez, mesmo formato JSON do Banco de Dados) e traz para o Claude, que junta em `data/resumos-assunto.json` e publica.
+5. **Claude: Pacote Trilha.** Aviso "você já pode subir de nível" (sugestão: assunto aprendido + 80% de acerto com "Tenho certeza") e o caminho de volta (errou questão de prova → sugere o Iniciante do mesmo assunto).
+6. **Claude + Nathan: perfil e meta na nuvem** (tabela `perfis`). Claude escreve a SQL, Nathan roda. Hoje a meta definida no celular não vale no computador.
+7. Decisão sem pressa: a barra de % de acerto deve ignorar as respostas dadas no Aprender? Hoje conta todas.
 
-Próximas fases:
-- B (em andamento): Nathan estuda pelo Iniciante e dá retorno por matéria. Só o Banco de Dados foi testado até agora (21/31, nível adequado). Testar uma amostra de cada matéria, principalmente Português, RLM e Governança (CNJ), e reportar gabarito duvidoso ao Claude. Correção = reimportar com o mesmo id e a mesma letra correta.
-- Intermediário: propor o plano matéria por matéria; Banco de Dados já tem 30 (parte relacional).
-- C: trilha por matéria: barra de progresso por nível e aviso "você já pode subir". Critério a definir (sugestão: 10 respostas no nível e 80% de acerto com "Tenho certeza").
-- D: nível de conta (gamificação).
+## Datas
+- 31/10: Fase 2 do U9. Nathan roda `docs/sql/u9-fase2-apagar-resposta-correta.sql` passo a passo (só o passo 3 se o passo 1 der `faltando=0` e o passo 2 vier vazio).
 
-Siglas de id: bd, rs, es, dev, gov, arq, so, pt, rlm. Padrão `focopro-<sigla>-n<nível>-<NNN>`. Detalhes em `docs/modelo-questoes-por-nivel.md`.
+## Níveis de questão e trilha
+- Nomes: 1 Iniciante · 2 Intermediário · 3 Avançado (prova) · 4 Especialista. Progressão por matéria. Recomendar o próximo nível, sem trancar.
+- Intermediário: plano matéria por matéria no chat do banco; Banco de Dados já tem 30 (parte relacional).
+- Especialista: ainda sem questões. Nível de conta (gamificação) fica para depois.
 
-## 2. U5 — Reportar erro em questão (prioridade subiu)
-Botão no card para apontar problema (gabarito errado, enunciado confuso, desatualizada). Tabela nova com RLS, painel simples para o admin. Agora há 603 questões autorais e a revisão de todas depende de retorno dos usuários.
-
-## 3. Backup
-- Backup do banco no Supabase (confirmar o que o plano cobre).
-- Opcional: guardar os JSONs também no repositório (pasta `banco-questoes/`), versionados.
-
-## 4. Fase 2 do U9
-Rodar a partir de 31/10:
-`alter table public.questoes drop column resposta_correta;`
-
-## 5. Polimento (depois)
-- Pacote 4 visual
-- Modo Foco
-- Painel de tendência de 7 dias
-- CSP em modo bloqueio
+## Backlog (sem data)
+- U7: CSP em modo bloqueio, depois de uma semana sem avisos de "Content Security Policy" no Console.
+- U8: painel de tendência de 7 dias (baixa prioridade).
+- Glossário de siglas, lembretes por notificação, marcadores. Guardar os JSONs dos lotes no repositório (pasta `banco-questoes/`).
+- Barra de cima e barra lateral no celular: ajustes finos depois do teste no aparelho.
 
 ## Lembretes de processo
 - Toda mudança em arquivo do site: subir o CACHE_NAME no service-worker.js.
