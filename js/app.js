@@ -28,7 +28,11 @@ import {
     limparFilaPendente,
     salvarQuestoesEmMassa,
     carregarTodasQuestoes,
-    apagarHistoricoDoUsuario
+    apagarHistoricoDoUsuario,
+    salvarFavoritoNaNuvem,
+    salvarAnotacaoNaNuvem,
+    apagarFavoritosDoUsuario,
+    limparFilaFavoritosPendente
 } from './supabase.js';
 
 // ---------- 1.3 Autenticação ----------
@@ -639,8 +643,12 @@ if (container) {
             if (!historico[qId]) {
                 historico[qId] = { acertos: 0, erros: 0, tentativas: 0, ultimaResposta: null, recentes: [], status: 'novo', anotacao: "" };
             }
-            historico[qId].favorito = !historico[qId].favorito;
+            const novoFavorito = !historico[qId].favorito;
+            const agoraFavorito = Date.now();
+            historico[qId].favorito = novoFavorito;
+            historico[qId].favoritoEm = agoraFavorito;
             salvarHistorico(historico);
+            salvarFavoritoNaNuvem(qId, novoFavorito, agoraFavorito); // em segundo plano (U3)
 
             btnFavoritar.classList.toggle("ativo", historico[qId].favorito);
             btnFavoritar.textContent = historico[qId].favorito ? "★" : "☆";
@@ -797,8 +805,11 @@ async function solicitarExplicacaoIA(btnIA) {
                 historico[qId] = { acertos: 0, erros: 0, tentativas: 0, ultimaResposta: null, recentes: [], status: 'novo' };
             }
 
+            const agoraAnotacao = Date.now();
             historico[qId].anotacao = texto;
+            historico[qId].anotacaoEm = agoraAnotacao;
             salvarHistorico(historico);
+            salvarAnotacaoNaNuvem(qId, texto, agoraAnotacao); // em segundo plano (U3)
             atualizarPlacar(historico, questoes);
             showToast(texto ? "Anotação salva no seu Caderno de Erros!" : "Anotação removida.", "sucesso");
 
@@ -988,7 +999,9 @@ btnApagarTudo.addEventListener("click", async () => {
 
     try {
         await apagarHistoricoDoUsuario();
+        await apagarFavoritosDoUsuario();
         limparFilaPendente();
+        limparFilaFavoritosPendente();
         apagarCacheNuvem();
         localStorage.removeItem('appEstudos_Historico');
         apagarDiasDeEstudo();
