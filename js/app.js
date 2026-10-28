@@ -18,7 +18,6 @@ import {
     renderizarCoberturaEdital,
     temGabarito,
     preencherSelectAssunto,
-    calcularSequencia,
     textoGabaritoDe
 } from './ui.js';
 import { montarTrilha, proximoAssunto, resumoDasTrilhas, questaoPonte } from './aprender.js';
@@ -391,8 +390,122 @@ function aplicarFiltros() {
     }
     atualizarPlacar(historico, questoes);
     atualizarBadgeFiltros();
+    atualizarTituloDaBarra(filtradas);
+    sincronizarFiltrosRapidos();
     if (!foco) colocarCartaoHoje();
 }
+
+// ==================== INÍCIO: 6c. BARRA DE CIMA (título, contagem e filtros rápidos) ====================
+// Linha 1 diz onde você está ("Banco de Dados & Dados · 92 questões · 33 respondidas").
+// Linha 2 tem nível e situação como botões. Eles não guardam estado: só mexem nos campos
+// (selectNivel, selectStatus, checkFavoritas) e o resto do app continua lendo esses campos.
+const LETRA_NIVEL_BARRA = { "1": "I", "2": "M", "3": "A", "4": "E" };
+const STATUS_RAPIDOS = [
+    { valor: "", texto: "Todas" },
+    { valor: "nao-respondida", texto: "Não respondidas" },
+    { valor: "acertei", texto: "Acertei" },
+    { valor: "errei", texto: "Errei" }
+];
+const chipsNivel = document.getElementById("chips-nivel");
+const chipsStatus = document.getElementById("chips-status");
+
+function atualizarTituloDaBarra(filtradas) {
+    const titulo = document.getElementById("barra-titulo");
+    const contagem = document.getElementById("barra-contagem");
+    if (!titulo || !contagem) return;
+    titulo.textContent = (selectMateria && selectMateria.value) || "Todas as matérias";
+    const respondidas = filtradas.filter(q => {
+        const h = historico[String(q.id)];
+        return h && Number(h.tentativas) > 0;
+    }).length;
+    const n = filtradas.length;
+    contagem.textContent = `${n} ${n === 1 ? "questão" : "questões"} · ${respondidas} ${respondidas === 1 ? "respondida" : "respondidas"}`;
+}
+
+function criarChip(classe, html, ativo, dados) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = `chip-filtro ${classe}`;
+    b.innerHTML = html;
+    b.setAttribute("aria-pressed", String(ativo));
+    if (dados.favoritas) { b.title = "Só favoritas"; b.setAttribute("aria-label", "Só favoritas"); }
+    Object.entries(dados).forEach(([k, v]) => { b.dataset[k] = v; });
+    return b;
+}
+
+function sincronizarFiltrosRapidos() {
+    // Nível: um botão por nível que existe no banco (some se houver um só)
+    if (chipsNivel && selectNivel) {
+        const niveis = [...selectNivel.options].filter(o => o.value);
+        chipsNivel.hidden = niveis.length < 2;
+        const assinatura = niveis.map(o => o.value).join(",");
+        if (chipsNivel.dataset.assinatura !== assinatura) {
+            chipsNivel.dataset.assinatura = assinatura;
+            chipsNivel.replaceChildren(...niveis.map(o => {
+                const nome = o.textContent.replace(/^[^\p{L}]+/u, "").replace(/\s*\(\d+\)\s*$/, "").trim();
+                return criarChip(`nv-chip-btn nv-${o.value}`,
+                    `<b class="nv-letra nv-${o.value}">${LETRA_NIVEL_BARRA[o.value] || o.value}</b>${esc(nome)}`, false, { nivel: o.value });
+            }));
+        }
+        chipsNivel.querySelectorAll(".chip-filtro").forEach(b =>
+            b.setAttribute("aria-pressed", String(selectNivel.value === b.dataset.nivel)));
+    }
+    // Situação: Todas / Não respondidas / Acertei / Errei, e Favoritas à parte
+    if (chipsStatus && selectStatus) {
+        if (!chipsStatus.children.length) {
+            chipsStatus.replaceChildren(
+                ...STATUS_RAPIDOS.map(st => criarChip("chip-status", esc(st.texto), false, { status: st.valor })),
+                criarChip("chip-status chip-favoritas", "⭐", false, { favoritas: "1" })
+            );
+        }
+        chipsStatus.querySelectorAll(".chip-filtro").forEach(b => {
+            const ativo = b.dataset.favoritas
+                ? Boolean(checkFavoritas && checkFavoritas.checked)
+                : selectStatus.value === b.dataset.status;
+            b.setAttribute("aria-pressed", String(ativo));
+        });
+    }
+}
+
+if (chipsNivel && selectNivel) {
+    chipsNivel.addEventListener("click", (e) => {
+        const b = e.target.closest(".chip-filtro[data-nivel]");
+        if (!b) return;
+        // Tocar no nível ativo tira o filtro
+        selectNivel.value = selectNivel.value === b.dataset.nivel ? "" : b.dataset.nivel;
+        selectNivel.dispatchEvent(new Event("change"));
+    });
+}
+if (chipsStatus && selectStatus) {
+    chipsStatus.addEventListener("click", (e) => {
+        const b = e.target.closest(".chip-filtro");
+        if (!b) return;
+        if (b.dataset.favoritas) {
+            if (checkFavoritas) { checkFavoritas.checked = !checkFavoritas.checked; checkFavoritas.dispatchEvent(new Event("change")); }
+            return;
+        }
+        selectStatus.value = b.dataset.status;
+        selectStatus.dispatchEvent(new Event("change"));
+    });
+}
+
+// Tecla / abre a busca (fora do Modo Foco e sem estar digitando em outro campo)
+document.addEventListener("keydown", (e) => {
+    if (e.key !== "/" || e.ctrlKey || e.metaKey || e.altKey || e.isComposing || foco) return;
+    if (e.target.closest && e.target.closest("textarea, select, input, [contenteditable='true']")) return;
+    if (document.querySelector(".modal-overlay.visible, .modal.visible")) return;
+    if (!inputBusca) return;
+    e.preventDefault();
+    inputBusca.focus();
+    inputBusca.select();
+});
+
+const btnAprenderBarra = document.getElementById("btn-aprender-barra");
+if (btnAprenderBarra) btnAprenderBarra.addEventListener("click", () => {
+    if (!usuarioAtual) { mostrarEntradaVisitante(); return; }
+    abrirEscolhaAprender();
+});
+// ==================== FIM: 6c. BARRA DE CIMA ====================
 
 function algumFiltroAtivo() {
     return Boolean((selectBanca && selectBanca.value) || (selectMateria && selectMateria.value) ||
@@ -442,17 +555,15 @@ function fecharPaineis() {
 
 paineisTopo.forEach(p => p.botao.addEventListener("click", () => alternarPainel(p)));
 
-// Número no botão "Filtros" = quantos filtros escondidos no painel estão ativos
+// Número no botão "Mais filtros" = quantos filtros do painel (matéria, banca, assunto, ano) estão ativos
 function atualizarBadgeFiltros() {
     const badge = document.getElementById("badge-filtros");
     if (!badge) return;
     const ativos = [
+        selectMateria && selectMateria.value,
         selectBanca && selectBanca.value,
         tagSelecionada,
-        selectAno && selectAno.value,
-        selectNivel && selectNivel.value,
-        selectStatus && selectStatus.value,
-        checkFavoritas && checkFavoritas.checked
+        selectAno && selectAno.value
     ].filter(Boolean).length;
     badge.textContent = ativos;
     badge.hidden = ativos === 0;
@@ -2146,7 +2257,6 @@ function colocarCartaoHoje() {
     }
     const revisar = questoesParaRevisarHoje();
     const meta = atualizarMetaNaTela(historico);
-    const seq = calcularSequencia(carregarDiasDeEstudo());
     const semana = resumoSemanaPassada();
 
     let titulo, texto;
@@ -2164,12 +2274,6 @@ function colocarCartaoHoje() {
         titulo = "Pronto para estudar?";
         texto = "Nada para revisar hoje. Siga com as questões novas, uma por vez.";
     }
-
-    const chips = [
-        `<span class="hoje-chip">🔁 ${revisar.length} para revisar</span>`,
-        meta ? `<span class="hoje-chip${meta.batida ? " ok" : ""}">🎯 ${meta.feitas} de ${meta.meta}</span>` : "",
-        `<span class="hoje-chip">🔥 ${seq.atual} ${seq.atual === 1 ? "dia" : "dias"}</span>`
-    ].join("");
 
     const textoSemana = semana ? `
         <div class="hoje-semana">
@@ -2189,10 +2293,8 @@ function colocarCartaoHoje() {
             </div>
             <div class="hoje-botoes">
                 <button type="button" class="btn-primary hoje-continuar">▶ Continuar</button>
-                <button type="button" class="btn-secondary hoje-aprender">📖 Aprender</button>
             </div>
         </div>
-        <div class="hoje-chips">${chips}</div>
         ${textoSemana}`;
     if (antigo) antigo.replaceWith(caixa);
     else container.prepend(caixa);
@@ -2214,7 +2316,6 @@ function continuarHoje() {
 if (container) {
     container.addEventListener("click", (e) => {
         if (e.target.closest(".hoje-continuar")) { continuarHoje(); return; }
-        if (e.target.closest(".hoje-aprender")) { abrirEscolhaAprender(); return; }
         const fechar = e.target.closest(".hoje-semana-fechar");
         if (fechar) {
             try { localStorage.setItem(CHAVE_SEMANA_DISPENSADA, fechar.dataset.chave); } catch (err) { /* segue */ }
