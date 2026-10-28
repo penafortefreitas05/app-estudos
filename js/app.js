@@ -65,7 +65,10 @@ import {
 import { showToast, showConfirmModal } from './notifications.js';
 
 // ---------- 1.7 API de questões ----------
-import { normalizarQuestao, ORDEM_MACROS } from './api.js';
+import { normalizarQuestao, ORDEM_MACROS, NIVEIS } from './api.js';
+
+// Filtro de nível: mostra o nome ("Iniciante") e ordena 1→4
+const OPCOES_SELECT_NIVEL = { rotulo: (v) => NIVEIS[v] || v, numerico: true };
 
 // ==================== FIM: 1. IMPORTAÇÕES DE MÓDULOS ====================
 // ---------- 2. ESTADO GLOBAL ----------
@@ -90,6 +93,7 @@ const selectBanca = document.getElementById("filtro-banca");
 const selectMateria = document.getElementById("filtro-materia");
 const selectTag = document.getElementById("filtro-tag");
 const selectAno = document.getElementById("filtro-ano");
+const selectNivel = document.getElementById("filtro-nivel");
 const selectStatus = document.getElementById("filtro-status");
 const checkFavoritas = document.getElementById("filtro-favoritas");
 const inputBusca = document.getElementById("filtro-busca");
@@ -242,6 +246,7 @@ function filtrarQuestoes() {
     const termo = inputBusca ? inputBusca.value.trim().toLowerCase() : "";
     const tag = tagSelecionada.toLowerCase();
     const ano = selectAno ? selectAno.value : "";
+    const nivel = selectNivel ? selectNivel.value : "";
     const statusFiltro = selectStatus ? selectStatus.value : "";
     const soFavoritas = checkFavoritas ? checkFavoritas.checked : false;
 
@@ -251,6 +256,7 @@ function filtrarQuestoes() {
         // "tag" aqui é o assunto padronizado (U11), não mais a tag livre — ver js/api.js
         if (tag && String(q.assunto || "").toLowerCase() !== tag) return false;
         if (ano && String(q.ano || "") !== ano) return false;
+        if (nivel && String(q.nivel || "") !== nivel) return false;
 
         if (statusFiltro) {
             const categoria = obterCategoriaStatus(q.id, historico);
@@ -376,6 +382,7 @@ function atualizarBadgeFiltros() {
         selectBanca && selectBanca.value,
         tagSelecionada,
         selectAno && selectAno.value,
+        selectNivel && selectNivel.value,
         selectStatus && selectStatus.value,
         checkFavoritas && checkFavoritas.checked
     ].filter(Boolean).length;
@@ -859,6 +866,7 @@ if (inputBusca) {
 if (selectBanca) selectBanca.addEventListener("change", aplicarFiltros);
 if (selectMateria) selectMateria.addEventListener("change", aplicarFiltros);
 if (selectAno) selectAno.addEventListener("change", aplicarFiltros);
+if (selectNivel) selectNivel.addEventListener("change", aplicarFiltros);
 if (selectStatus) selectStatus.addEventListener("change", aplicarFiltros);
 if (checkFavoritas) checkFavoritas.addEventListener("change", aplicarFiltros);
 if (selectTag) selectTag.addEventListener("change", () => definirTag(selectTag.value));
@@ -924,6 +932,7 @@ if (btnTodas) {
         if (selectBanca) selectBanca.value = "";
         if (selectMateria) selectMateria.value = "";
         if (selectAno) selectAno.value = "";
+        if (selectNivel) selectNivel.value = "";
         if (selectStatus) selectStatus.value = "";
         if (checkFavoritas) checkFavoritas.checked = false;
         if (inputBusca) inputBusca.value = "";
@@ -1361,6 +1370,7 @@ async function carregarBancoDeQuestoes(questoesChegando = null) {
         preencherSelect(selectBanca, "🏛️ Todas as Bancas", "banca", questoes);
         preencherSelect(selectMateria, "📖 Todas as Matérias", "materia", questoes);
         preencherSelect(selectAno, "📅 Todos os Anos", "ano", questoes);
+        preencherSelect(selectNivel, "📶 Todos os Níveis", "nivel", questoes, OPCOES_SELECT_NIVEL);
         preencherSelect(selectTag, "🏷️ Todos os Assuntos", "assunto", questoes);
 
         atualizarPlacar(historico, questoes);
@@ -1399,9 +1409,12 @@ async function carregarBancoDeQuestoes(questoesChegando = null) {
     preencherSelect(selectBanca, "🏛️ Todas as Bancas", "banca", questoes);
     preencherSelect(selectMateria, "📖 Todas as Matérias", "materia", questoes);
     preencherSelect(selectAno, "📅 Todos os Anos", "ano", questoes);
+    preencherSelect(selectNivel, "📶 Todos os Níveis", "nivel", questoes, OPCOES_SELECT_NIVEL);
     preencherSelect(selectTag, "🏷️ Todos os Assuntos", "assunto", questoes);
     // Filtro de ano só aparece quando alguma questão tem ano cadastrado
     if (selectAno) selectAno.hidden = selectAno.options.length <= 1;
+    // Nível: só aparece quando o banco tiver mais de um nível (antes disso, todo mundo é "Avançado")
+    if (selectNivel) selectNivel.hidden = selectNivel.options.length <= 2;
 
     atualizarPlacar(historico, questoes);
     aplicarFiltros();

@@ -4,6 +4,7 @@
 
 import { carregarDiasDeEstudo, diaLocal } from './storage.js';
 import { venceHoje } from './revisao.js';
+import { NIVEIS } from './api.js';
 
 // Matéria "a reforçar": abaixo deste % de acerto, com pelo menos esta quantidade de respostas
 // (sem o mínimo, 1 erro em 1 questão já marcaria a matéria como crítica)
@@ -139,8 +140,11 @@ export function textoGabaritoDe(q) {
 }
 
 // ---------- 3. COMPONENTES DE INTERFACE ----------
-export function preencherSelect(selectElement, textoPadrao, propriedade, listaQuestoes) {
+// opcoes.rotulo(valor): texto mostrado no lugar do valor cru (ex.: nível 1 → "Iniciante")
+// opcoes.numerico: ordena 1, 2, 3... em vez de alfabético
+export function preencherSelect(selectElement, textoPadrao, propriedade, listaQuestoes, opcoes = {}) {
     if (!selectElement) return;
+    const { rotulo = (v) => v, numerico = false } = opcoes;
     const contagem = {};
     listaQuestoes.forEach(q => {
         const val = q[propriedade];
@@ -149,35 +153,11 @@ export function preencherSelect(selectElement, textoPadrao, propriedade, listaQu
 
     selectElement.innerHTML = `<option value="">${esc(textoPadrao)} (${listaQuestoes.length})</option>`;
     Object.keys(contagem)
-        .sort((a, b) => a.localeCompare(b, 'pt-BR'))
+        .sort((a, b) => numerico ? Number(a) - Number(b) : a.localeCompare(b, 'pt-BR'))
         .forEach(valor => {
             const opt = document.createElement("option");
             opt.value = valor;
-            opt.textContent = `${valor} (${contagem[valor]})`;
-            selectElement.appendChild(opt);
-        });
-}
-
-
-// Preenche um <select> a partir de um campo que é uma LISTA por questão (como "tags"),
-// contando quantas vezes cada valor aparece no total.
-export function preencherSelectTags(selectElement, textoPadrao, listaQuestoes) {
-    if (!selectElement) return;
-    const contagem = {};
-    listaQuestoes.forEach(q => {
-        (q.tags || []).forEach(t => {
-            const val = String(t).trim();
-            if (val) contagem[val] = (contagem[val] || 0) + 1;
-        });
-    });
-
-    selectElement.innerHTML = `<option value="">${esc(textoPadrao)}</option>`;
-    Object.keys(contagem)
-        .sort((a, b) => a.localeCompare(b, 'pt-BR'))
-        .forEach(valor => {
-            const opt = document.createElement("option");
-            opt.value = valor;
-            opt.textContent = `${valor} (${contagem[valor]})`;
+            opt.textContent = `${rotulo(valor)} (${contagem[valor]})`;
             selectElement.appendChild(opt);
         });
 }
@@ -533,6 +513,7 @@ function desenharCards(container, lista, historico, restaurarRespostas) {
                <div class="card-header">
                     <div class="header-info">
                         <span class="badge-materia">${esc(q.materia || 'Geral')}</span>
+                        ${NIVEIS[q.nivel] ? `<span class="badge-nivel nivel-${q.nivel}" title="Nível da questão">${esc(NIVEIS[q.nivel])}</span>` : ''}
                         <span class="badge-info">${infoExtra}</span>
                     </div>
                     <div class="header-acoes">

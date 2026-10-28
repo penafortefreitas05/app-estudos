@@ -485,9 +485,30 @@ function comGabaritoEmQuestoes(payload, gabaritos) {
     return payload.map(q => ({ ...q, resposta_correta: porId.get(q.id) }));
 }
 
+// Coluna 'nivel' (níveis de questão). Enquanto a SQL dos níveis não rodar, importar questões
+// de prova (nível 3, o padrão) segue funcionando sem a coluna; já questões de outro nível são
+// recusadas com aviso claro — gravá-las sem o nível as faria virar "Avançado" sem ninguém ver.
+let colunaNivelExiste = true;
+function erroDeColunaNivel(erro) {
+    return Boolean(erro) && /\bnivel\b/i.test(`${erro?.message || ''} ${erro?.details || ''} ${erro?.hint || ''}`);
+}
+
+function semColunaNivel(payload) {
+    if (payload.some(q => q.nivel !== undefined && q.nivel !== 3)) {
+        throw new Error("O banco ainda não tem a coluna 'nivel'. Rode a SQL dos níveis no Supabase antes de importar questões Iniciante, Intermediário ou Especialista.");
+    }
+    return payload.map(({ nivel, ...resto }) => resto);
+}
+
 async function upsertQuestoesComPlanoB(payload, gabaritos) {
+    if (!colunaNivelExiste) payload = semColunaNivel(payload);
     const { error } = await supabaseClient.from('questoes').upsert(payload);
     if (error) {
+        if (colunaNivelExiste && erroDeColunaNivel(error)) {
+            colunaNivelExiste = false;
+            console.warn("[FocoPro] Coluna 'nivel' ainda não existe em 'questoes' (rode a SQL dos níveis).");
+            return upsertQuestoesComPlanoB(payload, gabaritos);
+        }
         if (tabelaGabaritoExiste && erroDeColunaRespostaObrigatoria(error)) {
             tabelaGabaritoExiste = false;
             console.warn("[FocoPro] Coluna 'resposta_correta' de 'questoes' ainda exige valor (SQL do U9 não rodou); salvando do jeito antigo por ora.");
@@ -551,7 +572,8 @@ export async function salvarQuestoesEmMassa(arrayDeQuestoes) {
                     fonte: qNorm.fonte || null,
                     tipo: qNorm.tipo || null,
                     versao_referencia: qNorm.versao_referencia || null,
-                    laboratorio: qNorm.laboratorio || null
+                    laboratorio: qNorm.laboratorio || null,
+                    nivel: qNorm.nivel
                 };
                 // Plano B já ativo (de uma tentativa anterior nesta mesma sessão): manda do jeito antigo direto
                 if (!tabelaGabaritoExiste) linha.resposta_correta = letraGabarito;

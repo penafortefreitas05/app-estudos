@@ -194,6 +194,30 @@ function derivarAssunto(questao, materiaOriginal, materiaMacro) {
     return materiaMacro;
 }
 
+// ============================================================
+// Níveis de questão (trilha do iniciante até a prova)
+// ============================================================
+// 3 = Avançado é o nível das questões reais de prova (todo o banco atual). Abaixo dele vêm
+// as questões feitas para aprender o conceito; acima, as mais difíceis que a prova média.
+export const NIVEIS = { 1: 'Iniciante', 2: 'Intermediário', 3: 'Avançado', 4: 'Especialista' };
+const NIVEL_PADRAO = 3;
+
+const NIVEL_POR_NOME = {
+    'iniciante': 1, 'basico': 1, 'fundamentos': 1,
+    'intermediario': 2,
+    'avancado': 3, 'prova': 3,
+    'especialista': 4, 'desafio': 4
+};
+
+// Aceita 1–4 (número ou texto) ou o nome do nível, com ou sem acento. Qualquer outra coisa
+// (inclusive vazio) vira o nível de prova — é o que todo o banco era antes dos níveis.
+export function normalizarNivel(valor) {
+    const n = Number(valor);
+    if (Number.isInteger(n) && NIVEIS[n]) return n;
+    const nome = String(valor ?? '').trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    return NIVEL_POR_NOME[nome] || NIVEL_PADRAO;
+}
+
 function gerarIdEstavel(texto, indexFallback = 0) {
     const str = String(texto || "").trim();
     if (!str) return `q_${indexFallback}`;
@@ -279,6 +303,9 @@ export function normalizarMateriaEAgruparTags(questao, index = 0) {
 
     questao.materia = materiaMacro;
     questao.banca = String(questao.banca || "Não informada").trim();
+
+    // 8. Nível (1 Iniciante · 2 Intermediário · 3 Avançado · 4 Especialista)
+    questao.nivel = normalizarNivel(questao.nivel);
 
     return questao;
 }
