@@ -167,17 +167,13 @@ function formatarAssunto(chave) {
         .join(' ');
 }
 
-// Mapa inverso: cada matéria macro (os "9 Pilares") -> lista de tópicos conhecidos dela.
-// Usado pelo painel "Cobertura do Edital" (ui.js) para mostrar o que o banco já cobre.
-export const TOPICOS_POR_MACRO = (() => {
-    const mapa = {};
-    Object.entries(MAPA_MATERIAS_MACRO).forEach(([chave, macro]) => {
-        if (!mapa[macro]) mapa[macro] = [];
-        mapa[macro].push(formatarAssunto(chave));
-    });
-    Object.values(mapa).forEach(lista => lista.sort((a, b) => a.localeCompare(b, 'pt-BR')));
-    return mapa;
-})();
+// Ordem canônica dos "9 Pilares" (as matérias-macro), na ordem em que aparecem acima.
+// Usado pelo painel "Cobertura do Edital" (ui.js) só pra decidir em que ordem mostrar
+// as matérias que o banco já tem — a contagem de assuntos dentro de cada uma vem direto
+// das questões carregadas, não de uma lista fixa (um dicionário fixo de ~80 palavras não
+// tem como acompanhar assuntos já ricos e específicos que vêm prontos na importação, tipo
+// "Autenticação e identidade (MFA, SSO, SAML, OAuth)").
+export const ORDEM_MACROS = [...new Set(Object.values(MAPA_MATERIAS_MACRO))];
 
 // Escolhe o assunto padronizado da questão: a primeira entre [matéria original, suas tags]
 // que bater, por igualdade exata, com um tópico conhecido do edital. Sem bater com nada, cai
