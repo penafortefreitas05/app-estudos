@@ -10,13 +10,13 @@ import {
     obterOpcoes,
     gabaritoDe,
     preencherSelect,
-    preencherSelectTags,
     atualizarChipTag,
     atualizarPlacar,
     renderizarQuestoes,
     revelar,
     classificarStatus,
-    obterCategoriaStatus
+    obterCategoriaStatus,
+    renderizarCoberturaEdital
 } from './ui.js';
 // ==================== FIM ====================
 
@@ -64,7 +64,7 @@ import {
 import { showToast, showConfirmModal } from './notifications.js';
 
 // ---------- 1.7 API de questões ----------
-import { normalizarQuestao } from './api.js';
+import { normalizarQuestao, TOPICOS_POR_MACRO } from './api.js';
 
 // ==================== FIM: 1. IMPORTAÇÕES DE MÓDULOS ====================
 // ---------- 2. ESTADO GLOBAL ----------
@@ -247,7 +247,8 @@ function filtrarQuestoes() {
     return questoes.filter(q => {
         if (banca && q.banca !== banca) return false;
         if (materia && q.materia !== materia) return false;
-        if (tag && !(q.tags || []).some(t => String(t).toLowerCase() === tag)) return false;
+        // "tag" aqui é o assunto padronizado (U11), não mais a tag livre — ver js/api.js
+        if (tag && String(q.assunto || "").toLowerCase() !== tag) return false;
         if (ano && String(q.ano || "") !== ano) return false;
 
         if (statusFiltro) {
@@ -475,10 +476,12 @@ async function responder(card, botao) {
 
 // ---------- 7b. QUESTÃO-IRMÃ: depois de um erro, outra do mesmo assunto ----------
 // Corrigir o conceito logo após o erro, numa questão diferente (transferência), antes que a
-// ideia errada se fixe. Usa as tags: o 1º assunto da questão pesa mais.
+// ideia errada se fixe. Critério principal (U11): o assunto padronizado bater; as tags livres
+// continuam como reforço, pra distinguir dentro do mesmo assunto (ex.: "pegadinha").
 const irmasJaMostradas = new Set();
 
 function escolherQuestaoIrma(q) {
+    const assuntoQ = String(q.assunto || "").trim().toLowerCase();
     const tagsQ = (q.tags || []).map(t => String(t).trim().toLowerCase()).filter(Boolean);
     let melhor = null;
     let melhorPontos = 3; // precisa de mais que 1 tag solta em comum (ex.: "pegadinha")
@@ -488,8 +491,9 @@ function escolherQuestaoIrma(q) {
         if (idO === String(q.id) || irmasJaMostradas.has(idO)) return;
         const tagsO = (o.tags || []).map(t => String(t).trim().toLowerCase());
         let pontos = 0;
-        if (tagsQ[0] && tagsO.includes(tagsQ[0])) pontos += 10;
-        pontos += tagsO.filter(t => tagsQ.includes(t)).length * 3;
+        if (assuntoQ && String(o.assunto || "").trim().toLowerCase() === assuntoQ) pontos += 10;
+        if (tagsQ[0] && tagsO.includes(tagsQ[0])) pontos += 5;
+        pontos += tagsO.filter(t => tagsQ.includes(t)).length * 2;
         if (o.materia === q.materia) pontos += 1;
         const h = historico[idO];
         if (!h || !h.tentativas) pontos += 2;          // prefere inédita
@@ -1217,6 +1221,29 @@ if (formAuth) {
     });
 }
 
+// ============================================================
+// 12b. COBERTURA DO EDITAL (U11)
+// ============================================================
+const btnCoberturaEdital = document.getElementById('btn-cobertura-edital');
+const modalCobertura = document.getElementById('modal-cobertura');
+const listaCoberturaEdital = document.getElementById('lista-cobertura-edital');
+const btnFecharCobertura = document.getElementById('btn-fechar-cobertura');
+
+if (btnCoberturaEdital) {
+    btnCoberturaEdital.addEventListener('click', () => {
+        renderizarCoberturaEdital(listaCoberturaEdital, TOPICOS_POR_MACRO, questoes);
+        if (modalCobertura) modalCobertura.classList.add('visible');
+    });
+}
+if (btnFecharCobertura) {
+    btnFecharCobertura.addEventListener('click', () => modalCobertura.classList.remove('visible'));
+}
+if (modalCobertura) {
+    modalCobertura.addEventListener('click', (e) => {
+        if (e.target === modalCobertura) modalCobertura.classList.remove('visible');
+    });
+}
+
 // ==================== INÍCIO: SUBSTITUIR TODA A SEÇÃO 13 (até antes de "14. CARGA INICIAL") ====================
 // ============================================================
 // 13. IMPORTAÇÃO EM MASSA DE QUESTÕES
@@ -1307,7 +1334,7 @@ async function carregarBancoDeQuestoes(questoesChegando = null) {
         preencherSelect(selectBanca, "🏛️ Todas as Bancas", "banca", questoes);
         preencherSelect(selectMateria, "📖 Todas as Matérias", "materia", questoes);
         preencherSelect(selectAno, "📅 Todos os Anos", "ano", questoes);
-        preencherSelectTags(selectTag, "🏷️ Todos os Assuntos", questoes);
+        preencherSelect(selectTag, "🏷️ Todos os Assuntos", "assunto", questoes);
 
         atualizarPlacar(historico, questoes);
         renderizarQuestoes(
@@ -1337,7 +1364,7 @@ async function carregarBancoDeQuestoes(questoesChegando = null) {
     preencherSelect(selectBanca, "🏛️ Todas as Bancas", "banca", questoes);
     preencherSelect(selectMateria, "📖 Todas as Matérias", "materia", questoes);
     preencherSelect(selectAno, "📅 Todos os Anos", "ano", questoes);
-    preencherSelectTags(selectTag, "🏷️ Todos os Assuntos", questoes);
+    preencherSelect(selectTag, "🏷️ Todos os Assuntos", "assunto", questoes);
     // Filtro de ano só aparece quando alguma questão tem ano cadastrado
     if (selectAno) selectAno.hidden = selectAno.options.length <= 1;
 
