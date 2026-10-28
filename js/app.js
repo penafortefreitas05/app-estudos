@@ -1271,8 +1271,11 @@ document.addEventListener("keydown", (e) => {
         return;
     }
 
-    // Enter/Espaço num botão focado (ex.: "Entender meu erro com IA") fica com o botão
-    if (alvo.closest && alvo.closest("button, a, summary") && (e.key === "Enter" || e.key === " ")) return;
+    // Enter/Espaço num botão focado (ex.: "Entender meu erro com IA") fica com o botão.
+    // Só se o botão estiver ativo: depois de um clique em "Tenho certeza" ou em "Outra do mesmo
+    // assunto", o botão fica desativado e o navegador às vezes deixa o foco nele — antes, isso
+    // engolia o Enter e o Foco não avançava.
+    if (alvo.closest && alvo.closest("button:not(:disabled), a, summary") && (e.key === "Enter" || e.key === " ")) return;
 
     const card = cardAtualDoFoco();
     if (e.key === "Escape") {
