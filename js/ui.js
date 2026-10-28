@@ -353,7 +353,8 @@ export function atualizarPlacar(historico, questoes) {
 
     definirTexto("stat-sequencia", sequencia.atual);
     definirTexto("stat-sequencia-detalhe",
-        sequencia.atual > 0 && !sequencia.estudouHoje ? "responda hoje!"
+        sequencia.recorde === 0 ? "responda 1 questão"
+            : sequencia.atual > 0 && !sequencia.estudouHoje ? "responda hoje!"
             : sequencia.folgaRecente ? "folga da semana usada" : `recorde ${sequencia.recorde}`);
     definirTexto("mini-sequencia", sequencia.atual);
     const miniSeq = document.getElementById("mini-sequencia");
@@ -363,7 +364,9 @@ export function atualizarPlacar(historico, questoes) {
     definirTexto("stat-cobertura-detalhe", `${cobertura.feitas} de ${cobertura.total} feitas`);
 
     definirTexto("stat-criticas", criticas.length);
-    definirTexto("stat-criticas-detalhe", criticas.length ? "abaixo de 60%" : "nenhuma");
+    // Sem nenhuma matéria com 5 respostas ainda, "nenhuma" enganaria: diz quando começa a contar
+    const algumaAvaliada = Object.values(materiasMap).some(d => d.acertos + d.erros >= MIN_RESPOSTAS_CRITICO);
+    definirTexto("stat-criticas-detalhe", criticas.length ? "abaixo de 60%" : (algumaAvaliada ? "nenhuma" : `após ${MIN_RESPOSTAS_CRITICO} respostas`));
     const cardCriticas = document.getElementById("card-criticas");
     if (cardCriticas) cardCriticas.classList.toggle("alerta", criticas.length > 0);
 

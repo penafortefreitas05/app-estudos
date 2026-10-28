@@ -17,7 +17,8 @@ import {
     obterCategoriaStatus,
     renderizarCoberturaEdital,
     temGabarito,
-    preencherSelectAssunto
+    preencherSelectAssunto,
+    calcularSequencia
 } from './ui.js';
 // ==================== FIM ====================
 
@@ -51,7 +52,8 @@ import {
     registrarDiaDeEstudo,
     apagarDiasDeEstudo,
     apagarCacheNuvem,
-    diaLocal
+    diaLocal,
+    carregarDiasDeEstudo
 } from './storage.js';
 
 // ---------- 1.45 Revisão espaçada ----------
@@ -374,10 +376,27 @@ function aplicarFiltros() {
     if (foco) {
         atualizarListaFoco(filtradas);
     } else {
-        renderizarQuestoes(container, filtradas, historico, undefined, { paginar: true });
+        const mensagem = algumFiltroAtivo()
+            ? "Nenhuma questão com esses filtros."
+            : "Nenhuma questão encontrada.";
+        renderizarQuestoes(container, filtradas, historico, mensagem, { paginar: true });
+        // Estado vazio que ensina: diz o próximo passo em vez de só "nada aqui"
+        if (!filtradas.length && algumFiltroAtivo()) {
+            const aviso = container.querySelector(".aviso-vazio");
+            if (aviso) aviso.insertAdjacentHTML("beforeend",
+                ` <button type="button" class="btn-link btn-limpar-vazio">Limpar filtros</button>`);
+        }
     }
     atualizarPlacar(historico, questoes);
     atualizarBadgeFiltros();
+    if (!foco) colocarCartaoHoje();
+}
+
+function algumFiltroAtivo() {
+    return Boolean((selectBanca && selectBanca.value) || (selectMateria && selectMateria.value) ||
+        tagSelecionada || (selectAno && selectAno.value) || (selectNivel && selectNivel.value) ||
+        (selectStatus && selectStatus.value) || (checkFavoritas && checkFavoritas.checked) ||
+        (inputBusca && inputBusca.value.trim()));
 }
 
 // ---------- 6a. TOCAR NUMA MATÉRIA DO PAINEL DE DESEMPENHO = TREINAR ELA ----------
@@ -2017,6 +2036,7 @@ function iniciarSessaoGuiada(materia) {
 
 // Depois de cada resposta no modo estudo: dicas da primeira vez e aviso da meta batida
 function reagirAPrimeirosPassos({ acertou, confianca }) {
+    if (!foco) colocarCartaoHoje();
     if (!acertou) mostrarDica("primeiro-erro");
     else if (confianca === "duvida") mostrarDica("primeira-duvida");
     if (Object.values(historico).filter(h => h && Number(h.tentativas) > 0).length >= 10) mostrarDica("tres-numeros");
@@ -2074,3 +2094,157 @@ if (gavetaDesempenho) {
     });
 }
 // ==================== FIM: 15. BARRA LATERAL ====================
+
+// ==================== INÍCIO: 16. HOJE (cartão "Hoje", resumo da semana, explicações no toque) ====================
+// Itens E, N, O e U da Análise da primeira experiência. O cartão fica no topo da lista e diz
+// o que fazer agora: primeiro a revisão, depois as novas, até a meta. "Continuar" abre o Foco.
+const CHAVE_SEMANA_DISPENSADA = "appEstudos_ResumoSemanaDispensado";
+
+function questoesParaRevisarHoje() {
+    const hoje = diaLocal();
+    return questoes
+        .filter(q => venceHoje(historico[String(q.id)], hoje))
+        .sort((a, b) => historico[String(a.id)].revisaoEm.localeCompare(historico[String(b.id)].revisaoEm));
+}
+
+// Semana passada (segunda a domingo), com o que o histórico guarda: dias estudados (exato) e
+// as questões cuja última resposta caiu naquela semana. Aparece até ser dispensado ou a semana virar.
+function resumoSemanaPassada() {
+    const agora = new Date();
+    const diaDaSemana = (agora.getDay() + 6) % 7; // 0 = segunda
+    const inicioEsta = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate() - diaDaSemana);
+    const inicioPassada = new Date(inicioEsta);
+    inicioPassada.setDate(inicioPassada.getDate() - 7);
+    const chave = diaLocal(inicioEsta);
+    try { if (localStorage.getItem(CHAVE_SEMANA_DISPENSADA) === chave) return null; } catch (e) { /* segue */ }
+
+    const de = inicioPassada.getTime(), ate = inicioEsta.getTime();
+    let diasEstudados = 0;
+    for (let i = 0; i < 7; i++) {
+        const d = new Date(inicioPassada);
+        d.setDate(d.getDate() + i);
+        if (carregarDiasDeEstudo().has(diaLocal(d))) diasEstudados++;
+    }
+    let trabalhadas = 0, certas = 0, dominadas = 0;
+    Object.values(historico).forEach(h => {
+        if (!h || !h.ultimaData || h.ultimaData < de || h.ultimaData >= ate) return;
+        trabalhadas++;
+        if (h.ultimaResposta === "certo") certas++;
+        if (h.status === "dominada") dominadas++;
+    });
+    if (!diasEstudados && !trabalhadas) return null;
+    return { chave, diasEstudados, trabalhadas, pct: trabalhadas ? Math.round(certas * 100 / trabalhadas) : 0, dominadas };
+}
+
+function colocarCartaoHoje() {
+    if (!container) return;
+    const antigo = container.querySelector(".cartao-hoje");
+    if (!usuarioAtual || foco || simulado || !questoes.length) {
+        if (antigo) antigo.remove();
+        return;
+    }
+    const revisar = questoesParaRevisarHoje();
+    const meta = atualizarMetaNaTela(historico);
+    const seq = calcularSequencia(carregarDiasDeEstudo());
+    const semana = resumoSemanaPassada();
+
+    let titulo, texto;
+    if (revisar.length) {
+        titulo = revisar.length === 1 ? "Comece pela revisão: 1 questão" : `Comece pela revisão: ${revisar.length} questões`;
+        texto = "São as que você errou ou acertou na dúvida. Depois vêm as questões novas.";
+    } else if (meta && meta.batida) {
+        titulo = "Meta de hoje batida 🎯";
+        texto = "Pode parar por aqui ou continuar com questões novas.";
+    } else if (meta) {
+        const faltam = meta.meta - meta.feitas;
+        titulo = faltam === 1 ? "Falta 1 questão para a meta de hoje" : `Faltam ${faltam} questões para a meta de hoje`;
+        texto = "Nada para revisar hoje. Siga com as questões novas, uma por vez.";
+    } else {
+        titulo = "Pronto para estudar?";
+        texto = "Nada para revisar hoje. Siga com as questões novas, uma por vez.";
+    }
+
+    const chips = [
+        `<span class="hoje-chip">🔁 ${revisar.length} para revisar</span>`,
+        meta ? `<span class="hoje-chip${meta.batida ? " ok" : ""}">🎯 ${meta.feitas} de ${meta.meta}</span>` : "",
+        `<span class="hoje-chip">🔥 ${seq.atual} ${seq.atual === 1 ? "dia" : "dias"}</span>`
+    ].join("");
+
+    const textoSemana = semana ? `
+        <div class="hoje-semana">
+            <p><strong>Semana passada:</strong> você estudou ${semana.diasEstudados} de 7 dias e trabalhou ${semana.trabalhadas} ${semana.trabalhadas === 1 ? "questão" : "questões"}${semana.trabalhadas ? ` (${semana.pct}% certas na última tentativa)` : ""}.${semana.dominadas ? ` ${semana.dominadas} ${semana.dominadas === 1 ? "virou Dominada" : "viraram Dominadas"}.` : ""}</p>
+            <button type="button" class="btn-fechar-aviso hoje-semana-fechar" data-chave="${esc(semana.chave)}" aria-label="Dispensar o resumo da semana">✕</button>
+        </div>` : "";
+
+    const caixa = document.createElement("section");
+    caixa.className = "cartao-hoje";
+    caixa.setAttribute("aria-label", "Hoje");
+    caixa.innerHTML = `
+        <div class="hoje-topo">
+            <div>
+                <p class="hoje-rotulo">Hoje</p>
+                <h2 class="hoje-titulo">${esc(titulo)}</h2>
+                <p class="hoje-texto">${esc(texto)}</p>
+            </div>
+            <button type="button" class="btn-primary hoje-continuar">▶ Continuar</button>
+        </div>
+        <div class="hoje-chips">${chips}</div>
+        ${textoSemana}`;
+    if (antigo) antigo.replaceWith(caixa);
+    else container.prepend(caixa);
+}
+
+// "Continuar": a revisão do dia primeiro, depois as novas da lista atual (filtros e ordem de estudo)
+function continuarHoje() {
+    const revisar = questoesParaRevisarHoje();
+    const idsRevisar = new Set(revisar.map(q => String(q.id)));
+    const novas = ordenarParaEstudo(filtrarQuestoes()).filter(q => !jaRespondeu(q.id) && !idsRevisar.has(String(q.id)));
+    const lista = [...revisar, ...novas];
+    if (!lista.length) {
+        showToast("Você já respondeu todas as questões desta lista. Mude os filtros ou use Resolver Novamente.", "info", 4000);
+        return;
+    }
+    entrarFoco(lista, { titulo: revisar.length ? "Hoje · revisão primeiro" : "Hoje", silencioso: true });
+}
+
+if (container) {
+    container.addEventListener("click", (e) => {
+        if (e.target.closest(".hoje-continuar")) { continuarHoje(); return; }
+        const fechar = e.target.closest(".hoje-semana-fechar");
+        if (fechar) {
+            try { localStorage.setItem(CHAVE_SEMANA_DISPENSADA, fechar.dataset.chave); } catch (err) { /* segue */ }
+            const caixa = fechar.closest(".hoje-semana");
+            if (caixa) caixa.remove();
+            return;
+        }
+        if (e.target.closest(".btn-limpar-vazio") && btnTodas) btnTodas.click();
+    });
+}
+
+// ---- Explicações que funcionam no toque (antes eram só dicas de mouse) ----
+const explicacoesDesempenho = document.querySelectorAll("[data-explicacao]");
+const textoExplicacao = document.getElementById("explicacao-desempenho");
+let explicacaoAberta = null;
+const TEXTO_DICA_TOQUE = textoExplicacao ? textoExplicacao.textContent : "";
+explicacoesDesempenho.forEach(el => {
+    const alternar = () => {
+        if (!textoExplicacao) return;
+        if (explicacaoAberta === el) {
+            textoExplicacao.textContent = TEXTO_DICA_TOQUE;
+            textoExplicacao.classList.add("dica-toque");
+            el.setAttribute("aria-expanded", "false");
+            explicacaoAberta = null;
+            return;
+        }
+        if (explicacaoAberta) explicacaoAberta.setAttribute("aria-expanded", "false");
+        textoExplicacao.textContent = el.dataset.explicacao;
+        textoExplicacao.classList.remove("dica-toque");
+        el.setAttribute("aria-expanded", "true");
+        explicacaoAberta = el;
+    };
+    el.addEventListener("click", alternar);
+    el.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); alternar(); }
+    });
+});
+// ==================== FIM: 16. HOJE ====================
