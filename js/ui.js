@@ -193,7 +193,45 @@ export function atualizarChipTag(chipTagElement, tag) {
         return;
     }
     chipTagElement.hidden = false;
-    chipTagElement.innerHTML = `<span>Filtro ativo por tag: <strong>#${esc(tag)}</strong></span> <button type="button" id="btn-limpar-tag" class="btn-limpar-tag">✖ Remover</button>`;
+    chipTagElement.innerHTML = `<span>Filtro ativo por assunto: <strong>${esc(tag)}</strong></span> <button type="button" id="btn-limpar-tag" class="btn-limpar-tag">✖ Remover</button>`;
+}
+
+// ---------- Cobertura do Edital (U11) ----------
+// Mostra, por matéria macro, quantas questões o banco já tem em cada tópico padronizado
+// (questao.assunto). Tópicos com 0 questões ficam destacados: são os buracos do edital.
+export function renderizarCoberturaEdital(container, topicosPorMacro, listaQuestoes) {
+    if (!container) return;
+
+    const contagem = {};
+    let semTopicoFino = 0;
+    listaQuestoes.forEach(q => {
+        const assunto = String(q.assunto || '').trim();
+        if (!assunto) return;
+        contagem[assunto] = (contagem[assunto] || 0) + 1;
+        if (assunto === q.materia) semTopicoFino++; // assunto caiu na matéria macro: não bateu com nenhum tópico
+    });
+
+    const partes = [];
+    if (semTopicoFino > 0) {
+        partes.push(`<p class="cobertura-aviso">⚠️ ${semTopicoFino} questão(ões) ainda sem tópico fino (ficaram só na matéria macro).</p>`);
+    }
+
+    Object.entries(topicosPorMacro).forEach(([macro, topicos]) => {
+        const totalMacro = topicos.reduce((soma, t) => soma + (contagem[t] || 0), 0);
+        const linhas = topicos.map(topico => {
+            const n = contagem[topico] || 0;
+            const classe = n === 0 ? 'cobertura-vazio' : '';
+            return `<li class="${classe}"><span>${esc(topico)}</span><span class="cobertura-contagem">${n}</span></li>`;
+        }).join('');
+        partes.push(`
+            <details class="cobertura-macro">
+                <summary>${esc(macro)} <span class="cobertura-contagem">${totalMacro}</span></summary>
+                <ul class="cobertura-lista">${linhas}</ul>
+            </details>
+        `);
+    });
+
+    container.innerHTML = partes.join('');
 }
 
 export function classificarStatus(qId, historico) {

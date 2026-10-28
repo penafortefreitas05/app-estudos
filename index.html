@@ -84,6 +84,11 @@
                 <span class="badge-count" id="contador-revisao">0</span>
             </button>
 
+            <!-- Botão: Cobertura do Edital (U11) -->
+            <button type="button" id="btn-cobertura-edital" class="btn-sidebar">
+                <span>📚 Cobertura do Edital</span>
+            </button>
+
             <!-- Gaveta de ferramentas: ações raras de manutenção, fechada por padrão -->
             <details class="gaveta-ferramentas">
                 <summary>⚙️ Ferramentas e Backup</summary>
@@ -233,6 +238,19 @@
         </div>
     </div>
     <!-- ==================== FIM: MODAL DE IMPORTAÇÃO EM MASSA ==================== -->
+     <!-- ==================== INÍCIO: MODAL DE COBERTURA DO EDITAL (U11) ==================== -->
+<div id="modal-cobertura" class="modal-overlay">
+    <div class="modal-card" style="max-width: 600px; max-height: 82vh; overflow-y: auto;">
+        <h3 class="modal-titulo">📚 Cobertura do Edital</h3>
+        <p class="modal-mensagem">Quantas questões o banco já tem em cada tópico padronizado, por matéria. Tópicos em vermelho ainda não têm nenhuma questão.</p>
+        <div id="lista-cobertura-edital"></div>
+        <div class="modal-acoes">
+            <button type="button" id="btn-fechar-cobertura" class="btn-secondary">Fechar</button>
+        </div>
+    </div>
+</div>
+<!-- ==================== FIM: MODAL DE COBERTURA DO EDITAL ==================== -->
+
      <!-- ==================== INÍCIO: MODAL DE LOGIN / CADASTRO ==================== -->
 <div id="modal-auth" class="modal-overlay">
     <div class="modal-card">

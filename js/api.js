@@ -135,6 +135,69 @@ const MAPA_MATERIAS_MACRO = {
     "hardware": "Sistemas Operacionais & Hardware"
 };
 
+// ============================================================
+// U11 — Campo "assunto" padronizado, ligado aos tópicos do edital
+// ============================================================
+// As chaves de MAPA_MATERIAS_MACRO acima JÁ SÃO os tópicos reais do edital (scrum, uml,
+// normalização, docker, lgpd, itil...). Em vez de criar um segundo dicionário (e correr o
+// risco de os dois desalinharem), o "assunto" de cada questão é a própria chave que bateu,
+// só formatada para leitura. Isso resolve o problema das tags livres (376 valores soltos para
+// 194 questões, na auditoria de 26/10): toda questão passa a cair num vocabulário fecho e
+// fixo, sem precisar reescrever nada no banco — a padronização acontece ao carregar, a partir
+// da matéria/tags que a questão já tem.
+
+// Formatação especial para siglas e nomes próprios que o Title Case simples erraria.
+const ASSUNTO_FORMATADO_ESPECIAL = {
+    "rlm": "RLM", "uml": "UML", "poo": "POO", "sql": "SQL", "css": "CSS", "html": "HTML",
+    "bi": "BI", "cmmi": "CMMI", "mps.br": "MPS.BR", "aws": "AWS", "devops": "DevOps",
+    "tcp/ip": "TCP/IP", "lgpd": "LGPD", "iso 27001": "ISO 27001", "itil": "ITIL",
+    "cobit": "COBIT", "pmbok": "PMBOK", "nosql": "NoSQL", "mongodb": "MongoDB",
+    "postgresql": "PostgreSQL", "mysql": "MySQL", "api rest": "API REST",
+    "modelagem er": "Modelagem ER", "modelo relacional": "Modelo Relacional",
+    "data warehouse": "Data Warehouse", "business intelligence": "Business Intelligence"
+};
+
+// Title Case simples em português (maiúscula só na 1ª letra de cada palavra), preservando
+// acentos. Usado como regra padrão para quem não está em ASSUNTO_FORMATADO_ESPECIAL.
+function formatarAssunto(chave) {
+    if (ASSUNTO_FORMATADO_ESPECIAL[chave]) return ASSUNTO_FORMATADO_ESPECIAL[chave];
+    return chave
+        .split(/\s+/)
+        .map(p => p.charAt(0).toUpperCase() + p.slice(1))
+        .join(' ');
+}
+
+// Mapa inverso: cada matéria macro (os "9 Pilares") -> lista de tópicos conhecidos dela.
+// Usado pelo painel "Cobertura do Edital" (ui.js) para mostrar o que o banco já cobre.
+export const TOPICOS_POR_MACRO = (() => {
+    const mapa = {};
+    Object.entries(MAPA_MATERIAS_MACRO).forEach(([chave, macro]) => {
+        if (!mapa[macro]) mapa[macro] = [];
+        mapa[macro].push(formatarAssunto(chave));
+    });
+    Object.values(mapa).forEach(lista => lista.sort((a, b) => a.localeCompare(b, 'pt-BR')));
+    return mapa;
+})();
+
+// Escolhe o assunto padronizado da questão: a primeira entre [matéria original, suas tags]
+// que bater, por igualdade exata, com um tópico conhecido do edital. Sem bater com nada, cai
+// no nome da matéria macro — fica visível no painel de cobertura como "ainda sem tópico fino".
+function derivarAssunto(questao, materiaOriginal, materiaMacro) {
+    const assuntoJaPadronizado = String(questao.assunto || '').trim();
+    if (assuntoJaPadronizado) return assuntoJaPadronizado; // import manual já veio com assunto
+
+    // As tags vêm primeiro: normalmente são mais específicas que a matéria (ex.: matéria
+    // "Engenharia de Software" + tag "Scrum" — "Scrum" é o assunto mais útil dos dois).
+    const candidatos = [...(Array.isArray(questao.tags) ? questao.tags : []), materiaOriginal];
+    for (const candidato of candidatos) {
+        const chave = String(candidato || '').trim().toLowerCase();
+        if (chave && MAPA_MATERIAS_MACRO[chave]) {
+            return formatarAssunto(chave);
+        }
+    }
+    return materiaMacro;
+}
+
 function gerarIdEstavel(texto, indexFallback = 0) {
     const str = String(texto || "").trim();
     if (!str) return `q_${indexFallback}`;
@@ -212,6 +275,9 @@ export function normalizarMateriaEAgruparTags(questao, index = 0) {
     if (!tagExiste && materiaOriginal !== materiaMacro) {
         questao.tags.push(materiaOriginal);
     }
+
+    // 7. Assunto padronizado (U11) — calculado ANTES de materiaOriginal virar materiaMacro
+    questao.assunto = derivarAssunto(questao, materiaOriginal, materiaMacro);
 
     questao.materia = materiaMacro;
     questao.banca = String(questao.banca || "Não informada").trim();
