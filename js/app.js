@@ -39,7 +39,8 @@ import {
     corrigirResposta,
     enviarReporteDeQuestao,
     listarReportesAbertos,
-    fecharReporte
+    fecharReporte,
+    exportarBackupDoBanco
 } from './supabase.js';
 
 // ---------- 1.3 Autenticação ----------
@@ -144,6 +145,12 @@ btnExportar.title = "Baixa um arquivo com todo o seu histórico de estudo";
 // Ficam antes do "Sair", que é sempre o último item de "Minha conta"
 const antesDoSair = document.getElementById("btn-auth-acao");
 if (gavetaFerramentas) gavetaFerramentas.insertBefore(btnExportar, antesDoSair);
+
+// Backup do banco de questões: só o admin vê (a RLS também barra os outros no servidor)
+const btnBackupBanco = criarBotaoSidebar("🗄️ Backup do banco de questões");
+btnBackupBanco.title = "Baixa todas as questões, gabaritos e reportes num arquivo .json";
+btnBackupBanco.hidden = true;
+if (gavetaFerramentas) gavetaFerramentas.insertBefore(btnBackupBanco, antesDoSair);
 
 // Botão "de verdade": apaga a nuvem inteira, não só o cache deste navegador
 const btnApagarTudo = criarBotaoSidebar("🔥 Apagar TUDO (nuvem + local)");
@@ -814,6 +821,32 @@ function exportarHistorico() {
     URL.revokeObjectURL(url);
     showToast("Download do histórico iniciado!", "sucesso");
 }
+
+async function baixarBackupDoBanco() {
+    if (!ehAdministrador()) return;
+    btnBackupBanco.disabled = true;
+    showToast("Gerando o backup... pode levar alguns segundos.", "info");
+    try {
+        const backup = await exportarBackupDoBanco();
+        const t = backup.tabelas;
+        const blob = new Blob([JSON.stringify(backup)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `focopro-backup-banco-${new Date().toISOString().slice(0, 10)}.json`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        const resumo = `${t.questoes.length} questões, ${t.questoes_gabarito.length} gabaritos, ${t.reportes_questao.length} reportes`;
+        showToast(backup.avisos.length ? `Backup baixado com avisos: ${backup.avisos.join("; ")}` : `Backup baixado: ${resumo}.`, backup.avisos.length ? "erro" : "sucesso");
+    } catch (e) {
+        showToast("Não foi possível gerar o backup agora.", "erro");
+    } finally {
+        btnBackupBanco.disabled = false;
+    }
+}
+btnBackupBanco.addEventListener("click", baixarBackupDoBanco);
 
 // ---------- 9. DELEGAÇÃO E ESCUTADORES DE EVENTOS ----------
 
@@ -1771,6 +1804,7 @@ async function carregarBancoDeQuestoes(questoesChegando = null) {
     // O botão de importar questões só aparece para o admin
     const botaoImportarQuestoes = document.getElementById('btnAbrirImportar');
     if (botaoImportarQuestoes) botaoImportarQuestoes.hidden = !ehAdministrador();
+    btnBackupBanco.hidden = !ehAdministrador();
     atualizarBotaoReportesAdmin();
 
     // Visitante sem login: nenhuma questão é buscada nem exibida.

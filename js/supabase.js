@@ -696,3 +696,21 @@ export async function fecharReporte(id, status) {
         .eq('id', id);
     return error ? { ok: false, motivo: motivoDeErroReporte(error) } : { ok: true };
 }
+
+// ---------- Backup do banco de questões (só o admin; a RLS barra os demais) ----------
+// Baixa tudo que é conteúdo: questoes, questoes_gabarito e reportes_questao. Cada tabela
+// que falhar vira um aviso no próprio arquivo, sem derrubar as outras.
+export async function exportarBackupDoBanco() {
+    const tabelas = { questoes: 'id', questoes_gabarito: 'questao_id', reportes_questao: 'id' };
+    const backup = { gerado_em: new Date().toISOString(), tabelas: {}, avisos: [] };
+    for (const [tabela, ordem] of Object.entries(tabelas)) {
+        try {
+            backup.tabelas[tabela] = await buscarTodasAsPaginas(() => supabaseClient
+                .from(tabela).select('*').order(ordem, { ascending: true }));
+        } catch (e) {
+            backup.tabelas[tabela] = [];
+            backup.avisos.push(`${tabela}: ${e?.message || 'falhou'}`);
+        }
+    }
+    return backup;
+}
