@@ -2174,5 +2174,291 @@
     ],
     "palavras_chave": "\"inevitável, sempre, nunca, todo, apenas\" → confira se o texto afirma isso; \"entre outros\" → lista sem ranking; \"descreve\" não é \"defende\".",
     "pegadinha": "Achar que o texto defende algo só porque descreve vantagens: incentivar ou defender exige que o autor tome posição."
+  },
+  {
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Proposições e conectivos lógicos",
+    "modelo": "conceito",
+    "resumo": "Proposição é uma frase declarativa que é verdadeira ou falsa; os conectivos combinam proposições. Ex.: \"Que horas são?\" não é proposição; \"2 + 3 = 7\" é (e é falsa).",
+    "nao_confundir": [
+      {
+        "conceito": "p e q",
+        "faz": "só é verdadeira se as duas forem verdadeiras"
+      },
+      {
+        "conceito": "p ou q",
+        "faz": "só é falsa se as duas forem falsas"
+      },
+      {
+        "conceito": "se p, então q",
+        "faz": "só é falsa se p é verdadeira e q é falsa"
+      },
+      {
+        "conceito": "p se e somente se q",
+        "faz": "verdadeira quando p e q têm o mesmo valor"
+      }
+    ],
+    "palavras_chave": "\"pergunta, ordem, exclamação\" → não é proposição; \"promessa quebrada\" → condicional falsa; \"mesmo valor\" → bicondicional verdadeira.",
+    "pegadinha": "Achar que a condicional é falsa quando p é falsa: ela só é falsa se p for verdadeira e q for falsa."
+  },
+  {
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Equivalências e negações lógicas",
+    "modelo": "conceito",
+    "resumo": "Negar é dizer o que torna a frase falsa; equivalente é dizer o mesmo de outra forma. Ex.: a negação de \"chove e faz frio\" é \"não chove ou não faz frio\".",
+    "nao_confundir": [
+      {
+        "conceito": "Negação de \"p e q\"",
+        "faz": "não p ou não q"
+      },
+      {
+        "conceito": "Negação de \"p ou q\"",
+        "faz": "não p e não q"
+      },
+      {
+        "conceito": "Negação de \"se p, então q\"",
+        "faz": "p e não q"
+      },
+      {
+        "conceito": "Equivalente de \"se p, então q\"",
+        "faz": "se não q, então não p (ou: não p ou q)"
+      }
+    ],
+    "palavras_chave": "\"todo\" → nega-se com \"algum não\"; \"contrapositiva\" → equivale à original; \"recíproca e inversa\" → não equivalem.",
+    "pegadinha": "Manter o \"e\" ao negar uma conjunção: a negação troca \"e\" por \"ou\" e nega cada parte."
+  },
+  {
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Conjuntos",
+    "modelo": "conceito",
+    "resumo": "Conjunto é uma coleção de elementos; as operações mostram o que une, o que é comum e o que sobra. Ex.: A = {1, 2, 3, 4} e B = {3, 4, 5}: a interseção é {3, 4}.",
+    "nao_confundir": [
+      {
+        "conceito": "União",
+        "faz": "todos os elementos dos dois conjuntos"
+      },
+      {
+        "conceito": "Interseção",
+        "faz": "só os elementos comuns aos dois"
+      },
+      {
+        "conceito": "Diferença A − B",
+        "faz": "os que estão em A e não estão em B"
+      },
+      {
+        "conceito": "A é subconjunto de B",
+        "faz": "todo elemento de A também está em B"
+      }
+    ],
+    "palavras_chave": "\"pelo menos um\" → soma menos a interseção; \"nenhum dos dois\" → total menos a união; \"n elementos\" → 2ⁿ subconjuntos.",
+    "pegadinha": "Somar os grupos sem tirar a interseção: quem está nos dois conta duas vezes (30 + 20 − 8 = 42, e não 50)."
+  },
+  {
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Porcentagem e proporção",
+    "modelo": "conceito",
+    "resumo": "Porcentagem é uma fração de 100: 20% = 0,2. Para achar quanto uma parte representa, divida a parte pelo total. Ex.: 20% de 350 = 0,2 × 350 = 70.",
+    "nao_confundir": [
+      {
+        "conceito": "Percentual de um valor",
+        "faz": "multiplique o valor pela taxa (20% = 0,2)"
+      },
+      {
+        "conceito": "Quanto uma parte representa",
+        "faz": "divida a parte pelo total"
+      },
+      {
+        "conceito": "Aumento de 10%",
+        "faz": "multiplique por 1,10"
+      },
+      {
+        "conceito": "Desconto de 15%",
+        "faz": "multiplique por 0,85"
+      }
+    ],
+    "palavras_chave": "\"sucessivos\" → multiplique os fatores; \"razão 3 para 5, soma 40\" → some as partes (3 + 5); \"proporção\" → multiplicação cruzada.",
+    "pegadinha": "Somar aumentos sucessivos: dois de 10% dão 21%, e não 20%, porque o segundo incide sobre o valor já aumentado."
+  },
+  {
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Regra de três e razão",
+    "modelo": "conceito",
+    "resumo": "Regra de três compara grandezas: se crescem juntas, são diretas; se uma sobe e a outra cai, são inversas. Ex.: 6 operários fazem a obra em 12 dias; 4 operários levam 18.",
+    "nao_confundir": [
+      {
+        "conceito": "Diretamente proporcionais",
+        "faz": "dobra uma, dobra a outra (técnicos × computadores)"
+      },
+      {
+        "conceito": "Inversamente proporcionais",
+        "faz": "dobra uma, a outra cai à metade (operários × dias)"
+      },
+      {
+        "conceito": "Escala 1 : 50.000",
+        "faz": "1 cm no mapa vale 50.000 cm reais"
+      },
+      {
+        "conceito": "Divisão proporcional",
+        "faz": "divida o total pela soma das partes (120 ÷ 6 = 20)"
+      }
+    ],
+    "palavras_chave": "\"mais gera mais\" → direta; \"mais gera menos\" → inversa; \"escala\" → converta as unidades no fim.",
+    "pegadinha": "Esquecer de converter a unidade na escala: 4 cm a 1 : 50.000 são 200.000 cm, ou seja, 2 km, e não 200 m."
+  },
+  {
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Juros simples e compostos",
+    "modelo": "conceito",
+    "resumo": "Juros são o preço de usar o dinheiro no tempo: no simples, rendem sobre o capital inicial; no composto, sobre o montante acumulado. Ex.: R$ 1.000 a 10% ao ano, 2 anos: R$ 1.200 (simples) e R$ 1.210 (composto).",
+    "nao_confundir": [
+      {
+        "conceito": "Juros simples",
+        "faz": "J = C · i · n; crescimento em linha reta"
+      },
+      {
+        "conceito": "Juros compostos",
+        "faz": "M = C · (1 + i)ⁿ; juros sobre juros"
+      },
+      {
+        "conceito": "Juros",
+        "faz": "só o rendimento"
+      },
+      {
+        "conceito": "Montante",
+        "faz": "capital mais os juros"
+      }
+    ],
+    "palavras_chave": "\"juros sobre juros\" → composto; \"prazo no expoente\" → composto; \"12% ao ano, juros simples\" → 1% ao mês (taxa proporcional).",
+    "pegadinha": "Responder o montante quando a questão pede os juros: o montante é capital mais juros, e os juros são só o rendimento."
+  },
+  {
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Análise combinatória",
+    "modelo": "conceito",
+    "resumo": "Combinatória conta as maneiras de organizar elementos; a pergunta-chave é se a ordem importa. Ex.: 1º e 2º lugar entre 5 candidatos (ordem importa) = 20; escolher 2 entre 5 (não importa) = 10.",
+    "nao_confundir": [
+      {
+        "conceito": "Princípio multiplicativo",
+        "faz": "escolhas em sequência: multiplique (3 camisas × 4 calças = 12)"
+      },
+      {
+        "conceito": "Permutação",
+        "faz": "todos os elementos em fila: n! (5! = 120)"
+      },
+      {
+        "conceito": "Arranjo",
+        "faz": "escolhe parte dos elementos e a ordem importa"
+      },
+      {
+        "conceito": "Combinação",
+        "faz": "escolhe parte dos elementos e a ordem não importa"
+      }
+    ],
+    "palavras_chave": "\"fila com todos, anagrama de letras distintas\" → permutação; \"cargos, posições\" → arranjo; \"comissão sem cargos\" → combinação.",
+    "pegadinha": "Somar em vez de multiplicar quando as escolhas acontecem juntas: 3 camisas e 4 calças dão 3 × 4 = 12, e não 7."
+  },
+  {
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Sequências e problemas de raciocínio",
+    "modelo": "conceito",
+    "resumo": "Em sequências, descubra a regra que leva de um termo ao seguinte; em problemas, monte uma equação. Ex.: 2, 5, 8, 11 soma 3 a cada passo, então o próximo é 14.",
+    "nao_confundir": [
+      {
+        "conceito": "PA (progressão aritmética)",
+        "faz": "soma sempre o mesmo valor (a razão)"
+      },
+      {
+        "conceito": "PG (progressão geométrica)",
+        "faz": "multiplica sempre pelo mesmo valor"
+      },
+      {
+        "conceito": "Fibonacci",
+        "faz": "cada termo é a soma dos dois anteriores"
+      },
+      {
+        "conceito": "Termo n de uma PA",
+        "faz": "a₁ + (n − 1) · razão"
+      }
+    ],
+    "palavras_chave": "\"acrescenta sempre o mesmo valor\" → PA; \"multiplica pelo mesmo número\" → PG; \"o triplo\" → 3x; \"a soma dos números é 48\" → equação.",
+    "pegadinha": "Somar 10 razões para achar o 10º termo da PA: do 1º ao 10º há 9 saltos (a₁ + 9 · razão)."
+  },
+  {
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Estatística descritiva",
+    "modelo": "conceito",
+    "resumo": "Estatística descritiva resume os dados: média, mediana e moda mostram o centro; amplitude, variância e desvio padrão mostram o quanto os dados se espalham. Ex.: 4, 6, 8 e 10 têm média 7.",
+    "nao_confundir": [
+      {
+        "conceito": "Média",
+        "faz": "soma dividida pela quantidade"
+      },
+      {
+        "conceito": "Mediana",
+        "faz": "valor central dos dados ordenados"
+      },
+      {
+        "conceito": "Moda",
+        "faz": "valor que mais se repete"
+      },
+      {
+        "conceito": "Desvio padrão",
+        "faz": "raiz quadrada da variância; mede a dispersão"
+      }
+    ],
+    "palavras_chave": "\"quantidade par\" → mediana é a média dos dois centrais (dados ordenados); \"maior menos menor\" → amplitude; \"variância, desvio padrão\" → dispersão.",
+    "pegadinha": "Achar que, se o coeficiente de variação (desvio ÷ média) dobra, a variância dobra: dobra o desvio, e a variância quadruplica (médias iguais)."
+  },
+  {
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Probabilidade",
+    "modelo": "conceito",
+    "resumo": "Probabilidade é casos favoráveis dividido por casos possíveis, sempre entre 0 e 1. Ex.: sair par em um dado = 3/6 = 1/2.",
+    "nao_confundir": [
+      {
+        "conceito": "Evento complementar",
+        "faz": "1 menos a probabilidade de ocorrer"
+      },
+      {
+        "conceito": "A e B independentes",
+        "faz": "multiplique P(A) por P(B)"
+      },
+      {
+        "conceito": "P = 0",
+        "faz": "evento impossível"
+      },
+      {
+        "conceito": "P = 1",
+        "faz": "evento certo"
+      }
+    ],
+    "palavras_chave": "\"não ocorrer\" → 1 − P; \"A e B independentes\" → multiplica; \"A ou B\" → soma e tira a interseção; \"tabela de P(X = x)\" → soma 1.",
+    "pegadinha": "Achar que saber de um evento muda a probabilidade do outro quando são independentes: a probabilidade condicional é igual à original."
+  },
+  {
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Lógica de argumentação e quantificadores",
+    "modelo": "conceito",
+    "resumo": "Argumento é um conjunto de premissas que leva a uma conclusão; é válido quando a conclusão decorre delas. Ex.: todo analista sabe SQL; Maria é analista; logo, Maria sabe SQL.",
+    "nao_confundir": [
+      {
+        "conceito": "Argumento válido",
+        "faz": "se as premissas são verdadeiras, a conclusão tem de ser"
+      },
+      {
+        "conceito": "Todo A é B",
+        "faz": "não vale ao contrário: B não é necessariamente A"
+      },
+      {
+        "conceito": "Algum",
+        "faz": "pelo menos um, podendo ser todos"
+      },
+      {
+        "conceito": "Nenhum A é B",
+        "faz": "vale nos dois sentidos: nenhum B é A"
+      }
+    ],
+    "palavras_chave": "\"todo A é B e todo B é C\" → todo A é C; \"algum\" → pelo menos um; \"validade\" → depende da forma, não da verdade real.",
+    "pegadinha": "Inverter a premissa: \"todo analista sabe SQL\" não permite concluir que quem sabe SQL é analista."
   }
 ]
