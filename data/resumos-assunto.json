@@ -1940,5 +1940,239 @@
     ],
     "palavras_chave": "\"mais máquinas\" → escala horizontal; \"máquina maior\" → escala vertical; \"troca de mensagens pela rede\" → sistema distribuído.",
     "pegadinha": "Dizer que na computação paralela todos os processadores ficam no mesmo chip: podem estar em chips diferentes, até em máquinas diferentes."
+  },
+  {
+    "materia": "Português",
+    "assunto": "Concordância",
+    "modelo": "regra",
+    "resumo": "O verbo combina em número com o sujeito; haver (existir) e fazer (tempo) ficam no singular. Ex.: \"Há muitos candidatos\" e \"Faz três anos\".",
+    "nao_confundir": [
+      {
+        "conceito": "Há muitos candidatos",
+        "faz": "Certo: haver no sentido de existir fica no singular"
+      },
+      {
+        "conceito": "Haviam / Houveram candidatos",
+        "faz": "Errado: haver (existir) nunca vai ao plural"
+      },
+      {
+        "conceito": "Vendem-se casas",
+        "faz": "Certo: o verbo concorda com o sujeito, casas"
+      },
+      {
+        "conceito": "Vende-se casas",
+        "faz": "Errado: o sujeito é plural, então o verbo também"
+      }
+    ],
+    "palavras_chave": "se dá para trocar haver por existir → haver fica no singular; \"são vendidas\" no lugar de vende-se (verbo sem preposição) → plural; \"menos\" → nunca varia.",
+    "pegadinha": "Achar que um termo intercalado entre o sujeito e o verbo muda a concordância: o verbo segue concordando com o sujeito, mesmo longe dele."
+  },
+  {
+    "materia": "Português",
+    "assunto": "Regência",
+    "modelo": "regra",
+    "resumo": "Regência é a preposição que o verbo pede. Vale decorar os verbos mais cobrados. Ex.: obedecer às normas; chegar ao escritório.",
+    "nao_confundir": [
+      {
+        "conceito": "Assistir à palestra",
+        "faz": "Certo: no sentido de ver, pede \"a\""
+      },
+      {
+        "conceito": "Implicar em custos",
+        "faz": "Errado: no sentido de acarretar, não leva \"em\""
+      },
+      {
+        "conceito": "Prefiro estudar a dormir",
+        "faz": "Certo: preferir pede \"a\", sem \"mais\" nem \"do que\""
+      },
+      {
+        "conceito": "Cheguei no escritório",
+        "faz": "Evitar em prova: a norma pede \"a\" (ao escritório)"
+      }
+    ],
+    "palavras_chave": "\"ver, presenciar\" → assistir a (ajudar: sem preposição); \"almejar\" → aspirar a; \"acarretar\" → implicar sem preposição; \"chegar\" → a.",
+    "pegadinha": "Trocar um verbo por outro de sentido parecido sem conferir a preposição: resultar em vira acarretar, que não leva \"em\"."
+  },
+  {
+    "materia": "Português",
+    "assunto": "Crase",
+    "modelo": "regra",
+    "resumo": "Crase é a fusão da preposição \"a\" com o artigo \"a\" (ou com aquele, aquilo, a qual). Ex.: \"Fomos à reunião\": ir pede \"a\" e reunião aceita artigo.",
+    "nao_confundir": [
+      {
+        "conceito": "à noite, às vezes",
+        "faz": "Certo: locuções adverbiais femininas"
+      },
+      {
+        "conceito": "a pé",
+        "faz": "Sem crase: palavra masculina, sem artigo"
+      },
+      {
+        "conceito": "começou a estudar",
+        "faz": "Sem crase: antes de verbo não há artigo"
+      },
+      {
+        "conceito": "a ela, a Vossa Senhoria",
+        "faz": "Sem crase: pronomes não aceitam artigo"
+      }
+    ],
+    "palavras_chave": "verbo pede \"a\" e, na versão masculina, dá \"ao\" → crase; \"hora marcada\" → às nove horas; verbo depois do \"a\" → nunca crase.",
+    "pegadinha": "Usar crase só porque há um \"a\" feminino: sem termo que peça a preposição (\"como a distribuição\"), a crase é erro."
+  },
+  {
+    "materia": "Português",
+    "assunto": "Colocação pronominal",
+    "modelo": "regra",
+    "resumo": "É a posição do pronome (me, se, lhe) em relação ao verbo. Uma palavra atrativa puxa o pronome para antes; no início da frase, ele vai depois. Ex.: \"Não me falaram\"; \"Diga-me\".",
+    "nao_confundir": [
+      {
+        "conceito": "Diga-me",
+        "faz": "Certo: não se inicia a oração com pronome átono (ênclise)"
+      },
+      {
+        "conceito": "Me diga",
+        "faz": "Errado na norma: pronome átono no início da frase"
+      },
+      {
+        "conceito": "Não me falaram",
+        "faz": "Certo: o \"não\" atrai o pronome (próclise)"
+      },
+      {
+        "conceito": "Enviar-lhe-ei",
+        "faz": "Certo: mesóclise no futuro do presente; \"Enviarei-lhe\" é erro"
+      }
+    ],
+    "palavras_chave": "atrativa (não, que, quando, se conjunção) logo antes do verbo → pronome antes; início de oração → depois; futuro do presente, sem atrativa → no meio.",
+    "pegadinha": "Achar que sem palavra atrativa a próclise é livre: logo depois de vírgula o trecho também não começa com pronome (\"..., verifica-se\")."
+  },
+  {
+    "materia": "Português",
+    "assunto": "Pontuação",
+    "modelo": "regra",
+    "resumo": "A vírgula isola o que é acrescentado e não separa o sujeito do verbo, salvo termo intercalado entre duas vírgulas. Ex.: \"Carlos, gerente do projeto, aprovou o plano\" (aposto entre duas vírgulas).",
+    "nao_confundir": [
+      {
+        "conceito": "Os analistas, aprovaram o projeto",
+        "faz": "Errado: vírgula entre sujeito e verbo"
+      },
+      {
+        "conceito": "Carlos, gerente do projeto, aprovou",
+        "faz": "Certo: aposto entre duas vírgulas"
+      },
+      {
+        "conceito": "Servidores, que são concursados, têm",
+        "faz": "Explicativa: vale para todos os servidores"
+      },
+      {
+        "conceito": "Servidores que são concursados têm",
+        "faz": "Restritiva: vale só para uma parte"
+      }
+    ],
+    "palavras_chave": "aposto explicativo, vocativo, oração explicativa → entre vírgulas; \"anunciar lista ou explicação\" → dois-pontos; \"itens longos, incisos\" → ponto e vírgula.",
+    "pegadinha": "Achar que o travessão dispensa a vírgula: um não anula o outro, e a vírgula após o adjunto deslocado no início continua."
+  },
+  {
+    "materia": "Português",
+    "assunto": "Coesão e referenciação",
+    "modelo": "regra",
+    "resumo": "Coesão é a ligação entre as partes do texto: pronomes retomam termos e conectores mostram a relação entre as ideias. Ex.: \"O gerente chamou a analista e pediu-lhe um relatório\" (lhe = a analista).",
+    "nao_confundir": [
+      {
+        "conceito": "Anáfora",
+        "faz": "retoma algo que já foi dito"
+      },
+      {
+        "conceito": "Catáfora",
+        "faz": "antecipa algo que só vem depois"
+      },
+      {
+        "conceito": "Portanto, por isso",
+        "faz": "indicam conclusão"
+      },
+      {
+        "conceito": "Porém, contudo, mas",
+        "faz": "indicam oposição"
+      }
+    ],
+    "palavras_chave": "\"cujo\" → posse, sem artigo depois; \"o qual\" → concorda com o termo retomado; \"sinônimo no lugar do termo\" → coesão lexical.",
+    "pegadinha": "Procurar o antecedente de \"o qual\" só pela proximidade: confira gênero e número, que ajudam a achar o termo retomado."
+  },
+  {
+    "materia": "Português",
+    "assunto": "Sintaxe — termos e orações",
+    "modelo": "regra",
+    "resumo": "Sintaxe mostra a função de cada termo e como as orações se ligam. Ex.: \"A equipe entregou o relatório ao cliente\" (relatório é objeto direto; ao cliente, objeto indireto).",
+    "nao_confundir": [
+      {
+        "conceito": "Objeto direto",
+        "faz": "em regra, completa o verbo sem preposição"
+      },
+      {
+        "conceito": "Objeto indireto",
+        "faz": "completa o verbo com a preposição que ele pede"
+      },
+      {
+        "conceito": "Adjunto adverbial",
+        "faz": "dá a circunstância: tempo, lugar, modo"
+      },
+      {
+        "conceito": "Coordenada × subordinada",
+        "faz": "a coordenada tem sentido próprio; a subordinada depende da principal"
+      }
+    ],
+    "palavras_chave": "\"termo com que o verbo concorda\" → sujeito; \"ser, estar, ficar, parecer\" → verbo de ligação; \"vírgula antes do pronome que\" → explicativa; sem vírgula → restritiva.",
+    "pegadinha": "Achar que \"mas também\" é aditivo em qualquer caso: o sentido aditivo vem do par \"não só... mas também\"; sem ele, o \"mas\" opõe."
+  },
+  {
+    "materia": "Português",
+    "assunto": "Semântica e reescrita",
+    "modelo": "regra",
+    "resumo": "Reescrever é dizer o mesmo com outras palavras, sem mudar o sentido nem criar erro. Ex.: \"mas\" pode virar \"no entanto\", porque os dois opõem ideias.",
+    "nao_confundir": [
+      {
+        "conceito": "Sinônimos",
+        "faz": "sentidos próximos; só valem se o contexto aceitar"
+      },
+      {
+        "conceito": "Antônimos",
+        "faz": "sentidos contrários"
+      },
+      {
+        "conceito": "Denotação",
+        "faz": "sentido literal, de dicionário"
+      },
+      {
+        "conceito": "Conotação",
+        "faz": "sentido figurado"
+      }
+    ],
+    "palavras_chave": "\"fizeram-se testes\" → \"foram feitos testes\"; \"mas\" = \"no entanto\" (não = \"embora\"); \"trocou o verbo\" → confira a preposição.",
+    "pegadinha": "Achar que deslocar um advérbio (como \"ainda\") é sempre seguro: a frase pode seguir correta, mas o sentido muda."
+  },
+  {
+    "materia": "Português",
+    "assunto": "Interpretação de texto",
+    "modelo": "regra",
+    "resumo": "Interpretar é concluir só o que o texto sustenta: o que está dito ou decorre claramente do dito. Ex.: se o texto cita vantagens e riscos, não dá para concluir que as vantagens pesam mais.",
+    "nao_confundir": [
+      {
+        "conceito": "Compreensão literal",
+        "faz": "o que está explícito no texto"
+      },
+      {
+        "conceito": "Inferência",
+        "faz": "conclusão que decorre do que foi dito"
+      },
+      {
+        "conceito": "Extrapolação",
+        "faz": "diz mais do que o texto permite"
+      },
+      {
+        "conceito": "Fato × opinião",
+        "faz": "o fato se comprova; a opinião é ponto de vista"
+      }
+    ],
+    "palavras_chave": "\"inevitável, sempre, nunca, todo, apenas\" → confira se o texto afirma isso; \"entre outros\" → lista sem ranking; \"descreve\" não é \"defende\".",
+    "pegadinha": "Achar que o texto defende algo só porque descreve vantagens: incentivar ou defender exige que o autor tome posição."
   }
 ]
