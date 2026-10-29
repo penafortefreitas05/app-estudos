@@ -1068,5 +1068,389 @@
   ],
   "palavras_chave": "\"Gherkin\", \"Given/When/Then\" → BDD; \"rodar de novo os testes antigos\" → regressão; \"sem olhar o código\" → caixa-preta.",
   "pegadinha": "Dizer que no TDD o teste vem depois do código: o vermelho é escrever primeiro um teste que falha."
+ },
+ {
+  "materia": "Desenvolvimento, POO & Linguagens",
+  "assunto": "Python",
+  "modelo": "conceito",
+  "resumo": "Python é uma linguagem fácil de ler, em que a indentação (o recuo) define os blocos. Ex.: for i in range(3): print(i) imprime 0, 1 e 2.",
+  "nao_confundir": [
+   {
+    "conceito": "Lista [ ]",
+    "faz": "mutável: cresce, diminui e muda"
+   },
+   {
+    "conceito": "Tupla ( )",
+    "faz": "imutável depois de criada"
+   },
+   {
+    "conceito": "Dicionário {chave: valor}",
+    "faz": "pares chave-valor, acesso pela chave"
+   }
+  ],
+  "palavras_chave": "\"/\" → divisão com resultado float; \"//\" → divisão inteira, arredonda para baixo (-7 // 2 = -4); \"append\" → acrescenta no fim; \"range(n)\" → de 0 até n − 1.",
+  "pegadinha": "Dizer que a lista tem tamanho fixo depois de criada: ela cresce e diminui; quem não muda é a tupla."
+ },
+ {
+  "materia": "Desenvolvimento, POO & Linguagens",
+  "assunto": "Java",
+  "modelo": "conceito",
+  "resumo": "Java é uma linguagem orientada a objetos que compila para bytecode, executado pela JVM em qualquer sistema. Ex.: o mesmo .class roda em Windows e em Linux.",
+  "nao_confundir": [
+   {
+    "conceito": "abstract",
+    "faz": "classe que não pode ser instanciada; método que a subclasse concreta deve implementar"
+   },
+   {
+    "conceito": "final",
+    "faz": "impede reatribuir (variável), sobrescrever (método) ou herdar (classe)"
+   },
+   {
+    "conceito": "static",
+    "faz": "pertence à classe, não a cada objeto"
+   },
+   {
+    "conceito": "interface",
+    "faz": "contrato de métodos que a classe promete cumprir"
+   }
+  ],
+  "palavras_chave": "\"bytecode\", \"JVM\" → portabilidade; \"objeto sem referência\" → garbage collector; \"tratar classes diferentes de forma uniforme\" → polimorfismo (via interface).",
+  "pegadinha": "Confundir ++i com i++: no ++i soma antes de usar o valor; no i++ usa o valor e soma depois."
+ },
+ {
+  "materia": "Desenvolvimento, POO & Linguagens",
+  "assunto": "JavaScript e TypeScript",
+  "modelo": "conceito",
+  "resumo": "JavaScript dá comportamento à página no navegador; o TypeScript é JavaScript com tipos. Ex.: um clique no botão chama uma função que altera o DOM.",
+  "nao_confundir": [
+   {
+    "conceito": "var",
+    "faz": "escopo de função"
+   },
+   {
+    "conceito": "let",
+    "faz": "escopo de bloco; pode reatribuir"
+   },
+   {
+    "conceito": "const",
+    "faz": "escopo de bloco; não pode reatribuir"
+   }
+  ],
+  "palavras_chave": "\"===\" → compara valor e tipo; \"==\" → converte o tipo antes de comparar; \"superconjunto com tipagem estática\" → TypeScript; \"Virtual DOM\" → Vue, React.",
+  "pegadinha": "Achar que const deixa o objeto imutável: ela só impede reatribuir a variável; as propriedades do objeto ainda podem mudar."
+ },
+ {
+  "materia": "Desenvolvimento, POO & Linguagens",
+  "assunto": "Orientação a objetos",
+  "modelo": "conceito",
+  "resumo": "Orientação a objetos organiza o programa em objetos que juntam dados e comportamento. Ex.: a classe Carro é o molde; cada carro criado a partir dela é um objeto.",
+  "nao_confundir": [
+   {
+    "conceito": "Encapsulamento",
+    "faz": "esconde os dados; acesso só por métodos"
+   },
+   {
+    "conceito": "Herança",
+    "faz": "a subclasse reaproveita a superclasse"
+   },
+   {
+    "conceito": "Polimorfismo",
+    "faz": "a mesma chamada, comportamentos diferentes"
+   },
+   {
+    "conceito": "Abstração",
+    "faz": "modela só o que é essencial"
+   }
+  ],
+  "palavras_chave": "\"mesma assinatura na subclasse\" → sobrescrita (override); \"mesmo nome, parâmetros diferentes\" → sobrecarga (overload); \"instância\" → objeto.",
+  "pegadinha": "Dizer que a sobrecarga depende de herança: ela é o mesmo nome com parâmetros diferentes, e não precisa de subclasse."
+ },
+ {
+  "materia": "Desenvolvimento, POO & Linguagens",
+  "assunto": "APIs e integração (REST, GraphQL, gRPC)",
+  "modelo": "conceito",
+  "resumo": "API é a porta que um sistema oferece para outro usar seus dados e funções. Ex.: o app do banco chama GET /saldo e recebe a resposta em JSON.",
+  "nao_confundir": [
+   {
+    "conceito": "REST",
+    "faz": "recursos por URL e verbos HTTP; stateless"
+   },
+   {
+    "conceito": "SOAP",
+    "faz": "mensagens em XML, contrato no WSDL"
+   },
+   {
+    "conceito": "GraphQL",
+    "faz": "o cliente escolhe os campos que quer"
+   },
+   {
+    "conceito": "gRPC",
+    "faz": "Protocol Buffers (binário) sobre HTTP/2"
+   }
+  ],
+  "palavras_chave": "\"stateless\" → REST; \"envelope\", \"WSDL\" → SOAP; \"POST para uma URL cadastrada quando ocorre um evento\" → webhook; GET consulta, POST cria.",
+  "pegadinha": "Dizer que o REST guarda o estado da sessão ou só devolve XML: ele é stateless e aceita JSON, XML e outros formatos."
+ },
+ {
+  "materia": "Desenvolvimento, POO & Linguagens",
+  "assunto": "HTML e CSS",
+  "modelo": "conceito",
+  "resumo": "O HTML monta a estrutura da página, e o CSS cuida da aparência. Ex.: <h1>Título</h1> cria o título; h1 { color: blue; } deixa ele azul.",
+  "nao_confundir": [
+   {
+    "conceito": "HTML",
+    "faz": "estrutura e conteúdo"
+   },
+   {
+    "conceito": "CSS",
+    "faz": "aparência: cores, fontes, espaços, animações"
+   },
+   {
+    "conceito": "JavaScript",
+    "faz": "comportamento: reage a cliques e muda a página"
+   }
+  ],
+  "palavras_chave": "\".\" → seletor de classe; \"#\" → seletor de id; \"padding\" → espaço interno; \"margin\" → espaço externo; \"required\" → campo obrigatório no HTML5.",
+  "pegadinha": "Trocar as propriedades do CSS: quem define o tamanho é width/height (padding é espaço interno), e capitalize põe maiúscula na inicial de cada palavra."
+ },
+ {
+  "materia": "Desenvolvimento, POO & Linguagens",
+  "assunto": "Estruturas de dados",
+  "modelo": "conceito",
+  "resumo": "Estruturas de dados são formas de organizar os dados na memória para guardar e buscar com eficiência. Ex.: o botão Desfazer usa uma pilha: o último passo é o primeiro a sair.",
+  "nao_confundir": [
+   {
+    "conceito": "Pilha",
+    "faz": "LIFO: o último a entrar sai primeiro"
+   },
+   {
+    "conceito": "Fila",
+    "faz": "FIFO: o primeiro a entrar sai primeiro"
+   },
+   {
+    "conceito": "Deque",
+    "faz": "insere e remove nas duas pontas"
+   },
+   {
+    "conceito": "Árvore binária de busca",
+    "faz": "menores à esquerda, maiores à direita"
+   }
+  ],
+  "palavras_chave": "\"push/pop\" → pilha; \"percurso em ordem simétrica (in-order)\" numa árvore de busca → valores em ordem crescente; \"tabela hash\" → busca média O(1).",
+  "pegadinha": "No deque do Python (collections.deque), confundir as pontas: append e pop mexem no fim; appendleft e popleft, no início."
+ },
+ {
+  "materia": "Desenvolvimento, POO & Linguagens",
+  "assunto": "Algoritmos (ordenação, busca, complexidade)",
+  "modelo": "conceito",
+  "resumo": "Algoritmo é uma receita passo a passo; a complexidade diz como o tempo cresce com o tamanho dos dados. Ex.: numa lista ordenada de 1 milhão de nomes, a busca binária acha um em cerca de 20 passos.",
+  "nao_confundir": [
+   {
+    "conceito": "Busca linear",
+    "faz": "olha um por um: O(n)"
+   },
+   {
+    "conceito": "Busca binária",
+    "faz": "corta a lista ao meio a cada passo: O(log n); exige lista ordenada"
+   },
+   {
+    "conceito": "Ordenação estável",
+    "faz": "mantém a ordem original dos elementos iguais"
+   }
+  ],
+  "palavras_chave": "\"compara vizinhos e troca\" → bolha; \"pivô\" → quicksort; \"divide e intercala\" → merge sort.",
+  "pegadinha": "Dizer que a seleção direta é estável: bolha e inserção são estáveis; a seleção, na versão clássica, não."
+ },
+ {
+  "materia": "Desenvolvimento, POO & Linguagens",
+  "assunto": "Git e versionamento",
+  "modelo": "conceito",
+  "resumo": "O Git guarda o histórico de alterações do código e permite trabalhar em paralelo sem perder nada. Ex.: cada commit é um retrato do projeto, ao qual dá para voltar.",
+  "nao_confundir": [
+   {
+    "conceito": "commit",
+    "faz": "grava no repositório local o que foi preparado (git add)"
+   },
+   {
+    "conceito": "push",
+    "faz": "envia os commits ao repositório remoto"
+   },
+   {
+    "conceito": "pull",
+    "faz": "traz do remoto e junta (fetch + merge)"
+   },
+   {
+    "conceito": "clone",
+    "faz": "copia o repositório inteiro, com histórico"
+   }
+  ],
+  "palavras_chave": "\"linha de trabalho isolada\" → branch; \"juntar uma branch em outra\" → merge; \"mesma linha alterada nas duas branches\" → conflito.",
+  "pegadinha": "Achar que feature branch não tem custo: a branch de longa duração, que demora a voltar para a principal, atrapalha a integração contínua."
+ },
+ {
+  "materia": "Desenvolvimento, POO & Linguagens",
+  "assunto": "Protocolos e arquitetura web (HTTP, HTTP/2, WebSocket)",
+  "modelo": "conceito",
+  "resumo": "O HTTP é o protocolo de pedido e resposta da web; o WebSocket mantém um canal aberto nos dois sentidos. Ex.: abrir uma página é HTTP; um chat ao vivo usa WebSocket.",
+  "nao_confundir": [
+   {
+    "conceito": "HTTP/1.1",
+    "faz": "reaproveita a conexão, mas as respostas saem em fila"
+   },
+   {
+    "conceito": "HTTP/2",
+    "faz": "várias em paralelo na mesma conexão (multiplexação)"
+   },
+   {
+    "conceito": "WebSocket",
+    "faz": "conversa contínua nos dois sentidos, por mensagens"
+   }
+  ],
+  "palavras_chave": "\"301\" → movido para sempre; \"302\" → movido temporariamente; \"404\" → não encontrado; \"5xx\" → erro do servidor.",
+  "pegadinha": "Inverter as versões: é o HTTP/2, e não o HTTP/1.1, que atende várias requisições em paralelo na mesma conexão."
+ },
+ {
+  "materia": "Desenvolvimento, POO & Linguagens",
+  "assunto": "C# e .NET",
+  "modelo": "conceito",
+  "resumo": "C# é a linguagem orientada a objetos da Microsoft, executada na plataforma .NET. Ex.: sistemas web de órgãos públicos feitos em ASP.NET.",
+  "nao_confundir": [
+   {
+    "conceito": "??",
+    "faz": "usa um valor padrão quando a variável é nula"
+   },
+   {
+    "conceito": "foreach",
+    "faz": "percorre cada item de uma coleção"
+   },
+   {
+    "conceito": "while",
+    "faz": "repete enquanto a condição for verdadeira"
+   }
+  ],
+  "palavras_chave": "\"coalescência nula\" → ??; \"plataforma .NET\" → C# (a principal linguagem dela); \"JVM\" → Java, e não C#.",
+  "pegadinha": "No teste de mesa, esquecer o pós-incremento: em while (num++ < 6), o num já está somado quando é impresso."
+ },
+ {
+  "materia": "Desenvolvimento, POO & Linguagens",
+  "assunto": "Acessibilidade (e-MAG, WCAG)",
+  "modelo": "conceito",
+  "resumo": "Acessibilidade é fazer o site funcionar para todos, inclusive pessoas com deficiência. Ex.: o atributo alt descreve a imagem para quem usa leitor de tela.",
+  "nao_confundir": [
+   {
+    "conceito": "e-MAG",
+    "faz": "modelo de acessibilidade do governo federal brasileiro"
+   },
+   {
+    "conceito": "WCAG",
+    "faz": "diretrizes internacionais do W3C"
+   },
+   {
+    "conceito": "Leitor de tela",
+    "faz": "lê a página em voz alta para quem não enxerga"
+   }
+  ],
+  "palavras_chave": "\"tudo funcionar só pelo teclado\" → acessibilidade (e-MAG e WCAG); \"perceptível, operável, compreensível, robusto\" → WCAG; \"texto alternativo\" → alt.",
+  "pegadinha": "Achar que abrir links em nova aba ou mudar o foco sozinho ajuda: o e-MAG recomenda não mudar o contexto sem o usuário pedir."
+ },
+ {
+  "materia": "Desenvolvimento, POO & Linguagens",
+  "assunto": "Portais, CMS, busca e gestão de conteúdo",
+  "modelo": "conceito",
+  "resumo": "O CMS publica conteúdo sem programar; o portal reúne informações de várias fontes num só lugar. Ex.: o site de um órgão feito em WordPress, atualizado pela equipe de comunicação.",
+  "nao_confundir": [
+   {
+    "conceito": "CMS",
+    "faz": "separa o conteúdo da aparência (WordPress, Drupal)"
+   },
+   {
+    "conceito": "Portal corporativo",
+    "faz": "um acesso a várias fontes, personalizável"
+   },
+   {
+    "conceito": "GED/ECM",
+    "faz": "organiza e recupera os documentos"
+   },
+   {
+    "conceito": "Crawler",
+    "faz": "percorre as páginas para indexá-las"
+   }
+  ],
+  "palavras_chave": "\"publicar sem programar\", \"interface de edição\" → CMS; \"site:gov.br\" no Google → busca só nesse domínio; \"várias fontes num só lugar\" → portal.",
+  "pegadinha": "Achar que a indexação nos buscadores é imediata: o crawler precisa visitar a página antes, o que pode levar horas ou dias."
+ },
+ {
+  "materia": "Desenvolvimento, POO & Linguagens",
+  "assunto": "Desenvolvimento mobile",
+  "modelo": "conceito",
+  "resumo": "Desenvolver para celular é lidar com tela pequena, bateria limitada e conexão instável. Ex.: o app guarda os dados offline e sincroniza quando a rede volta.",
+  "nao_confundir": [
+   {
+    "conceito": "App nativo",
+    "faz": "feito para uma plataforma (Kotlin no Android, Swift no iOS)"
+   },
+   {
+    "conceito": "App web",
+    "faz": "roda no navegador"
+   },
+   {
+    "conceito": "App híbrido",
+    "faz": "HTML, CSS e JS dentro de um app nativo (WebView)"
+   }
+  ],
+  "palavras_chave": "\"melhor acesso ao hardware\" → nativo; \"economia de bateria\" → cuidado obrigatório no projeto mobile.",
+  "pegadinha": ""
+ },
+ {
+  "materia": "Desenvolvimento, POO & Linguagens",
+  "assunto": "COBOL e sistemas legados",
+  "modelo": "conceito",
+  "resumo": "COBOL é uma linguagem antiga, ainda usada em mainframes de bancos e do governo para processar grandes volumes de dados. Ex.: a folha de pagamento de um órgão pode rodar em COBOL.",
+  "nao_confundir": [
+   {
+    "conceito": "IDENTIFICATION DIVISION",
+    "faz": "identifica o programa"
+   },
+   {
+    "conceito": "ENVIRONMENT DIVISION",
+    "faz": "ambiente e arquivos"
+   },
+   {
+    "conceito": "DATA DIVISION",
+    "faz": "variáveis, com as cláusulas PIC"
+   },
+   {
+    "conceito": "PROCEDURE DIVISION",
+    "faz": "a lógica do programa"
+   }
+  ],
+  "palavras_chave": "\"PIC 9(3)\" → número de 3 dígitos; \"PIC X(10)\" → texto de 10 caracteres; \"mainframe\", \"legado\" → ambiente típico do COBOL.",
+  "pegadinha": "Colocar as cláusulas PIC na PROCEDURE DIVISION: as variáveis e seus formatos ficam na DATA DIVISION."
+ },
+ {
+  "materia": "Desenvolvimento, POO & Linguagens",
+  "assunto": "UX e UI design",
+  "modelo": "conceito",
+  "resumo": "UX é a experiência completa de quem usa o produto; UI é a interface visual com que ele interage. Ex.: a cor do botão é UI; pagar ser fácil e rápido é UX.",
+  "nao_confundir": [
+   {
+    "conceito": "UI",
+    "faz": "botões, cores, tipografia, layout"
+   },
+   {
+    "conceito": "UX",
+    "faz": "facilidade, fluxo e satisfação de uso"
+   },
+   {
+    "conceito": "Wireframe",
+    "faz": "esboço da tela, sem acabamento"
+   },
+   {
+    "conceito": "Protótipo",
+    "faz": "simula o uso para testar (do papel ao clicável)"
+   }
+  ],
+  "palavras_chave": "\"aparência\", \"elementos visuais\" → UI; \"jornada\", \"satisfação\", \"facilidade de uso\" → UX.",
+  "pegadinha": "Trocar UX por UI: UI é o que se vê e toca na tela; UX é a experiência inteira, do primeiro contato ao fim."
  }
 ]
