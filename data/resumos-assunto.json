@@ -1814,5 +1814,131 @@
     ],
     "palavras_chave": "\"mover a VM ligada, sem parar\" → live migration; \"computação, armazenamento e rede nos mesmos nós\" → hiperconvergência.",
     "pegadinha": "Dizer que a hiperconvergência usa uma controladora central de armazenamento: o armazenamento é distribuído entre os nós, definido por software."
+  },
+  {
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Arquitetura de computadores",
+    "modelo": "conceito",
+    "resumo": "É como o computador funciona por dentro: a CPU, as memórias e como os números viram binário. Ex.: 1010 em binário vale 10 em decimal.",
+    "nao_confundir": [
+      {
+        "conceito": "Registradores",
+        "faz": "memória mínima e rapidíssima dentro da CPU"
+      },
+      {
+        "conceito": "Cache",
+        "faz": "guarda o que a CPU usa com frequência"
+      },
+      {
+        "conceito": "RAM",
+        "faz": "memória principal; perde tudo sem energia"
+      },
+      {
+        "conceito": "Disco",
+        "faz": "guarda de forma permanente"
+      }
+    ],
+    "palavras_chave": "\"subtrair somando\" → complemento de dois; \"endereço do endereço\" → endereçamento indireto; \"valor na própria instrução\" → imediato; \"Assembly para código de máquina\" → montador.",
+    "pegadinha": "Achar que o complemento de um é o padrão: ele também subtrai somando, mas tem dois zeros; o padrão é o complemento de dois."
+  },
+  {
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Linux",
+    "modelo": "conceito",
+    "resumo": "Linux é o sistema operacional mais usado em servidores, operado muito pelo terminal. Ex.: ls lista os arquivos, cd entra numa pasta, sudo executa como administrador.",
+    "nao_confundir": [
+      {
+        "conceito": "Hard link",
+        "faz": "aponta para o mesmo conteúdo (inode); segue funcionando se o original for apagado"
+      },
+      {
+        "conceito": "Link simbólico",
+        "faz": "aponta para o nome; quebra se o original sumir"
+      },
+      {
+        "conceito": "chmod",
+        "faz": "muda as permissões"
+      },
+      {
+        "conceito": "chown",
+        "faz": "muda o dono (e pode mudar o grupo)"
+      }
+    ],
+    "palavras_chave": "\"dono, grupo e outros\" → categorias de permissão; \"755\" → rwx para o dono, r-x para grupo e outros; \"instalar resolvendo dependências\" → apt; \"instala .deb sem resolver dependências\" → dpkg.",
+    "pegadinha": "Achar que o link simbólico continua funcionando depois de apagar o original: quem continua é o hard link."
+  },
+  {
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Sistemas operacionais — processos e memória",
+    "modelo": "conceito",
+    "resumo": "O sistema operacional gerencia os programas em execução (processos) e a memória que cada um usa. Ex.: abrir o navegador cria um processo, que recebe memória e tempo de CPU.",
+    "nao_confundir": [
+      {
+        "conceito": "Processo",
+        "faz": "programa em execução, com memória própria"
+      },
+      {
+        "conceito": "Thread",
+        "faz": "linha de execução dentro do processo; compartilha a memória"
+      },
+      {
+        "conceito": "Deadlock",
+        "faz": "processos esperando recursos presos entre si"
+      },
+      {
+        "conceito": "Memória virtual",
+        "faz": "espaço de endereços próprio por processo; o excedente vai ao disco (swap)"
+      }
+    ],
+    "palavras_chave": "\"pronto, executando, bloqueado\" → estados do processo; \"quantum em rodízio\" → Round Robin; \"páginas de tamanho fixo\" → paginação; \"resultado depende da ordem de acesso\" → condição de corrida.",
+    "pegadinha": ""
+  },
+  {
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Windows Server",
+    "modelo": "conceito",
+    "resumo": "O Windows Server é o sistema da Microsoft para servidores, com serviços de rede e de domínio. Ex.: o Active Directory centraliza os usuários e computadores do órgão.",
+    "nao_confundir": [
+      {
+        "conceito": "Active Directory",
+        "faz": "usuários, computadores e permissões do domínio"
+      },
+      {
+        "conceito": "GPO",
+        "faz": "aplica regras a usuários e máquinas do domínio"
+      },
+      {
+        "conceito": "Hyper-V",
+        "faz": "cria máquinas virtuais"
+      },
+      {
+        "conceito": "Windows Admin Center",
+        "faz": "administração pelo navegador"
+      }
+    ],
+    "palavras_chave": "\"Verbo-Substantivo\" → cmdlet do PowerShell; \"nome → IP\" → DNS; \"IP automático\" → DHCP; \"Restart-Service\" → reinicia um serviço.",
+    "pegadinha": ""
+  },
+  {
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Sistemas distribuídos e paralelismo",
+    "modelo": "conceito",
+    "resumo": "Paralelismo é executar partes de uma tarefa ao mesmo tempo; sistema distribuído é vários computadores em rede trabalhando como um só. Ex.: um cluster que divide o processamento entre 10 máquinas.",
+    "nao_confundir": [
+      {
+        "conceito": "Computação paralela",
+        "faz": "partes da mesma tarefa ao mesmo tempo, em vários processadores"
+      },
+      {
+        "conceito": "Sistema distribuído",
+        "faz": "máquinas separadas que cooperam por mensagens"
+      },
+      {
+        "conceito": "Multicore",
+        "faz": "vários núcleos no mesmo chip"
+      }
+    ],
+    "palavras_chave": "\"mais máquinas\" → escala horizontal; \"máquina maior\" → escala vertical; \"troca de mensagens pela rede\" → sistema distribuído.",
+    "pegadinha": "Dizer que na computação paralela todos os processadores ficam no mesmo chip: podem estar em chips diferentes, até em máquinas diferentes."
   }
 ]
