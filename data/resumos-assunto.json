@@ -1622,5 +1622,197 @@
     ],
     "palavras_chave": "\"marketplace de soluções\", \"modelo de convergência\" → PDPJ-Br; \"equipe de tratamento e resposta a incidentes\" → ETIR; \"requisitos de gestão documental, preservação e autenticidade\" → MoReq-Jus.",
     "pegadinha": "Dizer que sistemas em microsserviços ficam fora do MoReq-Jus: a norma os inclui expressamente (Res. CNJ 522/2023, art. 2º)."
+  },
+  {
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Computação em nuvem (modelos de serviço e implantação)",
+    "modelo": "conceito",
+    "resumo": "Nuvem é usar recursos de computação pela rede, sob demanda, pagando pelo uso (na pública, de um provedor, pela internet). Ex.: ligar mais servidores na Black Friday e desligar depois.",
+    "nao_confundir": [
+      {
+        "conceito": "IaaS",
+        "faz": "o provedor dá a infraestrutura; o cliente cuida do SO para cima"
+      },
+      {
+        "conceito": "PaaS",
+        "faz": "o provedor cuida também de SO e plataforma; o cliente, de código e dados"
+      },
+      {
+        "conceito": "SaaS",
+        "faz": "software pronto; o cliente usa e cuida dos dados e acessos"
+      }
+    ],
+    "palavras_chave": "\"compartilhado, com dados isolados\" → multitenancy; \"mais de um provedor\" → multicloud; \"pública + privada\" → híbrida; \"migrar com poucas mudanças\" → lift and shift; \"controle de custos\" → FinOps.",
+    "pegadinha": "Dizer que no PaaS o provedor cuida também das aplicações do cliente: aplicação e dados são do cliente; tudo pronto é SaaS."
+  },
+  {
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Alta disponibilidade, balanceamento e tolerância a falhas",
+    "modelo": "conceito",
+    "resumo": "Alta disponibilidade é manter o serviço no ar o máximo de tempo, com o mínimo de interrupções, usando redundância e balanceamento. Ex.: dois servidores atrás de um balanceador; se um cai, o outro segue atendendo.",
+    "nao_confundir": [
+      {
+        "conceito": "Failover",
+        "faz": "passa sozinho para o componente reserva"
+      },
+      {
+        "conceito": "Failback",
+        "faz": "volta ao componente original depois do conserto"
+      },
+      {
+        "conceito": "MTBF",
+        "faz": "tempo médio entre falhas"
+      },
+      {
+        "conceito": "MTTR",
+        "faz": "tempo médio para reparar"
+      }
+    ],
+    "palavras_chave": "\"ponto único de falha\" → SPOF; \"distribuir as requisições\" → balanceador de carga; \"perda máxima de dados aceita\" → RPO; \"locais isolados na mesma região\" → zonas de disponibilidade.",
+    "pegadinha": "Achar que várias zonas de disponibilidade bastam para tudo: contra o desastre de uma região inteira, é preciso replicar em outra região."
+  },
+  {
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Arquitetura de software (camadas, MVC, microsserviços)",
+    "modelo": "conceito",
+    "resumo": "Arquitetura de software é o jeito de organizar as partes de um sistema e como elas conversam. Ex.: separar tela, regras e dados em camadas, ou quebrar o sistema em microsserviços.",
+    "nao_confundir": [
+      {
+        "conceito": "Monolito",
+        "faz": "tudo junto, implantado de uma vez"
+      },
+      {
+        "conceito": "Microsserviços",
+        "faz": "serviços pequenos e independentes, que se falam por APIs"
+      },
+      {
+        "conceito": "MVC",
+        "faz": "Model (dados e regras), View (tela), Controller (fluxo)"
+      },
+      {
+        "conceito": "SOA",
+        "faz": "serviços reutilizáveis, com contrato definido"
+      }
+    ],
+    "palavras_chave": "\"cada serviço com seu banco\" → database per service; \"porta de entrada única\" → API Gateway; \"proxies ao lado de cada serviço\" → service mesh.",
+    "pegadinha": "Dizer que os microsserviços são dependentes entre si: eles se chamam por APIs, mas são implantados e escalados de forma independente."
+  },
+  {
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Contêineres e Kubernetes",
+    "modelo": "conceito",
+    "resumo": "O contêiner empacota a aplicação com o que ela precisa; o Kubernetes orquestra muitos contêineres em vários servidores. Ex.: o Kubernetes recria sozinho um contêiner que caiu.",
+    "nao_confundir": [
+      {
+        "conceito": "Docker",
+        "faz": "cria e executa contêineres"
+      },
+      {
+        "conceito": "Kubernetes",
+        "faz": "orquestra: escala, distribui e recupera"
+      },
+      {
+        "conceito": "kube-scheduler",
+        "faz": "escolhe em qual nó cada pod vai rodar"
+      },
+      {
+        "conceito": "HPA",
+        "faz": "aumenta ou diminui o número de pods conforme a carga"
+      }
+    ],
+    "palavras_chave": "\"menor unidade implantável\" → pod; \"agente que roda e vigia os pods no nó\" → kubelet; \"endereço estável para os pods\" → Service; \"containerd, CRI-O\" → runtime de contêiner usado pelo Kubernetes.",
+    "pegadinha": "Dizer que o kube-scheduler aumenta ou diminui as réplicas: isso é o HPA; o scheduler só escolhe o nó."
+  },
+  {
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Infraestrutura como código",
+    "modelo": "conceito",
+    "resumo": "Infraestrutura como código é criar servidores e redes a partir de arquivos de código, em vez de cliques manuais. Ex.: um arquivo do Terraform sobe a mesma rede de teste quantas vezes for preciso.",
+    "nao_confundir": [
+      {
+        "conceito": "Declarativo",
+        "faz": "descreve o estado final desejado (Terraform)"
+      },
+      {
+        "conceito": "Imperativo",
+        "faz": "lista os passos, na ordem"
+      },
+      {
+        "conceito": "Terraform",
+        "faz": "provisiona a infraestrutura"
+      },
+      {
+        "conceito": "Ansible",
+        "faz": "configura servidores com playbooks em YAML, sem agente"
+      }
+    ],
+    "palavras_chave": "\"rodar de novo dá o mesmo resultado\" → idempotência; \"playbook\" → Ansible; \"estado desejado\" → declarativo.",
+    "pegadinha": ""
+  },
+  {
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Observabilidade e monitoramento",
+    "modelo": "conceito",
+    "resumo": "Observabilidade é ter dados (logs, métricas e traces) para entender o que acontece dentro do sistema. Ex.: o painel mostra que o tempo de resposta subiu, e o trace aponta o serviço lento.",
+    "nao_confundir": [
+      {
+        "conceito": "Logs",
+        "faz": "registros de eventos"
+      },
+      {
+        "conceito": "Métricas",
+        "faz": "números ao longo do tempo (CPU, requisições)"
+      },
+      {
+        "conceito": "Traces",
+        "faz": "o caminho de uma requisição entre os serviços"
+      }
+    ],
+    "palavras_chave": "\"só aumenta (zera ao reiniciar)\" → counter; \"sobe e desce\" → gauge; \"coleta séries temporais\" → Prometheus; \"painéis\" → Grafana; \"onde a requisição demora, na aplicação em produção\" → APM.",
+    "pegadinha": "Modelar a temperatura (que sobe e desce) como counter: o counter só aumenta; o certo é gauge."
+  },
+  {
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Serverless",
+    "modelo": "conceito",
+    "resumo": "Serverless é rodar código sem cuidar de servidores: o provedor provisiona, escala e cobra pelo uso. Ex.: uma função que só roda quando alguém envia um arquivo.",
+    "nao_confundir": [
+      {
+        "conceito": "FaaS",
+        "faz": "funções disparadas por eventos"
+      },
+      {
+        "conceito": "BaaS",
+        "faz": "back-end pronto (autenticação, banco), como o Supabase"
+      },
+      {
+        "conceito": "Cold start",
+        "faz": "atraso quando a função é chamada depois de ficar parada"
+      }
+    ],
+    "palavras_chave": "\"pago por execução\" → serverless; \"sem gerenciar servidores\", \"escala até zero\" → serverless; \"função acionada por evento\" → FaaS.",
+    "pegadinha": "Achar que serverless não tem servidor: os servidores existem, mas quem cuida deles é o provedor."
+  },
+  {
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Virtualização",
+    "modelo": "conceito",
+    "resumo": "Virtualização divide um servidor físico em várias máquinas virtuais isoladas, gerenciadas por um hipervisor. Ex.: um servidor rodando 10 VMs de sistemas diferentes.",
+    "nao_confundir": [
+      {
+        "conceito": "Hipervisor tipo 1",
+        "faz": "roda direto no hardware (ESXi, KVM, Hyper-V)"
+      },
+      {
+        "conceito": "Hipervisor tipo 2",
+        "faz": "roda sobre um sistema operacional (VirtualBox, VMware Workstation)"
+      },
+      {
+        "conceito": "Contêiner",
+        "faz": "compartilha o kernel do hospedeiro; sem SO completo"
+      }
+    ],
+    "palavras_chave": "\"mover a VM ligada, sem parar\" → live migration; \"computação, armazenamento e rede nos mesmos nós\" → hiperconvergência.",
+    "pegadinha": "Dizer que a hiperconvergência usa uma controladora central de armazenamento: o armazenamento é distribuído entre os nós, definido por software."
   }
 ]
