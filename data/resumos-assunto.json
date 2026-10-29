@@ -1,1456 +1,1626 @@
 [
- {
-  "materia": "Banco de Dados & Dados",
-  "assunto": "Conceitos de SGBD",
-  "modelo": "conceito",
-  "resumo": "O SGBD é o programa que guarda o banco e controla quem lê e altera os dados, mesmo com muita gente usando ao mesmo tempo. Ex.: PostgreSQL, MySQL, Oracle.",
-  "nao_confundir": [
-   {
-    "conceito": "SGBD",
-    "faz": "o programa que gerencia (PostgreSQL)"
-   },
-   {
-    "conceito": "Banco de dados",
-    "faz": "os dados guardados (os alunos, as notas)"
-   },
-   {
-    "conceito": "Servidor web",
-    "faz": "entrega páginas (IIS, Nginx); não gerencia dados"
-   }
-  ],
-  "palavras_chave": "\"gerencia\", \"controla o acesso\", \"acessos simultâneos\", \"backup e recuperação\" → SGBD.",
-  "pegadinha": "Lista de SGBDs com um servidor web no meio, como o IIS: a lista está errada."
- },
- {
-  "materia": "Banco de Dados & Dados",
-  "assunto": "Modelagem de dados (MER e relacional)",
-  "modelo": "conceito",
-  "resumo": "Modelar é desenhar o que o sistema vai registrar antes de criar as tabelas. Ex.: Cliente tem nome e CPF e faz vários Pedidos.",
-  "nao_confundir": [
-   {
-    "conceito": "Entidade",
-    "faz": "a \"coisa\" registrada (Cliente, Pedido)"
-   },
-   {
-    "conceito": "Atributo",
-    "faz": "uma característica dela (CPF, nome)"
-   },
-   {
-    "conceito": "Relacionamento",
-    "faz": "a ligação entre entidades (Cliente faz Pedido, 1:N)"
-   }
-  ],
-  "palavras_chave": "\"depende de outra para ser identificada\" → entidade fraca; \"um para muitos\" → 1:N; \"descrição detalhada de cada item do modelo\" → dicionário de dados.",
-  "pegadinha": "Entidade fraca não é a que tem poucos atributos: é a que não tem identificador próprio suficiente e depende de outra."
- },
- {
-  "materia": "Banco de Dados & Dados",
-  "assunto": "Normalização",
-  "modelo": "conceito",
-  "resumo": "Normalizar é dividir os dados em tabelas para reduzir a repetição e evitar dados contraditórios ao atualizar. Ex.: o nome do departamento fica só na tabela Departamento.",
-  "nao_confundir": [
-   {
-    "conceito": "1FN",
-    "faz": "um valor por célula (nada de \"9999-1111, 9888-2222\")"
-   },
-   {
-    "conceito": "2FN",
-    "faz": "nada depende de só uma parte da chave composta"
-   },
-   {
-    "conceito": "3FN",
-    "faz": "nenhuma coluna não chave depende de outra coluna não chave"
-   }
-  ],
-  "palavras_chave": "\"atômico\", \"multivalorado\" → 1FN; \"dependência parcial\" → 2FN; \"dependência transitiva\" → 3FN.",
-  "pegadinha": "Definir a 3FN como \"sem campos multivalorados\": isso é a 1FN; a 3FN tira a dependência transitiva."
- },
- {
-  "materia": "Banco de Dados & Dados",
-  "assunto": "SQL — DDL e restrições",
-  "modelo": "conceito",
-  "resumo": "DDL é a parte do SQL que cria e altera a estrutura: tabelas, colunas e regras. Ex.: CREATE TABLE Aluno (cpf CHAR(11) PRIMARY KEY, nome VARCHAR(100) NOT NULL).",
-  "nao_confundir": [
-   {
-    "conceito": "PRIMARY KEY",
-    "faz": "não repete e não aceita nulo"
-   },
-   {
-    "conceito": "UNIQUE",
-    "faz": "não repete, mas em geral aceita nulo"
-   },
-   {
-    "conceito": "FOREIGN KEY",
-    "faz": "aponta para a chave de uma tabela (pode ser a própria)"
-   }
-  ],
-  "palavras_chave": "\"estrutura\", \"criar, alterar ou excluir tabela\" → DDL (CREATE, ALTER, DROP); \"não pode ficar vazio\" → NOT NULL.",
-  "pegadinha": "\"ALTER PROCESSO ADD ...\" está errado: falta a palavra TABLE (ALTER TABLE PROCESSO ADD ...)."
- },
- {
-  "materia": "Banco de Dados & Dados",
-  "assunto": "SQL — DML (INSERT, UPDATE, DELETE, TRUNCATE)",
-  "modelo": "conceito",
-  "resumo": "DML são os comandos que mexem nos dados, não na estrutura: INSERT inclui, UPDATE altera e DELETE apaga linhas. Ex.: DELETE FROM Aluno WHERE cpf = '123' apaga só esse aluno.",
-  "nao_confundir": [
-   {
-    "conceito": "DELETE",
-    "faz": "apaga linhas, aceita WHERE; a tabela fica"
-   },
-   {
-    "conceito": "TRUNCATE",
-    "faz": "esvazia a tabela, sem WHERE; a tabela fica (muitos livros: DDL)"
-   },
-   {
-    "conceito": "DROP TABLE",
-    "faz": "apaga a tabela, estrutura incluída"
-   }
-  ],
-  "palavras_chave": "\"remove a estrutura\" → DROP; \"remove linhas com condição\" → DELETE; \"esvazia a tabela inteira, sem WHERE\" → TRUNCATE (DELETE sem WHERE também apaga tudo, linha a linha).",
-  "pegadinha": "INSERT que deixa de fora uma coluna NOT NULL sem valor padrão falha: o SGBD recusa a linha."
- },
- {
-  "materia": "Banco de Dados & Dados",
-  "assunto": "SQL — Consultas, JOIN e subconsultas",
-  "modelo": "conceito",
-  "resumo": "O SELECT busca dados: quais colunas, de qual tabela e com qual filtro; o JOIN junta tabelas ligadas. Ex.: SELECT nome FROM Cliente WHERE cidade = 'Recife'.",
-  "nao_confundir": [
-   {
-    "conceito": "INNER JOIN",
-    "faz": "só as linhas que têm par nas duas tabelas"
-   },
-   {
-    "conceito": "LEFT JOIN",
-    "faz": "todas as linhas da tabela da esquerda, mesmo sem par"
-   },
-   {
-    "conceito": "RIGHT / FULL JOIN",
-    "faz": "mantêm os sem par da direita / dos dois lados"
-   }
-  ],
-  "palavras_chave": "\"apenas correspondentes em ambas\" → INNER JOIN; \"todos os clientes, mesmo sem pedido\" → LEFT JOIN (com Cliente à esquerda); \"consulta dentro de consulta\" → subconsulta.",
-  "pegadinha": "Trocar INNER por LEFT JOIN: o INNER descarta quem não tem par na outra tabela; os OUTER (LEFT, RIGHT, FULL) mantêm."
- },
- {
-  "materia": "Banco de Dados & Dados",
-  "assunto": "SQL — Agrupamento e agregação",
-  "modelo": "conceito",
-  "resumo": "Agregar é resumir muitas linhas em um valor (contagem, soma, média), e o GROUP BY faz isso por grupo. Ex.: SELECT depto, COUNT(*) FROM Funcionario GROUP BY depto.",
-  "nao_confundir": [
-   {
-    "conceito": "WHERE",
-    "faz": "filtra as linhas antes de agrupar"
-   },
-   {
-    "conceito": "GROUP BY",
-    "faz": "forma os grupos"
-   },
-   {
-    "conceito": "HAVING",
-    "faz": "filtra os grupos já formados (com COUNT, AVG...)"
-   }
-  ],
-  "palavras_chave": "\"pelo menos 3 por departamento\", \"média acima de X por grupo\" → GROUP BY com HAVING.",
-  "pegadinha": "\"WHERE COUNT(*) >= 3\" dá erro: filtro sobre o resultado de COUNT, SUM ou AVG é com HAVING."
- },
- {
-  "materia": "Banco de Dados & Dados",
-  "assunto": "SQL — DCL e controle de acesso",
-  "modelo": "conceito",
-  "resumo": "DCL controla quem pode fazer o quê no banco: GRANT dá a permissão e REVOKE tira. Ex.: GRANT SELECT ON Salario TO ana dá à Ana permissão de consultar a tabela.",
-  "nao_confundir": [
-   {
-    "conceito": "DCL (GRANT, REVOKE)",
-    "faz": "permissões"
-   },
-   {
-    "conceito": "TCL (COMMIT, ROLLBACK)",
-    "faz": "transações"
-   },
-   {
-    "conceito": "DDL (CREATE, DROP)",
-    "faz": "estrutura"
-   }
-  ],
-  "palavras_chave": "\"conceder ou revogar privilégio\" → GRANT e REVOKE; \"repassar a outros usuários\" → WITH GRANT OPTION.",
-  "pegadinha": "Quem recebeu uma permissão só pode repassá-la se o GRANT tiver WITH GRANT OPTION."
- },
- {
-  "materia": "Banco de Dados & Dados",
-  "assunto": "Transações, concorrência e otimização",
-  "modelo": "conceito",
-  "resumo": "Transação é um bloco de operações que vale inteiro ou não vale: COMMIT grava tudo, ROLLBACK desfaz tudo. Ex.: debitar da conta A e creditar na B.",
-  "nao_confundir": [
-   {
-    "conceito": "Atomicidade",
-    "faz": "tudo ou nada"
-   },
-   {
-    "conceito": "Consistência",
-    "faz": "as regras do banco continuam valendo"
-   },
-   {
-    "conceito": "Isolamento",
-    "faz": "uma transação não vê a outra pela metade"
-   },
-   {
-    "conceito": "Durabilidade",
-    "faz": "depois do COMMIT, nada se perde"
-   }
-  ],
-  "palavras_chave": "\"tudo ou nada\" → atomicidade; \"mesmo após queda de energia\" → durabilidade; \"plano de execução da consulta\" → EXPLAIN (PostgreSQL, MySQL).",
-  "pegadinha": "O EXPLAIN não executa nem acelera a consulta: só mostra o plano estimado (o EXPLAIN ANALYZE executa de verdade e mostra o tempo real)."
- },
- {
-  "materia": "Banco de Dados & Dados",
-  "assunto": "Objetos de banco (views, triggers, procedures, sequences)",
-  "modelo": "conceito",
-  "resumo": "Além das tabelas, o banco guarda objetos prontos que poupam trabalho. Ex.: um trigger grava um log toda vez que alguém altera um salário.",
-  "nao_confundir": [
-   {
-    "conceito": "View",
-    "faz": "consulta salva com nome; não guarda os dados (a materializada guarda)"
-   },
-   {
-    "conceito": "Trigger",
-    "faz": "dispara sozinho com INSERT, UPDATE ou DELETE"
-   },
-   {
-    "conceito": "Procedure",
-    "faz": "roda quando alguém a chama pelo nome"
-   },
-   {
-    "conceito": "Sequence",
-    "faz": "gera números em ordem (no PostgreSQL, nextval e currval)"
-   }
-  ],
-  "palavras_chave": "\"tabela virtual\" → view; \"automaticamente ao inserir\" → trigger; \"próximo valor\" → nextval.",
-  "pegadinha": "Para criar um trigger não basta o evento: é obrigatório informar o momento (BEFORE, AFTER ou INSTEAD OF), o evento e a tabela (ou view)."
- },
- {
-  "materia": "Banco de Dados & Dados",
-  "assunto": "SQL — Funções",
-  "modelo": "conceito",
-  "resumo": "Funções fazem contas e ajustes dentro da consulta. Ex.: UPPER('recife') devolve 'RECIFE'; COALESCE(telefone, 'sem telefone') troca o NULL por um aviso.",
-  "nao_confundir": [
-   {
-    "conceito": "Escalares (UPPER, SUBSTRING, COALESCE)",
-    "faz": "atuam em cada linha"
-   },
-   {
-    "conceito": "Agregação (SUM, COUNT, AVG)",
-    "faz": "resumem várias linhas em um valor"
-   }
-  ],
-  "palavras_chave": "\"primeiros N caracteres\" → SUBSTRING(texto, 1, N) (SUBSTR no Oracle, MID no MySQL); \"trocar NULL por um valor\" → COALESCE.",
-  "pegadinha": "Inverter os números do SUBSTRING: o primeiro é a posição de início, o segundo é a quantidade."
- },
- {
-  "materia": "Banco de Dados & Dados",
-  "assunto": "NoSQL",
-  "modelo": "conceito",
-  "resumo": "NoSQL (\"não só SQL\") são bancos que não seguem obrigatoriamente o modelo relacional, de tabelas com esquema fixo. Ex.: no MongoDB, cada cliente é um documento parecido com JSON.",
-  "nao_confundir": [
-   {
-    "conceito": "Documentos (MongoDB)",
-    "faz": "registros no estilo JSON, com campos livres"
-   },
-   {
-    "conceito": "Chave-valor (Redis)",
-    "faz": "busca rápida pela chave; cache e sessão"
-   },
-   {
-    "conceito": "Grafos (Neo4j)",
-    "faz": "relações, como \"amigos dos meus amigos\""
-   }
-  ],
-  "palavras_chave": "\"dividir os dados entre servidores\" → sharding; \"cópia idêntica em outro servidor\" → replicação.",
-  "pegadinha": "O MongoDB não guarda em XML: usa documentos no estilo JSON (internamente, BSON)."
- },
- {
-  "materia": "Banco de Dados & Dados",
-  "assunto": "Data warehouse, OLAP e BI",
-  "modelo": "conceito",
-  "resumo": "O data warehouse junta dados históricos de vários sistemas, já limpos, para análise e relatórios. Ex.: \"vendas por região nos últimos 3 anos\".",
-  "nao_confundir": [
-   {
-    "conceito": "OLTP",
-    "faz": "registra as operações do dia a dia (cada venda)"
-   },
-   {
-    "conceito": "DW",
-    "faz": "guarda o histórico integrado para análise"
-   },
-   {
-    "conceito": "OLAP",
-    "faz": "analisa esse histórico em várias dimensões (cubos, drill-down)"
-   },
-   {
-    "conceito": "Data mart",
-    "faz": "pedaço do DW para uma área (vendas, RH)"
-   }
-  ],
-  "palavras_chave": "\"não volátil\", \"variante no tempo\", \"integrado\", \"orientado a assunto\" → DW; \"fato\" = medidas (valor, quantidade); \"dimensão\" = contexto (produto, data).",
-  "pegadinha": "Dizer que o data mart reúne vários DWs: é o contrário, ele é a parte menor."
- },
- {
-  "materia": "Banco de Dados & Dados",
-  "assunto": "Engenharia de dados (ETL, ELT, data lake)",
-  "modelo": "conceito",
-  "resumo": "Engenharia de dados é levar os dados das fontes até onde serão usados. Ex.: extrair as vendas, padronizar as datas e carregar no DW (ETL).",
-  "nao_confundir": [
-   {
-    "conceito": "ETL",
-    "faz": "transforma antes de carregar (comum no DW)"
-   },
-   {
-    "conceito": "ELT",
-    "faz": "carrega o dado bruto e transforma no destino"
-   },
-   {
-    "conceito": "Data lake",
-    "faz": "guarda dado bruto de qualquer tipo, sem esquema prévio"
-   }
-  ],
-  "palavras_chave": "\"esquema na leitura\", \"não estruturados\", \"formato original\" → data lake; \"esquema antes de gravar\" → DW.",
-  "pegadinha": "Dizer que o data lake exige esquema antes de gravar, ou que o DW guarda o formato original: os dois estão invertidos."
- },
- {
-  "materia": "Banco de Dados & Dados",
-  "assunto": "Mineração de dados",
-  "modelo": "conceito",
-  "resumo": "Minerar dados é usar algoritmos para achar padrões úteis em grandes volumes de dados. Ex.: descobrir que quem compra pão costuma levar manteiga.",
-  "nao_confundir": [
-   {
-    "conceito": "Regra de associação",
-    "faz": "itens que aparecem juntos"
-   },
-   {
-    "conceito": "Árvore de decisão",
-    "faz": "classifica por uma sequência de perguntas"
-   },
-   {
-    "conceito": "Extração (o E do ETL)",
-    "faz": "só copia os dados; não descobre padrão"
-   }
-  ],
-  "palavras_chave": "\"cesta de compras\", \"comprados juntos\" → regra de associação; \"sequência de perguntas\" → árvore de decisão.",
-  "pegadinha": ""
- },
- {
-  "materia": "Banco de Dados & Dados",
-  "assunto": "Dados abertos",
-  "modelo": "conceito",
-  "resumo": "Dados abertos são dados que qualquer pessoa pode acessar, usar e compartilhar, em formato que um programa consiga ler. Ex.: gastos da prefeitura publicados em CSV.",
-  "nao_confundir": [
-   {
-    "conceito": "1 estrela",
-    "faz": "na web, em qualquer formato, com licença aberta (até PDF)"
-   },
-   {
-    "conceito": "2 estrelas",
-    "faz": "estruturado, como planilha XLSX"
-   },
-   {
-    "conceito": "3 estrelas",
-    "faz": "formato não proprietário, como CSV"
-   },
-   {
-    "conceito": "4 e 5 estrelas",
-    "faz": "URIs e dados ligados a outros (linked data)"
-   }
-  ],
-  "palavras_chave": "\"formato não proprietário\" → 3 estrelas; \"ligado a outros dados\" → 5 estrelas.",
-  "pegadinha": "Trocar XLSX por CSV, mantendo a licença aberta, leva os dados a 3 estrelas, e não a 2."
- },
- {
-  "materia": "Banco de Dados & Dados",
-  "assunto": "Machine learning — conceitos e tipos de aprendizado",
-  "modelo": "conceito",
-  "resumo": "No machine learning, o computador aprende padrões a partir de exemplos, em vez de seguir regras escritas à mão. Ex.: aprender o que é spam vendo milhares de e-mails.",
-  "nao_confundir": [
-   {
-    "conceito": "Supervisionado",
-    "faz": "aprende com exemplos rotulados (resposta conhecida)"
-   },
-   {
-    "conceito": "Não supervisionado",
-    "faz": "acha padrões sem rótulo, como grupos"
-   },
-   {
-    "conceito": "Por reforço",
-    "faz": "aprende por tentativa e erro, com recompensa"
-   }
-  ],
-  "palavras_chave": "\"rotulado\" → supervisionado; \"clusters\", \"agrupar por semelhança, sem rótulo\" → não supervisionado; \"recompensa\", \"agente\" → reforço.",
-  "pegadinha": "Classificar o aprendizado por reforço como não supervisionado: ele é um tipo à parte."
- },
- {
-  "materia": "Banco de Dados & Dados",
-  "assunto": "Machine learning — algoritmos",
-  "modelo": "conceito",
-  "resumo": "Cada algoritmo resolve um tipo de problema. Ex.: prever o preço de um imóvel pela área é um problema de regressão (como a regressão linear).",
-  "nao_confundir": [
-   {
-    "conceito": "Regressão linear",
-    "faz": "prevê um número (supervisionado)"
-   },
-   {
-    "conceito": "Naive Bayes",
-    "faz": "classifica, como spam ou não (supervisionado)"
-   },
-   {
-    "conceito": "K-means",
-    "faz": "agrupa (não supervisionado)"
-   }
-  ],
-  "palavras_chave": "\"valor contínuo\" → regressão; \"probabilidade das palavras\" → Naive Bayes; \"K grupos\", \"centroides\" → K-means.",
-  "pegadinha": "O K-means não descobre sozinho quantos grupos existem: o K é escolhido antes de rodar."
- },
- {
-  "materia": "Banco de Dados & Dados",
-  "assunto": "Machine learning — avaliação de modelos",
-  "modelo": "conceito",
-  "resumo": "Avaliar é testar o modelo com dados que ele nunca viu, para saber se aprendeu ou só decorou. Ex.: 99% de acerto no treino e 60% no teste indicam que decorou.",
-  "nao_confundir": [
-   {
-    "conceito": "Overfitting",
-    "faz": "ótimo no treino, ruim no teste (decorou)"
-   },
-   {
-    "conceito": "Underfitting",
-    "faz": "ruim até no treino (simples demais)"
-   },
-   {
-    "conceito": "Falso positivo",
-    "faz": "disse \"é fraude\" e errou"
-   }
-  ],
-  "palavras_chave": "\"generalização\" → teste com dados novos; \"k-fold\" → cada parte testa uma vez; \"erro do tipo 1\" → falso positivo.",
-  "pegadinha": "Dizer que a acurácia do treino basta e dispensa o teste com dados separados."
- },
- {
-  "materia": "Banco de Dados & Dados",
-  "assunto": "Deep learning e PLN",
-  "modelo": "conceito",
-  "resumo": "Deep learning usa redes neurais com muitas camadas; PLN faz o computador lidar com a linguagem humana. Ex.: reconhecer placas em fotos; traduzir um texto.",
-  "nao_confundir": [
-   {
-    "conceito": "CNN (convolucional)",
-    "faz": "imagens"
-   },
-   {
-    "conceito": "LSTM (recorrente)",
-    "faz": "sequências, como texto"
-   },
-   {
-    "conceito": "Bag of words",
-    "faz": "conta as palavras e perde a ordem"
-   }
-  ],
-  "palavras_chave": "\"muitas camadas\", \"profunda\" → deep learning; \"convolução\", \"imagem\" → CNN; \"sequência\", \"memória\" → LSTM; \"vetor que representa a palavra\" → embedding.",
-  "pegadinha": "Dizer que a LSTM é convolucional ou que o bag of words considera a ordem das palavras."
- },
- {
-  "materia": "Banco de Dados & Dados",
-  "assunto": "IA generativa e LLMs",
-  "modelo": "conceito",
-  "resumo": "IA generativa cria conteúdo novo; o LLM gera texto pedaço por pedaço (token), escolhendo o próximo com base em probabilidades. Ex.: um chatbot escrevendo um resumo.",
-  "nao_confundir": [
-   {
-    "conceito": "IA generativa",
-    "faz": "cria texto, imagem ou áudio novo"
-   },
-   {
-    "conceito": "IA discriminativa",
-    "faz": "classifica o que já existe (spam ou não)"
-   },
-   {
-    "conceito": "Alucinação",
-    "faz": "resposta falsa dita com confiança"
-   }
-  ],
-  "palavras_chave": "\"próximo token\" → como o LLM gera; \"temperatura\" → variação das respostas; \"prompt\" → a instrução enviada.",
-  "pegadinha": "Inverter a temperatura: mais alta deixa as respostas mais variadas e criativas; mais baixa, mais previsíveis."
- },
- {
-  "materia": "Banco de Dados & Dados",
-  "assunto": "MLOps",
-  "modelo": "conceito",
-  "resumo": "MLOps é aplicar ao machine learning as práticas do DevOps para pôr modelos em produção e mantê-los bons. Ex.: versionar o modelo, fazer o deploy numa API e monitorar.",
-  "nao_confundir": [
-   {
-    "conceito": "DevOps",
-    "faz": "ciclo de vida do software"
-   },
-   {
-    "conceito": "MLOps",
-    "faz": "ciclo do modelo: dados, treino, deploy, monitoramento, retreino"
-   },
-   {
-    "conceito": "Drift",
-    "faz": "os dados reais mudam e o modelo piora"
-   }
-  ],
-  "palavras_chave": "\"rastreabilidade\", \"rollback\", \"reprodutibilidade\" → versionamento de modelos; \"implantar\" → deploy.",
-  "pegadinha": "Dizer que a orquestração em MLOps cuida só do treino: ela cobre também o deploy e o monitoramento."
- },
- {
-  "materia": "Banco de Dados & Dados",
-  "assunto": "Ética e governança de IA",
-  "modelo": "conceito",
-  "resumo": "É garantir que a IA seja justa, explicável e transparente, com supervisão humana nas decisões que afetam pessoas. Ex.: poder explicar por que um crédito foi negado.",
-  "nao_confundir": [
-   {
-    "conceito": "Viés algorítmico",
-    "faz": "resultado injusto para um grupo de pessoas"
-   },
-   {
-    "conceito": "Explicabilidade",
-    "faz": "poder dizer por que o modelo decidiu"
-   },
-   {
-    "conceito": "Transparência",
-    "faz": "informar que a IA é usada e como"
-   }
-  ],
-  "palavras_chave": "\"caixa-preta\" → falta de explicabilidade; \"decisão unicamente automatizada\" → LGPD art. 20, direito de pedir revisão (a lei não exige que seja feita por humano).",
-  "pegadinha": "Dizer que a opacidade dos algoritmos é boa prática: os princípios pedem o contrário, transparência."
- },
- {
-  "materia": "Redes & Segurança da Informação",
-  "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
-  "modelo": "conceito",
-  "resumo": "Os modelos OSI (7 camadas) e TCP/IP (4, ou 5 em alguns livros) dividem a comunicação em camadas, cada uma com uma função. Ex.: o IP endereça os pacotes (rede); o TCP garante a entrega (transporte).",
-  "nao_confundir": [
-   {
-    "conceito": "Hub",
-    "faz": "repete o sinal para as demais portas (física)"
-   },
-   {
-    "conceito": "Switch",
-    "faz": "encaminha pelo endereço MAC (enlace)"
-   },
-   {
-    "conceito": "Roteador",
-    "faz": "escolhe o caminho entre redes pelo IP (rede)"
-   }
-  ],
-  "palavras_chave": "\"orientado a conexão\", \"garante entrega e ordem\" → TCP; \"sem conexão, na camada de transporte\" → UDP; \"vários IPs privados saem por um público\" → NAT.",
-  "pegadinha": "Dizer que a camada de transporte garante entrega confiável com TCP e UDP: só o TCP garante; o UDP não confirma nada."
- },
- {
-  "materia": "Redes & Segurança da Informação",
-  "assunto": "Protocolos de aplicação (DNS, HTTP, SMTP, LDAP)",
-  "modelo": "conceito",
-  "resumo": "São os protocolos que os programas usam para conversar pela rede, cada um com uma tarefa. Ex.: ao abrir www.gov.br, o DNS acha o IP e o HTTPS traz a página.",
-  "nao_confundir": [
-   {
-    "conceito": "DNS",
-    "faz": "traduz nome em IP"
-   },
-   {
-    "conceito": "DHCP",
-    "faz": "entrega IP, máscara e gateway automaticamente"
-   },
-   {
-    "conceito": "SMTP",
-    "faz": "envia e-mail (IMAP e POP3 leem a caixa)"
-   },
-   {
-    "conceito": "LDAP",
-    "faz": "consulta o diretório de usuários (como o Active Directory)"
-   }
-  ],
-  "palavras_chave": "\"nome → IP\", porta 53 → DNS; \"HTTP + TLS\", porta 443 → HTTPS; \"monitorar equipamentos\" → SNMP.",
-  "pegadinha": "Dizer que o HTTP envia e recebe e-mail: envio é SMTP, leitura é IMAP ou POP3; o HTTP só liga o navegador ao webmail."
- },
- {
-  "materia": "Redes & Segurança da Informação",
-  "assunto": "Roteamento, switching e SDN",
-  "modelo": "conceito",
-  "resumo": "Switching entrega os dados dentro da rede local pelo MAC; roteamento escolhe o caminho entre redes pelo IP. Ex.: o switch liga os PCs do andar; o roteador leva até a internet.",
-  "nao_confundir": [
-   {
-    "conceito": "OSPF",
-    "faz": "estado de enlace: conhece o mapa e calcula rotas (Dijkstra)"
-   },
-   {
-    "conceito": "RIP",
-    "faz": "vetor de distância: conta saltos"
-   },
-   {
-    "conceito": "SDN",
-    "faz": "separa o controle (logicamente centralizado) do encaminhamento"
-   }
-  ],
-  "palavras_chave": "\"Dijkstra\", \"estado de enlace\" → OSPF; \"número de saltos\" → RIP; \"redes lógicas no mesmo switch\" → VLAN.",
-  "pegadinha": "Dizer que a SDN tem pouca flexibilidade: centralizar o controle é justamente o que a deixa flexível."
- },
- {
-  "materia": "Redes & Segurança da Informação",
-  "assunto": "Camada física e meios de transmissão",
-  "modelo": "conceito",
-  "resumo": "A camada física leva os bits pelo meio: cabo de cobre, fibra ou ondas de rádio. Ex.: o cabo de rede com conector RJ-45 do escritório é par trançado.",
-  "nao_confundir": [
-   {
-    "conceito": "Par trançado",
-    "faz": "sinal elétrico, conector RJ-45, redes locais"
-   },
-   {
-    "conceito": "Fibra óptica",
-    "faz": "luz, imune a interferência, longas distâncias"
-   },
-   {
-    "conceito": "Wi-Fi",
-    "faz": "ondas de rádio, sem cabo"
-   }
-  ],
-  "palavras_chave": "\"imune a interferência eletromagnética\" → fibra; \"capacidade com ruído\" → Shannon; \"canal ideal, sem ruído\" → Nyquist.",
-  "pegadinha": "Trocar o nome da fórmula: canal com ruído é Shannon (Metcalfe não calcula taxa); canal ideal, sem ruído, é Nyquist."
- },
- {
-  "materia": "Redes & Segurança da Informação",
-  "assunto": "Segurança de redes (firewall, VPN, IPSec, IDS/IPS)",
-  "modelo": "conceito",
-  "resumo": "São as barreiras e os túneis que protegem o tráfego. Ex.: o firewall bloqueia as portas não liberadas; a VPN cria um túnel criptografado para quem trabalha de casa.",
-  "nao_confundir": [
-   {
-    "conceito": "Firewall",
-    "faz": "filtra o que passa, por regras"
-   },
-   {
-    "conceito": "IDS",
-    "faz": "detecta e alerta"
-   },
-   {
-    "conceito": "IPS",
-    "faz": "detecta e bloqueia"
-   },
-   {
-    "conceito": "SIEM",
-    "faz": "junta e correlaciona registros e alerta; não bloqueia por si só"
-   }
-  ],
-  "palavras_chave": "\"nunca confie, sempre verifique\" → Zero Trust; \"túnel criptografado pela internet\" → VPN (IPSec ou TLS); \"muitas máquinas derrubando um serviço\" → DDoS.",
-  "pegadinha": "Achar que o SIEM dispensa o IPS: o SIEM correlaciona e alerta; quem bloqueia o ataque é o IPS."
- },
- {
-  "materia": "Redes & Segurança da Informação",
-  "assunto": "Criptografia, certificação digital e PKI",
-  "modelo": "conceito",
-  "resumo": "Criptografia embaralha os dados para que só quem tem a chave consiga ler. Ex.: no HTTPS, a assimétrica protege a troca da chave e a simétrica, mais rápida, cifra os dados.",
-  "nao_confundir": [
-   {
-    "conceito": "Simétrica",
-    "faz": "uma chave só, para cifrar e decifrar (AES)"
-   },
-   {
-    "conceito": "Assimétrica",
-    "faz": "par de chaves, pública e privada (RSA)"
-   },
-   {
-    "conceito": "Hash",
-    "faz": "resumo de tamanho fixo, sem volta (SHA-256)"
-   }
-  ],
-  "palavras_chave": "\"só o destinatário lê\" → cifrar com a chave pública dele; \"não repúdio\" → assinatura com a chave privada do autor; \"atesta de quem é a chave pública\" → certificado (AC, ICP-Brasil).",
-  "pegadinha": "Inverter as chaves da assinatura: o remetente assina com a própria chave privada, e quem confere usa a chave pública dele."
- },
- {
-  "materia": "Redes & Segurança da Informação",
-  "assunto": "Autenticação e identidade (MFA, SSO, SAML, OAuth)",
-  "modelo": "conceito",
-  "resumo": "Autenticar é provar quem você é; autorizar é definir o que você pode fazer. Ex.: senha + código no celular para entrar (autenticação); o perfil RH decide o que você vê (autorização).",
-  "nao_confundir": [
-   {
-    "conceito": "MFA",
-    "faz": "fatores de tipos diferentes: algo que sabe, tem ou é"
-   },
-   {
-    "conceito": "SSO",
-    "faz": "um login vale para vários sistemas"
-   },
-   {
-    "conceito": "OAuth 2.0",
-    "faz": "dá a um app acesso limitado, sem a sua senha (autorização)"
-   }
-  ],
-  "palavras_chave": "\"2 ou mais fatores de categorias diferentes (sabe, tem, é)\" → MFA; \"login único\" → SSO (SAML, OpenID Connect); \"permissões por papel\" → RBAC.",
-  "pegadinha": "Dizer que o RBAC dispensa o MFA: RBAC é autorização (o que você pode fazer); MFA é autenticação (quem você é)."
- },
- {
-  "materia": "Redes & Segurança da Informação",
-  "assunto": "Ataques e desenvolvimento seguro (OWASP)",
-  "modelo": "conceito",
-  "resumo": "Ataques exploram falhas da aplicação, e o desenvolvimento seguro as fecha desde o código. Ex.: validar no servidor tudo o que o usuário envia.",
-  "nao_confundir": [
-   {
-    "conceito": "SQL injection",
-    "faz": "o dado enviado (campo, URL, cookie) vira parte da consulta SQL"
-   },
-   {
-    "conceito": "XSS",
-    "faz": "script injetado roda no navegador de outro usuário"
-   },
-   {
-    "conceito": "CSRF",
-    "faz": "o navegador logado envia uma ação que a vítima não pediu"
-   }
-  ],
-  "palavras_chave": "\"' OR '1'='1\", \"prepared statement\" → SQL injection; \"escapar a saída\" → XSS; \"token anti-CSRF\" → CSRF; \"riscos mais críticos da web\" → OWASP Top 10.",
-  "pegadinha": "Achar que HTTPS ou validação no navegador bastam: o HTTPS só protege o caminho, e a validação que vale é no servidor."
- },
- {
-  "materia": "Redes & Segurança da Informação",
-  "assunto": "Segurança de endpoint e malware",
-  "modelo": "conceito",
-  "resumo": "Malware é todo programa feito para causar dano, e cada tipo age de um jeito. Ex.: um anexo falso que, ao ser aberto, criptografa os arquivos e pede resgate (ransomware).",
-  "nao_confundir": [
-   {
-    "conceito": "Vírus",
-    "faz": "se anexa a um arquivo e depende de ser executado"
-   },
-   {
-    "conceito": "Worm",
-    "faz": "se espalha sozinho pela rede"
-   },
-   {
-    "conceito": "Trojan",
-    "faz": "parece programa útil e esconde ação maliciosa"
-   }
-  ],
-  "palavras_chave": "\"resgate\" → ransomware; \"registra as teclas\" → keylogger; \"sem arquivo no disco\", \"usa PowerShell\" → fileless; \"desligar o que não é usado\" → hardening.",
-  "pegadinha": "Dizer que o keylogger fileless precisa de um rootkit instalado: ele age na memória, sem gravar arquivo, e não depende disso."
- },
- {
-  "materia": "Redes & Segurança da Informação",
-  "assunto": "Gestão de SI e riscos (ISO 27001, 27002, 27005)",
-  "modelo": "conceito",
-  "resumo": "Gestão de SI é proteger a informação de forma organizada, decidindo o que fazer com cada risco. Ex.: servidor sem atualização (vulnerabilidade) + hacker (ameaça) = risco de invasão.",
-  "nao_confundir": [
-   {
-    "conceito": "ISO 27001",
-    "faz": "requisitos do SGSI (é a certificável)"
-   },
-   {
-    "conceito": "ISO 27002",
-    "faz": "detalha como aplicar os controles (o Anexo A da 27001 só os lista)"
-   },
-   {
-    "conceito": "ISO 27005",
-    "faz": "gestão de riscos de SI"
-   }
-  ],
-  "palavras_chave": "\"confidencialidade, integridade, disponibilidade\" → tríade CID; \"contratar seguro\" → transferir o risco; \"isolar a máquina\" → contenção.",
-  "pegadinha": "Dizer que gerir riscos elimina todas as vulnerabilidades: trata-se o risco até um nível aceitável, e sobra risco residual."
- },
- {
-  "materia": "Redes & Segurança da Informação",
-  "assunto": "Frameworks de segurança (NIST CSF, CIS Controls)",
-  "modelo": "conceito",
-  "resumo": "Frameworks são roteiros prontos de segurança para a organização seguir. Ex.: no NIST CSF, um dos primeiros passos é inventariar todos os ativos (função Identificar).",
-  "nao_confundir": [
-   {
-    "conceito": "NIST CSF 2.0",
-    "faz": "6 funções: Governar, Identificar, Proteger, Detectar, Responder, Recuperar"
-   },
-   {
-    "conceito": "CIS Controls",
-    "faz": "lista priorizada de ações de defesa (v8: 18)"
-   },
-   {
-    "conceito": "MITRE ATT&CK",
-    "faz": "catálogo de táticas e técnicas de atacantes"
-   }
-  ],
-  "palavras_chave": "\"Governar\" → função nova do CSF 2.0; \"inventário de ativos\" → Identificar (CSF) e Controle 1 (CIS); \"táticas e técnicas\" → ATT&CK.",
-  "pegadinha": "Dizer que o núcleo do NIST CSF tem 3 funções: a versão 2.0 tem 6, e a 1.1 tinha 5."
- },
- {
-  "materia": "Redes & Segurança da Informação",
-  "assunto": "Normas de SI na APF (GSI)",
-  "modelo": "conceito",
-  "resumo": "Na Administração Pública Federal, o GSI/PR coordena a política de segurança da informação, e a LGPD rege os dados pessoais. Ex.: o GSI edita instruções normativas para os órgãos.",
-  "nao_confundir": [
-   {
-    "conceito": "Controlador",
-    "faz": "decide para que e como tratar os dados"
-   },
-   {
-    "conceito": "Operador",
-    "faz": "trata os dados em nome do controlador"
-   },
-   {
-    "conceito": "Encarregado (DPO)",
-    "faz": "ponte com os titulares e a ANPD"
-   }
-  ],
-  "palavras_chave": "\"coordena a política de SI da APF\" → GSI/PR; \"configuração inicial mais protetiva\" → privacy by default; \"propósito legítimo e informado\" → finalidade.",
-  "pegadinha": "Achar que, se os dados estão seguros, pode-se coletar mais: privacidade por padrão é coletar só o necessário."
- },
- {
-  "materia": "Redes & Segurança da Informação",
-  "assunto": "Continuidade de negócios",
-  "modelo": "conceito",
-  "resumo": "Continuidade é manter ou retomar o essencial durante uma crise. Ex.: após um ataque, a folha de pagamento volta em 4 horas (RTO) usando o backup da noite anterior.",
-  "nao_confundir": [
-   {
-    "conceito": "RTO",
-    "faz": "prazo máximo aceitável para o serviço voltar"
-   },
-   {
-    "conceito": "RPO",
-    "faz": "quanto dado (em tempo) se aceita perder"
-   },
-   {
-    "conceito": "MTBF",
-    "faz": "tempo médio entre falhas"
-   }
-  ],
-  "palavras_chave": "\"tempo para restabelecer\" → RTO; \"ponto de recuperação\" → RPO; \"3 cópias, 2 mídias, 1 fora\" → backup 3-2-1; norma → ISO 22301.",
-  "pegadinha": "Achar que a continuidade só trata do depois: a estratégia (ISO 22301) prevê a operação antes, durante e depois da interrupção."
- },
- {
-  "materia": "Redes & Segurança da Informação",
-  "assunto": "Blockchain e DLT",
-  "modelo": "conceito",
-  "resumo": "Blockchain é um registro compartilhado em que cada bloco guarda o hash do anterior, o que torna o passado difícil de alterar. Ex.: mudar um bloco antigo quebra toda a cadeia.",
-  "nao_confundir": [
-   {
-    "conceito": "DLT",
-    "faz": "registro de transações distribuído entre participantes"
-   },
-   {
-    "conceito": "Blockchain",
-    "faz": "um tipo de DLT, em blocos encadeados"
-   },
-   {
-    "conceito": "Consenso",
-    "faz": "como os nós concordam sobre o que entra"
-   }
-  ],
-  "palavras_chave": "\"hash do bloco anterior\" → encadeamento; \"qualquer um participa\", \"sem permissão\" → blockchain pública; \"livro-razão distribuído\" → DLT.",
-  "pegadinha": "Dizer que a blockchain é um tipo de criptografia assimétrica: ela usa criptografia, mas é um registro distribuído."
- },
- {
-  "materia": "Engenharia de Software & Agilidade",
-  "assunto": "Scrum",
-  "modelo": "conceito",
-  "resumo": "Scrum é um framework ágil que trabalha em ciclos de até um mês (Sprints), com 3 responsabilidades e 5 eventos. Ex.: a cada Sprint, o time produz ao menos um incremento utilizável.",
-  "nao_confundir": [
-   {
-    "conceito": "Product Owner",
-    "faz": "ordena o Product Backlog: o que vem primeiro"
-   },
-   {
-    "conceito": "Scrum Master",
-    "faz": "faz o Scrum funcionar e ajuda a remover impedimentos"
-   },
-   {
-    "conceito": "Developers",
-    "faz": "constroem o incremento; donos do Sprint Backlog"
-   }
-  ],
-  "palavras_chave": "\"maximiza o valor do produto\" → Product Owner; \"até 15 minutos\" → Daily; \"inspeciona o incremento com os interessados\" → Review; \"melhora a forma de trabalhar\" → Retrospectiva.",
-  "pegadinha": "Dizer que o Product Owner altera o Sprint Backlog durante a Sprint: ele pertence aos Developers."
- },
- {
-  "materia": "Engenharia de Software & Agilidade",
-  "assunto": "Métodos ágeis (manifesto, XP, Kanban, Lean)",
-  "modelo": "conceito",
-  "resumo": "Métodos ágeis entregam o software em partes que funcionam, com entregas frequentes, ajustando o rumo com o retorno do cliente. Ex.: entregar a tela de login em duas semanas e melhorá-la com o uso.",
-  "nao_confundir": [
-   {
-    "conceito": "XP",
-    "faz": "práticas de engenharia: programação em par, TDD, integração contínua"
-   },
-   {
-    "conceito": "Kanban",
-    "faz": "fluxo visual com limite de itens em andamento (WIP)"
-   },
-   {
-    "conceito": "Lean",
-    "faz": "corta desperdício; cada etapa produz quando a seguinte pede"
-   }
-  ],
-  "palavras_chave": "\"software em funcionamento mais que documentação\" → Manifesto Ágil; \"programação em par\" → XP; \"limitar o WIP\" → Kanban; \"sistema puxado\" → Lean e Kanban; \"eliminar desperdício\" → Lean.",
-  "pegadinha": "Confundir lead time com cycle time: lead time vai do compromisso até a entrega; cycle time, do início do trabalho até a conclusão."
- },
- {
-  "materia": "Engenharia de Software & Agilidade",
-  "assunto": "Engenharia de requisitos",
-  "modelo": "conceito",
-  "resumo": "Requisitos dizem o que o sistema deve fazer e com que qualidade. Ex.: \"emitir o boleto\" é requisito funcional; \"responder em até 2 segundos\" é não funcional.",
-  "nao_confundir": [
-   {
-    "conceito": "Funcional",
-    "faz": "uma função ou serviço que o sistema oferece"
-   },
-   {
-    "conceito": "Não funcional",
-    "faz": "qualidade ou restrição: desempenho, segurança, usabilidade"
-   },
-   {
-    "conceito": "História de usuário",
-    "faz": "\"Como <papel>, quero <ação>, para <benefício>\""
-   }
-  ],
-  "palavras_chave": "verbo de serviço (emitir, cadastrar, calcular) → funcional; \"em até X segundos\", \"disponível 24 horas\" → não funcional; \"entrevista, workshop\" → elicitação.",
-  "pegadinha": "Chamar usabilidade ou portabilidade de requisito funcional: são não funcionais, porque dizem como o sistema deve ser."
- },
- {
-  "materia": "Engenharia de Software & Agilidade",
-  "assunto": "Análise e projeto OO (UML, DDD)",
-  "modelo": "conceito",
-  "resumo": "Análise e projeto OO modelam o sistema como objetos antes de programar, em geral com os diagramas da UML. Ex.: o diagrama de classes mostra Aluno, Disciplina e a ligação entre elas.",
-  "nao_confundir": [
-   {
-    "conceito": "Diagrama de classes",
-    "faz": "a estrutura: classes, atributos e relações"
-   },
-   {
-    "conceito": "Diagrama de sequência",
-    "faz": "a ordem das mensagens no tempo"
-   },
-   {
-    "conceito": "Diagrama de comunicação",
-    "faz": "as ligações entre objetos; ordem só pela numeração"
-   },
-   {
-    "conceito": "Casos de uso",
-    "faz": "os atores e o que fazem no sistema"
-   }
-  ],
-  "palavras_chave": "\"mesmos termos do negócio no código\" → linguagem ubíqua (DDD); \"fronteira em que o termo tem um sentido só\" → contexto delimitado (bounded context).",
-  "pegadinha": "Chamar a UML de metodologia: ela é uma linguagem de modelagem e não diz em que ordem trabalhar."
- },
- {
-  "materia": "Engenharia de Software & Agilidade",
-  "assunto": "DevOps, DevSecOps e CI/CD",
-  "modelo": "conceito",
-  "resumo": "DevOps une desenvolvimento e operações, com automação, para entregar com frequência e segurança. Ex.: a cada envio de código, o pipeline compila, testa e deixa a versão pronta para implantar.",
-  "nao_confundir": [
-   {
-    "conceito": "Integração contínua",
-    "faz": "integra e testa o código várias vezes ao dia"
-   },
-   {
-    "conceito": "Entrega contínua",
-    "faz": "sempre pronto; alguém decide quando ir para produção"
-   },
-   {
-    "conceito": "Implantação contínua",
-    "faz": "passou nos testes, vai para produção sozinho"
-   }
-  ],
-  "palavras_chave": "\"shift-left\" → segurança desde o início (DevSecOps); \"SAST\" → analisa o código parado; \"DAST\" → testa a aplicação rodando; \".gitlab-ci.yml\" → pipeline do GitLab.",
-  "pegadinha": "Dizer que o pipeline implanta primeiro e integra depois: a ordem é integrar e testar antes de implantar."
- },
- {
-  "materia": "Engenharia de Software & Agilidade",
-  "assunto": "Métricas e estimativas (APF, pontos de história)",
-  "modelo": "conceito",
-  "resumo": "Métricas medem o tamanho e o esforço do software para planejar prazo e custo. Ex.: a APF mede quanto o sistema entrega ao usuário, seja qual for a linguagem.",
-  "nao_confundir": [
-   {
-    "conceito": "APF",
-    "faz": "tamanho funcional, padronizado (IFPUG)"
-   },
-   {
-    "conceito": "Story points",
-    "faz": "esforço e complexidade relativos; não são horas"
-   },
-   {
-    "conceito": "Velocidade",
-    "faz": "pontos que o próprio time entrega por Sprint"
-   }
-  ],
-  "palavras_chave": "\"tamanho funcional\", \"visão do usuário\" → APF; \"estimativa relativa\" → story points; \"cartas, em geral com Fibonacci\" → Planning Poker.",
-  "pegadinha": "Dizer que a APF mede como o software foi construído: ela mede o tamanho funcional, do ponto de vista do usuário."
- },
- {
-  "materia": "Engenharia de Software & Agilidade",
-  "assunto": "Padrões de projeto (GoF)",
-  "modelo": "conceito",
-  "resumo": "Padrões de projeto são soluções testadas, com nome conhecido, para problemas recorrentes de projeto. Ex.: o Singleton garante um único objeto de configuração no sistema.",
-  "nao_confundir": [
-   {
-    "conceito": "Adapter",
-    "faz": "converte uma interface em outra"
-   },
-   {
-    "conceito": "Decorator",
-    "faz": "acrescenta comportamento a um objeto, em tempo de execução"
-   },
-   {
-    "conceito": "Facade",
-    "faz": "dá uma interface simples para um subsistema"
-   },
-   {
-    "conceito": "Builder",
-    "faz": "monta um objeto complexo passo a passo"
-   }
-  ],
-  "palavras_chave": "\"única instância\" → Singleton; \"avisar vários quando algo muda\" → Observer; \"famílias de objetos\" → Abstract Factory; grupos: criação, estruturais, comportamentais.",
-  "pegadinha": "Trocar Facade por Builder: Facade simplifica o acesso a um subsistema; separar a construção de um objeto complexo da sua representação é o Builder."
- },
- {
-  "materia": "Engenharia de Software & Agilidade",
-  "assunto": "Processos, ciclos de vida e manutenção de software",
-  "modelo": "conceito",
-  "resumo": "O ciclo de vida diz em que ordem o software é construído, e a manutenção cuida dele depois de pronto. Ex.: no incremental, entrega-se primeiro o essencial e depois o resto.",
-  "nao_confundir": [
-   {
-    "conceito": "Cascata",
-    "faz": "fases em sequência, uma após a outra"
-   },
-   {
-    "conceito": "Incremental",
-    "faz": "partes entregues uma de cada vez"
-   },
-   {
-    "conceito": "Espiral",
-    "faz": "ciclos guiados pela análise de riscos"
-   }
-  ],
-  "palavras_chave": "\"corrigir defeito\" → manutenção corretiva; \"mudança no ambiente\" → adaptativa; \"nova função ou melhoria\" → perfectiva; \"evitar problemas futuros\" → preventiva.",
-  "pegadinha": ""
- },
- {
-  "materia": "Engenharia de Software & Agilidade",
-  "assunto": "Qualidade e maturidade (CMMI, MPS.BR, ISO 12207)",
-  "modelo": "conceito",
-  "resumo": "Modelos de maturidade medem quão organizados e previsíveis são os processos de uma empresa. Ex.: no nível 5 do CMMI, a organização melhora o processo continuamente.",
-  "nao_confundir": [
-   {
-    "conceito": "CMMI",
-    "faz": "5 níveis de maturidade (1 a 5)"
-   },
-   {
-    "conceito": "MPS.BR",
-    "faz": "modelo brasileiro, 7 níveis (de G a A)"
-   },
-   {
-    "conceito": "ISO 12207",
-    "faz": "processos do ciclo de vida, sem níveis"
-   },
-   {
-    "conceito": "ISO 25010",
-    "faz": "características de qualidade do produto"
-   }
-  ],
-  "palavras_chave": "\"Em Otimização\" → nível 5 do CMMI = nível A do MPS.BR; \"manutenibilidade\", \"usabilidade\" → ISO 25010 (antes, ISO 9126).",
-  "pegadinha": "Inverter a escala do MPS.BR: ela vai de G (menor maturidade) até A (maior)."
- },
- {
-  "materia": "Engenharia de Software & Agilidade",
-  "assunto": "Testes de software (TDD, BDD, tipos de teste)",
-  "modelo": "conceito",
-  "resumo": "Testar é conferir se o software faz o que deveria. Ex.: o teste unitário verifica um método isolado; o de regressão roda de novo os testes antigos depois de uma mudança.",
-  "nao_confundir": [
-   {
-    "conceito": "TDD",
-    "faz": "teste antes do código: vermelho, verde, refatorar"
-   },
-   {
-    "conceito": "BDD",
-    "faz": "comportamento em linguagem do negócio (Dado, Quando, Então)"
-   },
-   {
-    "conceito": "Teste alfa",
-    "faz": "usuários testam no ambiente do desenvolvedor"
-   },
-   {
-    "conceito": "Teste beta",
-    "faz": "usuários testam no próprio ambiente"
-   }
-  ],
-  "palavras_chave": "\"Gherkin\", \"Given/When/Then\" → BDD; \"rodar de novo os testes antigos\" → regressão; \"sem olhar o código\" → caixa-preta.",
-  "pegadinha": "Dizer que no TDD o teste vem depois do código: o vermelho é escrever primeiro um teste que falha."
- },
- {
-  "materia": "Desenvolvimento, POO & Linguagens",
-  "assunto": "Python",
-  "modelo": "conceito",
-  "resumo": "Python é uma linguagem fácil de ler, em que a indentação (o recuo) define os blocos. Ex.: for i in range(3): print(i) imprime 0, 1 e 2.",
-  "nao_confundir": [
-   {
-    "conceito": "Lista [ ]",
-    "faz": "mutável: cresce, diminui e muda"
-   },
-   {
-    "conceito": "Tupla ( )",
-    "faz": "imutável depois de criada"
-   },
-   {
-    "conceito": "Dicionário {chave: valor}",
-    "faz": "pares chave-valor, acesso pela chave"
-   }
-  ],
-  "palavras_chave": "\"/\" → divisão com resultado float; \"//\" → divisão inteira, arredonda para baixo (-7 // 2 = -4); \"append\" → acrescenta no fim; \"range(n)\" → de 0 até n − 1.",
-  "pegadinha": "Dizer que a lista tem tamanho fixo depois de criada: ela cresce e diminui; quem não muda é a tupla."
- },
- {
-  "materia": "Desenvolvimento, POO & Linguagens",
-  "assunto": "Java",
-  "modelo": "conceito",
-  "resumo": "Java é uma linguagem orientada a objetos que compila para bytecode, executado pela JVM em qualquer sistema. Ex.: o mesmo .class roda em Windows e em Linux.",
-  "nao_confundir": [
-   {
-    "conceito": "abstract",
-    "faz": "classe que não pode ser instanciada; método que a subclasse concreta deve implementar"
-   },
-   {
-    "conceito": "final",
-    "faz": "impede reatribuir (variável), sobrescrever (método) ou herdar (classe)"
-   },
-   {
-    "conceito": "static",
-    "faz": "pertence à classe, não a cada objeto"
-   },
-   {
-    "conceito": "interface",
-    "faz": "contrato de métodos que a classe promete cumprir"
-   }
-  ],
-  "palavras_chave": "\"bytecode\", \"JVM\" → portabilidade; \"objeto sem referência\" → garbage collector; \"tratar classes diferentes de forma uniforme\" → polimorfismo (via interface).",
-  "pegadinha": "Confundir ++i com i++: no ++i soma antes de usar o valor; no i++ usa o valor e soma depois."
- },
- {
-  "materia": "Desenvolvimento, POO & Linguagens",
-  "assunto": "JavaScript e TypeScript",
-  "modelo": "conceito",
-  "resumo": "JavaScript dá comportamento à página no navegador; o TypeScript é JavaScript com tipos. Ex.: um clique no botão chama uma função que altera o DOM.",
-  "nao_confundir": [
-   {
-    "conceito": "var",
-    "faz": "escopo de função"
-   },
-   {
-    "conceito": "let",
-    "faz": "escopo de bloco; pode reatribuir"
-   },
-   {
-    "conceito": "const",
-    "faz": "escopo de bloco; não pode reatribuir"
-   }
-  ],
-  "palavras_chave": "\"===\" → compara valor e tipo; \"==\" → converte o tipo antes de comparar; \"superconjunto com tipagem estática\" → TypeScript; \"Virtual DOM\" → Vue, React.",
-  "pegadinha": "Achar que const deixa o objeto imutável: ela só impede reatribuir a variável; as propriedades do objeto ainda podem mudar."
- },
- {
-  "materia": "Desenvolvimento, POO & Linguagens",
-  "assunto": "Orientação a objetos",
-  "modelo": "conceito",
-  "resumo": "Orientação a objetos organiza o programa em objetos que juntam dados e comportamento. Ex.: a classe Carro é o molde; cada carro criado a partir dela é um objeto.",
-  "nao_confundir": [
-   {
-    "conceito": "Encapsulamento",
-    "faz": "esconde os dados; acesso só por métodos"
-   },
-   {
-    "conceito": "Herança",
-    "faz": "a subclasse reaproveita a superclasse"
-   },
-   {
-    "conceito": "Polimorfismo",
-    "faz": "a mesma chamada, comportamentos diferentes"
-   },
-   {
-    "conceito": "Abstração",
-    "faz": "modela só o que é essencial"
-   }
-  ],
-  "palavras_chave": "\"mesma assinatura na subclasse\" → sobrescrita (override); \"mesmo nome, parâmetros diferentes\" → sobrecarga (overload); \"instância\" → objeto.",
-  "pegadinha": "Dizer que a sobrecarga depende de herança: ela é o mesmo nome com parâmetros diferentes, e não precisa de subclasse."
- },
- {
-  "materia": "Desenvolvimento, POO & Linguagens",
-  "assunto": "APIs e integração (REST, GraphQL, gRPC)",
-  "modelo": "conceito",
-  "resumo": "API é a porta que um sistema oferece para outro usar seus dados e funções. Ex.: o app do banco chama GET /saldo e recebe a resposta em JSON.",
-  "nao_confundir": [
-   {
-    "conceito": "REST",
-    "faz": "recursos por URL e verbos HTTP; stateless"
-   },
-   {
-    "conceito": "SOAP",
-    "faz": "mensagens em XML, contrato no WSDL"
-   },
-   {
-    "conceito": "GraphQL",
-    "faz": "o cliente escolhe os campos que quer"
-   },
-   {
-    "conceito": "gRPC",
-    "faz": "Protocol Buffers (binário) sobre HTTP/2"
-   }
-  ],
-  "palavras_chave": "\"stateless\" → REST; \"envelope\", \"WSDL\" → SOAP; \"POST para uma URL cadastrada quando ocorre um evento\" → webhook; GET consulta, POST cria.",
-  "pegadinha": "Dizer que o REST guarda o estado da sessão ou só devolve XML: ele é stateless e aceita JSON, XML e outros formatos."
- },
- {
-  "materia": "Desenvolvimento, POO & Linguagens",
-  "assunto": "HTML e CSS",
-  "modelo": "conceito",
-  "resumo": "O HTML monta a estrutura da página, e o CSS cuida da aparência. Ex.: <h1>Título</h1> cria o título; h1 { color: blue; } deixa ele azul.",
-  "nao_confundir": [
-   {
-    "conceito": "HTML",
-    "faz": "estrutura e conteúdo"
-   },
-   {
-    "conceito": "CSS",
-    "faz": "aparência: cores, fontes, espaços, animações"
-   },
-   {
-    "conceito": "JavaScript",
-    "faz": "comportamento: reage a cliques e muda a página"
-   }
-  ],
-  "palavras_chave": "\".\" → seletor de classe; \"#\" → seletor de id; \"padding\" → espaço interno; \"margin\" → espaço externo; \"required\" → campo obrigatório no HTML5.",
-  "pegadinha": "Trocar as propriedades do CSS: quem define o tamanho é width/height (padding é espaço interno), e capitalize põe maiúscula na inicial de cada palavra."
- },
- {
-  "materia": "Desenvolvimento, POO & Linguagens",
-  "assunto": "Estruturas de dados",
-  "modelo": "conceito",
-  "resumo": "Estruturas de dados são formas de organizar os dados na memória para guardar e buscar com eficiência. Ex.: o botão Desfazer usa uma pilha: o último passo é o primeiro a sair.",
-  "nao_confundir": [
-   {
-    "conceito": "Pilha",
-    "faz": "LIFO: o último a entrar sai primeiro"
-   },
-   {
-    "conceito": "Fila",
-    "faz": "FIFO: o primeiro a entrar sai primeiro"
-   },
-   {
-    "conceito": "Deque",
-    "faz": "insere e remove nas duas pontas"
-   },
-   {
-    "conceito": "Árvore binária de busca",
-    "faz": "menores à esquerda, maiores à direita"
-   }
-  ],
-  "palavras_chave": "\"push/pop\" → pilha; \"percurso em ordem simétrica (in-order)\" numa árvore de busca → valores em ordem crescente; \"tabela hash\" → busca média O(1).",
-  "pegadinha": "No deque do Python (collections.deque), confundir as pontas: append e pop mexem no fim; appendleft e popleft, no início."
- },
- {
-  "materia": "Desenvolvimento, POO & Linguagens",
-  "assunto": "Algoritmos (ordenação, busca, complexidade)",
-  "modelo": "conceito",
-  "resumo": "Algoritmo é uma receita passo a passo; a complexidade diz como o tempo cresce com o tamanho dos dados. Ex.: numa lista ordenada de 1 milhão de nomes, a busca binária acha um em cerca de 20 passos.",
-  "nao_confundir": [
-   {
-    "conceito": "Busca linear",
-    "faz": "olha um por um: O(n)"
-   },
-   {
-    "conceito": "Busca binária",
-    "faz": "corta a lista ao meio a cada passo: O(log n); exige lista ordenada"
-   },
-   {
-    "conceito": "Ordenação estável",
-    "faz": "mantém a ordem original dos elementos iguais"
-   }
-  ],
-  "palavras_chave": "\"compara vizinhos e troca\" → bolha; \"pivô\" → quicksort; \"divide e intercala\" → merge sort.",
-  "pegadinha": "Dizer que a seleção direta é estável: bolha e inserção são estáveis; a seleção, na versão clássica, não."
- },
- {
-  "materia": "Desenvolvimento, POO & Linguagens",
-  "assunto": "Git e versionamento",
-  "modelo": "conceito",
-  "resumo": "O Git guarda o histórico de alterações do código e permite trabalhar em paralelo sem perder nada. Ex.: cada commit é um retrato do projeto, ao qual dá para voltar.",
-  "nao_confundir": [
-   {
-    "conceito": "commit",
-    "faz": "grava no repositório local o que foi preparado (git add)"
-   },
-   {
-    "conceito": "push",
-    "faz": "envia os commits ao repositório remoto"
-   },
-   {
-    "conceito": "pull",
-    "faz": "traz do remoto e junta (fetch + merge)"
-   },
-   {
-    "conceito": "clone",
-    "faz": "copia o repositório inteiro, com histórico"
-   }
-  ],
-  "palavras_chave": "\"linha de trabalho isolada\" → branch; \"juntar uma branch em outra\" → merge; \"mesma linha alterada nas duas branches\" → conflito.",
-  "pegadinha": "Achar que feature branch não tem custo: a branch de longa duração, que demora a voltar para a principal, atrapalha a integração contínua."
- },
- {
-  "materia": "Desenvolvimento, POO & Linguagens",
-  "assunto": "Protocolos e arquitetura web (HTTP, HTTP/2, WebSocket)",
-  "modelo": "conceito",
-  "resumo": "O HTTP é o protocolo de pedido e resposta da web; o WebSocket mantém um canal aberto nos dois sentidos. Ex.: abrir uma página é HTTP; um chat ao vivo usa WebSocket.",
-  "nao_confundir": [
-   {
-    "conceito": "HTTP/1.1",
-    "faz": "reaproveita a conexão, mas as respostas saem em fila"
-   },
-   {
-    "conceito": "HTTP/2",
-    "faz": "várias em paralelo na mesma conexão (multiplexação)"
-   },
-   {
-    "conceito": "WebSocket",
-    "faz": "conversa contínua nos dois sentidos, por mensagens"
-   }
-  ],
-  "palavras_chave": "\"301\" → movido para sempre; \"302\" → movido temporariamente; \"404\" → não encontrado; \"5xx\" → erro do servidor.",
-  "pegadinha": "Inverter as versões: é o HTTP/2, e não o HTTP/1.1, que atende várias requisições em paralelo na mesma conexão."
- },
- {
-  "materia": "Desenvolvimento, POO & Linguagens",
-  "assunto": "C# e .NET",
-  "modelo": "conceito",
-  "resumo": "C# é a linguagem orientada a objetos da Microsoft, executada na plataforma .NET. Ex.: sistemas web de órgãos públicos feitos em ASP.NET.",
-  "nao_confundir": [
-   {
-    "conceito": "??",
-    "faz": "usa um valor padrão quando a variável é nula"
-   },
-   {
-    "conceito": "foreach",
-    "faz": "percorre cada item de uma coleção"
-   },
-   {
-    "conceito": "while",
-    "faz": "repete enquanto a condição for verdadeira"
-   }
-  ],
-  "palavras_chave": "\"coalescência nula\" → ??; \"plataforma .NET\" → C# (a principal linguagem dela); \"JVM\" → Java, e não C#.",
-  "pegadinha": "No teste de mesa, esquecer o pós-incremento: em while (num++ < 6), o num já está somado quando é impresso."
- },
- {
-  "materia": "Desenvolvimento, POO & Linguagens",
-  "assunto": "Acessibilidade (e-MAG, WCAG)",
-  "modelo": "conceito",
-  "resumo": "Acessibilidade é fazer o site funcionar para todos, inclusive pessoas com deficiência. Ex.: o atributo alt descreve a imagem para quem usa leitor de tela.",
-  "nao_confundir": [
-   {
-    "conceito": "e-MAG",
-    "faz": "modelo de acessibilidade do governo federal brasileiro"
-   },
-   {
-    "conceito": "WCAG",
-    "faz": "diretrizes internacionais do W3C"
-   },
-   {
-    "conceito": "Leitor de tela",
-    "faz": "lê a página em voz alta para quem não enxerga"
-   }
-  ],
-  "palavras_chave": "\"tudo funcionar só pelo teclado\" → acessibilidade (e-MAG e WCAG); \"perceptível, operável, compreensível, robusto\" → WCAG; \"texto alternativo\" → alt.",
-  "pegadinha": "Achar que abrir links em nova aba ou mudar o foco sozinho ajuda: o e-MAG recomenda não mudar o contexto sem o usuário pedir."
- },
- {
-  "materia": "Desenvolvimento, POO & Linguagens",
-  "assunto": "Portais, CMS, busca e gestão de conteúdo",
-  "modelo": "conceito",
-  "resumo": "O CMS publica conteúdo sem programar; o portal reúne informações de várias fontes num só lugar. Ex.: o site de um órgão feito em WordPress, atualizado pela equipe de comunicação.",
-  "nao_confundir": [
-   {
-    "conceito": "CMS",
-    "faz": "separa o conteúdo da aparência (WordPress, Drupal)"
-   },
-   {
-    "conceito": "Portal corporativo",
-    "faz": "um acesso a várias fontes, personalizável"
-   },
-   {
-    "conceito": "GED/ECM",
-    "faz": "organiza e recupera os documentos"
-   },
-   {
-    "conceito": "Crawler",
-    "faz": "percorre as páginas para indexá-las"
-   }
-  ],
-  "palavras_chave": "\"publicar sem programar\", \"interface de edição\" → CMS; \"site:gov.br\" no Google → busca só nesse domínio; \"várias fontes num só lugar\" → portal.",
-  "pegadinha": "Achar que a indexação nos buscadores é imediata: o crawler precisa visitar a página antes, o que pode levar horas ou dias."
- },
- {
-  "materia": "Desenvolvimento, POO & Linguagens",
-  "assunto": "Desenvolvimento mobile",
-  "modelo": "conceito",
-  "resumo": "Desenvolver para celular é lidar com tela pequena, bateria limitada e conexão instável. Ex.: o app guarda os dados offline e sincroniza quando a rede volta.",
-  "nao_confundir": [
-   {
-    "conceito": "App nativo",
-    "faz": "feito para uma plataforma (Kotlin no Android, Swift no iOS)"
-   },
-   {
-    "conceito": "App web",
-    "faz": "roda no navegador"
-   },
-   {
-    "conceito": "App híbrido",
-    "faz": "HTML, CSS e JS dentro de um app nativo (WebView)"
-   }
-  ],
-  "palavras_chave": "\"melhor acesso ao hardware\" → nativo; \"economia de bateria\" → cuidado obrigatório no projeto mobile.",
-  "pegadinha": ""
- },
- {
-  "materia": "Desenvolvimento, POO & Linguagens",
-  "assunto": "COBOL e sistemas legados",
-  "modelo": "conceito",
-  "resumo": "COBOL é uma linguagem antiga, ainda usada em mainframes de bancos e do governo para processar grandes volumes de dados. Ex.: a folha de pagamento de um órgão pode rodar em COBOL.",
-  "nao_confundir": [
-   {
-    "conceito": "IDENTIFICATION DIVISION",
-    "faz": "identifica o programa"
-   },
-   {
-    "conceito": "ENVIRONMENT DIVISION",
-    "faz": "ambiente e arquivos"
-   },
-   {
-    "conceito": "DATA DIVISION",
-    "faz": "variáveis, com as cláusulas PIC"
-   },
-   {
-    "conceito": "PROCEDURE DIVISION",
-    "faz": "a lógica do programa"
-   }
-  ],
-  "palavras_chave": "\"PIC 9(3)\" → número de 3 dígitos; \"PIC X(10)\" → texto de 10 caracteres; \"mainframe\", \"legado\" → ambiente típico do COBOL.",
-  "pegadinha": "Colocar as cláusulas PIC na PROCEDURE DIVISION: as variáveis e seus formatos ficam na DATA DIVISION."
- },
- {
-  "materia": "Desenvolvimento, POO & Linguagens",
-  "assunto": "UX e UI design",
-  "modelo": "conceito",
-  "resumo": "UX é a experiência completa de quem usa o produto; UI é a interface visual com que ele interage. Ex.: a cor do botão é UI; pagar ser fácil e rápido é UX.",
-  "nao_confundir": [
-   {
-    "conceito": "UI",
-    "faz": "botões, cores, tipografia, layout"
-   },
-   {
-    "conceito": "UX",
-    "faz": "facilidade, fluxo e satisfação de uso"
-   },
-   {
-    "conceito": "Wireframe",
-    "faz": "esboço da tela, sem acabamento"
-   },
-   {
-    "conceito": "Protótipo",
-    "faz": "simula o uso para testar (do papel ao clicável)"
-   }
-  ],
-  "palavras_chave": "\"aparência\", \"elementos visuais\" → UI; \"jornada\", \"satisfação\", \"facilidade de uso\" → UX.",
-  "pegadinha": "Trocar UX por UI: UI é o que se vê e toca na tela; UX é a experiência inteira, do primeiro contato ao fim."
- }
+  {
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Conceitos de SGBD",
+    "modelo": "conceito",
+    "resumo": "O SGBD é o programa que guarda o banco e controla quem lê e altera os dados, mesmo com muita gente usando ao mesmo tempo. Ex.: PostgreSQL, MySQL, Oracle.",
+    "nao_confundir": [
+      {
+        "conceito": "SGBD",
+        "faz": "o programa que gerencia (PostgreSQL)"
+      },
+      {
+        "conceito": "Banco de dados",
+        "faz": "os dados guardados (os alunos, as notas)"
+      },
+      {
+        "conceito": "Servidor web",
+        "faz": "entrega páginas (IIS, Nginx); não gerencia dados"
+      }
+    ],
+    "palavras_chave": "\"gerencia\", \"controla o acesso\", \"acessos simultâneos\", \"backup e recuperação\" → SGBD.",
+    "pegadinha": "Lista de SGBDs com um servidor web no meio, como o IIS: a lista está errada."
+  },
+  {
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Modelagem de dados (MER e relacional)",
+    "modelo": "conceito",
+    "resumo": "Modelar é desenhar o que o sistema vai registrar antes de criar as tabelas. Ex.: Cliente tem nome e CPF e faz vários Pedidos.",
+    "nao_confundir": [
+      {
+        "conceito": "Entidade",
+        "faz": "a \"coisa\" registrada (Cliente, Pedido)"
+      },
+      {
+        "conceito": "Atributo",
+        "faz": "uma característica dela (CPF, nome)"
+      },
+      {
+        "conceito": "Relacionamento",
+        "faz": "a ligação entre entidades (Cliente faz Pedido, 1:N)"
+      }
+    ],
+    "palavras_chave": "\"depende de outra para ser identificada\" → entidade fraca; \"um para muitos\" → 1:N; \"descrição detalhada de cada item do modelo\" → dicionário de dados.",
+    "pegadinha": "Entidade fraca não é a que tem poucos atributos: é a que não tem identificador próprio suficiente e depende de outra."
+  },
+  {
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Normalização",
+    "modelo": "conceito",
+    "resumo": "Normalizar é dividir os dados em tabelas para reduzir a repetição e evitar dados contraditórios ao atualizar. Ex.: o nome do departamento fica só na tabela Departamento.",
+    "nao_confundir": [
+      {
+        "conceito": "1FN",
+        "faz": "um valor por célula (nada de \"9999-1111, 9888-2222\")"
+      },
+      {
+        "conceito": "2FN",
+        "faz": "nada depende de só uma parte da chave composta"
+      },
+      {
+        "conceito": "3FN",
+        "faz": "nenhuma coluna não chave depende de outra coluna não chave"
+      }
+    ],
+    "palavras_chave": "\"atômico\", \"multivalorado\" → 1FN; \"dependência parcial\" → 2FN; \"dependência transitiva\" → 3FN.",
+    "pegadinha": "Definir a 3FN como \"sem campos multivalorados\": isso é a 1FN; a 3FN tira a dependência transitiva."
+  },
+  {
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — DDL e restrições",
+    "modelo": "conceito",
+    "resumo": "DDL é a parte do SQL que cria e altera a estrutura: tabelas, colunas e regras. Ex.: CREATE TABLE Aluno (cpf CHAR(11) PRIMARY KEY, nome VARCHAR(100) NOT NULL).",
+    "nao_confundir": [
+      {
+        "conceito": "PRIMARY KEY",
+        "faz": "não repete e não aceita nulo"
+      },
+      {
+        "conceito": "UNIQUE",
+        "faz": "não repete, mas em geral aceita nulo"
+      },
+      {
+        "conceito": "FOREIGN KEY",
+        "faz": "aponta para a chave de uma tabela (pode ser a própria)"
+      }
+    ],
+    "palavras_chave": "\"estrutura\", \"criar, alterar ou excluir tabela\" → DDL (CREATE, ALTER, DROP); \"não pode ficar vazio\" → NOT NULL.",
+    "pegadinha": "\"ALTER PROCESSO ADD ...\" está errado: falta a palavra TABLE (ALTER TABLE PROCESSO ADD ...)."
+  },
+  {
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — DML (INSERT, UPDATE, DELETE, TRUNCATE)",
+    "modelo": "conceito",
+    "resumo": "DML são os comandos que mexem nos dados, não na estrutura: INSERT inclui, UPDATE altera e DELETE apaga linhas. Ex.: DELETE FROM Aluno WHERE cpf = '123' apaga só esse aluno.",
+    "nao_confundir": [
+      {
+        "conceito": "DELETE",
+        "faz": "apaga linhas, aceita WHERE; a tabela fica"
+      },
+      {
+        "conceito": "TRUNCATE",
+        "faz": "esvazia a tabela, sem WHERE; a tabela fica (muitos livros: DDL)"
+      },
+      {
+        "conceito": "DROP TABLE",
+        "faz": "apaga a tabela, estrutura incluída"
+      }
+    ],
+    "palavras_chave": "\"remove a estrutura\" → DROP; \"remove linhas com condição\" → DELETE; \"esvazia a tabela inteira, sem WHERE\" → TRUNCATE (DELETE sem WHERE também apaga tudo, linha a linha).",
+    "pegadinha": "INSERT que deixa de fora uma coluna NOT NULL sem valor padrão falha: o SGBD recusa a linha."
+  },
+  {
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — Consultas, JOIN e subconsultas",
+    "modelo": "conceito",
+    "resumo": "O SELECT busca dados: quais colunas, de qual tabela e com qual filtro; o JOIN junta tabelas ligadas. Ex.: SELECT nome FROM Cliente WHERE cidade = 'Recife'.",
+    "nao_confundir": [
+      {
+        "conceito": "INNER JOIN",
+        "faz": "só as linhas que têm par nas duas tabelas"
+      },
+      {
+        "conceito": "LEFT JOIN",
+        "faz": "todas as linhas da tabela da esquerda, mesmo sem par"
+      },
+      {
+        "conceito": "RIGHT / FULL JOIN",
+        "faz": "mantêm os sem par da direita / dos dois lados"
+      }
+    ],
+    "palavras_chave": "\"apenas correspondentes em ambas\" → INNER JOIN; \"todos os clientes, mesmo sem pedido\" → LEFT JOIN (com Cliente à esquerda); \"consulta dentro de consulta\" → subconsulta.",
+    "pegadinha": "Trocar INNER por LEFT JOIN: o INNER descarta quem não tem par na outra tabela; os OUTER (LEFT, RIGHT, FULL) mantêm."
+  },
+  {
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — Agrupamento e agregação",
+    "modelo": "conceito",
+    "resumo": "Agregar é resumir muitas linhas em um valor (contagem, soma, média), e o GROUP BY faz isso por grupo. Ex.: SELECT depto, COUNT(*) FROM Funcionario GROUP BY depto.",
+    "nao_confundir": [
+      {
+        "conceito": "WHERE",
+        "faz": "filtra as linhas antes de agrupar"
+      },
+      {
+        "conceito": "GROUP BY",
+        "faz": "forma os grupos"
+      },
+      {
+        "conceito": "HAVING",
+        "faz": "filtra os grupos já formados (com COUNT, AVG...)"
+      }
+    ],
+    "palavras_chave": "\"pelo menos 3 por departamento\", \"média acima de X por grupo\" → GROUP BY com HAVING.",
+    "pegadinha": "\"WHERE COUNT(*) >= 3\" dá erro: filtro sobre o resultado de COUNT, SUM ou AVG é com HAVING."
+  },
+  {
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — DCL e controle de acesso",
+    "modelo": "conceito",
+    "resumo": "DCL controla quem pode fazer o quê no banco: GRANT dá a permissão e REVOKE tira. Ex.: GRANT SELECT ON Salario TO ana dá à Ana permissão de consultar a tabela.",
+    "nao_confundir": [
+      {
+        "conceito": "DCL (GRANT, REVOKE)",
+        "faz": "permissões"
+      },
+      {
+        "conceito": "TCL (COMMIT, ROLLBACK)",
+        "faz": "transações"
+      },
+      {
+        "conceito": "DDL (CREATE, DROP)",
+        "faz": "estrutura"
+      }
+    ],
+    "palavras_chave": "\"conceder ou revogar privilégio\" → GRANT e REVOKE; \"repassar a outros usuários\" → WITH GRANT OPTION.",
+    "pegadinha": "Quem recebeu uma permissão só pode repassá-la se o GRANT tiver WITH GRANT OPTION."
+  },
+  {
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Transações, concorrência e otimização",
+    "modelo": "conceito",
+    "resumo": "Transação é um bloco de operações que vale inteiro ou não vale: COMMIT grava tudo, ROLLBACK desfaz tudo. Ex.: debitar da conta A e creditar na B.",
+    "nao_confundir": [
+      {
+        "conceito": "Atomicidade",
+        "faz": "tudo ou nada"
+      },
+      {
+        "conceito": "Consistência",
+        "faz": "as regras do banco continuam valendo"
+      },
+      {
+        "conceito": "Isolamento",
+        "faz": "uma transação não vê a outra pela metade"
+      },
+      {
+        "conceito": "Durabilidade",
+        "faz": "depois do COMMIT, nada se perde"
+      }
+    ],
+    "palavras_chave": "\"tudo ou nada\" → atomicidade; \"mesmo após queda de energia\" → durabilidade; \"plano de execução da consulta\" → EXPLAIN (PostgreSQL, MySQL).",
+    "pegadinha": "O EXPLAIN não executa nem acelera a consulta: só mostra o plano estimado (o EXPLAIN ANALYZE executa de verdade e mostra o tempo real)."
+  },
+  {
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Objetos de banco (views, triggers, procedures, sequences)",
+    "modelo": "conceito",
+    "resumo": "Além das tabelas, o banco guarda objetos prontos que poupam trabalho. Ex.: um trigger grava um log toda vez que alguém altera um salário.",
+    "nao_confundir": [
+      {
+        "conceito": "View",
+        "faz": "consulta salva com nome; não guarda os dados (a materializada guarda)"
+      },
+      {
+        "conceito": "Trigger",
+        "faz": "dispara sozinho com INSERT, UPDATE ou DELETE"
+      },
+      {
+        "conceito": "Procedure",
+        "faz": "roda quando alguém a chama pelo nome"
+      },
+      {
+        "conceito": "Sequence",
+        "faz": "gera números em ordem (no PostgreSQL, nextval e currval)"
+      }
+    ],
+    "palavras_chave": "\"tabela virtual\" → view; \"automaticamente ao inserir\" → trigger; \"próximo valor\" → nextval.",
+    "pegadinha": "Para criar um trigger não basta o evento: é obrigatório informar o momento (BEFORE, AFTER ou INSTEAD OF), o evento e a tabela (ou view)."
+  },
+  {
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — Funções",
+    "modelo": "conceito",
+    "resumo": "Funções fazem contas e ajustes dentro da consulta. Ex.: UPPER('recife') devolve 'RECIFE'; COALESCE(telefone, 'sem telefone') troca o NULL por um aviso.",
+    "nao_confundir": [
+      {
+        "conceito": "Escalares (UPPER, SUBSTRING, COALESCE)",
+        "faz": "atuam em cada linha"
+      },
+      {
+        "conceito": "Agregação (SUM, COUNT, AVG)",
+        "faz": "resumem várias linhas em um valor"
+      }
+    ],
+    "palavras_chave": "\"primeiros N caracteres\" → SUBSTRING(texto, 1, N) (SUBSTR no Oracle, MID no MySQL); \"trocar NULL por um valor\" → COALESCE.",
+    "pegadinha": "Inverter os números do SUBSTRING: o primeiro é a posição de início, o segundo é a quantidade."
+  },
+  {
+    "materia": "Banco de Dados & Dados",
+    "assunto": "NoSQL",
+    "modelo": "conceito",
+    "resumo": "NoSQL (\"não só SQL\") são bancos que não seguem obrigatoriamente o modelo relacional, de tabelas com esquema fixo. Ex.: no MongoDB, cada cliente é um documento parecido com JSON.",
+    "nao_confundir": [
+      {
+        "conceito": "Documentos (MongoDB)",
+        "faz": "registros no estilo JSON, com campos livres"
+      },
+      {
+        "conceito": "Chave-valor (Redis)",
+        "faz": "busca rápida pela chave; cache e sessão"
+      },
+      {
+        "conceito": "Grafos (Neo4j)",
+        "faz": "relações, como \"amigos dos meus amigos\""
+      }
+    ],
+    "palavras_chave": "\"dividir os dados entre servidores\" → sharding; \"cópia idêntica em outro servidor\" → replicação.",
+    "pegadinha": "O MongoDB não guarda em XML: usa documentos no estilo JSON (internamente, BSON)."
+  },
+  {
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Data warehouse, OLAP e BI",
+    "modelo": "conceito",
+    "resumo": "O data warehouse junta dados históricos de vários sistemas, já limpos, para análise e relatórios. Ex.: \"vendas por região nos últimos 3 anos\".",
+    "nao_confundir": [
+      {
+        "conceito": "OLTP",
+        "faz": "registra as operações do dia a dia (cada venda)"
+      },
+      {
+        "conceito": "DW",
+        "faz": "guarda o histórico integrado para análise"
+      },
+      {
+        "conceito": "OLAP",
+        "faz": "analisa esse histórico em várias dimensões (cubos, drill-down)"
+      },
+      {
+        "conceito": "Data mart",
+        "faz": "pedaço do DW para uma área (vendas, RH)"
+      }
+    ],
+    "palavras_chave": "\"não volátil\", \"variante no tempo\", \"integrado\", \"orientado a assunto\" → DW; \"fato\" = medidas (valor, quantidade); \"dimensão\" = contexto (produto, data).",
+    "pegadinha": "Dizer que o data mart reúne vários DWs: é o contrário, ele é a parte menor."
+  },
+  {
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Engenharia de dados (ETL, ELT, data lake)",
+    "modelo": "conceito",
+    "resumo": "Engenharia de dados é levar os dados das fontes até onde serão usados. Ex.: extrair as vendas, padronizar as datas e carregar no DW (ETL).",
+    "nao_confundir": [
+      {
+        "conceito": "ETL",
+        "faz": "transforma antes de carregar (comum no DW)"
+      },
+      {
+        "conceito": "ELT",
+        "faz": "carrega o dado bruto e transforma no destino"
+      },
+      {
+        "conceito": "Data lake",
+        "faz": "guarda dado bruto de qualquer tipo, sem esquema prévio"
+      }
+    ],
+    "palavras_chave": "\"esquema na leitura\", \"não estruturados\", \"formato original\" → data lake; \"esquema antes de gravar\" → DW.",
+    "pegadinha": "Dizer que o data lake exige esquema antes de gravar, ou que o DW guarda o formato original: os dois estão invertidos."
+  },
+  {
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Mineração de dados",
+    "modelo": "conceito",
+    "resumo": "Minerar dados é usar algoritmos para achar padrões úteis em grandes volumes de dados. Ex.: descobrir que quem compra pão costuma levar manteiga.",
+    "nao_confundir": [
+      {
+        "conceito": "Regra de associação",
+        "faz": "itens que aparecem juntos"
+      },
+      {
+        "conceito": "Árvore de decisão",
+        "faz": "classifica por uma sequência de perguntas"
+      },
+      {
+        "conceito": "Extração (o E do ETL)",
+        "faz": "só copia os dados; não descobre padrão"
+      }
+    ],
+    "palavras_chave": "\"cesta de compras\", \"comprados juntos\" → regra de associação; \"sequência de perguntas\" → árvore de decisão.",
+    "pegadinha": ""
+  },
+  {
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Dados abertos",
+    "modelo": "conceito",
+    "resumo": "Dados abertos são dados que qualquer pessoa pode acessar, usar e compartilhar, em formato que um programa consiga ler. Ex.: gastos da prefeitura publicados em CSV.",
+    "nao_confundir": [
+      {
+        "conceito": "1 estrela",
+        "faz": "na web, em qualquer formato, com licença aberta (até PDF)"
+      },
+      {
+        "conceito": "2 estrelas",
+        "faz": "estruturado, como planilha XLSX"
+      },
+      {
+        "conceito": "3 estrelas",
+        "faz": "formato não proprietário, como CSV"
+      },
+      {
+        "conceito": "4 e 5 estrelas",
+        "faz": "URIs e dados ligados a outros (linked data)"
+      }
+    ],
+    "palavras_chave": "\"formato não proprietário\" → 3 estrelas; \"ligado a outros dados\" → 5 estrelas.",
+    "pegadinha": "Trocar XLSX por CSV, mantendo a licença aberta, leva os dados a 3 estrelas, e não a 2."
+  },
+  {
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Machine learning — conceitos e tipos de aprendizado",
+    "modelo": "conceito",
+    "resumo": "No machine learning, o computador aprende padrões a partir de exemplos, em vez de seguir regras escritas à mão. Ex.: aprender o que é spam vendo milhares de e-mails.",
+    "nao_confundir": [
+      {
+        "conceito": "Supervisionado",
+        "faz": "aprende com exemplos rotulados (resposta conhecida)"
+      },
+      {
+        "conceito": "Não supervisionado",
+        "faz": "acha padrões sem rótulo, como grupos"
+      },
+      {
+        "conceito": "Por reforço",
+        "faz": "aprende por tentativa e erro, com recompensa"
+      }
+    ],
+    "palavras_chave": "\"rotulado\" → supervisionado; \"clusters\", \"agrupar por semelhança, sem rótulo\" → não supervisionado; \"recompensa\", \"agente\" → reforço.",
+    "pegadinha": "Classificar o aprendizado por reforço como não supervisionado: ele é um tipo à parte."
+  },
+  {
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Machine learning — algoritmos",
+    "modelo": "conceito",
+    "resumo": "Cada algoritmo resolve um tipo de problema. Ex.: prever o preço de um imóvel pela área é um problema de regressão (como a regressão linear).",
+    "nao_confundir": [
+      {
+        "conceito": "Regressão linear",
+        "faz": "prevê um número (supervisionado)"
+      },
+      {
+        "conceito": "Naive Bayes",
+        "faz": "classifica, como spam ou não (supervisionado)"
+      },
+      {
+        "conceito": "K-means",
+        "faz": "agrupa (não supervisionado)"
+      }
+    ],
+    "palavras_chave": "\"valor contínuo\" → regressão; \"probabilidade das palavras\" → Naive Bayes; \"K grupos\", \"centroides\" → K-means.",
+    "pegadinha": "O K-means não descobre sozinho quantos grupos existem: o K é escolhido antes de rodar."
+  },
+  {
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Machine learning — avaliação de modelos",
+    "modelo": "conceito",
+    "resumo": "Avaliar é testar o modelo com dados que ele nunca viu, para saber se aprendeu ou só decorou. Ex.: 99% de acerto no treino e 60% no teste indicam que decorou.",
+    "nao_confundir": [
+      {
+        "conceito": "Overfitting",
+        "faz": "ótimo no treino, ruim no teste (decorou)"
+      },
+      {
+        "conceito": "Underfitting",
+        "faz": "ruim até no treino (simples demais)"
+      },
+      {
+        "conceito": "Falso positivo",
+        "faz": "disse \"é fraude\" e errou"
+      }
+    ],
+    "palavras_chave": "\"generalização\" → teste com dados novos; \"k-fold\" → cada parte testa uma vez; \"erro do tipo 1\" → falso positivo.",
+    "pegadinha": "Dizer que a acurácia do treino basta e dispensa o teste com dados separados."
+  },
+  {
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Deep learning e PLN",
+    "modelo": "conceito",
+    "resumo": "Deep learning usa redes neurais com muitas camadas; PLN faz o computador lidar com a linguagem humana. Ex.: reconhecer placas em fotos; traduzir um texto.",
+    "nao_confundir": [
+      {
+        "conceito": "CNN (convolucional)",
+        "faz": "imagens"
+      },
+      {
+        "conceito": "LSTM (recorrente)",
+        "faz": "sequências, como texto"
+      },
+      {
+        "conceito": "Bag of words",
+        "faz": "conta as palavras e perde a ordem"
+      }
+    ],
+    "palavras_chave": "\"muitas camadas\", \"profunda\" → deep learning; \"convolução\", \"imagem\" → CNN; \"sequência\", \"memória\" → LSTM; \"vetor que representa a palavra\" → embedding.",
+    "pegadinha": "Dizer que a LSTM é convolucional ou que o bag of words considera a ordem das palavras."
+  },
+  {
+    "materia": "Banco de Dados & Dados",
+    "assunto": "IA generativa e LLMs",
+    "modelo": "conceito",
+    "resumo": "IA generativa cria conteúdo novo; o LLM gera texto pedaço por pedaço (token), escolhendo o próximo com base em probabilidades. Ex.: um chatbot escrevendo um resumo.",
+    "nao_confundir": [
+      {
+        "conceito": "IA generativa",
+        "faz": "cria texto, imagem ou áudio novo"
+      },
+      {
+        "conceito": "IA discriminativa",
+        "faz": "classifica o que já existe (spam ou não)"
+      },
+      {
+        "conceito": "Alucinação",
+        "faz": "resposta falsa dita com confiança"
+      }
+    ],
+    "palavras_chave": "\"próximo token\" → como o LLM gera; \"temperatura\" → variação das respostas; \"prompt\" → a instrução enviada.",
+    "pegadinha": "Inverter a temperatura: mais alta deixa as respostas mais variadas e criativas; mais baixa, mais previsíveis."
+  },
+  {
+    "materia": "Banco de Dados & Dados",
+    "assunto": "MLOps",
+    "modelo": "conceito",
+    "resumo": "MLOps é aplicar ao machine learning as práticas do DevOps para pôr modelos em produção e mantê-los bons. Ex.: versionar o modelo, fazer o deploy numa API e monitorar.",
+    "nao_confundir": [
+      {
+        "conceito": "DevOps",
+        "faz": "ciclo de vida do software"
+      },
+      {
+        "conceito": "MLOps",
+        "faz": "ciclo do modelo: dados, treino, deploy, monitoramento, retreino"
+      },
+      {
+        "conceito": "Drift",
+        "faz": "os dados reais mudam e o modelo piora"
+      }
+    ],
+    "palavras_chave": "\"rastreabilidade\", \"rollback\", \"reprodutibilidade\" → versionamento de modelos; \"implantar\" → deploy.",
+    "pegadinha": "Dizer que a orquestração em MLOps cuida só do treino: ela cobre também o deploy e o monitoramento."
+  },
+  {
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Ética e governança de IA",
+    "modelo": "conceito",
+    "resumo": "É garantir que a IA seja justa, explicável e transparente, com supervisão humana nas decisões que afetam pessoas. Ex.: poder explicar por que um crédito foi negado.",
+    "nao_confundir": [
+      {
+        "conceito": "Viés algorítmico",
+        "faz": "resultado injusto para um grupo de pessoas"
+      },
+      {
+        "conceito": "Explicabilidade",
+        "faz": "poder dizer por que o modelo decidiu"
+      },
+      {
+        "conceito": "Transparência",
+        "faz": "informar que a IA é usada e como"
+      }
+    ],
+    "palavras_chave": "\"caixa-preta\" → falta de explicabilidade; \"decisão unicamente automatizada\" → LGPD art. 20, direito de pedir revisão (a lei não exige que seja feita por humano).",
+    "pegadinha": "Dizer que a opacidade dos algoritmos é boa prática: os princípios pedem o contrário, transparência."
+  },
+  {
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
+    "modelo": "conceito",
+    "resumo": "Os modelos OSI (7 camadas) e TCP/IP (4, ou 5 em alguns livros) dividem a comunicação em camadas, cada uma com uma função. Ex.: o IP endereça os pacotes (rede); o TCP garante a entrega (transporte).",
+    "nao_confundir": [
+      {
+        "conceito": "Hub",
+        "faz": "repete o sinal para as demais portas (física)"
+      },
+      {
+        "conceito": "Switch",
+        "faz": "encaminha pelo endereço MAC (enlace)"
+      },
+      {
+        "conceito": "Roteador",
+        "faz": "escolhe o caminho entre redes pelo IP (rede)"
+      }
+    ],
+    "palavras_chave": "\"orientado a conexão\", \"garante entrega e ordem\" → TCP; \"sem conexão, na camada de transporte\" → UDP; \"vários IPs privados saem por um público\" → NAT.",
+    "pegadinha": "Dizer que a camada de transporte garante entrega confiável com TCP e UDP: só o TCP garante; o UDP não confirma nada."
+  },
+  {
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Protocolos de aplicação (DNS, HTTP, SMTP, LDAP)",
+    "modelo": "conceito",
+    "resumo": "São os protocolos que os programas usam para conversar pela rede, cada um com uma tarefa. Ex.: ao abrir www.gov.br, o DNS acha o IP e o HTTPS traz a página.",
+    "nao_confundir": [
+      {
+        "conceito": "DNS",
+        "faz": "traduz nome em IP"
+      },
+      {
+        "conceito": "DHCP",
+        "faz": "entrega IP, máscara e gateway automaticamente"
+      },
+      {
+        "conceito": "SMTP",
+        "faz": "envia e-mail (IMAP e POP3 leem a caixa)"
+      },
+      {
+        "conceito": "LDAP",
+        "faz": "consulta o diretório de usuários (como o Active Directory)"
+      }
+    ],
+    "palavras_chave": "\"nome → IP\", porta 53 → DNS; \"HTTP + TLS\", porta 443 → HTTPS; \"monitorar equipamentos\" → SNMP.",
+    "pegadinha": "Dizer que o HTTP envia e recebe e-mail: envio é SMTP, leitura é IMAP ou POP3; o HTTP só liga o navegador ao webmail."
+  },
+  {
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Roteamento, switching e SDN",
+    "modelo": "conceito",
+    "resumo": "Switching entrega os dados dentro da rede local pelo MAC; roteamento escolhe o caminho entre redes pelo IP. Ex.: o switch liga os PCs do andar; o roteador leva até a internet.",
+    "nao_confundir": [
+      {
+        "conceito": "OSPF",
+        "faz": "estado de enlace: conhece o mapa e calcula rotas (Dijkstra)"
+      },
+      {
+        "conceito": "RIP",
+        "faz": "vetor de distância: conta saltos"
+      },
+      {
+        "conceito": "SDN",
+        "faz": "separa o controle (logicamente centralizado) do encaminhamento"
+      }
+    ],
+    "palavras_chave": "\"Dijkstra\", \"estado de enlace\" → OSPF; \"número de saltos\" → RIP; \"redes lógicas no mesmo switch\" → VLAN.",
+    "pegadinha": "Dizer que a SDN tem pouca flexibilidade: centralizar o controle é justamente o que a deixa flexível."
+  },
+  {
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Camada física e meios de transmissão",
+    "modelo": "conceito",
+    "resumo": "A camada física leva os bits pelo meio: cabo de cobre, fibra ou ondas de rádio. Ex.: o cabo de rede com conector RJ-45 do escritório é par trançado.",
+    "nao_confundir": [
+      {
+        "conceito": "Par trançado",
+        "faz": "sinal elétrico, conector RJ-45, redes locais"
+      },
+      {
+        "conceito": "Fibra óptica",
+        "faz": "luz, imune a interferência, longas distâncias"
+      },
+      {
+        "conceito": "Wi-Fi",
+        "faz": "ondas de rádio, sem cabo"
+      }
+    ],
+    "palavras_chave": "\"imune a interferência eletromagnética\" → fibra; \"capacidade com ruído\" → Shannon; \"canal ideal, sem ruído\" → Nyquist.",
+    "pegadinha": "Trocar o nome da fórmula: canal com ruído é Shannon (Metcalfe não calcula taxa); canal ideal, sem ruído, é Nyquist."
+  },
+  {
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de redes (firewall, VPN, IPSec, IDS/IPS)",
+    "modelo": "conceito",
+    "resumo": "São as barreiras e os túneis que protegem o tráfego. Ex.: o firewall bloqueia as portas não liberadas; a VPN cria um túnel criptografado para quem trabalha de casa.",
+    "nao_confundir": [
+      {
+        "conceito": "Firewall",
+        "faz": "filtra o que passa, por regras"
+      },
+      {
+        "conceito": "IDS",
+        "faz": "detecta e alerta"
+      },
+      {
+        "conceito": "IPS",
+        "faz": "detecta e bloqueia"
+      },
+      {
+        "conceito": "SIEM",
+        "faz": "junta e correlaciona registros e alerta; não bloqueia por si só"
+      }
+    ],
+    "palavras_chave": "\"nunca confie, sempre verifique\" → Zero Trust; \"túnel criptografado pela internet\" → VPN (IPSec ou TLS); \"muitas máquinas derrubando um serviço\" → DDoS.",
+    "pegadinha": "Achar que o SIEM dispensa o IPS: o SIEM correlaciona e alerta; quem bloqueia o ataque é o IPS."
+  },
+  {
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Criptografia, certificação digital e PKI",
+    "modelo": "conceito",
+    "resumo": "Criptografia embaralha os dados para que só quem tem a chave consiga ler. Ex.: no HTTPS, a assimétrica protege a troca da chave e a simétrica, mais rápida, cifra os dados.",
+    "nao_confundir": [
+      {
+        "conceito": "Simétrica",
+        "faz": "uma chave só, para cifrar e decifrar (AES)"
+      },
+      {
+        "conceito": "Assimétrica",
+        "faz": "par de chaves, pública e privada (RSA)"
+      },
+      {
+        "conceito": "Hash",
+        "faz": "resumo de tamanho fixo, sem volta (SHA-256)"
+      }
+    ],
+    "palavras_chave": "\"só o destinatário lê\" → cifrar com a chave pública dele; \"não repúdio\" → assinatura com a chave privada do autor; \"atesta de quem é a chave pública\" → certificado (AC, ICP-Brasil).",
+    "pegadinha": "Inverter as chaves da assinatura: o remetente assina com a própria chave privada, e quem confere usa a chave pública dele."
+  },
+  {
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Autenticação e identidade (MFA, SSO, SAML, OAuth)",
+    "modelo": "conceito",
+    "resumo": "Autenticar é provar quem você é; autorizar é definir o que você pode fazer. Ex.: senha + código no celular para entrar (autenticação); o perfil RH decide o que você vê (autorização).",
+    "nao_confundir": [
+      {
+        "conceito": "MFA",
+        "faz": "fatores de tipos diferentes: algo que sabe, tem ou é"
+      },
+      {
+        "conceito": "SSO",
+        "faz": "um login vale para vários sistemas"
+      },
+      {
+        "conceito": "OAuth 2.0",
+        "faz": "dá a um app acesso limitado, sem a sua senha (autorização)"
+      }
+    ],
+    "palavras_chave": "\"2 ou mais fatores de categorias diferentes (sabe, tem, é)\" → MFA; \"login único\" → SSO (SAML, OpenID Connect); \"permissões por papel\" → RBAC.",
+    "pegadinha": "Dizer que o RBAC dispensa o MFA: RBAC é autorização (o que você pode fazer); MFA é autenticação (quem você é)."
+  },
+  {
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Ataques e desenvolvimento seguro (OWASP)",
+    "modelo": "conceito",
+    "resumo": "Ataques exploram falhas da aplicação, e o desenvolvimento seguro as fecha desde o código. Ex.: validar no servidor tudo o que o usuário envia.",
+    "nao_confundir": [
+      {
+        "conceito": "SQL injection",
+        "faz": "o dado enviado (campo, URL, cookie) vira parte da consulta SQL"
+      },
+      {
+        "conceito": "XSS",
+        "faz": "script injetado roda no navegador de outro usuário"
+      },
+      {
+        "conceito": "CSRF",
+        "faz": "o navegador logado envia uma ação que a vítima não pediu"
+      }
+    ],
+    "palavras_chave": "\"' OR '1'='1\", \"prepared statement\" → SQL injection; \"escapar a saída\" → XSS; \"token anti-CSRF\" → CSRF; \"riscos mais críticos da web\" → OWASP Top 10.",
+    "pegadinha": "Achar que HTTPS ou validação no navegador bastam: o HTTPS só protege o caminho, e a validação que vale é no servidor."
+  },
+  {
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de endpoint e malware",
+    "modelo": "conceito",
+    "resumo": "Malware é todo programa feito para causar dano, e cada tipo age de um jeito. Ex.: um anexo falso que, ao ser aberto, criptografa os arquivos e pede resgate (ransomware).",
+    "nao_confundir": [
+      {
+        "conceito": "Vírus",
+        "faz": "se anexa a um arquivo e depende de ser executado"
+      },
+      {
+        "conceito": "Worm",
+        "faz": "se espalha sozinho pela rede"
+      },
+      {
+        "conceito": "Trojan",
+        "faz": "parece programa útil e esconde ação maliciosa"
+      }
+    ],
+    "palavras_chave": "\"resgate\" → ransomware; \"registra as teclas\" → keylogger; \"sem arquivo no disco\", \"usa PowerShell\" → fileless; \"desligar o que não é usado\" → hardening.",
+    "pegadinha": "Dizer que o keylogger fileless precisa de um rootkit instalado: ele age na memória, sem gravar arquivo, e não depende disso."
+  },
+  {
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Gestão de SI e riscos (ISO 27001, 27002, 27005)",
+    "modelo": "conceito",
+    "resumo": "Gestão de SI é proteger a informação de forma organizada, decidindo o que fazer com cada risco. Ex.: servidor sem atualização (vulnerabilidade) + hacker (ameaça) = risco de invasão.",
+    "nao_confundir": [
+      {
+        "conceito": "ISO 27001",
+        "faz": "requisitos do SGSI (é a certificável)"
+      },
+      {
+        "conceito": "ISO 27002",
+        "faz": "detalha como aplicar os controles (o Anexo A da 27001 só os lista)"
+      },
+      {
+        "conceito": "ISO 27005",
+        "faz": "gestão de riscos de SI"
+      }
+    ],
+    "palavras_chave": "\"confidencialidade, integridade, disponibilidade\" → tríade CID; \"contratar seguro\" → transferir o risco; \"isolar a máquina\" → contenção.",
+    "pegadinha": "Dizer que gerir riscos elimina todas as vulnerabilidades: trata-se o risco até um nível aceitável, e sobra risco residual."
+  },
+  {
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Frameworks de segurança (NIST CSF, CIS Controls)",
+    "modelo": "conceito",
+    "resumo": "Frameworks são roteiros prontos de segurança para a organização seguir. Ex.: no NIST CSF, um dos primeiros passos é inventariar todos os ativos (função Identificar).",
+    "nao_confundir": [
+      {
+        "conceito": "NIST CSF 2.0",
+        "faz": "6 funções: Governar, Identificar, Proteger, Detectar, Responder, Recuperar"
+      },
+      {
+        "conceito": "CIS Controls",
+        "faz": "lista priorizada de ações de defesa (v8: 18)"
+      },
+      {
+        "conceito": "MITRE ATT&CK",
+        "faz": "catálogo de táticas e técnicas de atacantes"
+      }
+    ],
+    "palavras_chave": "\"Governar\" → função nova do CSF 2.0; \"inventário de ativos\" → Identificar (CSF) e Controle 1 (CIS); \"táticas e técnicas\" → ATT&CK.",
+    "pegadinha": "Dizer que o núcleo do NIST CSF tem 3 funções: a versão 2.0 tem 6, e a 1.1 tinha 5."
+  },
+  {
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Normas de SI na APF (GSI)",
+    "modelo": "conceito",
+    "resumo": "Na Administração Pública Federal, o GSI/PR coordena a política de segurança da informação, e a LGPD rege os dados pessoais. Ex.: o GSI edita instruções normativas para os órgãos.",
+    "nao_confundir": [
+      {
+        "conceito": "Controlador",
+        "faz": "decide para que e como tratar os dados"
+      },
+      {
+        "conceito": "Operador",
+        "faz": "trata os dados em nome do controlador"
+      },
+      {
+        "conceito": "Encarregado (DPO)",
+        "faz": "ponte com os titulares e a ANPD"
+      }
+    ],
+    "palavras_chave": "\"coordena a política de SI da APF\" → GSI/PR; \"configuração inicial mais protetiva\" → privacy by default; \"propósito legítimo e informado\" → finalidade.",
+    "pegadinha": "Achar que, se os dados estão seguros, pode-se coletar mais: privacidade por padrão é coletar só o necessário."
+  },
+  {
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Continuidade de negócios",
+    "modelo": "conceito",
+    "resumo": "Continuidade é manter ou retomar o essencial durante uma crise. Ex.: após um ataque, a folha de pagamento volta em 4 horas (RTO) usando o backup da noite anterior.",
+    "nao_confundir": [
+      {
+        "conceito": "RTO",
+        "faz": "prazo máximo aceitável para o serviço voltar"
+      },
+      {
+        "conceito": "RPO",
+        "faz": "quanto dado (em tempo) se aceita perder"
+      },
+      {
+        "conceito": "MTBF",
+        "faz": "tempo médio entre falhas"
+      }
+    ],
+    "palavras_chave": "\"tempo para restabelecer\" → RTO; \"ponto de recuperação\" → RPO; \"3 cópias, 2 mídias, 1 fora\" → backup 3-2-1; norma → ISO 22301.",
+    "pegadinha": "Achar que a continuidade só trata do depois: a estratégia (ISO 22301) prevê a operação antes, durante e depois da interrupção."
+  },
+  {
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Blockchain e DLT",
+    "modelo": "conceito",
+    "resumo": "Blockchain é um registro compartilhado em que cada bloco guarda o hash do anterior, o que torna o passado difícil de alterar. Ex.: mudar um bloco antigo quebra toda a cadeia.",
+    "nao_confundir": [
+      {
+        "conceito": "DLT",
+        "faz": "registro de transações distribuído entre participantes"
+      },
+      {
+        "conceito": "Blockchain",
+        "faz": "um tipo de DLT, em blocos encadeados"
+      },
+      {
+        "conceito": "Consenso",
+        "faz": "como os nós concordam sobre o que entra"
+      }
+    ],
+    "palavras_chave": "\"hash do bloco anterior\" → encadeamento; \"qualquer um participa\", \"sem permissão\" → blockchain pública; \"livro-razão distribuído\" → DLT.",
+    "pegadinha": "Dizer que a blockchain é um tipo de criptografia assimétrica: ela usa criptografia, mas é um registro distribuído."
+  },
+  {
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Scrum",
+    "modelo": "conceito",
+    "resumo": "Scrum é um framework ágil que trabalha em ciclos de até um mês (Sprints), com 3 responsabilidades e 5 eventos. Ex.: a cada Sprint, o time produz ao menos um incremento utilizável.",
+    "nao_confundir": [
+      {
+        "conceito": "Product Owner",
+        "faz": "ordena o Product Backlog: o que vem primeiro"
+      },
+      {
+        "conceito": "Scrum Master",
+        "faz": "faz o Scrum funcionar e ajuda a remover impedimentos"
+      },
+      {
+        "conceito": "Developers",
+        "faz": "constroem o incremento; donos do Sprint Backlog"
+      }
+    ],
+    "palavras_chave": "\"maximiza o valor do produto\" → Product Owner; \"até 15 minutos\" → Daily; \"inspeciona o incremento com os interessados\" → Review; \"melhora a forma de trabalhar\" → Retrospectiva.",
+    "pegadinha": "Dizer que o Product Owner altera o Sprint Backlog durante a Sprint: ele pertence aos Developers."
+  },
+  {
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Métodos ágeis (manifesto, XP, Kanban, Lean)",
+    "modelo": "conceito",
+    "resumo": "Métodos ágeis entregam o software em partes que funcionam, com entregas frequentes, ajustando o rumo com o retorno do cliente. Ex.: entregar a tela de login em duas semanas e melhorá-la com o uso.",
+    "nao_confundir": [
+      {
+        "conceito": "XP",
+        "faz": "práticas de engenharia: programação em par, TDD, integração contínua"
+      },
+      {
+        "conceito": "Kanban",
+        "faz": "fluxo visual com limite de itens em andamento (WIP)"
+      },
+      {
+        "conceito": "Lean",
+        "faz": "corta desperdício; cada etapa produz quando a seguinte pede"
+      }
+    ],
+    "palavras_chave": "\"software em funcionamento mais que documentação\" → Manifesto Ágil; \"programação em par\" → XP; \"limitar o WIP\" → Kanban; \"sistema puxado\" → Lean e Kanban; \"eliminar desperdício\" → Lean.",
+    "pegadinha": "Confundir lead time com cycle time: lead time vai do compromisso até a entrega; cycle time, do início do trabalho até a conclusão."
+  },
+  {
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Engenharia de requisitos",
+    "modelo": "conceito",
+    "resumo": "Requisitos dizem o que o sistema deve fazer e com que qualidade. Ex.: \"emitir o boleto\" é requisito funcional; \"responder em até 2 segundos\" é não funcional.",
+    "nao_confundir": [
+      {
+        "conceito": "Funcional",
+        "faz": "uma função ou serviço que o sistema oferece"
+      },
+      {
+        "conceito": "Não funcional",
+        "faz": "qualidade ou restrição: desempenho, segurança, usabilidade"
+      },
+      {
+        "conceito": "História de usuário",
+        "faz": "\"Como <papel>, quero <ação>, para <benefício>\""
+      }
+    ],
+    "palavras_chave": "verbo de serviço (emitir, cadastrar, calcular) → funcional; \"em até X segundos\", \"disponível 24 horas\" → não funcional; \"entrevista, workshop\" → elicitação.",
+    "pegadinha": "Chamar usabilidade ou portabilidade de requisito funcional: são não funcionais, porque dizem como o sistema deve ser."
+  },
+  {
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Análise e projeto OO (UML, DDD)",
+    "modelo": "conceito",
+    "resumo": "Análise e projeto OO modelam o sistema como objetos antes de programar, em geral com os diagramas da UML. Ex.: o diagrama de classes mostra Aluno, Disciplina e a ligação entre elas.",
+    "nao_confundir": [
+      {
+        "conceito": "Diagrama de classes",
+        "faz": "a estrutura: classes, atributos e relações"
+      },
+      {
+        "conceito": "Diagrama de sequência",
+        "faz": "a ordem das mensagens no tempo"
+      },
+      {
+        "conceito": "Diagrama de comunicação",
+        "faz": "as ligações entre objetos; ordem só pela numeração"
+      },
+      {
+        "conceito": "Casos de uso",
+        "faz": "os atores e o que fazem no sistema"
+      }
+    ],
+    "palavras_chave": "\"mesmos termos do negócio no código\" → linguagem ubíqua (DDD); \"fronteira em que o termo tem um sentido só\" → contexto delimitado (bounded context).",
+    "pegadinha": "Chamar a UML de metodologia: ela é uma linguagem de modelagem e não diz em que ordem trabalhar."
+  },
+  {
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "DevOps, DevSecOps e CI/CD",
+    "modelo": "conceito",
+    "resumo": "DevOps une desenvolvimento e operações, com automação, para entregar com frequência e segurança. Ex.: a cada envio de código, o pipeline compila, testa e deixa a versão pronta para implantar.",
+    "nao_confundir": [
+      {
+        "conceito": "Integração contínua",
+        "faz": "integra e testa o código várias vezes ao dia"
+      },
+      {
+        "conceito": "Entrega contínua",
+        "faz": "sempre pronto; alguém decide quando ir para produção"
+      },
+      {
+        "conceito": "Implantação contínua",
+        "faz": "passou nos testes, vai para produção sozinho"
+      }
+    ],
+    "palavras_chave": "\"shift-left\" → segurança desde o início (DevSecOps); \"SAST\" → analisa o código parado; \"DAST\" → testa a aplicação rodando; \".gitlab-ci.yml\" → pipeline do GitLab.",
+    "pegadinha": "Dizer que o pipeline implanta primeiro e integra depois: a ordem é integrar e testar antes de implantar."
+  },
+  {
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Métricas e estimativas (APF, pontos de história)",
+    "modelo": "conceito",
+    "resumo": "Métricas medem o tamanho e o esforço do software para planejar prazo e custo. Ex.: a APF mede quanto o sistema entrega ao usuário, seja qual for a linguagem.",
+    "nao_confundir": [
+      {
+        "conceito": "APF",
+        "faz": "tamanho funcional, padronizado (IFPUG)"
+      },
+      {
+        "conceito": "Story points",
+        "faz": "esforço e complexidade relativos; não são horas"
+      },
+      {
+        "conceito": "Velocidade",
+        "faz": "pontos que o próprio time entrega por Sprint"
+      }
+    ],
+    "palavras_chave": "\"tamanho funcional\", \"visão do usuário\" → APF; \"estimativa relativa\" → story points; \"cartas, em geral com Fibonacci\" → Planning Poker.",
+    "pegadinha": "Dizer que a APF mede como o software foi construído: ela mede o tamanho funcional, do ponto de vista do usuário."
+  },
+  {
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Padrões de projeto (GoF)",
+    "modelo": "conceito",
+    "resumo": "Padrões de projeto são soluções testadas, com nome conhecido, para problemas recorrentes de projeto. Ex.: o Singleton garante um único objeto de configuração no sistema.",
+    "nao_confundir": [
+      {
+        "conceito": "Adapter",
+        "faz": "converte uma interface em outra"
+      },
+      {
+        "conceito": "Decorator",
+        "faz": "acrescenta comportamento a um objeto, em tempo de execução"
+      },
+      {
+        "conceito": "Facade",
+        "faz": "dá uma interface simples para um subsistema"
+      },
+      {
+        "conceito": "Builder",
+        "faz": "monta um objeto complexo passo a passo"
+      }
+    ],
+    "palavras_chave": "\"única instância\" → Singleton; \"avisar vários quando algo muda\" → Observer; \"famílias de objetos\" → Abstract Factory; grupos: criação, estruturais, comportamentais.",
+    "pegadinha": "Trocar Facade por Builder: Facade simplifica o acesso a um subsistema; separar a construção de um objeto complexo da sua representação é o Builder."
+  },
+  {
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Processos, ciclos de vida e manutenção de software",
+    "modelo": "conceito",
+    "resumo": "O ciclo de vida diz em que ordem o software é construído, e a manutenção cuida dele depois de pronto. Ex.: no incremental, entrega-se primeiro o essencial e depois o resto.",
+    "nao_confundir": [
+      {
+        "conceito": "Cascata",
+        "faz": "fases em sequência, uma após a outra"
+      },
+      {
+        "conceito": "Incremental",
+        "faz": "partes entregues uma de cada vez"
+      },
+      {
+        "conceito": "Espiral",
+        "faz": "ciclos guiados pela análise de riscos"
+      }
+    ],
+    "palavras_chave": "\"corrigir defeito\" → manutenção corretiva; \"mudança no ambiente\" → adaptativa; \"nova função ou melhoria\" → perfectiva; \"evitar problemas futuros\" → preventiva.",
+    "pegadinha": ""
+  },
+  {
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Qualidade e maturidade (CMMI, MPS.BR, ISO 12207)",
+    "modelo": "conceito",
+    "resumo": "Modelos de maturidade medem quão organizados e previsíveis são os processos de uma empresa. Ex.: no nível 5 do CMMI, a organização melhora o processo continuamente.",
+    "nao_confundir": [
+      {
+        "conceito": "CMMI",
+        "faz": "5 níveis de maturidade (1 a 5)"
+      },
+      {
+        "conceito": "MPS.BR",
+        "faz": "modelo brasileiro, 7 níveis (de G a A)"
+      },
+      {
+        "conceito": "ISO 12207",
+        "faz": "processos do ciclo de vida, sem níveis"
+      },
+      {
+        "conceito": "ISO 25010",
+        "faz": "características de qualidade do produto"
+      }
+    ],
+    "palavras_chave": "\"Em Otimização\" → nível 5 do CMMI = nível A do MPS.BR; \"manutenibilidade\", \"usabilidade\" → ISO 25010 (antes, ISO 9126).",
+    "pegadinha": "Inverter a escala do MPS.BR: ela vai de G (menor maturidade) até A (maior)."
+  },
+  {
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Testes de software (TDD, BDD, tipos de teste)",
+    "modelo": "conceito",
+    "resumo": "Testar é conferir se o software faz o que deveria. Ex.: o teste unitário verifica um método isolado; o de regressão roda de novo os testes antigos depois de uma mudança.",
+    "nao_confundir": [
+      {
+        "conceito": "TDD",
+        "faz": "teste antes do código: vermelho, verde, refatorar"
+      },
+      {
+        "conceito": "BDD",
+        "faz": "comportamento em linguagem do negócio (Dado, Quando, Então)"
+      },
+      {
+        "conceito": "Teste alfa",
+        "faz": "usuários testam no ambiente do desenvolvedor"
+      },
+      {
+        "conceito": "Teste beta",
+        "faz": "usuários testam no próprio ambiente"
+      }
+    ],
+    "palavras_chave": "\"Gherkin\", \"Given/When/Then\" → BDD; \"rodar de novo os testes antigos\" → regressão; \"sem olhar o código\" → caixa-preta.",
+    "pegadinha": "Dizer que no TDD o teste vem depois do código: o vermelho é escrever primeiro um teste que falha."
+  },
+  {
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Python",
+    "modelo": "conceito",
+    "resumo": "Python é uma linguagem fácil de ler, em que a indentação (o recuo) define os blocos. Ex.: for i in range(3): print(i) imprime 0, 1 e 2.",
+    "nao_confundir": [
+      {
+        "conceito": "Lista [ ]",
+        "faz": "mutável: cresce, diminui e muda"
+      },
+      {
+        "conceito": "Tupla ( )",
+        "faz": "imutável depois de criada"
+      },
+      {
+        "conceito": "Dicionário {chave: valor}",
+        "faz": "pares chave-valor, acesso pela chave"
+      }
+    ],
+    "palavras_chave": "\"/\" → divisão com resultado float; \"//\" → divisão inteira, arredonda para baixo (-7 // 2 = -4); \"append\" → acrescenta no fim; \"range(n)\" → de 0 até n − 1.",
+    "pegadinha": "Dizer que a lista tem tamanho fixo depois de criada: ela cresce e diminui; quem não muda é a tupla."
+  },
+  {
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Java",
+    "modelo": "conceito",
+    "resumo": "Java é uma linguagem orientada a objetos que compila para bytecode, executado pela JVM em qualquer sistema. Ex.: o mesmo .class roda em Windows e em Linux.",
+    "nao_confundir": [
+      {
+        "conceito": "abstract",
+        "faz": "classe que não pode ser instanciada; método que a subclasse concreta deve implementar"
+      },
+      {
+        "conceito": "final",
+        "faz": "impede reatribuir (variável), sobrescrever (método) ou herdar (classe)"
+      },
+      {
+        "conceito": "static",
+        "faz": "pertence à classe, não a cada objeto"
+      },
+      {
+        "conceito": "interface",
+        "faz": "contrato de métodos que a classe promete cumprir"
+      }
+    ],
+    "palavras_chave": "\"bytecode\", \"JVM\" → portabilidade; \"objeto sem referência\" → garbage collector; \"tratar classes diferentes de forma uniforme\" → polimorfismo (via interface).",
+    "pegadinha": "Confundir ++i com i++: no ++i soma antes de usar o valor; no i++ usa o valor e soma depois."
+  },
+  {
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "JavaScript e TypeScript",
+    "modelo": "conceito",
+    "resumo": "JavaScript dá comportamento à página no navegador; o TypeScript é JavaScript com tipos. Ex.: um clique no botão chama uma função que altera o DOM.",
+    "nao_confundir": [
+      {
+        "conceito": "var",
+        "faz": "escopo de função"
+      },
+      {
+        "conceito": "let",
+        "faz": "escopo de bloco; pode reatribuir"
+      },
+      {
+        "conceito": "const",
+        "faz": "escopo de bloco; não pode reatribuir"
+      }
+    ],
+    "palavras_chave": "\"===\" → compara valor e tipo; \"==\" → converte o tipo antes de comparar; \"superconjunto com tipagem estática\" → TypeScript; \"Virtual DOM\" → Vue, React.",
+    "pegadinha": "Achar que const deixa o objeto imutável: ela só impede reatribuir a variável; as propriedades do objeto ainda podem mudar."
+  },
+  {
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Orientação a objetos",
+    "modelo": "conceito",
+    "resumo": "Orientação a objetos organiza o programa em objetos que juntam dados e comportamento. Ex.: a classe Carro é o molde; cada carro criado a partir dela é um objeto.",
+    "nao_confundir": [
+      {
+        "conceito": "Encapsulamento",
+        "faz": "esconde os dados; acesso só por métodos"
+      },
+      {
+        "conceito": "Herança",
+        "faz": "a subclasse reaproveita a superclasse"
+      },
+      {
+        "conceito": "Polimorfismo",
+        "faz": "a mesma chamada, comportamentos diferentes"
+      },
+      {
+        "conceito": "Abstração",
+        "faz": "modela só o que é essencial"
+      }
+    ],
+    "palavras_chave": "\"mesma assinatura na subclasse\" → sobrescrita (override); \"mesmo nome, parâmetros diferentes\" → sobrecarga (overload); \"instância\" → objeto.",
+    "pegadinha": "Dizer que a sobrecarga depende de herança: ela é o mesmo nome com parâmetros diferentes, e não precisa de subclasse."
+  },
+  {
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "APIs e integração (REST, GraphQL, gRPC)",
+    "modelo": "conceito",
+    "resumo": "API é a porta que um sistema oferece para outro usar seus dados e funções. Ex.: o app do banco chama GET /saldo e recebe a resposta em JSON.",
+    "nao_confundir": [
+      {
+        "conceito": "REST",
+        "faz": "recursos por URL e verbos HTTP; stateless"
+      },
+      {
+        "conceito": "SOAP",
+        "faz": "mensagens em XML, contrato no WSDL"
+      },
+      {
+        "conceito": "GraphQL",
+        "faz": "o cliente escolhe os campos que quer"
+      },
+      {
+        "conceito": "gRPC",
+        "faz": "Protocol Buffers (binário) sobre HTTP/2"
+      }
+    ],
+    "palavras_chave": "\"stateless\" → REST; \"envelope\", \"WSDL\" → SOAP; \"POST para uma URL cadastrada quando ocorre um evento\" → webhook; GET consulta, POST cria.",
+    "pegadinha": "Dizer que o REST guarda o estado da sessão ou só devolve XML: ele é stateless e aceita JSON, XML e outros formatos."
+  },
+  {
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "HTML e CSS",
+    "modelo": "conceito",
+    "resumo": "O HTML monta a estrutura da página, e o CSS cuida da aparência. Ex.: <h1>Título</h1> cria o título; h1 { color: blue; } deixa ele azul.",
+    "nao_confundir": [
+      {
+        "conceito": "HTML",
+        "faz": "estrutura e conteúdo"
+      },
+      {
+        "conceito": "CSS",
+        "faz": "aparência: cores, fontes, espaços, animações"
+      },
+      {
+        "conceito": "JavaScript",
+        "faz": "comportamento: reage a cliques e muda a página"
+      }
+    ],
+    "palavras_chave": "\".\" → seletor de classe; \"#\" → seletor de id; \"padding\" → espaço interno; \"margin\" → espaço externo; \"required\" → campo obrigatório no HTML5.",
+    "pegadinha": "Trocar as propriedades do CSS: quem define o tamanho é width/height (padding é espaço interno), e capitalize põe maiúscula na inicial de cada palavra."
+  },
+  {
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Estruturas de dados",
+    "modelo": "conceito",
+    "resumo": "Estruturas de dados são formas de organizar os dados na memória para guardar e buscar com eficiência. Ex.: o botão Desfazer usa uma pilha: o último passo é o primeiro a sair.",
+    "nao_confundir": [
+      {
+        "conceito": "Pilha",
+        "faz": "LIFO: o último a entrar sai primeiro"
+      },
+      {
+        "conceito": "Fila",
+        "faz": "FIFO: o primeiro a entrar sai primeiro"
+      },
+      {
+        "conceito": "Deque",
+        "faz": "insere e remove nas duas pontas"
+      },
+      {
+        "conceito": "Árvore binária de busca",
+        "faz": "menores à esquerda, maiores à direita"
+      }
+    ],
+    "palavras_chave": "\"push/pop\" → pilha; \"percurso em ordem simétrica (in-order)\" numa árvore de busca → valores em ordem crescente; \"tabela hash\" → busca média O(1).",
+    "pegadinha": "No deque do Python (collections.deque), confundir as pontas: append e pop mexem no fim; appendleft e popleft, no início."
+  },
+  {
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Algoritmos (ordenação, busca, complexidade)",
+    "modelo": "conceito",
+    "resumo": "Algoritmo é uma receita passo a passo; a complexidade diz como o tempo cresce com o tamanho dos dados. Ex.: numa lista ordenada de 1 milhão de nomes, a busca binária acha um em cerca de 20 passos.",
+    "nao_confundir": [
+      {
+        "conceito": "Busca linear",
+        "faz": "olha um por um: O(n)"
+      },
+      {
+        "conceito": "Busca binária",
+        "faz": "corta a lista ao meio a cada passo: O(log n); exige lista ordenada"
+      },
+      {
+        "conceito": "Ordenação estável",
+        "faz": "mantém a ordem original dos elementos iguais"
+      }
+    ],
+    "palavras_chave": "\"compara vizinhos e troca\" → bolha; \"pivô\" → quicksort; \"divide e intercala\" → merge sort.",
+    "pegadinha": "Dizer que a seleção direta é estável: bolha e inserção são estáveis; a seleção, na versão clássica, não."
+  },
+  {
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Git e versionamento",
+    "modelo": "conceito",
+    "resumo": "O Git guarda o histórico de alterações do código e permite trabalhar em paralelo sem perder nada. Ex.: cada commit é um retrato do projeto, ao qual dá para voltar.",
+    "nao_confundir": [
+      {
+        "conceito": "commit",
+        "faz": "grava no repositório local o que foi preparado (git add)"
+      },
+      {
+        "conceito": "push",
+        "faz": "envia os commits ao repositório remoto"
+      },
+      {
+        "conceito": "pull",
+        "faz": "traz do remoto e junta (fetch + merge)"
+      },
+      {
+        "conceito": "clone",
+        "faz": "copia o repositório inteiro, com histórico"
+      }
+    ],
+    "palavras_chave": "\"linha de trabalho isolada\" → branch; \"juntar uma branch em outra\" → merge; \"mesma linha alterada nas duas branches\" → conflito.",
+    "pegadinha": "Achar que feature branch não tem custo: a branch de longa duração, que demora a voltar para a principal, atrapalha a integração contínua."
+  },
+  {
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Protocolos e arquitetura web (HTTP, HTTP/2, WebSocket)",
+    "modelo": "conceito",
+    "resumo": "O HTTP é o protocolo de pedido e resposta da web; o WebSocket mantém um canal aberto nos dois sentidos. Ex.: abrir uma página é HTTP; um chat ao vivo usa WebSocket.",
+    "nao_confundir": [
+      {
+        "conceito": "HTTP/1.1",
+        "faz": "reaproveita a conexão, mas as respostas saem em fila"
+      },
+      {
+        "conceito": "HTTP/2",
+        "faz": "várias em paralelo na mesma conexão (multiplexação)"
+      },
+      {
+        "conceito": "WebSocket",
+        "faz": "conversa contínua nos dois sentidos, por mensagens"
+      }
+    ],
+    "palavras_chave": "\"301\" → movido para sempre; \"302\" → movido temporariamente; \"404\" → não encontrado; \"5xx\" → erro do servidor.",
+    "pegadinha": "Inverter as versões: é o HTTP/2, e não o HTTP/1.1, que atende várias requisições em paralelo na mesma conexão."
+  },
+  {
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "C# e .NET",
+    "modelo": "conceito",
+    "resumo": "C# é a linguagem orientada a objetos da Microsoft, executada na plataforma .NET. Ex.: sistemas web de órgãos públicos feitos em ASP.NET.",
+    "nao_confundir": [
+      {
+        "conceito": "??",
+        "faz": "usa um valor padrão quando a variável é nula"
+      },
+      {
+        "conceito": "foreach",
+        "faz": "percorre cada item de uma coleção"
+      },
+      {
+        "conceito": "while",
+        "faz": "repete enquanto a condição for verdadeira"
+      }
+    ],
+    "palavras_chave": "\"coalescência nula\" → ??; \"plataforma .NET\" → C# (a principal linguagem dela); \"JVM\" → Java, e não C#.",
+    "pegadinha": "No teste de mesa, esquecer o pós-incremento: em while (num++ < 6), o num já está somado quando é impresso."
+  },
+  {
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Acessibilidade (e-MAG, WCAG)",
+    "modelo": "conceito",
+    "resumo": "Acessibilidade é fazer o site funcionar para todos, inclusive pessoas com deficiência. Ex.: o atributo alt descreve a imagem para quem usa leitor de tela.",
+    "nao_confundir": [
+      {
+        "conceito": "e-MAG",
+        "faz": "modelo de acessibilidade do governo federal brasileiro"
+      },
+      {
+        "conceito": "WCAG",
+        "faz": "diretrizes internacionais do W3C"
+      },
+      {
+        "conceito": "Leitor de tela",
+        "faz": "lê a página em voz alta para quem não enxerga"
+      }
+    ],
+    "palavras_chave": "\"tudo funcionar só pelo teclado\" → acessibilidade (e-MAG e WCAG); \"perceptível, operável, compreensível, robusto\" → WCAG; \"texto alternativo\" → alt.",
+    "pegadinha": "Achar que abrir links em nova aba ou mudar o foco sozinho ajuda: o e-MAG recomenda não mudar o contexto sem o usuário pedir."
+  },
+  {
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Portais, CMS, busca e gestão de conteúdo",
+    "modelo": "conceito",
+    "resumo": "O CMS publica conteúdo sem programar; o portal reúne informações de várias fontes num só lugar. Ex.: o site de um órgão feito em WordPress, atualizado pela equipe de comunicação.",
+    "nao_confundir": [
+      {
+        "conceito": "CMS",
+        "faz": "separa o conteúdo da aparência (WordPress, Drupal)"
+      },
+      {
+        "conceito": "Portal corporativo",
+        "faz": "um acesso a várias fontes, personalizável"
+      },
+      {
+        "conceito": "GED/ECM",
+        "faz": "organiza e recupera os documentos"
+      },
+      {
+        "conceito": "Crawler",
+        "faz": "percorre as páginas para indexá-las"
+      }
+    ],
+    "palavras_chave": "\"publicar sem programar\", \"interface de edição\" → CMS; \"site:gov.br\" no Google → busca só nesse domínio; \"várias fontes num só lugar\" → portal.",
+    "pegadinha": "Achar que a indexação nos buscadores é imediata: o crawler precisa visitar a página antes, o que pode levar horas ou dias."
+  },
+  {
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Desenvolvimento mobile",
+    "modelo": "conceito",
+    "resumo": "Desenvolver para celular é lidar com tela pequena, bateria limitada e conexão instável. Ex.: o app guarda os dados offline e sincroniza quando a rede volta.",
+    "nao_confundir": [
+      {
+        "conceito": "App nativo",
+        "faz": "feito para uma plataforma (Kotlin no Android, Swift no iOS)"
+      },
+      {
+        "conceito": "App web",
+        "faz": "roda no navegador"
+      },
+      {
+        "conceito": "App híbrido",
+        "faz": "HTML, CSS e JS dentro de um app nativo (WebView)"
+      }
+    ],
+    "palavras_chave": "\"melhor acesso ao hardware\" → nativo; \"economia de bateria\" → cuidado obrigatório no projeto mobile.",
+    "pegadinha": ""
+  },
+  {
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "COBOL e sistemas legados",
+    "modelo": "conceito",
+    "resumo": "COBOL é uma linguagem antiga, ainda usada em mainframes de bancos e do governo para processar grandes volumes de dados. Ex.: a folha de pagamento de um órgão pode rodar em COBOL.",
+    "nao_confundir": [
+      {
+        "conceito": "IDENTIFICATION DIVISION",
+        "faz": "identifica o programa"
+      },
+      {
+        "conceito": "ENVIRONMENT DIVISION",
+        "faz": "ambiente e arquivos"
+      },
+      {
+        "conceito": "DATA DIVISION",
+        "faz": "variáveis, com as cláusulas PIC"
+      },
+      {
+        "conceito": "PROCEDURE DIVISION",
+        "faz": "a lógica do programa"
+      }
+    ],
+    "palavras_chave": "\"PIC 9(3)\" → número de 3 dígitos; \"PIC X(10)\" → texto de 10 caracteres; \"mainframe\", \"legado\" → ambiente típico do COBOL.",
+    "pegadinha": "Colocar as cláusulas PIC na PROCEDURE DIVISION: as variáveis e seus formatos ficam na DATA DIVISION."
+  },
+  {
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "UX e UI design",
+    "modelo": "conceito",
+    "resumo": "UX é a experiência completa de quem usa o produto; UI é a interface visual com que ele interage. Ex.: a cor do botão é UI; pagar ser fácil e rápido é UX.",
+    "nao_confundir": [
+      {
+        "conceito": "UI",
+        "faz": "botões, cores, tipografia, layout"
+      },
+      {
+        "conceito": "UX",
+        "faz": "facilidade, fluxo e satisfação de uso"
+      },
+      {
+        "conceito": "Wireframe",
+        "faz": "esboço da tela, sem acabamento"
+      },
+      {
+        "conceito": "Protótipo",
+        "faz": "simula o uso para testar (do papel ao clicável)"
+      }
+    ],
+    "palavras_chave": "\"aparência\", \"elementos visuais\" → UI; \"jornada\", \"satisfação\", \"facilidade de uso\" → UX.",
+    "pegadinha": "Trocar UX por UI: UI é o que se vê e toca na tela; UX é a experiência inteira, do primeiro contato ao fim."
+  },
+  {
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Contratações de TI (Lei 14.133 e IN SGD)",
+    "modelo": "conceito",
+    "resumo": "É o caminho legal para o órgão contratar TI: planejar, escolher o fornecedor e gerir o contrato. Ex.: estudo técnico preliminar → termo de referência → pregão → fiscalização.",
+    "nao_confundir": [
+      {
+        "conceito": "Dispensa",
+        "faz": "dava para competir, mas a lei permite contratar direto (ex.: valor baixo)"
+      },
+      {
+        "conceito": "Inexigibilidade",
+        "faz": "não há como competir (ex.: fornecedor exclusivo)"
+      },
+      {
+        "conceito": "ETP",
+        "faz": "estuda a necessidade e a viabilidade; vem antes do TR"
+      },
+      {
+        "conceito": "Termo de referência",
+        "faz": "descreve o objeto e as condições; vem depois do ETP"
+      }
+    ],
+    "palavras_chave": "\"bens e serviços comuns\" → pregão; \"metas e indicadores no contrato\" → SLA (ANS); \"pago pelo tamanho entregue\" → fábrica de software (pontos de função).",
+    "pegadinha": "Dizer que o termo de referência é a etapa inicial ou que o ETP o substitui: o ETP vem antes, e são documentos diferentes."
+  },
+  {
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Gerenciamento de projetos (PMBOK)",
+    "modelo": "conceito",
+    "resumo": "Gerenciar projetos é planejar e controlar um esforço temporário que gera um resultado único. Ex.: implantar um sistema novo até junho, com orçamento definido.",
+    "nao_confundir": [
+      {
+        "conceito": "Matriz fraca",
+        "faz": "o poder fica com o gerente funcional"
+      },
+      {
+        "conceito": "Matriz balanceada",
+        "faz": "o poder é dividido entre os dois"
+      },
+      {
+        "conceito": "Matriz forte",
+        "faz": "o poder fica com o gerente de projetos"
+      }
+    ],
+    "palavras_chave": "\"temporário e único\" → projeto; \"contínuo e repetitivo\" → operação; \"decomposição do escopo\" → EAP; \"sequência mais longa, que define o prazo mínimo\" → caminho crítico.",
+    "pegadinha": "Dizer que na matriz fraca os dois gerentes dividem o poder igualmente: isso é a balanceada; na fraca, manda o gerente funcional."
+  },
+  {
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Gestão de processos (BPM e BPMN)",
+    "modelo": "conceito",
+    "resumo": "BPM é gerir os processos de ponta a ponta para melhorá-los; o BPMN é a notação para desenhá-los. Ex.: mapear o pedido de férias para achar onde ele trava.",
+    "nao_confundir": [
+      {
+        "conceito": "Evento (círculo)",
+        "faz": "marca o início, o fim ou algo que acontece"
+      },
+      {
+        "conceito": "Atividade (retângulo arredondado)",
+        "faz": "um trabalho a ser feito"
+      },
+      {
+        "conceito": "Gateway (losango)",
+        "faz": "divide ou junta o fluxo (XOR decide; AND paraleliza)"
+      },
+      {
+        "conceito": "Fluxo de sequência (seta cheia)",
+        "faz": "a ordem dentro do pool; entre pools é o fluxo de mensagem"
+      }
+    ],
+    "palavras_chave": "\"como é hoje\" → AS-IS; \"como será\" → TO-BE; \"raias\" → quem faz cada parte; \"lugares e transições\" → Redes de Petri.",
+    "pegadinha": "Dizer que o evento de início descreve o que acontece ao longo do processo: ele marca onde e com qual gatilho o processo começa."
+  },
+  {
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Gestão de serviços (ITIL)",
+    "modelo": "conceito",
+    "resumo": "A ITIL é o guia de boas práticas para gerenciar serviços de TI e gerar valor. Ex.: o sistema caiu (incidente); restaura-se o serviço, e depois se busca a causa (problema).",
+    "nao_confundir": [
+      {
+        "conceito": "Incidente",
+        "faz": "restaurar o serviço o mais rápido possível"
+      },
+      {
+        "conceito": "Problema",
+        "faz": "achar e tratar a causa dos incidentes"
+      },
+      {
+        "conceito": "Solicitação de serviço",
+        "faz": "pedido rotineiro e previsto (acesso, instalação)"
+      },
+      {
+        "conceito": "Mudança",
+        "faz": "alteração controlada, com o risco avaliado"
+      }
+    ],
+    "palavras_chave": "\"output\" → a entrega; \"outcome\" → o resultado para o cliente; \"seis atividades, não linear\" → cadeia de valor; \"fluxos de valor e processos\" → uma das 4 dimensões.",
+    "pegadinha": "Trocar incidente por problema: identificar a causa e reduzir a repetição é o gerenciamento de problemas; o de incidente restaura o serviço."
+  },
+  {
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Governança de dados (DMBOK)",
+    "modelo": "conceito",
+    "resumo": "Governança de dados define regras, papéis e responsabilidades para que os dados sejam confiáveis e bem usados. Ex.: definir quem responde pelos dados de clientes e como corrigi-los.",
+    "nao_confundir": [
+      {
+        "conceito": "Governança de dados",
+        "faz": "decide as regras e os papéis"
+      },
+      {
+        "conceito": "Data steward",
+        "faz": "cuida da qualidade e do uso de um conjunto de dados"
+      },
+      {
+        "conceito": "DBA",
+        "faz": "cuida da parte técnica do banco"
+      },
+      {
+        "conceito": "Metadados",
+        "faz": "dados que descrevem outros dados"
+      }
+    ],
+    "palavras_chave": "\"DAMA\" → DMBOK; \"políticas, padrões, papéis e responsabilidades\" → governança de dados; \"precisos, completos, consistentes\" → qualidade de dados.",
+    "pegadinha": ""
+  },
+  {
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Governança de TI (COBIT)",
+    "modelo": "conceito",
+    "resumo": "O COBIT é o framework da ISACA para governar e gerir a TI de forma alinhada ao negócio. Ex.: o conselho define as prioridades de TI, e a gestão executiva planeja e executa.",
+    "nao_confundir": [
+      {
+        "conceito": "Governança (EDM, COBIT 5/2019)",
+        "faz": "avalia, dirige e monitora; papel do conselho"
+      },
+      {
+        "conceito": "Gestão (APO, BAI, DSS, MEA)",
+        "faz": "planeja, constrói, executa e monitora"
+      }
+    ],
+    "palavras_chave": "\"avaliar, dirigir e monitorar\" → governança; \"repetível, mas intuitivo\" → nível 2 de maturidade (COBIT 4.1); \"otimizado\" → nível 5.",
+    "pegadinha": "Inverter governança e gestão: quem avalia, dirige e monitora é a governança; quem executa as atividades é a gestão."
+  },
+  {
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Normas de TI do Poder Judiciário (CNJ)",
+    "modelo": "conceito",
+    "resumo": "O CNJ edita as regras de TI para os órgãos do Judiciário (o STF não se submete a ele). Ex.: a PDPJ-Br reúne e compartilha os sistemas dos tribunais numa plataforma comum.",
+    "nao_confundir": [
+      {
+        "conceito": "PDPJ-Br",
+        "faz": "plataforma que integra e compartilha soluções entre tribunais"
+      },
+      {
+        "conceito": "ENTIC-JUD",
+        "faz": "estratégia nacional de TIC do Judiciário"
+      },
+      {
+        "conceito": "MoReq-Jus",
+        "faz": "requisitos para sistemas de processos e documentos"
+      },
+      {
+        "conceito": "ETIR",
+        "faz": "equipe que trata incidentes cibernéticos"
+      }
+    ],
+    "palavras_chave": "\"marketplace de soluções\", \"modelo de convergência\" → PDPJ-Br; \"equipe de tratamento e resposta a incidentes\" → ETIR; \"requisitos de gestão documental, preservação e autenticidade\" → MoReq-Jus.",
+    "pegadinha": "Dizer que sistemas em microsserviços ficam fora do MoReq-Jus: a norma os inclui expressamente (Res. CNJ 522/2023, art. 2º)."
+  }
 ]
