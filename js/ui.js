@@ -3,6 +3,7 @@
 // ============================================================
 
 import { carregarDiasDeEstudo, diaLocal } from './storage.js';
+import { atualizarNivelConta } from './conta.js';
 import { venceHoje, somarDias } from './revisao.js';
 import { NIVEIS, ORDEM_MACROS } from './api.js';
 import { atualizarMetaNaTela } from './primeiros-passos.js';
@@ -371,6 +372,7 @@ export function atualizarPlacar(historico, questoes) {
     if (cardCriticas) cardCriticas.classList.toggle("alerta", criticas.length > 0);
 
     renderizarDesempenhoMaterias(materiasMap, questoes, historico);
+    atualizarNivelConta(questoes, historico); // nível da conta (pontos por domínio)
     atualizarMetaNaTela(historico); // meta diária (some quando não há meta definida)
 }
 

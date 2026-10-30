@@ -1742,3 +1742,34 @@ body.modo-foco .cartao-hoje { display: none; }
 .dia-col-rot { text-transform: uppercase; letter-spacing: .04em; font-size: 0.68rem; }
 .dia-nota { margin: 0.8rem 0 0; font-size: 0.78rem; color: #94a3b8; line-height: 1.4; }
 @media (max-width: 480px) { .dia-linha { grid-template-columns: 1fr auto; } .dia-detalhe { grid-column: 1 / -1; order: 3; } }
+
+/* Nível da conta */
+.conta-nivel { all: unset; box-sizing: border-box; display: flex; flex-direction: column; gap: 0.35rem; margin: 0.4rem 0 0.2rem; padding: 0.55rem 0.7rem; border-radius: 10px; background: rgba(49, 46, 129, 0.3); border: 1px solid #4338ca; cursor: pointer; }
+.conta-nivel[hidden] { display: none; }
+.conta-nivel:focus-visible { outline: 2px solid #a5b4fc; outline-offset: 2px; }
+.selo-nivel { font-size: 0.82rem; font-weight: 800; color: #c7d2fe; }
+.conta-nivel-trilho { display: block; height: 5px; border-radius: 3px; background: #1e293b; overflow: hidden; }
+.conta-nivel-barra { display: block; height: 100%; width: 0; background: #818cf8; transition: width 0.25s ease; }
+.conta-nivel-texto { font-size: 0.74rem; color: #cbd5e1; }
+.conta-resumo { margin: 0 0 0.6rem; color: #e2e8f0; }
+.conta-aviso { margin: 0 0 0.6rem; padding: 0.55rem 0.7rem; border-radius: 8px; background: rgba(120, 53, 15, 0.25); border: 1px solid #9a3412; color: #fed7aa; font-size: 0.85rem; }
+.conta-regras { margin: 0 0 0.8rem; padding-left: 1.1rem; color: #cbd5e1; font-size: 0.86rem; line-height: 1.5; display: flex; flex-direction: column; gap: 0.3rem; }
+.conta-escada { display: flex; flex-direction: column; gap: 0.3rem; }
+.conta-degrau { display: flex; justify-content: space-between; padding: 0.45rem 0.7rem; border-radius: 8px; background: #0f172a; border: 1px solid #1e293b; font-size: 0.85rem; color: #94a3b8; }
+.conta-degrau.feito { color: #cbd5e1; }
+.conta-degrau.atual { background: rgba(49, 46, 129, 0.45); border-color: #4338ca; color: #e0e7ff; font-weight: 700; }
+
+/* Aprender com cara própria: índigo = estudo (as outras cores seguem como nível e acerto) */
+.card-foco.card-exemplo { border-color: #4338ca; overflow: hidden; }
+.card-foco.card-exemplo::before { display: block; margin: -1.5rem -1.5rem 1rem; padding: 0.5rem 1rem; background: rgba(79, 70, 229, 0.35); color: #c7d2fe; font-size: 0.74rem; font-weight: 800; letter-spacing: 0.06em; content: "🧠 EXEMPLO RESOLVIDO"; }
+.card-foco.card-resumo::before { content: "📖 ENTENDA EM 1 MINUTO"; }
+.card-resumo .resumo-rotulo { color: #a5b4fc; }
+.card-resumo .resumo-central { border-color: #4338ca; }
+.aprender-estado:not(.ok) strong { color: #c7d2fe; }
+.btn-primary.aprender-proximo { background: #4f46e5; border-color: #4338ca; }
+.escolha-aprender .modal-titulo { color: #a5b4fc; }
+.escolha-aprender .bv-opcao { border-color: #312e81; }
+.trilha-caminho { display: flex; align-items: center; gap: 3px; flex-wrap: wrap; margin: 0.3rem 0 0.15rem; }
+.trilha-bola { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #1e293b; border: 1px solid #334155; }
+.trilha-bola.feita { background: #6366f1; border-color: #6366f1; }
+.trilha-bola.atual { border: 2px solid #a5b4fc; box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25); }

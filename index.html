@@ -67,6 +67,13 @@
                 </div>
             </details>
 
+            <!-- Nível da conta: pontos por domínio (js/conta.js). Toque para ver a regra. -->
+            <button type="button" class="conta-nivel" id="btn-nivel-conta" hidden title="Seu nível sobe quando você domina questões: acerto com certeza ou superado na revisão. Toque para ver a regra.">
+                <span class="conta-nivel-linha"><span class="selo-nivel" id="nivel-conta-nome">Nível 1</span></span>
+                <span class="conta-nivel-trilho"><span class="conta-nivel-barra" id="nivel-conta-barra"></span></span>
+                <span class="conta-nivel-texto" id="nivel-conta-texto"></span>
+            </button>
+
             <!-- Meu desempenho: abre e fecha; o app lembra a escolha (app.js) -->
             <details class="gaveta-desempenho" id="gaveta-desempenho" open>
                 <summary>📊 Meu desempenho</summary>
@@ -281,6 +288,18 @@
     </div>
 </div>
 <!-- ==================== FIM: MODAL DE COBERTURA DO EDITAL ==================== -->
+
+<!-- ==================== INÍCIO: NÍVEL DA CONTA ==================== -->
+<div id="modal-nivel-conta" class="modal-overlay">
+    <div class="modal-card" style="max-width: 520px; max-height: 86vh; overflow-y: auto;">
+        <h3 class="modal-titulo">🏅 Nível da conta</h3>
+        <div id="conteudo-nivel-conta"></div>
+        <div class="modal-acoes">
+            <button type="button" id="btn-fechar-nivel-conta" class="btn-secondary">Fechar</button>
+        </div>
+    </div>
+</div>
+<!-- ==================== FIM: NÍVEL DA CONTA ==================== -->
 
 <!-- ==================== INÍCIO: TELA MEU DIA ==================== -->
 <div id="modal-meu-dia" class="modal-overlay">
