@@ -477,6 +477,35 @@ const ICONE_MATERIA = {
 };
 const ICONE_PADRAO = 'M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM4 19V5';
 
+const NOME_CURTO = {
+    'Raciocínio Lógico & Matemática': 'RLM',
+    'Engenharia de Software & Agilidade': 'Eng. Software',
+    'Desenvolvimento, POO & Linguagens': 'Desenv. e POO',
+    'Banco de Dados & Dados': 'Banco de Dados',
+    'Arquitetura de TI & Nuvem': 'Arquitetura e Nuvem',
+    'Redes & Segurança da Informação': 'Redes e Segurança',
+    'Governança, Gestão & Projetos de TI': 'Governança',
+    'Sistemas Operacionais & Hardware': 'SO e Hardware'
+};
+
+// Destaca a matéria escolhida no filtro e mostra os níveis dela (sem redesenhar o painel)
+export function marcarMateriaAtiva(materia) {
+    const raiz = document.getElementById('dashboard-materias');
+    if (!raiz) return;
+    let algum = false;
+    raiz.querySelectorAll('.materia-tile').forEach(t => {
+        const e = t.dataset.materia === materia;
+        t.classList.toggle('ativa', e);
+    });
+    raiz.querySelectorAll('.materia-detalhe').forEach(d => {
+        const e = d.dataset.materia === materia;
+        d.hidden = !e;
+        if (e) algum = true;
+    });
+    const dica = raiz.querySelector('.det-dica');
+    if (dica) dica.hidden = algum;
+}
+
 function renderizarDesempenhoMaterias(materiasMap, questoes = [], historico = {}) {
     const containerMaterias = document.getElementById("dashboard-materias");
     if (!containerMaterias) return;
@@ -505,10 +534,11 @@ function renderizarDesempenhoMaterias(materiasMap, questoes = [], historico = {}
         return;
     }
 
-    const presentes = [...new Set(Object.values(extra).flatMap(e => Object.keys(e.niveis).map(Number)))].sort((a, b) => a - b);
-    const legenda = presentes.map(n => `<span class="nv-chip"><b class="nv-letra nv-${n}">${LETRA_NIVEL[n] || n}</b>${esc(NIVEIS[n] || n)}</span>`).join('');
-    let html = `<p class="legenda-niveis" aria-label="Legenda dos níveis">${legenda}<span class="legenda-nota">respondidas/total</span></p>`;
-    html += '<div class="painel-desempenho-materias">';
+    const ativa = (document.getElementById('filtro-materia') || {}).value || '';
+    const COR = (taxa, comecou) => !comecou ? '#475569' : (taxa >= 70 ? '#34d399' : (taxa >= 50 ? '#fbbf24' : '#f87171'));
+    const CIRC = 2 * Math.PI * 17;
+    let tiles = '';
+    let detalhes = '';
     materias.forEach(mat => {
         const dados = materiasMap[mat];
         const somaResp = dados.acertos + dados.erros;
@@ -516,34 +546,47 @@ function renderizarDesempenhoMaterias(materiasMap, questoes = [], historico = {}
         const taxa = comecou ? Math.round((dados.acertos / somaResp) * 100) : 0;
         const critica = ehMateriaCritica(dados);
         const info = extra[mat] || { revisarHoje: 0, niveis: {} };
-        const niveis = Object.keys(info.niveis).map(Number).sort((a, b) => a - b)
-            .map(n => {
-                const { feitas, total } = info.niveis[n];
-                const pct = total ? Math.round((feitas / total) * 100) : 0;
-                return `<span class="nv-col" title="${esc(NIVEIS[n] || n)}: ${feitas} de ${total} respondidas">
-                    <span class="nv-chip"><b class="nv-letra nv-${n}">${LETRA_NIVEL[n] || n}</b>${feitas}/${total}</span>
-                    <span class="nv-barra"><span class="nv-barra-fill nv-${n}" style="width: ${pct}%;"></span></span>
-                </span>`;
-            }).join('');
+        const nums = Object.keys(info.niveis).map(Number).sort((a, b) => a - b);
+        const totalQ = nums.reduce((t, n) => t + info.niveis[n].total, 0);
+        const feitasQ = nums.reduce((t, n) => t + info.niveis[n].feitas, 0);
+        const pctFeito = totalQ ? Math.round(feitasQ * 100 / totalQ) : 0;
+        const cor = COR(taxa, comecou);
+        const sel = mat === ativa;
         const revisar = info.revisarHoje
-            ? `<span class="materia-revisar" title="${info.revisarHoje} para revisar hoje">${info.revisarHoje} 🔁</span>` : '';
-        const iconeSvg = `<span class="materia-icone" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${ICONE_MATERIA[mat] || ICONE_PADRAO}"/></svg></span>`;
+            ? `<span class="tile-revisar" title="${info.revisarHoje} para revisar hoje">${info.revisarHoje}</span>` : '';
 
-        html += `
-            <button type="button" class="materia-stat-item${critica ? ' critica' : ''}${comecou ? '' : ' nao-comecou'}" data-materia="${esc(mat)}" title="Ver questões de ${esc(mat)}">
-                <span class="materia-stat-header">
-                    ${iconeSvg}
-                    <span class="materia-nome">${esc(mat)}</span>
-                    ${revisar}
-                    <span class="materia-taxa">${comecou ? `${taxa}%` : 'não começou'}</span>
-                </span>
-                <span class="barra-progresso-bg"><span class="barra-progresso-fill ${taxa >= 70 ? 'alta' : (taxa >= 50 ? 'media' : 'baixa')}" style="width: ${comecou ? taxa : 0}%;"></span></span>
-                <span class="materia-niveis">${niveis}</span>
-                ${critica ? '<span class="materia-reforcar">Reforçar · toque para treinar</span>' : ''}
-            </button>
-        `;
+        tiles += `
+            <button type="button" class="materia-tile${critica ? ' critica' : ''}${comecou ? '' : ' nao-comecou'}${sel ? ' ativa' : ''}" data-materia="${esc(mat)}" title="${esc(mat)}: ${feitasQ} de ${totalQ} feitas${comecou ? `, ${taxa}% de acerto` : ''}. Toque para treinar.">
+                ${revisar}
+                <svg class="tile-anel" width="46" height="46" viewBox="0 0 44 44" aria-hidden="true">
+                    <circle cx="22" cy="22" r="17" fill="none" stroke="#303951" stroke-width="4"/>
+                    <circle cx="22" cy="22" r="17" fill="none" stroke="${cor}" stroke-width="4" stroke-linecap="round" stroke-dasharray="${CIRC.toFixed(1)}" stroke-dashoffset="${(CIRC * (1 - pctFeito / 100)).toFixed(1)}" transform="rotate(-90 22 22)"/>
+                    <text x="22" y="26" text-anchor="middle" font-size="11" font-weight="700" fill="#f8fafc">${pctFeito}%</text>
+                </svg>
+                <span class="tile-nome">${esc(NOME_CURTO[mat] || mat)}</span>
+            </button>`;
+
+        const linhasNivel = nums.map(n => {
+            const { feitas, total } = info.niveis[n];
+            const pct = total ? Math.round((feitas / total) * 100) : 0;
+            return `<span class="det-nivel" title="${esc(NIVEIS[n] || n)}: ${feitas} de ${total} respondidas">
+                <b class="nv-letra nv-${n}">${LETRA_NIVEL[n] || n}</b>
+                <span class="det-nome-nivel">${esc(NIVEIS[n] || n)}</span>
+                <span class="nv-barra"><span class="nv-barra-fill nv-${n}" style="width: ${pct}%;"></span></span>
+                <span class="det-contagem">${feitas}/${total}</span>
+            </span>`;
+        }).join('');
+        detalhes += `
+            <div class="materia-detalhe" data-materia="${esc(mat)}" ${sel ? '' : 'hidden'}>
+                <div class="det-topo"><strong>${esc(mat)}</strong><span class="det-taxa" style="color:${cor}">${comecou ? `${taxa}% de acerto` : 'não começou'}</span></div>
+                ${linhasNivel}
+                ${info.revisarHoje ? `<span class="det-aviso revisar">🔁 ${info.revisarHoje} para revisar hoje</span>` : ''}
+                ${critica ? '<span class="det-aviso reforcar">Reforçar · toque na matéria para treinar</span>' : ''}
+            </div>`;
     });
-    html += '</div>';
+
+    let html = '<div class="painel-desempenho-materias grade">' + tiles + '</div>';
+    html += `<div class="materia-detalhes">${detalhes}<p class="det-dica"${ativa && materias.includes(ativa) ? ' hidden' : ''}>O anel mostra quanto da matéria você já fez; a cor é o seu acerto. Toque numa matéria para ver os níveis.</p></div>`;
     containerMaterias.innerHTML = html;
 }
 

@@ -1672,7 +1672,7 @@ body.modo-foco .cartao-hoje { display: none; }
 /* ==================== BARRA MAIS LARGA (computador) ==================== */
 /* A barra ocupa cerca de um terço da tela (entre 300 e 560 px). No celular ela segue sendo a gaveta. */
 @media (min-width: 769px) {
-    :root { --largura-barra: clamp(300px, 33vw, 560px); }
+    :root { --largura-barra: clamp(290px, 23vw, 340px); }
     body.barra-recolhida .dica-card { left: 24px; }
 }
 .materia-icone { width: 2.5rem; height: 2.5rem; border-radius: 10px; }
@@ -1791,3 +1791,27 @@ body.modo-foco .cartao-hoje { display: none; }
 /* Barrinha de avanço da lista no Modo Foco */
 .foco-avanco { height: 5px; border-radius: 3px; background: #1e293b; overflow: hidden; margin: -0.2rem 0 0.8rem; }
 .foco-avanco > span { display: block; height: 100%; background: linear-gradient(90deg, #7c6cff, #43cda2); transition: width 0.3s ease; }
+
+/* Por matéria em grade de anéis (3 por linha) + detalhe da matéria escolhida */
+.painel-desempenho-materias.grade { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.45rem; }
+.materia-tile { all: unset; box-sizing: border-box; position: relative; display: flex; flex-direction: column; align-items: center; gap: 0.3rem; padding: 0.6rem 0.2rem 0.5rem; border-radius: 10px; background: #0c1322; border: 1px solid #1e293b; cursor: pointer; text-align: center; min-width: 0; }
+.materia-tile:hover { border-color: #334155; }
+.materia-tile:focus-visible { outline: 2px solid #a5b4fc; outline-offset: 2px; }
+.materia-tile.critica { border-color: #7f1d1d; }
+.materia-tile.ativa { border-color: #7c6cff; background: #11183a; }
+.materia-tile.nao-comecou .tile-nome { color: #94a3b8; }
+.tile-nome { font-size: 0.68rem; line-height: 1.2; color: #e2e8f0; padding: 0 0.15rem; overflow-wrap: anywhere; }
+.tile-revisar { position: absolute; top: 4px; right: 5px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 8px; background: #fbbf24; color: #1c1917; font-size: 0.65rem; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; }
+.materia-detalhes { margin-top: 0.6rem; }
+.materia-detalhe { display: flex; flex-direction: column; gap: 0.4rem; padding: 0.65rem 0.75rem; border-radius: 10px; background: #0c1322; border: 1px solid #312e81; }
+.materia-detalhe[hidden] { display: none; }
+.det-topo { display: flex; justify-content: space-between; gap: 0.5rem; font-size: 0.85rem; align-items: baseline; }
+.det-taxa { font-weight: 700; font-size: 0.78rem; white-space: nowrap; }
+.det-nivel { display: grid; grid-template-columns: auto 5.2rem 1fr auto; align-items: center; gap: 0.45rem; font-size: 0.74rem; color: #cbd5e1; }
+.det-nome-nivel { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.det-contagem { text-align: right; font-variant-numeric: tabular-nums; min-width: 2.6rem; }
+.det-aviso { font-size: 0.76rem; font-weight: 700; }
+.det-aviso.revisar { color: #fbbf24; }
+.det-aviso.reforcar { color: #fca5a5; }
+.det-dica { margin: 0; font-size: 0.74rem; color: #94a3b8; line-height: 1.45; }
+.det-dica[hidden] { display: none; }

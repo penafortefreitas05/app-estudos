@@ -18,7 +18,8 @@ import {
     renderizarCoberturaEdital,
     temGabarito,
     preencherSelectAssunto,
-    textoGabaritoDe
+    textoGabaritoDe,
+    marcarMateriaAtiva
 } from './ui.js';
 import { montarTrilha, proximoAssunto, resumoDasTrilhas, questaoPonte } from './aprender.js';
 // ==================== FIM ====================
@@ -402,6 +403,7 @@ function aplicarFiltros() {
     atualizarBadgeFiltros();
     atualizarTituloDaBarra(filtradas);
     sincronizarFiltrosRapidos();
+    marcarMateriaAtiva(selectMateria ? selectMateria.value : '');
     if (!foco) colocarCartaoHoje();
 }
 
@@ -528,7 +530,7 @@ function algumFiltroAtivo() {
 const dashboardMaterias = document.getElementById("dashboard-materias");
 if (dashboardMaterias) {
     dashboardMaterias.addEventListener("click", (e) => {
-        const item = e.target.closest(".materia-stat-item[data-materia]");
+        const item = e.target.closest(".materia-tile[data-materia]");
         if (!item || !selectMateria) return;
         const materia = item.dataset.materia;
         // Só filtra se a matéria existir no filtro (questões de outra lista não têm opção)
