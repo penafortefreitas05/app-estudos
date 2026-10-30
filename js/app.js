@@ -40,7 +40,8 @@ import {
     enviarReporteDeQuestao,
     listarReportesAbertos,
     fecharReporte,
-    exportarBackupDoBanco
+    exportarBackupDoBanco,
+    carregarRespostasRecentes
 } from './supabase.js';
 
 // ---------- 1.3 Autenticação ----------
@@ -59,6 +60,7 @@ import {
 } from './storage.js';
 
 // ---------- 1.45 Revisão espaçada ----------
+import { resumirPorDia, renderizarMeuDia } from './meu-dia.js';
 import { aplicarResposta, novoRegistro, venceHoje, formatarDiaCurto, somarDias } from './revisao.js';
 
 // ---------- 1.5 Simulado (cronômetro e finalização) ----------
@@ -1705,6 +1707,27 @@ if (modalCobertura) {
     modalCobertura.addEventListener('click', (e) => {
         if (e.target === modalCobertura) modalCobertura.classList.remove('visible');
     });
+}
+
+// ============================================================
+// 12c. MEU DIA: acertos de hoje (revisão x novas) e dos últimos 7 dias
+// ============================================================
+const btnMeuDia = document.getElementById('btn-meu-dia');
+const modalMeuDia = document.getElementById('modal-meu-dia');
+const conteudoMeuDia = document.getElementById('conteudo-meu-dia');
+if (btnMeuDia && modalMeuDia) {
+    btnMeuDia.addEventListener('click', async () => {
+        conteudoMeuDia.innerHTML = '<p class="modal-mensagem">Carregando…</p>';
+        modalMeuDia.classList.add('visible');
+        const dados = await carregarRespostasRecentes(7);
+        if (!dados) {
+            conteudoMeuDia.innerHTML = '<p class="modal-mensagem">Entre na sua conta (e confira a internet) para ver o seu dia. Os números vêm do histórico guardado na nuvem.</p>';
+            return;
+        }
+        renderizarMeuDia(conteudoMeuDia, resumirPorDia(dados.linhas, dados.jaVistas, 7));
+    });
+    document.getElementById('btn-fechar-meu-dia')?.addEventListener('click', () => modalMeuDia.classList.remove('visible'));
+    modalMeuDia.addEventListener('click', (e) => { if (e.target === modalMeuDia) modalMeuDia.classList.remove('visible'); });
 }
 
 // ==================== INÍCIO: SUBSTITUIR TODA A SEÇÃO 13 (até antes de "14. CARGA INICIAL") ====================

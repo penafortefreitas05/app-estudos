@@ -1721,3 +1721,24 @@ body.modo-foco .cartao-hoje { display: none; }
 .materia-stat-item .nv-chip { font-size: 0.74rem; gap: 0.3rem; }
 .nv-letra { width: 1.05rem; height: 1.05rem; font-size: 0.62rem; }
 .painel-desempenho-materias { gap: 0.35rem; }
+
+/* Tela Meu dia */
+.dia-hoje { display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem; }
+.dia-linha { display: grid; grid-template-columns: 9.5rem 1fr auto; align-items: center; gap: 0.6rem; padding: 0.55rem 0.7rem; background: #0f172a; border: 1px solid #1e293b; border-radius: 10px; font-size: 0.9rem; }
+.dia-total .dia-linha { background: #020617; border-color: #334155; font-weight: 700; }
+.dia-rotulo { color: #e2e8f0; font-weight: 600; }
+.dia-detalhe { color: #cbd5e1; }
+.dia-pct { font-weight: 800; min-width: 3rem; text-align: right; color: #94a3b8; }
+.dia-pct.alta, .dia-barra.alta { color: #34d399; }
+.dia-pct.media, .dia-barra.media { color: #fbbf24; }
+.dia-pct.baixa, .dia-barra.baixa { color: #f87171; }
+.dia-subtitulo { margin: 0.4rem 0 0.5rem; font-size: 0.95rem; color: #e2e8f0; }
+.dia-semana { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 0.4rem; }
+.dia-col { display: flex; flex-direction: column; align-items: center; gap: 0.15rem; font-size: 0.75rem; color: #cbd5e1; }
+.dia-barra-caixa { display: flex; align-items: flex-end; width: 100%; height: 76px; background: #0f172a; border: 1px solid #1e293b; border-radius: 8px; overflow: hidden; }
+.dia-barra { display: block; width: 100%; background: currentColor; border-radius: 6px 6px 0 0; color: #94a3b8; }
+.dia-col-pct { font-weight: 700; color: #e2e8f0; }
+.dia-col-n { color: #94a3b8; }
+.dia-col-rot { text-transform: uppercase; letter-spacing: .04em; font-size: 0.68rem; }
+.dia-nota { margin: 0.8rem 0 0; font-size: 0.78rem; color: #94a3b8; line-height: 1.4; }
+@media (max-width: 480px) { .dia-linha { grid-template-columns: 1fr auto; } .dia-detalhe { grid-column: 1 / -1; order: 3; } }

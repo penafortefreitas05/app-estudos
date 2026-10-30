@@ -149,6 +149,9 @@
                             📖 Aprender
                         </button>
                         <!-- Modo Foco (U1): uma questão por vez, com atalhos de teclado -->
+                        <button type="button" id="btn-meu-dia" class="btn-painel" title="Quanto você acertou hoje: revisão, questões novas e os últimos 7 dias">
+                            📊 Meu dia
+                        </button>
                         <button type="button" id="btn-modo-foco" class="btn-painel btn-foco" aria-pressed="false" title="Uma questão por vez. Teclas A–E, Enter responde, → próxima, Esc sai">
                             🎯 Foco
                         </button>
@@ -278,6 +281,18 @@
     </div>
 </div>
 <!-- ==================== FIM: MODAL DE COBERTURA DO EDITAL ==================== -->
+
+<!-- ==================== INÍCIO: TELA MEU DIA ==================== -->
+<div id="modal-meu-dia" class="modal-overlay">
+    <div class="modal-card" style="max-width: 560px; max-height: 86vh; overflow-y: auto;">
+        <h3 class="modal-titulo">📊 Meu dia</h3>
+        <div id="conteudo-meu-dia"><p class="modal-mensagem">Carregando…</p></div>
+        <div class="modal-acoes">
+            <button type="button" id="btn-fechar-meu-dia" class="btn-secondary">Fechar</button>
+        </div>
+    </div>
+</div>
+<!-- ==================== FIM: TELA MEU DIA ==================== -->
 
      <!-- ==================== INÍCIO: MODAL DE LOGIN / CADASTRO ==================== -->
 <div id="modal-auth" class="modal-overlay">
