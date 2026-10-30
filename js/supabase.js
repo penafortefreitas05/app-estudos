@@ -714,3 +714,51 @@ export async function exportarBackupDoBanco() {
     }
     return backup;
 }
+
+
+/**
+ * Respostas dos últimos N dias (para a tela "Meu dia").
+ * Devolve { linhas: [{questao_id, acertou, created_at}], jaVistas: Set de questao_id que já tinham
+ * resposta ANTES do período } — é isso que separa "questão nova" de "revisão".
+ * Devolve null sem login ou sem conexão.
+ */
+export async function carregarRespostasRecentes(dias = 7) {
+    let user = null;
+    try {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        user = session?.user || null;
+    } catch (e) { /* sem sessão */ }
+    if (!user) return null;
+
+    const inicio = new Date();
+    inicio.setHours(0, 0, 0, 0);
+    inicio.setDate(inicio.getDate() - (dias - 1));
+    const inicioISO = inicio.toISOString();
+
+    try {
+        const linhas = await buscarTodasAsPaginas(() => supabaseClient
+            .from('historico_respostas')
+            .select('questao_id, acertou, created_at')
+            .eq('user_id', user.id)
+            .gte('created_at', inicioISO)
+            .order('created_at', { ascending: true }));
+
+        const ids = [...new Set(linhas.map(l => String(l.questao_id)))];
+        const jaVistas = new Set();
+        for (let i = 0; i < ids.length; i += 80) {
+            const { data, error } = await supabaseClient
+                .from('historico_respostas')
+                .select('questao_id')
+                .eq('user_id', user.id)
+                .lt('created_at', inicioISO)
+                .in('questao_id', ids.slice(i, i + 80))
+                .limit(1000);
+            if (error) throw error;
+            (data || []).forEach(l => jaVistas.add(String(l.questao_id)));
+        }
+        return { linhas, jaVistas };
+    } catch (erro) {
+        console.warn('[FocoPro] Não foi possível ler as respostas recentes:', erro.message);
+        return null;
+    }
+}
