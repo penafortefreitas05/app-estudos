@@ -8,7 +8,7 @@
     <title>FocoPro - Preparação Intensiva para Concursos</title>
     
     <!-- Ícone, Manifest e Estilos -->
-    <link rel="icon" href="data:,">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 42 42%27%3E%3Cdefs%3E%3ClinearGradient id=%27g%27 x1=%270%27 y1=%270%27 x2=%271%27 y2=%271%27%3E%3Cstop stop-color=%27%237C6CFF%27/%3E%3Cstop offset=%271%27 stop-color=%27%234D8DFF%27/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%2742%27 height=%2742%27 rx=%2714%27 fill=%27url(%23g)%27/%3E%3Ccircle cx=%2721%27 cy=%2721%27 r=%2712%27 fill=%27none%27 stroke=%27white%27 stroke-width=%272.5%27/%3E%3Ccircle cx=%2721%27 cy=%2721%27 r=%275%27 fill=%27white%27/%3E%3Cpath d=%27M26 16l9-9M31 7h4v4%27 fill=%27none%27 stroke=%27white%27 stroke-width=%272.5%27 stroke-linecap=%27round%27/%3E%3C/svg%3E">
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="css/style.css">
 
@@ -23,9 +23,18 @@
         <!-- 2. PAINEL LATERAL (SIDEBAR & DESEMPENHO) -->
         <aside class="sidebar">
             <div class="brand">
-                <div>
-                    <h2>FocoPro ✦</h2>
-                    <p>Foco total na aprovação</p>
+                <div class="marca">
+                    <svg class="marca-logo" width="42" height="42" viewBox="0 0 42 42" aria-hidden="true" focusable="false">
+                        <defs><linearGradient id="marca-grad" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#7C6CFF"/><stop offset="1" stop-color="#4D8DFF"/></linearGradient></defs>
+                        <rect width="42" height="42" rx="14" fill="url(#marca-grad)"/>
+                        <circle cx="21" cy="21" r="12" fill="none" stroke="#fff" stroke-width="2.5"/>
+                        <circle cx="21" cy="21" r="5" fill="#fff"/>
+                        <path d="M26 16l9-9M31 7h4v4" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div>
+                        <h2>foco<span>pro</span></h2>
+                        <p>Sua aprovação, um passo por vez</p>
+                    </div>
                 </div>
                 <!-- Só no computador: recolhe a barra inteira para ficar só com as questões -->
                 <button type="button" id="btn-recolher-barra" class="btn-recolher-barra" title="Recolher a barra e ficar só com as questões" aria-label="Recolher a barra lateral">«</button>
@@ -68,10 +77,10 @@
             </details>
 
             <!-- Nível da conta: pontos por domínio (js/conta.js). Toque para ver a regra. -->
-            <button type="button" class="conta-nivel" id="btn-nivel-conta" hidden title="Seu nível sobe quando você domina questões: acerto com certeza ou superado na revisão. Toque para ver a regra.">
-                <span class="conta-nivel-linha"><span class="selo-nivel" id="nivel-conta-nome">Nível 1</span></span>
-                <span class="conta-nivel-trilho"><span class="conta-nivel-barra" id="nivel-conta-barra"></span></span>
-                <span class="conta-nivel-texto" id="nivel-conta-texto"></span>
+            <button type="button" class="conta-nivel js-nivel-abrir" id="btn-nivel-conta" hidden title="Seu nível sobe quando você domina questões: acerto com certeza ou superado na revisão. Toque para ver a regra.">
+                <span class="conta-nivel-linha"><span class="selo-nivel js-nivel-nome">Nível 1</span></span>
+                <span class="conta-nivel-trilho"><span class="conta-nivel-barra js-nivel-barra"></span></span>
+                <span class="conta-nivel-texto js-nivel-texto"></span>
             </button>
 
             <!-- Meu desempenho: abre e fecha; o app lembra a escolha (app.js) -->
@@ -134,6 +143,12 @@
                         <h2 class="barra-titulo" id="barra-titulo">Todas as matérias</h2>
                         <p class="barra-contagem" id="barra-contagem" aria-live="polite"></p>
                     </div>
+
+                    <button type="button" class="conta-nivel nivel-topo js-nivel-abrir" hidden title="Seu nível sobe quando você domina questões: acerto com certeza ou superado na revisão. Toque para ver a regra.">
+                        <span class="conta-nivel-linha"><span class="nivel-topo-icone" aria-hidden="true">✦</span><span class="selo-nivel js-nivel-nome">Nível 1</span></span>
+                        <span class="conta-nivel-trilho"><span class="conta-nivel-barra js-nivel-barra"></span></span>
+                        <span class="conta-nivel-texto js-nivel-curto"></span>
+                    </button>
 
                     <div class="placar-dia">
                         <div class="meta-hoje" id="meta-hoje" hidden title="Meta de hoje: questões diferentes que você respondeu hoje. Para mudar a meta, abra Minha conta e toque em Meta diária e perfil.">

@@ -69,16 +69,21 @@ let ultima = null;
 
 /** Atualiza o selo na barra lateral. Chamado sempre que o painel é redesenhado. */
 export function atualizarNivelConta(questoes, historico) {
-    const botao = document.getElementById('btn-nivel-conta');
-    if (!botao) return;
+    const botoes = document.querySelectorAll('.js-nivel-abrir');
+    if (!botoes.length) return;
     const s = situacaoDaConta(questoes, historico);
     ultima = s;
-    botao.hidden = false;
-    document.getElementById('nivel-conta-nome').textContent = `Nível ${s.indice + 1} · ${s.nome}`;
-    document.getElementById('nivel-conta-barra').style.width = `${s.pct}%`;
-    document.getElementById('nivel-conta-texto').innerHTML = s.proximo
+    const longo = s.proximo
         ? `${s.pontos} pontos · faltam <b>${s.falta}</b> para ${esc(s.proximo.nome)}`
         : `${s.pontos} pontos · nível máximo`;
+    const curto = s.proximo ? `${s.pontos} de ${s.proximo.minimo} pontos` : `${s.pontos} pontos · máximo`;
+    botoes.forEach(b => {
+        b.hidden = false;
+        b.querySelector('.js-nivel-nome').textContent = `Nível ${s.indice + 1} · ${s.nome}`;
+        b.querySelector('.js-nivel-barra').style.width = `${s.pct}%`;
+        const longoEl = b.querySelector('.js-nivel-texto'); if (longoEl) longoEl.innerHTML = longo;
+        const curtoEl = b.querySelector('.js-nivel-curto'); if (curtoEl) curtoEl.textContent = curto;
+    });
 }
 
 /** Conteúdo da tela de detalhes (regra e escada). */

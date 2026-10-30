@@ -1331,7 +1331,13 @@ function desenharFoco() {
         <button type="button" class="btn-painel foco-proxima" ${fim ? "disabled" : ""} aria-label="Próxima questão">→</button>
         <button type="button" class="btn-painel foco-sair">✕ Sair do foco</button>`;
 
-    const partes = [barra];
+    // Barrinha de avanço da lista: enche a cada questão e dá a vontade de chegar ao fim
+    const avanco = document.createElement("div");
+    avanco.className = "foco-avanco";
+    avanco.setAttribute("aria-hidden", "true");
+    avanco.innerHTML = `<span style="width:${total ? Math.round((fim ? total : foco.indice) * 100 / total) : 0}%"></span>`;
+
+    const partes = [barra, avanco];
     if (fim) {
         partes.push(resumoFoco());
     } else {
@@ -1732,13 +1738,13 @@ if (btnMeuDia && modalMeuDia) {
 }
 
 // 12d. NÍVEL DA CONTA: tela com a regra e a escada de níveis
-const btnNivelConta = document.getElementById('btn-nivel-conta');
+const botoesNivelConta = document.querySelectorAll('.js-nivel-abrir');
 const modalNivelConta = document.getElementById('modal-nivel-conta');
-if (btnNivelConta && modalNivelConta) {
-    btnNivelConta.addEventListener('click', () => {
+if (botoesNivelConta.length && modalNivelConta) {
+    botoesNivelConta.forEach(b => b.addEventListener('click', () => {
         renderizarDetalhesDaConta(document.getElementById('conteudo-nivel-conta'));
         modalNivelConta.classList.add('visible');
-    });
+    }));
     document.getElementById('btn-fechar-nivel-conta')?.addEventListener('click', () => modalNivelConta.classList.remove('visible'));
     modalNivelConta.addEventListener('click', (e) => { if (e.target === modalNivelConta) modalNivelConta.classList.remove('visible'); });
 }
