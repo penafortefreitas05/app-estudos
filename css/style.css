@@ -1773,3 +1773,21 @@ body.modo-foco .cartao-hoje { display: none; }
 .trilha-bola { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #1e293b; border: 1px solid #334155; }
 .trilha-bola.feita { background: #6366f1; border-color: #6366f1; }
 .trilha-bola.atual { border: 2px solid #a5b4fc; box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25); }
+
+/* Logo (etapa 1) */
+.marca { display: flex; align-items: center; gap: 0.7rem; }
+.marca-logo { flex: none; }
+.brand .marca h2 { margin: 0; font-size: 1.4rem; font-weight: 750; letter-spacing: -0.01em; line-height: 1.1; }
+.brand .marca h2 span { color: #9b8dff; }
+.brand .marca p { margin: 0.15rem 0 0; font-size: 0.72rem; color: #9aa6c0; }
+
+/* Nível no canto de cima (computador) e na barra lateral (celular) */
+.nivel-topo { margin: 0; min-width: 11.5rem; align-self: center; }
+.conta-nivel-linha { display: flex; align-items: center; gap: 0.4rem; }
+.nivel-topo-icone { color: #fbbf24; font-size: 0.8rem; }
+@media (min-width: 769px) { .sidebar .conta-nivel { display: none !important; } }
+@media (max-width: 768px) { .nivel-topo { display: none !important; } }
+
+/* Barrinha de avanço da lista no Modo Foco */
+.foco-avanco { height: 5px; border-radius: 3px; background: #1e293b; overflow: hidden; margin: -0.2rem 0 0.8rem; }
+.foco-avanco > span { display: block; height: 100%; background: linear-gradient(90deg, #7c6cff, #43cda2); transition: width 0.3s ease; }
