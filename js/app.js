@@ -61,6 +61,7 @@ import {
 
 // ---------- 1.45 Revisão espaçada ----------
 import { resumirPorDia, renderizarMeuDia } from './meu-dia.js';
+import { renderizarDetalhesDaConta } from './conta.js';
 import { aplicarResposta, novoRegistro, venceHoje, formatarDiaCurto, somarDias } from './revisao.js';
 
 // ---------- 1.5 Simulado (cronômetro e finalização) ----------
@@ -1730,6 +1731,18 @@ if (btnMeuDia && modalMeuDia) {
     modalMeuDia.addEventListener('click', (e) => { if (e.target === modalMeuDia) modalMeuDia.classList.remove('visible'); });
 }
 
+// 12d. NÍVEL DA CONTA: tela com a regra e a escada de níveis
+const btnNivelConta = document.getElementById('btn-nivel-conta');
+const modalNivelConta = document.getElementById('modal-nivel-conta');
+if (btnNivelConta && modalNivelConta) {
+    btnNivelConta.addEventListener('click', () => {
+        renderizarDetalhesDaConta(document.getElementById('conteudo-nivel-conta'));
+        modalNivelConta.classList.add('visible');
+    });
+    document.getElementById('btn-fechar-nivel-conta')?.addEventListener('click', () => modalNivelConta.classList.remove('visible'));
+    modalNivelConta.addEventListener('click', (e) => { if (e.target === modalNivelConta) modalNivelConta.classList.remove('visible'); });
+}
+
 // ==================== INÍCIO: SUBSTITUIR TODA A SEÇÃO 13 (até antes de "14. CARGA INICIAL") ====================
 // ============================================================
 // 13. IMPORTAÇÃO EM MASSA DE QUESTÕES
@@ -2605,8 +2618,11 @@ function abrirEscolhaAprender() {
                 const detalhe = r.proximo
                     ? `Próximo: ${r.proximo.nome} · ${r.aprendidos} de ${r.total} assuntos`
                     : `Tudo aprendido ✓ · ${r.total} assuntos`;
+                const bolas = Math.min(r.total, 24);
+                const feitas = r.total ? Math.round(r.aprendidos * bolas / r.total) : 0;
+                const caminho = Array.from({ length: bolas }, (_, i) => `<i class="trilha-bola${i < feitas ? " feita" : (i === feitas && r.proximo ? " atual" : "")}"></i>`).join("");
                 return `<button type="button" class="bv-opcao" data-materia="${esc(m)}" ${r.proximo ? "" : "disabled"}>
-                    <span class="bv-opcao-texto">${esc(m)}</span><span class="bv-opcao-detalhe">${esc(detalhe)}</span></button>`;
+                    <span class="bv-opcao-texto">${esc(m)}</span><span class="trilha-caminho" aria-hidden="true">${caminho}</span><span class="bv-opcao-detalhe">${esc(detalhe)}</span></button>`;
             }).join("")}</div>
             <div class="modal-acoes"><button type="button" class="btn-secondary ea-cancelar">Cancelar</button></div>
         </div>`;
