@@ -1835,3 +1835,6 @@ body.modo-foco .cartao-hoje { display: none; }
 .barra-numeros .totais-linha { display: flex; gap: 0.7rem; margin: 0; font-size: 0.78rem; }
 .barra-numeros .explicacao-desempenho { flex-basis: 100%; }
 .barra-numeros .explicacao-desempenho.dica-toque { display: none; }
+
+.marca { cursor: pointer; }
+.marca:focus-visible { outline: 2px solid #818cf8; outline-radius: 8px; border-radius: 8px; }
