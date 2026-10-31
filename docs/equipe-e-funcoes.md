@@ -29,6 +29,26 @@ Regra de ouro: **toda decisão sai da sala principal** (o chat do FocoPro) e é 
 - **Sala da esposa:** relatório do banco dela (prompt abaixo). Depois, revisão pedagógica dos cartões do piloto.
 - **Esposa:** testa o piloto como aluna e responde um questionário curto (o que entendeu, o que confundiu, o que faltou).
 
+
+## Salas extras (opcionais, decididas em 31/10)
+O Nathan tem também Gemini, DeepSeek e Grok instalados. A sala principal decide quando abrir cada uma; abrir sala demais custa tempo de copiar e colar entre elas. Regra: **uma função por sala, sempre voltando para a sala principal.**
+
+| IA | Função sugerida | Quando abrir |
+|---|---|---|
+| GPT | Rascunho de cartões e textos do Aprender | Já aberta |
+| Claude da esposa | Exportar o banco dela; depois revisão pedagógica | Já em andamento |
+| Gemini | Conferência cruzada de conteúdo (segunda opinião). É também o modelo que roda dentro do app (Edge Function); os textos do painel do dia devem ser testados nele | Quando houver lote de cartões para conferir e quando começar a fase 2 do painel do dia |
+| DeepSeek | Conferência às cegas de Raciocínio Lógico e Matemática: resolve a questão sem ver o gabarito e compara | Quando houver lote novo de RLM ou questões de cálculo |
+| Grok | Pesquisar notícias recentes de editais para o Radar. Todo item precisa ser confirmado no edital oficial antes de entrar | Quando o Radar começar |
+
+Pontos fracos de cada IA não foram testados neste projeto; a tabela é uma hipótese de trabalho e muda conforme a experiência.
+
+### Conferência cruzada
+- Quem escreveu o conteúdo não é quem confere. Um modelo escreve; outro confere às cegas (sem ver o gabarito) e aponta divergência.
+- Divergência é **alarme**, não veredito: a decisão sai da fonte (livro, lei, edital), conforme o Padrão FocoPro.
+- Concordância entre IAs **não substitui a fonte**.
+- O que é enviado a essas salas: só conteúdo de estudo. Nunca chaves, senhas, dados de usuários, nem gabarito de questão de prova real.
+
 ## Prompt 1: para o Claude da esposa (relatório do app dela)
 
 Copie o bloco abaixo e mande para a sala dela:
