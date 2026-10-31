@@ -544,7 +544,6 @@ if (dashboardMaterias) {
         aplicarFiltros();
         const mainContent = document.querySelector(".main-content");
         if (mainContent) mainContent.scrollTo({ top: 0, behavior: "smooth" });
-        showToast(jaAtiva ? "Todas as matérias" : `Treinando: ${materia}`, "info", 1800);
     });
 }
 
