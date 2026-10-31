@@ -23,3 +23,5 @@ Regra de ouro: **o repositório e o Checklist são a única fonte da verdade.** 
 ## Como passar o trabalho de um para o outro
 - GPT para Claude: colar a imagem ou o texto e dizer o objetivo ("avaliar", "implementar", "revisar").
 - Claude para GPT: eu entrego um resumo de uma linha do que foi decidido e do que falta, para ele não refazer o que já está pronto.
+
+Veja também `docs/ritmo-de-trabalho.md` (orçamento diário, chat de domingo) e `docs/prompt-gpt.md` (texto para apresentar o projeto ao GPT).

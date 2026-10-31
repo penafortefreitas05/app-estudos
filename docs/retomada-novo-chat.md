@@ -8,6 +8,7 @@ Use este arquivo para começar um chat limpo sem perder contexto. Atualizado em 
 - Service worker: subir CACHE_NAME a cada mudança em arquivo do site (última versão: v57; confira no arquivo). Arquivo novo de dados ou script entra na lista RECURSOS_ESTATICOS.
 
 ## Como trabalhamos
+- **Ritmo semanal (desde 30/10):** ~14% do limite por dia, chat novo todo domingo, trabalho dividido com o GPT, sem retrabalho nem revisão completa sem necessidade. Detalhes em `docs/ritmo-de-trabalho.md`; prompt do GPT em `docs/prompt-gpt.md`.
 - Branch por item, merge --no-ff na main, push. Commit termina com as linhas de atribuição pedidas pela sessão.
 - O sandbox não acessa o Supabase: Claude escreve a SQL, Nathan roda no SQL Editor.
 - Antes de importar lote: recarregar o app duas vezes (cache antigo grava nível 3).
