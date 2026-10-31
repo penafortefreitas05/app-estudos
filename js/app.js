@@ -537,12 +537,14 @@ if (dashboardMaterias) {
         if (![...selectMateria.options].some(opt => opt.value === materia)) return;
         simulado = null;
         pararCronometro(displayCronometro);
-        selectMateria.value = materia;
+        // Tocar de novo na matéria já ativa volta para todas as matérias
+        const jaAtiva = selectMateria.value === materia;
+        selectMateria.value = jaAtiva ? "" : materia;
         atualizarSelectAssunto();
         aplicarFiltros();
         const mainContent = document.querySelector(".main-content");
         if (mainContent) mainContent.scrollTo({ top: 0, behavior: "smooth" });
-        showToast(`Treinando: ${materia}`, "info", 1800);
+        showToast(jaAtiva ? "Todas as matérias" : `Treinando: ${materia}`, "info", 1800);
     });
 }
 
@@ -2725,3 +2727,16 @@ if (btnAbrirBarra) btnAbrirBarra.addEventListener("click", () => aplicarBarraRec
     if (botaoFoco) new MutationObserver(marcar).observe(botaoFoco, { attributes: true, attributeFilter: ["aria-pressed"] });
 })();
 // ==================== FIM: 19. MENU LATERAL ====================
+
+
+// ---------- 20. LOGO = recarregar (como F5) ----------
+(function ligarLogoRecarregar() {
+    const marca = document.querySelector(".marca");
+    if (!marca) return;
+    marca.setAttribute("role", "link");
+    marca.setAttribute("tabindex", "0");
+    marca.setAttribute("title", "Recarregar");
+    const recarregar = () => window.location.reload();
+    marca.addEventListener("click", recarregar);
+    marca.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); recarregar(); } });
+})();
