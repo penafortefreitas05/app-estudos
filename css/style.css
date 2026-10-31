@@ -1678,3 +1678,12 @@ body.modo-foco .cartao-hoje { display: none; }
 
 .marca { cursor: pointer; }
 .marca:focus-visible { outline: 2px solid #818cf8; outline-radius: 8px; border-radius: 8px; }
+
+/* ==================== AMBIENTE DO APRENDER (fundo índigo) ==================== */
+body.modo-aprender { background-color: #0b0a24; }
+body.modo-aprender .main-content {
+    background: #0b0a24;
+    background-image: radial-gradient(circle at top right, rgba(99, 102, 241, 0.22), transparent 55%), radial-gradient(circle at bottom left, rgba(79, 70, 229, 0.12), transparent 50%);
+    box-shadow: inset 0 3px 0 #6366f1;
+}
+body.modo-aprender .sidebar { background-color: #11102e; border-right-color: #2a2860; }

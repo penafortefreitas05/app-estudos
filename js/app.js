@@ -1177,6 +1177,8 @@ function entrarFoco(lista, opcoes = {}) {
         aprender: opcoes.aprender || null       // { materia, nome } do assunto em estudo
     };
     document.body.classList.add("modo-foco");
+    // Aprender é um ambiente à parte (fundo índigo); Foco comum segue o fundo de sempre
+    document.body.classList.toggle("modo-aprender", Boolean(opcoes.aprender));
     if (btnModoFoco) btnModoFoco.setAttribute("aria-pressed", "true");
     fecharPaineis();
     desenharFoco();
@@ -1187,7 +1189,7 @@ function sairFoco(opcoes = {}) {
     if (!foco) return;
     const idAtual = foco.lista[foco.indice] ? String(foco.lista[foco.indice].id) : "";
     foco = null;
-    document.body.classList.remove("modo-foco");
+    document.body.classList.remove("modo-foco", "modo-aprender");
     if (btnModoFoco) btnModoFoco.setAttribute("aria-pressed", "false");
     if (opcoes.silencioso) return; // quem chamou vai desenhar outra coisa no lugar
     aplicarFiltros();
