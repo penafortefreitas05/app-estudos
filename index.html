@@ -50,6 +50,24 @@
                 <button type="button" class="menu-item menu-revisar" data-alvo="btn-modo-revisao"><span class="menu-icone" aria-hidden="true">🔁</span>Revisar hoje<span class="menu-contador" id="menu-revisar-n">0</span></button>
             </nav>
 
+            <!-- Nível da conta: pontos por domínio (js/conta.js). Toque para ver a regra. -->
+            <button type="button" class="conta-nivel js-nivel-abrir" id="btn-nivel-conta" hidden title="Seu nível sobe quando você domina questões: acerto com certeza ou superado na revisão. Toque para ver a regra.">
+                <span class="conta-nivel-linha"><span class="selo-nivel js-nivel-nome">Nível 1</span></span>
+                <span class="conta-nivel-trilho"><span class="conta-nivel-barra js-nivel-barra"></span></span>
+                <span class="conta-nivel-texto js-nivel-texto"></span>
+            </button>
+
+
+
+
+            <!-- Por matéria: sempre à mostra, as 9 matérias fixas. Tocar treina a matéria. -->
+            <h3 class="dashboard-titulo">📚 Por matéria</h3>
+            <div class="dashboard-container" id="dashboard-materias">
+                <!-- Renderizado via js/ui.js -->
+            </div>
+            <button type="button" id="btn-cobertura-edital" class="btn-link link-cobertura">Ver cobertura do edital →</button>
+
+            <div class="conta-rodape">
             <!-- Minha conta: o avatar abre as ações da conta (raras), que antes ficavam soltas no menu.
                  Visitante: tocar no cartão abre o login (app.js). -->
             <details class="conta" id="conta">
@@ -86,47 +104,7 @@
                     </button>
                 </div>
             </details>
-
-            <!-- Nível da conta: pontos por domínio (js/conta.js). Toque para ver a regra. -->
-            <button type="button" class="conta-nivel js-nivel-abrir" id="btn-nivel-conta" hidden title="Seu nível sobe quando você domina questões: acerto com certeza ou superado na revisão. Toque para ver a regra.">
-                <span class="conta-nivel-linha"><span class="selo-nivel js-nivel-nome">Nível 1</span></span>
-                <span class="conta-nivel-trilho"><span class="conta-nivel-barra js-nivel-barra"></span></span>
-                <span class="conta-nivel-texto js-nivel-texto"></span>
-            </button>
-
-            <!-- Meu desempenho: abre e fecha; o app lembra a escolha (app.js) -->
-            <details class="gaveta-desempenho" id="gaveta-desempenho" open>
-                <summary>📊 Meu desempenho</summary>
-                <div class="gaveta-desempenho-conteudo">
-                    <!-- Os 2 números de acompanhamento (meta, dias e revisão ficam na barra de cima) -->
-                    <div class="resumo-row">
-                        <div class="resumo-card" role="button" tabindex="0" aria-expanded="false" data-explicacao="🗺️ Feitas: quanto do banco de questões você já respondeu pelo menos uma vez.">
-                            <span class="resumo-titulo">🗺️ Feitas</span>
-                            <span class="resumo-valor" id="stat-cobertura">—</span>
-                            <span class="resumo-detalhe" id="stat-cobertura-detalhe">0 de 0 feitas</span>
-                        </div>
-                        <div class="resumo-card" id="card-criticas" role="button" tabindex="0" aria-expanded="false" data-explicacao="⚠️ Reforçar: matérias com menos de 60% de acerto, contando só as que já têm 5 respostas ou mais. Elas aparecem com ⚠️ em Por matéria; toque nelas para treinar.">
-                            <span class="resumo-titulo">⚠️ Reforçar</span>
-                            <span class="resumo-valor" id="stat-criticas">0</span>
-                            <span class="resumo-detalhe" id="stat-criticas-detalhe">nenhuma</span>
-                        </div>
-                    </div>
-                    <p class="explicacao-desempenho dica-toque" id="explicacao-desempenho" aria-live="polite">ⓘ Toque num número para entender o que ele mostra.</p>
-
-                    <!-- Acertos e erros totais: discretos, numa linha -->
-                    <p class="totais-linha">
-                        <span class="text-blue">✓ <strong id="stat-acertos">0</strong> acertos</span>
-                        <span class="text-orange">✗ <strong id="stat-erros">0</strong> erros</span>
-                    </p>
-                </div>
-            </details>
-
-            <!-- Por matéria: sempre à mostra, as 9 matérias fixas. Tocar treina a matéria. -->
-            <h3 class="dashboard-titulo">📚 Por matéria</h3>
-            <div class="dashboard-container" id="dashboard-materias">
-                <!-- Renderizado via js/ui.js -->
             </div>
-            <button type="button" id="btn-cobertura-edital" class="btn-link link-cobertura">Ver cobertura do edital →</button>
         </aside>
 
         <button type="button" id="btn-abrir-barra" class="btn-abrir-barra" title="Mostrar a barra lateral" aria-label="Mostrar a barra lateral" hidden>F</button>
@@ -186,6 +164,27 @@
                             ⏱️ Simulado
                         </button>
                     </div>
+                </div>
+
+                <!-- Números de acompanhamento (antes na gaveta "Meu desempenho" da barra lateral) -->
+                <div class="barra-numeros" id="barra-numeros">
+                        <div class="resumo-row">
+                            <div class="resumo-card" role="button" tabindex="0" aria-expanded="false" data-explicacao="🗺️ Feitas: quanto do banco de questões você já respondeu pelo menos uma vez.">
+                                <span class="resumo-titulo">🗺️ Feitas</span>
+                                <span class="resumo-valor" id="stat-cobertura">—</span>
+                                <span class="resumo-detalhe" id="stat-cobertura-detalhe">0 de 0 feitas</span>
+                            </div>
+                            <div class="resumo-card" id="card-criticas" role="button" tabindex="0" aria-expanded="false" data-explicacao="⚠️ Reforçar: matérias com menos de 60% de acerto, contando só as que já têm 5 respostas ou mais. Elas aparecem com ⚠️ em Por matéria; toque nelas para treinar.">
+                                <span class="resumo-titulo">⚠️ Reforçar</span>
+                                <span class="resumo-valor" id="stat-criticas">0</span>
+                                <span class="resumo-detalhe" id="stat-criticas-detalhe">nenhuma</span>
+                            </div>
+                        </div>
+                    <p class="totais-linha">
+                        <span class="text-blue">✓ <strong id="stat-acertos">0</strong> acertos</span>
+                        <span class="text-orange">✗ <strong id="stat-erros">0</strong> erros</span>
+                    </p>
+                    <p class="explicacao-desempenho dica-toque" id="explicacao-desempenho" aria-live="polite">ⓘ Toque num número para entender o que ele mostra.</p>
                 </div>
 
                 <!-- Linha 2: busca e filtros rápidos (nível e status viram botões) -->
