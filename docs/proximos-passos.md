@@ -14,7 +14,7 @@ Só usar e testar. Anotar o que incomodar e mandar numa mensagem só. Sem trabal
 ## Depois de domingo 16h, por prioridade
 1. Pacote Trilha: aviso "você já pode subir de nível" e caminho de volta (errou prova, sugere o Iniciante do assunto).
 2. Perfil e meta na nuvem (tabela `perfis`; Claude escreve a SQL, Nathan roda).
-3. Etapa 2 do visual (o menu lateral já foi feito em 30/10): conta embaixo e filtros agrupados.
+3. Etapa 2 do visual (o menu lateral já foi feito em 30/10): conta embaixo já feito em 30/10; falta só filtros agrupados.
 4. Aprender em modo de leitura, com campo de nível nos cartões (todos os níveis).
 5. Novo molde do cartão "Entenda em 1 minuto": piloto em um assunto de Banco de Dados, conferido contra fonte, antes de pedir o resto.
 6. Decisão sobre a barra de % de acerto ignorar respostas do Aprender (some se o item 4 for feito).
