@@ -25,3 +25,10 @@ Regra de ouro: **o repositório e o Checklist são a única fonte da verdade.** 
 - Claude para GPT: eu entrego um resumo de uma linha do que foi decidido e do que falta, para ele não refazer o que já está pronto.
 
 Veja também `docs/ritmo-de-trabalho.md` (orçamento diário, chat de domingo) e `docs/prompt-gpt.md` (texto para apresentar o projeto ao GPT).
+
+## Registro: avaliação do GPT sobre as telas do celular (30/10/2026)
+Nota dele: 8,3/10; recomendou manter a identidade e refinar. Decisão do Claude e do Nathan:
+- **Aceito (no Checklist):** taxa de acerto geral e rótulo claro de acertos/erros; confiança x resultado ("errou com certeza"); reforçar por assunto; ganhar espaço vertical no celular.
+- **Adiado:** barra inferior no celular (reavaliar após uma semana de uso).
+- **Já existe, não refazer:** caderno de erros com anotações, botões Tenho certeza/Na dúvida, estados das alternativas, filtros de nível, matérias com progresso (anéis), nível de conta.
+- **Recusado:** trocar a identidade ou redesenhar as matérias como barras (a grade de anéis foi escolhida em 30/10). A imagem do GPT é conceito: os números dela (81%, 125, 103) são inventados.
