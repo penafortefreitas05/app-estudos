@@ -1824,3 +1824,14 @@ body.modo-foco .cartao-hoje { display: none; }
 .menu-contador { margin-left: auto; min-width: 1.4rem; padding: 0 0.45rem; border-radius: 10px; background: #2563eb; color: #fff; font-size: 0.72rem; font-weight: 800; text-align: center; line-height: 1.4rem; }
 /* No computador o menu lateral faz o papel dos botões da barra de cima */
 @media (min-width: 769px) { .barra-botoes { display: none; } }
+
+/* Conta no fim da barra lateral; números de desempenho na barra de cima */
+.conta-rodape { margin-top: auto; padding: 0.8rem 0 0.2rem; border-top: 1px solid #1e293b; position: sticky; bottom: -1.5rem; background: #0f172a; z-index: 2; }
+.barra-numeros { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.7rem; margin: 0.2rem 0 0.1rem; }
+.barra-numeros .resumo-row { display: flex; gap: 0.5rem; }
+.barra-numeros .resumo-card { display: flex; align-items: baseline; gap: 0.45rem; padding: 0.35rem 0.7rem; min-width: 0; }
+.barra-numeros .resumo-valor { font-size: 1rem; line-height: 1; }
+.barra-numeros .resumo-titulo, .barra-numeros .resumo-detalhe { font-size: 0.72rem; white-space: nowrap; }
+.barra-numeros .totais-linha { display: flex; gap: 0.7rem; margin: 0; font-size: 0.78rem; }
+.barra-numeros .explicacao-desempenho { flex-basis: 100%; }
+.barra-numeros .explicacao-desempenho.dica-toque { display: none; }

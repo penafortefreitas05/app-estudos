@@ -2690,8 +2690,11 @@ if (btnAbrirBarra) btnAbrirBarra.addEventListener("click", () => aplicarBarraRec
             return;
         }
         if (item.dataset.acao === "desempenho") {
-            const gaveta = document.getElementById("gaveta-desempenho");
-            if (gaveta) { gaveta.open = true; gaveta.scrollIntoView({ behavior: "smooth", block: "start" }); }
+            // Os números ficam na barra de cima; os detalhes por matéria, na lateral
+            const porMateria = document.getElementById("dashboard-materias");
+            if (porMateria) porMateria.scrollIntoView({ behavior: "smooth", block: "start" });
+            const principal = document.querySelector(".main-content");
+            if (principal) principal.scrollTo({ top: 0, behavior: "smooth" });
         } else if (item.dataset.acao === "questoes") {
             // Sai do Foco, se estiver nele, e volta ao topo da lista
             const foco = document.getElementById("btn-modo-foco");
