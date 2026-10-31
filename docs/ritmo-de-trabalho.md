@@ -3,7 +3,7 @@
 Definido pelo Nathan em 30/10. O limite semanal renova **domingo às 16h**.
 
 ## Regras combinadas
-1. **Orçamento por dia: cerca de 14% do limite semanal.** 7 dias x 14% = 98%. Quem controla é o Nathan, que lê o painel de uso. Domingo sobra uma folga para ajustes pequenos.
+1. **Orçamento por dia: de 10% a 13,5% do limite semanal (teto 13,5%).** No teto, 7 dias x 13,5% = 94,5%, então a semana chega ao domingo com cerca de 94% usado e uns 5 a 6% de folga para ajustes pequenos. Quem controla é o Nathan, que lê o painel de uso.
 2. **Chat novo todo domingo.** Abre-se por `docs/retomada-novo-chat.md`. Antes de fechar a semana: atualizar a retomada, o Checklist e os próximos passos.
 3. **Trabalho dividido com o GPT.** Ele rascunha (textos, conceitos visuais, dúvidas de estudo); o Claude escreve código, testa, faz commit e escreve o SQL final. Para o GPT entender o projeto: `docs/prompt-gpt.md`.
 4. **Sem trabalho redundante.** Não reler o projeto inteiro nem rodar todas as suítes de teste a cada mudança. Revisão completa só quando for necessário (antes de uma mudança grande, de importar lote no banco ou de mexer em segurança).
@@ -11,7 +11,7 @@ Definido pelo Nathan em 30/10. O limite semanal renova **domingo às 16h**.
 6. **Meta: usar a semana inteira com segurança até o reset.** Limite não usado não passa para a semana seguinte, mas também não vale estourar e ficar travado no meio.
 
 ## Sugestões do Claude (para decidir)
-- **Tamanho do pedido em 3 faixas:** P (ajuste de texto, cor, bug pequeno: ~1 a 2%), M (tela ou função nova pequena: ~3 a 5%), G (sistema novo, SQL, mexe em vários arquivos: 6% ou mais). Eu digo a faixa antes de começar; o Nathan decide se cabe no dia.
+- **Tamanho do pedido em 3 faixas:** P (ajuste de texto, cor, bug pequeno: ~1 a 2%), M (tela ou função nova pequena: ~3 a 5%), G (sistema novo, SQL, mexe em vários arquivos: 6% a 13,5%, nunca acima do teto do dia). São estimativas; a medida real é o painel do Nathan. Eu digo a faixa antes de começar; o Nathan decide se cabe no dia.
 - **Dia de G é dia sem mais nada.** Item G não divide o dia com outros; assim não trava no meio.
 - **Ponto de controle na quarta:** se passou de 50% do semanal, os itens G da semana são adiados.
 - **Máximo de uma melhoria G por semana.** O app é ferramenta; o concurso é o objetivo. A melhor métrica de que o app funciona é o seu "Meu dia" mostrando estudo constante.
