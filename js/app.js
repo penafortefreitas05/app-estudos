@@ -6,7 +6,7 @@
 
 // ==================== INÍCIO: SUBSTITUIR O IMPORT DE './ui.js' ====================
 import {
-    esc,                    // escapa HTML (usado em formatarExplicacaoIA)
+    esc,                    // escapa HTML
     obterOpcoes,
     preencherSelect,
     atualizarChipTag,
@@ -887,82 +887,6 @@ if (container) {
                        return;
         }
 
-        // >>>>>>>>>> INÍCIO BLOCO A: HELPERS DA IA >>>>>>>>>>
-const IA_MSG_PADRAO = "Não foi possível gerar a explicação agora. Tente novamente em instantes.";
-
-// Escapa TUDO primeiro e só depois aplica **negrito**, "- item" e quebras de linha
-function formatarExplicacaoIA(texto) {
-    return esc(String(texto ?? ""))
-        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-        .replace(/^\s*[-•]\s+/gm, "• ")
-        .replace(/\n/g, "<br>");
-}
-
-// invoke() devolve FunctionsHttpError em status != 2xx; a mensagem do servidor está em error.context
-async function extrairMensagemErroIA(error) {
-    if (!navigator.onLine) return "Sem conexão com a internet. Verifique e tente novamente.";
-    // A chamada nem chegou à função: rede caiu, ou o servidor recusou este endereço do site (CORS)
-    if (error && error.name === "FunctionsFetchError") {
-        return "Não foi possível falar com o servidor da IA. Se você está numa versão de teste, ela pode não estar autorizada; no app oficial deve funcionar.";
-    }
-    try {
-        if (error && error.context && typeof error.context.json === "function") {
-            const corpo = await error.context.json();
-            if (corpo && typeof corpo.message === "string") return corpo.message;
-        }
-    } catch (_) { /* corpo não era JSON: usa a mensagem padrão */ }
-    return IA_MSG_PADRAO;
-}
-
-async function solicitarExplicacaoIA(btnIA) {
-    if (btnIA.disabled) return; // evita clique duplo (cobrança dupla na API)
-
-    const card = btnIA.closest(".card-questao");
-    if (!card) return;
-
-    const qId = String(card.dataset.id);
-    const q = porId.get(qId);
-    const h = historico[qId];
-    const caixa = card.querySelector(".ia-resposta-container");
-    if (!q || !h || !caixa) return;
-
-    btnIA.disabled = true;
-    btnIA.textContent = "⏳ Processando com IA...";
-    caixa.style.display = "block";
-    caixa.innerHTML = "<em>A IA está analisando a questão e a sua resposta...</em>";
-
-    try {
-        // Só o id e a letra marcada: a função busca enunciado, alternativas e gabarito no banco
-        // (não confia no que o navegador manda — isso impede envenenar o cache da IA)
-        const { data, error } = await supabaseClient.functions.invoke("super-function", {
-            body: {
-                questaoId: qId,
-                respostaUsuario: h.ultimaEscolha
-            }
-        });
-        if (error) throw error;
-        if (!data || data.ok !== true || typeof data.explicacao !== "string") {
-            throw new Error("Resposta inesperada da função");
-        }
-
-        caixa.innerHTML = formatarExplicacaoIA(data.explicacao);
-        btnIA.style.display = "none";
-    } catch (erro) {
-        console.error("Erro na chamada da IA:", erro);
-        const msg = await extrairMensagemErroIA(erro);
-
-        // textContent: a mensagem nunca é interpretada como HTML
-        caixa.textContent = "";
-        const aviso = document.createElement("span");
-        aviso.style.color = "#f87171";
-        aviso.textContent = "⚠️ " + msg;
-        caixa.appendChild(aviso);
-
-        btnIA.disabled = false;
-        btnIA.textContent = "✨ Tentar novamente";
-    }
-}
-// <<<<<<<<<< FIM BLOCO A <<<<<<<<<<
         const btnResponder = e.target.closest(".btn-responder");
         if (btnResponder) {
             const card = btnResponder.closest(".card-questao");
@@ -995,11 +919,6 @@ async function solicitarExplicacaoIA(btnIA) {
             return;
         }
 
-        const btnIA = e.target.closest(".btn-ia-explicar");
-        if (btnIA) {
-            solicitarExplicacaoIA(btnIA);
-            return;
-        }
 // <<<<<<<<<< FIM BLOCO B <<<<<<<<<<
 
         const elemTag = e.target.closest(".tag-item");
@@ -2335,20 +2254,13 @@ function colocarCartaoHoje() {
         return;
     }
     const revisar = questoesParaRevisarHoje();
-    const meta = atualizarMetaNaTela(historico);
+    atualizarMetaNaTela(historico);
     const semana = resumoSemanaPassada();
 
     let titulo, texto;
     if (revisar.length) {
         titulo = revisar.length === 1 ? "Comece pela revisão: 1 questão" : `Comece pela revisão: ${revisar.length} questões`;
         texto = "São as que você errou ou acertou na dúvida. Depois vêm as questões novas.";
-    } else if (meta && meta.batida) {
-        titulo = "Meta de hoje batida 🎯";
-        texto = "Pode parar por aqui ou continuar com questões novas.";
-    } else if (meta) {
-        const faltam = meta.meta - meta.feitas;
-        titulo = faltam === 1 ? "Falta 1 questão para a meta de hoje" : `Faltam ${faltam} questões para a meta de hoje`;
-        texto = "Nada para revisar hoje. Siga com as questões novas, uma por vez.";
     } else {
         titulo = "Pronto para estudar?";
         texto = "Nada para revisar hoje. Siga com as questões novas, uma por vez.";
@@ -2690,13 +2602,7 @@ if (btnAbrirBarra) btnAbrirBarra.addEventListener("click", () => aplicarBarraRec
             fecharGaveta();
             return;
         }
-        if (item.dataset.acao === "desempenho") {
-            // Os números ficam na barra de cima; os detalhes por matéria, na lateral
-            const porMateria = document.getElementById("dashboard-materias");
-            if (porMateria) porMateria.scrollIntoView({ behavior: "smooth", block: "start" });
-            const principal = document.querySelector(".main-content");
-            if (principal) principal.scrollTo({ top: 0, behavior: "smooth" });
-        } else if (item.dataset.acao === "questoes") {
+        if (item.dataset.acao === "questoes") {
             // Sai do Foco, se estiver nele, e volta ao topo da lista
             const foco = document.getElementById("btn-modo-foco");
             if (foco && foco.getAttribute("aria-pressed") === "true") foco.click();
@@ -2705,15 +2611,6 @@ if (btnAbrirBarra) btnAbrirBarra.addEventListener("click", () => aplicarBarraRec
             fecharGaveta();
         }
     });
-
-    // Contador de "Revisar hoje" acompanha o número do placar
-    const origem = document.getElementById("contador-revisao");
-    const destino = document.getElementById("menu-revisar-n");
-    const copiar = () => { if (origem && destino) destino.textContent = origem.textContent; };
-    if (origem && destino) {
-        copiar();
-        new MutationObserver(copiar).observe(origem, { childList: true, characterData: true, subtree: true });
-    }
 
     // Item ativo: Foco enquanto o modo estiver ligado; senão, Questões
     const botaoFoco = document.getElementById("btn-modo-foco");
