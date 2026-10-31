@@ -2731,6 +2731,7 @@ if (btnAbrirBarra) btnAbrirBarra.addEventListener("click", () => aplicarBarraRec
 // ---------- 20. LOGO = recarregar (como F5) ----------
 (function ligarLogoRecarregar() {
     const marca = document.querySelector(".marca");
+    const marcaMobile = document.querySelector(".top-bar-brand");
     if (!marca) return;
     marca.setAttribute("role", "link");
     marca.setAttribute("tabindex", "0");
@@ -2738,4 +2739,8 @@ if (btnAbrirBarra) btnAbrirBarra.addEventListener("click", () => aplicarBarraRec
     const recarregar = () => window.location.reload();
     marca.addEventListener("click", recarregar);
     marca.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); recarregar(); } });
+    if (marcaMobile) {
+        marcaMobile.addEventListener("click", recarregar);
+        marcaMobile.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); recarregar(); } });
+    }
 })();

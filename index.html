@@ -116,7 +116,16 @@
             <!-- Linha do celular: menu, marca e placar rápido (fica fixa no topo ao rolar) -->
             <div class="top-bar-mobile">
                 <label for="menu-toggle" class="btn-menu" aria-label="Abrir menu">☰</label>
-                <span class="top-bar-brand">FocoPro ✦</span>
+                <span class="top-bar-brand" role="link" tabindex="0" title="Recarregar">
+                    <svg width="26" height="26" viewBox="0 0 42 42" aria-hidden="true" focusable="false">
+                        <defs><linearGradient id="marca-grad-m" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#7C6CFF"/><stop offset="1" stop-color="#4D8DFF"/></linearGradient></defs>
+                        <rect width="42" height="42" rx="12" fill="url(#marca-grad-m)"/>
+                        <circle cx="21" cy="21" r="12" fill="none" stroke="#fff" stroke-width="2.5"/>
+                        <circle cx="21" cy="21" r="5" fill="#fff"/>
+                        <path d="M26 16l9-9M31 7h4v4" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>foco<b>pro</b></span>
+                </span>
                 <span class="placar-mini" title="Sequência de dias, acertos e erros">
                     <span class="placar-mini-meta" id="mini-meta" hidden title="Meta de hoje">0/10</span>
                     <span class="placar-mini-sequencia apagada" id="mini-sequencia">0</span>
