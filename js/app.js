@@ -2670,3 +2670,55 @@ try { aplicarBarraRecolhida(localStorage.getItem(CHAVE_BARRA_RECOLHIDA) === "1")
 if (btnRecolherBarra) btnRecolherBarra.addEventListener("click", () => aplicarBarraRecolhida(true));
 if (btnAbrirBarra) btnAbrirBarra.addEventListener("click", () => aplicarBarraRecolhida(false));
 // ==================== FIM: 18. BARRA RECOLHÍVEL ====================
+
+
+// ==================== INÍCIO: 19. MENU LATERAL ====================
+// Cada item aciona o botão que já existe (Meu dia, Simulado, Aprender, Foco, Revisar). Assim a lógica
+// continua num lugar só. "Questões" volta para a lista; "Desempenho" abre a gaveta de números.
+(function iniciarMenuLateral() {
+    const menu = document.getElementById("menu-lateral");
+    if (!menu) return;
+    const fecharGaveta = () => { const t = document.getElementById("menu-toggle"); if (t) t.checked = false; };
+
+    menu.addEventListener("click", (e) => {
+        const item = e.target.closest(".menu-item");
+        if (!item) return;
+        const alvo = item.dataset.alvo ? document.getElementById(item.dataset.alvo) : null;
+        if (alvo) {
+            alvo.click();
+            fecharGaveta();
+            return;
+        }
+        if (item.dataset.acao === "desempenho") {
+            const gaveta = document.getElementById("gaveta-desempenho");
+            if (gaveta) { gaveta.open = true; gaveta.scrollIntoView({ behavior: "smooth", block: "start" }); }
+        } else if (item.dataset.acao === "questoes") {
+            // Sai do Foco, se estiver nele, e volta ao topo da lista
+            const foco = document.getElementById("btn-modo-foco");
+            if (foco && foco.getAttribute("aria-pressed") === "true") foco.click();
+            const principal = document.querySelector(".main-content");
+            if (principal) principal.scrollTo({ top: 0, behavior: "smooth" });
+            fecharGaveta();
+        }
+    });
+
+    // Contador de "Revisar hoje" acompanha o número do placar
+    const origem = document.getElementById("contador-revisao");
+    const destino = document.getElementById("menu-revisar-n");
+    const copiar = () => { if (origem && destino) destino.textContent = origem.textContent; };
+    if (origem && destino) {
+        copiar();
+        new MutationObserver(copiar).observe(origem, { childList: true, characterData: true, subtree: true });
+    }
+
+    // Item ativo: Foco enquanto o modo estiver ligado; senão, Questões
+    const botaoFoco = document.getElementById("btn-modo-foco");
+    const marcar = () => {
+        const emFoco = botaoFoco && botaoFoco.getAttribute("aria-pressed") === "true";
+        menu.querySelectorAll(".menu-item").forEach(i => i.classList.remove("ativo"));
+        const ativo = menu.querySelector(emFoco ? "#menu-foco" : "[data-acao=questoes]");
+        if (ativo) ativo.classList.add("ativo");
+    };
+    if (botaoFoco) new MutationObserver(marcar).observe(botaoFoco, { attributes: true, attributeFilter: ["aria-pressed"] });
+})();
+// ==================== FIM: 19. MENU LATERAL ====================

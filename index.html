@@ -39,6 +39,17 @@
                 <!-- Só no computador: recolhe a barra inteira para ficar só com as questões -->
                 <button type="button" id="btn-recolher-barra" class="btn-recolher-barra" title="Recolher a barra e ficar só com as questões" aria-label="Recolher a barra lateral">«</button>
             </div>
+            <!-- Menu: cada item aciona o botão que já existe (ids em data-alvo). No computador os botões da barra de cima somem. -->
+            <nav class="menu-lateral" id="menu-lateral" aria-label="Menu principal">
+                <button type="button" class="menu-item ativo" data-acao="questoes"><span class="menu-icone" aria-hidden="true">▦</span>Questões</button>
+                <button type="button" class="menu-item" data-alvo="btn-meu-dia"><span class="menu-icone" aria-hidden="true">📊</span>Meu dia</button>
+                <button type="button" class="menu-item" data-acao="desempenho"><span class="menu-icone" aria-hidden="true">📈</span>Desempenho</button>
+                <button type="button" class="menu-item" data-alvo="btn-painel-simulado"><span class="menu-icone" aria-hidden="true">⏱️</span>Simulados</button>
+                <button type="button" class="menu-item" data-alvo="btn-aprender-barra"><span class="menu-icone" aria-hidden="true">📖</span>Aprender</button>
+                <button type="button" class="menu-item" data-alvo="btn-modo-foco" id="menu-foco"><span class="menu-icone" aria-hidden="true">🎯</span>Foco</button>
+                <button type="button" class="menu-item menu-revisar" data-alvo="btn-modo-revisao"><span class="menu-icone" aria-hidden="true">🔁</span>Revisar hoje<span class="menu-contador" id="menu-revisar-n">0</span></button>
+            </nav>
+
             <!-- Minha conta: o avatar abre as ações da conta (raras), que antes ficavam soltas no menu.
                  Visitante: tocar no cartão abre o login (app.js). -->
             <details class="conta" id="conta">
