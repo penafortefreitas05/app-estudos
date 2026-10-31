@@ -1,11 +1,11 @@
 # FocoPro — Retomada em chat novo
 
-Use este arquivo para começar um chat limpo sem perder contexto. Atualizado em 28/10/2026 (fim do dia).
+Use este arquivo para começar um chat limpo sem perder contexto. Atualizado em 30/10/2026 (noite).
 
 ## O app
 - FocoPro: HTML/CSS/JS puro no Vercel, Supabase (Postgres, Auth, RLS, Edge Function `super-function` com Gemini). Repositório: github.com/penafortefreitas05/app-estudos. Site: 001foco-pro.vercel.app.
 - Banco: 985 questões (382 de prova/inéditas + 603 autorais FocoPro: 573 Iniciante, 30 Intermediário).
-- Service worker: subir CACHE_NAME a cada mudança em arquivo do site (última versão: v43). Arquivo novo de dados ou script entra na lista RECURSOS_ESTATICOS.
+- Service worker: subir CACHE_NAME a cada mudança em arquivo do site (última versão: v57; confira no arquivo). Arquivo novo de dados ou script entra na lista RECURSOS_ESTATICOS.
 
 ## Como trabalhamos
 - Branch por item, merge --no-ff na main, push. Commit termina com as linhas de atribuição pedidas pela sessão.
@@ -21,11 +21,21 @@ Use este arquivo para começar um chat limpo sem perder contexto. Atualizado em 
 - Filtro de assunto depende da matéria. Total (985) aparece só em "Todos os Níveis".
 - Siglas de id: bd, rs, es, dev, gov, arq, so, pt, rlm. Padrão focopro-<sigla>-n<nível>-<NNN>.
 - Aprender: cada assunto do Iniciante = "Entenda em 1 minuto" (opcional) → exemplo resolvido (1ª questão do assunto) → prova (as outras). Aprendido = todas as de prova respondidas e 2 de cada 3 certas na última tentativa. Estado derivado do histórico, sem tabela. A questão do exemplo continua aparecendo nas listas e revisões (repetir até ficar rápido é o método).
-- "Entenda em 1 minuto": textos em `data/resumos-assunto.json` (materia, assunto, ideia_central, exemplo, pegadinha). O `assunto` tem de ser igual ao das questões. Escritos no chat do banco, revisados pelo Nathan. Só Banco de Dados feito (23 assuntos).
-- Layout (desktop): barra lateral com largura de um terço da tela (`--largura-barra`), recolhível pelo « e pelo botão F (estado lembrado). Painel Por matéria em cartões (ícone, % de acerto, barrinha por nível). Barra de cima em duas linhas: título + contagem + placar do dia (meta, 🔁 para revisar, 🔥 dias) + Aprender/Foco/Simulado; busca (tecla /), botões de nível e de situação, Mais filtros. Meta, dias e Revisar saíram da lateral para não repetir.
+- "Entenda em 1 minuto": textos em `data/resumos-assunto.json`, escritos no chat do banco e revisados pelo Nathan. Feito: 103 cartões nas 9 matérias (Português e RLM usam o modelo "regra"). O `assunto` tem de ser igual ao das questões.
+- Layout (desktop): barra lateral estreita (`--largura-barra`: 290 a 340 px), recolhível pelo « e pelo botão F. **Por matéria em grade de anéis** (3 por linha): anel = quanto da matéria foi feito, cor = acerto, bolinha amarela = revisões de hoje; tocar filtra a matéria e abre o detalhe com I, M, A, revisão e reforçar. Barra de cima em duas linhas: título + contagem + **nível da conta com barra** + placar do dia + Aprender/Meu dia/Foco/Simulado; busca (tecla /), níveis e situação, Mais filtros. Logo nova (alvo com seta, "foco**pro**"). Cor da marca roxo-azul só na logo; botões seguem azuis; **índigo é a cor do Aprender**.
+- **Meu dia** (botão 📊): hoje separado em revisão x questões novas, mais 7 dias. Vem do histórico na nuvem (`carregarRespostasRecentes`). Revisão = questão já respondida antes; nova = primeira vez.
+- **Nível de conta** (`js/conta.js`): pontos por domínio. Só pontua questão com status acerto, superado ou dominada (acerto com certeza); 1/2/3/4 pontos por nível da questão; +1 se já foi errada e foi superada. Errar de novo tira os pontos dela, mas o nível conquistado nunca desce (guardado no aparelho). Degraus: 0, 200, 500, 900, 1400, 1900 (Aspirante, Candidato, Concurseiro, Analista, Especialista, Aprovado). Limites provisórios; rever quando o banco crescer.
+- Modo Foco tem barrinha de avanço da lista (degradê roxo-verde).
+- Decidido, ainda não feito: Aprender vira modo de leitura (pergunta, "Ver resposta" por toque, o porquê vem do comentário da questão, botão "Já entendi"), com o campo de nível nos cartões para acompanhar todos os níveis. Novo molde do cartão (o que é, para que serve, não confundir, atenção) começa por um piloto de Banco de Dados. Ambos fora da prioridade até depois de domingo.
 - Perfil e meta diária ficam no aparelho (localStorage) por enquanto.
 
 ## Onde está o resto
-- Lista viva de pendências com caixinhas: artefato "Checklist FocoPro" (claude.ai/artifact/Gcf7C7LDwq21xCarmGtT9M), com o grupo "Amanhã" por prioridade.
+- Lista viva de pendências com caixinhas: artefato "Checklist FocoPro" (claude.ai/artifact/Gcf7C7LDwq21xCarmGtT9M), com os grupos "Amanhã" e "Depois de domingo 16h".
 - Roteiro e detalhes: claude/proximos-passos.md. Modelo de geração de questões: claude/modelo-questoes-por-nivel.md.
 - Desenhos do painel e da barra: claude.ai/artifact/FBbzMZXvQfkNMXEkd7CyT6.
+
+## Trabalho em conjunto com o GPT
+Ver `docs/trabalho-com-gpt.md` (quem faz o quê e regras para não gerar conflito).
+
+## Limite semanal
+Em 30/10 o Nathan estava em 82% do limite semanal, que renova no domingo às 16h. Até lá: usar e testar o app, anotar problemas e mandar numa mensagem só; ajustes pequenos apenas. Conversas longas gastam mais: preferir chat novo com este arquivo.
