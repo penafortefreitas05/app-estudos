@@ -73,21 +73,6 @@ export function obterOpcoes(q) {
     return [];
 }
 
-export function letraDe(alt) {
-    if (!alt) return "";
-    const str = String(alt).trim();
-    const lower = str.toLowerCase();
-
-    if (lower === "certo" || lower === "correto" || lower === "c") return "C";
-    if (lower === "errado" || lower === "incorreto" || lower === "e") return "E";
-
-    const primeiraLetra = str.charAt(0).toUpperCase();
-    if (primeiraLetra >= "A" && primeiraLetra <= "Z") {
-        return primeiraLetra;
-    }
-    return str.toUpperCase();
-}
-
 export function gabaritoDe(q) {
     if (!q) return "A";
     const gabFonte = q.gabarito || q.resposta_correta;
@@ -848,17 +833,6 @@ export function revelar(card, q, letraEscolhida, info = {}) {
         } else if (letraEscolhida && !acertou && info.confianca === 'duvida') {
             gabaritoDiv.innerHTML += `<p class="aviso-confianca">🔁 Ela volta amanhã na revisão.</p>`;
         }
-        // Injeta o botão de IA apenas quando o utilizador erra a questão
-    if (!acertou && letraEscolhida && gabaritoDiv) {
-                gabaritoDiv.innerHTML += `
-            <div class="ia-acoes">
-                <button type="button" class="btn-ia-explicar" data-id="${esc(q.id)}">
-                    ✨ Entender meu erro com IA
-                </button>
-            </div>
-            <div class="ia-resposta-container"></div>
-        `;
-    }
     }
 
     if (explicacaoDiv) {
