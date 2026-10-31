@@ -1085,7 +1085,8 @@ body {
         background: #0f172a; border: 1px solid #1e293b; border-radius: 10px;
         color: #f8fafc; font-size: 1.3rem; cursor: pointer;
     }
-    .top-bar-brand { color: #f8fafc; font-weight: 700; font-size: 1.15rem; }
+    .top-bar-brand { color: #f8fafc; font-weight: 700; font-size: 1.15rem; display: inline-flex; align-items: center; gap: 0.45rem; cursor: pointer; }
+    .top-bar-brand b { color: #9b8dff; font-weight: 700; }
 
     /* --- Barra empilhada: título, placar, 3 botões, busca e filtros rápidos --- */
     .barra-linha1 { gap: 0.6rem; }
