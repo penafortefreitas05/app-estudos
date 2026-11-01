@@ -1,0 +1,120 @@
+[
+  {
+    "id": "card-bd-n1-001",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Normalização",
+    "nivel": 1,
+    "conceito": "Chave candidata",
+    "termo_ingles": "Candidate Key",
+    "traducao": "Chave candidata: conjunto mínimo de atributos que identifica um registro.",
+    "resumo": "Identifica cada registro sem atributos desnecessários. Exemplo: matrícula identifica um funcionário de forma única.",
+    "nao_confundir": [
+      {
+        "conceito": "Chave primária",
+        "diferenca": "É a chave candidata escolhida para identificar os registros da tabela."
+      }
+    ],
+    "atencao": "Uma tabela pode ter várias chaves candidatas, mas apenas uma é escolhida como chave primária.",
+    "fonte": "Elmasri, Ramez; Navathe, Shamkant B. Fundamentals of Database Systems. 7ª edição. Pearson, 2016.",
+    "tags": ["normalizacao"]
+  },
+  {
+    "id": "card-bd-n1-002",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Normalização",
+    "nivel": 1,
+    "conceito": "Dependência funcional",
+    "termo_ingles": "Functional Dependency",
+    "traducao": "Dependência funcional: um atributo determina o valor de outro.",
+    "resumo": "Existe quando um atributo determina outro. Exemplo: a matrícula determina o nome do funcionário.",
+    "nao_confundir": [
+      {
+        "conceito": "Chave candidata",
+        "diferenca": "Identifica unicamente o registro; dependência funcional expressa uma relação entre atributos."
+      }
+    ],
+    "atencao": "A seta vai do determinante ao determinado. O inverso não vale: dois funcionários podem ter o mesmo nome.",
+    "fonte": "Elmasri, Ramez; Navathe, Shamkant B. Fundamentals of Database Systems. 7ª edição. Pearson, 2016.",
+    "tags": ["normalizacao"]
+  },
+  {
+    "id": "card-bd-n1-003",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Normalização",
+    "nivel": 1,
+    "conceito": "Normalização de bancos de dados",
+    "termo_ingles": "Normalization",
+    "traducao": "Normalização: organização dos dados para reduzir repetições.",
+    "resumo": "Organiza tabelas para reduzir redundâncias e anomalias. Exemplo: armazenar o nome do departamento em uma tabela própria.",
+    "nao_confundir": [
+      {
+        "conceito": "Otimização de consultas",
+        "diferenca": "Melhora o desempenho das consultas; normalização organiza os dados."
+      }
+    ],
+    "atencao": "Normalizar não garante consultas mais rápidas; por desempenho, às vezes se desnormaliza.",
+    "fonte": "Elmasri, Ramez; Navathe, Shamkant B. Fundamentals of Database Systems. 7ª edição. Pearson, 2016.",
+    "tags": ["normalizacao", "formas-normais"]
+  },
+  {
+    "id": "card-bd-n1-004",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Normalização",
+    "nivel": 1,
+    "conceito": "Primeira Forma Normal (1FN)",
+    "termo_ingles": "First Normal Form (1NF)",
+    "traducao": "Primeira Forma Normal: cada campo guarda um único valor, sem grupos repetidos.",
+    "resumo": "Exige valores atômicos, sem grupos repetidos em uma célula. Exemplo: cada telefone em uma linha própria ou em tabela própria.",
+    "nao_confundir": [
+      {
+        "conceito": "Segunda Forma Normal (2FN)",
+        "diferenca": "A 1FN exige valores atômicos; a 2FN elimina dependências parciais."
+      }
+    ],
+    "atencao": "Vários telefones armazenados juntos em uma célula violam a 1FN.",
+    "fonte": "Elmasri, Ramez; Navathe, Shamkant B. Fundamentals of Database Systems. 7ª edição. Pearson, 2016.",
+    "tags": ["normalizacao", "1fn", "atributo-multivalorado"]
+  },
+  {
+    "id": "card-bd-n1-005",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Normalização",
+    "nivel": 1,
+    "conceito": "Segunda Forma Normal (2FN)",
+    "termo_ingles": "Second Normal Form (2NF)",
+    "traducao": "Segunda Forma Normal: atributos dependem da chave inteira.",
+    "resumo": "Exige 1FN e ausência de dependência parcial. Em ItensPedido, com chave (código do pedido, código do produto), o nome do produto depende apenas do código do produto.",
+    "nao_confundir": [
+      {
+        "conceito": "Primeira Forma Normal (1FN)",
+        "diferenca": "A 1FN exige valores atômicos; a 2FN elimina dependências parciais."
+      }
+    ],
+    "atencao": "Dependência parcial ocorre quando um atributo não-chave depende de apenas parte da chave composta.",
+    "fonte": "Elmasri, Ramez; Navathe, Shamkant B. Fundamentals of Database Systems. 7ª edição. Pearson, 2016.",
+    "tags": ["normalizacao", "2fn", "dependencia-parcial", "chave-composta"]
+  },
+  {
+    "id": "card-bd-n1-006",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Normalização",
+    "nivel": 1,
+    "conceito": "Terceira Forma Normal (3FN)",
+    "termo_ingles": "Third Normal Form (3NF)",
+    "traducao": "Terceira Forma Normal: atributos não-chave dependem da chave, não de outros atributos não-chave.",
+    "resumo": "Exige 2FN e ausência de dependência transitiva. Exemplo: em Funcionario(matrícula, código do departamento, nome do departamento), o nome depende do departamento, não da matrícula.",
+    "nao_confundir": [
+      {
+        "conceito": "Segunda Forma Normal (2FN)",
+        "diferenca": "A 2FN elimina dependências parciais; a 3FN trata dependências transitivas."
+      },
+      {
+        "conceito": "Primeira Forma Normal (1FN)",
+        "diferenca": "A 1FN exige valores atômicos; não elimina dependências transitivas."
+      }
+    ],
+    "atencao": "Transitiva: matrícula → código do departamento → nome.",
+    "fonte": "Elmasri, Ramez; Navathe, Shamkant B. Fundamentals of Database Systems. 7ª edição. Pearson, 2016.",
+    "tags": ["normalizacao", "3fn", "dependencia-transitiva"]
+  }
+]
