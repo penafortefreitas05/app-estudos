@@ -12,6 +12,22 @@ Regra de ouro: **toda decisão sai da sala principal** (o chat do FocoPro) e é 
 | **Esposa** | Aluna-teste (formada em Neurociência) | Testa como aluna, dá ideias, aponta o que confunde | Não edita código nem conteúdo sem passar pela sala principal |
 | **Nathan** | Dono do projeto | Prioridades, aprovação de conteúdo, controle do limite semanal, teste como aluno | — |
 
+## Duas contas, duas famílias de IA (decidido em 31/10, noite)
+O Nathan tem dois e-mails (principal e novo), com **Claude e GPT em cada um**. Gemini, Grok, DeepSeek e Perplexity passam a opcionais.
+
+| Conta | Papel | Faz |
+|---|---|---|
+| Principal (e-mail principal) | **Direção + autoria** | Sala principal com Claude (código, SQL, decisões). GPT da conta: rascunho de cartões e textos |
+| Nova (e-mail novo) | **Revisão independente** | Claude: revisa o que o GPT escreveu. GPT: revisa o que o Claude escreveu. Sempre às cegas (etapa 1 sem gabarito, etapa 2 com) |
+
+Regras:
+1. **Autor nunca revisa o próprio texto.** Claude revisa GPT; GPT revisa Claude. Mesmo modelo em duas contas tem os mesmos pontos cegos, então só vale como folga de limite, não como conferência.
+2. Conferência entre IAs continua sendo alarme, não fonte. Cerca de 10 questões por lote são checadas contra edital, livro ou documentação oficial.
+3. As duas contas precisam enxergar os docs do Project FocoPro (criar a sala **dentro** do Project).
+4. Só a sala principal altera código e importa conteúdo.
+5. Gemini fica como filtro mecânico (tamanho das alternativas, letras, campos), não como revisor de conteúdo. Motivo: no teste de 31/10 foi fraco em ambiguidade às cegas.
+6. Limites são separados por conta; conta nova não herda o histórico da principal, então cada sala nova começa com a retomada.
+
 ## Regras de trabalho
 1. **Um só escritor do código.** Só o Claude da sala principal altera o repositório. Assim não há dois commits mexendo nos mesmos arquivos.
 2. **Conteúdo entra por importação.** GPT e Claude da esposa geram JSON no formato combinado; a sala principal valida (campos, gabarito, duplicados, ids) e só então importa.
