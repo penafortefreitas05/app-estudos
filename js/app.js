@@ -22,6 +22,7 @@ import {
     marcarMateriaAtiva
 } from './ui.js';
 import { montarTrilha, proximoAssunto, resumoDasTrilhas, questaoPonte } from './aprender.js';
+import { assuntosComCartoes, abrirLeitura, contarEntendidos } from './leitura.js';
 // ==================== FIM ====================
 
 // ---------- 1.2 Supabase (banco e cliente) ----------
@@ -2518,23 +2519,38 @@ if (container) {
     });
 }
 
-// "📖 Aprender" no cartão Hoje: escolher a matéria (a última usada vem primeiro)
-function abrirEscolhaAprender() {
+// "📖 Aprender" no cartão Hoje: escolher a matéria (a última usada vem primeiro).
+// Aprender 2.0 (piloto, 01/11): os assuntos que já têm cartões novos aparecem num bloco à parte,
+// no topo, e abrem o modo leitura (js/leitura.js). A trilha antiga continua igual.
+async function abrirEscolhaAprender() {
+    if (document.querySelector(".escolha-aprender")) return;
+    const novos = await assuntosComCartoes();
     const resumo = resumoDasTrilhas(questoes, historico);
     let ultima = null;
     try { ultima = localStorage.getItem(CHAVE_ULTIMA_MATERIA_APRENDER); } catch (e) { /* segue */ }
     const ordem = [...new Set([ultima, ...MATERIAS_PARA_COMECAR, ...ORDEM_MACROS, ...Object.keys(resumo)])]
         .filter(m => m && resumo[m] && resumo[m].total > 0);
-    if (!ordem.length) {
+    if (!ordem.length && !novos.length) {
         showToast("Ainda não há questões de Iniciante para aprender.", "info");
         return;
     }
+
+    const blocoLeitura = novos.length ? `
+            <div class="ea-novo">
+                <p class="ea-novo-titulo">✨ Novo · modo leitura (piloto)</p>
+                <div class="bv-opcoes">${novos.map((a, i) => {
+                    const lidos = contarEntendidos(a.cartoes);
+                    return `<button type="button" class="bv-opcao ea-leitura" data-indice="${i}">
+                        <span class="bv-opcao-texto">📖 ${esc(a.assunto)}</span>
+                        <span class="bv-opcao-detalhe">${esc(a.materia)} · ${a.cartoes.length} cartões · ${lidos} entendidos</span></button>`;
+                }).join("")}</div>
+            </div>` : "";
 
     const overlay = document.createElement("div");
     overlay.className = "modal-overlay boas-vindas escolha-aprender";
     overlay.innerHTML = `
         <div class="modal-card boas-vindas-card" role="dialog" aria-modal="true" aria-labelledby="ea-titulo">
-            <h3 id="ea-titulo" class="modal-titulo">📖 O que aprender agora?</h3>
+            <h3 id="ea-titulo" class="modal-titulo">📖 O que aprender agora?</h3>${blocoLeitura}
             <p class="modal-mensagem">Um assunto por vez: um exemplo resolvido e depois a sua vez.</p>
             <div class="bv-opcoes">${ordem.map(m => {
                 const r = resumo[m];
@@ -2562,6 +2578,13 @@ function abrirEscolhaAprender() {
     const aoTeclar = (e) => { if (e.key === "Escape") fechar(); };
     document.addEventListener("keydown", aoTeclar);
     overlay.addEventListener("click", (e) => {
+        const leitura = e.target.closest(".ea-leitura");
+        if (leitura) {
+            const escolhido = novos[Number(leitura.dataset.indice)];
+            fechar();
+            if (escolhido) abrirLeitura(escolhido.cartoes, { titulo: escolhido.assunto });
+            return;
+        }
         const op = e.target.closest(".bv-opcao[data-materia]");
         if (op && !op.disabled) { fechar(); iniciarAprender(op.dataset.materia); return; }
         if (e.target === overlay || e.target.closest(".ea-cancelar")) fechar();

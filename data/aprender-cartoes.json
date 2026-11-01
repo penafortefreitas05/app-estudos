@@ -1,0 +1,98 @@
+[
+  {
+    "id": "card-bd-n1-001",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Normalização",
+    "nivel": 1,
+    "conceito": "Normalização de bancos de dados",
+    "termo_ingles": "Normalization",
+    "traducao": "Normalização: organização dos dados em estruturas adequadas",
+    "resumo": "Processo de organização das tabelas para reduzir repetições e evitar anomalias. Exemplo: armazenar o nome do departamento em uma tabela própria.",
+    "nao_confundir": [
+      {
+        "conceito": "Otimização de consultas",
+        "diferenca": "Busca melhorar o desempenho das consultas; normalização organiza os dados e reduz redundâncias."
+      }
+    ],
+    "atencao": "Normalizar não significa necessariamente acelerar consultas; algumas operações podem exigir mais JOINs.",
+    "fonte": "Elmasri, Ramez; Navathe, Shamkant B. Fundamentals of Database Systems. 7ª edição. Pearson, 2016.",
+    "tags": [
+      "normalizacao",
+      "formas-normais"
+    ]
+  },
+  {
+    "id": "card-bd-n1-002",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Normalização",
+    "nivel": 1,
+    "conceito": "Primeira Forma Normal (1FN)",
+    "termo_ingles": "First Normal Form (1NF)",
+    "traducao": "Primeira Forma Normal",
+    "resumo": "Exige valores atômicos, sem grupos repetidos em uma célula. Exemplo: cada telefone deve ocupar um registro próprio, em vez de vários números na mesma coluna.",
+    "nao_confundir": [
+      {
+        "conceito": "Segunda Forma Normal (2FN)",
+        "diferenca": "A 1FN exige valores atômicos; a 2FN trata das dependências em relação à chave."
+      }
+    ],
+    "atencao": "Vários telefones armazenados juntos em uma única célula violam a 1FN.",
+    "fonte": "Elmasri, Ramez; Navathe, Shamkant B. Fundamentals of Database Systems. 7ª edição. Pearson, 2016.",
+    "tags": [
+      "normalizacao",
+      "1fn",
+      "atributo-multivalorado"
+    ]
+  },
+  {
+    "id": "card-bd-n1-003",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Normalização",
+    "nivel": 1,
+    "conceito": "Segunda Forma Normal (2FN)",
+    "termo_ingles": "Second Normal Form (2NF)",
+    "traducao": "Segunda Forma Normal",
+    "resumo": "Exige 1FN e ausência de dependência parcial: atributos não-chave dependem da chave candidata inteira. Exemplo: nome do produto depende apenas do código do produto.",
+    "nao_confundir": [
+      {
+        "conceito": "Primeira Forma Normal (1FN)",
+        "diferenca": "A 1FN exige valores atômicos; a 2FN elimina dependências de apenas parte da chave."
+      }
+    ],
+    "atencao": "Dependência parcial ocorre quando uma chave candidata composta possui atributos não-chave dependentes de apenas parte dela.",
+    "fonte": "Elmasri, Ramez; Navathe, Shamkant B. Fundamentals of Database Systems. 7ª edição. Pearson, 2016.",
+    "tags": [
+      "normalizacao",
+      "2fn",
+      "dependencia-parcial",
+      "chave-composta"
+    ]
+  },
+  {
+    "id": "card-bd-n1-004",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Normalização",
+    "nivel": 1,
+    "conceito": "Terceira Forma Normal (3FN)",
+    "termo_ingles": "Third Normal Form (3NF)",
+    "traducao": "Terceira Forma Normal",
+    "resumo": "Exige 2FN e impede dependências transitivas entre atributos não-chave. Exemplo: nome do departamento depende do código do departamento.",
+    "nao_confundir": [
+      {
+        "conceito": "Segunda Forma Normal (2FN)",
+        "diferenca": "A 2FN elimina dependências parciais; a 3FN trata dependências transitivas."
+      },
+      {
+        "conceito": "Primeira Forma Normal (1FN)",
+        "diferenca": "A 1FN exige valores atômicos; não elimina dependências transitivas."
+      }
+    ],
+    "atencao": "A sequência importa: 3FN pressupõe 2FN, que pressupõe 1FN. Valores multivalorados são problema da 1FN.",
+    "fonte": "Elmasri, Ramez; Navathe, Shamkant B. Fundamentals of Database Systems. 7ª edição. Pearson, 2016.",
+    "tags": [
+      "normalizacao",
+      "3fn",
+      "dependencia-transitiva"
+    ]
+  }
+]
