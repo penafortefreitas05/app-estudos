@@ -8,7 +8,7 @@ Use este arquivo para começar um chat limpo sem perder contexto. Atualizado em 
 - Service worker: subir CACHE_NAME a cada mudança em arquivo do site (em 01/11 estava em v65; confira no arquivo). Arquivo novo de dados ou script entra na lista RECURSOS_ESTATICOS.
 
 ## Como trabalhamos
-- **Ritmo semanal (desde 30/10):** 10% a 13,5% do limite por dia (teto 13,5%; chega ao domingo com ~94%), chat novo todo domingo, trabalho dividido com o GPT, sem retrabalho nem revisão completa sem necessidade. Detalhes em `docs/ritmo-de-trabalho.md`; prompt do GPT em `docs/prompt-gpt.md`.
+- **Ritmo semanal (desde 30/10):** 10% a 13,5% do limite por dia (teto 13,5%; chega ao domingo com ~94%), chat novo todo domingo, trabalho dividido com o GPT, sem retrabalho nem revisão completa sem necessidade. Detalhes em `docs/ritmo-de-trabalho.md`; instruções das salas em `docs/prompts-salas.md` e o pacote do Aprender 2.0 no computador do Nathan.
 - Branch por item, merge --no-ff na main, push da main e do branch. Commit termina com as linhas de atribuição pedidas pela sessão. O clone feito no sandbox é só leitura; para push é preciso anexar o repositório com permissão de escrita (não testado em 01/11).
 - Antes de tarefa grande, Claude diz o custo estimado (faixa P/M/G) e espera o Nathan confirmar.
 - O sandbox não acessa o Supabase: Claude escreve a SQL, Nathan roda no SQL Editor.
@@ -39,11 +39,11 @@ Use este arquivo para começar um chat limpo sem perder contexto. Atualizado em 
 
 ## Onde está o resto
 - Lista viva de pendências com caixinhas: artefato "Checklist FocoPro" (claude.ai/artifact/Gcf7C7LDwq21xCarmGtT9M), organizada em blocos numerados (1 a 7) e "Entregue"; o bloco 2 é o Aprender 2.0.
-- Roteiro e detalhes: claude/proximos-passos.md. Modelo de geração de questões: claude/modelo-questoes-por-nivel.md.
+- Roteiro e detalhes: o próprio Checklist (acima). Modelo de geração de questões: claude/modelo-questoes-por-nivel.md.
 - Desenhos do painel e da barra: claude.ai/artifact/FBbzMZXvQfkNMXEkd7CyT6.
 
 ## Trabalho em conjunto com o GPT
-Ver `docs/trabalho-com-gpt.md` (quem faz o quê e regras para não gerar conflito).
+Ver `docs/equipe-e-funcoes.md` (quem faz o quê, duas contas, regras para não gerar conflito).
 
 ## Limite semanal
 Renova no domingo às 16h. O ritmo de 10% a 13,5% por dia vale a partir de segunda, 02/11 (máximo de uma melhoria G por semana). Chat novo todo domingo, aberto por este arquivo; conversas longas gastam mais.

@@ -5,7 +5,7 @@ Definido pelo Nathan em 30/10. O limite semanal renova **domingo às 16h**.
 ## Regras combinadas
 1. **Orçamento por dia: de 10% a 13,5% do limite semanal (teto 13,5%).** No teto, 7 dias x 13,5% = 94,5%, então a semana chega ao domingo com cerca de 94% usado e uns 5 a 6% de folga para ajustes pequenos. Quem controla é o Nathan, que lê o painel de uso.
 2. **Chat novo todo domingo.** Abre-se por `docs/retomada-novo-chat.md`. Antes de fechar a semana: atualizar a retomada, o Checklist e os próximos passos.
-3. **Trabalho dividido com o GPT.** Ele rascunha (textos, conceitos visuais, dúvidas de estudo); o Claude escreve código, testa, faz commit e escreve o SQL final. Para o GPT entender o projeto: `docs/prompt-gpt.md`.
+3. **Trabalho dividido com o GPT.** Ele rascunha (textos, conceitos visuais, dúvidas de estudo); o Claude escreve código, testa, faz commit e escreve o SQL final. Para o GPT entender o projeto: as instruções da sala no `docs/prompts-salas.md` e o `claude/aprender-2-0.md`.
 4. **Sem trabalho redundante.** Não reler o projeto inteiro nem rodar todas as suítes de teste a cada mudança. Revisão completa só quando for necessário (antes de uma mudança grande, de importar lote no banco ou de mexer em segurança).
 5. **Problemas em lote.** O Nathan junta o que achou e manda numa mensagem só.
 6. **Meta: usar a semana inteira com segurança até o reset.** Limite não usado não passa para a semana seguinte, mas também não vale estourar e ficar travado no meio.
