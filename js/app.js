@@ -2519,6 +2519,30 @@ if (container) {
     });
 }
 
+// Aprender 2.0: "Praticar" ao fim da leitura. Leva para a lista de questões do assunto (Testar), com os
+// outros filtros limpos para a lista não ficar vazia sem explicação. O nível não é filtrado: a ordem de
+// estudo já põe o Iniciante primeiro.
+function praticarAssunto(materia, assunto) {
+    const quantas = questoes.filter(q => q.materia === materia && q.assunto === assunto).length;
+    if (!quantas) { showToast("Ainda não há questões deste assunto.", "info"); return; }
+    simulado = null;
+    pararCronometro(displayCronometro);
+    if (foco) sairFoco({ silencioso: true });
+    if (selectBanca) selectBanca.value = "";
+    if (selectAno) selectAno.value = "";
+    if (selectNivel) selectNivel.value = "";
+    if (selectStatus) selectStatus.value = "";
+    if (checkFavoritas) checkFavoritas.checked = false;
+    if (inputBusca) inputBusca.value = "";
+    if (selectMateria) selectMateria.value = materia;
+    tagSelecionada = "";
+    atualizarSelectAssunto();
+    definirTag(assunto); // também chama aplicarFiltros
+    const mainContent = document.querySelector(".main-content");
+    if (mainContent) mainContent.scrollTo({ top: 0, behavior: "smooth" });
+    showToast(`Praticando ${assunto}: ${quantas} ${quantas === 1 ? "questão" : "questões"}.`, "info", 3000);
+}
+
 // "📖 Aprender" no cartão Hoje: escolher a matéria (a última usada vem primeiro).
 // Aprender 2.0 (piloto, 01/11): os assuntos que já têm cartões novos aparecem num bloco à parte,
 // no topo, e abrem o modo leitura (js/leitura.js). A trilha antiga continua igual.
@@ -2582,7 +2606,14 @@ async function abrirEscolhaAprender() {
         if (leitura) {
             const escolhido = novos[Number(leitura.dataset.indice)];
             fechar();
-            if (escolhido) abrirLeitura(escolhido.cartoes, { titulo: escolhido.assunto });
+            if (escolhido) {
+                // O botão "Praticar" só aparece se o assunto tem questões no banco
+                const temQuestoes = questoes.some(q => q.materia === escolhido.materia && q.assunto === escolhido.assunto);
+                abrirLeitura(escolhido.cartoes, {
+                    titulo: escolhido.assunto,
+                    aoPraticar: temQuestoes ? () => praticarAssunto(escolhido.materia, escolhido.assunto) : undefined
+                });
+            }
             return;
         }
         const op = e.target.closest(".bv-opcao[data-materia]");

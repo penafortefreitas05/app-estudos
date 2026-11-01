@@ -109,7 +109,9 @@ function cartaoHTML(c) {
 }
 
 // Abre a leitura de um assunto. Só um por vez.
-export function abrirLeitura(cartoes, { titulo, aoFechar } = {}) {
+// aoPraticar (opcional): se vier, a tela final ganha o botão "Praticar" (atalho para as questões do assunto
+// no Testar). Quem chama decide se há questões; sem a função, o botão não aparece.
+export function abrirLeitura(cartoes, { titulo, aoFechar, aoPraticar } = {}) {
     if (!Array.isArray(cartoes) || !cartoes.length || document.querySelector('.leitura')) return;
     const porId = new Map(cartoes.map(c => [c.id, c]));
     const assunto = titulo || cartoes[0].assunto;
@@ -157,9 +159,13 @@ export function abrirLeitura(cartoes, { titulo, aoFechar } = {}) {
                     <p class="leitura-fim-icone" aria-hidden="true">✓</p>
                     <h3 class="leitura-conceito" tabindex="-1">Você leu os ${cartoes.length} cartões</h3>
                     <p>${esc(assunto)}: todos marcados como entendidos.</p>
-                    <p class="leitura-fim-dica">Para fixar, pratique as questões desse assunto no Testar.</p>
+                    <p class="leitura-fim-dica">${typeof aoPraticar === 'function'
+                        ? 'Para fixar, pratique as questões desse assunto.'
+                        : 'Para fixar, pratique as questões desse assunto no Testar.'}</p>
                 </div>`;
-            acoes.innerHTML = `
+            acoes.innerHTML = typeof aoPraticar === 'function' ? `
+                <button type="button" class="leitura-btn ainda" data-acao="denovo">Ler de novo</button>
+                <button type="button" class="leitura-btn entendi" data-acao="praticar">Praticar →</button>` : `
                 <button type="button" class="leitura-btn ainda" data-acao="denovo">Ler de novo</button>
                 <button type="button" class="leitura-btn entendi" data-acao="fechar">Fechar</button>`;
         } else {
@@ -177,6 +183,12 @@ export function abrirLeitura(cartoes, { titulo, aoFechar } = {}) {
 
     function agir(acao) {
         if (acao === 'fechar') return fechar();
+        if (acao === 'praticar') {
+            // só vale na tela final: fecha a leitura e deixa o app abrir as questões
+            if (sessao.fila[0] !== undefined || typeof aoPraticar !== 'function') return;
+            fechar();
+            return aoPraticar();
+        }
         if (acao === 'denovo') { sessao = novaSessao(cartoes); return desenhar(); }
         if (sessao.fila[0] === undefined) return;
         if (acao === 'entendi') marcarEntendido(sessao.fila[0]);
