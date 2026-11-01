@@ -1,4 +1,4 @@
-# Ritmo de trabalho (a partir de domingo, 02/11/2026)
+# Ritmo de trabalho (a partir de segunda, 02/11/2026)
 
 Definido pelo Nathan em 30/10. O limite semanal renova **domingo às 16h**.
 

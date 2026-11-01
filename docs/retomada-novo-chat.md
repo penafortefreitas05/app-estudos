@@ -28,7 +28,7 @@ Use este arquivo para começar um chat limpo sem perder contexto. Atualizado em 
 - **Meu dia** (botão 📊): hoje separado em revisão x questões novas, mais 7 dias. Vem do histórico na nuvem (`carregarRespostasRecentes`). Revisão = questão já respondida antes; nova = primeira vez.
 - **Nível de conta** (`js/conta.js`): pontos por domínio. Só pontua questão com status acerto, superado ou dominada (acerto com certeza); 1/2/3/4 pontos por nível da questão; +1 se já foi errada e foi superada. Errar de novo tira os pontos dela, mas o nível conquistado nunca desce (guardado no aparelho). Degraus: 0, 200, 500, 900, 1400, 1900 (Aspirante, Candidato, Concurseiro, Analista, Especialista, Aprovado). Limites provisórios; rever quando o banco crescer.
 - Modo Foco tem barrinha de avanço da lista (degradê roxo-verde).
-- Decidido, ainda não feito: Aprender vira modo de leitura (pergunta, "Ver resposta" por toque, o porquê vem do comentário da questão, botão "Já entendi"), com o campo de nível nos cartões para acompanhar todos os níveis. Novo molde do cartão (o que é, para que serve, não confundir, atenção) começa por um piloto de Banco de Dados. Ambos fora da prioridade até depois de domingo.
+- Decidido em 01/11, ainda não feito (Aprender 2.0; desenho completo em `claude/aprender-2-0.md`): o Aprender não tem perguntas; é leitura, com os botões "Entendi" e "Ainda não". 4 a 6 cartões por assunto, em `data/aprender-cartoes.json`. GPT 01 escreve, Claude 02 revisa às cegas, sala principal valida e sobe, Nathan aprova. Piloto: 1 assunto de Banco de Dados.
 - Perfil e meta diária ficam no aparelho (localStorage) por enquanto.
 
 ## Equipe e estado em 01/11
@@ -38,7 +38,7 @@ Use este arquivo para começar um chat limpo sem perder contexto. Atualizado em 
 - Pendências abertas: erro 404 no console (aguardando teste anônimo: Método + URL depois de `supabase.co`); perfil/meta na nuvem (p08); campo `concurso` para um banco com vários concursos; fluxo de importação com validação; piloto do Aprender (15 cartões de BD nível 1); Radar de concursos; painel do dia com IA; decidir se os 9 assuntos de dados/IA/ML entram no nível 2.
 
 ## Onde está o resto
-- Lista viva de pendências com caixinhas: artefato "Checklist FocoPro" (claude.ai/artifact/Gcf7C7LDwq21xCarmGtT9M), com os grupos "Amanhã" e "Depois de domingo 16h".
+- Lista viva de pendências com caixinhas: artefato "Checklist FocoPro" (claude.ai/artifact/Gcf7C7LDwq21xCarmGtT9M), organizada em blocos numerados (1 a 7) e "Entregue"; o bloco 2 é o Aprender 2.0.
 - Roteiro e detalhes: claude/proximos-passos.md. Modelo de geração de questões: claude/modelo-questoes-por-nivel.md.
 - Desenhos do painel e da barra: claude.ai/artifact/FBbzMZXvQfkNMXEkd7CyT6.
 
@@ -46,4 +46,4 @@ Use este arquivo para começar um chat limpo sem perder contexto. Atualizado em 
 Ver `docs/trabalho-com-gpt.md` (quem faz o quê e regras para não gerar conflito).
 
 ## Limite semanal
-Renova no domingo às 16h. O ritmo de 10% a 13,5% por dia vale a partir de 02/11 (máximo de uma melhoria G por semana). Chat novo todo domingo, aberto por este arquivo; conversas longas gastam mais.
+Renova no domingo às 16h. O ritmo de 10% a 13,5% por dia vale a partir de segunda, 02/11 (máximo de uma melhoria G por semana). Chat novo todo domingo, aberto por este arquivo; conversas longas gastam mais.
