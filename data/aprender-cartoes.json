@@ -4595,5 +4595,544 @@
       "painel",
       "monitoramento"
     ]
+  },
+  {
+    "id": "card-rs-n1-001",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Criptografia, certificação digital e PKI",
+    "nivel": 1,
+    "conceito": "Criptografia simétrica",
+    "termo_ingles": "Symmetric encryption",
+    "traducao": "Criptografia simétrica: protege dados usando a mesma chave para cifrar e decifrar.",
+    "resumo": "Cifrar transforma dados legíveis em conteúdo protegido; decifrar recupera os dados. Na criptografia simétrica, ambos usam a mesma chave secreta. Exemplo: AES.",
+    "nao_confundir": [
+      {
+        "conceito": "Criptografia assimétrica",
+        "diferenca": "Usa um par de chaves relacionadas; a simétrica usa uma chave compartilhada."
+      }
+    ],
+    "atencao": "A chave secreta precisa ser compartilhada por um meio protegido entre as partes.",
+    "fonte": "NIST FIPS 197, Advanced Encryption Standard (AES), edição atualizada de 2023; NIST SP 800-57 Part 1 Rev. 5, 2020.",
+    "tags": [
+      "criptografia-simetrica"
+    ]
+  },
+  {
+    "id": "card-rs-n1-002",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Criptografia, certificação digital e PKI",
+    "nivel": 1,
+    "conceito": "Criptografia assimétrica",
+    "termo_ingles": "Asymmetric encryption",
+    "traducao": "Criptografia assimétrica: utiliza chaves pública e privada para operações criptográficas.",
+    "resumo": "Utiliza um par de chaves relacionadas: a pública pode ser compartilhada; a privada deve permanecer protegida. Na cifragem para sigilo, usa-se a pública do destinatário.",
+    "nao_confundir": [
+      {
+        "conceito": "Criptografia simétrica",
+        "diferenca": "A assimétrica usa um par de chaves; a simétrica usa a mesma chave nas duas."
+      }
+    ],
+    "atencao": "Na cifragem para sigilo, a chave privada correspondente é usada para decifrar.",
+    "fonte": "NIST SP 800-57 Part 1 Rev. 5, 2020.",
+    "tags": [
+      "criptografia-assimetrica",
+      "chave-publica"
+    ]
+  },
+  {
+    "id": "card-rs-n1-003",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Criptografia, certificação digital e PKI",
+    "nivel": 1,
+    "conceito": "Função hash",
+    "termo_ingles": "Hash function",
+    "traducao": "Função hash: gera um resumo de tamanho definido a partir dos dados.",
+    "resumo": "Produz um resumo de tamanho fixo para uma entrada. É usado para verificar alterações nos dados. Exemplo: SHA-256, da família SHA-2.",
+    "nao_confundir": [
+      {
+        "conceito": "Criptografia",
+        "diferenca": "Hash gera resumo não reversível; criptografia permite recuperar dados com a chave apropriada."
+      }
+    ],
+    "atencao": "Hash sozinho não prova quem escreveu os dados: qualquer pessoa pode calcular o resumo.",
+    "fonte": "NIST FIPS 180-4, Secure Hash Standard, 2015.",
+    "tags": [
+      "hash",
+      "integridade"
+    ]
+  },
+  {
+    "id": "card-rs-n1-004",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Criptografia, certificação digital e PKI",
+    "nivel": 1,
+    "conceito": "Assinatura digital",
+    "termo_ingles": "Digital signature",
+    "traducao": "Assinatura digital: permite verificar autoria e integridade de dados assinados.",
+    "resumo": "É produzida com a chave privada do signatário e verificada com sua chave pública. Ajuda a comprovar autoria e detectar alterações no conteúdo.",
+    "nao_confundir": [
+      {
+        "conceito": "Cifragem para sigilo",
+        "diferenca": "Assinatura comprova autoria e integridade (dados sem alteração); cifragem protege o sigilo."
+      }
+    ],
+    "atencao": "Assinar com a chave privada do autor não torna o conteúdo automaticamente sigiloso.",
+    "fonte": "NIST SP 800-57 Part 1 Rev. 5, 2020.",
+    "tags": [
+      "assinatura-digital",
+      "nao-repudio",
+      "integridade"
+    ]
+  },
+  {
+    "id": "card-rs-n1-005",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Criptografia, certificação digital e PKI",
+    "nivel": 1,
+    "conceito": "Certificado digital X.509",
+    "termo_ingles": "X.509 digital certificate",
+    "traducao": "Certificado digital: associa uma identidade a uma chave pública por meio de uma assinatura de confiança.",
+    "resumo": "Documento eletrônico que vincula a identidade de uma entidade a uma chave pública. É assinado por uma autoridade certificadora (AC), que emite e garante certificados.",
+    "nao_confundir": [
+      {
+        "conceito": "Chave privada",
+        "diferenca": "O certificado contém a chave pública; a chave privada correspondente permanece protegida pelo titular."
+      }
+    ],
+    "atencao": "O certificado tem prazo de validade e pode ser revogado antes dele.",
+    "fonte": "RFC 5280, Internet X.509 Public Key Infrastructure Certificate and CRL Profile, 2008; ITI, Certificação Digital.",
+    "tags": [
+      "certificado-digital",
+      "x509",
+      "chave-publica"
+    ]
+  },
+  {
+    "id": "card-rs-n1-006",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Criptografia, certificação digital e PKI",
+    "nivel": 1,
+    "conceito": "Infraestrutura de chaves públicas",
+    "termo_ingles": "Public Key Infrastructure (PKI)",
+    "traducao": "Infraestrutura de chaves públicas (ICP, em inglês PKI): organiza a emissão, validação e gestão de certificados digitais.",
+    "resumo": "Conjunto de entidades, políticas, procedimentos e tecnologias que sustentam certificados digitais e a confiança nas associações entre identidades e chaves públicas.",
+    "nao_confundir": [
+      {
+        "conceito": "Certificado digital",
+        "diferenca": "PKI é a infraestrutura de confiança; certificado é um documento emitido dentro dela."
+      }
+    ],
+    "atencao": "Na ICP-Brasil, a infraestrutura de chaves públicas do país, a AC Raiz é o Instituto Nacional de Tecnologia da Informação.",
+    "fonte": "Medida Provisória nº 2.200-2, de 24 de agosto de 2001; ITI, Certificação Digital.",
+    "tags": [
+      "pki",
+      "icp-brasil",
+      "certificado-digital"
+    ]
+  },
+  {
+    "id": "card-rs-n1-007",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Criptografia, certificação digital e PKI",
+    "nivel": 1,
+    "conceito": "Criptografia híbrida",
+    "termo_ingles": "Hybrid cryptography",
+    "traducao": "Criptografia híbrida: combina criptografia assimétrica e simétrica para proteger comunicações.",
+    "resumo": "Usa criptografia assimétrica para estabelecer uma chave secreta entre as partes e criptografia simétrica para proteger os dados em si.",
+    "nao_confundir": [
+      {
+        "conceito": "Criptografia exclusivamente assimétrica",
+        "diferenca": "Híbrida cifra os dados com chave simétrica; a só assimétrica cifraria tudo com o par."
+      }
+    ],
+    "atencao": "No TLS 1.3, protocolo que protege conexões na internet, os dados são protegidos com chaves simétricas estabelecidas na negociação.",
+    "fonte": "RFC 8446, The Transport Layer Security (TLS) Protocol Version 1.3, 2018.",
+    "tags": [
+      "criptografia-hibrida",
+      "tls",
+      "criptografia-simetrica",
+      "criptografia-assimetrica"
+    ]
+  },
+  {
+    "id": "card-rs-n1-008",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Criptografia, certificação digital e PKI",
+    "nivel": 1,
+    "conceito": "Gestão de chaves criptográficas",
+    "termo_ingles": "Cryptographic key management",
+    "traducao": "Gestão de chaves: controla criação, armazenamento, uso, proteção e descarte de chaves criptográficas.",
+    "resumo": "Abrange o ciclo de vida das chaves, desde sua criação até o descarte, incluindo proteção contra acesso e uso não autorizados.",
+    "nao_confundir": [
+      {
+        "conceito": "Criptografia",
+        "diferenca": "Criptografia protege dados; gestão de chaves protege os elementos usados nas operações criptográficas."
+      }
+    ],
+    "atencao": "Chave suspeita de vazamento deve ser revogada e substituída, mesmo antes do fim do prazo.",
+    "fonte": "NIST SP 800-57 Part 1 Rev. 5, Recommendation for Key Management: Part 1 – General, 2020.",
+    "tags": [
+      "criptografia-assimetrica",
+      "chave-publica"
+    ]
+  },
+  {
+    "id": "card-rs-n1-009",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Autenticação e identidade (MFA, SSO, SAML, OAuth)",
+    "nivel": 1,
+    "conceito": "Autenticação e autorização",
+    "termo_ingles": "Authentication and authorization",
+    "traducao": "Autenticação: confirma uma identidade; autorização: determina as ações permitidas.",
+    "resumo": "Autenticação verifica quem está acessando. Autorização define quais recursos e operações essa identidade pode utilizar.",
+    "nao_confundir": [
+      {
+        "conceito": "Identificação",
+        "diferenca": "Identificação informa quem diz ser; autenticação confirma que é verdade."
+      }
+    ],
+    "atencao": "A autenticação bem-sucedida não concede automaticamente acesso a todos os recursos.",
+    "fonte": "NIST SP 800-63-3, Digital Identity Guidelines, 2017.",
+    "tags": [
+      "autenticacao-vs-autorizacao",
+      "permissoes"
+    ]
+  },
+  {
+    "id": "card-rs-n1-010",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Autenticação e identidade (MFA, SSO, SAML, OAuth)",
+    "nivel": 1,
+    "conceito": "Autenticação multifator",
+    "termo_ingles": "Multi-factor authentication (MFA)",
+    "traducao": "Autenticação multifator: exige fatores de categorias diferentes para confirmar uma identidade.",
+    "resumo": "Combina fatores independentes: algo que a pessoa sabe, possui ou é. Exemplo: senha e código gerado por aplicativo autenticador.",
+    "nao_confundir": [
+      {
+        "conceito": "Autenticação com dois passos",
+        "diferenca": "MFA exige categorias distintas; dois segredos conhecidos podem continuar sendo um único fator."
+      }
+    ],
+    "atencao": "Senha e PIN pertencem à categoria de conhecimento e, sozinhos, não formam MFA.",
+    "fonte": "NIST SP 800-63B, Digital Identity Guidelines: Authentication and Authenticator Management, 2017.",
+    "tags": [
+      "mfa"
+    ]
+  },
+  {
+    "id": "card-rs-n1-011",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Autenticação e identidade (MFA, SSO, SAML, OAuth)",
+    "nivel": 1,
+    "conceito": "Senha única baseada em tempo",
+    "termo_ingles": "Time-Based One-Time Password (TOTP)",
+    "traducao": "Senha única baseada em tempo: gera códigos temporários para autenticação.",
+    "resumo": "Algoritmo que gera códigos de uso único a partir de um segredo compartilhado e do tempo atual. Aplicativos autenticadores podem utilizá-lo.",
+    "nao_confundir": [
+      {
+        "conceito": "HOTP",
+        "diferenca": "TOTP depende do relógio; HOTP, senha única baseada em contador, depende de um contador."
+      }
+    ],
+    "atencao": "O código TOTP depende da sincronização temporal entre o gerador e o verificador.",
+    "fonte": "RFC 6238, TOTP: Time-Based One-Time Password Algorithm, 2011.",
+    "tags": [
+      "totp",
+      "mfa"
+    ]
+  },
+  {
+    "id": "card-rs-n1-012",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Autenticação e identidade (MFA, SSO, SAML, OAuth)",
+    "nivel": 1,
+    "conceito": "Autenticação única",
+    "termo_ingles": "Single Sign-On (SSO)",
+    "traducao": "Autenticação única: permite acessar vários sistemas integrados após uma autenticação.",
+    "resumo": "Centraliza a autenticação: o usuário realiza o login uma vez e acessa diferentes sistemas que confiam no serviço de identidade integrado.",
+    "nao_confundir": [
+      {
+        "conceito": "MFA",
+        "diferenca": "SSO unifica o acesso a sistemas; MFA exige fatores de autenticação de categorias diferentes."
+      }
+    ],
+    "atencao": "SSO não elimina a autenticação; permite que sistemas integrados reutilizem uma autenticação válida.",
+    "fonte": "NIST CSRC Glossary, entrada Single Sign-On; OASIS. SAML V2.0 Technical Overview (2008).",
+    "tags": [
+      "sso",
+      "oidc",
+      "saml"
+    ]
+  },
+  {
+    "id": "card-rs-n1-013",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Autenticação e identidade (MFA, SSO, SAML, OAuth)",
+    "nivel": 1,
+    "conceito": "Autorização delegada",
+    "termo_ingles": "OAuth 2.0",
+    "traducao": "Autorização delegada: permite conceder acesso limitado a recursos sem compartilhar a senha do titular.",
+    "resumo": "O OAuth 2.0 é um framework que permite a um aplicativo obter acesso limitado a um serviço, usando um token de acesso: credencial que representa a permissão concedida.",
+    "nao_confundir": [
+      {
+        "conceito": "Autenticação",
+        "diferenca": "OAuth 2.0 delega acesso a recursos; autenticação confirma quem é o usuário."
+      }
+    ],
+    "atencao": "OAuth 2.0 é um framework de autorização, não um protocolo de autenticação por si só.",
+    "fonte": "RFC 6749, The OAuth 2.0 Authorization Framework, 2012; OpenID Connect Core 1.0.",
+    "tags": [
+      "oauth2",
+      "token"
+    ]
+  },
+  {
+    "id": "card-rs-n1-014",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Autenticação e identidade (MFA, SSO, SAML, OAuth)",
+    "nivel": 1,
+    "conceito": "Camada de identidade sobre OAuth",
+    "termo_ingles": "OpenID Connect (OIDC)",
+    "traducao": "OpenID Connect: permite verificar a identidade do usuário usando OAuth 2.0 como base.",
+    "resumo": "Camada de identidade construída sobre OAuth 2.0. Permite ao aplicativo verificar quem é o usuário e receber informações básicas de identidade.",
+    "nao_confundir": [
+      {
+        "conceito": "OAuth 2.0",
+        "diferenca": "OIDC trata identidade e autenticação; OAuth 2.0 trata concessão de acesso."
+      }
+    ],
+    "atencao": "O token de identidade (ID Token) informa quem é o usuário; o token de acesso autoriza acessar recursos.",
+    "fonte": "OpenID Connect Core 1.0, incorporating errata set 2.",
+    "tags": [
+      "oidc",
+      "oauth2",
+      "sso",
+      "token"
+    ]
+  },
+  {
+    "id": "card-rs-n1-015",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Autenticação e identidade (MFA, SSO, SAML, OAuth)",
+    "nivel": 1,
+    "conceito": "Linguagem de marcação para declarações de segurança",
+    "termo_ingles": "Security Assertion Markup Language (SAML)",
+    "traducao": "SAML: permite transmitir declarações de autenticação e atributos entre sistemas.",
+    "resumo": "Padrão baseado em declarações de segurança, usado para integrar autenticação entre um provedor de identidade (serviço que autentica o usuário) e os sistemas.",
+    "nao_confundir": [
+      {
+        "conceito": "OAuth 2.0",
+        "diferenca": "SAML transmite declarações de segurança; OAuth 2.0 delega autorização de acesso."
+      }
+    ],
+    "atencao": "SAML usa mensagens em XML, linguagem de marcação; OpenID Connect usa JSON.",
+    "fonte": "OASIS, Security Assertion Markup Language (SAML) V2.0 Technical Overview, 2008.",
+    "tags": [
+      "saml",
+      "sso"
+    ]
+  },
+  {
+    "id": "card-rs-n1-016",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Autenticação e identidade (MFA, SSO, SAML, OAuth)",
+    "nivel": 1,
+    "conceito": "Controle de acesso baseado em papéis",
+    "termo_ingles": "Role-Based Access Control (RBAC)",
+    "traducao": "Controle baseado em papéis: associa permissões a funções atribuídas aos usuários.",
+    "resumo": "Modelo em que as permissões são associadas a papéis, e os usuários recebem um ou mais papéis conforme suas responsabilidades.",
+    "nao_confundir": [
+      {
+        "conceito": "Controle discricionário (DAC)",
+        "diferenca": "No DAC o dono decide quem acessa; no RBAC o papel define o acesso."
+      }
+    ],
+    "atencao": "Um papel atribuído indevidamente pode conceder permissões além das necessárias ao usuário.",
+    "fonte": "Sandhu, Ferraiolo e Kuhn. The NIST Model for Role-Based Access Control (2000); NIST CSRC. Role Based Access Control; NIST CSRC Glossary, entrada Discretionary Access Control.",
+    "tags": [
+      "rbac",
+      "privilegio-minimo",
+      "permissoes"
+    ]
+  },
+  {
+    "id": "card-rs-n1-017",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Ataques e desenvolvimento seguro (OWASP)",
+    "nivel": 1,
+    "conceito": "Injeção de SQL",
+    "termo_ingles": "SQL injection",
+    "traducao": "Injeção de SQL: insere dados não confiáveis na estrutura de uma consulta SQL.",
+    "resumo": "Ocorre quando dados enviados pelo usuário são interpretados como parte do comando SQL, podendo alterar a consulta executada pelo banco.",
+    "nao_confundir": [
+      {
+        "conceito": "Cross-Site Scripting",
+        "diferenca": "Injeção de SQL altera comandos do banco; XSS executa código no navegador."
+      }
+    ],
+    "atencao": "Consultas parametrizadas separam os valores recebidos da estrutura do comando SQL.",
+    "fonte": "OWASP Top 10:2021, categoria Injection; OWASP Cheat Sheet Series, SQL Injection Prevention Cheat Sheet.",
+    "tags": [
+      "sql-injection",
+      "injecao",
+      "owasp"
+    ]
+  },
+  {
+    "id": "card-rs-n1-018",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Ataques e desenvolvimento seguro (OWASP)",
+    "nivel": 1,
+    "conceito": "Execução de scripts entre sites",
+    "termo_ingles": "Cross-Site Scripting (XSS)",
+    "traducao": "XSS: permite executar código malicioso no navegador de outro usuário.",
+    "resumo": "Ataque em que conteúdo controlado pelo atacante é interpretado como código pelo navegador da vítima, podendo manipular a página ou acessar dados disponíveis.",
+    "nao_confundir": [
+      {
+        "conceito": "Injeção de SQL",
+        "diferenca": "XSS afeta o navegador; injeção de SQL afeta a interpretação de comandos pelo banco."
+      }
+    ],
+    "atencao": "A principal defesa é codificar a saída conforme o contexto (HTML, atributo, script).",
+    "fonte": "OWASP Top 10:2021, categoria Injection; OWASP Cheat Sheet Series, Cross Site Scripting Prevention Cheat Sheet.",
+    "tags": [
+      "xss",
+      "sanitizacao",
+      "injecao",
+      "owasp"
+    ]
+  },
+  {
+    "id": "card-rs-n1-019",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Ataques e desenvolvimento seguro (OWASP)",
+    "nivel": 1,
+    "conceito": "Falsificação de requisição entre sites",
+    "termo_ingles": "Cross-Site Request Forgery (CSRF)",
+    "traducao": "CSRF: induz o navegador autenticado a enviar uma requisição não desejada.",
+    "resumo": "Ataque que induz o navegador de um usuário autenticado a executar uma ação sem sua intenção, aproveitando informações de autenticação enviadas automaticamente.",
+    "nao_confundir": [
+      {
+        "conceito": "Cross-Site Scripting",
+        "diferenca": "CSRF induz uma ação autenticada; XSS executa código no navegador da vítima."
+      }
+    ],
+    "atencao": "HTTPS protege o transporte, mas não impede sozinho requisições forjadas pelo navegador.",
+    "fonte": "OWASP Cheat Sheet Series, Cross-Site Request Forgery Prevention Cheat Sheet; OWASP Top 10:2021.",
+    "tags": [
+      "csrf",
+      "token-anti-csrf",
+      "samesite"
+    ]
+  },
+  {
+    "id": "card-rs-n1-020",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Ataques e desenvolvimento seguro (OWASP)",
+    "nivel": 1,
+    "conceito": "Validação de entrada",
+    "termo_ingles": "Input validation",
+    "traducao": "Validação de entrada: verifica se os dados recebidos atendem às regras esperadas.",
+    "resumo": "Confere formato, tipo, tamanho e faixa dos dados recebidos antes do processamento. Deve ocorrer no servidor, mesmo quando existe validação no navegador.",
+    "nao_confundir": [
+      {
+        "conceito": "Validação no cliente",
+        "diferenca": "No cliente melhora a experiência; no servidor aplica a verificação que protege o processamento."
+      }
+    ],
+    "atencao": "Dados enviados diretamente ao servidor podem contornar verificações realizadas apenas no navegador.",
+    "fonte": "OWASP Cheat Sheet Series, Input Validation Cheat Sheet; CWE-20, Improper Input Validation.",
+    "tags": [
+      "validacao-de-entrada",
+      "validacao-cliente"
+    ]
+  },
+  {
+    "id": "card-rs-n1-021",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Ataques e desenvolvimento seguro (OWASP)",
+    "nivel": 1,
+    "conceito": "Phishing",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Fraude que usa mensagens, páginas ou contatos falsos, passando-se por entidade confiável, para convencer a vítima a revelar informações.",
+    "nao_confundir": [
+      {
+        "conceito": "Malware",
+        "diferenca": "Phishing engana a pessoa; malware (software malicioso) é programa que age no equipamento."
+      }
+    ],
+    "atencao": "Uma página visualmente idêntica à original pode pertencer a um domínio controlado pelo atacante.",
+    "fonte": "NIST CSRC Glossary, entrada Phishing; CISA. Avoiding Social Engineering and Phishing Attacks.",
+    "tags": [
+      "phishing",
+      "engenharia-social"
+    ]
+  },
+  {
+    "id": "card-rs-n1-022",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Ataques e desenvolvimento seguro (OWASP)",
+    "nivel": 1,
+    "conceito": "Dez riscos críticos de aplicações web",
+    "termo_ingles": "OWASP Top 10",
+    "traducao": "OWASP Top 10: reúne categorias de riscos críticos para a segurança de aplicações web.",
+    "resumo": "Documento de conscientização que apresenta categorias de riscos relevantes, como controle de acesso quebrado, falhas criptográficas e injeção.",
+    "nao_confundir": [
+      {
+        "conceito": "ASVS",
+        "diferenca": "Top 10 lista riscos críticos; ASVS é um padrão de requisitos para verificar a segurança."
+      }
+    ],
+    "atencao": "Controle de acesso quebrado é o risco A01 tanto na edição de 2021 quanto na de 2025.",
+    "fonte": "OWASP Top 10:2021; OWASP Top 10:2025; OWASP Application Security Verification Standard.",
+    "tags": [
+      "owasp"
+    ]
+  },
+  {
+    "id": "card-rs-n1-023",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Ataques e desenvolvimento seguro (OWASP)",
+    "nivel": 1,
+    "conceito": "Teste de segurança por entradas aleatórias",
+    "termo_ingles": "Fuzzing",
+    "traducao": "Fuzzing: testa programas com entradas inesperadas ou malformadas para encontrar falhas.",
+    "resumo": "Técnica automatizada que envia entradas variadas, inválidas ou inesperadas a um programa e observa falhas, comportamentos incorretos ou encerramentos inesperados.",
+    "nao_confundir": [
+      {
+        "conceito": "Teste funcional convencional",
+        "diferenca": "Fuzzing explora entradas inesperadas; testes funcionais verificam comportamentos previstos."
+      }
+    ],
+    "atencao": "Fuzzing pode revelar falhas, mas não comprova que o programa esteja livre de vulnerabilidades.",
+    "fonte": "OWASP Web Security Testing Guide, versão 4.2; OWASP. Fuzzing.",
+    "tags": [
+      "fuzzing",
+      "testes-de-seguranca"
+    ]
+  },
+  {
+    "id": "card-rs-n1-024",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Ataques e desenvolvimento seguro (OWASP)",
+    "nivel": 1,
+    "conceito": "Análise estática de segurança",
+    "termo_ingles": "Static Application Security Testing (SAST)",
+    "traducao": "Análise estática: examina o código sem executar a aplicação para identificar possíveis falhas.",
+    "resumo": "Técnica de análise de segurança que examina código-fonte ou componentes em busca de padrões associados a vulnerabilidades, sem executar a aplicação.",
+    "nao_confundir": [
+      {
+        "conceito": "Análise dinâmica (DAST)",
+        "diferenca": "SAST examina código sem executá-lo; a análise dinâmica (DAST) testa a aplicação em execução."
+      }
+    ],
+    "atencao": "SAST pode apontar falsos positivos, alertas de falhas inexistentes; cada achado precisa ser avaliado.",
+    "fonte": "OWASP. Source Code Analysis Tools; OWASP. Static Code Analysis; OWASP DevSecOps Guideline.",
+    "tags": [
+      "sast",
+      "testes-de-seguranca",
+      "owasp"
+    ]
   }
 ]
