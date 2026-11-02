@@ -3051,5 +3051,466 @@
       "zonas-de-disponibilidade",
       "alta-disponibilidade"
     ]
+  },
+  {
+    "id": "card-bd-n1-090",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Machine learning — conceitos e tipos de aprendizado",
+    "nivel": 1,
+    "conceito": "Aprendizado de máquina",
+    "termo_ingles": "Machine Learning",
+    "traducao": "Aprendizado de máquina: técnica que permite ajustar modelos a partir de dados para produzir previsões ou decisões.",
+    "resumo": "O modelo identifica padrões em exemplos e é ajustado, em vez de usar apenas regras escritas manualmente.",
+    "nao_confundir": [
+      {
+        "conceito": "Programação baseada em regras",
+        "diferenca": "Regras são definidas manualmente; aprendizado de máquina ajusta padrões a partir de dados."
+      }
+    ],
+    "atencao": "Aprendizado de máquina não dispensa dados: o modelo depende dos exemplos usados em seu desenvolvimento.",
+    "fonte": "scikit-learn Documentation. An introduction to machine learning with scikit-learn.",
+    "tags": [
+      "machine-learning"
+    ]
+  },
+  {
+    "id": "card-bd-n1-091",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Machine learning — conceitos e tipos de aprendizado",
+    "nivel": 1,
+    "conceito": "Aprendizado supervisionado",
+    "termo_ingles": "Supervised Learning",
+    "traducao": "Aprendizado supervisionado: treina um modelo com exemplos que incluem a resposta esperada.",
+    "resumo": "Usa dados rotulados, isto é, exemplos com respostas conhecidas. Cada exemplo associa atributos a um resultado esperado.",
+    "nao_confundir": [
+      {
+        "conceito": "Aprendizado não supervisionado",
+        "diferenca": "Supervisionado usa respostas conhecidas; não supervisionado procura padrões sem essas respostas."
+      }
+    ],
+    "atencao": "Rótulo é a resposta esperada de cada exemplo; no supervisionado ele vem nos dados, não em regras escritas.",
+    "fonte": "scikit-learn Documentation. An introduction to machine learning with scikit-learn.",
+    "tags": [
+      "aprendizado-supervisionado",
+      "supervisionado"
+    ]
+  },
+  {
+    "id": "card-bd-n1-092",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Machine learning — conceitos e tipos de aprendizado",
+    "nivel": 1,
+    "conceito": "Aprendizado não supervisionado",
+    "termo_ingles": "Unsupervised Learning",
+    "traducao": "Aprendizado não supervisionado: identifica padrões em dados sem respostas previamente informadas.",
+    "resumo": "Analisa exemplos sem rótulos para encontrar estruturas, semelhanças ou grupos nos dados.",
+    "nao_confundir": [
+      {
+        "conceito": "Aprendizado supervisionado",
+        "diferenca": "Não supervisionado não recebe respostas conhecidas; supervisionado aprende com exemplos rotulados."
+      }
+    ],
+    "atencao": "A ausência de rótulos não significa ausência de dados ou de padrões nos exemplos.",
+    "fonte": "scikit-learn Documentation. An introduction to machine learning with scikit-learn.",
+    "tags": [
+      "aprendizado-nao-supervisionado"
+    ]
+  },
+  {
+    "id": "card-bd-n1-093",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Machine learning — conceitos e tipos de aprendizado",
+    "nivel": 1,
+    "conceito": "Aprendizado por reforço",
+    "termo_ingles": "Reinforcement Learning",
+    "traducao": "Aprendizado por reforço: aprende a escolher ações com base nas recompensas recebidas em um ambiente.",
+    "resumo": "Um agente realiza ações em um ambiente e recebe recompensas ou penalidades, ajustando seu comportamento ao longo das tentativas.",
+    "nao_confundir": [
+      {
+        "conceito": "Aprendizado supervisionado",
+        "diferenca": "Reforço aprende pelas consequências das ações; supervisionado usa respostas conhecidas nos exemplos."
+      }
+    ],
+    "atencao": "A recompensa avalia consequências das ações; não é necessariamente a resposta correta de cada exemplo.",
+    "fonte": "Russell e Norvig. Artificial Intelligence: A Modern Approach, 4ª ed. (2021); Google for Developers. Machine Learning Glossary (agent, reinforcement learning).",
+    "tags": [
+      "aprendizado-por-reforco"
+    ]
+  },
+  {
+    "id": "card-bd-n1-094",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Machine learning — conceitos e tipos de aprendizado",
+    "nivel": 1,
+    "conceito": "Classificação",
+    "termo_ingles": "Classification",
+    "traducao": "Classificação: prevê a categoria à qual um exemplo pertence.",
+    "resumo": "Atribui uma categoria a cada exemplo, como identificar se uma mensagem é spam ou não spam.",
+    "nao_confundir": [
+      {
+        "conceito": "Regressão",
+        "diferenca": "Classificação prevê categorias; regressão prevê valores numéricos."
+      }
+    ],
+    "atencao": "Classificação pode prever mais de duas categorias, não apenas resultados positivos ou negativos.",
+    "fonte": "Google for Developers. Machine Learning Crash Course. Classification.",
+    "tags": [
+      "classificacao",
+      "aprendizado-supervisionado"
+    ]
+  },
+  {
+    "id": "card-bd-n1-095",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Machine learning — conceitos e tipos de aprendizado",
+    "nivel": 1,
+    "conceito": "Regressão",
+    "termo_ingles": "Regression",
+    "traducao": "Regressão: prevê um valor numérico a partir de padrões encontrados nos dados.",
+    "resumo": "Estima um número, como preço, temperatura ou tempo, com base nos atributos fornecidos ao modelo.",
+    "nao_confundir": [
+      {
+        "conceito": "Classificação",
+        "diferenca": "Regressão estima números; classificação atribui categorias."
+      }
+    ],
+    "atencao": "Regressão prevê valores contínuos, como o comprimento de um peixe; categorias discretas são tarefa de classificação.",
+    "fonte": "scikit-learn Documentation. An introduction to machine learning with scikit-learn. Google for Developers. Machine Learning Crash Course. Linear Regression.",
+    "tags": [
+      "regressao",
+      "aprendizado-supervisionado"
+    ]
+  },
+  {
+    "id": "card-bd-n1-096",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Machine learning — conceitos e tipos de aprendizado",
+    "nivel": 1,
+    "conceito": "Agrupamento",
+    "termo_ingles": "Clustering",
+    "traducao": "Agrupamento: reúne exemplos semelhantes sem depender de categorias previamente informadas.",
+    "resumo": "Organiza exemplos em grupos com características semelhantes, como separar clientes por padrões de consumo.",
+    "nao_confundir": [
+      {
+        "conceito": "Classificação",
+        "diferenca": "Agrupamento descobre grupos sem rótulos; classificação prevê categorias previamente definidas."
+      }
+    ],
+    "atencao": "Os grupos saem apenas numerados (0, 1, 2...); dar significado de negócio a eles exige análise.",
+    "fonte": "scikit-learn Documentation, versão 1.9.1. Clustering; scikit-learn Documentation. An introduction to machine learning with scikit-learn.",
+    "tags": [
+      "clustering",
+      "aprendizado-nao-supervisionado"
+    ]
+  },
+  {
+    "id": "card-bd-n1-097",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Machine learning — conceitos e tipos de aprendizado",
+    "nivel": 1,
+    "conceito": "Atributo",
+    "termo_ingles": "Feature",
+    "traducao": "Atributo: característica de um exemplo usada como entrada para produzir uma previsão.",
+    "resumo": "Representa uma informação fornecida ao modelo, como área e localização de um imóvel usado para estimar seu preço.",
+    "nao_confundir": [
+      {
+        "conceito": "Rótulo",
+        "diferenca": "Atributo é uma entrada; rótulo é a resposta esperada usada no aprendizado supervisionado."
+      }
+    ],
+    "atencao": "Um atributo pode ser numérico, categórico ou texto transformado em representação numérica.",
+    "fonte": "Google for Developers. Machine Learning Glossary (feature, attribute); scikit-learn Documentation. An introduction to machine learning with scikit-learn.",
+    "tags": [
+      "machine-learning",
+      "aprendizado-supervisionado"
+    ]
+  },
+  {
+    "id": "card-bd-n1-098",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Machine learning — avaliação de modelos",
+    "nivel": 1,
+    "conceito": "Sobreajuste",
+    "termo_ingles": "Overfitting",
+    "traducao": "Sobreajuste: ocorre quando o modelo se adapta demais aos exemplos de treinamento e perde desempenho em dados novos.",
+    "resumo": "O modelo apresenta bom desempenho nos dados usados para aprender, mas erra mais quando recebe exemplos que não viu.",
+    "nao_confundir": [
+      {
+        "conceito": "Subajuste",
+        "diferenca": "Sobreajuste prejudica dados novos; subajuste apresenta desempenho ruim até no treinamento."
+      }
+    ],
+    "atencao": "Bom desempenho no treinamento, sozinho, não demonstra capacidade de generalizar para dados novos.",
+    "fonte": "Google for Developers. Machine Learning Crash Course. Overfitting.",
+    "tags": [
+      "overfitting"
+    ]
+  },
+  {
+    "id": "card-bd-n1-099",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Machine learning — avaliação de modelos",
+    "nivel": 1,
+    "conceito": "Subajuste",
+    "termo_ingles": "Underfitting",
+    "traducao": "Subajuste: ocorre quando o modelo não aprende padrões suficientes nem nos dados de treinamento.",
+    "resumo": "O modelo é simples ou limitado demais para representar os padrões presentes nos dados, apresentando erros no treinamento e em dados novos.",
+    "nao_confundir": [
+      {
+        "conceito": "Sobreajuste",
+        "diferenca": "Subajuste erra até no treinamento; sobreajuste aprende demais os exemplos de treinamento."
+      }
+    ],
+    "atencao": "Aumentar a complexidade do modelo pode reduzir subajuste, mas também pode favorecer sobreajuste.",
+    "fonte": "Google for Developers. Machine Learning Crash Course. Overfitting.",
+    "tags": [
+      "underfitting",
+      "overfitting"
+    ]
+  },
+  {
+    "id": "card-bd-n1-100",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Machine learning — avaliação de modelos",
+    "nivel": 1,
+    "conceito": "Conjunto de teste",
+    "termo_ingles": "Test Set",
+    "traducao": "Conjunto de teste: reúne exemplos separados para medir o desempenho final do modelo.",
+    "resumo": "Contém dados que não participam do treinamento e são usados para estimar o desempenho em exemplos ainda não vistos.",
+    "nao_confundir": [
+      {
+        "conceito": "Conjunto de treinamento",
+        "diferenca": "Treinamento ajusta o modelo; teste mede seu desempenho em exemplos separados."
+      }
+    ],
+    "atencao": "Usar repetidamente o conjunto de teste para ajustar o modelo compromete sua independência na avaliação.",
+    "fonte": "scikit-learn Documentation, versão 1.9.1. Cross-validation: evaluating estimator performance.",
+    "tags": [
+      "validacao",
+      "overfitting"
+    ]
+  },
+  {
+    "id": "card-bd-n1-101",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Machine learning — avaliação de modelos",
+    "nivel": 1,
+    "conceito": "Matriz de confusão",
+    "termo_ingles": "Confusion Matrix",
+    "traducao": "Matriz de confusão: organiza previsões do modelo conforme o resultado previsto e o resultado real.",
+    "resumo": "Em classificação, contabiliza verdadeiros positivos, falsos positivos, verdadeiros negativos e falsos negativos.",
+    "nao_confundir": [
+      {
+        "conceito": "Falso positivo",
+        "diferenca": "Falso positivo aponta positivo que não existe; falso negativo deixa passar um positivo real."
+      }
+    ],
+    "atencao": "Positivo ou negativo é a classe prevista; verdadeiro ou falso indica se essa previsão está correta.",
+    "fonte": "Google for Developers. Machine Learning Glossary (TP, FP, TN, FN; confusion matrix).",
+    "tags": [
+      "matriz-de-confusao"
+    ]
+  },
+  {
+    "id": "card-bd-n1-102",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Machine learning — avaliação de modelos",
+    "nivel": 1,
+    "conceito": "Acurácia",
+    "termo_ingles": "Accuracy",
+    "traducao": "Acurácia: mede a proporção de previsões que correspondem aos resultados reais.",
+    "resumo": "É a quantidade de previsões corretas dividida pelo total de previsões realizadas.",
+    "nao_confundir": [
+      {
+        "conceito": "Precisão",
+        "diferenca": "Acurácia considera todas as previsões; precisão considera apenas as previsões positivas."
+      }
+    ],
+    "atencao": "Em dados desbalanceados, alta acurácia pode coexistir com baixa identificação da classe minoritária.",
+    "fonte": "Google for Developers. Machine Learning Glossary (accuracy).",
+    "tags": [
+      "acuracia",
+      "metricas"
+    ]
+  },
+  {
+    "id": "card-bd-n1-103",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Machine learning — avaliação de modelos",
+    "nivel": 1,
+    "conceito": "Precisão",
+    "termo_ingles": "Precision",
+    "traducao": "Precisão: mede a proporção de previsões positivas que realmente pertencem à classe positiva.",
+    "resumo": "Entre os exemplos classificados como positivos, indica quantos eram realmente positivos.",
+    "nao_confundir": [
+      {
+        "conceito": "Revocação",
+        "diferenca": "Precisão considera positivos previstos; revocação considera positivos reais identificados."
+      }
+    ],
+    "atencao": "Precisão elevada não garante que o modelo encontrou todos os casos positivos existentes.",
+    "fonte": "scikit-learn Documentation, versão 1.9.1. precision_score.",
+    "tags": [
+      "precision",
+      "metricas"
+    ]
+  },
+  {
+    "id": "card-bd-n1-104",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Machine learning — avaliação de modelos",
+    "nivel": 1,
+    "conceito": "Revocação",
+    "termo_ingles": "Recall",
+    "traducao": "Revocação: mede a proporção de casos positivos reais que o modelo conseguiu identificar.",
+    "resumo": "Entre todos os exemplos realmente positivos, indica quantos foram classificados como positivos pelo modelo.",
+    "nao_confundir": [
+      {
+        "conceito": "Precisão",
+        "diferenca": "Revocação considera positivos reais identificados; precisão considera positivos previstos que eram reais."
+      }
+    ],
+    "atencao": "Revocação elevada não garante que todas as previsões positivas estejam certas.",
+    "fonte": "scikit-learn Documentation, versão 1.9.1. recall_score.",
+    "tags": [
+      "recall",
+      "metricas"
+    ]
+  },
+  {
+    "id": "card-bd-n1-105",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Machine learning — avaliação de modelos",
+    "nivel": 1,
+    "conceito": "Validação cruzada",
+    "termo_ingles": "Cross-Validation",
+    "traducao": "Validação cruzada: avalia o modelo repetindo o treinamento e o teste com diferentes divisões dos dados.",
+    "resumo": "Divide os dados em partes e alterna treinamento e avaliação, reduzindo a dependência de uma única divisão. Exemplo: k-fold.",
+    "nao_confundir": [
+      {
+        "conceito": "Conjunto de teste",
+        "diferenca": "Teste usa uma separação; validação cruzada repete avaliações com diferentes divisões."
+      }
+    ],
+    "atencao": "Na validação cruzada, cada rodada usa dados de teste diferentes, não todos os dados simultaneamente.",
+    "fonte": "scikit-learn Documentation, versão 1.9.1. Cross-validation: evaluating estimator performance.",
+    "tags": [
+      "validacao-cruzada",
+      "validacao"
+    ]
+  },
+  {
+    "id": "card-bd-n1-108",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Machine learning — algoritmos",
+    "nivel": 1,
+    "conceito": "Regressão linear",
+    "termo_ingles": "Linear Regression",
+    "traducao": "Regressão linear: estima um valor numérico ajustando uma relação linear aos dados.",
+    "resumo": "Relaciona atributos a um resultado numérico por uma equação linear, como estimar o preço de um imóvel pela área.",
+    "nao_confundir": [
+      {
+        "conceito": "K-means",
+        "diferenca": "Regressão linear estima números; K-means agrupa exemplos por semelhança."
+      }
+    ],
+    "atencao": "Regressão linear é usada para prever números, não para atribuir diretamente categorias.",
+    "fonte": "Google for Developers. Machine Learning Crash Course. Linear Regression.",
+    "tags": [
+      "regressao-linear",
+      "regressao",
+      "aprendizado-supervisionado"
+    ]
+  },
+  {
+    "id": "card-bd-n1-109",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Machine learning — algoritmos",
+    "nivel": 1,
+    "conceito": "K-means",
+    "termo_ingles": "K-Means",
+    "traducao": "K médias: agrupa exemplos em torno de centros calculados a partir dos próprios dados.",
+    "resumo": "Algoritmo de agrupamento que distribui exemplos em K grupos, definidos antes da execução.",
+    "nao_confundir": [
+      {
+        "conceito": "Naive Bayes",
+        "diferenca": "K-means agrupa sem rótulos; Naive Bayes classifica usando exemplos rotulados."
+      }
+    ],
+    "atencao": "O valor K é escolhido antes da execução; o algoritmo não determina sozinho quantos grupos formar.",
+    "fonte": "scikit-learn Documentation, versão 1.9.1. Clustering: K-Means.",
+    "tags": [
+      "k-means",
+      "clustering",
+      "aprendizado-nao-supervisionado"
+    ]
+  },
+  {
+    "id": "card-bd-n1-110",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Machine learning — algoritmos",
+    "nivel": 1,
+    "conceito": "Centroide",
+    "termo_ingles": "Centroid",
+    "traducao": "Centroide: ponto que representa a posição média dos exemplos de um grupo.",
+    "resumo": "No K-means, é calculado pela média das posições dos exemplos atribuídos a cada grupo.",
+    "nao_confundir": [
+      {
+        "conceito": "Rótulo",
+        "diferenca": "Centroide representa a posição média de um grupo; rótulo identifica a categoria de um exemplo."
+      }
+    ],
+    "atencao": "No K-means, o centroide não precisa corresponder a um exemplo real dos dados.",
+    "fonte": "scikit-learn Documentation, versão 1.9.1. Clustering: K-Means.",
+    "tags": [
+      "k-means",
+      "clustering"
+    ]
+  },
+  {
+    "id": "card-bd-n1-111",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Machine learning — algoritmos",
+    "nivel": 1,
+    "conceito": "Naive Bayes",
+    "termo_ingles": "Naive Bayes",
+    "traducao": "Bayes ingênuo: classifica exemplos calculando probabilidades a partir de características observadas.",
+    "resumo": "Usa probabilidades e assume, para simplificar, que os atributos são independentes dada a classe. Exemplo: filtrar spam.",
+    "nao_confundir": [
+      {
+        "conceito": "K-means",
+        "diferenca": "Naive Bayes classifica com exemplos rotulados; K-means agrupa sem rótulos."
+      }
+    ],
+    "atencao": "Naive Bayes não dispensa treinamento: aprende probabilidades a partir de exemplos disponíveis.",
+    "fonte": "scikit-learn Documentation, versão 1.9.1. Naive Bayes.",
+    "tags": [
+      "naive-bayes",
+      "classificacao",
+      "spam",
+      "probabilidade"
+    ]
+  },
+  {
+    "id": "card-bd-n1-112",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Machine learning — algoritmos",
+    "nivel": 1,
+    "conceito": "Independência condicional",
+    "termo_ingles": "Conditional Independence",
+    "traducao": "Independência condicional: hipótese de que características são independentes entre si quando uma classe é conhecida.",
+    "resumo": "No Naive Bayes, simplifica o cálculo das probabilidades ao tratar os atributos como condicionalmente independentes dada a classe.",
+    "nao_confundir": [
+      {
+        "conceito": "Independência estatística",
+        "diferenca": "Independência condicional vale dada a classe; independência estatística vale sem condição alguma."
+      }
+    ],
+    "atencao": "A hipótese de independência do Naive Bayes é uma simplificação do modelo, não uma garantia sobre os dados reais.",
+    "fonte": "scikit-learn Documentation, versão 1.9.1. Naive Bayes.",
+    "tags": [
+      "naive-bayes",
+      "probabilidade"
+    ]
   }
 ]
