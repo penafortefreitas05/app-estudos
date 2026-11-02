@@ -460,7 +460,11 @@ const ICONE_MATERIA = {
     'Governança, Gestão & Projetos de TI': 'M9 4h6v3H9zM6 6h12v15H6zM9 12h6M9 16h4',
     'Sistemas Operacionais & Hardware': 'M7 7h10v10H7zM10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4',
     'Direito Administrativo': 'M12 3v18M7 21h10M5 7h14M5 7l-2 6a3 3 0 0 0 4 0zM19 7l-2 6a3 3 0 0 0 4 0z',
-    'Micro e Macroeconomia': 'M4 20h16M6 16v-4M10 16V8M14 16v-6M18 16V5'
+    'Micro e Macroeconomia': 'M4 20h16M6 16v-4M10 16V8M14 16v-6M18 16V5',
+    'Finanças': 'M4 17l5-5 4 4 7-8M15 8h5v5',
+    'Contabilidade (COSIF)': 'M6 3h12v18H6zM9 7h6M9 11h6M9 15h3',
+    'Estatística e Econometria': 'M4 20h16M4 20V4M7 16l4-6 3 3 5-7',
+    'Conhecimentos Bancários': 'M3 10h18L12 4zM5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18'
 };
 const ICONE_PADRAO = 'M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM4 19V5';
 
@@ -474,7 +478,10 @@ const NOME_CURTO = {
     'Governança, Gestão & Projetos de TI': 'Governança',
     'Sistemas Operacionais & Hardware': 'SO e Hardware',
     'Direito Administrativo': 'Dir. Administrativo',
-    'Micro e Macroeconomia': 'Economia'
+    'Micro e Macroeconomia': 'Economia',
+    'Contabilidade (COSIF)': 'COSIF',
+    'Estatística e Econometria': 'Estatística',
+    'Conhecimentos Bancários': 'Conh. Bancários'
 };
 
 // Destaca a matéria escolhida no filtro e mostra os níveis dela (sem redesenhar o painel)

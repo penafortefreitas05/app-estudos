@@ -138,7 +138,14 @@ const MAPA_MATERIAS_MACRO = {
     "direito administrativo": "Direito Administrativo",
     "micro e macroeconomia": "Micro e Macroeconomia",
     "fundamentos de macroeconomia e microeconomia": "Micro e Macroeconomia",
-    "fundamentos de micro e macroeconomia": "Micro e Macroeconomia"
+    "fundamentos de micro e macroeconomia": "Micro e Macroeconomia",
+    "macroeconomia": "Micro e Macroeconomia",
+    "microeconomia": "Micro e Macroeconomia",
+    // 12 a 15. Trilhas Bacen (economia e finanças) e BNB da Nathalia (02/11/2026)
+    "finanças": "Finanças",
+    "contabilidade (cosif)": "Contabilidade (COSIF)",
+    "estatística e econometria": "Estatística e Econometria",
+    "conhecimentos bancários": "Conhecimentos Bancários"
 };
 
 // ============================================================

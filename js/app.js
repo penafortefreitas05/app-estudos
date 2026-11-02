@@ -99,6 +99,23 @@ const OPCOES_SELECT_NIVEL = { rotulo: (v) => NIVEIS[v] || v, numerico: true, mos
 let historico = {};
 let questoes = [];
 let porId = new Map();
+
+// ---------- Concurso (trilha) ----------
+// Cada questão diz a quais concursos serve (coluna 'concursos', text[]). Sem a coluna
+// preenchida, a questão é do banco de TI (tudo o que existia antes da trilha). Cada pessoa
+// escolhe o concurso em "Mais filtros" e vê só as questões dele; a escolha fica no aparelho.
+const TRILHAS = ['ti', 'bacen', 'bnb'];
+const CHAVE_TRILHA = 'focopro_trilha';
+let ultimaListaDaNuvem = null;
+function trilhaAtual() {
+    try {
+        const t = localStorage.getItem(CHAVE_TRILHA);
+        return TRILHAS.includes(t) ? t : 'ti';
+    } catch (e) { return 'ti'; }
+}
+function trilhasDe(q) {
+    return Array.isArray(q.concursos) && q.concursos.length ? q.concursos : ['ti'];
+}
 let tagSelecionada = "";
 let simulado = null;
 let foco = null; // Modo Foco (U1): { lista, indice, cards } — ver seção 12
@@ -984,6 +1001,21 @@ if (inputBusca) {
         esperaBusca = setTimeout(aplicarFiltros, 250);
     });
 }
+// Concurso: só aparece quando o banco tem questões de mais de uma trilha.
+const selectConcurso = document.getElementById("filtro-concurso");
+function atualizarSelectConcurso(todas, trilha) {
+    if (!selectConcurso) return;
+    const comQuestoes = new Set(todas.flatMap(trilhasDe));
+    [...selectConcurso.options].forEach(o => { o.hidden = o.disabled = !comQuestoes.has(o.value); });
+    selectConcurso.value = trilha;
+    selectConcurso.hidden = comQuestoes.size <= 1;
+}
+if (selectConcurso) selectConcurso.addEventListener("change", () => {
+    try { localStorage.setItem(CHAVE_TRILHA, selectConcurso.value); } catch (e) { /* fica só nesta sessão */ }
+    // Troca de concurso: os filtros de matéria/banca/assunto da trilha anterior não valem mais.
+    [selectMateria, selectBanca, selectTag].forEach(sel => { if (sel) sel.value = ""; });
+    if (ultimaListaDaNuvem) carregarBancoDeQuestoes(Promise.resolve({ questoes: ultimaListaDaNuvem }));
+});
 if (selectBanca) selectBanca.addEventListener("change", aplicarFiltros);
 if (selectMateria) selectMateria.addEventListener("change", () => { atualizarSelectAssunto(); aplicarFiltros(); });
 if (selectAno) selectAno.addEventListener("change", aplicarFiltros);
@@ -1801,8 +1833,12 @@ async function carregarBancoDeQuestoes(questoesChegando = null) {
         return;
     }
     const daNuvem = resultado.questoes;
+    ultimaListaDaNuvem = daNuvem;
 
-    questoes = mesclarQuestoes(daNuvem);
+    const todas = mesclarQuestoes(daNuvem);
+    const trilha = trilhaAtual();
+    questoes = todas.filter(q => trilhasDe(q).includes(trilha));
+    atualizarSelectConcurso(todas, trilha);
 
     porId = new Map(questoes.map(q => [String(q.id), q]));
 

@@ -504,6 +504,10 @@ async function upsertQuestoesComPlanoB(payload, gabaritos) {
     if (!colunaNivelExiste) payload = semColunaNivel(payload);
     const { error } = await supabaseClient.from('questoes').upsert(payload);
     if (error) {
+        // Sem a coluna 'concursos', gravar sem ela jogaria questões de outro concurso no banco de TI.
+        if (/\bconcursos\b/i.test(`${error?.message || ''} ${error?.details || ''} ${error?.hint || ''}`)) {
+            throw new Error("O banco ainda não tem a coluna 'concursos'. Rode a SQL docs/sql/concurso-trilhas.sql no Supabase antes de importar questões com concurso.");
+        }
         if (colunaNivelExiste && erroDeColunaNivel(error)) {
             colunaNivelExiste = false;
             console.warn("[FocoPro] Coluna 'nivel' ainda não existe em 'questoes' (rode a SQL dos níveis).");
@@ -575,6 +579,9 @@ export async function salvarQuestoesEmMassa(arrayDeQuestoes) {
                     laboratorio: qNorm.laboratorio || null,
                     nivel: qNorm.nivel
                 };
+                // Concurso (trilha): só vai quando a questão diz a quais concursos serve.
+                // Sem isso, a coluna fica vazia e a questão conta como TI.
+                if (Array.isArray(qNorm.concursos) && qNorm.concursos.length) linha.concursos = qNorm.concursos;
                 // Plano B já ativo (de uma tentativa anterior nesta mesma sessão): manda do jeito antigo direto
                 if (!tabelaGabaritoExiste) linha.resposta_correta = letraGabarito;
                 return linha;
