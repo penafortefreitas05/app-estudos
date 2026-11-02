@@ -5134,5 +5134,489 @@
       "testes-de-seguranca",
       "owasp"
     ]
+  },
+  {
+    "id": "card-rs-n1-025",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
+    "nivel": 1,
+    "conceito": "Modelo OSI",
+    "termo_ingles": "Open Systems Interconnection (OSI) model",
+    "traducao": "Modelo OSI: organiza a comunicação em sete camadas com funções distintas.",
+    "resumo": "Divide a comunicação em sete camadas, da física à aplicação: física, enlace, rede, transporte, sessão, apresentação, aplicação. Cada camada cuida de uma função.",
+    "nao_confundir": [
+      {
+        "conceito": "Modelo TCP/IP",
+        "diferenca": "TCP/IP agrupa funções do OSI e aparece com quatro ou cinco camadas, conforme o autor."
+      }
+    ],
+    "atencao": "No modelo OSI, a camada de rede é a terceira e a de transporte é a quarta.",
+    "fonte": "ITU-T Recommendation X.200, Open Systems Interconnection – Basic Reference Model, 1994; RFC 1122, Requirements for Internet Hosts, 1989.",
+    "tags": [
+      "modelo-osi",
+      "camada-de-rede",
+      "camada-de-transporte"
+    ]
+  },
+  {
+    "id": "card-rs-n1-026",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
+    "nivel": 1,
+    "conceito": "Endereço IP",
+    "termo_ingles": "Internet Protocol address",
+    "traducao": "Endereço IP: identifica uma interface de rede para comunicação entre redes.",
+    "resumo": "Identificador lógico de uma interface. O IPv4 utiliza 32 bits; o IPv6 utiliza 128 bits. O prefixo identifica a parte da rede.",
+    "nao_confundir": [
+      {
+        "conceito": "Nome de domínio",
+        "diferenca": "IP é número da interface; nome de domínio é texto que pessoas digitam."
+      }
+    ],
+    "atencao": "O IP identifica a interface, não o equipamento; uma interface pode ter mais de um endereço.",
+    "fonte": "RFC 791, Internet Protocol, 1981; RFC 8200, Internet Protocol, Version 6 (IPv6) Specification, 2017; RFC 1122, Requirements for Internet Hosts, 1989.",
+    "tags": [
+      "ipv6",
+      "camada-de-rede"
+    ]
+  },
+  {
+    "id": "card-rs-n1-027",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
+    "nivel": 1,
+    "conceito": "Protocolo de resolução de endereços",
+    "termo_ingles": "Address Resolution Protocol (ARP)",
+    "traducao": "ARP: descobre o endereço MAC associado a um endereço IPv4 na rede local.",
+    "resumo": "Na rede local, os dados são entregues ao endereço MAC, identificador físico da interface de rede. O ARP descobre o MAC que corresponde a um endereço IPv4 conhecido.",
+    "nao_confundir": [
+      {
+        "conceito": "Endereço IP",
+        "diferenca": "IP identifica a interface logicamente entre redes; MAC identifica fisicamente na rede local."
+      }
+    ],
+    "atencao": "O ARP serve ao IPv4; no IPv6, a descoberta do endereço MAC é feita pelo Neighbor Discovery.",
+    "fonte": "RFC 826, An Ethernet Address Resolution Protocol, 1982; RFC 4861, Neighbor Discovery for IP version 6 (IPv6), 2007.",
+    "tags": [
+      "equipamentos-de-rede",
+      "camada-de-rede"
+    ]
+  },
+  {
+    "id": "card-rs-n1-028",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
+    "nivel": 1,
+    "conceito": "Roteador",
+    "termo_ingles": "Router",
+    "traducao": "Roteador: encaminha pacotes entre redes com base em endereços IP e rotas.",
+    "resumo": "Equipamento que interliga redes e escolhe para onde encaminhar pacotes IP, blocos de dados enviados pela rede, consultando informações de roteamento.",
+    "nao_confundir": [
+      {
+        "conceito": "Switch",
+        "diferenca": "Roteador liga redes distintas usando IP; switch (liga dispositivos de uma mesma rede) usa MAC."
+      }
+    ],
+    "atencao": "O roteador opera tipicamente na camada de rede do modelo OSI.",
+    "fonte": "RFC 1812, Requirements for IP Version 4 Routers, 1995; ITU-T Recommendation X.200, 1994.",
+    "tags": [
+      "equipamentos-de-rede",
+      "camada-de-rede"
+    ]
+  },
+  {
+    "id": "card-rs-n1-029",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
+    "nivel": 1,
+    "conceito": "Protocolos de transporte TCP e UDP",
+    "termo_ingles": "Transmission Control Protocol and User Datagram Protocol",
+    "traducao": "TCP: oferece transporte confiável e ordenado; UDP: envia blocos de dados sem garantir entrega ou ordem.",
+    "resumo": "TCP estabelece conexão e controla recebimento e ordem dos dados. UDP envia datagramas, blocos de dados independentes, sem confirmação de entrega ou garantia de ordenação.",
+    "nao_confundir": [
+      {
+        "conceito": "IP",
+        "diferenca": "IP entrega pacotes sem garantia; TCP acrescenta confiabilidade e ordem sobre o IP."
+      }
+    ],
+    "atencao": "Com UDP, se a aplicação precisar de retransmissão ou de ordem, ela mesma precisa implementá-las.",
+    "fonte": "RFC 9293, Transmission Control Protocol (TCP), 2022; RFC 768, User Datagram Protocol, 1980.",
+    "tags": [
+      "tcp",
+      "udp",
+      "camada-de-transporte"
+    ]
+  },
+  {
+    "id": "card-rs-n1-030",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
+    "nivel": 1,
+    "conceito": "Porta de transporte",
+    "termo_ingles": "Transport-layer port",
+    "traducao": "Porta de transporte: identifica um serviço ou processo de comunicação associado a TCP ou UDP.",
+    "resumo": "Número usado para direcionar dados ao serviço correspondente no dispositivo. Exemplos (HTTP/1.1 e HTTP/2): HTTP usa TCP 80; HTTPS, TCP 443.",
+    "nao_confundir": [
+      {
+        "conceito": "Endereço IP",
+        "diferenca": "IP identifica a interface de rede; porta identifica o serviço de transporte."
+      }
+    ],
+    "atencao": "Uma mesma numeração de porta pode existir separadamente em TCP e UDP.",
+    "fonte": "RFC 9293, Transmission Control Protocol (TCP), 2022; RFC 768, User Datagram Protocol, 1980; IANA, Service Name and Transport Protocol Port Number Registry.",
+    "tags": [
+      "portas",
+      "tcp",
+      "udp",
+      "camada-de-transporte"
+    ]
+  },
+  {
+    "id": "card-rs-n1-031",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
+    "nivel": 1,
+    "conceito": "Rede local e rede de longa distância",
+    "termo_ingles": "Local Area Network and Wide Area Network",
+    "traducao": "LAN: conecta dispositivos em área limitada; WAN: interliga redes em grandes distâncias.",
+    "resumo": "LAN atende áreas como residências, escritórios e prédios. WAN conecta redes geograficamente distantes, como filiais em cidades diferentes.",
+    "nao_confundir": [
+      {
+        "conceito": "Rede metropolitana (MAN)",
+        "diferenca": "MAN cobre cidade ou região; é maior que a LAN e menor que a WAN."
+      }
+    ],
+    "atencao": "Uma WAN pode interligar várias LANs, inclusive por meio de redes de operadoras.",
+    "fonte": "NIST CSRC Glossary, entradas Local Area Network e Wide Area Network.",
+    "tags": [
+      "lan",
+      "wan"
+    ]
+  },
+  {
+    "id": "card-rs-n1-032",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
+    "nivel": 1,
+    "conceito": "Tradução de endereços de rede",
+    "termo_ingles": "Network Address Translation (NAT)",
+    "traducao": "NAT: traduz endereços IP durante o encaminhamento de pacotes entre redes.",
+    "resumo": "Substitui endereços IP de origem ou destino dos pacotes em trânsito. Permite que dispositivos de uma rede privada (com endereços de uso interno) acessem a internet.",
+    "nao_confundir": [
+      {
+        "conceito": "NAPT (PAT)",
+        "diferenca": "NAT traduz endereços IP; NAPT (PAT) também traduz portas, permitindo vários dispositivos num só endereço."
+      }
+    ],
+    "atencao": "O NAT troca endereços de pacotes em trânsito; não entrega endereços IP aos dispositivos da rede.",
+    "fonte": "RFC 3022, Traditional IP Network Address Translator (Traditional NAT), 2001.",
+    "tags": [
+      "nat",
+      "pat"
+    ]
+  },
+  {
+    "id": "card-rs-n1-033",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Roteamento, switching e SDN",
+    "nivel": 1,
+    "conceito": "Switching por endereço MAC",
+    "termo_ingles": "Ethernet switching",
+    "traducao": "Switching: encaminha quadros na rede local usando endereços MAC.",
+    "resumo": "O switch aprende os endereços MAC associados a cada uma de suas portas (conectores físicos) e encaminha quadros, unidades de dados da rede local, à porta correspondente.",
+    "nao_confundir": [
+      {
+        "conceito": "Roteamento",
+        "diferenca": "Switching encaminha quadros por MAC; roteamento encaminha pacotes IP entre redes."
+      }
+    ],
+    "atencao": "O switch tradicional opera na camada de enlace (2); o roteador, na de rede (3).",
+    "fonte": "Juniper Networks. Layer 2 Forwarding Tables (documentação Junos); ITU-T Recommendation X.200, 1994.",
+    "tags": [
+      "switch",
+      "mac"
+    ]
+  },
+  {
+    "id": "card-rs-n1-034",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Roteamento, switching e SDN",
+    "nivel": 1,
+    "conceito": "Rede local virtual",
+    "termo_ingles": "Virtual Local Area Network (VLAN)",
+    "traducao": "VLAN: divide uma rede local física em redes lógicas separadas.",
+    "resumo": "Permite separar grupos de dispositivos em redes lógicas distintas, mesmo conectados ao mesmo switch físico.",
+    "nao_confundir": [
+      {
+        "conceito": "Sub-rede",
+        "diferenca": "VLAN separa a rede no enlace; sub-rede separa por faixa de endereços IP."
+      }
+    ],
+    "atencao": "A comunicação entre VLANs diferentes exige roteamento entre elas.",
+    "fonte": "Cisco. Configure Inter-VLAN Routing with Catalyst Switches (Document ID 218429).",
+    "tags": [
+      "vlan",
+      "switch"
+    ]
+  },
+  {
+    "id": "card-rs-n1-035",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Roteamento, switching e SDN",
+    "nivel": 1,
+    "conceito": "Tabela de roteamento",
+    "termo_ingles": "Routing table",
+    "traducao": "Tabela de roteamento: armazena informações usadas para escolher o próximo caminho dos pacotes.",
+    "resumo": "Registra destinos de rede e como alcançá-los: próximo salto (próximo roteador no caminho) e interface de saída. O roteador a consulta ao encaminhar pacotes.",
+    "nao_confundir": [
+      {
+        "conceito": "Tabela MAC",
+        "diferenca": "Tabela de roteamento relaciona destinos IP a rotas; tabela MAC relaciona endereços MAC a portas."
+      }
+    ],
+    "atencao": "Prevalece a rota mais específica, a de prefixo mais longo, sobre uma rota menos específica.",
+    "fonte": "RFC 1812, Requirements for IP Version 4 Routers, 1995.",
+    "tags": [
+      "ospf"
+    ]
+  },
+  {
+    "id": "card-rs-n1-036",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Roteamento, switching e SDN",
+    "nivel": 1,
+    "conceito": "Protocolo de roteamento OSPF",
+    "termo_ingles": "Open Shortest Path First (OSPF)",
+    "traducao": "OSPF: calcula rotas usando informações sobre o estado dos enlaces da rede.",
+    "resumo": "Protocolo usado dentro de uma rede sob uma só administração. Cada roteador informa o estado de suas ligações e calcula caminhos com o algoritmo de Dijkstra.",
+    "nao_confundir": [
+      {
+        "conceito": "RIP (Routing Information Protocol)",
+        "diferenca": "OSPF escolhe rotas por custo de enlace; RIP usa contagem de saltos."
+      }
+    ],
+    "atencao": "O OSPFv2 atende redes IPv4; o OSPFv3 foi desenvolvido para IPv6.",
+    "fonte": "RFC 2328, OSPF Version 2, 1998; RFC 5340, OSPF for IPv6, 2008.",
+    "tags": [
+      "ospf",
+      "estado-de-enlace",
+      "ipv6"
+    ]
+  },
+  {
+    "id": "card-rs-n1-037",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Roteamento, switching e SDN",
+    "nivel": 1,
+    "conceito": "Rede definida por software",
+    "termo_ingles": "Software-Defined Networking (SDN)",
+    "traducao": "SDN: separa logicamente o controle da rede do encaminhamento dos dados.",
+    "resumo": "Abordagem que permite programar o comportamento da rede por software, separando as decisões de controle das funções de encaminhamento.",
+    "nao_confundir": [
+      {
+        "conceito": "Plano de dados",
+        "diferenca": "Plano de controle decide os caminhos; plano de dados encaminha os pacotes conforme essas decisões."
+      }
+    ],
+    "atencao": "A separação lógica entre controle e encaminhamento não exige eliminar roteadores e switches físicos.",
+    "fonte": "RFC 7426, Software-Defined Networking (SDN): Layers and Architecture Terminology, 2015; Open Networking Foundation, SDN Architecture.",
+    "tags": [
+      "sdn"
+    ]
+  },
+  {
+    "id": "card-rs-n1-038",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Roteamento, switching e SDN",
+    "nivel": 1,
+    "conceito": "Comutação por rótulos",
+    "termo_ingles": "Multiprotocol Label Switching (MPLS)",
+    "traducao": "MPLS: encaminha pacotes usando rótulos associados a caminhos na rede.",
+    "resumo": "Técnica de encaminhamento que utiliza rótulos para direcionar pacotes, permitindo definir caminhos de tráfego sem depender apenas da consulta tradicional ao destino IP.",
+    "nao_confundir": [
+      {
+        "conceito": "Roteamento IP tradicional",
+        "diferenca": "MPLS encaminha por rótulos; roteamento IP consulta endereços e prefixos de destino."
+      }
+    ],
+    "atencao": "MPLS não é um protocolo de criptografia e não garante confidencialidade por si só.",
+    "fonte": "RFC 3031, Multiprotocol Label Switching Architecture, 2001.",
+    "tags": [
+      "mpls"
+    ]
+  },
+  {
+    "id": "card-rs-n1-039",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Protocolos de aplicação (DNS, HTTP, SMTP, LDAP)",
+    "nivel": 1,
+    "conceito": "Sistema de nomes de domínio",
+    "termo_ingles": "Domain Name System (DNS)",
+    "traducao": "DNS: associa nomes de domínio a informações como endereços IP.",
+    "resumo": "Sistema distribuído que consulta registros associados a nomes de domínio. Por exemplo, permite localizar o endereço IP associado a um nome de site.",
+    "nao_confundir": [
+      {
+        "conceito": "DHCP",
+        "diferenca": "DNS consulta informações de nomes; DHCP entrega endereço IP e outras configurações aos dispositivos."
+      }
+    ],
+    "atencao": "Consultas DNS usam normalmente UDP na porta 53; TCP também é utilizado, inclusive em transferências de zona.",
+    "fonte": "RFC 1034, Domain Names – Concepts and Facilities, 1987; RFC 1035, Domain Names – Implementation and Specification, 1987; IANA, Service Name and Port Number Registry.",
+    "tags": [
+      "dns"
+    ]
+  },
+  {
+    "id": "card-rs-n1-040",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Protocolos de aplicação (DNS, HTTP, SMTP, LDAP)",
+    "nivel": 1,
+    "conceito": "Protocolo de transferência de hipertexto",
+    "termo_ingles": "Hypertext Transfer Protocol (HTTP)",
+    "traducao": "HTTP: permite a troca de requisições e respostas entre clientes e servidores.",
+    "resumo": "Protocolo de aplicação usado na comunicação entre clientes e servidores web. Utiliza mensagens de requisição e resposta para acessar recursos.",
+    "nao_confundir": [
+      {
+        "conceito": "HTTPS",
+        "diferenca": "HTTP trafega sem criptografia; HTTPS é HTTP sobre TLS, que protege a conexão."
+      }
+    ],
+    "atencao": "HTTP/1.1 e HTTP/2 usam TCP; HTTP/3 usa QUIC, protocolo de transporte sobre UDP.",
+    "fonte": "RFC 9110, HTTP Semantics, 2022; RFC 9112, HTTP/1.1, 2022; IANA, Service Name and Port Number Registry.; RFC 9114, HTTP/3, 2022.",
+    "tags": [
+      "http",
+      "https",
+      "cabecalhos"
+    ]
+  },
+  {
+    "id": "card-rs-n1-041",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Protocolos de aplicação (DNS, HTTP, SMTP, LDAP)",
+    "nivel": 1,
+    "conceito": "Protocolo de transferência de correio",
+    "termo_ingles": "Simple Mail Transfer Protocol (SMTP)",
+    "traducao": "SMTP: transmite mensagens de correio eletrônico entre clientes e servidores ou entre servidores.",
+    "resumo": "Protocolo usado para envio e retransmissão de mensagens de e-mail. A porta TCP 25 é usada na transferência entre servidores; a 587 é usada para submissão de mensagens.",
+    "nao_confundir": [
+      {
+        "conceito": "IMAP",
+        "diferenca": "SMTP envia mensagens; IMAP (leitura da caixa postal) permite acessar mensagens armazenadas."
+      }
+    ],
+    "atencao": "O cliente de e-mail usa SMTP só para enviar; para receber, usa IMAP ou POP3.",
+    "fonte": "RFC 5321, Simple Mail Transfer Protocol, 2008; RFC 6409, Message Submission for Mail, 2011; IANA, Service Name and Port Number Registry.",
+    "tags": [
+      "smtp"
+    ]
+  },
+  {
+    "id": "card-rs-n1-042",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Protocolos de aplicação (DNS, HTTP, SMTP, LDAP)",
+    "nivel": 1,
+    "conceito": "Acesso a mensagens por IMAP",
+    "termo_ingles": "Internet Message Access Protocol (IMAP)",
+    "traducao": "IMAP: permite acessar e gerenciar mensagens mantidas em um servidor de correio.",
+    "resumo": "Protocolo usado pelo cliente de e-mail para consultar e organizar mensagens armazenadas no servidor. Porta padrão TCP 143; com TLS desde o início da conexão, TCP 993.",
+    "nao_confundir": [
+      {
+        "conceito": "POP3",
+        "diferenca": "IMAP mantém e gerencia as mensagens no servidor; POP3 é voltado a baixá-las."
+      }
+    ],
+    "atencao": "O IMAP mantém as mensagens no servidor, por isso vários dispositivos veem a mesma caixa postal.",
+    "fonte": "RFC 3501, Internet Message Access Protocol – Version 4rev1, 2003; RFC 8314, Cleartext Considered Obsolete, 2018; IANA, Service Name and Port Number Registry.",
+    "tags": [
+      "imap"
+    ]
+  },
+  {
+    "id": "card-rs-n1-043",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Protocolos de aplicação (DNS, HTTP, SMTP, LDAP)",
+    "nivel": 1,
+    "conceito": "Protocolo de acesso a mensagens POP3",
+    "termo_ingles": "Post Office Protocol Version 3 (POP3)",
+    "traducao": "POP3: recupera mensagens de uma caixa postal mantida em um servidor.",
+    "resumo": "Protocolo usado por clientes de e-mail para obter mensagens armazenadas no servidor. Utiliza TCP 110; com TLS desde o início da conexão, TCP 995.",
+    "nao_confundir": [
+      {
+        "conceito": "IMAP",
+        "diferenca": "POP3 recupera mensagens; IMAP permite sincronizar e gerenciar mensagens no servidor."
+      }
+    ],
+    "atencao": "No POP3, a mensagem baixada pode ser removida do servidor; no IMAP, ela permanece lá.",
+    "fonte": "RFC 1939, Post Office Protocol – Version 3, 1996; RFC 8314, Cleartext Considered Obsolete, 2018; IANA, Service Name and Port Number Registry.",
+    "tags": [
+      "pop3"
+    ]
+  },
+  {
+    "id": "card-rs-n1-044",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Protocolos de aplicação (DNS, HTTP, SMTP, LDAP)",
+    "nivel": 1,
+    "conceito": "Protocolo de acesso a diretórios",
+    "termo_ingles": "Lightweight Directory Access Protocol (LDAP)",
+    "traducao": "LDAP: consulta e modifica informações armazenadas em serviços de diretório.",
+    "resumo": "Protocolo que permite pesquisar e administrar informações organizadas em diretórios, como usuários, grupos e atributos de uma organização.",
+    "nao_confundir": [
+      {
+        "conceito": "Active Directory",
+        "diferenca": "Active Directory é o serviço de diretório da Microsoft; LDAP é o protocolo para consultá-lo."
+      }
+    ],
+    "atencao": "LDAP utiliza TCP 389 por padrão; LDAP protegido por TLS implícito utiliza TCP 636.",
+    "fonte": "RFC 4511, Lightweight Directory Access Protocol (LDAP): The Protocol, 2006; IANA, Service Name and Port Number Registry.; Microsoft Learn. Active Directory Domain Services overview.",
+    "tags": [
+      "ldap",
+      "active-directory"
+    ]
+  },
+  {
+    "id": "card-rs-n1-045",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Protocolos de aplicação (DNS, HTTP, SMTP, LDAP)",
+    "nivel": 1,
+    "conceito": "Protocolo simples de gerenciamento de rede",
+    "termo_ingles": "Simple Network Management Protocol (SNMP)",
+    "traducao": "SNMP: permite monitorar e gerenciar equipamentos e serviços de rede.",
+    "resumo": "Protocolo usado para consultar e gerenciar equipamentos, como roteadores e switches. Usa UDP 161 para consultas e UDP 162 para notificações.",
+    "nao_confundir": [
+      {
+        "conceito": "Syslog",
+        "diferenca": "SNMP consulta equipamentos; syslog recebe mensagens de log enviadas por eles."
+      }
+    ],
+    "atencao": "Só o SNMPv3 oferece autenticação e criptografia; v1 e v2c não.",
+    "fonte": "RFC 3411, An Architecture for Describing Simple Network Management Protocol (SNMP) Management Frameworks, 2002; RFC 3417, Transport Mappings for the Simple Network Management Protocol (SNMP), 2002; IANA, Service Name and Port Number Registry.; RFC 3414, User-based Security Model (USM) for SNMPv3, 2002.",
+    "tags": [
+      "snmp",
+      "mib"
+    ]
+  },
+  {
+    "id": "card-rs-n1-046",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Protocolos de aplicação (DNS, HTTP, SMTP, LDAP)",
+    "nivel": 1,
+    "conceito": "Base de informações de gerenciamento",
+    "termo_ingles": "Management Information Base (MIB)",
+    "traducao": "MIB: organiza os objetos e informações que podem ser consultados ou gerenciados por SNMP.",
+    "resumo": "Estrutura que descreve objetos gerenciáveis de um equipamento, como contadores de tráfego, estado de interfaces e informações operacionais.",
+    "nao_confundir": [
+      {
+        "conceito": "SNMP",
+        "diferenca": "MIB descreve os objetos gerenciáveis; SNMP transporta operações de gerenciamento e consulta."
+      }
+    ],
+    "atencao": "Cada objeto da MIB é identificado por um OID, número em árvore hierárquica.",
+    "fonte": "RFC 3418, Management Information Base (MIB) for the Simple Network Management Protocol (SNMP), 2002.; RFC 2578, Structure of Management Information Version 2 (SMIv2), 1999.",
+    "tags": [
+      "mib",
+      "snmp",
+      "oid"
+    ]
   }
 ]
