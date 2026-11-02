@@ -458,7 +458,9 @@ const ICONE_MATERIA = {
     'Arquitetura de TI & Nuvem': 'M7 18a4 4 0 0 1-.5-8A6 6 0 0 1 18 9a4.5 4.5 0 0 1-.5 9z',
     'Redes & Segurança da Informação': 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18',
     'Governança, Gestão & Projetos de TI': 'M9 4h6v3H9zM6 6h12v15H6zM9 12h6M9 16h4',
-    'Sistemas Operacionais & Hardware': 'M7 7h10v10H7zM10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4'
+    'Sistemas Operacionais & Hardware': 'M7 7h10v10H7zM10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4',
+    'Direito Administrativo': 'M12 3v18M7 21h10M5 7h14M5 7l-2 6a3 3 0 0 0 4 0zM19 7l-2 6a3 3 0 0 0 4 0z',
+    'Micro e Macroeconomia': 'M4 20h16M6 16v-4M10 16V8M14 16v-6M18 16V5'
 };
 const ICONE_PADRAO = 'M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM4 19V5';
 
@@ -470,7 +472,9 @@ const NOME_CURTO = {
     'Arquitetura de TI & Nuvem': 'Arquitetura e Nuvem',
     'Redes & Segurança da Informação': 'Redes e Segurança',
     'Governança, Gestão & Projetos de TI': 'Governança',
-    'Sistemas Operacionais & Hardware': 'SO e Hardware'
+    'Sistemas Operacionais & Hardware': 'SO e Hardware',
+    'Direito Administrativo': 'Dir. Administrativo',
+    'Micro e Macroeconomia': 'Economia'
 };
 
 // Destaca a matéria escolhida no filtro e mostra os níveis dela (sem redesenhar o painel)

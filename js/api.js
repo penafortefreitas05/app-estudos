@@ -132,7 +132,13 @@ const MAPA_MATERIAS_MACRO = {
     "windows": "Sistemas Operacionais & Hardware",
     "windows server": "Sistemas Operacionais & Hardware",
     "virtualização": "Sistemas Operacionais & Hardware",
-    "hardware": "Sistemas Operacionais & Hardware"
+    "hardware": "Sistemas Operacionais & Hardware",
+
+    // 10 e 11. Básicas do Bacen (02/11/2026): chegam com as questões autorais da Operação Cognitiva
+    "direito administrativo": "Direito Administrativo",
+    "micro e macroeconomia": "Micro e Macroeconomia",
+    "fundamentos de macroeconomia e microeconomia": "Micro e Macroeconomia",
+    "fundamentos de micro e macroeconomia": "Micro e Macroeconomia"
 };
 
 // ============================================================
