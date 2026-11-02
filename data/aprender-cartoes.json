@@ -2117,5 +2117,424 @@
       "http-post",
       "eventos"
     ]
+  },
+  {
+    "id": "card-es-n1-016",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Processos, ciclos de vida e manutenção de software",
+    "nivel": 1,
+    "conceito": "Processo de software",
+    "termo_ingles": "Software Process",
+    "traducao": "Processo de software: conjunto de atividades para desenvolver e manter um sistema.",
+    "resumo": "Organiza atividades como especificação, desenvolvimento, validação e evolução de um sistema.",
+    "nao_confundir": [
+      {
+        "conceito": "Modelo de processo",
+        "diferenca": "Processo reúne atividades; modelo organiza como elas são executadas."
+      }
+    ],
+    "atencao": "Não existe processo ideal único: a escolha depende do tipo de sistema e do contexto do projeto.",
+    "fonte": "Sommerville, Ian. Engenharia de Software. 10ª ed. Pearson, 2018 (original de 2016).",
+    "tags": [
+      "processo-de-software"
+    ]
+  },
+  {
+    "id": "card-es-n1-017",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Processos, ciclos de vida e manutenção de software",
+    "nivel": 1,
+    "conceito": "Modelo em cascata",
+    "termo_ingles": "Waterfall Model",
+    "traducao": "Cascata: modelo que organiza o desenvolvimento em fases sequenciais.",
+    "resumo": "As fases avançam em sequência, como requisitos, projeto, implementação, testes e entrega.",
+    "nao_confundir": [
+      {
+        "conceito": "Modelo incremental",
+        "diferenca": "Cascata entrega o sistema inteiro no fim; incremental entrega partes utilizáveis a cada ciclo."
+      }
+    ],
+    "atencao": "Na prática, o cascata admite voltar a fases anteriores, mas mudanças tardias custam caro.",
+    "fonte": "Sommerville, Ian. Engenharia de Software. 10ª ed. Pearson, 2018 (original de 2016).",
+    "tags": [
+      "cascata",
+      "processo-de-software"
+    ]
+  },
+  {
+    "id": "card-es-n1-018",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Processos, ciclos de vida e manutenção de software",
+    "nivel": 1,
+    "conceito": "Modelo incremental",
+    "termo_ingles": "Incremental Development",
+    "traducao": "Incremental: desenvolvimento que entrega o sistema em partes sucessivas.",
+    "resumo": "Cada incremento acrescenta funcionalidades utilizáveis ao sistema. Exemplo: primeiro cadastro, depois consulta e edição.",
+    "nao_confundir": [
+      {
+        "conceito": "Modelo em cascata",
+        "diferenca": "Incremental entrega partes utilizáveis durante o projeto; cascata concentra a entrega no final."
+      }
+    ],
+    "atencao": "Cada incremento deve acrescentar funcionalidade integrada ao que já foi entregue.",
+    "fonte": "Sommerville, Ian. Engenharia de Software. 10ª ed. Pearson, 2018 (original de 2016).",
+    "tags": [
+      "modelo-incremental",
+      "processo-de-software"
+    ]
+  },
+  {
+    "id": "card-es-n1-019",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Processos, ciclos de vida e manutenção de software",
+    "nivel": 1,
+    "conceito": "Modelo espiral",
+    "termo_ingles": "Spiral Model",
+    "traducao": "Espiral: modelo que desenvolve o sistema em ciclos orientados à análise de riscos.",
+    "resumo": "Cada ciclo avalia objetivos, riscos (algo que pode dar errado e comprometer o projeto), desenvolvimento e planejamento seguinte.",
+    "nao_confundir": [
+      {
+        "conceito": "Modelo incremental",
+        "diferenca": "Espiral organiza ciclos pela análise de riscos; incremental organiza entregas pelo acréscimo de funcionalidades."
+      }
+    ],
+    "atencao": "Espiral funciona como metamodelo: cada volta pode usar protótipo, cascata ou outra abordagem, conforme o risco.",
+    "fonte": "Boehm, Barry W. A Spiral Model of Software Development and Enhancement. IEEE Computer, 1988; Sommerville, Ian. Engenharia de Software. 10ª ed. Pearson, 2018 (original de 2016).",
+    "tags": [
+      "espiral",
+      "processo-de-software"
+    ]
+  },
+  {
+    "id": "card-es-n1-020",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Processos, ciclos de vida e manutenção de software",
+    "nivel": 1,
+    "conceito": "Manutenção corretiva",
+    "termo_ingles": "Corrective Maintenance",
+    "traducao": "Corretiva: manutenção que corrige defeitos identificados no software.",
+    "resumo": "Altera o software para corrigir um defeito que provoca comportamento diferente do esperado.",
+    "nao_confundir": [
+      {
+        "conceito": "Manutenção preventiva",
+        "diferenca": "Corretiva corrige defeitos existentes; preventiva reduz a probabilidade de problemas futuros."
+      }
+    ],
+    "atencao": "O defeito pode ser identificado por qualquer pessoa, não apenas pelo usuário.",
+    "fonte": "Sommerville, Ian. Engenharia de Software. 10ª ed. Pearson, 2018 (original de 2016); ISO/IEC/IEEE 14764:2022. Software Engineering — Software Life Cycle Processes — Maintenance; SWEBOK Guide v3.0, cap. 5 (Software Maintenance).",
+    "tags": [
+      "tipos-de-manutencao"
+    ]
+  },
+  {
+    "id": "card-es-n1-021",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Processos, ciclos de vida e manutenção de software",
+    "nivel": 1,
+    "conceito": "Manutenção adaptativa",
+    "termo_ingles": "Adaptive Maintenance",
+    "traducao": "Adaptativa: manutenção que ajusta o software a mudanças no ambiente.",
+    "resumo": "Modifica o sistema para continuar funcionando em um ambiente alterado, como uma nova versão do sistema operacional ou banco de dados.",
+    "nao_confundir": [
+      {
+        "conceito": "Manutenção perfectiva",
+        "diferenca": "Adaptativa acompanha mudanças no ambiente; perfectiva melhora funcionalidades ou desempenho do software."
+      }
+    ],
+    "atencao": "Migrar para nova versão do sistema operacional é manutenção adaptativa, mesmo sem nenhuma função nova.",
+    "fonte": "Sommerville, Ian. Engenharia de Software. 10ª ed. Pearson, 2018 (original de 2016); ISO/IEC/IEEE 14764:2022. Software Engineering — Software Life Cycle Processes — Maintenance; SWEBOK Guide v3.0, cap. 5 (Software Maintenance).",
+    "tags": [
+      "tipos-de-manutencao"
+    ]
+  },
+  {
+    "id": "card-es-n1-022",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Análise e projeto OO (UML, DDD)",
+    "nivel": 1,
+    "conceito": "Linguagem de Modelagem Unificada",
+    "termo_ingles": "Unified Modeling Language (UML)",
+    "traducao": "Linguagem de Modelagem Unificada: notação visual para representar sistemas.",
+    "resumo": "Reúne diagramas para representar estruturas e comportamentos de um sistema antes ou durante sua implementação.",
+    "nao_confundir": [
+      {
+        "conceito": "Processo de software",
+        "diferenca": "UML representa o sistema por diagramas; processo define atividades e a ordem de execução."
+      }
+    ],
+    "atencao": "UML é linguagem de modelagem, não metodologia nem processo de desenvolvimento.",
+    "fonte": "Object Management Group (OMG). Unified Modeling Language, versão 2.5.1, 2017.",
+    "tags": [
+      "uml",
+      "modelagem"
+    ]
+  },
+  {
+    "id": "card-es-n1-023",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Análise e projeto OO (UML, DDD)",
+    "nivel": 1,
+    "conceito": "Diagrama de classes",
+    "termo_ingles": "Class Diagram",
+    "traducao": "Diagrama de classes: representação das classes e de suas relações no sistema.",
+    "resumo": "Mostra classes, atributos, operações e relacionamentos. Exemplo: Cliente associado a Pedido.",
+    "nao_confundir": [
+      {
+        "conceito": "Diagrama de objetos",
+        "diferenca": "Diagrama de classes mostra tipos e relações; diagrama de objetos mostra instâncias concretas."
+      }
+    ],
+    "atencao": "Atributos descrevem dados da classe; operações representam comportamentos que ela oferece.",
+    "fonte": "Object Management Group (OMG). Unified Modeling Language, versão 2.5.1, 2017.",
+    "tags": [
+      "uml",
+      "diagrama-de-classes"
+    ]
+  },
+  {
+    "id": "card-es-n1-024",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Análise e projeto OO (UML, DDD)",
+    "nivel": 1,
+    "conceito": "Diagrama de casos de uso",
+    "termo_ingles": "Use Case Diagram",
+    "traducao": "Diagrama de casos de uso: representação das funções do sistema e de quem interage com ele.",
+    "resumo": "Mostra atores (pessoas ou outros sistemas que interagem) e funcionalidades oferecidas pelo sistema.",
+    "nao_confundir": [
+      {
+        "conceito": "Diagrama de atividades",
+        "diferenca": "Casos de uso mostram funcionalidades e atores; atividades mostram o fluxo de ações."
+      }
+    ],
+    "atencao": "O ator é um papel externo, pessoa ou outro sistema, e não um usuário específico.",
+    "fonte": "Object Management Group (OMG). Unified Modeling Language, versão 2.5.1, 2017.",
+    "tags": [
+      "uml",
+      "casos-de-uso"
+    ]
+  },
+  {
+    "id": "card-es-n1-025",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Análise e projeto OO (UML, DDD)",
+    "nivel": 1,
+    "conceito": "Diagrama de sequência",
+    "termo_ingles": "Sequence Diagram",
+    "traducao": "Diagrama de sequência: representação das mensagens trocadas em ordem temporal.",
+    "resumo": "Mostra participantes e mensagens ao longo do tempo. Exemplo: usuário solicita login e o sistema valida os dados.",
+    "nao_confundir": [
+      {
+        "conceito": "Diagrama de comunicação",
+        "diferenca": "Sequência destaca a ordem temporal; comunicação destaca ligações entre participantes e numera mensagens."
+      }
+    ],
+    "atencao": "O tempo avança de cima para baixo no diagrama, conforme a ordem das mensagens.",
+    "fonte": "Object Management Group (OMG). Unified Modeling Language, versão 2.5.1, 2017.",
+    "tags": [
+      "uml",
+      "diagrama-de-sequencia"
+    ]
+  },
+  {
+    "id": "card-es-n1-026",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Análise e projeto OO (UML, DDD)",
+    "nivel": 1,
+    "conceito": "Diagrama de comunicação",
+    "termo_ingles": "Communication Diagram",
+    "traducao": "Diagrama de comunicação: representação das ligações e mensagens entre participantes.",
+    "resumo": "Mostra objetos, ligações e mensagens numeradas que indicam a ordem da interação.",
+    "nao_confundir": [
+      {
+        "conceito": "Diagrama de sequência",
+        "diferenca": "Comunicação destaca ligações e numera mensagens; sequência destaca a ordem temporal."
+      }
+    ],
+    "atencao": "Na UML 2, os diagramas de sequência e de comunicação são ambos diagramas de interação.",
+    "fonte": "Object Management Group (OMG). Unified Modeling Language, versão 2.5.1, 2017.",
+    "tags": [
+      "uml",
+      "diagrama-de-comunicacao"
+    ]
+  },
+  {
+    "id": "card-es-n1-027",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Análise e projeto OO (UML, DDD)",
+    "nivel": 1,
+    "conceito": "Projeto orientado ao domínio",
+    "termo_ingles": "Domain-Driven Design (DDD)",
+    "traducao": "Projeto orientado ao domínio: desenvolvimento guiado pela área de negócio atendida pelo sistema.",
+    "resumo": "Organiza o software em torno do domínio (área de negócio atendida), aproximando o modelo técnico das necessidades reais.",
+    "nao_confundir": [
+      {
+        "conceito": "Desenvolvimento orientado a dados",
+        "diferenca": "DDD prioriza o modelo do negócio; desenvolvimento orientado a dados prioriza a organização dos dados."
+      }
+    ],
+    "atencao": "A linguagem ubíqua (vocabulário comum de negócio e técnicos) aparece no código, em nomes de classes e métodos.",
+    "fonte": "Evans, Eric. Domain-Driven Design: Tackling Complexity in the Heart of Software. Addison-Wesley, 2003; Evans, Eric. Domain-Driven Design Reference, 2015.",
+    "tags": [
+      "ddd",
+      "linguagem-ubiqua"
+    ]
+  },
+  {
+    "id": "card-es-n1-028",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Análise e projeto OO (UML, DDD)",
+    "nivel": 1,
+    "conceito": "Contexto delimitado",
+    "termo_ingles": "Bounded Context",
+    "traducao": "Contexto delimitado: limite dentro do qual um modelo de domínio tem significado definido.",
+    "resumo": "Define onde um modelo e sua linguagem são válidos. Exemplo: vendas e suporte podem representar Cliente de formas diferentes.",
+    "nao_confundir": [
+      {
+        "conceito": "Domínio",
+        "diferenca": "Domínio é a área de negócio; contexto delimitado é o limite onde um modelo vale."
+      }
+    ],
+    "atencao": "O mesmo termo pode ter significados diferentes em contextos distintos, como cliente em vendas e suporte.",
+    "fonte": "Evans, Eric. Domain-Driven Design: Tackling Complexity in the Heart of Software. Addison-Wesley, 2003; Evans, Eric. Domain-Driven Design Reference, 2015.",
+    "tags": [
+      "ddd",
+      "bounded-context"
+    ]
+  },
+  {
+    "id": "card-es-n1-029",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Padrões de projeto (GoF)",
+    "nivel": 1,
+    "conceito": "Padrões de projeto",
+    "termo_ingles": "Design Patterns",
+    "traducao": "Padrões de projeto: soluções descritas para problemas recorrentes no desenvolvimento de software.",
+    "resumo": "Descrevem soluções reutilizáveis em situações recorrentes, sem determinar uma implementação única.",
+    "nao_confundir": [
+      {
+        "conceito": "Framework",
+        "diferenca": "Padrão descreve uma solução adaptável; framework fornece uma estrutura reutilizável de código."
+      }
+    ],
+    "atencao": "Padrão de projeto não é código pronto: é uma solução descrita para adaptar ao contexto.",
+    "fonte": "Gamma, Erich; Helm, Richard; Johnson, Ralph; Vlissides, John. Padrões de Projeto. Bookman, 2000 (original de 1994).",
+    "tags": [
+      "padroes-de-projeto",
+      "gof"
+    ]
+  },
+  {
+    "id": "card-es-n1-030",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Padrões de projeto (GoF)",
+    "nivel": 1,
+    "conceito": "Famílias de padrões GoF",
+    "termo_ingles": "GoF Design Pattern Categories",
+    "traducao": "Famílias GoF: classificação dos padrões em criação, estrutura e comportamento.",
+    "resumo": "Criação organiza como objetos são criados; estrutura, como classes e objetos se combinam; comportamento, como dividem responsabilidades e se comunicam.",
+    "nao_confundir": [
+      {
+        "conceito": "Criação × estruturais",
+        "diferenca": "Criação decide como e quantos objetos nascem; estruturais combinam classes e objetos já existentes."
+      }
+    ],
+    "atencao": "Singleton é de criação; Adapter e Decorator são estruturais; Observer é comportamental.",
+    "fonte": "Gamma, Erich; Helm, Richard; Johnson, Ralph; Vlissides, John. Padrões de Projeto. Bookman, 2000 (original de 1994).",
+    "tags": [
+      "padroes-de-projeto",
+      "gof"
+    ]
+  },
+  {
+    "id": "card-es-n1-031",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Padrões de projeto (GoF)",
+    "nivel": 1,
+    "conceito": "Padrão Singleton",
+    "termo_ingles": "Singleton",
+    "traducao": "Instância única: padrão que controla a quantidade de objetos criados de uma classe.",
+    "resumo": "Garante uma única instância acessível por um ponto definido. Exemplo: um objeto central de configuração.",
+    "nao_confundir": [
+      {
+        "conceito": "Factory Method",
+        "diferenca": "Singleton controla a quantidade de instâncias; Factory Method delega a criação de objetos."
+      }
+    ],
+    "atencao": "Singleton é padrão de criação, não estrutural: controla quantos objetos da classe existem.",
+    "fonte": "Gamma, Erich; Helm, Richard; Johnson, Ralph; Vlissides, John. Padrões de Projeto. Bookman, 2000 (original de 1994).",
+    "tags": [
+      "padroes-de-projeto",
+      "gof",
+      "singleton"
+    ]
+  },
+  {
+    "id": "card-es-n1-032",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Padrões de projeto (GoF)",
+    "nivel": 1,
+    "conceito": "Padrão Observer",
+    "termo_ingles": "Observer",
+    "traducao": "Observador: padrão que notifica objetos inscritos quando outro objeto muda de estado.",
+    "resumo": "Um objeto mantém observadores inscritos e os notifica quando ocorre uma mudança. Exemplo: atualizar telas após alterar um dado.",
+    "nao_confundir": [
+      {
+        "conceito": "Mediator",
+        "diferenca": "Observer distribui notificações de mudanças; Mediator centraliza a comunicação entre objetos."
+      }
+    ],
+    "atencao": "Observer é comportamental: o objeto observado só conhece a interface comum dos observadores, não suas classes.",
+    "fonte": "Gamma, Erich; Helm, Richard; Johnson, Ralph; Vlissides, John. Padrões de Projeto. Bookman, 2000 (original de 1994).",
+    "tags": [
+      "padroes-de-projeto",
+      "gof",
+      "observer"
+    ]
+  },
+  {
+    "id": "card-es-n1-033",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Padrões de projeto (GoF)",
+    "nivel": 1,
+    "conceito": "Padrão Adapter",
+    "termo_ingles": "Adapter",
+    "traducao": "Adaptador: padrão que converte uma interface para outra esperada pelo cliente.",
+    "resumo": "Permite que componentes com interfaces incompatíveis trabalhem juntos, usando um adaptador entre eles.",
+    "nao_confundir": [
+      {
+        "conceito": "Facade",
+        "diferenca": "Adapter converte uma interface; Facade simplifica o acesso a um conjunto de componentes."
+      }
+    ],
+    "atencao": "Adapter é estrutural: adapta interfaces incompatíveis sem exigir que os componentes mudem.",
+    "fonte": "Gamma, Erich; Helm, Richard; Johnson, Ralph; Vlissides, John. Padrões de Projeto. Bookman, 2000 (original de 1994).",
+    "tags": [
+      "padroes-de-projeto",
+      "gof",
+      "adapter"
+    ]
+  },
+  {
+    "id": "card-es-n1-034",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Padrões de projeto (GoF)",
+    "nivel": 1,
+    "conceito": "Padrão Decorator",
+    "termo_ingles": "Decorator",
+    "traducao": "Decorador: padrão que acrescenta responsabilidades a um objeto sem alterar sua classe.",
+    "resumo": "Envolve um objeto com outro que acrescenta comportamento. Exemplo: adicionar recursos a um componente visual.",
+    "nao_confundir": [
+      {
+        "conceito": "Herança",
+        "diferenca": "Decorator acrescenta comportamento por composição; herança estende uma classe para especializar seu comportamento."
+      }
+    ],
+    "atencao": "Decorator é estrutural: combina objetos para acrescentar responsabilidades de forma flexível.",
+    "fonte": "Gamma, Erich; Helm, Richard; Johnson, Ralph; Vlissides, John. Padrões de Projeto. Bookman, 2000 (original de 1994).",
+    "tags": [
+      "padroes-de-projeto",
+      "gof",
+      "decorator"
+    ]
   }
 ]
