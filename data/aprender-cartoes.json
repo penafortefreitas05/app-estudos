@@ -4040,5 +4040,560 @@
     "tags": [
       "qualidade-de-dados"
     ]
+  },
+  {
+    "id": "card-arq-n1-024",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Virtualização",
+    "nivel": 1,
+    "conceito": "Virtualização",
+    "termo_ingles": "Virtualization",
+    "traducao": "Virtualização: permite executar ambientes computacionais isolados no mesmo hardware físico.",
+    "resumo": "Abstrai os recursos de um computador físico para criar máquinas virtuais, cada uma com seu próprio sistema operacional.",
+    "nao_confundir": [
+      {
+        "conceito": "Contêiner",
+        "diferenca": "Máquina virtual executa seu próprio sistema operacional; contêiner compartilha o núcleo (kernel) do sistema hospedeiro."
+      }
+    ],
+    "atencao": "Cada máquina virtual roda seu próprio sistema operacional, mas todas dependem do mesmo hardware físico.",
+    "fonte": "NIST. SP 800-125, Guide to Security for Full Virtualization Technologies (2011).",
+    "tags": [
+      "virtualizacao",
+      "infraestrutura"
+    ]
+  },
+  {
+    "id": "card-arq-n1-025",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Virtualização",
+    "nivel": 1,
+    "conceito": "Hipervisor",
+    "termo_ingles": "Hypervisor",
+    "traducao": "Hipervisor: cria e administra máquinas virtuais, distribuindo os recursos do hardware físico.",
+    "resumo": "Software responsável por executar e gerenciar máquinas virtuais, controlando o acesso delas ao processamento, à memória e a outros recursos físicos.",
+    "nao_confundir": [
+      {
+        "conceito": "Máquina virtual",
+        "diferenca": "Hipervisor administra os ambientes virtuais; máquina virtual é o ambiente computacional executado."
+      }
+    ],
+    "atencao": "Hipervisor também se chama monitor de máquina virtual (VMM, virtual machine monitor).",
+    "fonte": "NIST. SP 800-125, Guide to Security for Full Virtualization Technologies (2011).",
+    "tags": [
+      "virtualizacao",
+      "hipervisor"
+    ]
+  },
+  {
+    "id": "card-arq-n1-026",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Virtualização",
+    "nivel": 1,
+    "conceito": "Hipervisor tipo 1",
+    "termo_ingles": "Type 1 Hypervisor",
+    "traducao": "Hipervisor tipo 1: executa diretamente sobre o hardware físico.",
+    "resumo": "Também chamado bare metal, funciona diretamente sobre o hardware, sem depender de um sistema operacional convencional intermediário.",
+    "nao_confundir": [
+      {
+        "conceito": "Hipervisor tipo 2",
+        "diferenca": "Tipo 1 executa diretamente no hardware; tipo 2 funciona sobre um sistema operacional."
+      }
+    ],
+    "atencao": "Tipo 1 também se chama nativo ou bare metal: não há sistema operacional hospedeiro sob o hipervisor.",
+    "fonte": "NIST. SP 800-125, Guide to Security for Full Virtualization Technologies (2011). Oracle VM VirtualBox User Manual, cap. 1 (Features Overview).",
+    "tags": [
+      "virtualizacao",
+      "hipervisor"
+    ]
+  },
+  {
+    "id": "card-arq-n1-027",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Virtualização",
+    "nivel": 1,
+    "conceito": "Hipervisor tipo 2",
+    "termo_ingles": "Type 2 Hypervisor",
+    "traducao": "Hipervisor tipo 2: executa como aplicação sobre um sistema operacional existente.",
+    "resumo": "Depende de um sistema operacional instalado no computador para acessar o hardware e executar máquinas virtuais.",
+    "nao_confundir": [
+      {
+        "conceito": "Hipervisor tipo 1",
+        "diferenca": "Tipo 2 depende de um sistema operacional; tipo 1 executa diretamente sobre o hardware."
+      }
+    ],
+    "atencao": "Tipo 2 também se chama hospedado (hosted): o hipervisor roda sobre o sistema operacional hospedeiro, como o VirtualBox.",
+    "fonte": "NIST. SP 800-125, Guide to Security for Full Virtualization Technologies (2011). Oracle VM VirtualBox User Manual, cap. 1 (Features Overview).",
+    "tags": [
+      "virtualizacao",
+      "hipervisor"
+    ]
+  },
+  {
+    "id": "card-arq-n1-028",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Virtualização",
+    "nivel": 1,
+    "conceito": "Migração ao vivo",
+    "termo_ingles": "Live Migration",
+    "traducao": "Migração ao vivo: transfere uma máquina virtual em execução para outro servidor físico.",
+    "resumo": "Move uma máquina virtual ligada entre servidores físicos, transferindo seu estado de execução para reduzir ou evitar interrupções.",
+    "nao_confundir": [
+      {
+        "conceito": "Migração a frio",
+        "diferenca": "Migração ao vivo transfere a máquina ligada; migração a frio exige que esteja desligada."
+      }
+    ],
+    "atencao": "Migração ao vivo move a máquina em execução sem queda perceptível, mas isso não significa tempo de interrupção zero.",
+    "fonte": "Microsoft Learn. Live Migration Overview (Windows Server).",
+    "tags": [
+      "live-migration",
+      "virtualizacao"
+    ]
+  },
+  {
+    "id": "card-arq-n1-029",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Virtualização",
+    "nivel": 1,
+    "conceito": "Infraestrutura hiperconvergente",
+    "termo_ingles": "Hyperconverged Infrastructure (HCI)",
+    "traducao": "Infraestrutura hiperconvergente: integra processamento, armazenamento e rede em uma plataforma gerenciada por software.",
+    "resumo": "Combina recursos de processamento, armazenamento e rede em servidores integrados, cuja gestão é centralizada por software.",
+    "nao_confundir": [
+      {
+        "conceito": "Infraestrutura convergente",
+        "diferenca": "Convergente reúne equipamentos integrados; hiperconvergente combina recursos por uma camada de software."
+      }
+    ],
+    "atencao": "Na hiperconvergência, o armazenamento pode ser distribuído entre os servidores; não exige uma controladora central dedicada.",
+    "fonte": "VMware. What Is Hyperconverged Infrastructure?; AWS. What Is Hyperconverged Infrastructure?",
+    "tags": [
+      "hiperconvergencia",
+      "virtualizacao",
+      "infraestrutura"
+    ]
+  },
+  {
+    "id": "card-arq-n1-030",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Infraestrutura como código",
+    "nivel": 1,
+    "conceito": "Infraestrutura como código",
+    "termo_ingles": "Infrastructure as Code (IaC)",
+    "traducao": "Infraestrutura como código: define e administra recursos de infraestrutura por arquivos de configuração.",
+    "resumo": "Descreve servidores, redes e outros recursos em arquivos que podem ser versionados, revisados e executados por ferramentas de automação.",
+    "nao_confundir": [
+      {
+        "conceito": "Configuração manual",
+        "diferenca": "IaC descreve recursos em arquivos; configuração manual depende de ações feitas diretamente nas interfaces."
+      }
+    ],
+    "atencao": "Com IaC, o mesmo arquivo recria ambientes idênticos, reduzindo diferenças entre teste e produção.",
+    "fonte": "HashiCorp. Terraform Documentation: Infrastructure as Code; AWS. CloudFormation User Guide.",
+    "tags": [
+      "iac",
+      "provisionamento",
+      "automacao"
+    ]
+  },
+  {
+    "id": "card-arq-n1-031",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Infraestrutura como código",
+    "nivel": 1,
+    "conceito": "Abordagem declarativa",
+    "termo_ingles": "Declarative Approach",
+    "traducao": "Abordagem declarativa: descreve o estado final que a infraestrutura deve alcançar.",
+    "resumo": "Informa quais recursos e configurações devem existir, sem determinar cada passo necessário para criá-los.",
+    "nao_confundir": [
+      {
+        "conceito": "Abordagem imperativa",
+        "diferenca": "Declarativa descreve o estado desejado; imperativa especifica os passos para alcançar esse estado."
+      }
+    ],
+    "atencao": "Na abordagem declarativa, você declara o estado final; a própria ferramenta calcula os passos para chegar a ele.",
+    "fonte": "HashiCorp. Terraform Language Documentation: Overview; Terraform CLI Documentation: Plan.",
+    "tags": [
+      "iac",
+      "declarativo"
+    ]
+  },
+  {
+    "id": "card-arq-n1-032",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Infraestrutura como código",
+    "nivel": 1,
+    "conceito": "Terraform",
+    "termo_ingles": "Terraform",
+    "traducao": "Terraform: compara a configuração declarada com a infraestrutura existente e propõe alterações.",
+    "resumo": "Ferramenta de IaC que cria, modifica e remove recursos para aproximar a infraestrutura real do estado descrito nos arquivos.",
+    "nao_confundir": [
+      {
+        "conceito": "Ansible",
+        "diferenca": "Terraform administra recursos de infraestrutura; Ansible executa tarefas de configuração em máquinas."
+      }
+    ],
+    "atencao": "O comando terraform plan apresenta mudanças previstas, mas não modifica sozinho os recursos da infraestrutura.",
+    "fonte": "HashiCorp. Terraform Documentation: Language, Plan and Apply Commands.",
+    "tags": [
+      "iac",
+      "terraform"
+    ]
+  },
+  {
+    "id": "card-arq-n1-033",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Infraestrutura como código",
+    "nivel": 1,
+    "conceito": "Ansible",
+    "termo_ingles": "Ansible",
+    "traducao": "Ansible: automatiza tarefas de configuração e implantação em máquinas por meio de playbooks.",
+    "resumo": "Ferramenta de automação que utiliza arquivos chamados playbooks para descrever tarefas, como instalar pacotes e alterar configurações.",
+    "nao_confundir": [
+      {
+        "conceito": "Terraform",
+        "diferenca": "Ansible configura máquinas; Terraform administra recursos de infraestrutura declarados."
+      }
+    ],
+    "atencao": "Ansible não precisa de programa instalado nas máquinas gerenciadas; normalmente se conecta a elas por SSH, um acesso remoto seguro.",
+    "fonte": "Ansible Community Documentation. Ansible Playbooks Guide; Ansible Core Documentation.",
+    "tags": [
+      "ansible",
+      "iac",
+      "automacao"
+    ]
+  },
+  {
+    "id": "card-arq-n1-034",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Infraestrutura como código",
+    "nivel": 1,
+    "conceito": "Idempotência",
+    "termo_ingles": "Idempotency",
+    "traducao": "Idempotência: permite repetir uma operação sem alterar o resultado final já alcançado.",
+    "resumo": "Repetir a operação mantém o estado já alcançado. Exemplo: 'garantir que o pacote esteja instalado' é idempotente; 'acrescentar uma linha ao arquivo' não é.",
+    "nao_confundir": [
+      {
+        "conceito": "Operação não idempotente",
+        "diferenca": "Operação idempotente repetida mantém o resultado; não idempotente acumula efeitos a cada execução."
+      }
+    ],
+    "atencao": "Nem toda tarefa ou playbook é idempotente: isso depende do comportamento das operações utilizadas.",
+    "fonte": "Ansible Core Documentation. Playbook Guide: Desired State and Idempotency.",
+    "tags": [
+      "iac",
+      "idempotencia"
+    ]
+  },
+  {
+    "id": "card-arq-n1-035",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Infraestrutura como código",
+    "nivel": 1,
+    "conceito": "Provisionamento",
+    "termo_ingles": "Provisioning",
+    "traducao": "Provisionamento: disponibiliza recursos de infraestrutura para uso.",
+    "resumo": "Cria e prepara recursos como máquinas virtuais, redes e serviços, deixando-os disponíveis para receber configurações e aplicações.",
+    "nao_confundir": [
+      {
+        "conceito": "Configuração",
+        "diferenca": "Provisionamento disponibiliza recursos; configuração define como esses recursos devem funcionar."
+      }
+    ],
+    "atencao": "Provisionar cria o recurso; configurar o sistema dentro dele é outra etapa, que ferramentas como o Ansible fazem.",
+    "fonte": "HashiCorp. Terraform Documentation: What is Terraform?; Ansible Community Documentation. Introduction to Ansible.",
+    "tags": [
+      "provisionamento",
+      "iac",
+      "automacao"
+    ]
+  },
+  {
+    "id": "card-arq-n1-036",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Serverless",
+    "nivel": 1,
+    "conceito": "Computação sem servidor",
+    "termo_ingles": "Serverless Computing",
+    "traducao": "Computação sem servidor: permite executar aplicações sem administrar diretamente os servidores.",
+    "resumo": "Modelo em que o provedor administra a infraestrutura necessária para executar o código, ajustando os recursos conforme a demanda.",
+    "nao_confundir": [
+      {
+        "conceito": "Infraestrutura como serviço (IaaS)",
+        "diferenca": "Serverless: o provedor administra os servidores; IaaS: o cliente administra o sistema operacional."
+      }
+    ],
+    "atencao": "Serverless utiliza servidores; o provedor administra a infraestrutura, mas o desenvolvedor continua responsável pelo código.",
+    "fonte": "CNCF. Serverless Whitepaper, versão 1.0 (2018).",
+    "tags": [
+      "serverless",
+      "abstracao-de-infraestrutura"
+    ]
+  },
+  {
+    "id": "card-arq-n1-037",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Serverless",
+    "nivel": 1,
+    "conceito": "Função como serviço",
+    "termo_ingles": "Function as a Service (FaaS)",
+    "traducao": "Função como serviço: executa funções em resposta a eventos, sem administrar servidores.",
+    "resumo": "Modelo serverless em que pequenas unidades de código são acionadas por eventos, como uma requisição ou o envio de um arquivo.",
+    "nao_confundir": [
+      {
+        "conceito": "Plataforma como serviço",
+        "diferenca": "FaaS executa funções acionadas por eventos; PaaS oferece ambiente para desenvolver e executar aplicações."
+      }
+    ],
+    "atencao": "Função FaaS roda só quando um evento a aciona; entre eventos, pode não haver nada em execução.",
+    "fonte": "CNCF. Serverless Whitepaper, versão 1.0 (2018).",
+    "tags": [
+      "serverless",
+      "faas"
+    ]
+  },
+  {
+    "id": "card-arq-n1-038",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Serverless",
+    "nivel": 1,
+    "conceito": "Backend como serviço",
+    "termo_ingles": "Backend as a Service (BaaS)",
+    "traducao": "Backend como serviço: disponibiliza serviços prontos de back-end por interfaces de programação.",
+    "resumo": "Back-end é a parte do sistema que roda no servidor. BaaS oferece peças prontas dele (autenticação, banco de dados, armazenamento) acessadas por API.",
+    "nao_confundir": [
+      {
+        "conceito": "Função como serviço",
+        "diferenca": "BaaS oferece componentes prontos de back-end; FaaS executa funções acionadas por eventos."
+      }
+    ],
+    "atencao": "BaaS substitui partes da aplicação, não a aplicação inteira: o restante continua sendo desenvolvido.",
+    "fonte": "CNCF. Serverless Whitepaper, versão 1.0 (2018).",
+    "tags": [
+      "serverless",
+      "baas"
+    ]
+  },
+  {
+    "id": "card-arq-n1-039",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Serverless",
+    "nivel": 1,
+    "conceito": "Cobrança por uso",
+    "termo_ingles": "Pay-per-use",
+    "traducao": "Cobrança por uso: calcula o custo conforme a utilização dos recursos contratados.",
+    "resumo": "Em serviços serverless, a cobrança pode considerar quantidade de execuções, duração e recursos consumidos.",
+    "nao_confundir": [
+      {
+        "conceito": "Cobrança fixa",
+        "diferenca": "Por uso varia conforme o consumo medido; fixa mantém um valor contratado independentemente da utilização."
+      }
+    ],
+    "atencao": "Na cobrança por uso, paga-se pelo tempo em que o código executa, não pelo servidor ligado esperando.",
+    "fonte": "CNCF. Serverless Whitepaper, versão 1.0 (2018).",
+    "tags": [
+      "serverless",
+      "custos-em-nuvem"
+    ]
+  },
+  {
+    "id": "card-arq-n1-040",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Serverless",
+    "nivel": 1,
+    "conceito": "Inicialização a frio",
+    "termo_ingles": "Cold Start",
+    "traducao": "Inicialização a frio: adiciona tempo à execução quando é necessário preparar um novo ambiente.",
+    "resumo": "Acontece quando o serviço precisa preparar um ambiente de execução antes de iniciar a função, acrescentando atraso (latência) à chamada.",
+    "nao_confundir": [
+      {
+        "conceito": "Inicialização aquecida",
+        "diferenca": "A frio exige preparar um ambiente; aquecida reutiliza um ambiente já preparado."
+      }
+    ],
+    "atencao": "No AWS Lambda, uma chamada pode reutilizar um ambiente existente; nem toda execução apresenta inicialização a frio.",
+    "fonte": "AWS. Lambda Developer Guide: Understanding the Lambda Execution Environment Lifecycle.",
+    "tags": [
+      "serverless",
+      "cold-start"
+    ]
+  },
+  {
+    "id": "card-arq-n1-041",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Observabilidade e monitoramento",
+    "nivel": 1,
+    "conceito": "Observabilidade",
+    "termo_ingles": "Observability",
+    "traducao": "Observabilidade: permite investigar o estado interno de um sistema a partir dos dados que ele produz.",
+    "resumo": "Utiliza sinais como registros de eventos, métricas e rastros de requisições para compreender o comportamento do sistema.",
+    "nao_confundir": [
+      {
+        "conceito": "Monitoramento",
+        "diferenca": "Monitoramento acompanha condições conhecidas; observabilidade ajuda a investigar também comportamentos inesperados."
+      }
+    ],
+    "atencao": "Logs, métricas e rastros são os sinais clássicos; o OpenTelemetry lista ainda outros sinais, além desses três.",
+    "fonte": "OpenTelemetry. Documentation: Concepts and Signals; Google. Site Reliability Engineering (2016), capítulo 6.",
+    "tags": [
+      "observabilidade",
+      "monitoramento"
+    ]
+  },
+  {
+    "id": "card-arq-n1-042",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Observabilidade e monitoramento",
+    "nivel": 1,
+    "conceito": "Registros de eventos",
+    "termo_ingles": "Logs",
+    "traducao": "Registros de eventos: armazenam informações sobre acontecimentos durante a execução de um sistema.",
+    "resumo": "Registram ocorrências como erros, acessos e operações realizadas, sempre com data e hora.",
+    "nao_confundir": [
+      {
+        "conceito": "Métricas",
+        "diferenca": "Logs registram acontecimentos individuais; métricas representam medições numéricas ao longo do tempo."
+      }
+    ],
+    "atencao": "Um log tem data e hora e pode ser estruturado (recomendado) ou não; o estruturado facilita a análise.",
+    "fonte": "OpenTelemetry. Documentation: Concepts and Signals, Logs.",
+    "tags": [
+      "logs",
+      "observabilidade"
+    ]
+  },
+  {
+    "id": "card-arq-n1-043",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Observabilidade e monitoramento",
+    "nivel": 1,
+    "conceito": "Métricas",
+    "termo_ingles": "Metrics",
+    "traducao": "Métricas: representam medições numéricas coletadas durante a execução de um sistema.",
+    "resumo": "Permitem acompanhar valores como uso de memória, quantidade de requisições e tempo de resposta ao longo do tempo.",
+    "nao_confundir": [
+      {
+        "conceito": "Logs",
+        "diferenca": "Métricas mostram medições numéricas; logs descrevem acontecimentos específicos."
+      }
+    ],
+    "atencao": "Uma métrica representa uma medição; seu valor isolado não explica necessariamente a causa de uma falha.",
+    "fonte": "OpenTelemetry. Documentation: Concepts and Signals, Metrics.",
+    "tags": [
+      "metricas",
+      "observabilidade"
+    ]
+  },
+  {
+    "id": "card-arq-n1-044",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Observabilidade e monitoramento",
+    "nivel": 1,
+    "conceito": "Rastreamento distribuído",
+    "termo_ingles": "Distributed Tracing",
+    "traducao": "Rastreamento distribuído: acompanha o percurso de uma requisição por diferentes serviços.",
+    "resumo": "Registra as etapas percorridas por uma requisição e o tempo gasto em cada serviço de uma aplicação distribuída.",
+    "nao_confundir": [
+      {
+        "conceito": "Logs",
+        "diferenca": "Rastreamento mostra o percurso da requisição; logs registram acontecimentos em componentes específicos."
+      }
+    ],
+    "atencao": "Um identificador do rastro é repassado de serviço em serviço para ligar as etapas de uma mesma requisição.",
+    "fonte": "OpenTelemetry. Documentation: Concepts, Signals (Traces) e Context propagation; Google. Site Reliability Engineering (2016), capítulo 6.",
+    "tags": [
+      "tracing",
+      "observabilidade"
+    ]
+  },
+  {
+    "id": "card-arq-n1-045",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Observabilidade e monitoramento",
+    "nivel": 1,
+    "conceito": "Prometheus",
+    "termo_ingles": "Prometheus",
+    "traducao": "Prometheus: coleta e armazena métricas ao longo do tempo (séries temporais) para monitorar sistemas.",
+    "resumo": "Ferramenta de monitoramento que coleta medições identificadas por nomes e etiquetas, armazenando seus valores ao longo do tempo.",
+    "nao_confundir": [
+      {
+        "conceito": "Grafana",
+        "diferenca": "Prometheus coleta e armazena métricas; Grafana consulta fontes de dados e apresenta painéis."
+      }
+    ],
+    "atencao": "O Prometheus busca as métricas nos alvos em intervalos (modelo pull); os alvos não precisam enviá-las.",
+    "fonte": "Prometheus Documentation. Overview; Prometheus Documentation: Metric Types.",
+    "tags": [
+      "prometheus",
+      "metricas"
+    ]
+  },
+  {
+    "id": "card-arq-n1-046",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Observabilidade e monitoramento",
+    "nivel": 1,
+    "conceito": "Contador",
+    "termo_ingles": "Counter",
+    "traducao": "Contador: acumula valores que aumentam ou são reiniciados.",
+    "resumo": "Tipo de métrica usado para totais acumulados, como quantidade de requisições atendidas ou erros registrados.",
+    "nao_confundir": [
+      {
+        "conceito": "Medidor",
+        "diferenca": "Contador acumula aumentos; medidor representa um valor que pode subir ou descer."
+      }
+    ],
+    "atencao": "No Prometheus, contador só aumenta ou volta a zero ao reiniciar; valor que diminui usa medidor.",
+    "fonte": "Prometheus Documentation. Metric Types; OpenTelemetry. Documentation: Metrics.",
+    "tags": [
+      "prometheus",
+      "tipos-de-metrica"
+    ]
+  },
+  {
+    "id": "card-arq-n1-047",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Observabilidade e monitoramento",
+    "nivel": 1,
+    "conceito": "Medidor",
+    "termo_ingles": "Gauge",
+    "traducao": "Medidor: registra um valor que pode aumentar ou diminuir.",
+    "resumo": "Tipo de métrica usado para valores variáveis, como temperatura, memória em uso ou quantidade atual de itens em uma fila.",
+    "nao_confundir": [
+      {
+        "conceito": "Contador",
+        "diferenca": "Medidor pode subir ou descer; contador acumula aumentos e pode ser reiniciado."
+      }
+    ],
+    "atencao": "Total de requisições só aumenta, então é contador; requisições simultâneas sobem e descem, então é medidor.",
+    "fonte": "Prometheus Documentation. Metric Types; OpenTelemetry. Documentation: Metrics.",
+    "tags": [
+      "prometheus",
+      "tipos-de-metrica"
+    ]
+  },
+  {
+    "id": "card-arq-n1-048",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Observabilidade e monitoramento",
+    "nivel": 1,
+    "conceito": "Grafana",
+    "termo_ingles": "Grafana",
+    "traducao": "Grafana: consulta fontes de dados e apresenta informações em painéis e gráficos.",
+    "resumo": "Ferramenta de visualização que reúne dados de fontes como Prometheus e os apresenta em painéis para acompanhamento.",
+    "nao_confundir": [
+      {
+        "conceito": "Prometheus",
+        "diferenca": "Grafana apresenta dados em painéis; Prometheus coleta e armazena métricas."
+      }
+    ],
+    "atencao": "Grafana não substitui o coletor de métricas: normalmente consulta dados armazenados em ferramentas como Prometheus.",
+    "fonte": "Grafana Documentation. Dashboards and Data Sources; Prometheus Documentation. Overview.",
+    "tags": [
+      "grafana",
+      "painel",
+      "monitoramento"
+    ]
   }
 ]
