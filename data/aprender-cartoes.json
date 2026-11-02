@@ -3512,5 +3512,533 @@
       "naive-bayes",
       "probabilidade"
     ]
+  },
+  {
+    "id": "card-bd-n1-064",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "NoSQL",
+    "nivel": 1,
+    "conceito": "Banco de dados NoSQL",
+    "termo_ingles": "NoSQL",
+    "traducao": "Não apenas SQL: família de bancos que não exige o modelo relacional para organizar os dados.",
+    "resumo": "Armazena dados sem exigir tabelas relacionais. Pode usar documentos, pares chave-valor ou grafos, conforme o modelo adotado.",
+    "nao_confundir": [
+      {
+        "conceito": "Banco relacional",
+        "diferenca": "Organiza dados em tabelas relacionadas; NoSQL admite outros modelos de organização."
+      }
+    ],
+    "atencao": "NoSQL não significa ausência de consultas: alguns sistemas oferecem linguagens semelhantes a SQL.",
+    "fonte": "Fowler e Sadalage. NoSQL Distilled (2012); MongoDB, Redis e Neo4j Docs; Apache Cassandra Documentation. CQL.",
+    "tags": [
+      "nosql",
+      "relacional"
+    ]
+  },
+  {
+    "id": "card-bd-n1-065",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "NoSQL",
+    "nivel": 1,
+    "conceito": "Banco orientado a documentos",
+    "termo_ingles": "Document Database",
+    "traducao": "Banco de documentos: organiza registros em estruturas que agrupam campos e valores.",
+    "resumo": "Armazena cada registro como documento, que pode conter campos e estruturas aninhadas. Documentos ficam agrupados em coleções.",
+    "nao_confundir": [
+      {
+        "conceito": "Banco chave-valor",
+        "diferenca": "Documento reúne vários campos; chave-valor associa uma chave a um valor."
+      }
+    ],
+    "atencao": "Documentos de uma mesma coleção podem ter campos diferentes, conforme as regras do sistema.",
+    "fonte": "MongoDB Manual, versão 8.0. Documentos e coleções.",
+    "tags": [
+      "nosql",
+      "mongodb"
+    ]
+  },
+  {
+    "id": "card-bd-n1-066",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "NoSQL",
+    "nivel": 1,
+    "conceito": "BSON",
+    "termo_ingles": "BSON",
+    "traducao": "JSON binário: formato binário usado para representar documentos e seus valores.",
+    "resumo": "Formato binário semelhante ao JSON, com tipos adicionais. O MongoDB usa BSON para armazenar documentos.",
+    "nao_confundir": [
+      {
+        "conceito": "JSON",
+        "diferenca": "JSON representa dados em texto; BSON representa dados em formato binário."
+      }
+    ],
+    "atencao": "No MongoDB, o documento pode ser apresentado como JSON, mas sua representação armazenada usa BSON.",
+    "fonte": "MongoDB Manual, versão 8.0. Documents; BSON Types.",
+    "tags": [
+      "nosql",
+      "mongodb",
+      "bson"
+    ]
+  },
+  {
+    "id": "card-bd-n1-067",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "NoSQL",
+    "nivel": 1,
+    "conceito": "Banco chave-valor",
+    "termo_ingles": "Key-Value Database",
+    "traducao": "Banco chave-valor: associa uma chave identificadora a um valor armazenado.",
+    "resumo": "Guarda pares de chave e valor. A aplicação recupera o valor informando sua chave, como em um dicionário.",
+    "nao_confundir": [
+      {
+        "conceito": "Banco orientado a documentos",
+        "diferenca": "Chave-valor busca pelo identificador; documentos permitem organizar campos no registro."
+      }
+    ],
+    "atencao": "No Redis, o valor pode ser uma estrutura de dados, não apenas um texto simples.",
+    "fonte": "Redis Documentation. Understand Redis data types.",
+    "tags": [
+      "nosql",
+      "chave-valor",
+      "redis"
+    ]
+  },
+  {
+    "id": "card-bd-n1-068",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "NoSQL",
+    "nivel": 1,
+    "conceito": "Banco orientado a grafos",
+    "termo_ingles": "Graph Database",
+    "traducao": "Banco de grafos: representa entidades e as relações existentes entre elas.",
+    "resumo": "Organiza entidades como nós e suas ligações como relacionamentos (arestas). Exemplo: pessoas conectadas por relações de amizade.",
+    "nao_confundir": [
+      {
+        "conceito": "Banco chave-valor",
+        "diferenca": "Grafo representa relações entre nós; chave-valor recupera valores por identificadores."
+      }
+    ],
+    "atencao": "No Neo4j, a ligação é um relacionamento entre dois nós, não uma coluna de tabela.",
+    "fonte": "Neo4j Documentation. Graph Database Concepts.",
+    "tags": [
+      "nosql",
+      "grafos"
+    ]
+  },
+  {
+    "id": "card-bd-n1-069",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "NoSQL",
+    "nivel": 1,
+    "conceito": "Fragmentação horizontal",
+    "termo_ingles": "Sharding",
+    "traducao": "Fragmentação: divide os registros de uma coleção ou conjunto de dados entre vários servidores.",
+    "resumo": "Distribui partes dos dados entre servidores. Cada fragmento (shard) mantém uma parcela do conjunto total armazenado.",
+    "nao_confundir": [
+      {
+        "conceito": "Replicação",
+        "diferenca": "Fragmentação divide os dados; replicação mantém cópias dos dados em outros servidores."
+      }
+    ],
+    "atencao": "A fragmentação distribui dados e carga; não significa criar uma cópia integral em cada servidor.",
+    "fonte": "MongoDB Manual, versão 8.0. Sharding.",
+    "tags": [
+      "nosql",
+      "sharding"
+    ]
+  },
+  {
+    "id": "card-bd-n1-070",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "NoSQL",
+    "nivel": 1,
+    "conceito": "Replicação de dados",
+    "termo_ingles": "Replication",
+    "traducao": "Replicação: mantém cópias dos mesmos dados em diferentes servidores.",
+    "resumo": "Copia dados entre servidores para permitir continuidade de acesso quando uma instância fica indisponível.",
+    "nao_confundir": [
+      {
+        "conceito": "Fragmentação horizontal",
+        "diferenca": "Replicação copia dados; fragmentação distribui partes diferentes do conjunto."
+      }
+    ],
+    "atencao": "Replicação não garante, sozinha, que todas as cópias estejam sempre atualizadas ao mesmo tempo.",
+    "fonte": "MongoDB Manual, versão 8.0. Replication.",
+    "tags": [
+      "nosql",
+      "mongodb"
+    ]
+  },
+  {
+    "id": "card-bd-n1-071",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "NoSQL",
+    "nivel": 1,
+    "conceito": "Índice em banco de documentos",
+    "termo_ingles": "Index",
+    "traducao": "Índice: estrutura auxiliar que localiza documentos sem percorrer a coleção inteira.",
+    "resumo": "No MongoDB, o índice guarda uma pequena parte dos dados da coleção em estrutura fácil de percorrer, acelerando consultas.",
+    "nao_confundir": [
+      {
+        "conceito": "Varredura da coleção",
+        "diferenca": "Sem índice, a consulta lê todos os documentos; com índice, vai direto aos candidatos."
+      }
+    ],
+    "atencao": "Índice acelera leituras, mas cada escrita na coleção também precisa atualizar o índice.",
+    "fonte": "MongoDB Manual, versão 8.0. Indexes.",
+    "tags": [
+      "nosql",
+      "indices",
+      "mongodb"
+    ]
+  },
+  {
+    "id": "card-bd-n1-072",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Data warehouse, OLAP e BI",
+    "nivel": 1,
+    "conceito": "Armazém de dados",
+    "termo_ingles": "Data Warehouse",
+    "traducao": "Armazém de dados: reúne dados integrados e históricos para análise e apoio à decisão.",
+    "resumo": "Integra dados de diferentes fontes e organiza seu histórico para consultas analíticas, relatórios e acompanhamento do negócio.",
+    "nao_confundir": [
+      {
+        "conceito": "Banco transacional",
+        "diferenca": "Banco transacional registra operações; armazém de dados reúne histórico para análise."
+      }
+    ],
+    "atencao": "Um armazém de dados não é, por definição, o banco que registra cada venda em tempo real.",
+    "fonte": "Oracle Database Data Warehousing Guide 12.2. Introduction to Data Warehousing Concepts. Microsoft Learn. Introduction to data engineering on Azure: Important data engineering concepts.",
+    "tags": [
+      "data-warehouse"
+    ]
+  },
+  {
+    "id": "card-bd-n1-073",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Data warehouse, OLAP e BI",
+    "nivel": 1,
+    "conceito": "Processamento transacional",
+    "termo_ingles": "Online Transaction Processing (OLTP)",
+    "traducao": "Processamento de transações em linha: registra operações rotineiras do negócio.",
+    "resumo": "Executa operações do dia a dia, como inserir uma venda, atualizar um pagamento ou consultar uma conta.",
+    "nao_confundir": [
+      {
+        "conceito": "Processamento analítico",
+        "diferenca": "OLTP registra operações; OLAP analisa conjuntos de dados."
+      }
+    ],
+    "atencao": "OLTP descreve o tipo de carga (operações rotineiras), não um tipo de banco.",
+    "fonte": "Oracle Database Data Warehousing Guide 12.2. Introduction to Data Warehousing Concepts. Microsoft Learn. Azure Databricks: LTAP architecture.",
+    "tags": [
+      "oltp",
+      "data-warehouse"
+    ]
+  },
+  {
+    "id": "card-bd-n1-074",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Data warehouse, OLAP e BI",
+    "nivel": 1,
+    "conceito": "Processamento analítico",
+    "termo_ingles": "Online Analytical Processing (OLAP)",
+    "traducao": "Processamento analítico em linha: permite analisar dados por diferentes perspectivas.",
+    "resumo": "Executa consultas analíticas sobre conjuntos de dados, como comparar vendas por região, produto e período.",
+    "nao_confundir": [
+      {
+        "conceito": "Processamento transacional",
+        "diferenca": "OLAP analisa históricos; OLTP registra operações do cotidiano."
+      }
+    ],
+    "atencao": "OLAP também roda sobre tabelas relacionais; o cubo multidimensional é só uma das formas de implementar.",
+    "fonte": "Kimball Group. Star Schemas and OLAP Cubes. Microsoft Learn. Big data architecture style.",
+    "tags": [
+      "olap",
+      "data-warehouse"
+    ]
+  },
+  {
+    "id": "card-bd-n1-075",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Data warehouse, OLAP e BI",
+    "nivel": 1,
+    "conceito": "Mercado de dados",
+    "termo_ingles": "Data Mart",
+    "traducao": "Mercado de dados: conjunto de dados analíticos voltado a uma área específica da organização.",
+    "resumo": "Atende às análises de uma área, como vendas ou recursos humanos, com dados relacionados às suas necessidades.",
+    "nao_confundir": [
+      {
+        "conceito": "Armazém de dados",
+        "diferenca": "Data mart atende uma área; data warehouse integra dados de diferentes áreas."
+      }
+    ],
+    "atencao": "Data mart tem escopo limitado a uma área, por isso fica pronto mais rápido que o armazém.",
+    "fonte": "Oracle Database Data Warehousing Guide 12.2. Introduction to Data Warehousing Concepts.",
+    "tags": [
+      "data-mart",
+      "data-warehouse"
+    ]
+  },
+  {
+    "id": "card-bd-n1-076",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Data warehouse, OLAP e BI",
+    "nivel": 1,
+    "conceito": "Não volatilidade",
+    "termo_ingles": "Non-Volatility",
+    "traducao": "Não volatilidade: característica de dados mantidos para consulta histórica, sem alterações rotineiras após a carga.",
+    "resumo": "Na definição de Inmon, dados carregados no armazém não devem mudar: servem para analisar o que já ocorreu.",
+    "nao_confundir": [
+      {
+        "conceito": "Volatilidade da memória",
+        "diferenca": "Não volatilidade trata da preservação dos dados; volatilidade da memória trata da perda sem energia."
+      }
+    ],
+    "atencao": "No data warehouse, não volátil significa que os dados carregados não são alterados rotineiramente.",
+    "fonte": "Oracle Database Data Warehousing Guide 12.2 (características de Inmon). Inmon. Building the Data Warehouse, 4ª ed. (2005).",
+    "tags": [
+      "data-warehouse",
+      "nao-volatil"
+    ]
+  },
+  {
+    "id": "card-bd-n1-077",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Data warehouse, OLAP e BI",
+    "nivel": 1,
+    "conceito": "Tabela fato",
+    "termo_ingles": "Fact Table",
+    "traducao": "Tabela fato: registra ocorrências do negócio e medidas que podem ser analisadas.",
+    "resumo": "Normalmente armazena medidas, como quantidade e valor vendido, associadas às dimensões que descrevem cada ocorrência.",
+    "nao_confundir": [
+      {
+        "conceito": "Tabela dimensão",
+        "diferenca": "Fato registra medidas; dimensão descreve o contexto dessas medidas."
+      }
+    ],
+    "atencao": "Uma tabela fato não guarda apenas números: também contém chaves que identificam suas dimensões.",
+    "fonte": "Kimball Group. Dimensional Modeling Techniques (baseado em Kimball e Ross, The Data Warehouse Toolkit, 3ª ed., 2013).",
+    "tags": [
+      "modelagem-dimensional",
+      "fato"
+    ]
+  },
+  {
+    "id": "card-bd-n1-078",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Data warehouse, OLAP e BI",
+    "nivel": 1,
+    "conceito": "Tabela dimensão",
+    "termo_ingles": "Dimension Table",
+    "traducao": "Tabela dimensão: descreve características usadas para contextualizar e agrupar medidas.",
+    "resumo": "Armazena descrições como nome do produto, região e data, permitindo analisar medidas por diferentes perspectivas.",
+    "nao_confundir": [
+      {
+        "conceito": "Tabela fato",
+        "diferenca": "Dimensão descreve entidades e contextos; fato registra medidas de ocorrências."
+      }
+    ],
+    "atencao": "Dimensões servem para filtrar e agrupar os fatos, por exemplo por produto, região ou data.",
+    "fonte": "Kimball Group. Dimensional Modeling Techniques (baseado em Kimball e Ross, The Data Warehouse Toolkit, 3ª ed., 2013).",
+    "tags": [
+      "modelagem-dimensional",
+      "dimensao"
+    ]
+  },
+  {
+    "id": "card-bd-n1-079",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Data warehouse, OLAP e BI",
+    "nivel": 1,
+    "conceito": "Modelo estrela",
+    "termo_ingles": "Star Schema",
+    "traducao": "Modelo estrela: organiza uma tabela fato central ligada a tabelas dimensão.",
+    "resumo": "Estrutura dimensional em que uma tabela fato se relaciona diretamente com dimensões, como produto, cliente e tempo.",
+    "nao_confundir": [
+      {
+        "conceito": "Modelo floco de neve",
+        "diferenca": "Estrela liga dimensões à fato; floco de neve subdivide dimensões em tabelas relacionadas."
+      }
+    ],
+    "atencao": "No modelo estrela, as tabelas dimensão ficam ao redor da fato; não são armazenadas dentro dela.",
+    "fonte": "Kimball Group. Star Schemas and OLAP Cubes; Dimensional Modeling Techniques.",
+    "tags": [
+      "modelagem-dimensional",
+      "fato",
+      "dimensao"
+    ]
+  },
+  {
+    "id": "card-bd-n1-080",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Engenharia de dados (ETL, ELT, data lake)",
+    "nivel": 1,
+    "conceito": "Engenharia de dados",
+    "termo_ingles": "Data Engineering",
+    "traducao": "Engenharia de dados: constrói processos que coletam, organizam e disponibilizam dados para uso.",
+    "resumo": "Desenvolve processos e estruturas para levar dados de suas fontes a ambientes de armazenamento, análise e consumo.",
+    "nao_confundir": [
+      {
+        "conceito": "Ciência de dados",
+        "diferenca": "Engenharia prepara e disponibiliza dados; ciência de dados extrai conhecimento deles."
+      }
+    ],
+    "atencao": "Engenharia de dados não se limita a criar relatórios: também envolve integração, armazenamento e qualidade dos dados.",
+    "fonte": "Microsoft Learn. Introduction to data engineering on Azure: Important data engineering concepts.",
+    "tags": [
+      "etl",
+      "qualidade-de-dados"
+    ]
+  },
+  {
+    "id": "card-bd-n1-081",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Engenharia de dados (ETL, ELT, data lake)",
+    "nivel": 1,
+    "conceito": "Extração, transformação e carga",
+    "termo_ingles": "Extract, Transform, Load (ETL)",
+    "traducao": "Extração, transformação e carga: retira dados das fontes, trata-os e grava-os no destino.",
+    "resumo": "Processo que extrai dados, transforma formatos e valores e, por fim, carrega o resultado em um destino.",
+    "nao_confundir": [
+      {
+        "conceito": "ELT",
+        "diferenca": "ETL transforma antes da carga; ELT transforma depois de carregar os dados."
+      }
+    ],
+    "atencao": "No ETL, a transformação ocorre antes da carga no destino final.",
+    "fonte": "Microsoft Learn. Azure Architecture Center: Extract, transform, load (ETL).",
+    "tags": [
+      "etl"
+    ]
+  },
+  {
+    "id": "card-bd-n1-082",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Engenharia de dados (ETL, ELT, data lake)",
+    "nivel": 1,
+    "conceito": "Extração, carga e transformação",
+    "termo_ingles": "Extract, Load, Transform (ELT)",
+    "traducao": "Extração, carga e transformação: carrega os dados no destino antes de transformá-los.",
+    "resumo": "Extrai dados das fontes, carrega-os no destino e realiza as transformações nesse ambiente.",
+    "nao_confundir": [
+      {
+        "conceito": "ETL",
+        "diferenca": "ELT transforma no destino; ETL transforma antes de carregar."
+      }
+    ],
+    "atencao": "No ELT, a transformação não desaparece: ela ocorre depois da carga dos dados.",
+    "fonte": "Microsoft Learn. Azure Architecture Center: Extract, transform, load (ETL).",
+    "tags": [
+      "etl",
+      "elt"
+    ]
+  },
+  {
+    "id": "card-bd-n1-083",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Engenharia de dados (ETL, ELT, data lake)",
+    "nivel": 1,
+    "conceito": "Lago de dados",
+    "termo_ingles": "Data Lake",
+    "traducao": "Lago de dados: repositório que armazena dados em formatos variados, inclusive brutos.",
+    "resumo": "Armazena grandes volumes de dados estruturados, semiestruturados e não estruturados, preservando frequentemente seu formato de origem.",
+    "nao_confundir": [
+      {
+        "conceito": "Armazém de dados",
+        "diferenca": "Lago pode preservar dados brutos; armazém organiza dados para análise."
+      }
+    ],
+    "atencao": "Um lago de dados pode armazenar tabelas, arquivos de texto, imagens e registros de sistemas.",
+    "fonte": "Microsoft Learn. Azure Architecture Center: What is a data lake?; AWS. What is a data lake?",
+    "tags": [
+      "data-lake"
+    ]
+  },
+  {
+    "id": "card-bd-n1-084",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Engenharia de dados (ETL, ELT, data lake)",
+    "nivel": 1,
+    "conceito": "Esquema na leitura",
+    "termo_ingles": "Schema-on-Read",
+    "traducao": "Esquema na leitura: interpreta a estrutura dos dados quando eles são consultados.",
+    "resumo": "A estrutura é aplicada no momento da leitura, permitindo armazenar dados antes de definir como serão interpretados.",
+    "nao_confundir": [
+      {
+        "conceito": "Esquema na escrita",
+        "diferenca": "Na leitura, a estrutura é aplicada ao consultar; na escrita, antes de armazenar."
+      }
+    ],
+    "atencao": "Esquema na leitura não significa ausência permanente de estrutura ou de regras de interpretação.",
+    "fonte": "Microsoft Learn. Azure Architecture Center: Big data architecture style.",
+    "tags": [
+      "data-lake",
+      "schema-on-read"
+    ]
+  },
+  {
+    "id": "card-bd-n1-085",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Engenharia de dados (ETL, ELT, data lake)",
+    "nivel": 1,
+    "conceito": "Arquivo CSV",
+    "termo_ingles": "Comma-Separated Values (CSV)",
+    "traducao": "Valores separados por vírgula: formato de texto que organiza registros em linhas e campos.",
+    "resumo": "Armazena dados em texto, com um registro por linha e campos separados por vírgula.",
+    "nao_confundir": [
+      {
+        "conceito": "Banco relacional",
+        "diferenca": "CSV guarda texto tabular; banco relacional mantém estruturas, restrições e operações próprias."
+      }
+    ],
+    "atencao": "Na RFC 4180, a linha de cabeçalho com os nomes dos campos é opcional.",
+    "fonte": "RFC 4180. Common Format and MIME Type for Comma-Separated Values (CSV) Files (2005).",
+    "tags": [
+      "csv",
+      "dados-tabulares"
+    ]
+  },
+  {
+    "id": "card-bd-n1-086",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Engenharia de dados (ETL, ELT, data lake)",
+    "nivel": 1,
+    "conceito": "Pipeline de dados",
+    "termo_ingles": "Data Pipeline",
+    "traducao": "Pipeline de dados: sequência de etapas que transporta e processa dados entre sistemas.",
+    "resumo": "Encadeia operações como extração, transformação e carga para disponibilizar dados em um destino.",
+    "nao_confundir": [
+      {
+        "conceito": "ETL",
+        "diferenca": "Pipeline é qualquer sequência de etapas; ETL é um pipeline de extrair, transformar e carregar."
+      }
+    ],
+    "atencao": "Pipeline pode incluir verificações de qualidade em cada etapa, não apenas mover dados.",
+    "fonte": "Microsoft Learn. Introduction to data engineering on Azure: Important data engineering concepts. Microsoft Learn. Azure Databricks: Guiding principles for the lakehouse.",
+    "tags": [
+      "etl",
+      "automacao"
+    ]
+  },
+  {
+    "id": "card-bd-n1-087",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Engenharia de dados (ETL, ELT, data lake)",
+    "nivel": 1,
+    "conceito": "Qualidade de dados",
+    "termo_ingles": "Data Quality",
+    "traducao": "Qualidade de dados: grau em que os dados atendem a critérios de uso, como precisão e completude.",
+    "resumo": "Avalia se os dados são exatos, completos e consistentes para o uso em sistemas e análises.",
+    "nao_confundir": [
+      {
+        "conceito": "Limpeza de dados",
+        "diferenca": "Qualidade avalia características; limpeza corrige problemas identificados nos dados."
+      }
+    ],
+    "atencao": "Dados completos, sem campos vazios, ainda podem estar errados ou inconsistentes.",
+    "fonte": "Microsoft Learn. Azure Databricks: Guiding principles for the lakehouse (qualidade de dados).",
+    "tags": [
+      "qualidade-de-dados"
+    ]
   }
 ]
