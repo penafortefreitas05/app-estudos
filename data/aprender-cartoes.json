@@ -1717,5 +1717,405 @@
       "devsecops",
       "shift-left"
     ]
+  },
+  {
+    "id": "card-dev-n1-001",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Orientação a objetos",
+    "nivel": 1,
+    "conceito": "Classe",
+    "termo_ingles": "Class",
+    "traducao": "Classe: o molde que define como serão os objetos daquele tipo.",
+    "resumo": "Uma classe é um molde que define atributos (dados) e métodos (ações). Um objeto é uma instância concreta dessa classe, com valores próprios.",
+    "nao_confundir": [
+      {
+        "conceito": "Objeto",
+        "diferenca": "Classe é o molde (Pessoa); objeto é um item concreto criado dele (João)."
+      }
+    ],
+    "atencao": "Uma classe pode originar vários objetos, cada um com seus próprios valores nos atributos.",
+    "fonte": "Oracle. The Java Tutorials: Object-Oriented Programming Concepts; Classes and Objects.",
+    "tags": [
+      "poo",
+      "classe-objeto"
+    ]
+  },
+  {
+    "id": "card-dev-n1-002",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Orientação a objetos",
+    "nivel": 1,
+    "conceito": "Encapsulamento",
+    "termo_ingles": "Encapsulation",
+    "traducao": "Encapsular: proteger os dados internos e controlar como podem ser acessados.",
+    "resumo": "Reúne dados e métodos no objeto, restringindo o acesso direto aos dados e permitindo alterações por operações controladas.",
+    "nao_confundir": [
+      {
+        "conceito": "Abstração",
+        "diferenca": "Abstração escolhe o que representar; encapsulamento controla o acesso ao que foi representado."
+      }
+    ],
+    "atencao": "Encapsulamento não significa tornar todos os atributos inacessíveis, mas controlar as formas de acesso.",
+    "fonte": "Oracle. The Java Tutorials: Object-Oriented Programming Concepts; Classes and Objects.",
+    "tags": [
+      "poo",
+      "encapsulamento"
+    ]
+  },
+  {
+    "id": "card-dev-n1-003",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Orientação a objetos",
+    "nivel": 1,
+    "conceito": "Herança",
+    "termo_ingles": "Inheritance",
+    "traducao": "Herança: uma classe recebe características definidas em outra classe.",
+    "resumo": "Uma subclasse herda atributos e métodos de uma superclasse, podendo acrescentar características próprias e especializar seu comportamento.",
+    "nao_confundir": [
+      {
+        "conceito": "Composição",
+        "diferenca": "Herança expressa \"é um\"; composição expressa \"tem um\": um objeto contém outro."
+      }
+    ],
+    "atencao": "Em Java, uma classe pode ter apenas uma superclasse direta; não herda diretamente de várias classes.",
+    "fonte": "Oracle. The Java Tutorials: What Is Inheritance?; Inheritance; Java Language Specification, Java SE 21, cap. 8; Deitel e Deitel. Java: como programar, 10ª ed. (2017).",
+    "tags": [
+      "poo",
+      "heranca"
+    ]
+  },
+  {
+    "id": "card-dev-n1-004",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Orientação a objetos",
+    "nivel": 1,
+    "conceito": "Sobrecarga de métodos",
+    "termo_ingles": "Method Overloading",
+    "traducao": "Sobrecarga: um mesmo nome identifica métodos com listas de parâmetros diferentes.",
+    "resumo": "Em Java, métodos de uma classe podem ter o mesmo nome quando suas listas de parâmetros diferem em quantidade, tipos ou ordem.",
+    "nao_confundir": [
+      {
+        "conceito": "Sobrescrita",
+        "diferenca": "Sobrecarga muda os parâmetros; sobrescrita redefine na subclasse um método herdado."
+      }
+    ],
+    "atencao": "Em Java, mudar apenas o tipo de retorno não basta para criar uma sobrecarga.",
+    "fonte": "Java Language Specification, Java SE 21, seção 8.4.2 e seção 8.4.9.",
+    "tags": [
+      "poo",
+      "polimorfismo",
+      "sobrecarga"
+    ]
+  },
+  {
+    "id": "card-dev-n1-005",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Orientação a objetos",
+    "nivel": 1,
+    "conceito": "Polimorfismo",
+    "termo_ingles": "Polymorphism",
+    "traducao": "Múltiplas formas: uma mesma chamada pode produzir comportamentos diferentes conforme o objeto utilizado.",
+    "resumo": "Uma variável do tipo da superclasse pode guardar objetos de subclasses; ao chamar um método, executa a versão do objeto real.",
+    "nao_confundir": [
+      {
+        "conceito": "Herança",
+        "diferenca": "Herança cria a relação entre classes; polimorfismo usa essa relação para variar o comportamento."
+      }
+    ],
+    "atencao": "Em muitos livros, sobrecarga é polimorfismo estático (decidido ao compilar), e sobrescrita, dinâmico (decidido ao executar).",
+    "fonte": "Oracle. The Java Tutorials: Polymorphism; Luca Cardelli e Peter Wegner. On Understanding Types, Data Abstraction, and Polymorphism. ACM Computing Surveys (1985).",
+    "tags": [
+      "poo",
+      "polimorfismo",
+      "sobrescrita"
+    ]
+  },
+  {
+    "id": "card-dev-n1-006",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Orientação a objetos",
+    "nivel": 1,
+    "conceito": "Abstração",
+    "termo_ingles": "Abstraction",
+    "traducao": "Abstrair: representar os aspectos essenciais de algo e deixar detalhes irrelevantes de fora.",
+    "resumo": "Na modelagem de um sistema, seleciona as características relevantes ao problema e ignora as que não contribuem para sua finalidade.",
+    "nao_confundir": [
+      {
+        "conceito": "Encapsulamento",
+        "diferenca": "Abstração seleciona o que representar; encapsulamento controla o acesso aos dados internos."
+      }
+    ],
+    "atencao": "Abstração é ideia de modelagem; classe abstrata é recurso da linguagem que não gera objetos diretamente.",
+    "fonte": "Oracle. The Java Tutorials: Abstract Methods and Classes; Grady Booch et al. Object-Oriented Analysis and Design with Applications, 3ª ed. (2007).",
+    "tags": [
+      "poo",
+      "abstracao"
+    ]
+  },
+  {
+    "id": "card-dev-n1-007",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Protocolos e arquitetura web (HTTP, HTTP/2, WebSocket)",
+    "nivel": 1,
+    "conceito": "Protocolo HTTP",
+    "termo_ingles": "Hypertext Transfer Protocol (HTTP)",
+    "traducao": "Protocolo de transferência de hipertexto: define regras para trocar requisições e respostas na web.",
+    "resumo": "O cliente (programa que pede, como o navegador) envia uma requisição ao servidor (programa que atende), que devolve uma resposta.",
+    "nao_confundir": [
+      {
+        "conceito": "HTTPS",
+        "diferenca": "HTTPS é HTTP protegido por criptografia (protocolo TLS); HTTP sozinho não cifra os dados."
+      }
+    ],
+    "atencao": "HTTP é sem estado: cada requisição pode ser entendida isoladamente, sem depender das anteriores.",
+    "fonte": "RFC 9110. HTTP Semantics (2022).",
+    "tags": [
+      "http"
+    ]
+  },
+  {
+    "id": "card-dev-n1-008",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Protocolos e arquitetura web (HTTP, HTTP/2, WebSocket)",
+    "nivel": 1,
+    "conceito": "Códigos de status HTTP",
+    "termo_ingles": "HTTP Status Codes",
+    "traducao": "Códigos de estado: informam o resultado do processamento de uma requisição HTTP.",
+    "resumo": "O primeiro dígito identifica a classe: 1xx informação, 2xx sucesso, 3xx redirecionamento, 4xx erro do cliente e 5xx erro do servidor. O código 404 indica recurso não encontrado.",
+    "nao_confundir": [
+      {
+        "conceito": "401 e 403",
+        "diferenca": "401: falta autenticação válida (provar quem é); 403: o servidor entendeu, mas recusa o acesso."
+      }
+    ],
+    "atencao": "O código 404 não significa necessariamente que o recurso foi removido permanentemente.",
+    "fonte": "RFC 9110. HTTP Semantics (2022), seção 15.",
+    "tags": [
+      "http",
+      "codigos-de-status"
+    ]
+  },
+  {
+    "id": "card-dev-n1-009",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Protocolos e arquitetura web (HTTP, HTTP/2, WebSocket)",
+    "nivel": 1,
+    "conceito": "Multiplexação no HTTP/2",
+    "termo_ingles": "HTTP/2 Multiplexing",
+    "traducao": "Multiplexação: permite intercalar vários fluxos de comunicação em uma mesma conexão.",
+    "resumo": "O HTTP/2 mantém vários fluxos independentes na mesma conexão, permitindo o andamento simultâneo de diferentes requisições e respostas.",
+    "nao_confundir": [
+      {
+        "conceito": "HTTP/1.1",
+        "diferenca": "HTTP/2 permite múltiplos fluxos simultâneos na conexão; HTTP/1.1 não oferece essa multiplexação."
+      }
+    ],
+    "atencao": "HTTP/2 mantém a semântica do HTTP/1.1 (métodos, códigos de status); muda a forma de transmitir, em quadros binários.",
+    "fonte": "RFC 9113. HTTP/2 (2022), seção 5.",
+    "tags": [
+      "http2",
+      "multiplexacao"
+    ]
+  },
+  {
+    "id": "card-dev-n1-010",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Protocolos e arquitetura web (HTTP, HTTP/2, WebSocket)",
+    "nivel": 1,
+    "conceito": "Protocolo WebSocket",
+    "termo_ingles": "WebSocket Protocol",
+    "traducao": "Soquete web: mantém um canal de comunicação para troca de mensagens nos dois sentidos.",
+    "resumo": "Após uma abertura de conexão, cliente e servidor podem enviar mensagens um ao outro sem iniciar uma nova requisição para cada troca.",
+    "nao_confundir": [
+      {
+        "conceito": "HTTP",
+        "diferenca": "HTTP segue requisição e resposta; WebSocket permite que os dois lados enviem mensagens."
+      }
+    ],
+    "atencao": "WebSocket começa com uma requisição HTTP de atualização (upgrade) e depois troca mensagens fora do modelo de requisição e resposta.",
+    "fonte": "RFC 6455. The WebSocket Protocol (2011), seções 1.2 e 1.3.",
+    "tags": [
+      "websocket"
+    ]
+  },
+  {
+    "id": "card-dev-n1-011",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "APIs e integração (REST, GraphQL, gRPC)",
+    "nivel": 1,
+    "conceito": "Interface de programação de aplicações",
+    "termo_ingles": "Application Programming Interface (API)",
+    "traducao": "Interface de programação de aplicações: define como um programa pode utilizar operações oferecidas por outro.",
+    "resumo": "Estabelece regras para que programas solicitem dados ou funcionalidades de outros sistemas sem precisar conhecer sua implementação interna.",
+    "nao_confundir": [
+      {
+        "conceito": "Implementação",
+        "diferenca": "API define como utilizar uma funcionalidade; implementação contém o código que a executa."
+      }
+    ],
+    "atencao": "Uma API não precisa ser web: bibliotecas de programação também oferecem interfaces para outros códigos.",
+    "fonte": "MDN Web Docs. Glossary: API, consulta em 02/11/2026.",
+    "tags": [
+      "api"
+    ]
+  },
+  {
+    "id": "card-dev-n1-012",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "APIs e integração (REST, GraphQL, gRPC)",
+    "nivel": 1,
+    "conceito": "Arquitetura REST",
+    "termo_ingles": "Representational State Transfer (REST)",
+    "traducao": "Transferência de estado representacional: estilo de arquitetura para comunicação entre sistemas distribuídos.",
+    "resumo": "Organiza a interação em torno de recursos identificáveis e suas representações. É sem estado (stateless): cada requisição traz as informações necessárias, sem depender de sessão guardada no servidor.",
+    "nao_confundir": [
+      {
+        "conceito": "Protocolo HTTP",
+        "diferenca": "REST é um estilo de arquitetura; HTTP é um protocolo de comunicação."
+      }
+    ],
+    "atencao": "Sem estado não impede o servidor de guardar dados; impede depender de sessão do cliente guardada nele.",
+    "fonte": "Roy T. Fielding. Architectural Styles and the Design of Network-based Software Architectures (2000), capítulo 5.",
+    "tags": [
+      "rest",
+      "stateless",
+      "escalabilidade"
+    ]
+  },
+  {
+    "id": "card-dev-n1-013",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "APIs e integração (REST, GraphQL, gRPC)",
+    "nivel": 1,
+    "conceito": "Verbos HTTP em APIs",
+    "termo_ingles": "HTTP Methods",
+    "traducao": "Métodos HTTP: indicam a ação pretendida sobre o recurso solicitado.",
+    "resumo": "GET costuma consultar um recurso; POST envia dados para processamento, podendo resultar na criação de um recurso ou em outra operação.",
+    "nao_confundir": [
+      {
+        "conceito": "Método PUT",
+        "diferenca": "PUT cria ou substitui o recurso; é idempotente (repetir dá o mesmo estado); POST não."
+      }
+    ],
+    "atencao": "POST não significa obrigatoriamente criar um recurso: sua finalidade depende da operação definida pela API.",
+    "fonte": "RFC 9110. HTTP Semantics (2022), seções 9.2.2, 9.3.1, 9.3.3 e 9.3.4.",
+    "tags": [
+      "rest",
+      "verbos-http",
+      "http-post"
+    ]
+  },
+  {
+    "id": "card-dev-n1-014",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "APIs e integração (REST, GraphQL, gRPC)",
+    "nivel": 1,
+    "conceito": "Formato JSON",
+    "termo_ingles": "JavaScript Object Notation (JSON)",
+    "traducao": "Notação de objetos JavaScript: formato textual para representar e trocar dados estruturados.",
+    "resumo": "Formato de texto que representa dados com objetos (pares nome e valor), listas, textos, números, verdadeiro, falso e nulo.",
+    "nao_confundir": [
+      {
+        "conceito": "XML",
+        "diferenca": "XML usa etiquetas de marcação, como <nome>; JSON usa pares nome-valor e listas."
+      }
+    ],
+    "atencao": "Apesar do nome, JSON é independente de linguagem: não exige JavaScript para ser lido ou gerado.",
+    "fonte": "RFC 8259. The JavaScript Object Notation (JSON) Data Interchange Format (2017).",
+    "tags": [
+      "json",
+      "rest"
+    ]
+  },
+  {
+    "id": "card-dev-n1-015",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "APIs e integração (REST, GraphQL, gRPC)",
+    "nivel": 1,
+    "conceito": "GraphQL",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Linguagem de consulta para APIs: permite ao cliente especificar os campos desejados, e a resposta contém os dados selecionados.",
+    "nao_confundir": [
+      {
+        "conceito": "REST",
+        "diferenca": "GraphQL busca só os campos pedidos, em geral num único endereço; REST costuma usar vários."
+      }
+    ],
+    "atencao": "GraphQL não é banco de dados (nem de grafos): é uma linguagem de consulta para APIs.",
+    "fonte": "GraphQL Specification, edição de outubro de 2021; graphql.org: Introduction to GraphQL; Serving over HTTP.",
+    "tags": [
+      "graphql",
+      "rest"
+    ]
+  },
+  {
+    "id": "card-dev-n1-016",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "APIs e integração (REST, GraphQL, gRPC)",
+    "nivel": 1,
+    "conceito": "gRPC",
+    "termo_ingles": "gRPC Remote Procedure Call",
+    "traducao": "Chamada de procedimento remoto: permite chamar operações oferecidas por outro sistema como métodos de um serviço.",
+    "resumo": "Sistema de comunicação entre serviços que usa HTTP/2 e, por padrão, Protocol Buffers para descrever os serviços e converter as mensagens em formato binário.",
+    "nao_confundir": [
+      {
+        "conceito": "REST",
+        "diferenca": "REST costuma usar JSON em texto; gRPC usa HTTP/2 e Protocol Buffers em binário."
+      }
+    ],
+    "atencao": "Protocol Buffers não é o próprio gRPC: é o mecanismo de descrição e serialização usado por padrão.",
+    "fonte": "gRPC Documentation: Introduction to gRPC; Core concepts, architecture and lifecycle; FAQ. Protocol Buffers Documentation: Overview.",
+    "tags": [
+      "grpc",
+      "http2",
+      "protobuf"
+    ]
+  },
+  {
+    "id": "card-dev-n1-017",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "APIs e integração (REST, GraphQL, gRPC)",
+    "nivel": 1,
+    "conceito": "Protocolo SOAP",
+    "termo_ingles": "SOAP (antes, Simple Object Access Protocol)",
+    "traducao": "Antes, protocolo simples de acesso a objetos; desde a versão 1.2, SOAP é só um nome.",
+    "resumo": "Utiliza mensagens estruturadas em XML (linguagem extensível de marcação). O WSDL (linguagem de descrição de serviços web) descreve as operações oferecidas pelo serviço.",
+    "nao_confundir": [
+      {
+        "conceito": "REST",
+        "diferenca": "SOAP define um protocolo de mensagens; REST define um estilo de arquitetura."
+      }
+    ],
+    "atencao": "SOAP não exige exclusivamente HTTP como transporte: sua especificação permite diferentes protocolos subjacentes.",
+    "fonte": "W3C. SOAP Version 1.2 Part 1: Messaging Framework, Second Edition (2007); W3C. Web Services Description Language (WSDL) Version 2.0 Part 1: Core Language (2007).",
+    "tags": [
+      "soap",
+      "xml",
+      "wsdl"
+    ]
+  },
+  {
+    "id": "card-dev-n1-018",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "APIs e integração (REST, GraphQL, gRPC)",
+    "nivel": 1,
+    "conceito": "Webhook",
+    "termo_ingles": "Webhook",
+    "traducao": "Gancho web: chamada que o serviço faz ao endereço do cliente quando algo acontece.",
+    "resumo": "Notifica outro sistema quando ocorre um evento (fato relevante): o serviço envia uma requisição, normalmente HTTP POST, para uma URL (endereço de rede) previamente cadastrada.",
+    "nao_confundir": [
+      {
+        "conceito": "Polling",
+        "diferenca": "Webhook envia notificação quando ocorre um evento; polling consulta repetidamente se houve mudança."
+      }
+    ],
+    "atencao": "No webhook, o serviço chama o endereço do cliente, e não o contrário; o cliente precisa expor esse endereço.",
+    "fonte": "GitHub Docs: About webhooks; Webhook events and payloads; RFC 9110. HTTP Semantics (2022), seção 9.3.3.",
+    "tags": [
+      "webhook",
+      "http-post",
+      "eventos"
+    ]
   }
 ]
