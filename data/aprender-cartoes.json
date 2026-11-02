@@ -16,7 +16,9 @@
     ],
     "atencao": "Uma tabela pode ter várias chaves candidatas, mas apenas uma é escolhida como chave primária.",
     "fonte": "Elmasri, Ramez; Navathe, Shamkant B. Fundamentals of Database Systems. 7ª edição. Pearson, 2016.",
-    "tags": ["normalizacao"]
+    "tags": [
+      "normalizacao"
+    ]
   },
   {
     "id": "card-bd-n1-002",
@@ -35,7 +37,9 @@
     ],
     "atencao": "A seta vai do determinante ao determinado. O inverso não vale: dois funcionários podem ter o mesmo nome.",
     "fonte": "Elmasri, Ramez; Navathe, Shamkant B. Fundamentals of Database Systems. 7ª edição. Pearson, 2016.",
-    "tags": ["normalizacao"]
+    "tags": [
+      "normalizacao"
+    ]
   },
   {
     "id": "card-bd-n1-003",
@@ -54,7 +58,10 @@
     ],
     "atencao": "Normalizar não garante consultas mais rápidas; por desempenho, às vezes se desnormaliza.",
     "fonte": "Elmasri, Ramez; Navathe, Shamkant B. Fundamentals of Database Systems. 7ª edição. Pearson, 2016.",
-    "tags": ["normalizacao", "formas-normais"]
+    "tags": [
+      "normalizacao",
+      "formas-normais"
+    ]
   },
   {
     "id": "card-bd-n1-004",
@@ -73,7 +80,11 @@
     ],
     "atencao": "Vários telefones armazenados juntos em uma célula violam a 1FN.",
     "fonte": "Elmasri, Ramez; Navathe, Shamkant B. Fundamentals of Database Systems. 7ª edição. Pearson, 2016.",
-    "tags": ["normalizacao", "1fn", "atributo-multivalorado"]
+    "tags": [
+      "normalizacao",
+      "1fn",
+      "atributo-multivalorado"
+    ]
   },
   {
     "id": "card-bd-n1-005",
@@ -92,7 +103,12 @@
     ],
     "atencao": "Dependência parcial ocorre quando um atributo não-chave depende de apenas parte da chave composta.",
     "fonte": "Elmasri, Ramez; Navathe, Shamkant B. Fundamentals of Database Systems. 7ª edição. Pearson, 2016.",
-    "tags": ["normalizacao", "2fn", "dependencia-parcial", "chave-composta"]
+    "tags": [
+      "normalizacao",
+      "2fn",
+      "dependencia-parcial",
+      "chave-composta"
+    ]
   },
   {
     "id": "card-bd-n1-006",
@@ -115,6 +131,441 @@
     ],
     "atencao": "Transitiva: matrícula → código do departamento → nome.",
     "fonte": "Elmasri, Ramez; Navathe, Shamkant B. Fundamentals of Database Systems. 7ª edição. Pearson, 2016.",
-    "tags": ["normalizacao", "3fn", "dependencia-transitiva"]
+    "tags": [
+      "normalizacao",
+      "3fn",
+      "dependencia-transitiva"
+    ]
+  },
+  {
+    "id": "card-bd-n1-007",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — DDL e restrições",
+    "nivel": 1,
+    "conceito": "DDL (linguagem de definição de dados)",
+    "termo_ingles": "Data Definition Language",
+    "traducao": "Linguagem de definição de dados: comandos que criam, modificam ou removem estruturas do banco.",
+    "resumo": "Define a estrutura das tabelas. CREATE cria, ALTER modifica e DROP remove estruturas.",
+    "nao_confundir": [
+      {
+        "conceito": "DML",
+        "diferenca": "Manipula os dados armazenados, não a estrutura das tabelas."
+      }
+    ],
+    "atencao": "DROP TABLE remove a tabela inteira, com dados e estrutura.",
+    "fonte": "PostgreSQL 18 Documentation. SQL Commands: CREATE TABLE, ALTER TABLE e DROP TABLE. Oracle Database 21c SQL Language Reference — Types of SQL Statements (DDL).",
+    "tags": [
+      "sql",
+      "ddl"
+    ]
+  },
+  {
+    "id": "card-bd-n1-008",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — DDL e restrições",
+    "nivel": 1,
+    "conceito": "Restrição NOT NULL",
+    "termo_ingles": "NOT NULL Constraint",
+    "traducao": "Restrição de não nulo: impede que uma coluna fique sem valor.",
+    "resumo": "Exige um valor na coluna em cada linha; NULL é a ausência de valor. Exemplo: nome VARCHAR(100) NOT NULL.",
+    "nao_confundir": [
+      {
+        "conceito": "UNIQUE",
+        "diferenca": "Impede valores repetidos; NOT NULL impede valores nulos."
+      }
+    ],
+    "atencao": "NOT NULL não impede valores repetidos nem identifica a linha.",
+    "fonte": "PostgreSQL 18 Documentation. CREATE TABLE — NOT NULL.",
+    "tags": [
+      "sql",
+      "not-null"
+    ]
+  },
+  {
+    "id": "card-bd-n1-009",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — DDL e restrições",
+    "nivel": 1,
+    "conceito": "Restrição UNIQUE",
+    "termo_ingles": "UNIQUE Constraint",
+    "traducao": "Restrição de unicidade: impede a repetição de valores em uma coluna ou combinação de colunas.",
+    "resumo": "Exige valores únicos na coluna definida. Exemplo: impedir dois clientes com o mesmo CPF.",
+    "nao_confundir": [
+      {
+        "conceito": "NOT NULL",
+        "diferenca": "UNIQUE impede repetição; NOT NULL impede ausência de valor."
+      }
+    ],
+    "atencao": "No PostgreSQL, UNIQUE permite múltiplos NULL por padrão; esse comportamento varia entre sistemas de banco de dados.",
+    "fonte": "PostgreSQL 18 Documentation. CREATE TABLE — UNIQUE; Constraints — Unique Constraints (comportamento de NULL e variação entre implementações).",
+    "tags": [
+      "sql",
+      "unique"
+    ]
+  },
+  {
+    "id": "card-bd-n1-010",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — DDL e restrições",
+    "nivel": 1,
+    "conceito": "Chave primária (PRIMARY KEY)",
+    "termo_ingles": "Primary Key",
+    "traducao": "Chave primária: identificador único e obrigatório de cada linha.",
+    "resumo": "Identifica cada linha sem repetição ou valor nulo. Pode usar uma coluna ou uma combinação de colunas.",
+    "nao_confundir": [
+      {
+        "conceito": "UNIQUE",
+        "diferenca": "Uma tabela pode ter várias restrições UNIQUE, mas apenas uma chave primária."
+      }
+    ],
+    "atencao": "Em chave composta, a combinação não pode repetir e nenhuma coluna da chave pode ser nula.",
+    "fonte": "PostgreSQL 18 Documentation. Constraints — Primary Keys.",
+    "tags": [
+      "sql",
+      "primary-key",
+      "chave-composta"
+    ]
+  },
+  {
+    "id": "card-bd-n1-011",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — DDL e restrições",
+    "nivel": 1,
+    "conceito": "Chave estrangeira (FOREIGN KEY)",
+    "termo_ingles": "Foreign Key",
+    "traducao": "Chave estrangeira: coluna que referencia valores identificadores de outra tabela.",
+    "resumo": "Só aceita valores já existentes na tabela referenciada. Exemplo: id_cliente em Pedido referencia o identificador existente em Cliente.",
+    "nao_confundir": [
+      {
+        "conceito": "PRIMARY KEY",
+        "diferenca": "Identifica linhas na própria tabela; FOREIGN KEY estabelece uma referência entre tabelas."
+      }
+    ],
+    "atencao": "A coluna pode ficar NULL; só valores preenchidos precisam existir na outra tabela.",
+    "fonte": "PostgreSQL 18 Documentation. Constraints — Foreign Keys; CREATE TABLE — REFERENCES (MATCH SIMPLE).",
+    "tags": [
+      "sql",
+      "foreign-key",
+      "integridade-referencial"
+    ]
+  },
+  {
+    "id": "card-bd-n1-012",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — DDL e restrições",
+    "nivel": 1,
+    "conceito": "Comando ALTER TABLE",
+    "termo_ingles": "ALTER TABLE",
+    "traducao": "Alterar tabela: comando que modifica a estrutura de uma tabela existente.",
+    "resumo": "Adiciona, modifica ou remove elementos da estrutura. Exemplo: ALTER TABLE Cliente ADD COLUMN status CHAR(1).",
+    "nao_confundir": [
+      {
+        "conceito": "UPDATE",
+        "diferenca": "Altera valores armazenados nas linhas, não a estrutura da tabela."
+      }
+    ],
+    "atencao": "A palavra TABLE é obrigatória: ALTER CLIENTE ADD ... não é a sintaxe do PostgreSQL.",
+    "fonte": "PostgreSQL 18 Documentation. SQL Commands — ALTER TABLE.",
+    "tags": [
+      "sql",
+      "alter-table",
+      "sintaxe-sql",
+      "ddl"
+    ]
+  },
+  {
+    "id": "card-bd-n1-013",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — DML (INSERT, UPDATE, DELETE, TRUNCATE)",
+    "nivel": 1,
+    "conceito": "DML (linguagem de manipulação de dados)",
+    "termo_ingles": "Data Manipulation Language",
+    "traducao": "Linguagem de manipulação de dados: comandos que inserem, alteram ou removem dados.",
+    "resumo": "Manipula os dados armazenados nas tabelas. INSERT insere linhas, UPDATE altera valores e DELETE remove linhas.",
+    "nao_confundir": [
+      {
+        "conceito": "DDL",
+        "diferenca": "Define ou modifica a estrutura das tabelas."
+      }
+    ],
+    "atencao": "O SELECT, que consulta dados, é DML em muitos livros; outros o separam como DQL.",
+    "fonte": "PostgreSQL 18 Documentation. SQL Commands — INSERT, UPDATE e DELETE. Oracle Database 21c SQL Language Reference — Types of SQL Statements (SELECT classificado como DML).",
+    "tags": [
+      "sql",
+      "dml"
+    ]
+  },
+  {
+    "id": "card-bd-n1-014",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — DML (INSERT, UPDATE, DELETE, TRUNCATE)",
+    "nivel": 1,
+    "conceito": "Comando INSERT",
+    "termo_ingles": "INSERT",
+    "traducao": "Inserir: comando que acrescenta novas linhas à tabela.",
+    "resumo": "Adiciona registros. Exemplo: INSERT INTO Cliente (nome) VALUES ('Ana').",
+    "nao_confundir": [
+      {
+        "conceito": "UPDATE",
+        "diferenca": "INSERT cria uma linha; UPDATE modifica valores de linhas existentes."
+      }
+    ],
+    "atencao": "Colunas omitidas recebem seu valor padrão ou NULL; uma coluna NOT NULL sem padrão pode causar erro.",
+    "fonte": "PostgreSQL 18 Documentation. SQL Commands — INSERT.",
+    "tags": [
+      "sql",
+      "insert",
+      "dml"
+    ]
+  },
+  {
+    "id": "card-bd-n1-015",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — DML (INSERT, UPDATE, DELETE, TRUNCATE)",
+    "nivel": 1,
+    "conceito": "Comando UPDATE",
+    "termo_ingles": "UPDATE",
+    "traducao": "Atualizar: comando que modifica valores de linhas existentes.",
+    "resumo": "Altera valores de linhas existentes. Exemplo: UPDATE Cliente SET cidade = 'Recife' WHERE id = 1 altera só o cliente de id 1.",
+    "nao_confundir": [
+      {
+        "conceito": "ALTER TABLE",
+        "diferenca": "UPDATE modifica dados; ALTER TABLE modifica a estrutura da tabela."
+      }
+    ],
+    "atencao": "Sem WHERE (a condição que escolhe as linhas), o comando altera todas as linhas da tabela.",
+    "fonte": "PostgreSQL 18 Documentation. SQL Commands — UPDATE.",
+    "tags": [
+      "sql",
+      "update",
+      "dml"
+    ]
+  },
+  {
+    "id": "card-bd-n1-016",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — DML (INSERT, UPDATE, DELETE, TRUNCATE)",
+    "nivel": 1,
+    "conceito": "Comando DELETE",
+    "termo_ingles": "DELETE",
+    "traducao": "Excluir: comando que remove linhas de uma tabela.",
+    "resumo": "Remove as linhas selecionadas. A cláusula WHERE define a condição para escolher quais serão removidas.",
+    "nao_confundir": [
+      {
+        "conceito": "DROP TABLE",
+        "diferenca": "DELETE remove linhas; DROP TABLE remove a própria tabela e sua estrutura."
+      }
+    ],
+    "atencao": "DELETE sem WHERE remove todas as linhas, mas mantém a estrutura da tabela.",
+    "fonte": "PostgreSQL 18 Documentation. SQL Commands — DELETE.",
+    "tags": [
+      "sql",
+      "delete",
+      "dml"
+    ]
+  },
+  {
+    "id": "card-bd-n1-017",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — DML (INSERT, UPDATE, DELETE, TRUNCATE)",
+    "nivel": 1,
+    "conceito": "Comando TRUNCATE",
+    "termo_ingles": "TRUNCATE",
+    "traducao": "Truncar (cortar): remove todas as linhas de uma tabela.",
+    "resumo": "Esvazia a tabela sem remover sua estrutura. Exemplo: TRUNCATE TABLE Cliente.",
+    "nao_confundir": [
+      {
+        "conceito": "DELETE",
+        "diferenca": "DELETE pode selecionar linhas; TRUNCATE esvazia a tabela inteira."
+      }
+    ],
+    "atencao": "Em muitos livros, TRUNCATE é classificado como DDL, não como DML.",
+    "fonte": "PostgreSQL 18 Documentation. SQL Commands — TRUNCATE. Oracle Database 21c SQL Language Reference — Types of SQL Statements (TRUNCATE classificado como DDL).",
+    "tags": [
+      "sql",
+      "truncate",
+      "dml"
+    ]
+  },
+  {
+    "id": "card-bd-n1-018",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — Consultas, JOIN e subconsultas",
+    "nivel": 1,
+    "conceito": "Comando SELECT",
+    "termo_ingles": "SELECT",
+    "traducao": "Selecionar: comando que consulta e retorna dados de uma tabela.",
+    "resumo": "Define quais colunas serão exibidas. Exemplo: SELECT nome FROM Cliente retorna os nomes dos clientes.",
+    "nao_confundir": [
+      {
+        "conceito": "WHERE",
+        "diferenca": "SELECT escolhe quais colunas aparecem; WHERE escolhe quais linhas aparecem."
+      }
+    ],
+    "atencao": "O asterisco (*) representa todas as colunas, não todas as linhas: SELECT * ainda pode ter filtro.",
+    "fonte": "PostgreSQL 18 Documentation. SQL Commands — SELECT.",
+    "tags": [
+      "sql",
+      "select"
+    ]
+  },
+  {
+    "id": "card-bd-n1-019",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — Consultas, JOIN e subconsultas",
+    "nivel": 1,
+    "conceito": "Cláusula WHERE",
+    "termo_ingles": "WHERE Clause",
+    "traducao": "Cláusula de condição: seleciona as linhas que atendem a um critério.",
+    "resumo": "Filtra as linhas retornadas pela consulta. Exemplo: WHERE cidade = 'Recife' seleciona clientes dessa cidade.",
+    "nao_confundir": [
+      {
+        "conceito": "ORDER BY",
+        "diferenca": "WHERE filtra linhas; ORDER BY organiza a ordem do resultado."
+      }
+    ],
+    "atencao": "WHERE coluna = NULL não retorna linhas, porque a comparação com NULL não é verdadeira; use IS NULL.",
+    "fonte": "PostgreSQL 18 Documentation. SQL Commands — SELECT, WHERE Clause.",
+    "tags": [
+      "sql",
+      "where"
+    ]
+  },
+  {
+    "id": "card-bd-n1-024",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — Consultas, JOIN e subconsultas",
+    "nivel": 1,
+    "conceito": "Teste de valor nulo (IS NULL)",
+    "termo_ingles": "IS NULL Predicate",
+    "traducao": "Teste de nulidade: verifica se uma expressão não possui valor conhecido.",
+    "resumo": "NULL representa um valor desconhecido ou ausente. WHERE email IS NULL seleciona linhas sem valor registrado em email.",
+    "nao_confundir": [
+      {
+        "conceito": "Zero",
+        "diferenca": "Zero é um valor; NULL é ausência de valor."
+      }
+    ],
+    "atencao": "NULL não é zero: comparar NULL com = ou <> não dá verdadeiro, e o WHERE descarta a linha.",
+    "fonte": "PostgreSQL 18 Documentation. Comparison Functions and Operators — IS NULL.",
+    "tags": [
+      "sql",
+      "is-null",
+      "where"
+    ]
+  },
+  {
+    "id": "card-bd-n1-020",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — Consultas, JOIN e subconsultas",
+    "nivel": 1,
+    "conceito": "Cláusula ORDER BY",
+    "termo_ingles": "ORDER BY Clause",
+    "traducao": "Cláusula de ordenação: organiza as linhas do resultado de uma consulta.",
+    "resumo": "Ordena o resultado por uma ou mais colunas. Exemplo: ORDER BY nome ASC organiza nomes em ordem crescente.",
+    "nao_confundir": [
+      {
+        "conceito": "WHERE",
+        "diferenca": "ORDER BY ordena o resultado; WHERE seleciona quais linhas serão retornadas."
+      }
+    ],
+    "atencao": "Sem ORDER BY, o sistema de banco de dados não garante uma ordem específica para as linhas retornadas.",
+    "fonte": "PostgreSQL 18 Documentation. SQL Commands — SELECT, ORDER BY Clause.",
+    "tags": [
+      "sql",
+      "order-by"
+    ]
+  },
+  {
+    "id": "card-bd-n1-021",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — Consultas, JOIN e subconsultas",
+    "nivel": 1,
+    "conceito": "Cláusula DISTINCT",
+    "termo_ingles": "DISTINCT",
+    "traducao": "Distinto: opção que elimina linhas duplicadas do resultado da consulta.",
+    "resumo": "Retorna cada combinação de valores uma única vez. Exemplo: SELECT DISTINCT cidade FROM Cliente.",
+    "nao_confundir": [
+      {
+        "conceito": "ORDER BY",
+        "diferenca": "DISTINCT elimina duplicatas; ORDER BY apenas ordena as linhas."
+      }
+    ],
+    "atencao": "DISTINCT vale para a linha inteira selecionada, não só para a primeira coluna.",
+    "fonte": "PostgreSQL 18 Documentation. SQL Commands — SELECT, DISTINCT Clause.",
+    "tags": [
+      "sql",
+      "distinct"
+    ]
+  },
+  {
+    "id": "card-bd-n1-022",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — Consultas, JOIN e subconsultas",
+    "nivel": 1,
+    "conceito": "Junção interna (INNER JOIN)",
+    "termo_ingles": "INNER JOIN",
+    "traducao": "Junção interna: combina linhas que possuem correspondência nas duas tabelas.",
+    "resumo": "Retorna apenas as combinações correspondentes. Exemplo: clientes ligados aos seus pedidos por um identificador comum.",
+    "nao_confundir": [
+      {
+        "conceito": "LEFT JOIN",
+        "diferenca": "Mantém todas as linhas da tabela à esquerda, mesmo sem correspondência."
+      }
+    ],
+    "atencao": "Clientes sem pedidos não aparecem no resultado de um INNER JOIN entre Cliente e Pedido.",
+    "fonte": "PostgreSQL 18 Documentation. SQL Commands — SELECT, Table Expressions e Joins.",
+    "tags": [
+      "sql",
+      "join",
+      "inner-join",
+      "left-join"
+    ]
+  },
+  {
+    "id": "card-bd-n1-023",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — Consultas, JOIN e subconsultas",
+    "nivel": 1,
+    "conceito": "Subconsulta",
+    "termo_ingles": "Subquery",
+    "traducao": "Consulta interna: consulta SQL inserida dentro de outra consulta.",
+    "resumo": "Produz um resultado usado pela consulta externa. Exemplo: WHERE id IN (SELECT id_cliente FROM Pedido), em que IN testa se o valor está na lista.",
+    "nao_confundir": [
+      {
+        "conceito": "JOIN",
+        "diferenca": "Subconsulta insere uma consulta dentro de outra; JOIN combina linhas de tabelas."
+      }
+    ],
+    "atencao": "Uma subconsulta pode aparecer em diferentes partes de uma instrução SQL, não apenas no WHERE.",
+    "fonte": "PostgreSQL 18 Documentation. SQL Commands — SELECT (cláusulas FROM e WITH).",
+    "tags": [
+      "sql",
+      "subconsulta"
+    ]
+  },
+  {
+    "id": "card-bd-n1-025",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — Consultas, JOIN e subconsultas",
+    "nivel": 1,
+    "conceito": "Ordem lógica de execução do SELECT",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "FROM escolhe a origem; WHERE filtra linhas; GROUP BY forma grupos; HAVING filtra grupos; SELECT escolhe colunas; ORDER BY ordena o resultado.",
+    "nao_confundir": [
+      {
+        "conceito": "Ordem escrita das cláusulas",
+        "diferenca": "A posição no texto SQL não representa a sequência lógica de processamento."
+      }
+    ],
+    "atencao": "O alias (apelido de coluna criado no SELECT) não vale no WHERE: o WHERE é processado antes do SELECT.",
+    "fonte": "PostgreSQL 18 Documentation. SQL Commands — SELECT, Description.",
+    "tags": [
+      "sql",
+      "select",
+      "where",
+      "ordem-de-execucao"
+    ]
   }
 ]
