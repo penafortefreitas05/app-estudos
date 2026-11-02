@@ -549,7 +549,7 @@ function renderizarDesempenhoMaterias(materiasMap, questoes = [], historico = {}
         const cor = COR(taxa, comecou);
         const sel = mat === ativa;
         const revisar = info.revisarHoje
-            ? `<span class="tile-revisar" title="${info.revisarHoje} para revisar hoje">${info.revisarHoje}</span>` : '';
+            ? `<span class="tile-revisar" data-revisar-materia="${esc(mat)}" title="Toque para revisar as ${info.revisarHoje} de hoje desta matéria">${info.revisarHoje}</span>` : '';
 
         tiles += `
             <button type="button" class="materia-tile${critica ? ' critica' : ''}${comecou ? '' : ' nao-comecou'}${sel ? ' ativa' : ''}" data-materia="${esc(mat)}" title="${esc(mat)}: ${feitasQ} de ${totalQ} feitas${comecou ? `, ${taxa}% de acerto` : ''}. Toque para treinar.">
@@ -576,7 +576,7 @@ function renderizarDesempenhoMaterias(materiasMap, questoes = [], historico = {}
             <div class="materia-detalhe" data-materia="${esc(mat)}" ${sel ? '' : 'hidden'}>
                 <div class="det-topo"><strong>${esc(mat)}</strong><span class="det-taxa" style="color:${cor}">${comecou ? `${taxa}% de acerto` : 'não começou'}</span></div>
                 ${linhasNivel}
-                ${info.revisarHoje ? `<span class="det-aviso revisar">🔁 ${info.revisarHoje} para revisar hoje</span>` : ''}
+                ${info.revisarHoje ? `<button type="button" class="det-aviso revisar" data-revisar-materia="${esc(mat)}">🔁 ${info.revisarHoje} para revisar hoje · toque para revisar</button>` : ''}
                 ${critica ? '<span class="det-aviso reforcar">Reforçar · toque na matéria para treinar</span>' : ''}
             </div>`;
     });

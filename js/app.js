@@ -544,10 +544,38 @@ function algumFiltroAtivo() {
         (inputBusca && inputBusca.value.trim()));
 }
 
+// ---------- 6a-1. REVISAR HOJE, SÓ DE UMA MATÉRIA ----------
+// Mesma regra do botão "para revisar" (só o que vence hoje, questão em branco), limitada à matéria.
+// As atrasadas vêm primeiro: a ordenação é pela data em que a revisão venceu.
+function revisarHojeDaMateria(materia) {
+    simulado = null;
+    pararCronometro(displayCronometro);
+    const hoje = diaLocal();
+    const paraHoje = questoes
+        .filter(q => (q.materia || "Geral") === materia && venceHoje(historico[String(q.id)], hoje))
+        .sort((a, b) => historico[String(a.id)].revisaoEm.localeCompare(historico[String(b.id)].revisaoEm));
+    if (paraHoje.length === 0) {
+        showToast(`Nada para revisar hoje em ${materia}.`, "info", 4000);
+        return;
+    }
+    if (foco) entrarFoco(paraHoje, { silencioso: true });
+    else renderizarQuestoes(container, paraHoje, historico, "", { restaurarRespostas: false });
+    const atrasadas = paraHoje.filter(q => historico[String(q.id)].revisaoEm < hoje).length;
+    showToast(`${materia}: ${paraHoje.length} para revisar hoje${atrasadas ? ` (${atrasadas} atrasada${atrasadas > 1 ? 's' : ''}, primeiro)` : ''}. Responda sem olhar o gabarito.`, "info");
+    const mainContent = document.querySelector(".main-content");
+    if (mainContent) mainContent.scrollTo({ top: 0, behavior: "smooth" });
+}
+
 // ---------- 6a. TOCAR NUMA MATÉRIA DO PAINEL DE DESEMPENHO = TREINAR ELA ----------
 const dashboardMaterias = document.getElementById("dashboard-materias");
 if (dashboardMaterias) {
     dashboardMaterias.addEventListener("click", (e) => {
+        // Número amarelo (ou aviso "para revisar hoje"): revisão do dia só desta matéria
+        const revisao = e.target.closest("[data-revisar-materia]");
+        if (revisao) {
+            revisarHojeDaMateria(revisao.dataset.revisarMateria);
+            return;
+        }
         const item = e.target.closest(".materia-tile[data-materia]");
         if (!item || !selectMateria) return;
         const materia = item.dataset.materia;
