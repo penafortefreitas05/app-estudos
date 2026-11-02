@@ -2536,5 +2536,520 @@
       "gof",
       "decorator"
     ]
+  },
+  {
+    "id": "card-arq-n1-001",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Computação em nuvem (modelos de serviço e implantação)",
+    "nivel": 1,
+    "conceito": "Computação em nuvem",
+    "termo_ingles": "Cloud Computing",
+    "traducao": "Computação em nuvem: acesso pela rede a recursos compartilhados, disponibilizados sob demanda por um provedor.",
+    "resumo": "Oferece servidores, armazenamento e aplicações pela rede, liberados rapidamente e com pouca intervenção humana do provedor.",
+    "nao_confundir": [
+      {
+        "conceito": "Hospedagem tradicional",
+        "diferenca": "Hospedagem tradicional reserva capacidade fixa; nuvem libera e devolve recursos sob demanda, por autosserviço."
+      }
+    ],
+    "atencao": "Nuvem exige cinco características: autosserviço sob demanda, amplo acesso à rede, recursos compartilhados, elasticidade rápida e serviço medido.",
+    "fonte": "Mell, Peter; Grance, Timothy. The NIST Definition of Cloud Computing. NIST SP 800-145, 2011.",
+    "tags": [
+      "nuvem",
+      "nist"
+    ]
+  },
+  {
+    "id": "card-arq-n1-002",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Computação em nuvem (modelos de serviço e implantação)",
+    "nivel": 1,
+    "conceito": "Elasticidade",
+    "termo_ingles": "Rapid Elasticity",
+    "traducao": "Elasticidade rápida: capacidade de ampliar ou reduzir recursos rapidamente conforme a demanda.",
+    "resumo": "Ajusta recursos de computação à necessidade de uso, aumentando ou diminuindo a capacidade disponibilizada.",
+    "nao_confundir": [
+      {
+        "conceito": "Escalabilidade",
+        "diferenca": "Elasticidade ajusta recursos rapidamente à demanda, para mais e para menos; escalabilidade é suportar crescimento."
+      }
+    ],
+    "atencao": "Elasticidade permite também reduzir recursos quando a demanda cai, evitando manter capacidade ociosa desnecessária.",
+    "fonte": "Mell, Peter; Grance, Timothy. The NIST Definition of Cloud Computing. NIST SP 800-145, 2011.",
+    "tags": [
+      "nuvem",
+      "elasticidade"
+    ]
+  },
+  {
+    "id": "card-arq-n1-003",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Computação em nuvem (modelos de serviço e implantação)",
+    "nivel": 1,
+    "conceito": "Modelos de serviço em nuvem",
+    "termo_ingles": "Cloud Service Models",
+    "traducao": "Modelos de serviço: classificam o nível de recursos e gerenciamento oferecido pelo provedor.",
+    "resumo": "IaaS (infraestrutura como serviço) fornece servidores e armazenamento; PaaS (plataforma como serviço) executa as aplicações do cliente; SaaS (software como serviço) entrega aplicações prontas.",
+    "nao_confundir": [
+      {
+        "conceito": "IaaS",
+        "diferenca": "IaaS entrega infraestrutura; PaaS entrega ambiente para desenvolver e executar aplicações."
+      }
+    ],
+    "atencao": "No PaaS, o cliente controla as aplicações que implanta; servidores e sistema operacional ficam com o provedor.",
+    "fonte": "Mell, Peter; Grance, Timothy. The NIST Definition of Cloud Computing. NIST SP 800-145, 2011.",
+    "tags": [
+      "modelos-de-servico",
+      "iaas",
+      "paas",
+      "saas"
+    ]
+  },
+  {
+    "id": "card-arq-n1-004",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Computação em nuvem (modelos de serviço e implantação)",
+    "nivel": 1,
+    "conceito": "Modelos de implantação em nuvem",
+    "termo_ingles": "Cloud Deployment Models",
+    "traducao": "Modelos de implantação: classificam como a infraestrutura de nuvem é disponibilizada e utilizada.",
+    "resumo": "Pública é aberta ao público em geral; privada é exclusiva de uma organização; comunitária atende organizações com interesses comuns; híbrida combina duas ou mais dessas.",
+    "nao_confundir": [
+      {
+        "conceito": "Nuvem híbrida",
+        "diferenca": "Híbrida integra infraestruturas de nuvem distintas; multicloud usa serviços de provedores diferentes."
+      }
+    ],
+    "atencao": "Nuvem híbrida combina duas ou mais infraestruturas distintas, como privada e pública, que continuam entidades separadas.",
+    "fonte": "Mell, Peter; Grance, Timothy. The NIST Definition of Cloud Computing. NIST SP 800-145, 2011.",
+    "tags": [
+      "modelos-de-implantacao",
+      "nuvem-publica",
+      "nuvem-hibrida"
+    ]
+  },
+  {
+    "id": "card-arq-n1-005",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Computação em nuvem (modelos de serviço e implantação)",
+    "nivel": 1,
+    "conceito": "Multicloud",
+    "termo_ingles": "Multicloud",
+    "traducao": "Múltiplas nuvens: uso de serviços de mais de um provedor de nuvem.",
+    "resumo": "Combina serviços de provedores diferentes, como AWS e Azure, em uma mesma estratégia tecnológica.",
+    "nao_confundir": [
+      {
+        "conceito": "Nuvem híbrida",
+        "diferenca": "Multicloud combina provedores; nuvem híbrida integra infraestruturas distintas, que continuam separadas."
+      }
+    ],
+    "atencao": "Usar vários serviços do mesmo provedor não caracteriza, por si só, multicloud.",
+    "fonte": "Amazon Web Services. What is Multicloud? (aws.amazon.com/what-is/multicloud), consulta em 02/11/2026; Mell, Peter; Grance, Timothy. The NIST Definition of Cloud Computing. NIST SP 800-145, 2011.",
+    "tags": [
+      "multicloud",
+      "nuvem"
+    ]
+  },
+  {
+    "id": "card-arq-n1-006",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Computação em nuvem (modelos de serviço e implantação)",
+    "nivel": 1,
+    "conceito": "Multilocação",
+    "termo_ingles": "Multitenancy",
+    "traducao": "Multilocação: compartilhamento de recursos entre clientes com isolamento dos respectivos dados.",
+    "resumo": "Uma mesma infraestrutura atende vários clientes, chamados locatários, mantendo separados seus dados e acessos.",
+    "nao_confundir": [
+      {
+        "conceito": "Locação única",
+        "diferenca": "Multilocação compartilha recursos entre locatários; locação única dedica o ambiente a um só."
+      }
+    ],
+    "atencao": "Compartilhar infraestrutura não significa permitir que um cliente acesse os dados de outro.",
+    "fonte": "Mell, Peter; Grance, Timothy. The NIST Definition of Cloud Computing. NIST SP 800-145, 2011.",
+    "tags": [
+      "multitenancy",
+      "nuvem"
+    ]
+  },
+  {
+    "id": "card-arq-n1-007",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Computação em nuvem (modelos de serviço e implantação)",
+    "nivel": 1,
+    "conceito": "Armazenamento de objetos",
+    "termo_ingles": "Object Storage",
+    "traducao": "Armazenamento de objetos: guarda dados com um identificador e informações descritivas, chamadas metadados.",
+    "resumo": "Guarda cada dado como objeto: o conteúdo, seus metadados e um identificador único. Exemplo: imagens, vídeos e documentos.",
+    "nao_confundir": [
+      {
+        "conceito": "Armazenamento em blocos",
+        "diferenca": "Objetos guardam unidades identificadas; blocos oferecem unidades de armazenamento para volumes e discos."
+      }
+    ],
+    "atencao": "Armazenamento de objetos não substitui diretamente um banco relacional para consultas e transações em tabelas.",
+    "fonte": "Amazon Web Services. Amazon S3 User Guide. Documentação oficial sobre object storage.",
+    "tags": [
+      "armazenamento-de-objetos"
+    ]
+  },
+  {
+    "id": "card-arq-n1-008",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Computação em nuvem (modelos de serviço e implantação)",
+    "nivel": 1,
+    "conceito": "FinOps",
+    "termo_ingles": "FinOps",
+    "traducao": "Finanças + DevOps: prática colaborativa para maximizar o valor dos gastos com tecnologia.",
+    "resumo": "Integra tecnologia, finanças e negócio para acompanhar gastos, melhorar previsões e relacionar custos ao valor entregue.",
+    "nao_confundir": [
+      {
+        "conceito": "Redução de custos",
+        "diferenca": "FinOps otimiza gastos conforme o valor entregue; redução de custos apenas diminui despesas."
+      }
+    ],
+    "atencao": "FinOps não busca simplesmente gastar menos: considera custos, desempenho e valor para o negócio.",
+    "fonte": "FinOps Foundation. What is FinOps? (finops.org), atualizada em março de 2026.",
+    "tags": [
+      "finops",
+      "custos-em-nuvem"
+    ]
+  },
+  {
+    "id": "card-arq-n1-009",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Contêineres e Kubernetes",
+    "nivel": 1,
+    "conceito": "Contêiner",
+    "termo_ingles": "Container",
+    "traducao": "Contêiner: unidade que isola a execução de uma aplicação e suas dependências.",
+    "resumo": "Executa uma aplicação isolada, com as bibliotecas e arquivos de que ela precisa, compartilhando o núcleo (parte central) do sistema operacional da máquina.",
+    "nao_confundir": [
+      {
+        "conceito": "Máquina virtual",
+        "diferenca": "Contêiner compartilha o núcleo do hospedeiro; máquina virtual executa seu próprio sistema operacional."
+      }
+    ],
+    "atencao": "Contêiner não inclui um sistema operacional completo próprio como uma máquina virtual.",
+    "fonte": "Docker. What is a container? Docker Documentation, seção Get Started: Docker concepts.",
+    "tags": [
+      "conteineres",
+      "virtualizacao"
+    ]
+  },
+  {
+    "id": "card-arq-n1-010",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Contêineres e Kubernetes",
+    "nivel": 1,
+    "conceito": "Imagem de contêiner",
+    "termo_ingles": "Container Image",
+    "traducao": "Imagem de contêiner: pacote imutável com tudo o que é preciso para criar contêineres.",
+    "resumo": "Reúne aplicação, arquivos e dependências necessários à execução. Uma mesma imagem pode originar vários contêineres.",
+    "nao_confundir": [
+      {
+        "conceito": "Contêiner",
+        "diferenca": "Imagem é o modelo; contêiner é uma instância criada dela, em execução ou parada."
+      }
+    ],
+    "atencao": "A imagem não é o contêiner em execução: ela serve de base para criá-lo.",
+    "fonte": "Docker. What is an image? Docker Documentation, seção Get Started: Docker concepts.",
+    "tags": [
+      "docker",
+      "imagem"
+    ]
+  },
+  {
+    "id": "card-arq-n1-011",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Contêineres e Kubernetes",
+    "nivel": 1,
+    "conceito": "Dockerfile",
+    "termo_ingles": "Dockerfile",
+    "traducao": "Arquivo Docker: texto com instruções para construir uma imagem; Docker é a ferramenta que cria e executa contêineres.",
+    "resumo": "Define etapas como escolher uma imagem-base, copiar arquivos e configurar o comando inicial da aplicação.",
+    "nao_confundir": [
+      {
+        "conceito": "Imagem de contêiner",
+        "diferenca": "Dockerfile contém instruções de construção; imagem reúne o resultado dessas instruções."
+      }
+    ],
+    "atencao": "Dockerfile descreve como construir a imagem; não representa um contêiner já em execução.",
+    "fonte": "Docker. Writing a Dockerfile. Docker Documentation, documentação oficial.",
+    "tags": [
+      "docker",
+      "dockerfile"
+    ]
+  },
+  {
+    "id": "card-arq-n1-012",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Contêineres e Kubernetes",
+    "nivel": 1,
+    "conceito": "Kubernetes",
+    "termo_ingles": "Kubernetes",
+    "traducao": "Kubernetes (timoneiro, em grego): orquestrador que automatiza a execução de aplicações em contêineres.",
+    "resumo": "Gerencia aplicações em um cluster, conjunto de máquinas físicas ou virtuais chamadas nós, distribuindo e acompanhando suas cargas.",
+    "nao_confundir": [
+      {
+        "conceito": "Docker",
+        "diferenca": "Docker constrói e executa contêineres; Kubernetes gerencia aplicações conteinerizadas em um cluster."
+      }
+    ],
+    "atencao": "O Kubernetes executa imagens criadas com Docker, mas não precisa do programa Docker instalado nos nós.",
+    "fonte": "Kubernetes Documentation. Overview; Kubernetes Blog. Updated: Dockershim Removal FAQ (2022).",
+    "tags": [
+      "kubernetes",
+      "docker",
+      "container-runtime"
+    ]
+  },
+  {
+    "id": "card-arq-n1-013",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Contêineres e Kubernetes",
+    "nivel": 1,
+    "conceito": "Pod",
+    "termo_ingles": "Pod",
+    "traducao": "Unidade de execução: menor unidade implantável do Kubernetes, que agrupa um ou mais contêineres.",
+    "resumo": "Agrupa contêineres que rodam no mesmo nó, compartilham a rede e podem compartilhar armazenamento configurado (volumes).",
+    "nao_confundir": [
+      {
+        "conceito": "Contêiner",
+        "diferenca": "Contêiner executa uma aplicação isolada; Pod agrupa um ou mais contêineres no Kubernetes."
+      }
+    ],
+    "atencao": "Um Pod pode conter mais de um contêiner; não é sinônimo de um único contêiner.",
+    "fonte": "Kubernetes. Pods. Documentação oficial, seção Concepts: Workloads.",
+    "tags": [
+      "kubernetes",
+      "pod"
+    ]
+  },
+  {
+    "id": "card-arq-n1-014",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Contêineres e Kubernetes",
+    "nivel": 1,
+    "conceito": "Deployment",
+    "termo_ingles": "Deployment",
+    "traducao": "Implantação: recurso que mantém a quantidade e a versão desejadas de Pods no Kubernetes.",
+    "resumo": "Define o estado desejado dos Pods, incluindo réplicas (cópias equivalentes), e permite atualizações controladas da aplicação.",
+    "nao_confundir": [
+      {
+        "conceito": "Pod",
+        "diferenca": "Pod executa contêineres; Deployment controla a quantidade e as atualizações dos Pods."
+      }
+    ],
+    "atencao": "Deployment mantém o estado desejado de Pods; não cria máquinas virtuais para o cluster.",
+    "fonte": "Kubernetes. Deployments. Documentação oficial, seção Concepts: Workloads.",
+    "tags": [
+      "kubernetes",
+      "deployment"
+    ]
+  },
+  {
+    "id": "card-arq-n1-015",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Contêineres e Kubernetes",
+    "nivel": 1,
+    "conceito": "Service",
+    "termo_ingles": "Service",
+    "traducao": "Serviço: recurso que oferece um endereço de rede estável para acessar um conjunto de Pods.",
+    "resumo": "Permite acessar Pods por um endereço estável, mesmo quando eles são substituídos e recebem novos endereços individuais.",
+    "nao_confundir": [
+      {
+        "conceito": "Pod",
+        "diferenca": "Pod executa a aplicação; Service fornece um ponto estável de acesso aos Pods."
+      }
+    ],
+    "atencao": "Por padrão, o Service recebe endereço próprio estável; os endereços dos Pods mudam quando eles são recriados.",
+    "fonte": "Kubernetes. Service. Documentação oficial, seção Concepts: Services, Load Balancing, and Networking.",
+    "tags": [
+      "kubernetes",
+      "service"
+    ]
+  },
+  {
+    "id": "card-arq-n1-016",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Contêineres e Kubernetes",
+    "nivel": 1,
+    "conceito": "Componentes de execução e agendamento",
+    "termo_ingles": "kube-scheduler and kubelet",
+    "traducao": "Agendador e agente do nó: escolhem onde executar Pods e garantem a execução dos contêineres.",
+    "resumo": "kube-scheduler escolhe o nó de cada Pod; kubelet acompanha os Pods e mantém seus contêineres em execução no nó.",
+    "nao_confundir": [
+      {
+        "conceito": "kube-scheduler",
+        "diferenca": "kube-scheduler escolhe o nó; kubelet acompanha a execução dos contêineres nesse nó."
+      }
+    ],
+    "atencao": "Ajustar a quantidade de réplicas conforme a carga é tarefa do HPA (ajuste automático horizontal), não do kube-scheduler.",
+    "fonte": "Kubernetes Documentation. Kubernetes Components; Horizontal Pod Autoscaling.",
+    "tags": [
+      "kubernetes",
+      "kube-scheduler",
+      "kubelet",
+      "hpa"
+    ]
+  },
+  {
+    "id": "card-arq-n1-017",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Alta disponibilidade, balanceamento e tolerância a falhas",
+    "nivel": 1,
+    "conceito": "Alta disponibilidade",
+    "termo_ingles": "High Availability",
+    "traducao": "Alta disponibilidade: capacidade de manter um serviço acessível durante a maior parte do tempo.",
+    "resumo": "Busca reduzir interrupções e manter o serviço funcionando, inclusive quando componentes apresentam falhas.",
+    "nao_confundir": [
+      {
+        "conceito": "Escalabilidade",
+        "diferenca": "Disponibilidade busca reduzir interrupções; escalabilidade aumenta ou reduz a capacidade de atendimento."
+      }
+    ],
+    "atencao": "Ampliar capacidade não garante disponibilidade: um componente compartilhado que falha ainda interrompe todo o serviço.",
+    "fonte": "AWS Well-Architected Framework. Reliability Pillar: Availability; REL10-BP01.",
+    "tags": [
+      "alta-disponibilidade",
+      "disponibilidade"
+    ]
+  },
+  {
+    "id": "card-arq-n1-018",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Alta disponibilidade, balanceamento e tolerância a falhas",
+    "nivel": 1,
+    "conceito": "Redundância",
+    "termo_ingles": "Redundancy",
+    "traducao": "Redundância: existência de componentes adicionais para substituir ou apoiar componentes que falham.",
+    "resumo": "Mantém recursos alternativos para reduzir interrupções. Um ponto único de falha é um componente cuja falha interrompe o serviço.",
+    "nao_confundir": [
+      {
+        "conceito": "Ponto único de falha",
+        "diferenca": "Redundância oferece alternativas; ponto único de falha interrompe o serviço quando seu componente falha."
+      }
+    ],
+    "atencao": "Duplicar servidores não elimina um ponto único de falha se todos dependerem da mesma rede crítica.",
+    "fonte": "AWS Well-Architected Framework. Reliability Pillar: REL10-BP01; Availability.",
+    "tags": [
+      "redundancia",
+      "spof",
+      "alta-disponibilidade"
+    ]
+  },
+  {
+    "id": "card-arq-n1-019",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Alta disponibilidade, balanceamento e tolerância a falhas",
+    "nivel": 1,
+    "conceito": "Balanceamento de carga",
+    "termo_ingles": "Load Balancing",
+    "traducao": "Balanceamento de carga: distribuição de requisições entre recursos que atendem um serviço.",
+    "resumo": "Distribui o tráfego entre servidores disponíveis, evitando concentrar todas as requisições em um único recurso.",
+    "nao_confundir": [
+      {
+        "conceito": "Failover",
+        "diferenca": "Balanceamento distribui requisições; failover transfere o atendimento para um recurso de reserva."
+      }
+    ],
+    "atencao": "Balancear tráfego não garante disponibilidade se todos os servidores dependerem de um componente único que falha.",
+    "fonte": "AWS Well-Architected Framework. Reliability Pillar: REL11-BP02 (Fail over to healthy resources); REL10-BP01.",
+    "tags": [
+      "balanceamento-de-carga",
+      "alta-disponibilidade"
+    ]
+  },
+  {
+    "id": "card-arq-n1-020",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Alta disponibilidade, balanceamento e tolerância a falhas",
+    "nivel": 1,
+    "conceito": "Failover",
+    "termo_ingles": "Failover",
+    "traducao": "Transferência por falha: mudança do atendimento para um recurso alternativo quando o principal falha.",
+    "resumo": "Assume o atendimento por um recurso de reserva após a falha do recurso principal, automaticamente ou por ação operacional.",
+    "nao_confundir": [
+      {
+        "conceito": "Failback",
+        "diferenca": "Failover transfere para a reserva; failback retorna o atendimento ao recurso original recuperado."
+      }
+    ],
+    "atencao": "Failover pode ser automático ou manual; o termo não significa necessariamente troca sem intervenção humana.",
+    "fonte": "AWS Well-Architected Framework. Reliability Pillar: REL11-BP02; REL13-BP02 (failback).",
+    "tags": [
+      "failover",
+      "failback",
+      "alta-disponibilidade"
+    ]
+  },
+  {
+    "id": "card-arq-n1-021",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Alta disponibilidade, balanceamento e tolerância a falhas",
+    "nivel": 1,
+    "conceito": "Métricas MTBF e MTTR",
+    "termo_ingles": "Mean Time Between Failures and Mean Time to Repair",
+    "traducao": "Tempo médio entre falhas e tempo médio de reparo: medidas de frequência de falhas e duração da recuperação.",
+    "resumo": "MTBF mede o tempo médio de funcionamento entre falhas; MTTR mede o tempo médio para reparar e restaurar o serviço.",
+    "nao_confundir": [
+      {
+        "conceito": "MTBF",
+        "diferenca": "MTBF mede o intervalo médio entre falhas; MTTR mede o tempo médio de recuperação."
+      }
+    ],
+    "atencao": "Disponibilidade estimada = MTBF ÷ (MTBF + MTTR): reduzir o tempo de reparo também aumenta a disponibilidade.",
+    "fonte": "AWS Well-Architected Framework. Reliability Pillar: Availability (estimativa MTBF / (MTBF + MTTR)).",
+    "tags": [
+      "mtbf",
+      "mttr",
+      "metricas"
+    ]
+  },
+  {
+    "id": "card-arq-n1-022",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Alta disponibilidade, balanceamento e tolerância a falhas",
+    "nivel": 1,
+    "conceito": "Objetivos RPO e RTO",
+    "termo_ingles": "Recovery Point Objective and Recovery Time Objective",
+    "traducao": "Objetivo de ponto e tempo de recuperação: limites de perda de dados e de duração da interrupção.",
+    "resumo": "RPO define a perda máxima de dados aceita, medida em tempo; RTO define o tempo máximo para restaurar o serviço.",
+    "nao_confundir": [
+      {
+        "conceito": "RPO",
+        "diferenca": "RPO limita a perda de dados; RTO limita o tempo de interrupção do serviço."
+      }
+    ],
+    "atencao": "RPO de uma hora não significa que o serviço deve voltar em uma hora; esse limite é o RTO.",
+    "fonte": "AWS Whitepaper. Disaster Recovery of Workloads on AWS: Business Continuity Plan (BCP).",
+    "tags": [
+      "rpo",
+      "rto",
+      "continuidade"
+    ]
+  },
+  {
+    "id": "card-arq-n1-023",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Alta disponibilidade, balanceamento e tolerância a falhas",
+    "nivel": 1,
+    "conceito": "Zonas de disponibilidade",
+    "termo_ingles": "Availability Zones",
+    "traducao": "Zonas de disponibilidade: locais isolados dentro de uma região de nuvem, usados para distribuir recursos.",
+    "resumo": "Uma região é uma área geográfica do provedor; suas zonas são locais separados, projetados para reduzir falhas compartilhadas.",
+    "nao_confundir": [
+      {
+        "conceito": "Região",
+        "diferenca": "Região representa uma área geográfica; zona é um local isolado dentro dessa região."
+      }
+    ],
+    "atencao": "Distribuir recursos entre zonas protege contra falhas locais, mas não garante proteção contra desastre regional.",
+    "fonte": "AWS. Amazon EC2 User Guide: Regions and Zones; AWS Well-Architected Reliability Pillar: REL10-BP01; Disaster Recovery of Workloads on AWS.",
+    "tags": [
+      "zonas-de-disponibilidade",
+      "alta-disponibilidade"
+    ]
   }
 ]
