@@ -1394,5 +1394,328 @@
       "explain",
       "plano-de-execucao"
     ]
+  },
+  {
+    "id": "card-es-n1-001",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Testes de software (TDD, BDD, tipos de teste)",
+    "nivel": 1,
+    "conceito": "Teste unitário",
+    "termo_ingles": "Unit Testing",
+    "traducao": "Unitário: verifica uma unidade pequena do código, como uma função ou método.",
+    "resumo": "Verifica uma parte isolada do programa. Exemplo: testar uma função que calcula o valor total de uma compra.",
+    "nao_confundir": [
+      {
+        "conceito": "Teste de integração",
+        "diferenca": "Unitário testa uma parte isolada; integração testa partes funcionando juntas."
+      }
+    ],
+    "atencao": "Testar uma função isolada não comprova que o sistema inteiro funciona.",
+    "fonte": "ISTQB Certified Tester Foundation Level Syllabus v4.0 (2023); ISTQB Glossary.",
+    "tags": [
+      "teste-unitario"
+    ]
+  },
+  {
+    "id": "card-es-n1-002",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Testes de software (TDD, BDD, tipos de teste)",
+    "nivel": 1,
+    "conceito": "Desenvolvimento guiado por testes",
+    "termo_ingles": "Test-Driven Development (TDD)",
+    "traducao": "Guiado por testes: escreve-se o teste antes do código da funcionalidade.",
+    "resumo": "Segue o ciclo vermelho, verde e refatoração: criar um teste que falha, escrever código para passar e melhorar o código sem alterar seu comportamento.",
+    "nao_confundir": [
+      {
+        "conceito": "Teste unitário",
+        "diferenca": "TDD é um modo de desenvolver; teste unitário é um tipo de teste."
+      }
+    ],
+    "atencao": "O primeiro teste deve falhar antes da implementação da funcionalidade.",
+    "fonte": "Kent Beck. Test-Driven Development: By Example (2002).",
+    "tags": [
+      "tdd",
+      "red-green-refactor"
+    ]
+  },
+  {
+    "id": "card-es-n1-003",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Testes de software (TDD, BDD, tipos de teste)",
+    "nivel": 1,
+    "conceito": "Desenvolvimento guiado por comportamento",
+    "termo_ingles": "Behavior-Driven Development (BDD)",
+    "traducao": "Guiado por comportamento: descreve o que o sistema deve fazer em situações reais.",
+    "resumo": "Descreve o comportamento esperado com exemplos que pessoas de negócio e técnicas entendem, em cenários no formato Dado, Quando, Então (linguagem Gherkin).",
+    "nao_confundir": [
+      {
+        "conceito": "Desenvolvimento guiado por testes",
+        "diferenca": "BDD descreve comportamentos com exemplos; TDD orienta a escrita do código por testes."
+      }
+    ],
+    "atencao": "Cenários de BDD descrevem o comportamento visível do sistema, não como o código foi escrito.",
+    "fonte": "Cucumber Documentation. Behaviour-Driven Development; Gherkin Reference, consulta em 02/11/2026.",
+    "tags": [
+      "bdd",
+      "gherkin"
+    ]
+  },
+  {
+    "id": "card-es-n1-004",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Testes de software (TDD, BDD, tipos de teste)",
+    "nivel": 1,
+    "conceito": "Teste alfa",
+    "termo_ingles": "Alpha Testing",
+    "traducao": "Alfa (primeira letra grega): primeira rodada de avaliação, ainda nas instalações de quem desenvolve.",
+    "resumo": "Tipo de teste de aceitação (confirma se o sistema atende ao combinado), feito antes do lançamento, nas instalações de quem desenvolve.",
+    "nao_confundir": [
+      {
+        "conceito": "Teste beta",
+        "diferenca": "Alfa ocorre nas instalações do desenvolvedor; beta ocorre em local externo."
+      }
+    ],
+    "atencao": "No alfa, quem usa o sistema são clientes ou testadores independentes, não a equipe que programou.",
+    "fonte": "ISTQB Glossary. Alpha testing; ISTQB Certified Tester Foundation Level Syllabus v4.0 (2023), seção 2.2.1.",
+    "tags": [
+      "teste-alfa"
+    ]
+  },
+  {
+    "id": "card-es-n1-005",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Testes de software (TDD, BDD, tipos de teste)",
+    "nivel": 1,
+    "conceito": "Teste beta",
+    "termo_ingles": "Beta Testing",
+    "traducao": "Beta (segunda letra grega): segunda rodada de avaliação, com usuários no ambiente deles.",
+    "resumo": "Teste de aceitação em que usuários potenciais ou existentes avaliam o software em local externo à organização de desenvolvimento.",
+    "nao_confundir": [
+      {
+        "conceito": "Teste alfa",
+        "diferenca": "Beta ocorre em local externo; alfa ocorre nas instalações do desenvolvedor."
+      }
+    ],
+    "atencao": "Versão beta ainda não é a final: serve para usuários relatarem problemas antes do lançamento.",
+    "fonte": "ISTQB Glossary. Beta testing; ISTQB Certified Tester Foundation Level Syllabus v4.0 (2023), seção 2.2.1.",
+    "tags": [
+      "teste-beta"
+    ]
+  },
+  {
+    "id": "card-es-n1-006",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Testes de software (TDD, BDD, tipos de teste)",
+    "nivel": 1,
+    "conceito": "Teste de regressão",
+    "termo_ingles": "Regression Testing",
+    "traducao": "Regressão: verifica se uma alteração introduziu defeitos em partes que já funcionavam.",
+    "resumo": "Reexecuta testes de funcionalidades já verificadas após uma alteração no programa ou em seu ambiente.",
+    "nao_confundir": [
+      {
+        "conceito": "Reteste",
+        "diferenca": "Reteste verifica a correção de um defeito; regressão procura efeitos indesejados da alteração."
+      }
+    ],
+    "atencao": "Testar apenas a funcionalidade corrigida não verifica possíveis defeitos em outras partes.",
+    "fonte": "ISTQB Glossary; ISTQB Certified Tester Foundation Level Syllabus v4.0 (2023).",
+    "tags": [
+      "teste-de-regressao"
+    ]
+  },
+  {
+    "id": "card-es-n1-007",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Testes de software (TDD, BDD, tipos de teste)",
+    "nivel": 1,
+    "conceito": "Teste de caixa-preta",
+    "termo_ingles": "Black-Box Testing",
+    "traducao": "Caixa-preta: testa o comportamento externo sem analisar a estrutura interna do código.",
+    "resumo": "Compara entradas e resultados observáveis com o comportamento esperado, sem depender de como o programa foi implementado.",
+    "nao_confundir": [
+      {
+        "conceito": "Teste de caixa-branca",
+        "diferenca": "Caixa-preta avalia o comportamento; caixa-branca considera a estrutura interna."
+      }
+    ],
+    "atencao": "O teste de caixa-preta não exige acesso ao código-fonte.",
+    "fonte": "ISTQB Certified Tester Foundation Level Syllabus v4.0 (2023).",
+    "tags": [
+      "caixa-preta"
+    ]
+  },
+  {
+    "id": "card-es-n1-008",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Testes de software (TDD, BDD, tipos de teste)",
+    "nivel": 1,
+    "conceito": "Teste de caixa-branca",
+    "termo_ingles": "White-Box Testing",
+    "traducao": "Caixa-branca: testa considerando a estrutura interna e a lógica do código.",
+    "resumo": "Utiliza elementos internos, como instruções, condições e caminhos de execução, para definir o que será testado.",
+    "nao_confundir": [
+      {
+        "conceito": "Teste de caixa-preta",
+        "diferenca": "Caixa-branca considera a estrutura interna; caixa-preta avalia entradas e resultados."
+      }
+    ],
+    "atencao": "Cobrir caminhos internos do código não comprova, por si só, que todos os requisitos foram atendidos.",
+    "fonte": "ISTQB Certified Tester Foundation Level Syllabus v4.0 (2023).",
+    "tags": [
+      "caixa-branca"
+    ]
+  },
+  {
+    "id": "card-es-n1-009",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "DevOps, DevSecOps e CI/CD",
+    "nivel": 1,
+    "conceito": "DevOps",
+    "termo_ingles": "Development and Operations",
+    "traducao": "Desenvolvimento e operações: aproxima as equipes que criam e mantêm o software em funcionamento.",
+    "resumo": "Cultura e conjunto de práticas que promovem colaboração entre desenvolvimento e operações, automação e feedback frequente.",
+    "nao_confundir": [
+      {
+        "conceito": "Métodos ágeis",
+        "diferenca": "Ágil organiza o desenvolvimento em ciclos curtos; DevOps estende a colaboração até a operação."
+      }
+    ],
+    "atencao": "DevOps não é um cargo nem uma ferramenta: é cultura e práticas compartilhadas pelas equipes.",
+    "fonte": "Gene Kim, Jez Humble, Patrick Debois, John Willis e Nicole Forsgren. The DevOps Handbook, 2ª edição (2021).",
+    "tags": [
+      "devops"
+    ]
+  },
+  {
+    "id": "card-es-n1-010",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "DevOps, DevSecOps e CI/CD",
+    "nivel": 1,
+    "conceito": "Integração contínua",
+    "termo_ingles": "Continuous Integration (CI)",
+    "traducao": "Integração contínua: incorpora alterações ao código compartilhado com frequência e verifica cada integração.",
+    "resumo": "Desenvolvedores integram alterações frequentemente, e cada integração passa por verificações automatizadas, incluindo compilação e testes.",
+    "nao_confundir": [
+      {
+        "conceito": "Implantação contínua",
+        "diferenca": "Integração contínua verifica alterações integradas; implantação contínua publica automaticamente em produção."
+      }
+    ],
+    "atencao": "Integrar e testar frequentemente não significa publicar cada alteração em produção.",
+    "fonte": "Martin Fowler. Continuous Integration, atualização em 18/01/2024.",
+    "tags": [
+      "integracao-continua",
+      "ci-cd"
+    ]
+  },
+  {
+    "id": "card-es-n1-011",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "DevOps, DevSecOps e CI/CD",
+    "nivel": 1,
+    "conceito": "Pipeline de automação",
+    "termo_ingles": "Pipeline",
+    "traducao": "Esteira de etapas: sequência organizada de tarefas automatizadas executadas durante o desenvolvimento e a entrega.",
+    "resumo": "Encadeia etapas automatizadas, como compilação, testes e publicação, que normalmente rodam a cada alteração enviada ao código.",
+    "nao_confundir": [
+      {
+        "conceito": "Integração contínua",
+        "diferenca": "Pipeline organiza etapas automatizadas; integração contínua é uma prática de desenvolvimento."
+      }
+    ],
+    "atencao": "Se uma etapa falha, o pipeline normalmente para e não executa as etapas seguintes.",
+    "fonte": "GitLab CI/CD Documentation. Get started with GitLab CI/CD; CI/CD pipelines, consulta em 02/11/2026.",
+    "tags": [
+      "pipeline",
+      "ci-cd"
+    ]
+  },
+  {
+    "id": "card-es-n1-012",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "DevOps, DevSecOps e CI/CD",
+    "nivel": 1,
+    "conceito": "Entrega contínua",
+    "termo_ingles": "Continuous Delivery (CD)",
+    "traducao": "Entrega contínua: mantém o software pronto para ser publicado quando houver decisão de liberar.",
+    "resumo": "Automatiza verificações e preparação da versão para que ela possa ser implantada em produção quando autorizada.",
+    "nao_confundir": [
+      {
+        "conceito": "Implantação contínua",
+        "diferenca": "Entrega contínua permite decisão de publicação; implantação contínua publica automaticamente."
+      }
+    ],
+    "atencao": "A sigla CD serve tanto para entrega contínua quanto para implantação contínua; o contexto define qual.",
+    "fonte": "Martin Fowler. Continuous Integration, atualização em 18/01/2024; Red Hat Developer. Coming to terms: CI/CD (2022).",
+    "tags": [
+      "ci-cd",
+      "entrega-continua"
+    ]
+  },
+  {
+    "id": "card-es-n1-013",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "DevOps, DevSecOps e CI/CD",
+    "nivel": 1,
+    "conceito": "Implantação contínua",
+    "termo_ingles": "Continuous Deployment (CD)",
+    "traducao": "Implantação contínua: publica automaticamente em produção as alterações que passam pelas verificações.",
+    "resumo": "Automatiza a publicação de cada alteração aprovada pelas etapas de verificação, sem exigir autorização manual para cada versão.",
+    "nao_confundir": [
+      {
+        "conceito": "Entrega contínua",
+        "diferenca": "Implantação contínua publica automaticamente; entrega contínua mantém a versão pronta para liberação."
+      }
+    ],
+    "atencao": "A aprovação manual antes de cada publicação caracteriza entrega contínua, não implantação contínua.",
+    "fonte": "Martin Fowler. Continuous Integration, atualização em 18/01/2024; Red Hat Developer. Coming to terms: CI/CD (2022).",
+    "tags": [
+      "ci-cd",
+      "implantacao-continua"
+    ]
+  },
+  {
+    "id": "card-es-n1-014",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "DevOps, DevSecOps e CI/CD",
+    "nivel": 1,
+    "conceito": "DevSecOps",
+    "termo_ingles": "Development, Security and Operations",
+    "traducao": "Desenvolvimento, segurança e operações: integra práticas de segurança ao trabalho de desenvolvimento e operação.",
+    "resumo": "Amplia a abordagem DevOps ao incorporar segurança nas etapas de criação, verificação, entrega e operação do software.",
+    "nao_confundir": [
+      {
+        "conceito": "DevOps",
+        "diferenca": "DevSecOps incorpora segurança como responsabilidade compartilhada ao trabalho DevOps."
+      }
+    ],
+    "atencao": "DevSecOps não restringe a segurança a uma auditoria realizada somente no final.",
+    "fonte": "OWASP DevSecOps Guideline, versão atual, consulta em 02/11/2026; NIST SP 800-218, Secure Software Development Framework (SSDF) v1.1 (2022).",
+    "tags": [
+      "devsecops",
+      "devops"
+    ]
+  },
+  {
+    "id": "card-es-n1-015",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "DevOps, DevSecOps e CI/CD",
+    "nivel": 1,
+    "conceito": "Abordagem shift-left",
+    "termo_ingles": "Shift-Left",
+    "traducao": "Deslocar para a esquerda (para o início da linha do tempo): antecipar testes e verificações.",
+    "resumo": "Leva testes e verificações (inclusive de segurança) para etapas iniciais, como planejamento e escrita do código, em vez de concentrá-los no final.",
+    "nao_confundir": [
+      {
+        "conceito": "Auditoria final",
+        "diferenca": "Shift-left antecipa verificações; auditoria final concentra a avaliação no encerramento."
+      }
+    ],
+    "atencao": "Shift-left não é exclusivo de segurança: também vale para antecipar testes em geral.",
+    "fonte": "OWASP DevSecOps Guideline, versão atual, consulta em 02/11/2026; ISTQB Certified Tester Foundation Level Syllabus v4.0 (2023), seção 2.1.5.",
+    "tags": [
+      "devsecops",
+      "shift-left"
+    ]
   }
 ]
