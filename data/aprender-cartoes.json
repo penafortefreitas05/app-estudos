@@ -567,5 +567,387 @@
       "where",
       "ordem-de-execucao"
     ]
+  },
+  {
+    "id": "card-bd-n1-026",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — Agrupamento e agregação",
+    "nivel": 1,
+    "conceito": "Função de agregação",
+    "termo_ingles": "Aggregate Function",
+    "traducao": "Agregação: reúne valores de várias linhas para produzir um resultado resumido.",
+    "resumo": "Resume várias linhas em um valor por consulta ou, com GROUP BY, por grupo. Pode contar registros, somar valores ou calcular uma média.",
+    "nao_confundir": [
+      {
+        "conceito": "Função linha a linha",
+        "diferenca": "Devolve um resultado por linha lida; a agregação resume várias linhas em um valor."
+      }
+    ],
+    "atencao": "Funções de agregação ignoram valores NULL, exceto COUNT(*).",
+    "fonte": "PostgreSQL 18 Documentation. Aggregate Functions.",
+    "tags": [
+      "sql",
+      "funcoes-de-agregacao"
+    ]
+  },
+  {
+    "id": "card-bd-n1-027",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — Agrupamento e agregação",
+    "nivel": 1,
+    "conceito": "Função COUNT(*)",
+    "termo_ingles": "COUNT",
+    "traducao": "Contar: calcula a quantidade de linhas consideradas pela consulta.",
+    "resumo": "COUNT(*) retorna a quantidade de linhas. Exemplo: SELECT COUNT(*) FROM Cliente conta todos os registros da tabela.",
+    "nao_confundir": [
+      {
+        "conceito": "COUNT(coluna)",
+        "diferenca": "COUNT(coluna) conta só valores não nulos; COUNT(*) conta todas as linhas."
+      }
+    ],
+    "atencao": "COUNT(*) conta linhas mesmo quando algumas colunas delas possuem NULL.",
+    "fonte": "PostgreSQL 18 Documentation. Aggregate Functions.",
+    "tags": [
+      "sql",
+      "funcoes-de-agregacao",
+      "count"
+    ]
+  },
+  {
+    "id": "card-bd-n1-028",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — Agrupamento e agregação",
+    "nivel": 1,
+    "conceito": "Cláusula GROUP BY",
+    "termo_ingles": "GROUP BY Clause",
+    "traducao": "Agrupar por: reúne linhas que possuem o mesmo valor na coluna indicada.",
+    "resumo": "Forma grupos para que funções de agregação calculem um resultado por grupo. Exemplo: GROUP BY departamento reúne funcionários do mesmo departamento.",
+    "nao_confundir": [
+      {
+        "conceito": "ORDER BY",
+        "diferenca": "GROUP BY forma grupos; ORDER BY organiza a ordem das linhas do resultado."
+      }
+    ],
+    "atencao": "Em regra, coluna do SELECT sem função de agregação deve constar no GROUP BY.",
+    "fonte": "PostgreSQL 18 Documentation. SELECT.",
+    "tags": [
+      "sql",
+      "group-by"
+    ]
+  },
+  {
+    "id": "card-bd-n1-029",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — Agrupamento e agregação",
+    "nivel": 1,
+    "conceito": "Função SUM",
+    "termo_ingles": "SUM",
+    "traducao": "Somar: calcula o total dos valores numéricos considerados.",
+    "resumo": "Soma os valores de uma coluna numérica. Exemplo: SELECT SUM(valor) FROM Venda calcula o total das vendas.",
+    "nao_confundir": [
+      {
+        "conceito": "COUNT",
+        "diferenca": "SUM calcula uma soma; COUNT calcula uma quantidade de linhas."
+      }
+    ],
+    "atencao": "SUM ignora valores NULL: se uma coluna tiver 10, NULL e 20, o resultado será 30.",
+    "fonte": "PostgreSQL 18 Documentation. Aggregate Functions.",
+    "tags": [
+      "sql",
+      "funcoes-de-agregacao"
+    ]
+  },
+  {
+    "id": "card-bd-n1-030",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — Agrupamento e agregação",
+    "nivel": 1,
+    "conceito": "Cláusula HAVING",
+    "termo_ingles": "HAVING Clause",
+    "traducao": "Filtrar grupos: seleciona quais grupos permanecem no resultado após o agrupamento.",
+    "resumo": "Aplica condições aos grupos formados por GROUP BY. Exemplo: HAVING COUNT(*) >= 3 mantém grupos com pelo menos três linhas.",
+    "nao_confundir": [
+      {
+        "conceito": "WHERE",
+        "diferenca": "WHERE filtra linhas antes do agrupamento; HAVING filtra os grupos depois de formados."
+      }
+    ],
+    "atencao": "Uma condição que usa o resultado de COUNT ou SUM para selecionar grupos deve ficar em HAVING, não em WHERE.",
+    "fonte": "PostgreSQL 18 Documentation. SELECT.",
+    "tags": [
+      "sql",
+      "having",
+      "group-by"
+    ]
+  },
+  {
+    "id": "card-bd-n1-032",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — Funções",
+    "nivel": 1,
+    "conceito": "Funções UPPER e LOWER",
+    "termo_ingles": "UPPER and LOWER",
+    "traducao": "Maiúsculas e minúsculas: transformam as letras de um texto para a caixa indicada.",
+    "resumo": "UPPER retorna o texto em letras maiúsculas; LOWER retorna em letras minúsculas. Exemplos: UPPER('recife') retorna 'RECIFE'; LOWER('RECIFE') retorna 'recife'.",
+    "nao_confundir": [
+      {
+        "conceito": "SUBSTRING",
+        "diferenca": "UPPER e LOWER mudam a caixa das letras; SUBSTRING extrai parte do texto."
+      }
+    ],
+    "atencao": "A conversão não altera o conteúdo armazenado na coluna; modifica apenas o resultado da função.",
+    "fonte": "PostgreSQL 18 Documentation. String Functions and Operators.",
+    "tags": [
+      "sql",
+      "funcoes-de-string"
+    ]
+  },
+  {
+    "id": "card-bd-n1-033",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — Funções",
+    "nivel": 1,
+    "conceito": "Função LENGTH",
+    "termo_ingles": "LENGTH",
+    "traducao": "Comprimento: retorna a quantidade de caracteres de um texto.",
+    "resumo": "Calcula o comprimento do texto. Exemplo: LENGTH('Recife') retorna 6.",
+    "nao_confundir": [
+      {
+        "conceito": "SUBSTRING",
+        "diferenca": "LENGTH informa o comprimento do texto; SUBSTRING extrai uma parte dele."
+      }
+    ],
+    "atencao": "No PostgreSQL, LENGTH conta caracteres; em outros sistemas o nome ou o comportamento muda.",
+    "fonte": "PostgreSQL 18 Documentation. String Functions and Operators. MySQL 8.4 Reference Manual. String Functions (LENGTH e CHAR_LENGTH). Microsoft SQL Server. LEN (Transact-SQL).",
+    "tags": [
+      "sql",
+      "funcoes-de-string"
+    ]
+  },
+  {
+    "id": "card-bd-n1-034",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — Funções",
+    "nivel": 1,
+    "conceito": "Função SUBSTRING",
+    "termo_ingles": "SUBSTRING",
+    "traducao": "Subtexto: extrai uma parte de um texto a partir de uma posição indicada.",
+    "resumo": "Recebe o texto, a posição inicial e a quantidade de caracteres. Exemplo: SUBSTRING('Recife', 1, 3) retorna 'Rec'.",
+    "nao_confundir": [
+      {
+        "conceito": "LENGTH",
+        "diferenca": "SUBSTRING extrai parte do texto; LENGTH informa o comprimento do texto."
+      }
+    ],
+    "atencao": "O segundo argumento indica a posição inicial; o terceiro indica quantos caracteres serão extraídos.",
+    "fonte": "PostgreSQL 18 Documentation. String Functions and Operators.",
+    "tags": [
+      "sql",
+      "funcoes-de-string"
+    ]
+  },
+  {
+    "id": "card-bd-n1-035",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — Funções",
+    "nivel": 1,
+    "conceito": "Função COALESCE",
+    "termo_ingles": "COALESCE",
+    "traducao": "Substituir valor ausente: retorna o primeiro valor da lista que não seja NULL.",
+    "resumo": "Verifica os valores na ordem apresentada e devolve o primeiro que não seja NULL. Exemplo: COALESCE(telefone, 'sem telefone') retorna o telefone ou o texto indicado.",
+    "nao_confundir": [
+      {
+        "conceito": "NULLIF",
+        "diferenca": "COALESCE retorna o primeiro valor não nulo; NULLIF retorna NULL quando dois valores são iguais."
+      }
+    ],
+    "atencao": "Se todos os argumentos forem NULL, COALESCE retorna NULL.",
+    "fonte": "PostgreSQL 18 Documentation. Conditional Expressions — COALESCE.",
+    "tags": [
+      "sql",
+      "coalesce",
+      "null"
+    ]
+  },
+  {
+    "id": "card-bd-n1-036",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — DCL e controle de acesso",
+    "nivel": 1,
+    "conceito": "DCL (linguagem de controle de dados)",
+    "termo_ingles": "Data Control Language",
+    "traducao": "Linguagem de controle de dados: comandos usados para conceder e retirar permissões de acesso.",
+    "resumo": "Controla quais operações um usuário ou papel (nome que reúne permissões, atribuível a vários usuários) pode realizar sobre objetos do banco. GRANT concede permissões e REVOKE as retira.",
+    "nao_confundir": [
+      {
+        "conceito": "DDL",
+        "diferenca": "DCL controla permissões; DDL define ou modifica estruturas do banco."
+      }
+    ],
+    "atencao": "Em muitos livros GRANT e REVOKE são DCL; o Oracle os classifica como DDL.",
+    "fonte": "PostgreSQL 18 Documentation. GRANT e REVOKE. Oracle Database 21c SQL Language Reference — Types of SQL Statements (GRANT e REVOKE listados como DDL).",
+    "tags": [
+      "sql",
+      "dcl"
+    ]
+  },
+  {
+    "id": "card-bd-n1-037",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — DCL e controle de acesso",
+    "nivel": 1,
+    "conceito": "Comando GRANT",
+    "termo_ingles": "GRANT",
+    "traducao": "Conceder: comando que atribui uma permissão de acesso a um usuário ou papel.",
+    "resumo": "Concede uma permissão específica sobre um objeto. Exemplo: GRANT SELECT ON Cliente TO ana permite que ana consulte a tabela Cliente.",
+    "nao_confundir": [
+      {
+        "conceito": "REVOKE",
+        "diferenca": "GRANT concede permissões; REVOKE retira permissões concedidas."
+      }
+    ],
+    "atencao": "Conceder SELECT permite consultar os dados, mas não concede automaticamente permissões de UPDATE ou DELETE.",
+    "fonte": "PostgreSQL 18 Documentation. GRANT.",
+    "tags": [
+      "sql",
+      "grant",
+      "dcl"
+    ]
+  },
+  {
+    "id": "card-bd-n1-038",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — DCL e controle de acesso",
+    "nivel": 1,
+    "conceito": "Comando REVOKE",
+    "termo_ingles": "REVOKE",
+    "traducao": "Retirar: comando que remove uma permissão de acesso anteriormente concedida.",
+    "resumo": "Retira uma permissão de um usuário ou papel. Exemplo: REVOKE SELECT ON Cliente FROM ana retira a permissão de consulta concedida a ana.",
+    "nao_confundir": [
+      {
+        "conceito": "GRANT",
+        "diferenca": "REVOKE retira permissões; GRANT concede permissões."
+      }
+    ],
+    "atencao": "Retirar uma concessão direta não elimina o acesso se o usuário a recebeu também por outro papel.",
+    "fonte": "PostgreSQL 18 Documentation. REVOKE e GRANT (privilégios acumulados por papel).",
+    "tags": [
+      "sql",
+      "revoke",
+      "dcl"
+    ]
+  },
+  {
+    "id": "card-bd-n1-039",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — DCL e controle de acesso",
+    "nivel": 1,
+    "conceito": "WITH GRANT OPTION",
+    "termo_ingles": "WITH GRANT OPTION",
+    "traducao": "Com opção de concessão: permite que quem recebeu uma permissão também a conceda a outros usuários ou papéis.",
+    "resumo": "Adiciona ao GRANT a possibilidade de repassar a permissão recebida. Exemplo: GRANT SELECT ON Cliente TO ana WITH GRANT OPTION.",
+    "nao_confundir": [
+      {
+        "conceito": "GRANT sem WITH GRANT OPTION",
+        "diferenca": "Permite usar a permissão concedida, mas não repassá-la a outros usuários."
+      }
+    ],
+    "atencao": "Receber uma permissão não significa poder concedê-la a terceiros; esse repasse exige WITH GRANT OPTION.",
+    "fonte": "PostgreSQL 18 Documentation. GRANT e REVOKE.",
+    "tags": [
+      "sql",
+      "with-grant-option",
+      "grant"
+    ]
+  },
+  {
+    "id": "card-bd-n1-040",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Objetos de banco (views, triggers, procedures, sequences)",
+    "nivel": 1,
+    "conceito": "View (visão)",
+    "termo_ingles": "View",
+    "traducao": "Visão: consulta salva com um nome, que pode ser utilizada como uma tabela em outras consultas.",
+    "resumo": "Armazena a definição de uma consulta, não uma cópia dos dados. Pode apresentar apenas nomes e cidades dos clientes.",
+    "nao_confundir": [
+      {
+        "conceito": "View materializada",
+        "diferenca": "View materializada guarda uma cópia dos dados do resultado; a view comum não guarda."
+      }
+    ],
+    "atencao": "A view comum não guarda os dados: consultá-la executa a consulta salva sobre as tabelas de origem.",
+    "fonte": "PostgreSQL 18 Documentation. CREATE VIEW.",
+    "tags": [
+      "sql",
+      "view"
+    ]
+  },
+  {
+    "id": "card-bd-n1-041",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Objetos de banco (views, triggers, procedures, sequences)",
+    "nivel": 1,
+    "conceito": "Trigger (gatilho)",
+    "termo_ingles": "Trigger",
+    "traducao": "Gatilho: mecanismo que executa código automaticamente quando ocorre um evento definido no banco.",
+    "resumo": "Pode executar código quando uma tabela recebe uma operação como INSERT, UPDATE ou DELETE. Exemplo: registrar uma alteração automaticamente após um UPDATE.",
+    "nao_confundir": [
+      {
+        "conceito": "Stored procedure",
+        "diferenca": "Trigger é disparado por um evento; stored procedure é executada quando alguém a chama."
+      }
+    ],
+    "atencao": "No PostgreSQL, o gatilho executa uma função própria, antes (BEFORE) ou depois (AFTER) do evento.",
+    "fonte": "PostgreSQL 18 Documentation. Overview of Trigger Behavior e CREATE TRIGGER.",
+    "tags": [
+      "sql",
+      "trigger",
+      "postgresql"
+    ]
+  },
+  {
+    "id": "card-bd-n1-042",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Objetos de banco (views, triggers, procedures, sequences)",
+    "nivel": 1,
+    "conceito": "Stored procedure (procedimento armazenado)",
+    "termo_ingles": "Stored Procedure",
+    "traducao": "Procedimento armazenado: conjunto nomeado de comandos salvo no banco e executado quando chamado.",
+    "resumo": "Reúne comandos para executar uma tarefa. No PostgreSQL, é criada com CREATE PROCEDURE e chamada com CALL. Exemplo: CALL atualizar_estoque().",
+    "nao_confundir": [
+      {
+        "conceito": "Trigger",
+        "diferenca": "A procedure é executada por uma chamada; o trigger é acionado automaticamente por um evento."
+      }
+    ],
+    "atencao": "Procedure é chamada com CALL; função é usada dentro de um SELECT, não com CALL.",
+    "fonte": "PostgreSQL 18 Documentation. CREATE PROCEDURE e User-Defined Procedures.",
+    "tags": [
+      "sql",
+      "stored-procedure"
+    ]
+  },
+  {
+    "id": "card-bd-n1-043",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Objetos de banco (views, triggers, procedures, sequences)",
+    "nivel": 1,
+    "conceito": "Sequence (sequência)",
+    "termo_ingles": "Sequence",
+    "traducao": "Sequência: objeto que gera uma série de valores numéricos sucessivos, frequentemente usados como identificadores.",
+    "resumo": "No PostgreSQL, nextval('pedido_seq') avança a sequência e retorna o próximo número. currval('pedido_seq') retorna o último número obtido por nextval na conexão atual do usuário.",
+    "nao_confundir": [
+      {
+        "conceito": "Chave primária",
+        "diferenca": "Sequence gera números; chave primária identifica cada linha e impede valores repetidos ou NULL."
+      }
+    ],
+    "atencao": "currval não avança a sequência e gera erro se nextval ainda não tiver sido chamado para ela na conexão atual.",
+    "fonte": "PostgreSQL 18 Documentation. CREATE SEQUENCE e Sequence Manipulation Functions.",
+    "tags": [
+      "sql",
+      "sequence",
+      "postgresql"
+    ]
   }
 ]
