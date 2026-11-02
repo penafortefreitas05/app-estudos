@@ -949,5 +949,450 @@
       "sequence",
       "postgresql"
     ]
+  },
+  {
+    "id": "card-bd-n1-044",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Conceitos de SGBD",
+    "nivel": 1,
+    "conceito": "Banco de dados",
+    "termo_ingles": "Database",
+    "traducao": "Base de dados: conjunto organizado de informações armazenadas para consulta e atualização.",
+    "resumo": "Reúne dados relacionados que podem ser consultados e modificados. Exemplo: registros de clientes, pedidos e produtos de uma loja.",
+    "nao_confundir": [
+      {
+        "conceito": "Sistema gerenciador de banco de dados",
+        "diferenca": "Banco de dados reúne os dados; sistema gerenciador é o software que os administra."
+      }
+    ],
+    "atencao": "O banco de dados não é o programa usado para administrá-lo.",
+    "fonte": "Silberschatz, Korth e Sudarshan. Database System Concepts, 7ª edição, 2019.",
+    "tags": [
+      "sgbd"
+    ]
+  },
+  {
+    "id": "card-bd-n1-045",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Conceitos de SGBD",
+    "nivel": 1,
+    "conceito": "Sistema gerenciador de banco de dados (SGBD)",
+    "termo_ingles": "Database Management System (DBMS)",
+    "traducao": "Sistema de gerenciamento: software que administra o armazenamento, a consulta e a alteração dos dados.",
+    "resumo": "Cria e administra bancos de dados, controla acessos e coordena operações simultâneas. Exemplos: PostgreSQL, MySQL e Oracle.",
+    "nao_confundir": [
+      {
+        "conceito": "Servidor web",
+        "diferenca": "Servidor web entrega conteúdo pela rede; sistema gerenciador administra dados."
+      }
+    ],
+    "atencao": "IIS e Nginx são servidores web, não sistemas gerenciadores de banco de dados.",
+    "fonte": "Silberschatz, Korth e Sudarshan. Database System Concepts, 7ª edição, 2019.",
+    "tags": [
+      "sgbd",
+      "postgresql",
+      "oracle"
+    ]
+  },
+  {
+    "id": "card-bd-n1-046",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Conceitos de SGBD",
+    "nivel": 1,
+    "conceito": "Modelo relacional",
+    "termo_ingles": "Relational Model",
+    "traducao": "Modelo baseado em relações: organiza os dados em tabelas relacionadas.",
+    "resumo": "Representa os dados em tabelas compostas por linhas e colunas. Cada tabela descreve um conjunto de informações, como clientes ou pedidos.",
+    "nao_confundir": [
+      {
+        "conceito": "Banco orientado a documentos",
+        "diferenca": "O modelo relacional organiza dados em tabelas; o documental utiliza documentos."
+      }
+    ],
+    "atencao": "Relacional vem de \"relação\", que é a própria tabela, e não de ligações entre tabelas.",
+    "fonte": "Silberschatz, Korth e Sudarshan. Database System Concepts, 7ª edição, 2019.",
+    "tags": [
+      "modelo-relacional",
+      "relacional"
+    ]
+  },
+  {
+    "id": "card-bd-n1-047",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Conceitos de SGBD",
+    "nivel": 1,
+    "conceito": "Controle de concorrência",
+    "termo_ingles": "Concurrency Control",
+    "traducao": "Controle de operações simultâneas: coordena acessos para evitar conflitos entre usuários.",
+    "resumo": "Permite que vários usuários consultem ou alterem dados sem produzir resultados conflitantes. O sistema de banco de dados coordena essas operações.",
+    "nao_confundir": [
+      {
+        "conceito": "Acesso simultâneo",
+        "diferenca": "Acesso simultâneo é a situação; controle de concorrência é a coordenação dela."
+      }
+    ],
+    "atencao": "Sem controle, uma alteração pode ser perdida: dois usuários alteram o mesmo dado ao mesmo tempo.",
+    "fonte": "Silberschatz, Korth e Sudarshan. Database System Concepts, 7ª edição, 2019.",
+    "tags": [
+      "sgbd",
+      "concorrencia"
+    ]
+  },
+  {
+    "id": "card-bd-n1-048",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Conceitos de SGBD",
+    "nivel": 1,
+    "conceito": "Backup",
+    "termo_ingles": "Backup",
+    "traducao": "Cópia de segurança: cópia dos dados usada para recuperá-los após perda ou dano.",
+    "resumo": "Cria uma cópia dos dados para permitir recuperação em caso de falha, exclusão acidental ou dano ao armazenamento.",
+    "nao_confundir": [
+      {
+        "conceito": "Recuperação",
+        "diferenca": "Backup é a cópia guardada; recuperação é o processo de restaurar os dados."
+      }
+    ],
+    "atencao": "Ter um backup não garante, por si só, a recuperação até qualquer instante escolhido.",
+    "fonte": "PostgreSQL 18 Documentation. Backup and Restore.",
+    "tags": [
+      "backup",
+      "postgresql"
+    ]
+  },
+  {
+    "id": "card-bd-n1-049",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Conceitos de SGBD",
+    "nivel": 1,
+    "conceito": "Recuperação para ponto no tempo",
+    "termo_ingles": "Point-in-Time Recovery (PITR)",
+    "traducao": "Recuperação até um instante: restaura o banco ao estado de uma data e hora escolhidas.",
+    "resumo": "No PostgreSQL, combina um backup-base com registros das alterações posteriores para recuperar o banco até o instante selecionado.",
+    "nao_confundir": [
+      {
+        "conceito": "Restauração do backup",
+        "diferenca": "Restaurar um backup recupera seu estado; PITR permite avançar até um instante posterior."
+      }
+    ],
+    "atencao": "No PostgreSQL, o backup-base sozinho não permite recuperar alterações feitas depois de sua criação.",
+    "fonte": "PostgreSQL 18 Documentation. Backup and Restore.",
+    "tags": [
+      "backup",
+      "pitr",
+      "wal",
+      "postgresql"
+    ]
+  },
+  {
+    "id": "card-bd-n1-050",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Modelagem de dados (MER e relacional)",
+    "nivel": 1,
+    "conceito": "Modelagem de dados",
+    "termo_ingles": "Data Modeling",
+    "traducao": "Modelagem: representação das informações que um sistema precisa armazenar e de suas relações.",
+    "resumo": "Descreve quais informações serão registradas e como se relacionam antes da construção das tabelas do banco de dados.",
+    "nao_confundir": [
+      {
+        "conceito": "Implementação",
+        "diferenca": "Modelagem descreve os dados; implementação constrói as estruturas no sistema."
+      }
+    ],
+    "atencao": "O modelo entidade-relacionamento (MER) descreve os dados sem depender de um sistema de banco de dados.",
+    "fonte": "Elmasri e Navathe. Fundamentals of Database Systems, 7ª edição, 2016.",
+    "tags": [
+      "mer"
+    ]
+  },
+  {
+    "id": "card-bd-n1-051",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Modelagem de dados (MER e relacional)",
+    "nivel": 1,
+    "conceito": "Entidade",
+    "termo_ingles": "Entity",
+    "traducao": "Entidade: representa algo sobre o qual o sistema precisa guardar informações.",
+    "resumo": "Representa um objeto ou elemento do mundo real que será registrado. Exemplos: Cliente, Produto e Funcionário.",
+    "nao_confundir": [
+      {
+        "conceito": "Atributo",
+        "diferenca": "Entidade representa o objeto; atributo descreve uma característica dele."
+      }
+    ],
+    "atencao": "Maria, como valor de um nome, não é a entidade; Cliente pode ser a entidade.",
+    "fonte": "Elmasri e Navathe. Fundamentals of Database Systems, 7ª edição, 2016.",
+    "tags": [
+      "mer",
+      "entidade"
+    ]
+  },
+  {
+    "id": "card-bd-n1-052",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Modelagem de dados (MER e relacional)",
+    "nivel": 1,
+    "conceito": "Atributo",
+    "termo_ingles": "Attribute",
+    "traducao": "Atributo: característica usada para descrever uma entidade.",
+    "resumo": "Representa uma informação de uma entidade. Na entidade Cliente, exemplos de atributos são nome, CPF e data de nascimento.",
+    "nao_confundir": [
+      {
+        "conceito": "Valor de atributo",
+        "diferenca": "Atributo é a característica; seu valor é o conteúdo registrado nela."
+      }
+    ],
+    "atencao": "Um atributo pode ser composto, como endereço (rua, cidade), ou ter vários valores, como telefones.",
+    "fonte": "Elmasri e Navathe. Fundamentals of Database Systems, 7ª edição, 2016.",
+    "tags": [
+      "mer",
+      "atributo"
+    ]
+  },
+  {
+    "id": "card-bd-n1-053",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Modelagem de dados (MER e relacional)",
+    "nivel": 1,
+    "conceito": "Relacionamento",
+    "termo_ingles": "Relationship",
+    "traducao": "Relacionamento: associação que representa como entidades se conectam.",
+    "resumo": "Representa uma ligação entre entidades. Exemplo: Cliente realiza Pedido expressa uma associação entre clientes e pedidos.",
+    "nao_confundir": [
+      {
+        "conceito": "Atributo",
+        "diferenca": "Relacionamento liga entidades; atributo descreve uma entidade."
+      }
+    ],
+    "atencao": "Relacionamento costuma ser nomeado por verbo (realiza, possui) e pode ter atributos próprios.",
+    "fonte": "Elmasri e Navathe. Fundamentals of Database Systems, 7ª edição, 2016.",
+    "tags": [
+      "mer"
+    ]
+  },
+  {
+    "id": "card-bd-n1-054",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Modelagem de dados (MER e relacional)",
+    "nivel": 1,
+    "conceito": "Cardinalidade",
+    "termo_ingles": "Cardinality",
+    "traducao": "Cardinalidade: indica quantas ocorrências de uma entidade podem se associar a outra.",
+    "resumo": "Indica quantas ocorrências se associam entre entidades. 1:N liga uma a várias; N:M liga várias a várias.",
+    "nao_confundir": [
+      {
+        "conceito": "1:1",
+        "diferenca": "1:1 limita cada lado a uma ocorrência; 1:N permite várias de um lado."
+      }
+    ],
+    "atencao": "Em Cliente 1:N Pedido, um cliente pode ter vários pedidos; cada pedido pertence a um cliente.",
+    "fonte": "Elmasri e Navathe. Fundamentals of Database Systems, 7ª edição, 2016.",
+    "tags": [
+      "mer",
+      "cardinalidade"
+    ]
+  },
+  {
+    "id": "card-bd-n1-055",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Modelagem de dados (MER e relacional)",
+    "nivel": 1,
+    "conceito": "Dicionário de dados",
+    "termo_ingles": "Data Dictionary",
+    "traducao": "Dicionário: registro que explica o significado e as características dos dados do modelo.",
+    "resumo": "Documenta elementos do modelo, como entidades, atributos, significados, tipos de dados e regras aplicáveis a cada informação.",
+    "nao_confundir": [
+      {
+        "conceito": "Diagrama",
+        "diferenca": "Diagrama mostra elementos e relações; dicionário detalha suas características."
+      }
+    ],
+    "atencao": "O diagrama, sozinho, pode não registrar o significado e o tipo de cada atributo.",
+    "fonte": "Elmasri e Navathe. Fundamentals of Database Systems, 7ª edição, 2016.",
+    "tags": [
+      "mer",
+      "dicionario-de-dados"
+    ]
+  },
+  {
+    "id": "card-bd-n1-056",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Transações, concorrência e otimização",
+    "nivel": 1,
+    "conceito": "Transação",
+    "termo_ingles": "Transaction",
+    "traducao": "Transação: conjunto de operações tratado como uma única unidade de trabalho.",
+    "resumo": "Agrupa operações que compõem uma tarefa. Exemplo: transferir dinheiro exige debitar uma conta e creditar outra como parte da mesma unidade.",
+    "nao_confundir": [
+      {
+        "conceito": "Comando SQL",
+        "diferenca": "Comando SQL é uma instrução; transação pode agrupar vários."
+      }
+    ],
+    "atencao": "Transação não é só dinheiro: qualquer conjunto de alterações que deve valer por inteiro forma uma transação.",
+    "fonte": "Silberschatz, Korth e Sudarshan. Database System Concepts, 7ª edição, 2019.",
+    "tags": [
+      "transacao"
+    ]
+  },
+  {
+    "id": "card-bd-n1-057",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Transações, concorrência e otimização",
+    "nivel": 1,
+    "conceito": "Atomicidade",
+    "termo_ingles": "Atomicity",
+    "traducao": "Atomicidade: propriedade de tratar todas as operações da transação como um todo indivisível.",
+    "resumo": "É uma das quatro propriedades ACID (atomicidade, consistência, isolamento, durabilidade): todas as operações da transação são concluídas ou nenhuma permanece aplicada.",
+    "nao_confundir": [
+      {
+        "conceito": "Durabilidade",
+        "diferenca": "Atomicidade trata do tudo ou nada; durabilidade trata da permanência após confirmação."
+      }
+    ],
+    "atencao": "Na transferência, apenas debitar ou apenas creditar a conta não satisfaz a atomicidade.",
+    "fonte": "Silberschatz, Korth e Sudarshan. Database System Concepts, 7ª edição, 2019.",
+    "tags": [
+      "transacao",
+      "acid",
+      "atomicidade"
+    ]
+  },
+  {
+    "id": "card-bd-n1-058",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Transações, concorrência e otimização",
+    "nivel": 1,
+    "conceito": "Consistência",
+    "termo_ingles": "Consistency",
+    "traducao": "Consistência: propriedade que preserva as regras definidas para os dados após uma transação.",
+    "resumo": "É uma propriedade ACID: uma transação concluída deve levar o banco de um estado que respeita suas regras a outro estado que também as respeita.",
+    "nao_confundir": [
+      {
+        "conceito": "Atomicidade",
+        "diferenca": "Consistência preserva regras; atomicidade exige que todas as operações ocorram ou nenhuma."
+      }
+    ],
+    "atencao": "Consistência não significa que os dados nunca mudam; significa que as regras continuam satisfeitas.",
+    "fonte": "Silberschatz, Korth e Sudarshan. Database System Concepts, 7ª edição, 2019.",
+    "tags": [
+      "transacao",
+      "acid"
+    ]
+  },
+  {
+    "id": "card-bd-n1-059",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Transações, concorrência e otimização",
+    "nivel": 1,
+    "conceito": "Isolamento",
+    "termo_ingles": "Isolation",
+    "traducao": "Isolamento: propriedade que controla os efeitos de transações executadas simultaneamente.",
+    "resumo": "É uma propriedade ACID: busca impedir que operações simultâneas interfiram umas nas outras e produzam resultados conflitantes.",
+    "nao_confundir": [
+      {
+        "conceito": "Atomicidade",
+        "diferenca": "Isolamento trata da execução simultânea; atomicidade trata do tudo ou nada."
+      }
+    ],
+    "atencao": "Isolamento não exige que apenas um usuário acesse o banco por vez.",
+    "fonte": "Silberschatz, Korth e Sudarshan. Database System Concepts, 7ª edição, 2019.",
+    "tags": [
+      "transacao",
+      "acid",
+      "isolamento",
+      "concorrencia"
+    ]
+  },
+  {
+    "id": "card-bd-n1-060",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Transações, concorrência e otimização",
+    "nivel": 1,
+    "conceito": "Durabilidade",
+    "termo_ingles": "Durability",
+    "traducao": "Durabilidade: propriedade que mantém os efeitos de uma transação após sua confirmação.",
+    "resumo": "É uma propriedade ACID: depois da confirmação, as alterações devem sobreviver a falhas, como uma queda de energia.",
+    "nao_confundir": [
+      {
+        "conceito": "Atomicidade",
+        "diferenca": "Durabilidade preserva alterações confirmadas; atomicidade exige conclusão total ou nenhuma."
+      }
+    ],
+    "atencao": "Durabilidade se aplica às alterações confirmadas, não a operações ainda não confirmadas.",
+    "fonte": "Silberschatz, Korth e Sudarshan. Database System Concepts, 7ª edição, 2019.",
+    "tags": [
+      "transacao",
+      "acid",
+      "durabilidade"
+    ]
+  },
+  {
+    "id": "card-bd-n1-061",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Transações, concorrência e otimização",
+    "nivel": 1,
+    "conceito": "COMMIT",
+    "termo_ingles": "COMMIT",
+    "traducao": "Confirmar: comando que encerra a transação aplicando suas alterações.",
+    "resumo": "Confirma a transação: suas alterações passam a valer de forma definitiva no banco de dados.",
+    "nao_confundir": [
+      {
+        "conceito": "ROLLBACK",
+        "diferenca": "COMMIT confirma as alterações; ROLLBACK desfaz as alterações não confirmadas."
+      }
+    ],
+    "atencao": "No PostgreSQL, fora de um bloco aberto com BEGIN, cada comando é confirmado automaticamente.",
+    "fonte": "PostgreSQL 18 Documentation. SQL Commands: BEGIN e COMMIT.",
+    "tags": [
+      "transacao",
+      "commit"
+    ]
+  },
+  {
+    "id": "card-bd-n1-062",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Transações, concorrência e otimização",
+    "nivel": 1,
+    "conceito": "ROLLBACK",
+    "termo_ingles": "ROLLBACK",
+    "traducao": "Reverter: comando que desfaz as alterações não confirmadas da transação.",
+    "resumo": "Cancela a transação atual e desfaz suas alterações ainda não confirmadas, voltando ao estado anterior ao início da transação.",
+    "nao_confundir": [
+      {
+        "conceito": "COMMIT",
+        "diferenca": "ROLLBACK desfaz alterações não confirmadas; COMMIT confirma a transação."
+      }
+    ],
+    "atencao": "Depois de um COMMIT concluído, ROLLBACK não desfaz aquela transação.",
+    "fonte": "PostgreSQL 18 Documentation. SQL Commands: ROLLBACK.",
+    "tags": [
+      "transacao",
+      "rollback",
+      "commit"
+    ]
+  },
+  {
+    "id": "card-bd-n1-063",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Transações, concorrência e otimização",
+    "nivel": 1,
+    "conceito": "EXPLAIN",
+    "termo_ingles": "EXPLAIN",
+    "traducao": "Explicar: comando que apresenta o plano escolhido para executar uma consulta.",
+    "resumo": "No PostgreSQL, mostra as etapas planejadas para executar uma consulta, como leitura de tabelas e uso de índices, sem executar a consulta.",
+    "nao_confundir": [
+      {
+        "conceito": "EXPLAIN ANALYZE",
+        "diferenca": "EXPLAIN apresenta o plano; EXPLAIN ANALYZE executa a consulta e mede sua execução."
+      }
+    ],
+    "atencao": "No PostgreSQL, EXPLAIN sozinho não mede o tempo real de execução da consulta.",
+    "fonte": "PostgreSQL 18 Documentation. Using EXPLAIN.",
+    "tags": [
+      "postgresql",
+      "explain",
+      "plano-de-execucao"
+    ]
   }
 ]
