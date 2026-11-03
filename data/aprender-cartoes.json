@@ -5618,5 +5618,364 @@
       "snmp",
       "oid"
     ]
+  },
+  {
+    "id": "card-es-n1-035",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Métodos ágeis (manifesto, XP, Kanban, Lean)",
+    "nivel": 1,
+    "conceito": "Valores do Manifesto Ágil",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Valoriza-se mais indivíduos e interações que processos, software funcionando que documentação abrangente, colaboração com o cliente que negociação de contratos, e responder a mudanças que seguir um plano.",
+    "nao_confundir": [
+      {
+        "conceito": "Proibição de documentação",
+        "diferenca": "Valorizar mais software funcionando não significa dispensar documentação."
+      }
+    ],
+    "atencao": "Processos, ferramentas, documentação, contratos e planos têm valor, mas valem menos que os quatro itens priorizados.",
+    "fonte": "Manifesto para Desenvolvimento Ágil de Software (2001), versão em português: https://agilemanifesto.org/iso/ptbr/manifesto.html",
+    "tags": [
+      "manifesto-agil",
+      "agil"
+    ]
+  },
+  {
+    "id": "card-es-n1-036",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Métodos ágeis (manifesto, XP, Kanban, Lean)",
+    "nivel": 1,
+    "conceito": "Programação em par no XP",
+    "termo_ingles": "pair programming",
+    "traducao": "Programação em par: duas pessoas trabalham juntas no mesmo código.",
+    "resumo": "No Extreme Programming (XP), uma pessoa escreve o código enquanto outra o acompanha e orienta; elas trocam de função durante o trabalho.",
+    "nao_confundir": [
+      {
+        "conceito": "Revisão de código posterior",
+        "diferenca": "No par, revisão e escrita ocorrem juntas; revisão posterior examina código já escrito."
+      }
+    ],
+    "atencao": "Em par, duas pessoas compartilham uma única estação de trabalho; não é divisão do código entre elas.",
+    "fonte": "Agile Alliance, Pair Programming: https://agilealliance.org/glossary/pair-programming/; Kent Beck, Extreme Programming Explained: Embrace Change, 2ª edição (2004)",
+    "tags": [
+      "xp",
+      "programacao-em-par"
+    ]
+  },
+  {
+    "id": "card-es-n1-037",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Métodos ágeis (manifesto, XP, Kanban, Lean)",
+    "nivel": 1,
+    "conceito": "Limite de trabalho em andamento",
+    "termo_ingles": "work in progress limit (WIP limit)",
+    "traducao": "Limite de trabalho em andamento: teto de itens simultâneos em execução.",
+    "resumo": "No Kanban, método que torna o fluxo de trabalho visível, o limite de trabalho em andamento (WIP) fixa quantos itens podem estar em andamento ao mesmo tempo.",
+    "nao_confundir": [
+      {
+        "conceito": "Backlog",
+        "diferenca": "Limite cobre itens em execução; backlog guarda itens ainda não iniciados."
+      }
+    ],
+    "atencao": "Com o limite cheio, nenhum item novo é iniciado até que outro saia ou seja concluído.",
+    "fonte": "The Official Guide to The Kanban Method, Kanban University: https://kanban.university/kanban-guide/",
+    "tags": [
+      "kanban",
+      "wip"
+    ]
+  },
+  {
+    "id": "card-es-n1-038",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Métodos ágeis (manifesto, XP, Kanban, Lean)",
+    "nivel": 1,
+    "conceito": "Lead time",
+    "termo_ingles": "lead time",
+    "traducao": "Prazo de entrega: tempo que um item leva no sistema até ser entregue.",
+    "resumo": "No Kanban, lead time é o tempo que um item leva no sistema até a entrega.",
+    "nao_confundir": [
+      {
+        "conceito": "Taxa de entrega",
+        "diferenca": "Lead time mede o tempo de um item; taxa de entrega, itens concluídos por período."
+      }
+    ],
+    "atencao": "A contagem começa no pedido do cliente ou quando o time assume o item, conforme a definição adotada.",
+    "fonte": "Kanban University, Customer Lead Time: https://kanban.university/tag/lead-time/; The Official Guide to The Kanban Method, Core Kanban Metrics (taxa de entrega): https://kanban.university/kanban-guide/",
+    "tags": [
+      "kanban",
+      "lead-time",
+      "metricas-de-fluxo"
+    ]
+  },
+  {
+    "id": "card-es-n1-039",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Métodos ágeis (manifesto, XP, Kanban, Lean)",
+    "nivel": 1,
+    "conceito": "Sistema puxado no Lean",
+    "termo_ingles": "pull system",
+    "traducao": "Sistema puxado: cada etapa produz quando a etapa seguinte solicita o trabalho.",
+    "resumo": "No Lean, que busca eliminar desperdício, cada etapa só começa quando a seguinte pede trabalho, reduzindo itens parados à espera de uso.",
+    "nao_confundir": [
+      {
+        "conceito": "Sistema empurrado",
+        "diferenca": "No sistema puxado, a etapa seguinte solicita trabalho; no empurrado, a anterior envia sem solicitação."
+      }
+    ],
+    "atencao": "Sistema puxado inicia o trabalho por demanda real, não por previsão do que será pedido.",
+    "fonte": "Mary e Tom Poppendieck, Lean Software Development: An Agile Toolkit (2003)",
+    "tags": [
+      "lean",
+      "sistema-puxado",
+      "desperdicio"
+    ]
+  },
+  {
+    "id": "card-es-n1-040",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Métodos ágeis (manifesto, XP, Kanban, Lean)",
+    "nivel": 1,
+    "conceito": "Entrega frequente de software",
+    "termo_ingles": "frequent delivery",
+    "traducao": "Entrega frequente: software funcionando em intervalos curtos.",
+    "resumo": "Princípio ágil: entregar software funcionando com frequência, de poucas semanas a poucos meses, preferindo o menor intervalo.",
+    "nao_confundir": [
+      {
+        "conceito": "Entrega única ao final",
+        "diferenca": "Entrega frequente libera partes funcionais; entrega única só libera o produto no final."
+      }
+    ],
+    "atencao": "Pelos princípios do Manifesto, a medida primária de progresso é software funcionando.",
+    "fonte": "Princípios por trás do Manifesto Ágil, princípios 3 e 7: https://agilemanifesto.org/iso/ptbr/principles.html",
+    "tags": [
+      "agil",
+      "iterativo-incremental"
+    ]
+  },
+  {
+    "id": "card-es-n1-041",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Scrum",
+    "nivel": 1,
+    "conceito": "Responsabilidades no Scrum Team",
+    "termo_ingles": "Scrum Team accountabilities",
+    "traducao": "Responsabilidades do Scrum Team: Product Owner, Scrum Master e Developers respondem por partes distintas do trabalho.",
+    "resumo": "Product Owner maximiza valor; Scrum Master promove compreensão e uso do Scrum; Developers criam incremento utilizável.",
+    "nao_confundir": [
+      {
+        "conceito": "Gerente de projeto como papel obrigatório",
+        "diferenca": "O Scrum Guide define três responsabilidades; gerente de projeto não é uma delas."
+      }
+    ],
+    "atencao": "O Scrum Master é um líder que serve o Scrum Team e a organização.",
+    "fonte": "The Scrum Guide, novembro de 2020, versão oficial em português brasileiro: https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-PortugueseBR-3.0.pdf",
+    "tags": [
+      "scrum",
+      "papeis-scrum",
+      "developers"
+    ]
+  },
+  {
+    "id": "card-es-n1-042",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Scrum",
+    "nivel": 1,
+    "conceito": "Product Owner",
+    "termo_ingles": "Product Owner",
+    "traducao": "Product Owner: responsável por maximizar o valor do produto e ordenar o Product Backlog.",
+    "resumo": "O Product Owner responde pelo Product Backlog, a lista ordenada do que o produto precisa, e pela ordem de seus itens.",
+    "nao_confundir": [
+      {
+        "conceito": "Scrum Master",
+        "diferenca": "Product Owner ordena o Product Backlog; Scrum Master facilita a aplicação do Scrum."
+      }
+    ],
+    "atencao": "O Product Owner pode delegar tarefas do Product Backlog, mas continua responsável pelo resultado.",
+    "fonte": "The Scrum Guide, novembro de 2020, seção Product Owner: https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-PortugueseBR-3.0.pdf",
+    "tags": [
+      "scrum",
+      "product-owner",
+      "product-backlog"
+    ]
+  },
+  {
+    "id": "card-es-n1-043",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Scrum",
+    "nivel": 1,
+    "conceito": "Duração da Sprint",
+    "termo_ingles": "Sprint timebox",
+    "traducao": "Sprint: ciclo de trabalho de duração fixa.",
+    "resumo": "A Sprint é o ciclo de trabalho do Scrum, um evento de duração fixa de um mês ou menos que cria consistência.",
+    "nao_confundir": [
+      {
+        "conceito": "Sprint de duas semanas",
+        "diferenca": "Sprint dura um mês ou menos; duas semanas é só uma duração possível."
+      }
+    ],
+    "atencao": "Uma nova Sprint começa imediatamente após a conclusão da Sprint anterior.",
+    "fonte": "The Scrum Guide, novembro de 2020, seção The Sprint: https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-PortugueseBR-3.0.pdf",
+    "tags": [
+      "scrum",
+      "sprint",
+      "timebox"
+    ]
+  },
+  {
+    "id": "card-es-n1-044",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Scrum",
+    "nivel": 1,
+    "conceito": "Sprint Backlog",
+    "termo_ingles": "Sprint Backlog",
+    "traducao": "Sprint Backlog: plano dos Developers para a Sprint.",
+    "resumo": "É o plano dos Developers para a Sprint, com a Meta da Sprint (o porquê), itens escolhidos do Product Backlog (o quê) e um plano de como entregá-los.",
+    "nao_confundir": [
+      {
+        "conceito": "Product Backlog",
+        "diferenca": "Product Backlog lista trabalho do produto; Sprint Backlog contém plano dos Developers para a Sprint."
+      }
+    ],
+    "atencao": "O Sprint Backlog é atualizado durante a Sprint, à medida que os Developers aprendem mais.",
+    "fonte": "The Scrum Guide, novembro de 2020, seção Sprint Backlog: https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-PortugueseBR-3.0.pdf",
+    "tags": [
+      "scrum",
+      "sprint-backlog",
+      "developers"
+    ]
+  },
+  {
+    "id": "card-es-n1-045",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Scrum",
+    "nivel": 1,
+    "conceito": "Daily Scrum",
+    "termo_ingles": "Daily Scrum",
+    "traducao": "Scrum diário: evento curto para alinhar o trabalho da Sprint.",
+    "resumo": "Os Developers inspecionam o progresso rumo à Meta da Sprint e adaptam o Sprint Backlog, todo dia útil, por até 15 minutos.",
+    "nao_confundir": [
+      {
+        "conceito": "Sprint Review",
+        "diferenca": "Daily Scrum adapta o plano dos Developers; Sprint Review inspeciona resultados com interessados."
+      }
+    ],
+    "atencao": "O Scrum Master garante que a Daily Scrum ocorra; os Developers escolhem a estrutura e as técnicas.",
+    "fonte": "The Scrum Guide, novembro de 2020, seção Daily Scrum: https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-PortugueseBR-3.0.pdf",
+    "tags": [
+      "scrum",
+      "daily-scrum"
+    ]
+  },
+  {
+    "id": "card-es-n1-046",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Engenharia de requisitos",
+    "nivel": 1,
+    "conceito": "Requisito funcional",
+    "termo_ingles": "functional requirement",
+    "traducao": "Requisito funcional: serviço ou comportamento que o sistema deve oferecer.",
+    "resumo": "Um requisito funcional descreve uma função do sistema, como calcular um pagamento ou emitir um documento.",
+    "nao_confundir": [
+      {
+        "conceito": "Requisito não funcional",
+        "diferenca": "Requisito funcional descreve uma função; requisito não funcional especifica qualidade ou restrição do sistema."
+      }
+    ],
+    "atencao": "Requisito funcional diz o que o sistema faz, não quão bem nem sob quais restrições.",
+    "fonte": "SWEBOK Guide V4.0a, IEEE Computer Society (2024), seção 1.4 Functional Requirements: https://ieeecs-media.computer.org/media/education/swebok/swebok-v4.pdf",
+    "tags": [
+      "requisitos-funcionais",
+      "requisitos"
+    ]
+  },
+  {
+    "id": "card-es-n1-047",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Engenharia de requisitos",
+    "nivel": 1,
+    "conceito": "Requisito não funcional",
+    "termo_ingles": "nonfunctional requirement",
+    "traducao": "Requisito não funcional: qualidade ou restrição que condiciona o funcionamento do sistema.",
+    "resumo": "Tempo de resposta e confiabilidade descrevem qualidades ou restrições, não uma nova função oferecida.",
+    "nao_confundir": [
+      {
+        "conceito": "Requisito funcional",
+        "diferenca": "Requisito não funcional descreve qualidade ou restrição; requisito funcional especifica uma função do sistema."
+      }
+    ],
+    "atencao": "Requisito não funcional restringe a solução; não define uma função a mais.",
+    "fonte": "SWEBOK Guide V4.0a, IEEE Computer Society (2024), seção 1.5 Nonfunctional Requirements: https://ieeecs-media.computer.org/media/education/swebok/swebok-v4.pdf",
+    "tags": [
+      "requisitos-nao-funcionais",
+      "requisitos"
+    ]
+  },
+  {
+    "id": "card-es-n1-048",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Engenharia de requisitos",
+    "nivel": 1,
+    "conceito": "Elicitação de requisitos",
+    "termo_ingles": "requirements elicitation",
+    "traducao": "Elicitação de requisitos: atividade de descobrir necessidades e requisitos com suas fontes.",
+    "resumo": "Entrevistas, observação e workshops ajudam a descobrir requisitos junto a pessoas e outras fontes relevantes.",
+    "nao_confundir": [
+      {
+        "conceito": "Análise de requisitos",
+        "diferenca": "Elicitação descobre requisitos com suas fontes; análise examina, organiza e resolve problemas entre requisitos."
+      }
+    ],
+    "atencao": "Fontes incluem partes interessadas (quem é afetado pelo sistema), políticas e processos da organização e ambiente computacional.",
+    "fonte": "SWEBOK Guide V4.0a, IEEE Computer Society (2024), seção 2 Requirements Elicitation: https://ieeecs-media.computer.org/media/education/swebok/swebok-v4.pdf",
+    "tags": [
+      "elicitacao",
+      "analise-de-requisitos",
+      "requisitos"
+    ]
+  },
+  {
+    "id": "card-es-n1-049",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Engenharia de requisitos",
+    "nivel": 1,
+    "conceito": "História de usuário",
+    "termo_ingles": "user story",
+    "traducao": "História de usuário: registro breve de uma necessidade pela perspectiva de quem usa.",
+    "resumo": "Descreve uma necessidade em frase curta, pelo ponto de vista de quem usa o sistema, e o benefício esperado.",
+    "nao_confundir": [
+      {
+        "conceito": "Cenário Dado Quando Então",
+        "diferenca": "História registra papel, ação e benefício; cenário descreve contexto, evento e resultado esperado."
+      }
+    ],
+    "atencao": "O formato Como, quero, para descreve uma história de usuário; Dado, Quando, Então estrutura testes de aceitação.",
+    "fonte": "Agile Alliance, User Story Template: https://agilealliance.org/glossary/user-story-template/; Given-When-Then: https://agilealliance.org/glossary/given-when-then/",
+    "tags": [
+      "historia-de-usuario",
+      "requisitos"
+    ]
+  },
+  {
+    "id": "card-es-n1-050",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Engenharia de requisitos",
+    "nivel": 1,
+    "conceito": "Análise de requisitos",
+    "termo_ingles": "requirements analysis",
+    "traducao": "Análise de requisitos: exame e organização dos requisitos para identificar conflitos e esclarecer necessidades.",
+    "resumo": "A análise examina requisitos, prioridades e conflitos para apoiar uma especificação compreensível e consistente.",
+    "nao_confundir": [
+      {
+        "conceito": "Validação de requisitos",
+        "diferenca": "Análise examina e organiza requisitos; validação verifica se eles representam necessidades das partes interessadas."
+      }
+    ],
+    "atencao": "No SWEBOK, elicitação e análise são atividades distintas; em muitos livros, formam uma só.",
+    "fonte": "SWEBOK Guide V4.0a, IEEE Computer Society (2024), seções 2 Requirements Elicitation e 3 Requirements Analysis: https://ieeecs-media.computer.org/media/education/swebok/swebok-v4.pdf",
+    "tags": [
+      "analise-de-requisitos",
+      "requisitos"
+    ]
   }
 ]
