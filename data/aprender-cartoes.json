@@ -6374,5 +6374,340 @@
       "service-mesh",
       "microsservicos"
     ]
+  },
+  {
+    "id": "card-bd-n1-113",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Deep learning e PLN",
+    "nivel": 1,
+    "conceito": "Aprendizado profundo",
+    "termo_ingles": "deep learning",
+    "traducao": "Aprendizado profundo: aprendizado de máquina com redes neurais de várias camadas, que aprendem características cada vez mais abstratas dos dados.",
+    "resumo": "Rede neural artificial é um modelo composto por unidades conectadas; camada é um conjunto dessas unidades que transforma entradas. Com mais camadas, a rede encadeia mais etapas de transformação.",
+    "nao_confundir": [
+      {
+        "conceito": "Aprendizado de máquina",
+        "diferenca": "Aprendizado de máquina reúne métodos; aprendizado profundo usa redes neurais com várias camadas."
+      }
+    ],
+    "atencao": "A palavra “profundo” vem do número de camadas da rede neural.",
+    "fonte": "Goodfellow, Bengio e Courville, Deep Learning (2016), cap. 1 e cap. 6: https://www.deeplearningbook.org/contents/intro.html ; https://www.deeplearningbook.org/contents/mlp.html",
+    "tags": [
+      "deep-learning",
+      "redes-neurais"
+    ]
+  },
+  {
+    "id": "card-bd-n1-114",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Deep learning e PLN",
+    "nivel": 1,
+    "conceito": "Processamento de linguagem natural (PLN)",
+    "termo_ingles": "natural language processing",
+    "traducao": "Processamento de linguagem natural: área que permite a computadores processar linguagem humana escrita ou falada.",
+    "resumo": "Inclui tarefas como análise de texto e reconhecimento de fala, com métodos computacionais aplicados à linguagem humana.",
+    "nao_confundir": [
+      {
+        "conceito": "Aprendizado profundo",
+        "diferenca": "PLN define o problema (linguagem humana); aprendizado profundo é uma técnica que pode resolvê-lo."
+      }
+    ],
+    "atencao": "O PLN pode usar métodos que não são aprendizado profundo, como contagens de palavras.",
+    "fonte": "Jurafsky e Martin, Speech and Language Processing, 3ª ed., rascunho público, cap. 1, Introduction. https://web.stanford.edu/~jurafsky/slp3/",
+    "tags": [
+      "pln"
+    ]
+  },
+  {
+    "id": "card-bd-n1-115",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Deep learning e PLN",
+    "nivel": 1,
+    "conceito": "Saco de palavras",
+    "termo_ingles": "bag of words",
+    "traducao": "Saco de palavras: representação de texto por contagens de palavras, sem preservar sua ordem.",
+    "resumo": "Cada palavra recebe uma contagem no texto. Frases com as mesmas palavras e frequências podem ter a mesma representação mesmo em ordens diferentes.",
+    "nao_confundir": [
+      {
+        "conceito": "Representação sequencial",
+        "diferenca": "Saco de palavras guarda contagens; representação sequencial preserva a ordem dos elementos."
+      }
+    ],
+    "atencao": "A contagem não preserva a ordem original das palavras no texto.",
+    "fonte": "Jurafsky e Martin, Speech and Language Processing, 3ª ed., rascunho público (versão de ago. 2026), cap. 11, seção 11.1.1, Representing documents as vectors. https://web.stanford.edu/~jurafsky/slp3/11.pdf",
+    "tags": [
+      "pln",
+      "bag-of-words"
+    ]
+  },
+  {
+    "id": "card-bd-n1-116",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Deep learning e PLN",
+    "nivel": 1,
+    "conceito": "Embedding de palavra",
+    "termo_ingles": "word embedding",
+    "traducao": "Vetor de palavra: sequência de números que representa uma palavra a partir de padrões de uso em textos.",
+    "resumo": "Palavras usadas em contextos semelhantes podem ter representações próximas no espaço numérico aprendido pelo modelo.",
+    "nao_confundir": [
+      {
+        "conceito": "Contagem de palavras",
+        "diferenca": "Contagem registra frequências; embedding representa palavras por relações aprendidas nos contextos."
+      }
+    ],
+    "atencao": "Embeddings são vetores curtos (poucos números) e densos (quase sem zeros); contagens são longos e cheios de zeros.",
+    "fonte": "Jurafsky e Martin, Speech and Language Processing, 3ª ed., rascunho público, cap. 5, Embeddings. https://web.stanford.edu/~jurafsky/slp3/5.pdf",
+    "tags": [
+      "embeddings",
+      "pln"
+    ]
+  },
+  {
+    "id": "card-bd-n1-117",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "IA generativa e LLMs",
+    "nivel": 1,
+    "conceito": "Inteligência artificial (IA) generativa",
+    "termo_ingles": "generative artificial intelligence",
+    "traducao": "Inteligência artificial generativa: sistemas que produzem conteúdo novo, como texto, imagem, áudio ou vídeo, a partir de padrões aprendidos.",
+    "resumo": "Os modelos aprendem a estrutura dos dados de treinamento e geram conteúdo sintético novo, derivado desses padrões.",
+    "nao_confundir": [
+      {
+        "conceito": "Classificação",
+        "diferenca": "Geração produz conteúdo; classificação atribui rótulo a uma entrada."
+      }
+    ],
+    "atencao": "IA generativa não é só texto: também produz imagens, áudio e vídeo.",
+    "fonte": "NIST, Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile, NIST AI 600-1 (2024): https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+    "tags": [
+      "ia-generativa",
+      "modelos-generativos"
+    ]
+  },
+  {
+    "id": "card-bd-n1-118",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "IA generativa e LLMs",
+    "nivel": 1,
+    "conceito": "Grande modelo de linguagem (LLM)",
+    "termo_ingles": "large language model",
+    "traducao": "Grande modelo de linguagem: modelo treinado com enorme volume de texto, que estima o próximo token dado o contexto.",
+    "resumo": "Token é uma unidade de texto processada pelo modelo, como uma palavra ou parte de palavra. A geração estima a próxima unidade pelo contexto.",
+    "nao_confundir": [
+      {
+        "conceito": "Base de respostas prontas",
+        "diferenca": "Modelo de linguagem estima o próximo token; base de respostas recupera registros armazenados."
+      }
+    ],
+    "atencao": "As informações do modelo ficam codificadas em seus parâmetros; ele não consulta automaticamente uma base de fatos.",
+    "fonte": "Jurafsky e Martin, Speech and Language Processing, 3ª ed., rascunho público (versão de ago. 2026), cap. 1, seção 1.1, What is a Large Language Model?, e cap. 11. https://web.stanford.edu/~jurafsky/slp3/",
+    "tags": [
+      "llm",
+      "ia-generativa"
+    ]
+  },
+  {
+    "id": "card-bd-n1-119",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "IA generativa e LLMs",
+    "nivel": 1,
+    "conceito": "Alucinação em geração de linguagem",
+    "termo_ingles": "hallucination",
+    "traducao": "Alucinação: texto gerado que contém informação não sustentada ou incompatível com a fonte de referência.",
+    "resumo": "O modelo gera conteúdo inventado ou que contradiz o material usado como referência.",
+    "nao_confundir": [
+      {
+        "conceito": "Informação desatualizada",
+        "diferenca": "Alucinação é conteúdo sem sustentação na fonte; informação desatualizada vem de dados antigos."
+      }
+    ],
+    "atencao": "O texto alucinado dá a impressão de ser fluente e natural, apesar de infiel ou sem sentido.",
+    "fonte": "Ji et al., Survey of Hallucination in Natural Language Generation, ACM Computing Surveys, v. 55, n. 12 (2023), DOI 10.1145/3571730, seção 2. https://arxiv.org/abs/2202.03629",
+    "tags": [
+      "alucinacao",
+      "llm",
+      "modelos-generativos"
+    ]
+  },
+  {
+    "id": "card-bd-n1-120",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "IA generativa e LLMs",
+    "nivel": 1,
+    "conceito": "Temperatura de amostragem",
+    "termo_ingles": "sampling temperature",
+    "traducao": "Temperatura: parâmetro que controla o grau de aleatoriedade na escolha do próximo token.",
+    "resumo": "Valores maiores aumentam a aleatoriedade; valores menores deixam a saída mais focada.",
+    "nao_confundir": [
+      {
+        "conceito": "Precisão factual",
+        "diferenca": "Temperatura regula aleatoriedade; não certifica que as afirmações geradas sejam verdadeiras."
+      }
+    ],
+    "atencao": "Segundo a OpenAI, em usos factuais, como extração de dados, a temperatura 0 é a mais indicada.",
+    "fonte": "Documentação oficial da API da OpenAI, Responses API, parâmetro temperature: https://developers.openai.com/api/reference/resources/responses/methods/create ; OpenAI Help Center, artigo 6654000 (hoje intitulado Best practices for prompt engineering with the OpenAI API): https://help.openai.com/en/articles/6654000-how-to-use-temperature-logprobs-and-other-optional-parameters",
+    "tags": [
+      "temperature",
+      "llm"
+    ]
+  },
+  {
+    "id": "card-bd-n1-121",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "MLOps",
+    "nivel": 1,
+    "conceito": "Operações de aprendizado de máquina (MLOps)",
+    "termo_ingles": "machine learning operations",
+    "traducao": "Operações de aprendizado de máquina: práticas para desenvolver, implantar e operar sistemas com modelos.",
+    "resumo": "Incluem automação e monitoramento durante a construção e operação de sistemas de aprendizado de máquina em produção.",
+    "nao_confundir": [
+      {
+        "conceito": "DevOps",
+        "diferenca": "DevOps integra desenvolvimento e operação de software; MLOps também acompanha dados e modelos."
+      }
+    ],
+    "atencao": "O código do modelo é só uma pequena parte de um sistema de aprendizado de máquina em produção.",
+    "fonte": "Google Cloud Architecture Center, MLOps: Continuous delivery and automation pipelines in machine learning, revisão de 28 ago. 2024. https://docs.cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning",
+    "tags": [
+      "mlops",
+      "ciclo-de-vida",
+      "monitoramento"
+    ]
+  },
+  {
+    "id": "card-bd-n1-122",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "MLOps",
+    "nivel": 1,
+    "conceito": "Registro de modelos",
+    "termo_ingles": "model registry",
+    "traducao": "Registro de modelos: local onde o modelo treinado é guardado depois do treinamento.",
+    "resumo": "O modelo treinado é enviado ao registro de modelos; em pipelines automatizados, esse envio é a saída da etapa de treinamento.",
+    "nao_confundir": [
+      {
+        "conceito": "Versionamento de código",
+        "diferenca": "Código-fonte vai ao repositório de código; o modelo treinado pode ir ao registro de modelos."
+      }
+    ],
+    "atencao": "Um fluxo manual pode incluir o envio do modelo treinado a um registro de modelos.",
+    "fonte": "Google Cloud Architecture Center, MLOps: Continuous delivery and automation pipelines in machine learning, seção MLOps level 0, revisão de 28 ago. 2024. https://docs.cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning",
+    "tags": [
+      "model-registry",
+      "versionamento-de-modelos",
+      "mlops"
+    ]
+  },
+  {
+    "id": "card-bd-n1-123",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "MLOps",
+    "nivel": 1,
+    "conceito": "Implantação de modelo",
+    "termo_ingles": "model deployment",
+    "traducao": "Implantação: disponibilização de um modelo validado em ambiente que atende previsões.",
+    "resumo": "Após validado, o modelo é publicado em um ambiente onde passa a atender pedidos de previsão.",
+    "nao_confundir": [
+      {
+        "conceito": "Treinamento de modelo",
+        "diferenca": "Treinamento ajusta o modelo com dados; implantação disponibiliza o modelo para atender previsões."
+      }
+    ],
+    "atencao": "Implantar não é treinar: o modelo implantado apenas recebe entradas e devolve previsões.",
+    "fonte": "Google Cloud Architecture Center, MLOps: Continuous delivery and automation pipelines in machine learning, seção Data science steps for ML, revisão de 28 ago. 2024. https://docs.cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning",
+    "tags": [
+      "deploy",
+      "mlops"
+    ]
+  },
+  {
+    "id": "card-bd-n1-125",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Ética e governança de IA",
+    "nivel": 1,
+    "conceito": "Viés algorítmico",
+    "termo_ingles": "algorithmic bias",
+    "traducao": "Viés algorítmico: tendência sistemática de resultados injustos ou desiguais em um sistema algorítmico.",
+    "resumo": "O NIST descreve três categorias de viés em IA: sistêmico, computacional e estatístico, e humano-cognitivo.",
+    "nao_confundir": [
+      {
+        "conceito": "Viés sistêmico",
+        "diferenca": "Viés algorítmico aparece nos resultados; viés sistêmico está nas normas e práticas da organização."
+      }
+    ],
+    "atencao": "Dados equilibrados não bastam: o viés é mais amplo que o equilíbrio entre grupos e a representatividade dos dados.",
+    "fonte": "NIST, Artificial Intelligence Risk Management Framework (AI RMF 1.0), NIST AI 100-1 (2023), seção 3 (viés prejudicial): https://nvlpubs.nist.gov/nistpubs/ai/nist.ai.100-1.pdf",
+    "tags": [
+      "vies",
+      "discriminacao-algoritmica",
+      "etica-ia"
+    ]
+  },
+  {
+    "id": "card-bd-n1-126",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Ética e governança de IA",
+    "nivel": 1,
+    "conceito": "Explicabilidade em inteligência artificial",
+    "termo_ingles": "explainability",
+    "traducao": "Explicabilidade: representação dos mecanismos internos de operação de um sistema de inteligência artificial.",
+    "resumo": "Descreve como o sistema opera e pode apoiar compreensão, auditoria e governança.",
+    "nao_confundir": [
+      {
+        "conceito": "Interpretabilidade",
+        "diferenca": "Explicabilidade descreve mecanismos; interpretabilidade contextualiza o significado da saída do sistema."
+      }
+    ],
+    "atencao": "Segundo o NIST, explicabilidade responde “como” a decisão foi tomada; interpretabilidade responde “por quê” e qual o significado.",
+    "fonte": "NIST, Artificial Intelligence Risk Management Framework (AI RMF 1.0), NIST AI 100-1 (2023), seção 3.5. https://nvlpubs.nist.gov/nistpubs/ai/nist.ai.100-1.pdf",
+    "tags": [
+      "explicabilidade",
+      "interpretabilidade",
+      "etica-ia"
+    ]
+  },
+  {
+    "id": "card-bd-n1-127",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Ética e governança de IA",
+    "nivel": 1,
+    "conceito": "Transparência em inteligência artificial",
+    "termo_ingles": "transparency",
+    "traducao": "Transparência: disponibilidade de informações sobre um sistema de inteligência artificial e suas saídas.",
+    "resumo": "As informações podem abranger projeto, dados de treinamento, usos pretendidos e decisões de implantação.",
+    "nao_confundir": [
+      {
+        "conceito": "Publicação integral do código",
+        "diferenca": "Transparência disponibiliza informação apropriada; publicação integral exige divulgar todo o código."
+      }
+    ],
+    "atencao": "Transparência abrange informações sobre o sistema e suas saídas, ajustadas à etapa do ciclo e ao público.",
+    "fonte": "NIST, Artificial Intelligence Risk Management Framework (AI RMF 1.0), NIST AI 100-1 (2023), seção 3.4. https://nvlpubs.nist.gov/nistpubs/ai/nist.ai.100-1.pdf",
+    "tags": [
+      "transparencia",
+      "etica-ia"
+    ]
+  },
+  {
+    "id": "card-bd-n1-128",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Ética e governança de IA",
+    "nivel": 1,
+    "conceito": "Lei Geral de Proteção de Dados Pessoais (LGPD)",
+    "termo_ingles": "Brazilian General Data Protection Law",
+    "traducao": "Lei Geral de Proteção de Dados Pessoais: lei que disciplina o tratamento de dados pessoais.",
+    "resumo": "O artigo 20 permite ao titular (a pessoa dos dados) pedir revisão de decisões unicamente automatizadas que afetem seus interesses.",
+    "nao_confundir": [
+      {
+        "conceito": "Direito de acesso",
+        "diferenca": "Art. 20: revisão de decisão automatizada; art. 18: acesso aos dados."
+      }
+    ],
+    "atencao": "O controlador (quem decide sobre o tratamento) informa, se solicitado, critérios e procedimentos da decisão, observados segredos comercial e industrial.",
+    "fonte": "Lei nº 13.709/2018, Lei Geral de Proteção de Dados Pessoais, art. 20, redação vigente. https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm",
+    "tags": [
+      "lgpd",
+      "decisao-automatizada",
+      "etica-ia"
+    ]
   }
 ]
