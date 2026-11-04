@@ -8012,5 +8012,614 @@
       "qualidade-de-dados",
       "dmbok"
     ]
+  },
+  {
+    "id": "card-rlm-n1-001",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Medidas de posição: média, moda, mediana e separatrizes",
+    "nivel": 1,
+    "conceito": "Média aritmética",
+    "termo_ingles": "Mean",
+    "traducao": "Média: representa o valor obtido ao dividir a soma dos dados pela quantidade de valores.",
+    "resumo": "Soma dos valores dividida pela quantidade. Exemplo: (2 + 4 + 6) ÷ 3 = 4.",
+    "nao_confundir": [
+      {
+        "conceito": "Média ponderada",
+        "diferenca": "A média simples atribui pesos iguais; a ponderada considera pesos diferentes para os valores."
+      }
+    ],
+    "atencao": "Um valor extremo pode deslocar a média para perto de si.",
+    "fonte": "NIST/SEMATECH Engineering Statistics Handbook, seção 1.3.5.1, Measures of Location — https://itl.nist.gov/div898/handbook/eda/section3/eda351.htm",
+    "tags": [
+      "medidas-de-posicao-media-moda-mediana-e-separatrizes",
+      "raciocinio",
+      "pegadinha"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-002",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Medidas de posição: média, moda, mediana e separatrizes",
+    "nivel": 1,
+    "conceito": "Mediana",
+    "termo_ingles": "Median",
+    "traducao": "Mediana: identifica o valor central dos dados depois de ordená-los.",
+    "resumo": "Com quantidade ímpar, escolhe-se o valor central. Com quantidade par, calcula-se a média dos dois centrais. Exemplo: 2, 4, 6, 8 → 5.",
+    "nao_confundir": [
+      {
+        "conceito": "Média aritmética",
+        "diferenca": "A média divide a soma pela quantidade; a mediana localiza o centro dos dados ordenados."
+      }
+    ],
+    "atencao": "A mediana é menos afetada por valores extremos do que a média.",
+    "fonte": "NIST/SEMATECH Engineering Statistics Handbook, seção 1.3.5.1, Measures of Location — https://itl.nist.gov/div898/handbook/eda/section3/eda351.htm",
+    "tags": [
+      "medidas-de-posicao-media-moda-mediana-e-separatrizes",
+      "pegadinha",
+      "raciocinio"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-003",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Medidas de posição: média, moda, mediana e separatrizes",
+    "nivel": 1,
+    "conceito": "Moda",
+    "termo_ingles": "Mode",
+    "traducao": "Moda: identifica o valor que aparece com maior frequência nos dados.",
+    "resumo": "É o valor mais frequente. Exemplo: em 2, 3, 3, 5, a moda é 3.",
+    "nao_confundir": [
+      {
+        "conceito": "Mediana",
+        "diferenca": "A moda identifica o valor mais frequente; a mediana identifica o centro dos dados ordenados."
+      }
+    ],
+    "atencao": "Um conjunto pode ter mais de uma moda ou não apresentar moda.",
+    "fonte": "OpenStax, Introductory Statistics 2e (Illowsky e Dean, 2023), seção 2.5: https://openstax.org/books/introductory-statistics-2e/pages/2-5-measures-of-the-center-of-the-data ; OpenStax, Prealgebra 2e, seção 5.5: https://openstax.org/books/prealgebra/pages/5-5-averages-and-probability",
+    "tags": [
+      "medidas-de-posicao-media-moda-mediana-e-separatrizes",
+      "estrutural",
+      "pegadinha"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-004",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Medidas de posição: média, moda, mediana e separatrizes",
+    "nivel": 1,
+    "conceito": "Quartis",
+    "termo_ingles": "Quartiles",
+    "traducao": "Quartis: dividem os dados ordenados em quatro partes, indicando posições de referência.",
+    "resumo": "Q1 marca aproximadamente 25% dos dados; Q2 corresponde à mediana; Q3 marca aproximadamente 75%.",
+    "nao_confundir": [
+      {
+        "conceito": "Percentis",
+        "diferenca": "Quartis dividem os dados em quatro partes; percentis dividem os dados em cem partes."
+      }
+    ],
+    "atencao": "Em muitos livros, o método de cálculo dos quartis varia, e os valores podem diferir conforme o método.",
+    "fonte": "NIST/SEMATECH e-Handbook, seção 7.2.6.2, Percentiles: https://www.itl.nist.gov/div898/handbook/prc/section2/prc262.htm ; seção 1.3.3.7, Box Plot: https://www.itl.nist.gov/div898/handbook/eda/section3/boxplot.htm",
+    "tags": [
+      "medidas-de-posicao-media-moda-mediana-e-separatrizes",
+      "estrutural",
+      "provavel"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-005",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Medidas de posição: média, moda, mediana e separatrizes",
+    "nivel": 1,
+    "conceito": "Percentis",
+    "termo_ingles": "Percentiles",
+    "traducao": "Percentis: indicam posições que dividem os dados ordenados em cem partes.",
+    "resumo": "O percentil 25 indica a posição abaixo da qual estão cerca de 25% dos dados ordenados.",
+    "nao_confundir": [
+      {
+        "conceito": "Quartis",
+        "diferenca": "Percentis dividem os dados em cem partes; quartis dividem os dados em quatro partes."
+      }
+    ],
+    "atencao": "P25 corresponde a Q1; P50 corresponde a Q2; P75 corresponde a Q3.",
+    "fonte": "NIST/SEMATECH e-Handbook, seção 7.2.6.2, Percentiles: https://www.itl.nist.gov/div898/handbook/prc/section2/prc262.htm ; seção 1.3.3.7, Box Plot: https://www.itl.nist.gov/div898/handbook/eda/section3/boxplot.htm",
+    "tags": [
+      "medidas-de-posicao-media-moda-mediana-e-separatrizes",
+      "estrutural",
+      "pegadinha"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-006",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Medidas de dispersão absoluta e relativa",
+    "nivel": 1,
+    "conceito": "Amplitude",
+    "termo_ingles": "Range",
+    "traducao": "Amplitude: mede a distância entre o maior e o menor valor dos dados.",
+    "resumo": "Subtrai-se o menor valor do maior. Exemplo: 4, 9, 12 → 12 − 4 = 8.",
+    "nao_confundir": [
+      {
+        "conceito": "Variância",
+        "diferenca": "A amplitude usa apenas os extremos; a variância considera os afastamentos em relação à média."
+      }
+    ],
+    "atencao": "A amplitude depende somente do maior e do menor valor.",
+    "fonte": "NIST/SEMATECH Engineering Statistics Handbook, seção 1.3.5.6, Measures of Scale — https://itl.nist.gov/div898/handbook/eda/section3/eda356.htm",
+    "tags": [
+      "medidas-de-dispersao-absoluta-e-relativa",
+      "estrutural",
+      "raciocinio"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-007",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Medidas de dispersão absoluta e relativa",
+    "nivel": 1,
+    "conceito": "Variância",
+    "termo_ingles": "Variance",
+    "traducao": "Variância: média dos desvios em relação à média, elevados ao quadrado (na população).",
+    "resumo": "Para 2, 4 e 6, a média é 4; os desvios ao quadrado são 4, 0 e 4. Dividindo por n = 3 (população), dá 8/3.",
+    "nao_confundir": [
+      {
+        "conceito": "Desvio padrão",
+        "diferenca": "A variância usa os desvios ao quadrado; o desvio padrão é a raiz quadrada dela."
+      }
+    ],
+    "atencao": "A variância é expressa na unidade de medida dos dados elevada ao quadrado.",
+    "fonte": "NIST/SEMATECH Engineering Statistics Handbook, seção 1.3.5.6, Measures of Scale — https://itl.nist.gov/div898/handbook/eda/section3/eda356.htm",
+    "tags": [
+      "medidas-de-dispersao-absoluta-e-relativa",
+      "pegadinha",
+      "raciocinio"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-008",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Medidas de dispersão absoluta e relativa",
+    "nivel": 1,
+    "conceito": "Desvio padrão",
+    "termo_ingles": "Standard deviation",
+    "traducao": "Desvio padrão: expressa o afastamento dos dados em relação à média na unidade original dos valores.",
+    "resumo": "É a raiz quadrada da variância. Exemplo: variância 9 → desvio padrão √9 = 3.",
+    "nao_confundir": [
+      {
+        "conceito": "Variância",
+        "diferenca": "A variância apresenta unidade ao quadrado; o desvio padrão apresenta a unidade original dos dados."
+      }
+    ],
+    "atencao": "O desvio padrão nunca é negativo; é zero só quando todos os valores são iguais.",
+    "fonte": "NIST/SEMATECH e-Handbook, seção 1.3.5.6, Measures of Scale: https://itl.nist.gov/div898/handbook/eda/section3/eda356.htm ; OpenStax, Introductory Statistics 2e (Illowsky e Dean, 2023), seção 2.7: https://openstax.org/books/introductory-statistics-2e/pages/2-7-measures-of-the-spread-of-the-data",
+    "tags": [
+      "medidas-de-dispersao-absoluta-e-relativa",
+      "pegadinha",
+      "estrutural"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-009",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Medidas de dispersão absoluta e relativa",
+    "nivel": 1,
+    "conceito": "Coeficiente de variação",
+    "termo_ingles": "Coefficient of variation",
+    "traducao": "Coeficiente de variação: expressa o desvio padrão em relação à média, permitindo avaliar a dispersão relativa.",
+    "resumo": "Calcula-se desvio padrão ÷ média × 100. Exemplo: desvio 2 e média 10 → CV = 20%.",
+    "nao_confundir": [
+      {
+        "conceito": "Desvio padrão",
+        "diferenca": "O desvio padrão mede dispersão absoluta; o coeficiente de variação relaciona essa dispersão à média."
+      }
+    ],
+    "atencao": "O coeficiente de variação permite comparar a dispersão de séries com médias ou unidades diferentes.",
+    "fonte": "NIST, Dataplot Reference Manual, Coefficient of Variation — https://www.itl.nist.gov/div898/software/dataplot/refman2/auxillar/coefvari.htm",
+    "tags": [
+      "medidas-de-dispersao-absoluta-e-relativa",
+      "estrutural",
+      "raciocinio"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-010",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Medidas de dispersão absoluta e relativa",
+    "nivel": 1,
+    "conceito": "Variância populacional e amostral",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "População é todo o conjunto estudado; amostra, uma parte dele. Na população divide-se por N; na amostra, por n − 1.",
+    "nao_confundir": [
+      {
+        "conceito": "Desvio padrão populacional e amostral",
+        "diferenca": "O desvio padrão de cada caso é a raiz quadrada da variância correspondente."
+      }
+    ],
+    "atencao": "Exemplo 2, 4, 6: populacional 8/3; amostral 8/2 = 4, valor maior.",
+    "fonte": "OpenStax, Introductory Statistics 2e (Illowsky e Dean, 2023), seção 2.7: https://openstax.org/books/introductory-statistics-2e/pages/2-7-measures-of-the-spread-of-the-data ; termos-chave do cap. 1: https://openstax.org/books/introductory-statistics-2e/pages/1-key-terms",
+    "tags": [
+      "medidas-de-dispersao-absoluta-e-relativa",
+      "pegadinha",
+      "raciocinio"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-011",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Estatística descritiva",
+    "nivel": 1,
+    "conceito": "Estatística descritiva",
+    "termo_ingles": "Descriptive statistics",
+    "traducao": "Estatística descritiva: organiza e resume os dados observados por meio de medidas, tabelas e gráficos.",
+    "resumo": "Descreve os dados disponíveis. Exemplo: calcular a média das notas de uma turma e apresentar sua distribuição.",
+    "nao_confundir": [
+      {
+        "conceito": "Estatística inferencial",
+        "diferenca": "A descritiva resume os dados observados; a inferencial usa amostra para concluir sobre a população."
+      }
+    ],
+    "atencao": "Descrever uma amostra não significa, por si só, concluir sobre toda a população.",
+    "fonte": "OpenStax, Introductory Business Statistics (versão de Introductory Statistics), seção 1.1: https://assets.openstax.org/oscms-prodcms/media/documents/IntroductoryBusinessStatistics-OP.pdf ; OpenStax, Introductory Statistics 2e (Illowsky e Dean, 2023), termos-chave do cap. 1: https://openstax.org/books/introductory-statistics-2e/pages/1-key-terms",
+    "tags": [
+      "estatistica-descritiva"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-012",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Estatística descritiva",
+    "nivel": 1,
+    "conceito": "Tipos de variável",
+    "termo_ingles": "Variable types",
+    "traducao": "Tipos de variável: qualitativa (categórica) ou quantitativa (numérica).",
+    "resumo": "A qualitativa (categórica) descreve atributos, como setor; a quantitativa resulta de contar ou medir, como idade ou número de operações.",
+    "nao_confundir": [
+      {
+        "conceito": "Dados discretos e contínuos",
+        "diferenca": "Discretos e contínuos são subtipos da variável quantitativa, não da qualitativa."
+      }
+    ],
+    "atencao": "Discreto resulta de contagem; contínuo, de medição, como peso ou tempo.",
+    "fonte": "OpenStax, Introductory Statistics 2e (Illowsky e Dean, 2023), seção 1.2: https://openstax.org/books/introductory-statistics-2e/pages/1-2-data-sampling-and-variation-in-data-and-sampling",
+    "tags": [
+      "estatistica-descritiva"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-013",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Estatística descritiva",
+    "nivel": 1,
+    "conceito": "Frequência absoluta",
+    "termo_ingles": "Absolute frequency",
+    "traducao": "Frequência absoluta: informa quantas vezes determinado valor ou categoria aparece nos dados.",
+    "resumo": "Se 8 pessoas escolheram a opção A, a frequência absoluta dessa opção é 8.",
+    "nao_confundir": [
+      {
+        "conceito": "Frequência relativa",
+        "diferenca": "A absoluta conta ocorrências; a relativa representa a proporção dessas ocorrências no total."
+      }
+    ],
+    "atencao": "A soma das frequências absolutas corresponde à quantidade total de observações.",
+    "fonte": "OpenStax, Introductory Statistics 2e (Illowsky e Dean, 2023), seção 1.3: https://openstax.org/books/introductory-statistics-2e/pages/1-3-frequency-frequency-tables-and-levels-of-measurement",
+    "tags": [
+      "estatistica-descritiva"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-014",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Estatística descritiva",
+    "nivel": 1,
+    "conceito": "Frequências relativa e acumulada",
+    "termo_ingles": "Relative and cumulative frequency",
+    "traducao": "Frequência relativa: representa a proporção no total; frequência acumulada: soma frequências até determinada posição.",
+    "resumo": "Com 20 observações e 5 ocorrências, a frequência relativa é 5/20 = 25%. A acumulada soma frequências sucessivas.",
+    "nao_confundir": [
+      {
+        "conceito": "Frequência absoluta",
+        "diferenca": "A absoluta conta ocorrências; a relativa divide essa contagem pelo total de observações."
+      }
+    ],
+    "atencao": "A última linha da frequência acumulada relativa é 1 (100%), salvo arredondamento.",
+    "fonte": "OpenStax, Introductory Statistics 2e (Illowsky e Dean, 2023), seção 1.3: https://openstax.org/books/introductory-statistics-2e/pages/1-3-frequency-frequency-tables-and-levels-of-measurement ; OpenStax, Introductory Business Statistics, seção 1.3",
+    "tags": [
+      "estatistica-descritiva"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-015",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Probabilidade",
+    "nivel": 1,
+    "conceito": "Espaço amostral e evento",
+    "termo_ingles": "Sample space and event",
+    "traducao": "Espaço amostral: reúne todos os resultados possíveis; evento: reúne resultados de interesse.",
+    "resumo": "No lançamento de um dado, o espaço amostral é {1, 2, 3, 4, 5, 6}; sair número par é um evento.",
+    "nao_confundir": [
+      {
+        "conceito": "Resultado",
+        "diferenca": "O espaço amostral reúne todos os resultados possíveis; um resultado é uma ocorrência individual."
+      }
+    ],
+    "atencao": "Um evento pode reunir um ou mais resultados do espaço amostral.",
+    "fonte": "OpenStax, Introductory Statistics 2e (Illowsky e Dean, 2023), termos-chave do cap. 3: https://openstax.org/books/introductory-statistics-2e/pages/3-key-terms",
+    "tags": [
+      "probabilidade",
+      "espaco-amostral"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-016",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Probabilidade",
+    "nivel": 1,
+    "conceito": "Probabilidade de um evento",
+    "termo_ingles": "Probability",
+    "traducao": "Probabilidade: expressa numericamente a possibilidade de ocorrência de um evento.",
+    "resumo": "Em resultados igualmente possíveis, divide-se casos favoráveis por casos possíveis. Dado: número par = 3/6 = 1/2.",
+    "nao_confundir": [
+      {
+        "conceito": "Frequência relativa",
+        "diferenca": "A probabilidade modela a chance de ocorrência; a frequência relativa descreve a proporção observada."
+      }
+    ],
+    "atencao": "Toda probabilidade está entre 0 e 1, inclusive.",
+    "fonte": "OpenStax, Introductory Statistics 2e (Illowsky e Dean, 2023), termos-chave do cap. 3: https://openstax.org/books/introductory-statistics-2e/pages/3-key-terms",
+    "tags": [
+      "probabilidade",
+      "axiomas"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-017",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Probabilidade",
+    "nivel": 1,
+    "conceito": "Evento complementar",
+    "termo_ingles": "Complementary event",
+    "traducao": "Evento complementar: reúne os resultados em que o evento original não ocorre.",
+    "resumo": "Se a probabilidade de A é 0,3, a de A não ocorrer é 1 − 0,3 = 0,7.",
+    "nao_confundir": [
+      {
+        "conceito": "Eventos mutuamente exclusivos",
+        "diferenca": "Complementares são exclusivos e somam 1; exclusivos (sem resultado comum) podem somar menos."
+      }
+    ],
+    "atencao": "A probabilidade de um evento somada à de seu complementar é sempre 1.",
+    "fonte": "OpenStax, Introductory Statistics 2e (Illowsky e Dean, 2023), termos-chave do cap. 3 e seção 3.2: https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events",
+    "tags": [
+      "probabilidade",
+      "evento-complementar"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-018",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Probabilidade",
+    "nivel": 1,
+    "conceito": "União e interseção de eventos",
+    "termo_ingles": "Union and intersection of events",
+    "traducao": "União: ocorrência de pelo menos um evento; interseção: ocorrência simultânea dos eventos.",
+    "resumo": "A união considera A ou B; a interseção, A e B. Exemplo no dado: par ou maior que 4 = 3/6 + 2/6 − 1/6 = 4/6.",
+    "nao_confundir": [
+      {
+        "conceito": "Eventos mutuamente exclusivos",
+        "diferenca": "Eventos exclusivos não têm resultados em comum; eventos com interseção compartilham resultados."
+      }
+    ],
+    "atencao": "P(A ou B) é a soma das probabilidades de A e de B menos P(A e B).",
+    "fonte": "OpenStax, Introductory Statistics 2e (Illowsky e Dean, 2023), seção 3.3, The Addition Rule: https://openstax.org/books/introductory-statistics-2e/pages/3-3-two-basic-rules-of-probability",
+    "tags": [
+      "probabilidade",
+      "axiomas"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-019",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Probabilidade condicional, independência",
+    "nivel": 1,
+    "conceito": "Probabilidade condicional",
+    "termo_ingles": "Conditional probability",
+    "traducao": "Probabilidade condicional: calcula a chance de um evento considerando que outro já ocorreu.",
+    "resumo": "P(A|B) = P(A e B) dividido pela probabilidade de B, que não pode ser zero. Se 2 de 5 casos de B são A, P(A|B) = 2/5.",
+    "nao_confundir": [
+      {
+        "conceito": "Probabilidade conjunta",
+        "diferenca": "A condicional restringe a análise a B; a conjunta considera A e B ocorrendo juntos."
+      }
+    ],
+    "atencao": "P(A|B) não é necessariamente igual a P(B|A).",
+    "fonte": "OpenStax, Introductory Statistics 2e (Illowsky e Dean, 2023), termos-chave e resumo de fórmulas do cap. 3: https://openstax.org/books/introductory-statistics-2e/pages/3-formula-review",
+    "tags": [
+      "probabilidade-condicional-independencia",
+      "pegadinha",
+      "raciocinio"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-020",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Probabilidade condicional, independência",
+    "nivel": 1,
+    "conceito": "Eventos independentes",
+    "termo_ingles": "Independent events",
+    "traducao": "Eventos independentes: são eventos em que a ocorrência de um não altera a probabilidade do outro.",
+    "resumo": "Se A e B são independentes, P(A e B) é o produto das probabilidades de A e de B. Exemplo: 1/2 × 1/2 = 1/4.",
+    "nao_confundir": [
+      {
+        "conceito": "Eventos mutuamente exclusivos",
+        "diferenca": "Independentes não alteram probabilidades; mutuamente exclusivos não podem ocorrer juntos."
+      }
+    ],
+    "atencao": "Eventos independentes com probabilidades positivas não são mutuamente exclusivos.",
+    "fonte": "OpenStax, Introductory Statistics 2e (Illowsky e Dean, 2023), seção 3.2: https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events",
+    "tags": [
+      "probabilidade-condicional-independencia",
+      "pegadinha",
+      "armadilha"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-021",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Probabilidade condicional, independência",
+    "nivel": 1,
+    "conceito": "Regra do produto",
+    "termo_ingles": "Multiplication rule",
+    "traducao": "Regra do produto: calcula a probabilidade conjunta usando uma probabilidade condicional.",
+    "resumo": "P(A e B) é a probabilidade de A vezes P(B|A). Exemplo: 1/2 × 1/3 = 1/6.",
+    "nao_confundir": [
+      {
+        "conceito": "Regra da soma",
+        "diferenca": "O produto calcula a ocorrência conjunta; a soma, a ocorrência de pelo menos um evento."
+      }
+    ],
+    "atencao": "Multiplicar apenas as probabilidades de A e de B só vale quando os eventos são independentes.",
+    "fonte": "OpenStax, Introductory Statistics 2e (Illowsky e Dean, 2023), seção 3.3, The Multiplication Rule: https://openstax.org/books/introductory-statistics-2e/pages/3-3-two-basic-rules-of-probability",
+    "tags": [
+      "probabilidade-condicional-independencia",
+      "raciocinio",
+      "provavel"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-022",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Probabilidade condicional, independência",
+    "nivel": 1,
+    "conceito": "Eventos mutuamente exclusivos",
+    "termo_ingles": "Mutually exclusive events",
+    "traducao": "Eventos mutuamente exclusivos: não possuem resultados em comum e não ocorrem simultaneamente.",
+    "resumo": "Se A e B são mutuamente exclusivos, P(A e B) = 0. Exemplo: em um único dado, sair 2 e sair 5.",
+    "nao_confundir": [
+      {
+        "conceito": "Eventos independentes",
+        "diferenca": "Exclusivos não ocorrem juntos; independentes não alteram a probabilidade de ocorrência um do outro."
+      }
+    ],
+    "atencao": "Se A e B são mutuamente exclusivos, P(A ou B) é a soma das duas probabilidades.",
+    "fonte": "OpenStax, Introductory Statistics 2e (Illowsky e Dean, 2023), seções 3.2 e 3.3: https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events",
+    "tags": [
+      "probabilidade-condicional-independencia",
+      "pegadinha",
+      "armadilha"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-023",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Variável aleatória e funções de distribuição",
+    "nivel": 1,
+    "conceito": "Variável aleatória",
+    "termo_ingles": "Random variable",
+    "traducao": "Variável aleatória: atribui um valor numérico a cada resultado de um processo aleatório.",
+    "resumo": "No lançamento de dois dados, X pode representar a soma dos resultados. Cada lançamento determina um valor para X.",
+    "nao_confundir": [
+      {
+        "conceito": "Evento",
+        "diferenca": "A variável aleatória atribui números aos resultados; o evento reúne resultados de interesse."
+      }
+    ],
+    "atencao": "Letra maiúscula (X) indica a variável aleatória; minúscula (x), um valor que ela assume.",
+    "fonte": "OpenStax, Introductory Statistics 2e (Illowsky e Dean, 2023), introdução do cap. 4: https://openstax.org/books/introductory-statistics-2e/pages/4-introduction",
+    "tags": [
+      "variavel-aleatoria-e-funcoes-de-distribuicao",
+      "estrutural",
+      "provavel"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-024",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Variável aleatória e funções de distribuição",
+    "nivel": 1,
+    "conceito": "Variável discreta e contínua",
+    "termo_ingles": "Discrete and continuous random variables",
+    "traducao": "Discreta: assume valores separados; contínua: pode assumir qualquer valor em um intervalo.",
+    "resumo": "Quantidade de reclamações é discreta. Tempo de atendimento é contínuo.",
+    "nao_confundir": [
+      {
+        "conceito": "Variável qualitativa (categórica)",
+        "diferenca": "Qualitativa descreve grupos; discreta e contínua são ambas quantitativas (numéricas)."
+      }
+    ],
+    "atencao": "Para uma variável contínua, a probabilidade de assumir exatamente um valor específico é zero.",
+    "fonte": "NIST/SEMATECH e-Handbook, seção 1.3.6.2, Related Distributions: https://www.itl.nist.gov/div898/handbook/eda/section3/eda362.htm ; OpenStax, Introductory Statistics 2e (Illowsky e Dean, 2023), seção 1.2: https://openstax.org/books/introductory-statistics-2e/pages/1-2-data-sampling-and-variation-in-data-and-sampling ; OpenStax, Introductory Statistics 2e (Illowsky e Dean, 2023), seção 5.1: https://openstax.org/books/introductory-statistics-2e/pages/5-1-continuous-probability-functions",
+    "tags": [
+      "variavel-aleatoria-e-funcoes-de-distribuicao",
+      "pegadinha",
+      "estrutural"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-025",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Variável aleatória e funções de distribuição",
+    "nivel": 1,
+    "conceito": "Distribuição de probabilidade",
+    "termo_ingles": "Probability distribution",
+    "traducao": "Distribuição de probabilidade: associa probabilidades aos valores que uma variável aleatória pode assumir.",
+    "resumo": "Se X assume 0, 1 e 2 com probabilidades 0,5, 0,3 e 0,2, a distribuição apresenta esses valores e suas probabilidades.",
+    "nao_confundir": [
+      {
+        "conceito": "Espaço amostral",
+        "diferenca": "O espaço amostral reúne resultados possíveis; a distribuição associa probabilidades aos valores da variável aleatória."
+      }
+    ],
+    "atencao": "As probabilidades de todos os valores possíveis de uma variável discreta somam 1.",
+    "fonte": "OpenStax, Introductory Statistics 2e (Illowsky e Dean, 2023), seção 4.1: https://openstax.org/books/introductory-statistics-2e/pages/4-1-probability-distribution-function-pdf-for-a-discrete-random-variable",
+    "tags": [
+      "variavel-aleatoria-e-funcoes-de-distribuicao",
+      "estrutural",
+      "raciocinio"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-026",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Variável aleatória e funções de distribuição",
+    "nivel": 1,
+    "conceito": "Esperança matemática",
+    "termo_ingles": "Expected value",
+    "traducao": "Esperança matemática: representa a média dos valores possíveis ponderados por suas probabilidades.",
+    "resumo": "E(X) = soma de valor × probabilidade. Para 0, 1 e 2 com probabilidades 0,5, 0,3 e 0,2: E(X) = 0,7.",
+    "nao_confundir": [
+      {
+        "conceito": "Média observada",
+        "diferenca": "A esperança usa valores e probabilidades teóricas; a média observada calcula os valores registrados."
+      }
+    ],
+    "atencao": "A esperança matemática não precisa ser um valor possível da variável aleatória.",
+    "fonte": "OpenStax, Introductory Statistics 2e (Illowsky e Dean, 2023), seção 4.2: https://openstax.org/books/introductory-statistics-2e/pages/4-2-mean-or-expected-value-and-standard-deviation",
+    "tags": [
+      "variavel-aleatoria-e-funcoes-de-distribuicao",
+      "pegadinha",
+      "raciocinio"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-027",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Variável aleatória e funções de distribuição",
+    "nivel": 1,
+    "conceito": "Função de distribuição acumulada",
+    "termo_ingles": "Cumulative distribution function",
+    "traducao": "Função de distribuição acumulada: informa a probabilidade de a variável aleatória assumir valor menor ou igual a um limite.",
+    "resumo": "F(x) = P(X ≤ x). Se P(X = 0) = 0,5 e P(X = 1) = 0,3, então F(1) = 0,8.",
+    "nao_confundir": [
+      {
+        "conceito": "Distribuição de probabilidade",
+        "diferenca": "A distribuição associa probabilidades aos valores; a acumulada soma probabilidades até determinado limite."
+      }
+    ],
+    "atencao": "A função acumulada nunca diminui quando o limite aumenta.",
+    "fonte": "NIST/SEMATECH e-Handbook, seção 1.3.6.2, Related Distributions: https://www.itl.nist.gov/div898/handbook/eda/section3/eda362.htm",
+    "tags": [
+      "variavel-aleatoria-e-funcoes-de-distribuicao",
+      "estrutural",
+      "pegadinha"
+    ]
   }
 ]
