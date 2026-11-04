@@ -9048,5 +9048,395 @@
       "iso-27001",
       "sgsi"
     ]
+  },
+  {
+    "id": "card-rs-n1-089",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Frameworks de segurança (NIST CSF, CIS Controls)",
+    "nivel": 1,
+    "conceito": "NIST Cybersecurity Framework",
+    "termo_ingles": "NIST Cybersecurity Framework (CSF)",
+    "traducao": "Estrutura de Cibersegurança: organiza resultados e atividades para gerenciar riscos de segurança cibernética.",
+    "resumo": "O NIST CSF orienta organizações a compreender, avaliar, priorizar e comunicar riscos de segurança cibernética.",
+    "nao_confundir": [
+      {
+        "conceito": "Catálogo de controles",
+        "diferenca": "O CSF organiza resultados; um catálogo descreve controles específicos."
+      }
+    ],
+    "atencao": "A versão 2.0 possui seis funções; a versão 1.1 possuía cinco.",
+    "fonte": "NIST CSWP 29, The NIST Cybersecurity Framework (CSF) 2.0, 26/02/2024 — https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf ; NIST, The CSF 1.1 Five Functions — https://www.nist.gov/cyberframework/csf-11-five-functions",
+    "tags": [
+      "nist-csf"
+    ]
+  },
+  {
+    "id": "card-rs-n1-090",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Frameworks de segurança (NIST CSF, CIS Controls)",
+    "nivel": 1,
+    "conceito": "Funções do NIST CSF 2.0",
+    "termo_ingles": "Govern, Identify, Protect, Detect, Respond, Recover",
+    "traducao": "Governar, Identificar, Proteger, Detectar, Responder e Recuperar: funções que organizam os resultados de segurança cibernética.",
+    "resumo": "As seis funções orientam a governança, o conhecimento dos ativos, a proteção, a detecção, a resposta e a recuperação.",
+    "nao_confundir": [
+      {
+        "conceito": "Categorias",
+        "diferenca": "Funções agrupam resultados amplos; categorias detalham resultados dentro de cada função."
+      }
+    ],
+    "atencao": "As funções devem ser tratadas de forma concorrente, não em sequência.",
+    "fonte": "NIST CSWP 29, The NIST Cybersecurity Framework (CSF) 2.0, 26/02/2024, seção CSF Core e Tabela 1. https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf",
+    "tags": [
+      "nist-csf"
+    ]
+  },
+  {
+    "id": "card-rs-n1-091",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Frameworks de segurança (NIST CSF, CIS Controls)",
+    "nivel": 1,
+    "conceito": "CIS Controls e grupos de implementação",
+    "termo_ingles": "Center for Internet Security Critical Security Controls",
+    "traducao": "Controles Críticos do CIS: conjunto priorizado de salvaguardas para defender sistemas e redes contra ataques cibernéticos.",
+    "resumo": "Os CIS Controls v8.1 reúnem 18 controles e organizam salvaguardas em três grupos de implementação, conforme risco e recursos.",
+    "nao_confundir": [
+      {
+        "conceito": "NIST CSF",
+        "diferenca": "O CIS prioriza salvaguardas; o NIST CSF organiza resultados em funções."
+      }
+    ],
+    "atencao": "Toda organização deve começar pelo IG1, chamado de higiene cibernética essencial.",
+    "fonte": "CIS Controls v8.1, Implementation Groups — https://www.cisecurity.org/controls/implementation-groups ; CIS, The Ongoing Evolution of the CIS Critical Security Controls (v8: de 20 para 18 controles) — https://www.cisecurity.org/insights/blog/ongoing-evolution-cis-critical-security-controls",
+    "tags": [
+      "cis-controls"
+    ]
+  },
+  {
+    "id": "card-rs-n1-092",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Frameworks de segurança (NIST CSF, CIS Controls)",
+    "nivel": 1,
+    "conceito": "Inventário de ativos",
+    "termo_ingles": "Inventory and Control of Enterprise Assets",
+    "traducao": "Inventário e controle de ativos: identifica e acompanha os equipamentos e recursos que precisam ser protegidos.",
+    "resumo": "O inventário registra ativos corporativos, como dispositivos de usuários, equipamentos de rede, servidores e recursos em nuvem.",
+    "nao_confundir": [
+      {
+        "conceito": "Inventário de software",
+        "diferenca": "O inventário de ativos registra equipamentos; o de software registra programas instalados."
+      }
+    ],
+    "atencao": "O controle 1 do CIS manda gerenciar ativamente todos os ativos: inventariar, acompanhar e corrigir.",
+    "fonte": "CIS Controls v8.1, Control 1 — Inventory and Control of Enterprise Assets — https://www.cisecurity.org/controls/inventory-and-control-of-enterprise-assets ; CIS/MS-ISAC, Establishing Essential Cyber Hygiene (2022), CIS Control 01 — https://www.cisecurity.org/insights/white-papers/establishing-essential-cyber-hygiene",
+    "tags": [
+      "cis-controls",
+      "inventario-de-ativos"
+    ]
+  },
+  {
+    "id": "card-rs-n1-093",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Frameworks de segurança (NIST CSF, CIS Controls)",
+    "nivel": 1,
+    "conceito": "MITRE ATT&CK",
+    "termo_ingles": "MITRE ATT&CK",
+    "traducao": "Base de conhecimento de táticas e técnicas: organiza comportamentos de adversários observados em ataques reais.",
+    "resumo": "O MITRE ATT&CK cataloga comportamentos de adversários e auxilia a compreender ações realizadas durante operações de ataque.",
+    "nao_confundir": [
+      {
+        "conceito": "Tática e técnica",
+        "diferenca": "A tática expressa por que o adversário age; a técnica descreve como ele age."
+      }
+    ],
+    "atencao": "Subtécnica descreve, em nível mais baixo, como a técnica é executada.",
+    "fonte": "MITRE ATT&CK, Get Started (Key Concepts) — https://attack.mitre.org/resources/ ; FAQ — https://attack.mitre.org/resources/faq/",
+    "tags": [
+      "mitre-attck",
+      "taticas-e-tecnicas"
+    ]
+  },
+  {
+    "id": "card-rs-n1-094",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Frameworks de segurança (NIST CSF, CIS Controls)",
+    "nivel": 1,
+    "conceito": "Catálogo NIST SP 800-53",
+    "termo_ingles": "Security and Privacy Controls for Information Systems and Organizations",
+    "traducao": "Controles de Segurança e Privacidade: catálogo de controles aplicáveis a sistemas de informação e organizações.",
+    "resumo": "A NIST SP 800-53 Rev. 5 reúne controles de segurança e privacidade flexíveis, organizados em famílias e ajustáveis aos riscos.",
+    "nao_confundir": [
+      {
+        "conceito": "NIST CSF",
+        "diferenca": "A SP 800-53 cataloga controles; o CSF organiza resultados de segurança."
+      }
+    ],
+    "atencao": "Os controles estão organizados em 20 famílias, como resposta a incidentes e planejamento de contingência.",
+    "fonte": "NIST SP 800-53 Rev. 5, seção 2.2 e Tabela 1 (20 famílias) — https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r5.pdf ; página da publicação — https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final",
+    "tags": [
+      "nist-800-53"
+    ]
+  },
+  {
+    "id": "card-rs-n1-095",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Normas de SI na APF (GSI)",
+    "nivel": 1,
+    "conceito": "Política Nacional de Segurança da Informação",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "A PNSI estabelece diretrizes de segurança da informação no âmbito da Administração Pública Federal, abrangendo dados, ativos, processos, ambientes e pessoas.",
+    "nao_confundir": [
+      {
+        "conceito": "Política institucional",
+        "diferenca": "A PNSI orienta a Administração Pública Federal; a política institucional detalha regras de cada órgão."
+      }
+    ],
+    "atencao": "O Decreto nº 12.572/2025 instituiu a PNSI e revogou o Decreto nº 9.637/2018.",
+    "fonte": "Decreto nº 12.572, de 4 de agosto de 2025 (vigente), arts. 1º e 2º e cláusula de revogação — https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2025/decreto/d12572.htm ; Decreto nº 9.637/2018 (revogado) — https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/decreto/d9637.htm",
+    "tags": [
+      "pnsi",
+      "gsi"
+    ]
+  },
+  {
+    "id": "card-rs-n1-096",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Normas de SI na APF (GSI)",
+    "nivel": 1,
+    "conceito": "Processos de gestão de SI na APF",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "A Instrução Normativa GSI/PR nº 3/2021 estabelece processos de gestão de segurança da informação para órgãos e entidades da Administração Pública Federal.",
+    "nao_confundir": [
+      {
+        "conceito": "Estrutura de gestão de SI",
+        "diferenca": "A IN nº 1/2020 define a estrutura; a IN nº 3/2021, os processos."
+      }
+    ],
+    "atencao": "São cinco processos obrigatórios: mapeamento de ativos, riscos, continuidade, mudanças e avaliação de conformidade.",
+    "fonte": "Instrução Normativa GSI/PR nº 3, de 28/05/2021 (vigente, alterada pela IN nº 7/2022), arts. 2º e 3º — https://www.gov.br/gsi/pt-br/seguranca-da-informacao-e-cibernetica/legislacao/copy_of_IN03_consolidada.pdf ; IN GSI/PR nº 1, de 27/05/2020 (vigente, alterada pela IN nº 9/2026) — https://www.gov.br/gsi/pt-br/seguranca-da-informacao-e-cibernetica/legislacao/copy_of_IN01_consolidada.pdf",
+    "tags": [
+      "gsi",
+      "in-01-gsi"
+    ]
+  },
+  {
+    "id": "card-rs-n1-097",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Normas de SI na APF (GSI)",
+    "nivel": 1,
+    "conceito": "Controlador e operador na LGPD",
+    "termo_ingles": "Controller and Processor",
+    "traducao": "Controlador e operador: agentes que decidem sobre o tratamento de dados pessoais e executam o tratamento em nome do controlador.",
+    "resumo": "Controlador é quem toma as decisões sobre o tratamento de dados pessoais; operador é quem realiza o tratamento em nome do controlador.",
+    "nao_confundir": [
+      {
+        "conceito": "Encarregado",
+        "diferenca": "Encarregado é canal de comunicação; operador executa o tratamento."
+      }
+    ],
+    "atencao": "O operador deve tratar dados pessoais segundo as instruções fornecidas pelo controlador.",
+    "fonte": "Lei nº 13.709/2018 (LGPD), texto compilado no Planalto, art. 5º, VI e VII, e art. 39 — https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm",
+    "tags": [
+      "lgpd",
+      "controlador",
+      "operador"
+    ]
+  },
+  {
+    "id": "card-rs-n1-098",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Normas de SI na APF (GSI)",
+    "nivel": 1,
+    "conceito": "Princípios da LGPD",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "O tratamento de dados pessoais deve observar a boa-fé e princípios como finalidade, adequação, necessidade, transparência, segurança e prevenção.",
+    "nao_confundir": [
+      {
+        "conceito": "Finalidade e necessidade",
+        "diferenca": "Finalidade define o propósito do uso; necessidade limita os dados ao mínimo necessário."
+      }
+    ],
+    "atencao": "A finalidade exige propósitos legítimos, específicos, explícitos e informados ao titular.",
+    "fonte": "Lei nº 13.709/2018 (LGPD), texto compilado no Planalto, art. 6º, I a X — https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm",
+    "tags": [
+      "lgpd",
+      "principios"
+    ]
+  },
+  {
+    "id": "card-rs-n1-099",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Normas de SI na APF (GSI)",
+    "nivel": 1,
+    "conceito": "Marco Civil da Internet",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "A Lei nº 12.965/2014 estabelece princípios, garantias, direitos e deveres para o uso da internet no Brasil.",
+    "nao_confundir": [
+      {
+        "conceito": "LGPD",
+        "diferenca": "Marco Civil disciplina o uso da internet; LGPD regula dados pessoais."
+      }
+    ],
+    "atencao": "O art. 3º inclui proteção da privacidade, proteção de dados pessoais e neutralidade de rede.",
+    "fonte": "Lei nº 12.965/2014 (Marco Civil da Internet), arts. 1º e 3º — https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2014/lei/l12965.htm ; texto na Câmara — https://www2.camara.leg.br/legin/fed/lei/2014/lei-12965-23-abril-2014-778630-publicacaooriginal-143980-pl.html",
+    "tags": [
+      "marco-civil"
+    ]
+  },
+  {
+    "id": "card-rs-n1-100",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Normas de SI na APF (GSI)",
+    "nivel": 1,
+    "conceito": "Segurança em nuvem governamental",
+    "termo_ingles": "Government Cloud Computing",
+    "traducao": "Computação em nuvem governamental: uso de recursos computacionais acessados pela rede, sujeito a requisitos de segurança da Administração Pública Federal.",
+    "resumo": "A utilização de soluções de computação em nuvem na APF deve observar requisitos mínimos de segurança da informação definidos pelo GSI.",
+    "nao_confundir": [
+      {
+        "conceito": "Nuvem pública",
+        "diferenca": "Nuvem pública atende vários clientes; a de governo segue requisitos para órgãos públicos."
+      }
+    ],
+    "atencao": "Desde a IN nº 8/2025, reservada e secreta podem ir a nuvem privada ou comunitária; ultrassecreta, não.",
+    "fonte": "Instrução Normativa GSI/PR nº 5, de 30/08/2021 (vigente) — https://www.gov.br/gsi/pt-br/seguranca-da-informacao-e-cibernetica/legislacao/english_version_in_05.pdf ; IN GSI/PR nº 8, de 06/10/2025 — https://www.in.gov.br/en/web/dou/-/instrucao-normativagsi/pr-n-8-de-6-de-outubro-de-2025-660716869 ; GSI, Cartilha da IN de informação classificada em nuvem — https://www.gov.br/gsi/pt-br/centrais-de-conteudo/apoio/cartilha-de-seguranca-da-informacao-in-trat-info-class-nuvem-1/@@download/file",
+    "tags": [
+      "nuvem-governamental",
+      "gsi"
+    ]
+  },
+  {
+    "id": "card-rs-n1-101",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Normas de SI na APF (GSI)",
+    "nivel": 1,
+    "conceito": "Contratação de soluções de TIC",
+    "termo_ingles": "Information and Communication Technology Procurement",
+    "traducao": "Contratação de TIC: processo de planejamento, seleção e gestão de contratos de tecnologia da informação e comunicação.",
+    "resumo": "A IN SGD/ME nº 94/2022 disciplina as contratações de soluções de TIC pelos órgãos e entidades do SISP do Poder Executivo Federal.",
+    "nao_confundir": [
+      {
+        "conceito": "Modelo de contratação de nuvem",
+        "diferenca": "IN nº 94 rege contratações de TIC; Portaria nº 5.950 detalha software e nuvem."
+      }
+    ],
+    "atencao": "O modelo da Portaria SGD/MGI nº 5.950/2023 é obrigatório no SISP desde 30/04/2024.",
+    "fonte": "IN SGD/ME nº 94, de 23/12/2022, art. 1º; Portaria SGD/MGI nº 5.950, de 26/10/2023, arts. 1º a 3º — https://www.gov.br/governodigital/pt-br/contratacoes-de-tic/legislacao/modelo-de-contratacao-de-software-e-servicos-em-nuvem/vigentes/portaria-sgd-mgi-no-5-950-de-26-de-outubro-de-2023",
+    "tags": [
+      "contratos-de-ti"
+    ]
+  },
+  {
+    "id": "card-rs-n1-102",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Continuidade de negócios",
+    "nivel": 1,
+    "conceito": "Continuidade de negócios",
+    "termo_ingles": "Business Continuity",
+    "traducao": "Continuidade de negócios: capacidade de manter ou recuperar atividades prioritárias durante uma interrupção.",
+    "resumo": "A continuidade de negócios prepara a organização para manter atividades prioritárias durante interrupções e recuperar sua operação.",
+    "nao_confundir": [
+      {
+        "conceito": "Recuperação de desastre",
+        "diferenca": "Continuidade mantém atividades prioritárias; recuperação de desastre restaura sistemas e infraestrutura."
+      }
+    ],
+    "atencao": "A ISO 22301 dá estrutura para planejar, implementar, monitorar e melhorar continuamente a gestão da continuidade.",
+    "fonte": "ISO 22301:2019, página oficial (What is ISO 22301) — https://www.iso.org/standard/75106.html ; NIST SP 800-34 Rev. 1, seção 2.2 — https://nvlpubs.nist.gov/nistpubs/legacy/sp/nistspecialpublication800-34r1.pdf",
+    "tags": [
+      "continuidade",
+      "iso-22301"
+    ]
+  },
+  {
+    "id": "card-rs-n1-103",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Continuidade de negócios",
+    "nivel": 1,
+    "conceito": "Análise de impacto nos negócios",
+    "termo_ingles": "Business Impact Analysis (BIA)",
+    "traducao": "Análise de Impacto nos Negócios: identifica consequências de interrupções e prioridades de recuperação.",
+    "resumo": "A análise avalia impactos de interrupções nos processos e recursos, apoiando prioridades e requisitos de recuperação.",
+    "nao_confundir": [
+      {
+        "conceito": "Avaliação de riscos",
+        "diferenca": "Análise de impacto mede consequências da parada; avaliação de riscos examina ameaças."
+      }
+    ],
+    "atencao": "A análise de impacto identifica e prioriza os sistemas críticos para a missão e os negócios.",
+    "fonte": "NIST SP 800-34 Rev. 1, seção 3.2 — https://nvlpubs.nist.gov/nistpubs/legacy/sp/nistspecialpublication800-34r1.pdf ; NIST ITL Bulletin julho de 2010 — https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=906210",
+    "tags": [
+      "continuidade"
+    ]
+  },
+  {
+    "id": "card-rs-n1-104",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Continuidade de negócios",
+    "nivel": 1,
+    "conceito": "Objetivo de tempo de recuperação",
+    "termo_ingles": "Recovery Time Objective (RTO)",
+    "traducao": "Objetivo de Tempo de Recuperação: prazo máximo de indisponibilidade tolerado antes de impacto inaceitável.",
+    "resumo": "O RTO define quanto tempo um recurso ou sistema pode permanecer indisponível após uma interrupção.",
+    "nao_confundir": [
+      {
+        "conceito": "Objetivo de ponto de recuperação",
+        "diferenca": "RTO limita o tempo de indisponibilidade; RPO define o ponto dos dados ao qual recuperar."
+      }
+    ],
+    "atencao": "O RTO normalmente deve ser menor que o tempo máximo tolerável de parada (MTD).",
+    "fonte": "NIST SP 800-34 Rev. 1, seção 3.2 (MTD, RTO) — https://nvlpubs.nist.gov/nistpubs/legacy/sp/nistspecialpublication800-34r1.pdf",
+    "tags": [
+      "continuidade",
+      "rto"
+    ]
+  },
+  {
+    "id": "card-rs-n1-105",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Continuidade de negócios",
+    "nivel": 1,
+    "conceito": "Objetivo de ponto de recuperação",
+    "termo_ingles": "Recovery Point Objective (RPO)",
+    "traducao": "Objetivo de Ponto de Recuperação: determina até que momento anterior à interrupção os dados precisam ser recuperáveis.",
+    "resumo": "O RPO expressa a perda de dados tolerada, medida pelo intervalo de tempo entre a interrupção e o ponto recuperável.",
+    "nao_confundir": [
+      {
+        "conceito": "Objetivo de tempo de recuperação",
+        "diferenca": "RPO limita a perda de dados; RTO limita o tempo de indisponibilidade."
+      }
+    ],
+    "atencao": "O RPO depende da cópia de backup mais recente e mede quanta perda de dados se tolera.",
+    "fonte": "NIST SP 800-34 Rev. 1, seção 3.2 (RPO) — https://nvlpubs.nist.gov/nistpubs/legacy/sp/nistspecialpublication800-34r1.pdf",
+    "tags": [
+      "continuidade",
+      "rpo"
+    ]
+  },
+  {
+    "id": "card-rs-n1-106",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Continuidade de negócios",
+    "nivel": 1,
+    "conceito": "Cópia de segurança",
+    "termo_ingles": "Backup",
+    "traducao": "Cópia de segurança: cópia de dados mantida para possibilitar sua restauração após perda ou interrupção.",
+    "resumo": "O backup preserva cópias de dados para restauração quando os dados originais são perdidos, danificados ou ficam indisponíveis.",
+    "nao_confundir": [
+      {
+        "conceito": "Plano de continuidade",
+        "diferenca": "Backup guarda cópias de dados; plano de continuidade organiza ações para manter atividades prioritárias."
+      }
+    ],
+    "atencao": "Frequência e escopo do backup dependem da criticidade dos dados e da frequência com que surgem dados novos.",
+    "fonte": "NIST SP 800-34 Rev. 1, seção 3.4.2, Backup Methods and Offsite Storage — https://nvlpubs.nist.gov/nistpubs/legacy/sp/nistspecialpublication800-34r1.pdf",
+    "tags": [
+      "backup",
+      "continuidade"
+    ]
   }
 ]
