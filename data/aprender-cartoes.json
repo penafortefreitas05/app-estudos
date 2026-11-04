@@ -7612,5 +7612,405 @@
     "tags": [
       "mfa"
     ]
+  },
+  {
+    "id": "card-gov-n1-001",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Gestão de serviços (ITIL)",
+    "nivel": 1,
+    "conceito": "Serviço",
+    "termo_ingles": "service",
+    "traducao": "Serviço: meio que facilita resultados desejados pelo cliente.",
+    "resumo": "Serviço facilita resultados desejados pelo cliente, quem recebe a oferta, sem que ele precise gerenciar custos e riscos específicos.",
+    "nao_confundir": [
+      {
+        "conceito": "Produto",
+        "diferenca": "Produto reúne recursos organizacionais; serviço facilita resultados que o cliente deseja alcançar."
+      }
+    ],
+    "atencao": "Valor, benefício percebido, é cocriado por quem oferece o serviço e por quem o utiliza.",
+    "fonte": "AXELOS, “ITIL 4: Connecting key concepts – Part 1: Products, Services, and Service Relationships” (abr. 2019): https://www.axelos.com/news/blogs/april-2019/itil-4-connecting-the-key-concepts-blog-part-1",
+    "tags": [
+      "itil-v4",
+      "itil"
+    ]
+  },
+  {
+    "id": "card-gov-n1-002",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Gestão de serviços (ITIL)",
+    "nivel": 1,
+    "conceito": "Gerenciamento de incidentes (ITIL 4)",
+    "termo_ingles": "incident management",
+    "traducao": "Gerenciamento de incidentes: coordena a resposta a interrupções do serviço.",
+    "resumo": "Prática que coordena a resposta a incidentes, isto é, a interrupções que afetam o serviço.",
+    "nao_confundir": [
+      {
+        "conceito": "Gerenciamento de problemas",
+        "diferenca": "Problemas procuram causas; incidentes são interrupções do serviço que exigem resposta."
+      }
+    ],
+    "atencao": "A prática busca restaurar rapidamente a operação normal do serviço após uma interrupção.",
+    "fonte": "PeopleCert, ITIL 4 Practitioner: Incident Management: https://www.peoplecert.org/browse-certifications/it-governance-and-service-management/ITIL-1/itil4-practices-incident-management-3684",
+    "tags": [
+      "itil-v4",
+      "gerenciamento-de-incidente"
+    ]
+  },
+  {
+    "id": "card-gov-n1-003",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Gestão de serviços (ITIL)",
+    "nivel": 1,
+    "conceito": "Gerenciamento de problemas (ITIL 4)",
+    "termo_ingles": "problem management",
+    "traducao": "Gerenciamento de problemas: identifica causas de incidentes e reduz sua recorrência.",
+    "resumo": "Prática que identifica causas reais ou potenciais de incidentes para reduzir sua probabilidade e impacto.",
+    "nao_confundir": [
+      {
+        "conceito": "Gerenciamento de incidentes",
+        "diferenca": "Incidentes restauram o serviço; problemas identificam causas reais ou potenciais."
+      }
+    ],
+    "atencao": "Também gerencia soluções de contorno (medidas temporárias) e erros conhecidos.",
+    "fonte": "AXELOS, ITIL 4 Practitioner: Problem Management: https://www.axelos.com/certifications/itil-service-management/itil-practices-manager/itil-4-specialist-monitor-support-and-fulfil/itil-4-practitioner-problem-management",
+    "tags": [
+      "itil",
+      "gerenciamento-de-problemas"
+    ]
+  },
+  {
+    "id": "card-gov-n1-004",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Gestão de serviços (ITIL)",
+    "nivel": 1,
+    "conceito": "Solicitação de serviço (ITIL 4)",
+    "termo_ingles": "service request",
+    "traducao": "Solicitação de serviço: pedido do usuário por algo previamente oferecido.",
+    "resumo": "Trata pedidos por serviço, informação ou acesso na infraestrutura de TI.",
+    "nao_confundir": [
+      {
+        "conceito": "Incidente",
+        "diferenca": "Incidente é interrupção não planejada; solicitação pede algo previsto, como informação ou acesso."
+      }
+    ],
+    "atencao": "A solicitação é previamente definida e iniciada pelo usuário.",
+    "fonte": "PeopleCert, ITIL 4 Practitioner: Service Request Management: https://www.peoplecert.org/browse-certifications/it-governance-and-service-management/ITIL-1/itil4-practices-service-request-management-3690 ; AXELOS, ITIL 4 Practitioner: Service Request Management",
+    "tags": [
+      "itil-v4",
+      "solicitacao-de-servico"
+    ]
+  },
+  {
+    "id": "card-gov-n1-005",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Gestão de serviços (ITIL)",
+    "nivel": 1,
+    "conceito": "Sistema de valor de serviço (SVS)",
+    "termo_ingles": "service value system",
+    "traducao": "Sistema de valor de serviço: integra componentes e atividades para criar valor.",
+    "resumo": "Modelo que reúne elementos e atividades organizacionais para coordenar criação e gestão de serviços.",
+    "nao_confundir": [
+      {
+        "conceito": "Cadeia de valor de serviço",
+        "diferenca": "A cadeia organiza atividades de serviço; o sistema integra também outros elementos organizacionais."
+      }
+    ],
+    "atencao": "O SVS combina cadeia de valor, governança, princípios orientadores, práticas e melhoria contínua.",
+    "fonte": "AXELOS, ITIL 4 Foundation: https://www.axelos.com/certifications/itil-service-management/itil-4-foundation/ ; PeopleCert, Introduction to the ITIL Maturity Model: https://www.peoplecert.org/-/media/folders-reorganized/pdfs/itil-maturity-model/services-page/introduction-to-the-itil-mm.pdf",
+    "tags": [
+      "itil-v4",
+      "svs"
+    ]
+  },
+  {
+    "id": "card-gov-n1-006",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Gestão de serviços (ITIL)",
+    "nivel": 1,
+    "conceito": "Cadeia de valor de serviço (SVC)",
+    "termo_ingles": "service value chain",
+    "traducao": "Cadeia de valor de serviço: organiza atividades que atendem demandas e criam valor.",
+    "resumo": "Modelo que organiza fluxos de valor, sequências de atividades que transformam demandas em produtos e serviços.",
+    "nao_confundir": [
+      {
+        "conceito": "Sistema de valor de serviço (SVS)",
+        "diferenca": "O sistema reúne vários componentes; a cadeia é seu modelo de atividades operacionais."
+      }
+    ],
+    "atencao": "As seis atividades são planejar, melhorar, engajar, projetar e transicionar, obter e construir, entregar e suportar.",
+    "fonte": "PeopleCert, Optimizing IT Monitoring with ITIL 4 (Service Value Chain): https://atv.peoplecert.org/itil4-peoplecert-accredited-monitoring-tools/ ; PeopleCert, Introduction to the ITIL Maturity Model (2025)",
+    "tags": [
+      "itil-v4",
+      "service-value-chain"
+    ]
+  },
+  {
+    "id": "card-gov-n1-007",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Gestão de serviços (ITIL)",
+    "nivel": 1,
+    "conceito": "Quatro dimensões do gerenciamento de serviços",
+    "termo_ingles": "four dimensions of service management",
+    "traducao": "Quatro dimensões: perspectivas que influenciam o gerenciamento de serviços.",
+    "resumo": "Quadro da ITIL 4 que considera quatro perspectivas organizacionais ao gerenciar serviços.",
+    "nao_confundir": [
+      {
+        "conceito": "Cadeia de valor de serviço",
+        "diferenca": "A cadeia organiza atividades; as dimensões examinam perspectivas que influenciam o gerenciamento."
+      }
+    ],
+    "atencao": "As dimensões são organizações e pessoas, informação e tecnologia, parceiros e fornecedores, fluxos de valor e processos.",
+    "fonte": "AXELOS, ITIL 4 Foundation: https://www.axelos.com/certifications/itil-service-management/itil-4-foundation/ ; AXELOS, “ITIL 4: Connecting the Key Concepts – Part 2” (abr. 2019): https://www.axelos.com/news/blogs/april-2019/itil-4-connecting-the-key-concepts-blog-part-2",
+    "tags": [
+      "itil-v4",
+      "quatro-dimensoes"
+    ]
+  },
+  {
+    "id": "card-gov-n1-008",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Gestão de serviços (ITIL)",
+    "nivel": 1,
+    "conceito": "Prática de gerenciamento (ITIL 4)",
+    "termo_ingles": "management practice",
+    "traducao": "Prática de gerenciamento: reúne recursos organizacionais para realizar trabalho ou atingir objetivo.",
+    "resumo": "Conjunto de recursos da organização usado para executar trabalho ou alcançar um objetivo.",
+    "nao_confundir": [
+      {
+        "conceito": "Processo",
+        "diferenca": "Processo estrutura atividades para um objetivo; prática inclui processos e outros recursos organizacionais."
+      }
+    ],
+    "atencao": "Na ITIL 4, há 34 práticas de gerenciamento.",
+    "fonte": "PeopleCert, “ITIL 4 Management Practices 2023”: https://www.peoplecert.org/news-and-announcements/2023/itil-4-management-practices-2023 ; PeopleCert, Introduction to the ITIL Maturity Model: https://www.peoplecert.org/-/media/folders-reorganized/pdfs/itil-maturity-model/services-page/introduction-to-the-itil-mm.pdf ; AXELOS, “ITIL 4: a healthy balance of structure and agility” (out. 2019): https://www.axelos.com/news/blogs/october-2019/itil-4-a-healthy-balance-of-structure-and-agility",
+    "tags": [
+      "itil-v4",
+      "praticas"
+    ]
+  },
+  {
+    "id": "card-gov-n1-009",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Governança de TI (COBIT)",
+    "nivel": 1,
+    "conceito": "Control Objectives for Information and Related Technologies (COBIT)",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Framework da ISACA para governança e gestão de informação e tecnologia, que alinha decisões às metas empresariais.",
+    "nao_confundir": [
+      {
+        "conceito": "ITIL 4",
+        "diferenca": "ITIL orienta gestão de serviços; COBIT orienta governança e gestão da informação e tecnologia empresarial."
+      }
+    ],
+    "atencao": "O framework se aplica à empresa inteira, não somente ao departamento de tecnologia.",
+    "fonte": "ISACA, “A New COBIT Is in Town…” (2018): https://www.isaca.org/resources/news-and-trends/industry-news/2018/a-new-cobit-is-in-town-and-i-really-like-how-it-looks",
+    "tags": [
+      "cobit",
+      "isaca"
+    ]
+  },
+  {
+    "id": "card-gov-n1-010",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Governança de TI (COBIT)",
+    "nivel": 1,
+    "conceito": "Governança de tecnologia e informação",
+    "termo_ingles": "information and technology governance",
+    "traducao": "Governança: avalia necessidades, define direção e monitora resultados.",
+    "resumo": "Função que orienta decisões sobre informação e tecnologia e alinha essa direção às metas empresariais.",
+    "nao_confundir": [
+      {
+        "conceito": "Gestão de tecnologia e informação",
+        "diferenca": "Gestão planeja, constrói, executa e monitora atividades alinhadas à direção da governança."
+      }
+    ],
+    "atencao": "A governança avalia necessidades, condições e opções dos envolvidos para acordar objetivos empresariais equilibrados.",
+    "fonte": "ISACA, “Effective Capability and Maturity Assessment Using COBIT 2019” (2020), “Governance”. https://www.isaca.org/resources/news-and-trends/industry-news/2020/effective-capability-and-maturity-assessment-using-cobit-2019",
+    "tags": [
+      "cobit-2019",
+      "governanca-vs-gestao",
+      "governanca",
+      "governanca-de-ti"
+    ]
+  },
+  {
+    "id": "card-gov-n1-011",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Governança de TI (COBIT)",
+    "nivel": 1,
+    "conceito": "Gestão de tecnologia e informação",
+    "termo_ingles": "information and technology management",
+    "traducao": "Gestão: planeja e executa atividades alinhadas à direção definida pela governança.",
+    "resumo": "Função que planeja, constrói, executa e monitora atividades conforme a direção estabelecida pela governança.",
+    "nao_confundir": [
+      {
+        "conceito": "Governança de tecnologia e informação",
+        "diferenca": "Governança avalia opções, define direção e monitora; gestão executa atividades alinhadas a essa direção."
+      }
+    ],
+    "atencao": "No COBIT 2019, os objetivos de governança formam um domínio (avaliar, dirigir e monitorar) e os de gestão, quatro.",
+    "fonte": "ISACA, “A New COBIT Is in Town…” (2018), objetivos de governança e de gestão: https://www.isaca.org/resources/news-and-trends/industry-news/2018/a-new-cobit-is-in-town-and-i-really-like-how-it-looks ; ISACA, “Effective Capability and Maturity Assessment Using COBIT 2019” (2020): https://www.isaca.org/resources/news-and-trends/industry-news/2020/effective-capability-and-maturity-assessment-using-cobit-2019",
+    "tags": [
+      "cobit-2019",
+      "governanca-vs-gestao",
+      "governanca-de-ti"
+    ]
+  },
+  {
+    "id": "card-gov-n1-012",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Governança de TI (COBIT)",
+    "nivel": 1,
+    "conceito": "Componentes do sistema de governança",
+    "termo_ingles": "governance system components",
+    "traducao": "Componentes: fatores que, em conjunto, apoiam objetivos de governança e gestão.",
+    "resumo": "Fatores que, individualmente ou em conjunto, contribuem para o funcionamento do sistema de governança.",
+    "nao_confundir": [
+      {
+        "conceito": "Processo",
+        "diferenca": "Processo estrutura atividades para um objetivo; componente pode ser estrutura, política, informação ou recurso."
+      }
+    ],
+    "atencao": "COBIT 5 chamava esses fatores de habilitadores; COBIT 2019 os denomina componentes.",
+    "fonte": "ISACA, “A New COBIT Is in Town…” (2018), Governance Components: https://www.isaca.org/resources/news-and-trends/industry-news/2018/a-new-cobit-is-in-town-and-i-really-like-how-it-looks",
+    "tags": [
+      "cobit-2019",
+      "componentes"
+    ]
+  },
+  {
+    "id": "card-gov-n1-013",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Governança de TI (COBIT)",
+    "nivel": 1,
+    "conceito": "Nível de capacidade de processo",
+    "termo_ingles": "process capability level",
+    "traducao": "Nível de capacidade: mede o desempenho de um processo em escala de zero a cinco.",
+    "resumo": "Medida de quão bem um processo foi implementado e está funcionando, em níveis de zero a cinco.",
+    "nao_confundir": [
+      {
+        "conceito": "Nível de maturidade de área de foco",
+        "diferenca": "Maturidade resume desempenho de uma área de foco; capacidade avalia a execução de um processo."
+      }
+    ],
+    "atencao": "O nível zero indica processo incompleto ou sem capacidade básica para cumprir seu propósito.",
+    "fonte": "ISACA, “Defining Target Capability Levels in COBIT 2019: A Proposal for Refinement” (2019): https://www.isaca.org/resources/news-and-trends/industry-news/2019/defining-target-capability-levels-in-cobit-2019-a-proposal-for-refinement ; ISACA, “Effective Capability and Maturity Assessment Using COBIT 2019” (2020)",
+    "tags": [
+      "cobit-2019",
+      "modelo-de-maturidade"
+    ]
+  },
+  {
+    "id": "card-gov-n1-014",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Governança de dados (DMBOK)",
+    "nivel": 1,
+    "conceito": "Corpo de conhecimento em gestão de dados (DMBOK)",
+    "termo_ingles": "Data Management Body of Knowledge",
+    "traducao": "Corpo de conhecimento em gestão de dados: organiza áreas e práticas da disciplina.",
+    "resumo": "Guia da Data Management Association (DAMA) que organiza gestão de dados em onze áreas de conhecimento.",
+    "nao_confundir": [
+      {
+        "conceito": "Gestão de dados",
+        "diferenca": "Gestão desenvolve e executa planos; DMBOK organiza áreas de conhecimento para orientar essa disciplina."
+      }
+    ],
+    "atencao": "A revisão de 2024 ajustou clareza e terminologia sem mudar a estrutura geral das áreas.",
+    "fonte": "DAMA International, DAMA-DMBOK 2.0 Revision – Maintenance Release (2024): https://dama.org/dama-dmbok-revision/ ; DAMA International, “What Is Data Management?”: https://dama.org/about-dama/what-is-data-management/",
+    "tags": [
+      "dmbok",
+      "dama"
+    ]
+  },
+  {
+    "id": "card-gov-n1-015",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Governança de dados (DMBOK)",
+    "nivel": 1,
+    "conceito": "Governança de dados",
+    "termo_ingles": "data governance",
+    "traducao": "Governança de dados: define prestação de contas, políticas e direitos de decisão sobre dados.",
+    "resumo": "Função que estabelece prestação de contas, políticas e direitos de decisão para orientar o uso dos dados.",
+    "nao_confundir": [
+      {
+        "conceito": "Gestão de dados",
+        "diferenca": "Gestão executa planos; governança define políticas e direitos de decisão sobre dados."
+      }
+    ],
+    "atencao": "A DAMA associa governança de dados a conformidade, gestão de riscos e alinhamento organizacional.",
+    "fonte": "DAMA International, “What Is Data Management?”, “What Data Management Looks Like”. https://dama.org/about-dama/what-is-data-management/",
+    "tags": [
+      "governanca-de-dados",
+      "dmbok",
+      "riscos"
+    ]
+  },
+  {
+    "id": "card-gov-n1-016",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Governança de dados (DMBOK)",
+    "nivel": 1,
+    "conceito": "Responsável pelos dados (data owner)",
+    "termo_ingles": "data owner",
+    "traducao": "Responsável pelos dados: responde por decisões sobre dados de um domínio organizacional.",
+    "resumo": "Pessoa responsável por decisões de negócio sobre dados de seu domínio, isto é, de uma área organizacional.",
+    "nao_confundir": [
+      {
+        "conceito": "Administrador de banco de dados",
+        "diferenca": "Administrador configura a plataforma; responsável pelos dados responde por decisões do domínio de negócio."
+      }
+    ],
+    "atencao": "A revisão DAMA-DMBOK define esse responsável como profissional da área de negócio.",
+    "fonte": "DAMA International, DAMA-DMBOK 2.0 Revision – Maintenance Release (2024): https://dama.org/dama-dmbok-revision/",
+    "tags": [
+      "dmbok",
+      "papeis"
+    ]
+  },
+  {
+    "id": "card-gov-n1-017",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Governança de dados (DMBOK)",
+    "nivel": 1,
+    "conceito": "Metadados",
+    "termo_ingles": "metadata",
+    "traducao": "Metadados: fornecem contexto e significado para interpretar outros dados.",
+    "resumo": "Dados descritivos que contextualizam outros dados e ajudam a localizá-los, utilizá-los e auditá-los.",
+    "nao_confundir": [
+      {
+        "conceito": "Dado de negócio",
+        "diferenca": "Dado registra um fato; metadado descreve contexto e significado desse dado."
+      }
+    ],
+    "atencao": "A DAMA reconhece gerenciamento de metadados como uma das áreas de conhecimento em gestão de dados.",
+    "fonte": "DAMA International, “What Is Data Management?”, “What Data Management Looks Like”. https://dama.org/about-dama/what-is-data-management/",
+    "tags": [
+      "metadados",
+      "dmbok"
+    ]
+  },
+  {
+    "id": "card-gov-n1-018",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Governança de dados (DMBOK)",
+    "nivel": 1,
+    "conceito": "Qualidade de dados",
+    "termo_ingles": "data quality",
+    "traducao": "Qualidade de dados: indica se dados são precisos, completos e confiáveis.",
+    "resumo": "Conjunto de características que permite confiar nos dados para decisões e usos organizacionais.",
+    "nao_confundir": [
+      {
+        "conceito": "Governança de dados",
+        "diferenca": "Qualidade verifica se os dados são precisos e completos; governança define responsabilidades e políticas."
+      }
+    ],
+    "atencao": "A revisão de 2024 acrescentou “currency” (atualidade) como dimensão de qualidade dos dados.",
+    "fonte": "DAMA International, DAMA-DMBOK 2.0 Revision – Maintenance Release (2024), Data Quality: https://dama.org/dama-dmbok-revision/ ; DAMA International, “What Is Data Management?”, Data Quality: https://dama.org/about-dama/what-is-data-management/",
+    "tags": [
+      "qualidade-de-dados",
+      "dmbok"
+    ]
   }
 ]
