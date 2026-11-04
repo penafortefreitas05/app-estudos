@@ -6732,5 +6732,380 @@
       "monitoramento",
       "mlops"
     ]
+  },
+  {
+    "id": "card-so-n1-001",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Sistemas operacionais — processos e memória",
+    "nivel": 1,
+    "conceito": "Processo",
+    "termo_ingles": "process",
+    "traducao": "Processo: instância de um programa enquanto executa sob gerenciamento do sistema operacional.",
+    "resumo": "O processo é a abstração de um programa em execução; o sistema mantém informações para interromper e retomar sua execução.",
+    "nao_confundir": [
+      {
+        "conceito": "Programa",
+        "diferenca": "Programa é conjunto de instruções armazenadas; processo é a execução ativa dessas instruções."
+      }
+    ],
+    "atencao": "O estado inclui memória (instruções e dados), registradores (valores ativos no processador) e informações de entrada e saída.",
+    "fonte": "Arpaci-Dusseau e Arpaci-Dusseau, Operating Systems: Three Easy Pieces, v. 1.10, “The Abstraction: The Process”. https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-intro.pdf",
+    "tags": [
+      "processos",
+      "sistemas-operacionais"
+    ]
+  },
+  {
+    "id": "card-so-n1-002",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Sistemas operacionais — processos e memória",
+    "nivel": 1,
+    "conceito": "Concorrência",
+    "termo_ingles": "concurrency",
+    "traducao": "Concorrência: permite que mais de uma tarefa progrida em períodos sobrepostos.",
+    "resumo": "O sistema alterna a execução de tarefas para que várias avancem durante um mesmo intervalo de tempo.",
+    "nao_confundir": [
+      {
+        "conceito": "Paralelismo",
+        "diferenca": "Paralelismo executa tarefas simultaneamente; concorrência organiza o progresso de tarefas em períodos sobrepostos."
+      }
+    ],
+    "atencao": "Concorrência inclui a divisão do tempo do processador (time-slicing), uma forma de paralelismo virtual.",
+    "fonte": "Oracle, Multithreaded Programming Guide (Oracle Solaris 11.2), Multithreading Terms: https://docs.oracle.com/cd/E36784_01/html/E36868/mtintro-58106.html",
+    "tags": [
+      "concorrencia"
+    ]
+  },
+  {
+    "id": "card-so-n1-003",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Sistemas operacionais — processos e memória",
+    "nivel": 1,
+    "conceito": "Thread",
+    "termo_ingles": "thread",
+    "traducao": "Fluxo de execução: progride dentro de um processo e mantém estado próprio.",
+    "resumo": "Uma thread executa parte do trabalho de um processo; várias threads podem avançar de forma concorrente.",
+    "nao_confundir": [
+      {
+        "conceito": "Processo",
+        "diferenca": "Processos têm memória separada; as threads de um processo dividem a mesma memória."
+      }
+    ],
+    "atencao": "Cada thread tem seus próprios registradores, apesar de compartilharem a memória do processo.",
+    "fonte": "Arpaci-Dusseau e Arpaci-Dusseau, Operating Systems: Three Easy Pieces, v. 1.10, “Concurrency: An Introduction”. https://pages.cs.wisc.edu/~remzi/OSTEP/threads-intro.pdf",
+    "tags": [
+      "threads",
+      "processos"
+    ]
+  },
+  {
+    "id": "card-so-n1-004",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Sistemas operacionais — processos e memória",
+    "nivel": 1,
+    "conceito": "Escalonamento round-robin",
+    "termo_ingles": "round-robin scheduling",
+    "traducao": "Escalonamento circular: alterna processos após cada intervalo de uso do processador.",
+    "resumo": "Cada processo recebe um intervalo fixo, chamado quantum; ao fim dele, o próximo processo recebe o processador.",
+    "nao_confundir": [
+      {
+        "conceito": "FIFO (primeiro a chegar, primeiro a sair)",
+        "diferenca": "FIFO executa cada processo até o fim; round-robin alterna a cada quantum."
+      }
+    ],
+    "atencao": "Quantum muito curto pode tornar dominante a troca de contexto, que salva e restaura o estado de execução.",
+    "fonte": "Arpaci-Dusseau e Arpaci-Dusseau, Operating Systems: Three Easy Pieces, v. 1.10, “Scheduling: Introduction”. https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-sched.pdf",
+    "tags": [
+      "escalonamento",
+      "round-robin"
+    ]
+  },
+  {
+    "id": "card-so-n1-005",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Sistemas operacionais — processos e memória",
+    "nivel": 1,
+    "conceito": "Memória virtual",
+    "termo_ingles": "virtual memory",
+    "traducao": "Memória virtual: oferece a cada processo seu próprio espaço de endereços, independente de onde os dados estão na memória física.",
+    "resumo": "Espaço de endereços é o conjunto de posições que o processo pode referenciar; memória física armazena instruções e dados em uso.",
+    "nao_confundir": [
+      {
+        "conceito": "Memória física",
+        "diferenca": "Memória física é memória de acesso aleatório instalada; memória virtual abstrai o espaço endereçável."
+      }
+    ],
+    "atencao": "Um endereço virtual 0 não precisa corresponder ao endereço físico 0.",
+    "fonte": "Arpaci-Dusseau e Arpaci-Dusseau, Operating Systems: Three Easy Pieces, v. 1.10, “Address Spaces”. https://pages.cs.wisc.edu/~remzi/OSTEP/vm-intro.pdf",
+    "tags": [
+      "memoria-virtual",
+      "memoria"
+    ]
+  },
+  {
+    "id": "card-so-n1-006",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Sistemas operacionais — processos e memória",
+    "nivel": 1,
+    "conceito": "Paginação",
+    "termo_ingles": "paging",
+    "traducao": "Paginação: divide endereços virtuais e memória física em blocos fixos correspondentes.",
+    "resumo": "Cada página virtual tem o mesmo tamanho que um quadro da memória física, onde pode ser carregada.",
+    "nao_confundir": [
+      {
+        "conceito": "Segmentação",
+        "diferenca": "Paginação usa blocos fixos; segmentação divide o espaço em blocos de tamanhos variáveis."
+      }
+    ],
+    "atencao": "A tabela de páginas registra, para cada página virtual, o quadro físico onde ela está.",
+    "fonte": "Arpaci-Dusseau e Arpaci-Dusseau, Operating Systems: Three Easy Pieces, v. 1.10, “Introduction to Paging”. https://pages.cs.wisc.edu/~remzi/OSTEP/vm-paging.pdf",
+    "tags": [
+      "paginacao",
+      "memoria"
+    ]
+  },
+  {
+    "id": "card-so-n1-007",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Sistemas operacionais — processos e memória",
+    "nivel": 1,
+    "conceito": "Deadlock",
+    "termo_ingles": "deadlock",
+    "traducao": "Impasse: bloqueio em que processos aguardam recursos retidos uns pelos outros.",
+    "resumo": "Recurso é um item necessário ao processo; no deadlock, a espera circular impede que os envolvidos prossigam.",
+    "nao_confundir": [
+      {
+        "conceito": "Condição de corrida",
+        "diferenca": "Corrida: ordem de acessos simultâneos muda resultado; deadlock: processos esperam recursos em ciclo."
+      }
+    ],
+    "atencao": "Deadlock exige as quatro condições ao mesmo tempo: exclusão mútua, retenção e espera, ausência de preempção e espera circular.",
+    "fonte": "Arpaci-Dusseau e Arpaci-Dusseau, Operating Systems: Three Easy Pieces, v. 1.10, “Common Concurrency Problems”. https://pages.cs.wisc.edu/~remzi/OSTEP/threads-bugs.pdf",
+    "tags": [
+      "deadlock",
+      "concorrencia"
+    ]
+  },
+  {
+    "id": "card-so-n1-008",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Linux",
+    "nivel": 1,
+    "conceito": "Permissões de arquivo",
+    "termo_ingles": "file permissions",
+    "traducao": "Permissão de arquivo: controla leitura, escrita ou execução por dono, grupo e demais usuários.",
+    "resumo": "Arquivo é uma unidade nomeada de dados; no Linux, chmod altera os bits de permissão associados a ele.",
+    "nao_confundir": [
+      {
+        "conceito": "chown",
+        "diferenca": "chmod altera as permissões do arquivo; chown altera o dono e o grupo."
+      }
+    ],
+    "atencao": "Em chmod 754: dono 7 (rwx), grupo 5 (r-x), demais 4 (r--); cada dígito soma 4, 2 e 1.",
+    "fonte": "Linux man-pages, chmod(1) e chown(1), DESCRIPTION. https://man7.org/linux/man-pages/man1/chmod.1.html ; https://man7.org/linux/man-pages/man1/chown.1.html",
+    "tags": [
+      "linux",
+      "permissoes",
+      "chmod"
+    ]
+  },
+  {
+    "id": "card-so-n1-009",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Linux",
+    "nivel": 1,
+    "conceito": "Link simbólico",
+    "termo_ingles": "symbolic link",
+    "traducao": "Link simbólico: arquivo que guarda o caminho de outro arquivo ou diretório.",
+    "resumo": "O link simbólico pode apontar para diretórios e para outros sistemas de arquivos (ex.: outro disco); o hard link não.",
+    "nao_confundir": [
+      {
+        "conceito": "Hard link",
+        "diferenca": "Hard link é outro nome do mesmo arquivo; link simbólico guarda o caminho a seguir."
+      }
+    ],
+    "atencao": "No Linux, remover o nome-alvo pode deixar o link simbólico dangling, isto é, apontando para caminho inexistente.",
+    "fonte": "Linux man-pages, symlink(7), DESCRIPTION, e link(2). https://man7.org/linux/man-pages/man7/symlink.7.html ; https://man7.org/linux/man-pages/man2/link.2.html",
+    "tags": [
+      "linux",
+      "hard-link",
+      "link-simbolico"
+    ]
+  },
+  {
+    "id": "card-so-n1-010",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Linux",
+    "nivel": 1,
+    "conceito": "Ferramenta avançada de pacotes (APT)",
+    "termo_ingles": "Advanced Package Tool",
+    "traducao": "APT: ferramenta de alto nível para instalar, atualizar e remover pacotes Debian.",
+    "resumo": "APT usa repositórios (catálogos de pacotes) para localizar versões e gerenciar programas instaláveis no sistema.",
+    "nao_confundir": [
+      {
+        "conceito": "dpkg, ferramenta de gerenciamento de pacotes Debian",
+        "diferenca": "dpkg é de baixo nível e trabalha com arquivos de pacote; apt resolve dependências."
+      }
+    ],
+    "atencao": "A versão candidata é a que o apt escolhe instalar, conforme as preferências locais.",
+    "fonte": "Debian Reference, “Debian package management”, seção “Package dependencies”. https://www.debian.org/doc/manuals/debian-reference/ch02",
+    "tags": [
+      "linux",
+      "apt",
+      "dpkg"
+    ]
+  },
+  {
+    "id": "card-so-n1-011",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Linux",
+    "nivel": 1,
+    "conceito": "sudo",
+    "termo_ingles": "sudo",
+    "traducao": "Sudo: executa um comando autorizado como superusuário ou outro usuário.",
+    "resumo": "Superusuário é a conta administrativa; shell é o interpretador que recebe comandos e inicia sua execução.",
+    "nao_confundir": [
+      {
+        "conceito": "Sessão de login como superusuário",
+        "diferenca": "Sessão de login inicia shell da conta; sudo executa comando autorizado sob usuário de destino."
+      }
+    ],
+    "atencao": "No sudo, a opção -i executa o shell do usuário de destino como shell de login.",
+    "fonte": "Linux man-pages, sudo(8), DESCRIPTION e opção --login. https://www.man7.org/linux/man-pages/man8/sudo.8.html",
+    "tags": [
+      "linux",
+      "sudo"
+    ]
+  },
+  {
+    "id": "card-so-n1-012",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Linux",
+    "nivel": 1,
+    "conceito": "Pipe",
+    "termo_ingles": "pipe",
+    "traducao": "Canal de comunicação: conduz dados escritos em uma extremidade para leitura na outra.",
+    "resumo": "Pipe é canal unidirecional entre processos; uma extremidade recebe dados escritos na outra.",
+    "nao_confundir": [
+      {
+        "conceito": "Canal nomeado",
+        "diferenca": "Canal nomeado tem nome no sistema de arquivos; pipe comum é acessado pelas extremidades abertas."
+      }
+    ],
+    "atencao": "No Linux, um pipe transporta um fluxo de bytes sem preservar limites entre mensagens.",
+    "fonte": "Linux man-pages, pipe(7), DESCRIPTION e I/O on pipes and FIFOs. https://man7.org/linux/man-pages/man7/pipe.7.html",
+    "tags": [
+      "linux",
+      "pipe"
+    ]
+  },
+  {
+    "id": "card-so-n1-013",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Sistemas distribuídos e paralelismo",
+    "nivel": 1,
+    "conceito": "Sistema distribuído",
+    "termo_ingles": "distributed system",
+    "traducao": "Sistema distribuído: elementos computacionais autônomos que aparentam formar um sistema coerente.",
+    "resumo": "Elemento autônomo age de forma independente; o sistema reúne esses elementos e aparenta ser uma unidade coerente para seus usuários.",
+    "nao_confundir": [
+      {
+        "conceito": "Computação paralela",
+        "diferenca": "Computação paralela executa tarefas simultaneamente; sistema distribuído coordena elementos computacionais autônomos."
+      }
+    ],
+    "atencao": "Falha parcial: um componente falha e os outros continuam; é difícil ocultá-la dos usuários.",
+    "fonte": "van Steen e Tanenbaum, “A brief introduction to distributed systems” (2016). https://link.springer.com/article/10.1007/s00607-016-0508-7",
+    "tags": [
+      "sistemas-distribuidos"
+    ]
+  },
+  {
+    "id": "card-so-n1-014",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Sistemas distribuídos e paralelismo",
+    "nivel": 1,
+    "conceito": "Troca de mensagens",
+    "termo_ingles": "message passing",
+    "traducao": "Troca de mensagens: comunicação em que processos enviam informação uns aos outros.",
+    "resumo": "Nó é elemento computacional independente; nós cooperam enviando mensagens e respondendo às mensagens recebidas.",
+    "nao_confundir": [
+      {
+        "conceito": "Memória compartilhada",
+        "diferenca": "Memória compartilhada permite acesso a dados comuns; troca de mensagens transmite informação entre processos."
+      }
+    ],
+    "atencao": "Nós independentes têm suas próprias referências de tempo; um sistema distribuído não pode pressupor relógio global.",
+    "fonte": "van Steen e Tanenbaum, “A brief introduction to distributed systems” (2016), “Characteristic 1: collection of autonomous computing elements”. https://link.springer.com/article/10.1007/s00607-016-0508-7",
+    "tags": [
+      "sistemas-distribuidos",
+      "troca-de-mensagens"
+    ]
+  },
+  {
+    "id": "card-so-n1-015",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Sistemas distribuídos e paralelismo",
+    "nivel": 1,
+    "conceito": "Paralelização",
+    "termo_ingles": "parallelization",
+    "traducao": "Paralelização: distribui partes do trabalho entre processadores para executá-las ao mesmo tempo.",
+    "resumo": "Aplicações paralelizadas podem espalhar trabalho por vários processadores e usar seus recursos para executar mais depressa.",
+    "nao_confundir": [
+      {
+        "conceito": "Concorrência",
+        "diferenca": "Paralelização usa vários processadores ao mesmo tempo; concorrência pode alternar tarefas em um só."
+      }
+    ],
+    "atencao": "Adicionar processadores não acelera uma aplicação que usa apenas um; ela precisa ser paralelizada (por exemplo, com threads).",
+    "fonte": "Arpaci-Dusseau e Arpaci-Dusseau, Operating Systems: Three Easy Pieces, v. 1.10, “Multiprocessor Scheduling (Advanced)”. https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-sched-multi.pdf",
+    "tags": [
+      "computacao-paralela"
+    ]
+  },
+  {
+    "id": "card-so-n1-016",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Sistemas distribuídos e paralelismo",
+    "nivel": 1,
+    "conceito": "Cluster computacional",
+    "termo_ingles": "cluster computing",
+    "traducao": "Cluster: conjunto de computadores conectados para executar trabalho coordenado.",
+    "resumo": "Cluster de computação de alto desempenho reúne computadores semelhantes conectados por uma rede rápida.",
+    "nao_confundir": [
+      {
+        "conceito": "Grade computacional",
+        "diferenca": "Cluster conecta máquinas semelhantes em rede local; grade reúne sistemas de organizações ou domínios diferentes."
+      }
+    ],
+    "atencao": "Em cluster computing, um programa intensivo pode executar em paralelo em várias máquinas.",
+    "fonte": "van Steen e Tanenbaum, “A brief introduction to distributed systems” (2016), “Cluster computing”. https://link.springer.com/article/10.1007/s00607-016-0508-7",
+    "tags": [
+      "cluster",
+      "sistemas-distribuidos",
+      "computacao-paralela"
+    ]
+  },
+  {
+    "id": "card-so-n1-017",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Sistemas distribuídos e paralelismo",
+    "nivel": 1,
+    "conceito": "Escalabilidade de sistemas distribuídos",
+    "termo_ingles": "scalability",
+    "traducao": "Escalabilidade: capacidade de um sistema continuar atendendo ao crescer em usuários ou carga.",
+    "resumo": "A escalabilidade pode ser de tamanho, geográfica ou administrativa, conforme o que cresce no sistema.",
+    "nao_confundir": [
+      {
+        "conceito": "Escalabilidade vertical",
+        "diferenca": "Escalar verticalmente muda a capacidade de um recurso; escalar horizontalmente adiciona ou remove instâncias."
+      }
+    ],
+    "atencao": "Escalar horizontalmente pode exigir distribuir trabalho, replicar dados ou ocultar atrasos de comunicação.",
+    "fonte": "van Steen e Tanenbaum, “A brief introduction to distributed systems” (2016), seção “Scaling techniques”. https://link.springer.com/article/10.1007/s00607-016-0508-7 ; Microsoft Learn, Azure Architecture Center, Autoscaling (escala vertical e horizontal): https://learn.microsoft.com/en-us/azure/architecture/best-practices/auto-scaling",
+    "tags": [
+      "escalabilidade",
+      "sistemas-distribuidos"
+    ]
   }
 ]
