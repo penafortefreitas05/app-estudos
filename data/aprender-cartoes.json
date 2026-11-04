@@ -9438,5 +9438,495 @@
       "backup",
       "continuidade"
     ]
+  },
+  {
+    "id": "card-so-n1-018",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Arquitetura de computadores",
+    "nivel": 1,
+    "conceito": "Bits e bytes",
+    "termo_ingles": "Bit and byte",
+    "traducao": "Bit e byte: unidades de informação; o bit representa 0 ou 1 e o byte reúne oito bits.",
+    "resumo": "Um bit assume 0 ou 1. Um byte contém oito bits e representa 256 combinações possíveis.",
+    "nao_confundir": [
+      {
+        "conceito": "Nibble",
+        "diferenca": "Um nibble reúne quatro bits; um byte reúne oito bits."
+      }
+    ],
+    "atencao": "Na terminologia Intel, word tem 2 bytes (16 bits) e doubleword, 4 bytes (32 bits).",
+    "fonte": "Intel 64 and IA-32 Architectures SDM, Volume 1, cap. 4 (Data Types), seções 4.1 e 4.2.1 — https://cdrdv2-public.intel.com/671294/252046-sdm-change-document.pdf ; https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html",
+    "tags": [
+      "bits-e-bytes",
+      "binarios"
+    ]
+  },
+  {
+    "id": "card-so-n1-019",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Arquitetura de computadores",
+    "nivel": 1,
+    "conceito": "Conversão de bases e hexadecimal",
+    "termo_ingles": "Number systems and hexadecimal",
+    "traducao": "Sistemas numéricos e hexadecimal: representam valores usando diferentes conjuntos de símbolos e bases.",
+    "resumo": "Binário usa base 2; decimal, base 10; hexadecimal, base 16, com 0 a 9 e A a F.",
+    "nao_confundir": [
+      {
+        "conceito": "Octal",
+        "diferenca": "Octal agrupa bits de 3 em 3; hexadecimal, de 4 em 4."
+      }
+    ],
+    "atencao": "Cada dígito hexadecimal representa 4 bits: 1111 0000 vira F0.",
+    "fonte": "Univ. de Wisconsin, CS/ECE 252, Lecture 2, Hexadecimal Notation (four bits per hex digit) — https://pages.cs.wisc.edu/~rrahulnayar/cs252/Spring2017/lectures/Lecture2.pdf ; MIT OCW 6.004 (each group of 4 binary digits is a single hex digit) — https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/",
+    "tags": [
+      "conversao-de-bases",
+      "hexadecimal",
+      "binarios"
+    ]
+  },
+  {
+    "id": "card-so-n1-020",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Arquitetura de computadores",
+    "nivel": 1,
+    "conceito": "Complemento de dois",
+    "termo_ingles": "Two's complement",
+    "traducao": "Complemento de dois: representação binária de inteiros com sinal, usada para realizar operações aritméticas.",
+    "resumo": "Em uma representação com largura fixa, o complemento de dois representa inteiros positivos e negativos usando os mesmos bits.",
+    "nao_confundir": [
+      {
+        "conceito": "Sinal e magnitude",
+        "diferenca": "Sinal e magnitude tem dois zeros, +0 e −0; complemento de dois tem um só."
+      }
+    ],
+    "atencao": "O bit mais à esquerda (mais significativo) é o sinal; com 8 bits, vai de −128 a 127.",
+    "fonte": "Intel 64 and IA-32 Architectures SDM, Volume 1, cap. 4 (Data Types), seções 4.1 e 4.2.1 — https://cdrdv2-public.intel.com/671294/252046-sdm-change-document.pdf ; https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html",
+    "tags": [
+      "complemento-de-dois",
+      "binarios"
+    ]
+  },
+  {
+    "id": "card-so-n1-021",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Arquitetura de computadores",
+    "nivel": 1,
+    "conceito": "Unidade Lógica e Aritmética",
+    "termo_ingles": "Arithmetic Logic Unit (ALU)",
+    "traducao": "Unidade Lógica e Aritmética: executa operações aritméticas e lógicas dentro do processador.",
+    "resumo": "A ULA realiza operações como soma, subtração, comparações e operações lógicas sobre dados.",
+    "nao_confundir": [
+      {
+        "conceito": "Registradores",
+        "diferenca": "A ULA calcula; os registradores guardam operandos e resultados."
+      }
+    ],
+    "atencao": "A unidade de controle busca e decodifica instruções e gera os sinais que comandam a ULA.",
+    "fonte": "MIT 16.070, Lecture 3.2, Computer Organization — https://web.mit.edu/16.070/www/lecture/lecture_3_2.pdf ; MIT OCW 6.004 Computation Structures, 9.1 — https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c9/c9s1/",
+    "tags": [
+      "cpu",
+      "ula"
+    ]
+  },
+  {
+    "id": "card-so-n1-022",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Arquitetura de computadores",
+    "nivel": 1,
+    "conceito": "Registradores do processador",
+    "termo_ingles": "Processor registers",
+    "traducao": "Registradores do processador: pequenas posições de armazenamento interno usadas durante a execução de instruções.",
+    "resumo": "Os registradores guardam temporariamente valores, endereços e informações necessários às operações do processador.",
+    "nao_confundir": [
+      {
+        "conceito": "Memória RAM",
+        "diferenca": "Registradores ficam dentro do processador; RAM é a memória principal acessada por ele."
+      }
+    ],
+    "atencao": "O contador de programa é um registrador que guarda o endereço da próxima instrução.",
+    "fonte": "MIT OCW 6.004 Computation Structures, 9.1 — https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/c9/c9s1/ ; Intel 64 and IA-32 Architectures Software Developer’s Manual, Volume 1, Basic Architecture, seção 3.5, Instruction Pointer — https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html",
+    "tags": [
+      "cpu",
+      "registradores",
+      "hierarquia-de-memoria"
+    ]
+  },
+  {
+    "id": "card-so-n1-023",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Arquitetura de computadores",
+    "nivel": 1,
+    "conceito": "Memória cache e memória RAM",
+    "termo_ingles": "Cache memory and Random Access Memory (RAM)",
+    "traducao": "Memória cache e memória de acesso aleatório: armazenam temporariamente dados para uso do processador, com capacidades e velocidades diferentes.",
+    "resumo": "A cache mantém dados de acesso frequente próxima ao processador; a RAM armazena programas e dados em uso.",
+    "nao_confundir": [
+      {
+        "conceito": "Armazenamento secundário (SSD, HD)",
+        "diferenca": "Cache e RAM são voláteis, perdem dados sem energia; SSD e HD são persistentes."
+      }
+    ],
+    "atencao": "A cache é pequena e rápida e guarda cópias de dados populares; a memória principal é maior e mais lenta.",
+    "fonte": "OSTEP, capítulo 10, Multiprocessor Scheduling (Background: Hardware Caches) — https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-sched-multi.pdf",
+    "tags": [
+      "memoria-cache",
+      "ram",
+      "hierarquia-de-memoria"
+    ]
+  },
+  {
+    "id": "card-so-n1-024",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Arquitetura de computadores",
+    "nivel": 1,
+    "conceito": "Compilador e interpretador",
+    "termo_ingles": "Compiler and interpreter",
+    "traducao": "Compilador e interpretador: ferramentas que traduzem instruções de uma linguagem de programação para execução.",
+    "resumo": "O compilador traduz código antes da execução; o interpretador realiza tradução durante a execução do programa.",
+    "nao_confundir": [
+      {
+        "conceito": "Montador",
+        "diferenca": "O compilador traduz linguagens de programação; o montador converte instruções Assembly em código de máquina."
+      }
+    ],
+    "atencao": "Existem implementações híbridas; não é regra que toda linguagem use somente compilação ou interpretação.",
+    "fonte": "GCC, Using the GNU Compiler Collection, seção Introduction; Python Documentation, Tutorial — Using the Python Interpreter. https://gcc.gnu.org/onlinedocs/gcc/ ; https://docs.python.org/3/tutorial/interpreter.html",
+    "tags": [
+      "compiladores",
+      "interpretadores"
+    ]
+  },
+  {
+    "id": "card-so-n1-025",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Sistemas operacionais — processos e memória",
+    "nivel": 1,
+    "conceito": "Kernel do sistema operacional",
+    "termo_ingles": "Kernel",
+    "traducao": "Núcleo do sistema operacional: componente central que gerencia recursos e oferece serviços essenciais aos programas.",
+    "resumo": "O kernel gerencia recursos como processador, memória e dispositivos, mediando o acesso dos programas ao hardware.",
+    "nao_confundir": [
+      {
+        "conceito": "Chamada de sistema",
+        "diferenca": "Chamada de sistema é como o programa em modo usuário pede serviço ao kernel."
+      }
+    ],
+    "atencao": "No modo usuário o código é restrito; no modo kernel, o sistema tem acesso a todos os recursos da máquina.",
+    "fonte": "OSTEP, capítulos 2 (Introduction) e 6 (Mechanism: Limited Direct Execution) — https://pages.cs.wisc.edu/~remzi/OSTEP/intro.pdf ; https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-mechanisms.pdf",
+    "tags": [
+      "kernel",
+      "sistemas-operacionais"
+    ]
+  },
+  {
+    "id": "card-so-n1-026",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Sistemas operacionais — processos e memória",
+    "nivel": 1,
+    "conceito": "Estados de um processo",
+    "termo_ingles": "Process states",
+    "traducao": "Estados de processo: indicam a condição de execução ou espera de um processo no sistema operacional.",
+    "resumo": "Estados básicos incluem pronto, executando e bloqueado; representam espera pela CPU, uso da CPU ou espera por evento.",
+    "nao_confundir": [
+      {
+        "conceito": "Programa",
+        "diferenca": "Programa é o código parado em disco; processo é o programa em execução."
+      }
+    ],
+    "atencao": "Quando o evento termina, o processo bloqueado volta ao estado pronto.",
+    "fonte": "Operating Systems: Three Easy Pieces (OSTEP), capítulo 4 — The Abstraction: The Process. https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-intro.pdf",
+    "tags": [
+      "processos",
+      "estados-de-processo"
+    ]
+  },
+  {
+    "id": "card-so-n1-027",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Sistemas operacionais — processos e memória",
+    "nivel": 1,
+    "conceito": "Escalonador de processos",
+    "termo_ingles": "Process scheduler",
+    "traducao": "Escalonador de processos: componente que seleciona qual processo pronto receberá tempo de processamento.",
+    "resumo": "O escalonador decide a ordem de uso do processador conforme uma política de escalonamento.",
+    "nao_confundir": [
+      {
+        "conceito": "Política de escalonamento",
+        "diferenca": "O escalonador aplica a decisão; a política, como round-robin, define o critério."
+      }
+    ],
+    "atencao": "Escalonador preemptivo pode parar um processo para rodar outro; o não preemptivo roda cada tarefa até o fim.",
+    "fonte": "Operating Systems: Three Easy Pieces (OSTEP), capítulo 7 — Scheduling: Introduction. https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-sched.pdf",
+    "tags": [
+      "escalonamento",
+      "processos"
+    ]
+  },
+  {
+    "id": "card-so-n1-028",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Sistemas operacionais — processos e memória",
+    "nivel": 1,
+    "conceito": "Condição de corrida",
+    "termo_ingles": "Race condition",
+    "traducao": "Condição de corrida: situação em que o resultado depende da ordem ou do momento de acessos concorrentes a dados compartilhados.",
+    "resumo": "Ocorre quando operações concorrentes acessam dados compartilhados e a ordem de execução altera o resultado.",
+    "nao_confundir": [
+      {
+        "conceito": "Deadlock",
+        "diferenca": "Corrida depende da ordem dos acessos; deadlock é espera mútua permanente."
+      }
+    ],
+    "atencao": "Com condição de corrida o programa fica indeterminado: o resultado pode variar entre execuções.",
+    "fonte": "Operating Systems: Three Easy Pieces (OSTEP), capítulo 26 — Concurrency: An Introduction. https://pages.cs.wisc.edu/~remzi/OSTEP/threads-intro.pdf",
+    "tags": [
+      "concorrencia",
+      "condicao-de-corrida"
+    ]
+  },
+  {
+    "id": "card-so-n1-029",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Sistemas operacionais — processos e memória",
+    "nivel": 1,
+    "conceito": "Semáforo e mutex",
+    "termo_ingles": "Semaphore and mutex",
+    "traducao": "Semáforo e exclusão mútua: mecanismos de sincronização que coordenam o acesso concorrente a recursos compartilhados.",
+    "resumo": "O semáforo usa um contador para controlar acessos; o mutex garante exclusão mútua na região crítica (trecho que usa dado compartilhado).",
+    "nao_confundir": [
+      {
+        "conceito": "Semáforo binário",
+        "diferenca": "Semáforo binário pode ser liberado por qualquer thread; mutex, só pela que travou."
+      }
+    ],
+    "atencao": "O mutex tem dono: destravar mutex que a thread não travou dá erro ou comportamento indefinido.",
+    "fonte": "OSTEP, capítulos 28 (Locks) e 31 (Semaphores) — https://pages.cs.wisc.edu/~remzi/OSTEP/threads-locks.pdf ; https://pages.cs.wisc.edu/~remzi/OSTEP/threads-sema.pdf ; POSIX pthread_mutex_unlock(3p) — https://man7.org/linux/man-pages/man3/pthread_mutex_unlock.3p.html",
+    "tags": [
+      "semaforo",
+      "concorrencia"
+    ]
+  },
+  {
+    "id": "card-so-n1-030",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Linux",
+    "nivel": 1,
+    "conceito": "Estrutura de diretórios Linux",
+    "termo_ingles": "Linux filesystem hierarchy",
+    "traducao": "Hierarquia do sistema de arquivos Linux: organiza arquivos e diretórios a partir de um diretório raiz.",
+    "resumo": "No Linux, / é a raiz; /home guarda diretórios de usuários, /etc concentra configurações e /var contém dados variáveis.",
+    "nao_confundir": [
+      {
+        "conceito": "Diretório /root",
+        "diferenca": "A raiz / inicia a árvore; /root é, em geral, o diretório pessoal do superusuário."
+      }
+    ],
+    "atencao": "/dev guarda arquivos especiais que representam dispositivos físicos; /tmp, arquivos temporários.",
+    "fonte": "Linux man-pages, hier(7) — Description of the filesystem hierarchy. https://man7.org/linux/man-pages/man7/hier.7.html",
+    "tags": [
+      "linux",
+      "estrutura-de-diretorios"
+    ]
+  },
+  {
+    "id": "card-so-n1-031",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Linux",
+    "nivel": 1,
+    "conceito": "Link físico e link simbólico",
+    "termo_ingles": "Hard link and symbolic link",
+    "traducao": "Link físico e link simbólico: nomes que referenciam um arquivo diretamente ou por meio de um caminho.",
+    "resumo": "No Linux, um link físico é outro nome para o mesmo inode (estrutura com os dados e metadados do arquivo); o simbólico guarda um caminho.",
+    "nao_confundir": [
+      {
+        "conceito": "Cópia de arquivo",
+        "diferenca": "Link físico compartilha o mesmo inode; cópia cria outro arquivo com conteúdo próprio."
+      }
+    ],
+    "atencao": "No Linux, link físico não funciona entre sistemas de arquivos diferentes nem aponta para diretório.",
+    "fonte": "Linux man-pages, symlink(7) — Symbolic link handling; link(2) — Make a new name for a file. https://man7.org/linux/man-pages/man7/symlink.7.html ; https://man7.org/linux/man-pages/man2/link.2.html ; unlink(2) — https://man7.org/linux/man-pages/man2/unlink.2.html",
+    "tags": [
+      "linux",
+      "hard-link",
+      "link-simbolico"
+    ]
+  },
+  {
+    "id": "card-so-n1-032",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Linux",
+    "nivel": 1,
+    "conceito": "Comandos de navegação e arquivos",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "No Linux, pwd mostra o diretório atual, cd muda de diretório, ls lista conteúdo, cp copia e mv move ou renomeia arquivos.",
+    "nao_confundir": [
+      {
+        "conceito": "cp e mv",
+        "diferenca": "cp mantém o arquivo de origem; mv o tira do lugar original."
+      }
+    ],
+    "atencao": "No Linux, mv renomeia a origem ou a move para um diretório; cp faz uma cópia.",
+    "fonte": "Linux man-pages: pwd(1), cd(1p), ls(1), cp(1) e mv(1). https://man7.org/linux/man-pages/man1/pwd.1.html ; https://man7.org/linux/man-pages/man1/ls.1.html ; https://man7.org/linux/man-pages/man1/cp.1.html ; https://man7.org/linux/man-pages/man1/mv.1.html",
+    "tags": [
+      "linux",
+      "comandos-basicos"
+    ]
+  },
+  {
+    "id": "card-so-n1-033",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Linux",
+    "nivel": 1,
+    "conceito": "Caminho absoluto e caminho relativo",
+    "termo_ingles": "Absolute and relative pathname",
+    "traducao": "Caminho absoluto e relativo: formas de indicar um arquivo a partir da raiz ou do diretório atual.",
+    "resumo": "No Linux, caminho absoluto começa em /, como /etc/hosts; caminho relativo parte do diretório atual, como docs/nota.txt.",
+    "nao_confundir": [
+      {
+        "conceito": "Diretório de trabalho",
+        "diferenca": "Diretório de trabalho é onde você está; caminho relativo parte dele."
+      }
+    ],
+    "atencao": "Todo diretório tem . (ele mesmo) e .. (o diretório pai); /.. é o mesmo que /.",
+    "fonte": "Linux man-pages, path_resolution(7), Step 1 — https://man7.org/linux/man-pages/man7/path_resolution.7.html",
+    "tags": [
+      "linux",
+      "estrutura-de-diretorios",
+      "comandos-basicos"
+    ]
+  },
+  {
+    "id": "card-so-n1-034",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Windows Server",
+    "nivel": 1,
+    "conceito": "Funções do Windows Server",
+    "termo_ingles": "Windows Server roles",
+    "traducao": "Funções do Windows Server: serviços instaláveis que permitem ao servidor executar tarefas específicas na rede.",
+    "resumo": "O Windows Server fornece funções como serviços de diretório, arquivos, impressão e serviços de rede para ambientes organizacionais.",
+    "nao_confundir": [
+      {
+        "conceito": "Recurso (feature)",
+        "diferenca": "Função é o papel principal do servidor; recurso é complemento, como o BitLocker."
+      }
+    ],
+    "atencao": "Uma função descreve o papel principal do servidor; um servidor pode acumular várias funções.",
+    "fonte": "Microsoft Learn, Add or Remove Roles and Features in Windows Server — https://learn.microsoft.com/en-us/windows-server/administration/server-manager/add-remove-roles-features ; Roles, Role Services, and Features (Server Core) — https://learn.microsoft.com/en-us/windows-server/administration/server-core/server-core-roles-and-services ; Commands by Server Role (definição de função) — https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-R2-and-2012/hh875528(v=ws.11)",
+    "tags": [
+      "windows-server"
+    ]
+  },
+  {
+    "id": "card-so-n1-035",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Windows Server",
+    "nivel": 1,
+    "conceito": "Objeto de Política de Grupo",
+    "termo_ingles": "Group Policy Object (GPO)",
+    "traducao": "Objeto de Política de Grupo: conjunto de configurações centralizadas aplicáveis a usuários e computadores.",
+    "resumo": "A GPO reúne configurações para usuários e computadores do Active Directory e pode ser vinculada a site, domínio ou unidade organizacional (contêiner que agrupa objetos).",
+    "nao_confundir": [
+      {
+        "conceito": "Política local",
+        "diferenca": "Política local configura um computador; GPO vinculada ao diretório pode alcançar vários usuários e computadores."
+      }
+    ],
+    "atencao": "A ordem é local, site, domínio e unidade organizacional; a última prevalece, salvo política imposta (Enforced).",
+    "fonte": "Microsoft Learn, Group Policy overview — https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-policy/group-policy-overview ; Group Policy processing — https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-policy/group-policy-processing",
+    "tags": [
+      "windows-server",
+      "gpo"
+    ]
+  },
+  {
+    "id": "card-so-n1-036",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Windows Server",
+    "nivel": 1,
+    "conceito": "Hyper-V no Windows Server",
+    "termo_ingles": "Hyper-V",
+    "traducao": "Hyper-V: tecnologia de hipervisor da Microsoft que permite criar, gerenciar e executar máquinas virtuais.",
+    "resumo": "No Windows Server, Hyper-V é uma função que permite executar sistemas operacionais convidados em máquinas virtuais.",
+    "nao_confundir": [
+      {
+        "conceito": "Hipervisor tipo 2",
+        "diferenca": "Tipo 1 roda direto no hardware; tipo 2 roda sobre um sistema operacional."
+      }
+    ],
+    "atencao": "O hipervisor do Hyper-V fica entre o hardware e os sistemas operacionais e controla o acesso ao hardware.",
+    "fonte": "Microsoft Learn, Hyper-V virtualization in Windows Server and Windows, aplicável ao Windows Server 2016, 2019, 2022 e 2025. https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/overview",
+    "tags": [
+      "windows-server",
+      "hyper-v",
+      "virtualizacao"
+    ]
+  },
+  {
+    "id": "card-so-n1-037",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Windows Server",
+    "nivel": 1,
+    "conceito": "Cmdlets do PowerShell",
+    "termo_ingles": "PowerShell cmdlets",
+    "traducao": "Cmdlets do PowerShell: comandos nativos que executam operações administrativas e seguem uma convenção de nomenclatura.",
+    "resumo": "No PowerShell, cmdlets são comandos especializados, como Get-Service, usados para consultar e administrar recursos do sistema.",
+    "nao_confundir": [
+      {
+        "conceito": "Script",
+        "diferenca": "Cmdlet é um comando individual; script reúne instruções para executar uma sequência de tarefas."
+      }
+    ],
+    "atencao": "Os nomes dos cmdlets seguem o padrão Verbo-Substantivo, como Get-Service.",
+    "fonte": "Microsoft Learn, Introduction to Windows PowerShell; approved verbs for PowerShell commands. https://learn.microsoft.com/en-us/powershell/scripting/learn/ps101/ ; https://learn.microsoft.com/en-us/powershell/scripting/developer/cmdlet/approved-verbs-for-powershell-commands",
+    "tags": [
+      "powershell",
+      "cmdlets"
+    ]
+  },
+  {
+    "id": "card-so-n1-038",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Windows Server",
+    "nivel": 1,
+    "conceito": "Execução remota no PowerShell",
+    "termo_ingles": "PowerShell remoting",
+    "traducao": "Execução remota do PowerShell: permite executar comandos em computadores remotos a partir de uma sessão local.",
+    "resumo": "O Enter-PSSession abre uma sessão interativa (você digita e o comando roda no remoto); o Invoke-Command executa comandos em um ou mais computadores.",
+    "nao_confundir": [
+      {
+        "conceito": "Execução local",
+        "diferenca": "Execução local atua no computador atual; execução remota envia comandos a outro."
+      }
+    ],
+    "atencao": "No Windows, o PowerShell remoting usa o WinRM, implementação do protocolo WS-Management.",
+    "fonte": "Microsoft Learn, about_Remote — https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_remote ; about_Remote_Requirements — https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_remote_requirements",
+    "tags": [
+      "powershell",
+      "powershell-remoting",
+      "invoke-command"
+    ]
+  },
+  {
+    "id": "card-so-n1-039",
+    "materia": "Sistemas Operacionais & Hardware",
+    "assunto": "Windows Server",
+    "nivel": 1,
+    "conceito": "Windows Admin Center",
+    "termo_ingles": "Windows Admin Center",
+    "traducao": "Central de Administração do Windows: ferramenta baseada em navegador para gerenciar servidores e clusters Windows.",
+    "resumo": "O Windows Admin Center reúne ferramentas de gerenciamento remoto de servidores, clusters e recursos do Windows Server.",
+    "nao_confundir": [
+      {
+        "conceito": "Gerenciador do Servidor (Server Manager)",
+        "diferenca": "Server Manager é console do próprio Windows Server; Windows Admin Center gerencia remotamente."
+      }
+    ],
+    "atencao": "Gerencia Windows Server físico, virtual ou em nuvem, sem custo extra além das licenças do Windows.",
+    "fonte": "Microsoft Learn, Windows Admin Center overview, aplicável ao Windows Admin Center. https://learn.microsoft.com/en-us/windows-server/manage/windows-admin-center/overview ; FAQ: https://learn.microsoft.com/en-us/windows-server/manage/windows-admin-center/understand/faq",
+    "tags": [
+      "windows-server",
+      "windows-admin-center"
+    ]
   }
 ]
