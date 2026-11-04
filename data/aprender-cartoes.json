@@ -5977,5 +5977,402 @@
       "analise-de-requisitos",
       "requisitos"
     ]
+  },
+  {
+    "id": "card-es-n1-051",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Métricas e estimativas (APF, pontos de história)",
+    "nivel": 1,
+    "conceito": "Análise de Pontos de Função (APF)",
+    "termo_ingles": "Function Point Analysis",
+    "traducao": "Análise de Pontos de Função: mede o tamanho funcional do software pelas funções que oferece ao usuário.",
+    "resumo": "A APF conta as funções que o software oferece ao usuário, a partir dos requisitos funcionais.",
+    "nao_confundir": [
+      {
+        "conceito": "Esforço em horas",
+        "diferenca": "A APF mede tamanho funcional; horas registram o tempo de trabalho."
+      }
+    ],
+    "atencao": "A contagem independe da metodologia e da tecnologia utilizadas.",
+    "fonte": "Roteiro de Métricas de Software do SISP (v2.3 e minuta da v3.0; a v3.0 final consta na página do CCSISP, gov.br); IFPUG, Function Point Counting Practices Manual",
+    "tags": [
+      "apf"
+    ]
+  },
+  {
+    "id": "card-es-n1-052",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Métricas e estimativas (APF, pontos de história)",
+    "nivel": 1,
+    "conceito": "Usuário na Análise de Pontos de Função",
+    "termo_ingles": "User",
+    "traducao": "Usuário: pessoa ou coisa que interage com o software.",
+    "resumo": "Quem ou o que interage com o software, seja pessoa ou outro sistema, conta como usuário na APF.",
+    "nao_confundir": [
+      {
+        "conceito": "Operador de tela",
+        "diferenca": "O operador usa telas; o usuário da APF inclui qualquer pessoa ou coisa que interage."
+      }
+    ],
+    "atencao": "Na APF, outro sistema que interage com o software também é usuário.",
+    "fonte": "IFPUG, MetricViews, agosto de 2015",
+    "tags": [
+      "apf",
+      "usuario"
+    ]
+  },
+  {
+    "id": "card-es-n1-053",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Métricas e estimativas (APF, pontos de história)",
+    "nivel": 1,
+    "conceito": "Pontos de história",
+    "termo_ingles": "Story points",
+    "traducao": "Pontos de história: unidade com que a equipe compara o tamanho de histórias.",
+    "resumo": "A equipe atribui pontos às histórias para compará-las entre si, sem prever quanto tempo cada uma levará.",
+    "nao_confundir": [
+      {
+        "conceito": "Pontos de função (APF)",
+        "diferenca": "Pontos de função medem tamanho funcional; pontos de história comparam dificuldade entre histórias."
+      }
+    ],
+    "atencao": "Pontos enfatizam a dificuldade relativa de uma história, e não uma duração absoluta.",
+    "fonte": "Mike Cohn, Agile Estimating and Planning; Agile Alliance Glossary, verbete “Points (estimates in)”.",
+    "tags": [
+      "story-points",
+      "estimativa"
+    ]
+  },
+  {
+    "id": "card-es-n1-054",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Métricas e estimativas (APF, pontos de história)",
+    "nivel": 1,
+    "conceito": "Planning Poker",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Cada participante escolhe uma carta com sua estimativa em pontos de história, e todas são reveladas ao mesmo tempo.",
+    "nao_confundir": [
+      {
+        "conceito": "Estimativa por especialista",
+        "diferenca": "No Planning Poker, todos estimam e revelam juntos; no especialista, só uma pessoa decide."
+      }
+    ],
+    "atencao": "Quem deu a estimativa mais alta e a mais baixa justifica sua escolha; pode haver novas rodadas até o consenso.",
+    "fonte": "Agile Alliance Glossary, verbete “Planning Poker”; Mountain Goat Software, What is Planning Poker; Mike Cohn, Agile Estimating and Planning",
+    "tags": [
+      "planning-poker",
+      "estimativa",
+      "story-points"
+    ]
+  },
+  {
+    "id": "card-es-n1-055",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Métricas e estimativas (APF, pontos de história)",
+    "nivel": 1,
+    "conceito": "Velocidade da equipe",
+    "termo_ingles": "Velocity",
+    "traducao": "Velocidade: total de pontos estimados para histórias concluídas em uma iteração.",
+    "resumo": "A equipe usa sua velocidade observada para estimar quanto trabalho pode planejar em iterações futuras.",
+    "nao_confundir": [
+      {
+        "conceito": "Produtividade individual",
+        "diferenca": "Velocidade soma estimativas concluídas pela equipe; produtividade individual atribuiria uma medida a cada pessoa."
+      }
+    ],
+    "atencao": "Só histórias concluídas somam pontos; trabalho iniciado e não concluído não entra na velocidade.",
+    "fonte": "Agile Alliance Glossary, verbete “Velocity”; Mike Cohn, Agile Estimating and Planning.",
+    "tags": [
+      "velocidade",
+      "story-points"
+    ]
+  },
+  {
+    "id": "card-es-n1-056",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Qualidade e maturidade (CMMI, MPS.BR, ISO 12207)",
+    "nivel": 1,
+    "conceito": "CMMI",
+    "termo_ingles": "Capability Maturity Model Integration",
+    "traducao": "Integração do Modelo de Capacidade e Maturidade: modelo de melhoria de processos de uma organização.",
+    "resumo": "O CMMI define níveis de maturidade; o mais alto é Em Otimização.",
+    "nao_confundir": [
+      {
+        "conceito": "MPS.BR",
+        "diferenca": "CMMI identifica níveis por números; MPS.BR os identifica por letras, de G a A."
+      }
+    ],
+    "atencao": "Os níveis formam um caminho em etapas para melhorar o desempenho e os processos da organização.",
+    "fonte": "CMMI Institute, “CMMI Levels of Capability and Performance”.",
+    "tags": [
+      "cmmi"
+    ]
+  },
+  {
+    "id": "card-es-n1-057",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Qualidade e maturidade (CMMI, MPS.BR, ISO 12207)",
+    "nivel": 1,
+    "conceito": "Melhoria de Processo do Software Brasileiro (MPS.BR)",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Modelo brasileiro de melhoria de processos de software, com sete níveis de maturidade identificados por letras.",
+    "nao_confundir": [
+      {
+        "conceito": "CMMI",
+        "diferenca": "MPS.BR usa letras, de G a A; CMMI usa números."
+      }
+    ],
+    "atencao": "Os níveis crescem na ordem inversa do alfabeto: G é o mais baixo e A o mais alto.",
+    "fonte": "Softex, MPS.BR: https://mpsbr.softex.br/ (sete níveis, de G a A); Guia Geral MPS de Software, Softex",
+    "tags": [
+      "mps-br",
+      "cmmi"
+    ]
+  },
+  {
+    "id": "card-es-n1-058",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Qualidade e maturidade (CMMI, MPS.BR, ISO 12207)",
+    "nivel": 1,
+    "conceito": "ISO/IEC 12207",
+    "termo_ingles": "Software life cycle processes",
+    "traducao": "Processos do ciclo de vida de software: conjunto de processos aplicáveis à aquisição, desenvolvimento, operação, manutenção e descarte de software.",
+    "resumo": "Norma internacional que oferece uma estrutura comum para processos do ciclo de vida de software.",
+    "nao_confundir": [
+      {
+        "conceito": "ISO/IEC 25010",
+        "diferenca": "A 12207 organiza processos do ciclo de vida; a 25010 define qualidade do produto."
+      }
+    ],
+    "atencao": "Descreve processos do ciclo de vida, não níveis de maturidade; a edição de 2017 foi substituída pela de 2026.",
+    "fonte": "ISO/IEC/IEEE 12207:2026 (substitui a de 2017): https://www.iso.org/standard/90219.html; SWEBOK Guide v4.0a, IEEE Computer Society",
+    "tags": [
+      "iso-12207",
+      "processo-de-software"
+    ]
+  },
+  {
+    "id": "card-es-n1-059",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Qualidade e maturidade (CMMI, MPS.BR, ISO 12207)",
+    "nivel": 1,
+    "conceito": "ISO/IEC 25010",
+    "termo_ingles": "Product quality model",
+    "traducao": "Modelo de qualidade de produto: organiza características para especificar, medir e avaliar a qualidade de produtos de software.",
+    "resumo": "Norma internacional, em sua edição de 2023, que define um modelo de qualidade aplicável a produtos de software e de tecnologia da informação e comunicação.",
+    "nao_confundir": [
+      {
+        "conceito": "ISO/IEC 12207",
+        "diferenca": "ISO/IEC 25010 avalia qualidade de produto; ISO/IEC 12207 organiza processos do ciclo de vida."
+      }
+    ],
+    "atencao": "A edição de 2023 define nove características; a de 2011 definia oito.",
+    "fonte": "ISO/IEC 25010:2023: https://www.iso.org/standard/78176.html; SWEBOK Guide v4.0a, IEEE Computer Society",
+    "tags": [
+      "iso-25010",
+      "qualidade-de-software"
+    ]
+  },
+  {
+    "id": "card-es-n1-060",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Qualidade e maturidade (CMMI, MPS.BR, ISO 12207)",
+    "nivel": 1,
+    "conceito": "Qualidade de processo",
+    "termo_ingles": "process quality",
+    "traducao": "Qualidade de processo: quão bem o trabalho de produzir software é organizado e executado.",
+    "resumo": "Avalia como o software é produzido, e não o software pronto.",
+    "nao_confundir": [
+      {
+        "conceito": "Qualidade de produto",
+        "diferenca": "Qualidade de processo avalia como se produz; qualidade de produto avalia o software entregue."
+      }
+    ],
+    "atencao": "CMMI e MPS.BR tratam da qualidade do processo; a ISO/IEC 25010, da qualidade do produto.",
+    "fonte": "CMMI Institute, Levels: https://cmmiinstitute.com/learning/appraisals/levels; Softex, MPS.BR: https://mpsbr.softex.br/; ISO/IEC 25010:2023: https://www.iso.org/standard/78176.html",
+    "tags": [
+      "qualidade-de-software",
+      "processo-de-software"
+    ]
+  },
+  {
+    "id": "card-arq-n1-049",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Arquitetura de software (camadas, MVC, microsserviços)",
+    "nivel": 1,
+    "conceito": "Arquitetura em camadas",
+    "termo_ingles": "Layered architecture",
+    "traducao": "Arquitetura em camadas: separa as responsabilidades do sistema em divisões lógicas.",
+    "resumo": "Cada camada tem uma função. Na arquitetura de três camadas, apresentação atende à interface, negócio aplica regras e dados acessa armazenamento.",
+    "nao_confundir": [
+      {
+        "conceito": "Modelo–visão–controlador",
+        "diferenca": "Camadas organizam funções do sistema; modelo–visão–controlador separa dados, tela e interação."
+      }
+    ],
+    "atencao": "Camadas são divisões lógicas; níveis físicos (tiers) é que rodam em máquinas separadas.",
+    "fonte": "Sommerville, Engenharia de Software, 10ª ed.; Microsoft, Azure Architecture Center, “N-tier architecture style”",
+    "tags": [
+      "camadas",
+      "tres-camadas"
+    ]
+  },
+  {
+    "id": "card-arq-n1-050",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Arquitetura de software (camadas, MVC, microsserviços)",
+    "nivel": 1,
+    "conceito": "Modelo–visão–controlador (MVC)",
+    "termo_ingles": "Model–View–Controller (MVC)",
+    "traducao": "Modelo–visão–controlador: separa dados, apresentação e fluxo de interação.",
+    "resumo": "O modelo representa o estado e a lógica de negócio, a visão apresenta a tela e o controlador trata a interação do usuário.",
+    "nao_confundir": [
+      {
+        "conceito": "Arquitetura em camadas",
+        "diferenca": "MVC separa dados, tela e interação; camadas dividem as responsabilidades do sistema inteiro."
+      }
+    ],
+    "atencao": "No MVC, o modelo reúne lógica de negócio e persistência do estado, mais do que a camada de dados.",
+    "fonte": "Sommerville, Engenharia de Software, 10ª ed.; Microsoft Learn, Overview of ASP.NET Core MVC: https://learn.microsoft.com/en-us/aspnet/core/mvc/overview",
+    "tags": [
+      "mvc",
+      "tres-camadas"
+    ]
+  },
+  {
+    "id": "card-arq-n1-051",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Arquitetura de software (camadas, MVC, microsserviços)",
+    "nivel": 1,
+    "conceito": "Arquitetura monolítica",
+    "termo_ingles": "Monolithic architecture",
+    "traducao": "Arquitetura monolítica: constrói e implanta a aplicação como uma unidade.",
+    "resumo": "A aplicação é estruturada como um único componente implantável, que usa um único banco de dados.",
+    "nao_confundir": [
+      {
+        "conceito": "Arquitetura de microsserviços",
+        "diferenca": "Monólito implanta a aplicação como unidade; microsserviços permitem implantar serviços separadamente."
+      }
+    ],
+    "atencao": "Um monólito pode ter módulos internos; isso não significa que cada módulo seja implantado separadamente.",
+    "fonte": "Chris Richardson, Microservices Patterns, 1ª ed. (2018); Microservices.io, Monolithic Architecture.",
+    "tags": [
+      "monolito",
+      "microsservicos"
+    ]
+  },
+  {
+    "id": "card-arq-n1-052",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Arquitetura de software (camadas, MVC, microsserviços)",
+    "nivel": 1,
+    "conceito": "Arquitetura orientada a serviços",
+    "termo_ingles": "Service-Oriented Architecture (SOA)",
+    "traducao": "Arquitetura orientada a serviços: cria aplicações a partir de componentes de software chamados serviços.",
+    "resumo": "Na arquitetura orientada a serviços (SOA), aplicações são criadas com serviços que outros sistemas reutilizam, chamando-os por uma interface que define como invocá-los.",
+    "nao_confundir": [
+      {
+        "conceito": "Arquitetura de microsserviços",
+        "diferenca": "SOA organiza funções reutilizáveis entre sistemas; microsserviços enfatizam serviços implantáveis de forma independente."
+      }
+    ],
+    "atencao": "Em muitos livros, microsserviços podem ser classificados como uma forma de SOA; essa classificação varia entre autores.",
+    "fonte": "AWS, What is Service-Oriented Architecture?: https://aws.amazon.com/what-is/service-oriented-architecture/; James Lewis e Martin Fowler, “Microservices” (2014); Chris Richardson, Microservices Patterns, 1ª ed. (2018)",
+    "tags": [
+      "soa",
+      "acoplamento"
+    ]
+  },
+  {
+    "id": "card-arq-n1-053",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Arquitetura de software (camadas, MVC, microsserviços)",
+    "nivel": 1,
+    "conceito": "Arquitetura de microsserviços",
+    "termo_ingles": "Microservices architecture",
+    "traducao": "Arquitetura de microsserviços: divide a aplicação em serviços pequenos e autônomos.",
+    "resumo": "Cada serviço atende uma capacidade do negócio e pode ser desenvolvido, implantado e escalado de forma independente.",
+    "nao_confundir": [
+      {
+        "conceito": "Arquitetura monolítica",
+        "diferenca": "Microsserviços são implantáveis separadamente; monólito reúne a aplicação em uma unidade implantável."
+      }
+    ],
+    "atencao": "Microsserviços não são sempre melhores: serviços demais podem aumentar comunicação e complexidade operacional.",
+    "fonte": "James Lewis e Martin Fowler, “Microservices” (2014); Microsoft, Azure Architecture Center, “Microservices Architecture Style”.",
+    "tags": [
+      "microsservicos",
+      "granularidade",
+      "acoplamento",
+      "apis"
+    ]
+  },
+  {
+    "id": "card-arq-n1-054",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Arquitetura de software (camadas, MVC, microsserviços)",
+    "nivel": 1,
+    "conceito": "Banco de dados por serviço",
+    "termo_ingles": "Database per service",
+    "traducao": "Banco de dados por serviço: mantém os dados de cada serviço sob seu próprio controle.",
+    "resumo": "Os dados de cada serviço são privados e só podem ser acessados pela API desse serviço.",
+    "nao_confundir": [
+      {
+        "conceito": "Banco de dados compartilhado",
+        "diferenca": "Banco por serviço restringe dados ao dono; banco compartilhado permite acesso direto de vários serviços."
+      }
+    ],
+    "atencao": "Não é preciso um servidor de banco de dados por serviço; tabelas ou esquemas privados também isolam os dados.",
+    "fonte": "Chris Richardson, Microservices Patterns, 1ª ed. (2018); Microservices.io, Database per Service.",
+    "tags": [
+      "banco-por-servico",
+      "microsservicos"
+    ]
+  },
+  {
+    "id": "card-arq-n1-055",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Arquitetura de software (camadas, MVC, microsserviços)",
+    "nivel": 1,
+    "conceito": "Gateway de API",
+    "termo_ingles": "API gateway",
+    "traducao": "Gateway de API: ponto de entrada que recebe chamadas externas e as encaminha aos serviços.",
+    "resumo": "O gateway oferece aos clientes um ponto de entrada único e direciona cada chamada ao serviço apropriado.",
+    "nao_confundir": [
+      {
+        "conceito": "Malha de serviços",
+        "diferenca": "Gateway encaminha chamadas de clientes; malha de serviços gerencia comunicação entre serviços."
+      }
+    ],
+    "atencao": "O gateway pode centralizar funções como autenticação e limite de chamadas antes de encaminhá-las.",
+    "fonte": "Microsoft, Azure Architecture Center, “Microservices Architecture Style” e “Choose an API gateway”; Chris Richardson, Microservices Patterns, 1ª ed. (2018)",
+    "tags": [
+      "api-gateway",
+      "microsservicos"
+    ]
+  },
+  {
+    "id": "card-arq-n1-056",
+    "materia": "Arquitetura de TI & Nuvem",
+    "assunto": "Arquitetura de software (camadas, MVC, microsserviços)",
+    "nivel": 1,
+    "conceito": "Malha de serviços",
+    "termo_ingles": "Service mesh",
+    "traducao": "Malha de serviços: gerencia comunicação e tráfego entre serviços.",
+    "resumo": "Uma camada de infraestrutura controla a comunicação entre serviços, aplicando regras de tráfego e segurança e coletando dados de monitoramento.",
+    "nao_confundir": [
+      {
+        "conceito": "Gateway de API",
+        "diferenca": "Malha de serviços gerencia tráfego entre serviços; gateway recebe e encaminha chamadas de clientes."
+      }
+    ],
+    "atencao": "A malha opera na infraestrutura, com poucas ou nenhuma mudança no código dos serviços.",
+    "fonte": "Istio, documentação 1.31, “What is Istio?” e “The Istio service mesh”.",
+    "tags": [
+      "service-mesh",
+      "microsservicos"
+    ]
   }
 ]
