@@ -8621,5 +8621,432 @@
       "estrutural",
       "pegadinha"
     ]
+  },
+  {
+    "id": "card-rs-n1-070",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de redes (firewall, VPN, IPSec, IDS/IPS)",
+    "nivel": 1,
+    "conceito": "Segurança do protocolo IP",
+    "termo_ingles": "Internet Protocol Security (IPsec)",
+    "traducao": "IPsec: protege comunicações na camada de rede, aplicando serviços de segurança aos pacotes IP.",
+    "resumo": "Protege o tráfego entre equipamentos ou redes, por exemplo na criação de uma rede privada virtual (VPN).",
+    "nao_confundir": [
+      {
+        "conceito": "Segurança da camada de transporte",
+        "diferenca": "IPsec protege pacotes IP; TLS estabelece um canal seguro para aplicações sobre transporte confiável."
+      }
+    ],
+    "atencao": "IPsec oferece seus serviços na camada IP, protegendo todos os protocolos transportados sobre o IP.",
+    "fonte": "RFC 4301, Security Architecture for the Internet Protocol, seção 2.1 — https://www.rfc-editor.org/rfc/rfc4301.html#section-2.1 ; NIST SP 800-77 Rev. 1, Guide to IPsec VPNs — https://csrc.nist.gov/pubs/sp/800/77/r1/final",
+    "tags": [
+      "ipsec",
+      "vpn"
+    ]
+  },
+  {
+    "id": "card-rs-n1-071",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de redes (firewall, VPN, IPSec, IDS/IPS)",
+    "nivel": 1,
+    "conceito": "Segurança da camada de transporte",
+    "termo_ingles": "Transport Layer Security (TLS)",
+    "traducao": "TLS: estabelece um canal seguro entre aplicações comunicantes, protegendo os dados contra interceptação e alteração.",
+    "resumo": "TLS protege a comunicação entre cliente e servidor. É utilizado em conexões HTTPS para proteger os dados transmitidos.",
+    "nao_confundir": [
+      {
+        "conceito": "Segurança do protocolo IP (IPsec)",
+        "diferenca": "TLS protege a conexão da aplicação; IPsec protege o pacote na camada IP."
+      }
+    ],
+    "atencao": "TLS exige do transporte só um fluxo de dados confiável e em ordem.",
+    "fonte": "RFC 9846, The Transport Layer Security (TLS) Protocol Version 1.3 (julho de 2026, substitui o RFC 8446), seção 1 — https://www.rfc-editor.org/rfc/rfc9846.html#section-1",
+    "tags": [
+      "tls"
+    ]
+  },
+  {
+    "id": "card-rs-n1-072",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de redes (firewall, VPN, IPSec, IDS/IPS)",
+    "nivel": 1,
+    "conceito": "Gerenciamento de eventos de segurança",
+    "termo_ingles": "Security Information and Event Management (SIEM)",
+    "traducao": "SIEM: centraliza registros de segurança e permite analisar eventos provenientes de diferentes fontes.",
+    "resumo": "Reúne registros de equipamentos e sistemas para apoiar a identificação de atividades suspeitas e incidentes.",
+    "nao_confundir": [
+      {
+        "conceito": "Sistema de detecção de intrusão",
+        "diferenca": "SIEM centraliza e analisa registros; IDS monitora atividades para identificar possíveis intrusões."
+      }
+    ],
+    "atencao": "Correlação é relacionar entradas de log, de uma única fonte ou de várias fontes.",
+    "fonte": "NIST SP 800-92, Guide to Computer Security Log Management (glossário: event correlation e rule-based event correlation) — https://csrc.nist.gov/glossary/term/rule_based_event_correlation ; NIST CSF 2.0 Implementation Examples, DE.AE-03 — https://www.nist.gov/system/files/documents/2024/02/21/CSF%202.0%20Implementation%20Examples.pdf",
+    "tags": [
+      "siem",
+      "correlacao",
+      "ids"
+    ]
+  },
+  {
+    "id": "card-rs-n1-073",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de redes (firewall, VPN, IPSec, IDS/IPS)",
+    "nivel": 1,
+    "conceito": "Proxy direto e reverso",
+    "termo_ingles": "Forward proxy and reverse proxy",
+    "traducao": "Proxy direto e reverso: o direto age em nome do cliente; o reverso fica à frente dos servidores.",
+    "resumo": "O proxy direto intermedeia o acesso do cliente. O reverso recebe solicitações externas e as encaminha aos servidores de destino.",
+    "nao_confundir": [
+      {
+        "conceito": "Firewall",
+        "diferenca": "Firewall filtra tráfego por regras; proxy recebe e reencaminha as requisições."
+      }
+    ],
+    "atencao": "Proxy direto é escolhido pelo cliente; proxy reverso age como servidor de origem para quem faz a requisição.",
+    "fonte": "RFC 9110, HTTP Semantics, seção 3.7, Intermediaries — https://www.rfc-editor.org/rfc/rfc9110.html#section-3.7",
+    "tags": [
+      "proxy"
+    ]
+  },
+  {
+    "id": "card-rs-n1-074",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de redes (firewall, VPN, IPSec, IDS/IPS)",
+    "nivel": 1,
+    "conceito": "Negação distribuída de serviço",
+    "termo_ingles": "Distributed Denial of Service (DDoS)",
+    "traducao": "DDoS: ataque de negação de serviço em que várias máquinas geram tráfego contra um mesmo alvo.",
+    "resumo": "Sobrecarrega um serviço com tráfego originado de múltiplas máquinas que atuam em conjunto, prejudicando sua disponibilidade.",
+    "nao_confundir": [
+      {
+        "conceito": "Negação de serviço",
+        "diferenca": "DoS é a negação de serviço; DDoS distribui o tráfego de ataque entre múltiplas máquinas."
+      }
+    ],
+    "atencao": "Por vir de muitas origens, o DDoS é difícil de rastrear e de bloquear por endereço IP.",
+    "fonte": "CISA, FBI e MS-ISAC, Understanding and Responding to Distributed Denial-of-Service Attacks (2024), seções Overview e DoS and DDoS — https://www.cisa.gov/sites/default/files/2024-03/understanding-and-responding-to-distributed-denial-of-service-attacks_508c.pdf ; CISA, Understanding Denial-of-Service Attacks — https://www.cisa.gov/news-events/news/understanding-denial-service-attacks",
+    "tags": [
+      "ddos",
+      "dos"
+    ]
+  },
+  {
+    "id": "card-rs-n1-075",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de redes (firewall, VPN, IPSec, IDS/IPS)",
+    "nivel": 1,
+    "conceito": "Falsificação de ARP",
+    "termo_ingles": "ARP spoofing",
+    "traducao": "Falsificação de ARP: manipula informações de resolução de endereços para direcionar tráfego a um equipamento indevido.",
+    "resumo": "O atacante envia informações falsas do protocolo de resolução de endereços, alterando tabelas e podendo interceptar comunicações.",
+    "nao_confundir": [
+      {
+        "conceito": "Falsificação de endereço IP",
+        "diferenca": "ARP spoofing manipula associações entre endereços; IP spoofing falsifica o endereço IP de origem."
+      }
+    ],
+    "atencao": "É base do ataque man-in-the-middle (atacante entre as pontas) e em geral exige o atacante na rede local.",
+    "fonte": "CISA, Recommended Practice: Improving Industrial Control System Cybersecurity with Defense-in-Depth Strategies (2016), seção 3.3.5 — https://www.cisa.gov/sites/default/files/recommended_practices/NCCIC_ICS-CERT_Defense_in_Depth_2016_S508C.pdf ; CISA/DHS, Common Cybersecurity Vulnerabilities in Industrial Control Systems (2011), ARP MitM — https://www.cisa.gov/sites/default/files/recommended_practices/DHS_Common_Cybersecurity_Vulnerabilities_ICS_2010.pdf",
+    "tags": [
+      "arp-spoofing",
+      "spoofing",
+      "ip-spoofing"
+    ]
+  },
+  {
+    "id": "card-rs-n1-076",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de redes (firewall, VPN, IPSec, IDS/IPS)",
+    "nivel": 1,
+    "conceito": "Captura de pacotes com Wireshark",
+    "termo_ingles": "Packet capture",
+    "traducao": "Captura de pacotes: registra dados que trafegam pela interface de rede para permitir sua análise.",
+    "resumo": "No Wireshark, a captura permite examinar pacotes, protocolos e comunicações observadas em uma interface selecionada.",
+    "nao_confundir": [
+      {
+        "conceito": "Sistema de detecção de intrusão (IDS)",
+        "diferenca": "Wireshark captura e exibe pacotes; IDS avisa quando há atividade estranha na rede."
+      }
+    ],
+    "atencao": "Wireshark não manipula a rede: só observa, sem enviar pacotes, salvo a resolução de nomes.",
+    "fonte": "Wireshark User's Guide (versão 4.7.3), seção What Wireshark is not — https://www.wireshark.org/docs/wsug_html/",
+    "tags": [
+      "wireshark",
+      "captura-de-pacotes",
+      "sniffing"
+    ]
+  },
+  {
+    "id": "card-rs-n1-077",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de endpoint e malware",
+    "nivel": 1,
+    "conceito": "Registrador de teclas",
+    "termo_ingles": "Keylogger",
+    "traducao": "Keylogger: programa que registra as teclas pressionadas para obter dados digitados.",
+    "resumo": "Pode capturar senhas, mensagens e outros dados digitados pelo usuário, armazenando ou enviando essas informações.",
+    "nao_confundir": [
+      {
+        "conceito": "Spyware",
+        "diferenca": "Spyware monitora o sistema e envia dados a terceiros; keylogger é um tipo de spyware."
+      }
+    ],
+    "atencao": "A ativação costuma depender de ação do usuário, como acessar o site do internet banking.",
+    "fonte": "CERT.br, Cartilha de Segurança para Internet, fascículo Códigos Maliciosos (spyware e keylogger) — https://cartilha.cert.br/fasciculos/codigos-maliciosos/fasciculo-codigos-maliciosos.pdf ; NIST CSRC Glossary, key logger (NIST SP 800-82r3) — https://csrc.nist.gov/glossary/term/key_logger",
+    "tags": [
+      "keylogger",
+      "malware",
+      "endpoint"
+    ]
+  },
+  {
+    "id": "card-rs-n1-078",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de endpoint e malware",
+    "nivel": 1,
+    "conceito": "Malware sem arquivo",
+    "termo_ingles": "Fileless malware",
+    "traducao": "Malware sem arquivo: ameaça que executa atividades maliciosas sem necessariamente gravar um arquivo malicioso no disco.",
+    "resumo": "Pode utilizar memória, scripts e recursos legítimos do sistema para executar ações maliciosas.",
+    "nao_confundir": [
+      {
+        "conceito": "Malware baseado em arquivo",
+        "diferenca": "Fileless pode executar sem gravar arquivo malicioso; malware baseado em arquivo utiliza arquivos para operar."
+      }
+    ],
+    "atencao": "Fileless pode usar componentes legítimos, como o PowerShell, e não deixar executável para o antivírus inspecionar.",
+    "fonte": "Microsoft Learn, Fileless threats (seções introdutória, Type I e Type III) — https://learn.microsoft.com/en-us/defender-endpoint/malware/fileless-threats",
+    "tags": [
+      "malware-fileless",
+      "fileless",
+      "malware"
+    ]
+  },
+  {
+    "id": "card-rs-n1-079",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de endpoint e malware",
+    "nivel": 1,
+    "conceito": "Serviços de domínio Active Directory",
+    "termo_ingles": "Active Directory Domain Services (AD DS)",
+    "traducao": "Active Directory: serviço de diretório que organiza informações de usuários, computadores e recursos de uma rede.",
+    "resumo": "No ambiente Windows, permite armazenar informações de contas e recursos, além de apoiar autenticação e controle de acesso.",
+    "nao_confundir": [
+      {
+        "conceito": "LDAP",
+        "diferenca": "Active Directory é o serviço de diretório; LDAP é protocolo de acesso a diretórios."
+      }
+    ],
+    "atencao": "Diretório é estrutura hierárquica que guarda dados sobre objetos da rede.",
+    "fonte": "Microsoft Learn, Active Directory Domain Services overview, seção inicial — https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/active-directory-domain-services",
+    "tags": [
+      "active-directory",
+      "endpoint"
+    ]
+  },
+  {
+    "id": "card-rs-n1-080",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de endpoint e malware",
+    "nivel": 1,
+    "conceito": "Segurança no trabalho remoto",
+    "termo_ingles": "Telework security",
+    "traducao": "Segurança no trabalho remoto: protege dispositivos, conexões e informações utilizados fora das instalações da organização.",
+    "resumo": "Abrange equipamentos corporativos e pessoais autorizados, acesso remoto e medidas de proteção contra ameaças externas.",
+    "nao_confundir": [
+      {
+        "conceito": "Segurança de rede interna",
+        "diferenca": "Trabalho remoto protege acessos externos e dispositivos fora da organização; rede interna protege recursos locais."
+      }
+    ],
+    "atencao": "No trabalho remoto, planeje a segurança supondo que redes externas contêm ameaças hostis.",
+    "fonte": "NIST SP 800-46 Rev. 2, Guide to Enterprise Telework, Remote Access, and BYOD Security — https://csrc.nist.gov/pubs/sp/800/46/r2/final ; NIST ITL Bulletin junho de 2009 (sobre a SP 800-46) — https://csrc.nist.gov/csrc/media/publications/shared/documents/itl-bulletin/itlbul2009-06.pdf",
+    "tags": [
+      "trabalho-remoto",
+      "endpoint"
+    ]
+  },
+  {
+    "id": "card-rs-n1-081",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de endpoint e malware",
+    "nivel": 1,
+    "conceito": "Plataforma de proteção de endpoint",
+    "termo_ingles": "Endpoint Protection Platform (EPP)",
+    "traducao": "EPP: software de proteção instalado nos endpoints (máquinas do usuário final, como estações e notebooks).",
+    "resumo": "Pode incluir antivírus, antispyware, firewall pessoal e mecanismos de detecção e prevenção de intrusões no equipamento.",
+    "nao_confundir": [
+      {
+        "conceito": "Proteção de rede",
+        "diferenca": "EPP protege equipamentos individuais; proteção de rede monitora ou controla comunicações entre dispositivos."
+      }
+    ],
+    "atencao": "Proteção de endpoint é feita por software no próprio equipamento, como estações de trabalho e notebooks.",
+    "fonte": "NIST CSRC Glossary, Endpoint Protection Platform, definição baseada na NIST SP 800-128 — https://csrc.nist.gov/glossary/term/endpoint_protection_platform",
+    "tags": [
+      "endpoint",
+      "malware"
+    ]
+  },
+  {
+    "id": "card-rs-n1-082",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de endpoint e malware",
+    "nivel": 1,
+    "conceito": "Detecção e resposta em endpoint",
+    "termo_ingles": "Endpoint Detection and Response (EDR)",
+    "traducao": "EDR: monitora dispositivos finais para detectar atividades suspeitas e apoiar ações de resposta.",
+    "resumo": "Acompanha atividades em computadores e outros dispositivos, identifica comportamentos suspeitos e fornece informações para investigação e correção.",
+    "nao_confundir": [
+      {
+        "conceito": "Plataforma de proteção de endpoint",
+        "diferenca": "EPP reúne salvaguardas de proteção; EDR monitora atividades e apoia detecção e resposta."
+      }
+    ],
+    "atencao": "EDR monitora continuamente os dispositivos e, além de detectar, responde com sugestões de correção.",
+    "fonte": "CISA, Healthcare and Public Health Sector Mitigation Guide, Focus Area 5: Device Logs and Monitoring Solutions — https://www.cisa.gov/sites/default/files/2023-12/HPH-Sector-Mitigation-Guide-TLP-CLEAR._508c.pdf",
+    "tags": [
+      "endpoint",
+      "malware"
+    ]
+  },
+  {
+    "id": "card-rs-n1-083",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Gestão de SI e riscos (ISO 27001, 27002, 27005)",
+    "nivel": 1,
+    "conceito": "Controles da ISO/IEC 27002",
+    "termo_ingles": "Information security controls",
+    "traducao": "Controles de segurança da informação: medidas e orientações para tratar riscos e proteger informações organizacionais.",
+    "resumo": "A ISO/IEC 27002:2022 apresenta orientações sobre controles, enquanto a ISO/IEC 27001 estabelece requisitos para o sistema de gestão.",
+    "nao_confundir": [
+      {
+        "conceito": "Requisitos da ISO/IEC 27001",
+        "diferenca": "27002 orienta a aplicação de controles; 27001 estabelece requisitos para o sistema de gestão."
+      }
+    ],
+    "atencao": "A edição de 2022 da 27002 traz 93 controles em quatro temas: organizacionais, pessoas, físicos e tecnológicos.",
+    "fonte": "ISO/IEC 27002:2022, página oficial — https://www.iso.org/standard/75652.html ; ISO/IEC JTC 1/SC 27, SC 27 Journal 2025 (Issue 1) — https://committee.iso.org/files/live/sites/jtc1sc27/files/resources/Journal%202025.pdf",
+    "tags": [
+      "iso-27001",
+      "sgsi",
+      "gestao-de-riscos"
+    ]
+  },
+  {
+    "id": "card-rs-n1-084",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Gestão de SI e riscos (ISO 27001, 27002, 27005)",
+    "nivel": 1,
+    "conceito": "Declaração de aplicabilidade",
+    "termo_ingles": "Statement of Applicability (SoA)",
+    "traducao": "Declaração de aplicabilidade: documento que identifica controles necessários, sua inclusão e a situação de implementação.",
+    "resumo": "Registra os controles necessários, por que entraram, se estão implementados e por que controles do Anexo A (referência de controles da 27001) ficaram de fora.",
+    "nao_confundir": [
+      {
+        "conceito": "Plano de tratamento de riscos",
+        "diferenca": "A declaração registra controles e justificativas; o plano descreve ações para tratar os riscos identificados."
+      }
+    ],
+    "atencao": "Estar no Anexo A não torna um controle necessário; a necessidade é decidida pela organização.",
+    "fonte": "ISO/IEC JTC 1/SC 27, Auditing Practices Note: ISO/IEC 27001:2022 — Statement of Applicability and conformity discussion, seção sobre SoA — https://committee.iso.org/files/live/sites/jtc1sc27/files/resources/ISO-IECJTC1-SC27-WG1_N3298_Auditing%20Practices%20Note%20-%20SoA.pdf",
+    "tags": [
+      "declaracao-de-aplicabilidade",
+      "iso-27001",
+      "tratamento-de-riscos"
+    ]
+  },
+  {
+    "id": "card-rs-n1-085",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Gestão de SI e riscos (ISO 27001, 27002, 27005)",
+    "nivel": 1,
+    "conceito": "Ciclo de resposta a incidentes",
+    "termo_ingles": "Incident response lifecycle",
+    "traducao": "Ciclo de resposta a incidentes: preparação; detecção e análise; contenção, erradicação e recuperação; atividade pós-incidente.",
+    "resumo": "A resposta não termina na contenção: também envolve eliminar a causa, recuperar sistemas e registrar lições aprendidas.",
+    "nao_confundir": [
+      {
+        "conceito": "Contenção de incidente",
+        "diferenca": "Contenção limita danos e propagação; erradicação remove a causa; recuperação restabelece operações."
+      }
+    ],
+    "atencao": "Na revisão 2 são quatro fases; contenção, erradicação e recuperação formam uma fase só.",
+    "fonte": "NIST SP 800-61 Rev. 2, Computer Security Incident Handling Guide, seção 3 (retirada e substituída pela Rev. 3 em abril de 2025) — https://nvlpubs.nist.gov/nistpubs/specialpublications/nist.sp.800-61r2.pdf",
+    "tags": [
+      "resposta-a-incidentes",
+      "contencao",
+      "melhoria-continua"
+    ]
+  },
+  {
+    "id": "card-rs-n1-086",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Gestão de SI e riscos (ISO 27001, 27002, 27005)",
+    "nivel": 1,
+    "conceito": "Política de segurança da informação",
+    "termo_ingles": "Information security policy",
+    "traducao": "Política de segurança da informação: estabelece diretrizes e regras para orientar a proteção e o uso das informações.",
+    "resumo": "Define objetivos, responsabilidades e orientações organizacionais para gerenciar, proteger e distribuir informações.",
+    "nao_confundir": [
+      {
+        "conceito": "Procedimento de segurança",
+        "diferenca": "Política estabelece diretrizes; procedimento descreve etapas para executar uma atividade."
+      }
+    ],
+    "atencao": "No NIST, há política de programa, política específica de tema e política específica de sistema.",
+    "fonte": "NIST SP 800-12 Rev. 1, An Introduction to Information Security, capítulo 5, Information Security Policy — https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-12r1.pdf ; NIST CSRC Glossary, information security policy — https://csrc.nist.gov/glossary/term/information_security_policy",
+    "tags": [
+      "politica-de-seguranca",
+      "sgsi",
+      "iso-27001"
+    ]
+  },
+  {
+    "id": "card-rs-n1-087",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Gestão de SI e riscos (ISO 27001, 27002, 27005)",
+    "nivel": 1,
+    "conceito": "Risco residual",
+    "termo_ingles": "Residual risk",
+    "traducao": "Risco residual: parcela do risco que permanece após a aplicação de medidas de segurança.",
+    "resumo": "Mesmo depois do tratamento, pode permanecer risco. Exemplo: controles reduzem a chance de invasão, mas não eliminam totalmente essa possibilidade.",
+    "nao_confundir": [
+      {
+        "conceito": "Risco inerente",
+        "diferenca": "Risco residual permanece após controles; risco inerente existe antes da aplicação desses controles."
+      }
+    ],
+    "atencao": "Concluída a autorização do sistema, cabe a quem o autoriza aceitar o risco residual.",
+    "fonte": "NIST CSRC Glossary, residual risk — https://csrc.nist.gov/glossary/term/residual_risk ; NIST SP 800-12 Rev. 1, seção 7.1, Authorization — https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-12r1.pdf",
+    "tags": [
+      "risco-residual",
+      "gestao-de-riscos",
+      "tratamento-de-riscos"
+    ]
+  },
+  {
+    "id": "card-rs-n1-088",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Gestão de SI e riscos (ISO 27001, 27002, 27005)",
+    "nivel": 1,
+    "conceito": "Melhoria contínua do SGSI",
+    "termo_ingles": "Continual improvement",
+    "traducao": "Melhoria contínua: aprimora continuamente a adequação, suficiência e eficácia do sistema de gestão.",
+    "resumo": "Envolve avaliar resultados, identificar oportunidades de melhoria e aperfeiçoar o sistema de gestão de segurança da informação.",
+    "nao_confundir": [
+      {
+        "conceito": "Ação corretiva",
+        "diferenca": "Melhoria contínua aperfeiçoa o sistema; ação corretiva trata causas de uma não conformidade identificada."
+      }
+    ],
+    "atencao": "A 27001 orienta estabelecer, implementar, manter e melhorar continuamente o SGSI.",
+    "fonte": "ISO/IEC 27001:2022, página oficial (What is ISO/IEC 27001) — https://www.iso.org/standard/27001",
+    "tags": [
+      "melhoria-continua",
+      "iso-27001",
+      "sgsi"
+    ]
   }
 ]
