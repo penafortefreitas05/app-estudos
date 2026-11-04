@@ -7107,5 +7107,489 @@
       "escalabilidade",
       "sistemas-distribuidos"
     ]
+  },
+  {
+    "id": "card-rs-n1-047",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de redes (firewall, VPN, IPSec, IDS/IPS)",
+    "nivel": 1,
+    "conceito": "Firewall",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Controla o tráfego entre redes ou equipamentos com níveis de segurança diferentes, como a rede interna e a internet, segundo uma política de acesso.",
+    "nao_confundir": [
+      {
+        "conceito": "Antivírus",
+        "diferenca": "Antivírus procura códigos que causam dano; firewall controla o tráfego entre redes."
+      }
+    ],
+    "atencao": "A regra negar por padrão bloqueia o tráfego que a política não autorizou expressamente.",
+    "fonte": "NIST SP 800-41 Rev. 1, “Firewall Policy”. https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-41r1.pdf",
+    "tags": [
+      "firewall"
+    ]
+  },
+  {
+    "id": "card-rs-n1-048",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de redes (firewall, VPN, IPSec, IDS/IPS)",
+    "nivel": 1,
+    "conceito": "Sistema de detecção de intrusão (IDS)",
+    "termo_ingles": "intrusion detection system",
+    "traducao": "Sistema de detecção de intrusão: monitora eventos e alerta sobre atividade suspeita.",
+    "resumo": "Monitora eventos de rede ou computador, analisa sinais de possíveis incidentes e emite alertas aos responsáveis.",
+    "nao_confundir": [
+      {
+        "conceito": "Sistema de prevenção de intrusão (IPS)",
+        "diferenca": "IPS também tenta deter atividade detectada; IDS monitora e alerta os responsáveis."
+      }
+    ],
+    "atencao": "Um IDS pode monitorar uma rede (baseado em rede) ou um computador (baseado em hospedeiro).",
+    "fonte": "NIST SP 800-94, Guide to Intrusion Detection and Prevention Systems. https://csrc.nist.gov/pubs/sp/800/94/final",
+    "tags": [
+      "ids"
+    ]
+  },
+  {
+    "id": "card-rs-n1-049",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de redes (firewall, VPN, IPSec, IDS/IPS)",
+    "nivel": 1,
+    "conceito": "Sistema de prevenção de intrusão (IPS)",
+    "termo_ingles": "intrusion prevention system",
+    "traducao": "Sistema de prevenção de intrusão: detecta atividade suspeita e tenta interrompê-la.",
+    "resumo": "Monitora eventos e analisa sinais de intrusão para tentar impedir que a atividade alcance seus alvos.",
+    "nao_confundir": [
+      {
+        "conceito": "Sistema de detecção de intrusão (IDS)",
+        "diferenca": "IDS monitora eventos e alerta; IPS também tenta parar a atividade detectada."
+      }
+    ],
+    "atencao": "O IPS pode parar o ataque, mudar o ambiente de segurança (ex.: firewall) ou alterar o conteúdo do ataque.",
+    "fonte": "NIST SP 800-94, Guide to Intrusion Detection and Prevention Systems. https://csrc.nist.gov/pubs/sp/800/94/final",
+    "tags": [
+      "ips"
+    ]
+  },
+  {
+    "id": "card-rs-n1-050",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de redes (firewall, VPN, IPSec, IDS/IPS)",
+    "nivel": 1,
+    "conceito": "Rede privada virtual (VPN)",
+    "termo_ingles": "virtual private network",
+    "traducao": "Rede privada virtual: protege comunicações sobre uma infraestrutura de rede pública.",
+    "resumo": "VPN cria um túnel, ou canal protegido, entre dois pontos sobre infraestrutura pública.",
+    "nao_confundir": [
+      {
+        "conceito": "Proxy",
+        "diferenca": "Proxy intermedeia pedidos entre sistemas; VPN protege a comunicação entre pontos da rede."
+      }
+    ],
+    "atencao": "Uma VPN pode ligar duas redes, um dispositivo e uma rede, ou dois computadores.",
+    "fonte": "NIST SP 800-77 Rev. 1, Guide to IPsec VPNs (2020): https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-77r1.pdf",
+    "tags": [
+      "vpn"
+    ]
+  },
+  {
+    "id": "card-rs-n1-051",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de redes (firewall, VPN, IPSec, IDS/IPS)",
+    "nivel": 1,
+    "conceito": "Negação de serviço (DoS)",
+    "termo_ingles": "denial of service",
+    "traducao": "Negação de serviço: impede acesso autorizado a recursos ou atrasa operações.",
+    "resumo": "Ataque que impede o acesso autorizado a recursos de um sistema.",
+    "nao_confundir": [
+      {
+        "conceito": "Negação distribuída de serviço (DDoS)",
+        "diferenca": "DDoS usa um conjunto de computadores de forma coordenada; DoS, na Cartilha, usa um computador."
+      }
+    ],
+    "atencao": "No NIST, DoS é o termo geral para impedir acesso autorizado, sem fixar o número de origens.",
+    "fonte": "NIST SP 800-12 Rev. 1, An Introduction to Information Security, “Denial of Service”: https://csrc.nist.gov/pubs/sp/800/12/r1/final ; CERT.br, Cartilha de Segurança para Internet, versão 4.0 (2012), “Negação de serviço”: https://cartilha.cert.br/livro/cartilha-seguranca-internet.pdf",
+    "tags": [
+      "dos",
+      "ddos"
+    ]
+  },
+  {
+    "id": "card-rs-n1-052",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de redes (firewall, VPN, IPSec, IDS/IPS)",
+    "nivel": 1,
+    "conceito": "Falsificação de endereço IP (spoofing)",
+    "termo_ingles": "IP address spoofing",
+    "traducao": "Falsificação de origem: faz um pacote parecer enviado por outro endereço.",
+    "resumo": "Envia um pacote que aparenta partir de endereço IP diferente da origem real.",
+    "nao_confundir": [
+      {
+        "conceito": "Captura de tráfego (sniffing)",
+        "diferenca": "Sniffing captura e examina tráfego; spoofing falsifica o endereço de origem do pacote."
+      }
+    ],
+    "atencao": "Ataques DDoS em larga escala podem usar endereços IP falsificados.",
+    "fonte": "NIST SP 800-189, Resilient Interdomain Traffic Exchange: BGP Security and DDoS Mitigation. https://csrc.nist.gov/pubs/sp/800/189/final",
+    "tags": [
+      "spoofing",
+      "ip-spoofing"
+    ]
+  },
+  {
+    "id": "card-rs-n1-053",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de redes (firewall, VPN, IPSec, IDS/IPS)",
+    "nivel": 1,
+    "conceito": "Captura de tráfego de rede (sniffing)",
+    "termo_ingles": "network sniffing",
+    "traducao": "Captura de tráfego: observa e registra comunicações para análise.",
+    "resumo": "Técnica passiva que observa e registra comunicação da rede para exame posterior.",
+    "nao_confundir": [
+      {
+        "conceito": "Falsificação de origem (spoofing)",
+        "diferenca": "Spoofing falsifica a identidade apresentada; sniffing observa e examina a comunicação."
+      }
+    ],
+    "atencao": "A técnica pode decodificar protocolos e examinar cabeçalhos e conteúdos dos dados capturados.",
+    "fonte": "NIST SP 800-115, Technical Guide to Information Security Testing and Assessment, seção 3.5, Network Sniffing: https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-115.pdf",
+    "tags": [
+      "sniffing",
+      "captura-de-pacotes"
+    ]
+  },
+  {
+    "id": "card-rs-n1-054",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de redes (firewall, VPN, IPSec, IDS/IPS)",
+    "nivel": 1,
+    "conceito": "Arquitetura de confiança zero (Zero Trust)",
+    "termo_ingles": "zero trust architecture",
+    "traducao": "Confiança zero: protege recursos verificando identidade e cada pedido de acesso.",
+    "resumo": "Modelo de segurança que protege recursos e verifica usuários e dispositivos antes de estabelecer acesso.",
+    "nao_confundir": [
+      {
+        "conceito": "Rede privada virtual (VPN)",
+        "diferenca": "VPN protege um canal de comunicação; confiança zero avalia pedidos de acesso a recursos."
+      }
+    ],
+    "atencao": "Estar na rede interna ou pertencer à organização não concede confiança implícita.",
+    "fonte": "NIST SP 800-207, Zero Trust Architecture. https://csrc.nist.gov/pubs/sp/800/207/final",
+    "tags": [
+      "zero-trust",
+      "vpn"
+    ]
+  },
+  {
+    "id": "card-rs-n1-055",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de endpoint e malware",
+    "nivel": 1,
+    "conceito": "Código malicioso (malware)",
+    "termo_ingles": "malware",
+    "traducao": "Código malicioso: hardware, firmware ou software inserido para executar ações não autorizadas e prejudiciais.",
+    "resumo": "Malware é hardware, firmware (programa interno) ou software inserido em sistema para causar dano.",
+    "nao_confundir": [
+      {
+        "conceito": "Vírus",
+        "diferenca": "Malware é o gênero; vírus é um tipo de malware que se replica em hospedeiros."
+      }
+    ],
+    "atencao": "Segundo o NIST (2013), malware é a ameaça externa mais comum para a maioria dos computadores.",
+    "fonte": "CNSSI 4009-2022, “Malware”; NIST SP 800-83 Rev. 1, Guide to Malware Incident Prevention and Handling for Desktops and Laptops. https://csrc.nist.gov/glossary/term/malware; https://csrc.nist.gov/pubs/sp/800/83/r1/final",
+    "tags": [
+      "malware"
+    ]
+  },
+  {
+    "id": "card-rs-n1-056",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de endpoint e malware",
+    "nivel": 1,
+    "conceito": "Worm",
+    "termo_ingles": "worm",
+    "traducao": "Worm: programa independente que se propaga pela rede sem arquivo hospedeiro.",
+    "resumo": "Programa que replica cópias de si pela rede sem precisar infectar outro programa ou arquivo.",
+    "nao_confundir": [
+      {
+        "conceito": "Vírus",
+        "diferenca": "Vírus depende de arquivo hospedeiro executado; worm replica cópias pela rede sem hospedeiro."
+      }
+    ],
+    "atencao": "Em regra, o worm se executa sozinho, sem intervenção do usuário, e se propaga pela rede.",
+    "fonte": "NIST SP 800-83 Rev. 1, Guide to Malware Incident Prevention and Handling for Desktops and Laptops (2013): https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-83r1.pdf ; CERT.br, Cartilha de Segurança para Internet, versão 4.0, “Worm”",
+    "tags": [
+      "malware",
+      "worm"
+    ]
+  },
+  {
+    "id": "card-rs-n1-057",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de endpoint e malware",
+    "nivel": 1,
+    "conceito": "Vírus de computador",
+    "termo_ingles": "computer virus",
+    "traducao": "Vírus: infecta arquivo ou programa hospedeiro e pode inserir cópias de si nele.",
+    "resumo": "Código malicioso que se replica ao infectar outros programas ou arquivos, chamados hospedeiros.",
+    "nao_confundir": [
+      {
+        "conceito": "Worm",
+        "diferenca": "Worm propaga cópias pela rede sem hospedeiro; vírus insere cópias em programas ou arquivos."
+      }
+    ],
+    "atencao": "O vírus não se replica apenas por estar armazenado; o arquivo hospedeiro precisa ser executado.",
+    "fonte": "CERT.br, Cartilha de Segurança para Internet, versão 4.0 (2012), seção 4.1, Vírus: https://cartilha.cert.br/livro/cartilha-seguranca-internet.pdf",
+    "tags": [
+      "malware",
+      "virus"
+    ]
+  },
+  {
+    "id": "card-rs-n1-058",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de endpoint e malware",
+    "nivel": 1,
+    "conceito": "Cavalo de Troia (trojan)",
+    "termo_ingles": "Trojan horse",
+    "traducao": "Cavalo de Troia: parece legítimo, mas oculta uma finalidade maliciosa.",
+    "resumo": "Programa que aparenta executar função benigna, mas realiza ações maliciosas ocultas.",
+    "nao_confundir": [
+      {
+        "conceito": "Backdoor",
+        "diferenca": "Cavalo de Troia se disfarça de programa legítimo; backdoor mantém acesso oculto ao sistema."
+      }
+    ],
+    "atencao": "Cavalos de Troia não propagam cópias de si automaticamente.",
+    "fonte": "NIST SP 800-83 Rev. 1, Guide to Malware Incident Prevention and Handling for Desktops and Laptops, seção “Trojan Horses”. https://csrc.nist.gov/pubs/sp/800/83/r1/final",
+    "tags": [
+      "malware",
+      "trojan"
+    ]
+  },
+  {
+    "id": "card-rs-n1-059",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de endpoint e malware",
+    "nivel": 1,
+    "conceito": "Backdoor",
+    "termo_ingles": "backdoor",
+    "traducao": "Porta dos fundos: forma não documentada de obter acesso a um sistema.",
+    "resumo": "Programa malicioso que mantém um caminho de acesso não documentado ao computador.",
+    "nao_confundir": [
+      {
+        "conceito": "Cavalo de Troia (trojan)",
+        "diferenca": "Cavalo de Troia disfarça-se de programa legítimo; backdoor mantém acesso oculto ao sistema."
+      }
+    ],
+    "atencao": "Uma backdoor pode escutar comandos em uma porta de comunicação.",
+    "fonte": "NIST SP 800-83 Rev. 1, Guide to Malware Incident Prevention and Handling for Desktops and Laptops, “Backdoor”. https://csrc.nist.gov/pubs/sp/800/83/r1/final",
+    "tags": [
+      "malware",
+      "backdoor"
+    ]
+  },
+  {
+    "id": "card-rs-n1-060",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de endpoint e malware",
+    "nivel": 1,
+    "conceito": "Ransomware",
+    "termo_ingles": "ransomware",
+    "traducao": "Ransomware: torna dados inacessíveis e exige resgate para tentar liberar o acesso.",
+    "resumo": "Código malicioso que geralmente criptografa dados, impede acesso e exige pagamento de resgate.",
+    "nao_confundir": [
+      {
+        "conceito": "Worm",
+        "diferenca": "Worm descreve como o malware se espalha; ransomware descreve o que ele faz."
+      }
+    ],
+    "atencao": "Além de criptografar, o ransomware pode roubar dados e ameaçar divulgá-los (dupla extorsão), e atacar backups acessíveis.",
+    "fonte": "CISA, #StopRansomware Guide (set. 2023): https://www.cisa.gov/stopransomware/ransomware-guide",
+    "tags": [
+      "malware",
+      "ransomware"
+    ]
+  },
+  {
+    "id": "card-rs-n1-061",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de endpoint e malware",
+    "nivel": 1,
+    "conceito": "Endurecimento de sistemas (hardening)",
+    "termo_ingles": "system hardening",
+    "traducao": "Endurecimento: ajusta configurações para reduzir vulnerabilidades do sistema.",
+    "resumo": "Altera configurações padrão e desativa funções desnecessárias para reduzir vulnerabilidades, ou fraquezas exploráveis.",
+    "nao_confundir": [
+      {
+        "conceito": "Antivírus",
+        "diferenca": "Hardening reduz vulnerabilidades do sistema; antivírus detecta e trata malware já presente."
+      }
+    ],
+    "atencao": "Serviços de rede desnecessários são vetores adicionais que malware pode usar para se espalhar.",
+    "fonte": "NIST SP 800-83 Rev. 1, Guide to Malware Incident Prevention and Handling for Desktops and Laptops, seção 3.3: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-83r1.pdf",
+    "tags": [
+      "hardening"
+    ]
+  },
+  {
+    "id": "card-rs-n1-063",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Gestão de SI e riscos (ISO 27001, 27002, 27005)",
+    "nivel": 1,
+    "conceito": "Tríade de confidencialidade, integridade e disponibilidade (CID)",
+    "termo_ingles": "confidentiality, integrity and availability triad",
+    "traducao": "Tríade CID: reúne três objetivos centrais de proteção da informação.",
+    "resumo": "Confidencialidade restringe acesso; integridade preserva exatidão; disponibilidade mantém acesso quando necessário.",
+    "nao_confundir": [
+      {
+        "conceito": "Privacidade",
+        "diferenca": "Privacidade protege pessoas e seus dados; confidencialidade restringe acesso à informação."
+      }
+    ],
+    "atencao": "Em muitos livros, autenticidade e não repúdio são propriedades à parte; a FIPS 199 as inclui na integridade.",
+    "fonte": "NIST FIPS 199, Standards for Security Categorization of Federal Information and Information Systems: https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.199.pdf",
+    "tags": [
+      "triade-cid",
+      "confidencialidade",
+      "integridade",
+      "disponibilidade"
+    ]
+  },
+  {
+    "id": "card-rs-n1-064",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Gestão de SI e riscos (ISO 27001, 27002, 27005)",
+    "nivel": 1,
+    "conceito": "Risco de segurança da informação",
+    "termo_ingles": "information security risk",
+    "traducao": "Risco de segurança: combina possibilidade de evento danoso e impacto potencial.",
+    "resumo": "Risco estima a chance de um evento explorar uma fraqueza e o impacto adverso resultante.",
+    "nao_confundir": [
+      {
+        "conceito": "Incidente de segurança",
+        "diferenca": "Incidente é evento ocorrido; risco estima possibilidade e consequências de eventos futuros."
+      }
+    ],
+    "atencao": "Ameaça é causa potencial; vulnerabilidade é fraqueza explorável; risco considera probabilidade e impacto.",
+    "fonte": "NIST SP 800-30 Rev. 1, Guide for Conducting Risk Assessments (2012), cap. 2: https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-30r1.pdf",
+    "tags": [
+      "gestao-de-riscos",
+      "vulnerabilidade",
+      "ameaca"
+    ]
+  },
+  {
+    "id": "card-rs-n1-065",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Gestão de SI e riscos (ISO 27001, 27002, 27005)",
+    "nivel": 1,
+    "conceito": "Tratamento de riscos",
+    "termo_ingles": "risk treatment",
+    "traducao": "Tratamento de riscos: escolhe ações para lidar com exposições identificadas.",
+    "resumo": "A organização pode evitar a atividade, reduzir a exposição, compartilhar ou transferir efeitos, ou aceitar o risco.",
+    "nao_confundir": [
+      {
+        "conceito": "Risco residual",
+        "diferenca": "Tratamento é escolher respostas ao risco; risco residual é o que permanece depois delas."
+      }
+    ],
+    "atencao": "O risco residual muda com o tempo; o nível aceitável depende da tolerância a risco da organização.",
+    "fonte": "NIST SP 800-39, Managing Information Security Risk (2011), seção 2.1 e nota 8: https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-39.pdf",
+    "tags": [
+      "gestao-de-riscos",
+      "tratamento-de-riscos",
+      "risco-residual"
+    ]
+  },
+  {
+    "id": "card-rs-n1-066",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Gestão de SI e riscos (ISO 27001, 27002, 27005)",
+    "nivel": 1,
+    "conceito": "Sistema de Gestão da Segurança da Informação (SGSI)",
+    "termo_ingles": "information security management system",
+    "traducao": "Sistema de gestão da segurança da informação: organiza processos para gerir proteção informacional.",
+    "resumo": "Sistema organizacional que estabelece objetivos, políticas e processos para gerir a segurança da informação.",
+    "nao_confundir": [
+      {
+        "conceito": "Política de segurança",
+        "diferenca": "Política define diretrizes; SGSI reúne processos e responsáveis para aplicá-las e avaliá-las."
+      }
+    ],
+    "atencao": "O SGSI deve ser estabelecido, implementado, mantido e continuamente melhorado.",
+    "fonte": "ISO/IEC 27001:2022, resumo público: https://webstore.iec.ch/publication/79694",
+    "tags": [
+      "sgsi",
+      "politica-de-seguranca",
+      "melhoria-continua"
+    ]
+  },
+  {
+    "id": "card-rs-n1-067",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Gestão de SI e riscos (ISO 27001, 27002, 27005)",
+    "nivel": 1,
+    "conceito": "ISO/IEC 27001",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "ISO/IEC 27001 é a norma de requisitos para sistemas de gestão da segurança da informação (SGSI).",
+    "nao_confundir": [
+      {
+        "conceito": "ISO/IEC 27002",
+        "diferenca": "ISO/IEC 27002 orienta controles; ISO/IEC 27001 especifica requisitos do sistema de gestão."
+      }
+    ],
+    "atencao": "A 27001 pode ser certificada, embora a certificação não seja obrigatória; a 27002 não é certificável.",
+    "fonte": "ISO, ISO/IEC 27001 (página sobre a norma): https://www.iso.org/isoiec-27001-information-security.html ; ISO/IEC 27001:2022, resumo público: https://webstore.iec.ch/publication/79694 ; ISO/IEC 27002:2022: https://www.iso.org/standard/75652.html",
+    "tags": [
+      "iso-27001",
+      "sgsi"
+    ]
+  },
+  {
+    "id": "card-rs-n1-068",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Gestão de SI e riscos (ISO 27001, 27002, 27005)",
+    "nivel": 1,
+    "conceito": "ISO/IEC 27005",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "A ISO/IEC 27005 orienta identificação, avaliação e tratamento de riscos de segurança da informação.",
+    "nao_confundir": [
+      {
+        "conceito": "ISO 31000",
+        "diferenca": "ISO 31000 orienta gestão geral de riscos; ISO/IEC 27005 trata riscos de segurança da informação."
+      }
+    ],
+    "atencao": "A 27005 orienta a gestão de riscos para apoiar a implementação de um SGSI baseado na 27001.",
+    "fonte": "ISO/IEC 27005:2022: https://www.iso.org/standard/80585.html ; ISO 31000:2018: https://www.iso.org/standard/65694.html",
+    "tags": [
+      "iso-27005",
+      "iso-31000",
+      "gestao-de-riscos"
+    ]
+  },
+  {
+    "id": "card-rs-n1-069",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Gestão de SI e riscos (ISO 27001, 27002, 27005)",
+    "nivel": 1,
+    "conceito": "Contenção de incidente de segurança",
+    "termo_ingles": "incident containment",
+    "traducao": "Contenção: limita o avanço de um incidente e seus efeitos.",
+    "resumo": "Incidente de segurança é evento que compromete sistemas; contenção limita seu avanço antes da recuperação.",
+    "nao_confundir": [
+      {
+        "conceito": "Erradicação",
+        "diferenca": "Erradicação remove componentes maliciosos; contenção limita a propagação enquanto o incidente é tratado."
+      }
+    ],
+    "atencao": "No caso de ransomware, os sistemas afetados devem ser isolados imediatamente.",
+    "fonte": "CISA, #StopRansomware Guide (set. 2023): https://www.cisa.gov/stopransomware/ransomware-guide ; NIST SP 800-83 Rev. 1, seção 4 (containment/eradication/recovery): https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-83r1.pdf",
+    "tags": [
+      "resposta-a-incidentes",
+      "contencao"
+    ]
   }
 ]
