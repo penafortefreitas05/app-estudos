@@ -7591,5 +7591,26 @@
       "resposta-a-incidentes",
       "contencao"
     ]
+  },
+  {
+    "id": "card-rs-n1-062",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Segurança de endpoint e malware",
+    "nivel": 1,
+    "conceito": "Autenticação multifator (MFA) contra senha roubada",
+    "termo_ingles": "multifactor authentication",
+    "traducao": "Autenticação multifator: exige fatores distintos para confirmar a identidade.",
+    "resumo": "Mesmo que o atacante descubra ou roube a senha, ela sozinha não basta para entrar na conta.",
+    "nao_confundir": [
+      {
+        "conceito": "Bloqueio de conta",
+        "diferenca": "Bloqueio de conta deixa a adivinhação de senha lenta; o MFA pode impedi-la por completo."
+      }
+    ],
+    "atencao": "Nem todo MFA resiste a phishing; a resistência a phishing deve pesar na escolha da solução.",
+    "fonte": "CISA, Identity and Access Management: Recommended Best Practices for Administrators (2023), seções “Why MFA Matters” e “What It Does”: https://www.cisa.gov/sites/default/files/2023-12/ESF%20IDENTITY%20AND%20ACCESS%20MANAGEMENT%20RECOMMENDED%20BEST%20PRACTICES%20FOR%20ADMINISTRATORS%20PP-23-0248_508C.pdf",
+    "tags": [
+      "mfa"
+    ]
   }
 ]
