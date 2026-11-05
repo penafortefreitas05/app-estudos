@@ -524,46 +524,51 @@ function criarChip(classe, html, ativo, dados) {
     return b;
 }
 
+// Nível e situação são botões que "rolam": cada toque passa para a próxima opção e volta ao começo.
+// Aparece uma opção de cada vez (a barra fica enxuta); o campo escondido continua sendo a fonte.
+function textoLimpo(o) { return o.textContent.replace(/^[^\p{L}]+/u, "").replace(/\s*\(\d+\)\s*$/, "").trim(); }
+
 function sincronizarFiltrosRapidos() {
-    // Nível: um botão por nível que existe no banco (some se houver um só)
+    // Nível: Todos os níveis → Iniciante → Intermediário → ... (some se houver um só)
     if (chipsNivel && selectNivel) {
         const niveis = [...selectNivel.options].filter(o => o.value);
         chipsNivel.hidden = niveis.length < 2;
-        const assinatura = niveis.map(o => o.value).join(",");
-        if (chipsNivel.dataset.assinatura !== assinatura) {
-            chipsNivel.dataset.assinatura = assinatura;
-            chipsNivel.replaceChildren(...niveis.map(o => {
-                const nome = o.textContent.replace(/^[^\p{L}]+/u, "").replace(/\s*\(\d+\)\s*$/, "").trim();
-                return criarChip(`nv-chip-btn nv-${o.value}`,
-                    `<b class="nv-letra nv-${o.value}">${LETRA_NIVEL_BARRA[o.value] || o.value}</b>${esc(nome)}`, false, { nivel: o.value });
-            }));
+        if (!chipsNivel.firstElementChild) {
+            chipsNivel.replaceChildren(criarChip("chip-ciclo", "", false, { ciclo: "nivel" }));
         }
-        chipsNivel.querySelectorAll(".chip-filtro").forEach(b =>
-            b.setAttribute("aria-pressed", String(selectNivel.value === b.dataset.nivel)));
+        const b = chipsNivel.firstElementChild;
+        const atual = niveis.find(o => o.value === selectNivel.value);
+        b.className = `chip-filtro chip-ciclo${atual ? ` nv-chip-btn nv-${atual.value}` : ""}`;
+        b.innerHTML = atual
+            ? `<b class="nv-letra nv-${atual.value}">${LETRA_NIVEL_BARRA[atual.value] || atual.value}</b>${esc(textoLimpo(atual))}<i class="ciclo-seta" aria-hidden="true">⟳</i>`
+            : `📶 Todos os níveis<i class="ciclo-seta" aria-hidden="true">⟳</i>`;
+        b.setAttribute("aria-pressed", String(Boolean(atual)));
+        b.setAttribute("aria-label", `Nível: ${atual ? textoLimpo(atual) : "todos"}. Toque para trocar.`);
     }
-    // Situação: Todas / Não respondidas / Acertei / Errei, e Favoritas à parte
+    // Situação: Todas → Não respondidas → Acertei → Errei, e Favoritas à parte
     if (chipsStatus && selectStatus) {
         if (!chipsStatus.children.length) {
             chipsStatus.replaceChildren(
-                ...STATUS_RAPIDOS.map(st => criarChip("chip-status", esc(st.texto), false, { status: st.valor })),
+                criarChip("chip-status chip-ciclo", "", false, { ciclo: "status" }),
                 criarChip("chip-status chip-favoritas", "⭐", false, { favoritas: "1" })
             );
         }
-        chipsStatus.querySelectorAll(".chip-filtro").forEach(b => {
-            const ativo = b.dataset.favoritas
-                ? Boolean(checkFavoritas && checkFavoritas.checked)
-                : selectStatus.value === b.dataset.status;
-            b.setAttribute("aria-pressed", String(ativo));
-        });
+        const b = chipsStatus.querySelector("[data-ciclo]");
+        const st = STATUS_RAPIDOS.find(x => x.valor === selectStatus.value) || STATUS_RAPIDOS[0];
+        b.innerHTML = `${esc(st.valor ? st.texto : "Todas")}<i class="ciclo-seta" aria-hidden="true">⟳</i>`;
+        b.setAttribute("aria-pressed", String(Boolean(st.valor)));
+        b.setAttribute("aria-label", `Situação: ${st.texto}. Toque para trocar.`);
+        const fav = chipsStatus.querySelector("[data-favoritas]");
+        if (fav) fav.setAttribute("aria-pressed", String(Boolean(checkFavoritas && checkFavoritas.checked)));
     }
 }
 
 if (chipsNivel && selectNivel) {
     chipsNivel.addEventListener("click", (e) => {
-        const b = e.target.closest(".chip-filtro[data-nivel]");
-        if (!b) return;
-        // Tocar no nível ativo tira o filtro
-        selectNivel.value = selectNivel.value === b.dataset.nivel ? "" : b.dataset.nivel;
+        if (!e.target.closest(".chip-filtro[data-ciclo]")) return;
+        const valores = ["", ...[...selectNivel.options].filter(o => o.value).map(o => o.value)];
+        const i = valores.indexOf(selectNivel.value);
+        selectNivel.value = valores[(i + 1) % valores.length];
         selectNivel.dispatchEvent(new Event("change"));
     });
 }
@@ -575,10 +580,34 @@ if (chipsStatus && selectStatus) {
             if (checkFavoritas) { checkFavoritas.checked = !checkFavoritas.checked; checkFavoritas.dispatchEvent(new Event("change")); }
             return;
         }
-        selectStatus.value = b.dataset.status;
+        const i = STATUS_RAPIDOS.findIndex(x => x.valor === selectStatus.value);
+        selectStatus.value = STATUS_RAPIDOS[(i + 1) % STATUS_RAPIDOS.length].valor;
         selectStatus.dispatchEvent(new Event("change"));
     });
 }
+
+// Barra fixa de filtros (celular): some ao rolar para baixo, volta ao rolar para cima.
+(function barraFixaQueSome() {
+    const barra = document.getElementById("barra-fixa");
+    const rolagem = document.querySelector(".main-content");
+    const topo = document.querySelector(".top-bar-mobile");
+    if (!barra || !rolagem || !topo) return;
+    const celular = window.matchMedia("(max-width: 768px)");
+    let ultimo = 0;
+    const ajustar = () => barra.style.setProperty("--topo-fixo", `${topo.offsetHeight}px`);
+    ajustar();
+    window.addEventListener("resize", ajustar);
+    rolagem.addEventListener("scroll", () => {
+        if (!celular.matches) { barra.classList.remove("recolhida"); return; }
+        const y = rolagem.scrollTop;
+        const dy = y - ultimo;
+        if (Math.abs(dy) < 8) return;
+        ultimo = y;
+        const digitando = barra.contains(document.activeElement) && document.activeElement.matches("input");
+        if (dy > 0 && y > 120 && !digitando) barra.classList.add("recolhida");
+        else if (dy < 0 || y <= 120) barra.classList.remove("recolhida");
+    }, { passive: true });
+})();
 
 // Tecla / abre a busca (fora do Modo Foco e sem estar digitando em outro campo)
 document.addEventListener("keydown", (e) => {

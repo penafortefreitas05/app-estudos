@@ -103,7 +103,7 @@ export function atualizarMetaNaTela(historico) {
         caixa.classList.toggle('batida', batida);
         const valor = document.getElementById('meta-hoje-valor');
         const fill = document.getElementById('meta-hoje-fill');
-        if (valor) valor.textContent = batida ? `${feitas} de ${meta} ✓` : `${feitas} de ${meta}`;
+        if (valor) valor.textContent = batida ? `${feitas} de ${meta} hoje ✓` : `${feitas} de ${meta} hoje`;
         if (fill) fill.style.width = `${pct}%`;
     }
     if (mini) {
