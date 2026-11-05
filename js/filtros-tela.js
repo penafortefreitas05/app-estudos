@@ -60,13 +60,13 @@ export function abrirFiltros({ selects, contagem = () => '', aoLimpar } = {}) {
         </footer>`;
     const q = s => el.querySelector(s);
 
-    function bloco(titulo, select, rotuloTodos) {
+    function bloco(titulo, select, rotuloTodos, colunas = 2) {
         const ops = opcoesDe(select);
         if (!ops.length) return '';
         const atual = select.value;
         return `<h3 class="ft-sec-titulo">${titulo}</h3>
-            <div class="ft-chips" role="group" aria-label="${esc(titulo)}">
-                ${rotuloTodos ? `<button type="button" class="ft-chip${atual ? '' : ' ativo'}" data-campo="${select.id}" data-valor="" aria-pressed="${!atual}">${rotuloTodos}</button>` : ''}
+            <div class="ft-chips ft-grade ft-g${colunas}" role="group" aria-label="${esc(titulo)}">
+                ${rotuloTodos ? `<button type="button" class="ft-chip todos${atual ? '' : ' ativo'}" data-campo="${select.id}" data-valor="" aria-pressed="${!atual}">${rotuloTodos}</button>` : ''}
                 ${ops.map(o => `<button type="button" class="ft-chip${o.valor === atual ? ' ativo' : ''}" data-campo="${select.id}" data-valor="${esc(o.valor)}" aria-pressed="${o.valor === atual}">${esc(o.rotulo)}</button>`).join('')}
             </div>`;
     }
@@ -94,8 +94,8 @@ export function abrirFiltros({ selects, contagem = () => '', aoLimpar } = {}) {
         q('.ft-ver').textContent = `Ver ${contagem() || 'questões'}`;
         q('.ft-sec-concurso').innerHTML = concurso && !concurso.hidden ? bloco('Concurso', concurso, null) : '';
         q('.ft-sec-materia').innerHTML = bloco('Matéria', materia, 'Todas');
-        q('.ft-sec-banca').innerHTML = bloco('Banca', banca, 'Todas');
-        q('.ft-sec-ano').innerHTML = ano && !ano.hidden ? bloco('Ano', ano, 'Todos') : '';
+        q('.ft-sec-banca').innerHTML = bloco('Banca', banca, 'Todas', 3);
+        q('.ft-sec-ano').innerHTML = ano && !ano.hidden ? bloco('Ano', ano, 'Todos', 3) : '';
         if (!manterBusca) desenharAssunto();
     }
 

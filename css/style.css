@@ -1990,3 +1990,10 @@ body.modo-aprender .sidebar { background-color: #11102e; border-right-color: #2a
 .at-plano-btn { display: inline-flex; align-items: center; min-height: 2.6rem; padding: 0.5rem 1rem; border-radius: 10px; background: #4f46e5; color: #fff; font-weight: 600; }
 .at-plano-link { display: inline-block; padding: 0.4rem 0; font-size: 0.82rem; color: #a5b4fc; text-decoration: underline; }
 .at-plano-btn:focus-visible, .at-plano-link:focus-visible, .at-plano-assunto:focus-visible { outline: 2px solid #c7d2fe; outline-offset: 2px; }
+/* Filtros: matérias, bancas e anos em grade, cada botão do mesmo tamanho */
+.ft-chips.ft-grade { display: grid; gap: 0.5rem; }
+.ft-chips.ft-g2 { grid-template-columns: 1fr 1fr; }
+.ft-chips.ft-g3 { grid-template-columns: repeat(3, 1fr); }
+.ft-grade .ft-chip { display: flex; align-items: center; min-width: 0; min-height: 3.1rem; padding: 0.5rem 0.75rem; border-radius: 10px; font-size: 0.84rem; line-height: 1.2; overflow-wrap: anywhere; }
+.ft-g3 .ft-chip { justify-content: center; text-align: center; min-height: 2.7rem; padding: 0.5rem 0.3rem; }
+.ft-grade .ft-chip.todos { grid-column: 1 / -1; min-height: 2.6rem; }
