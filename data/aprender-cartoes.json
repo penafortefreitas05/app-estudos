@@ -12291,5 +12291,310 @@
       "resolucao-cnj-396",
       "cnj"
     ]
+  },
+  {
+    "id": "card-rlm-n1-048",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Histogramas e curvas de frequência",
+    "nivel": 1,
+    "conceito": "Histograma",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Histograma mostra a frequência de cada classe, intervalo de valores, em barras; a altura indica a frequência. Exemplo: classes 0–10 e 10–20.",
+    "nao_confundir": [
+      {
+        "conceito": "Gráfico de barras",
+        "diferenca": "Gráfico de barras compara categorias com barras separadas; histograma representa classes quantitativas contíguas."
+      }
+    ],
+    "atencao": "No histograma, as barras são contíguas, ou seja, encostadas umas nas outras.",
+    "fonte": "OpenStax, Introductory Statistics 2e, seção 2.2 — https://openstax.org/books/introductory-statistics-2e/pages/2-2-histograms-frequency-polygons-and-time-series-graphs",
+    "tags": [
+      "histogramas-e-curvas-de-frequencia",
+      "raciocinio"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-049",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Histogramas e curvas de frequência",
+    "nivel": 1,
+    "conceito": "Gráfico de barras",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Gráfico de barras compara categorias, como tipos de serviço. Exemplo: categorias sistema A, B e C.",
+    "nao_confundir": [
+      {
+        "conceito": "Histograma",
+        "diferenca": "Histograma agrupa dados quantitativos em intervalos contíguos; gráfico de barras compara categorias separadas."
+      }
+    ],
+    "atencao": "As barras do gráfico de barras ficam separadas e podem ser verticais ou horizontais.",
+    "fonte": "OpenStax, Introductory Statistics 2e, seção 2.1 — https://openstax.org/books/introductory-statistics-2e/pages/2-1-stem-and-leaf-graphs-stemplots-line-graphs-and-bar-graphs",
+    "tags": [
+      "histogramas-e-curvas-de-frequencia",
+      "raciocinio"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-050",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Histogramas e curvas de frequência",
+    "nivel": 1,
+    "conceito": "Polígono de frequência",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Polígono de frequência marca cada frequência no centro da classe e liga os pontos. Exemplo: centros 5 e 15, frequências 2 e 4.",
+    "nao_confundir": [
+      {
+        "conceito": "Histograma",
+        "diferenca": "Histograma usa barras contíguas; polígono liga pontos por segmentos."
+      }
+    ],
+    "atencao": "Polígonos sobrepostos ajudam a comparar distribuições.",
+    "fonte": "OpenStax, Introductory Statistics 2e, seção 2.2 — https://openstax.org/books/introductory-statistics-2e/pages/2-2-histograms-frequency-polygons-and-time-series-graphs",
+    "tags": [
+      "histogramas-e-curvas-de-frequencia"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-051",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Histogramas e curvas de frequência",
+    "nivel": 1,
+    "conceito": "Assimetria da distribuição",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Distribuição simétrica espelha os lados; assimétrica tem cauda mais longa de um lado. Exemplo: cauda longa à direita indica assimetria à direita.",
+    "nao_confundir": [
+      {
+        "conceito": "Assimetria à esquerda",
+        "diferenca": "Cauda longa à esquerda: a média tende a ficar abaixo da mediana."
+      }
+    ],
+    "atencao": "Na assimetria à direita, a média costuma superar a mediana, mas isso não ocorre em todo conjunto.",
+    "fonte": "OpenStax, Introductory Statistics 2e, seção 2.6 — https://openstax.org/books/introductory-statistics-2e/pages/2-6-skewness-and-the-mean-median-and-mode",
+    "tags": [
+      "histogramas-e-curvas-de-frequencia",
+      "raciocinio"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-052",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "População e amostra",
+    "nivel": 1,
+    "conceito": "População",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "População é o conjunto total de interesse. Exemplo: todos os 800 usuários de um sistema.",
+    "nao_confundir": [
+      {
+        "conceito": "Amostra",
+        "diferenca": "Amostra é parte da população; não confundir com espaço amostral, da probabilidade."
+      }
+    ],
+    "atencao": "Examinar toda a população exige muito tempo e dinheiro; por isso se estuda uma amostra.",
+    "fonte": "OpenStax, Introductory Statistics 2e, seção 1.1 — https://openstax.org/books/introductory-statistics-2e/pages/1-1-definitions-of-statistics-probability-and-key-terms",
+    "tags": [
+      "populacao-e-amostra"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-053",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "População e amostra",
+    "nivel": 1,
+    "conceito": "Parâmetro",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Parâmetro é número que descreve uma característica da população. Exemplo: média dos 800 usuários.",
+    "nao_confundir": [
+      {
+        "conceito": "Estatística",
+        "diferenca": "Estatística é número calculado na amostra e estima o parâmetro populacional."
+      }
+    ],
+    "atencao": "Uma média calculada na amostra é estatística, não parâmetro.",
+    "fonte": "OpenStax, Introductory Statistics 2e, seção 1.1 — https://openstax.org/books/introductory-statistics-2e/pages/1-1-definitions-of-statistics-probability-and-key-terms",
+    "tags": [
+      "populacao-e-amostra"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-054",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "População e amostra",
+    "nivel": 1,
+    "conceito": "Amostragem aleatória simples",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Amostragem aleatória simples seleciona elementos ao acaso, com igual chance de inclusão. Exemplo: sortear três nomes entre trinta clientes.",
+    "nao_confundir": [
+      {
+        "conceito": "Amostragem por conveniência",
+        "diferenca": "Conveniência usa quem está mais à mão; não dá a todos a mesma chance."
+      }
+    ],
+    "atencao": "Sem reposição, cada pessoa pode ser selecionada uma única vez.",
+    "fonte": "OpenStax, Introductory Statistics 2e, seção 1.2 — https://openstax.org/books/introductory-statistics-2e/pages/1-2-data-sampling-and-variation-in-data-and-sampling",
+    "tags": [
+      "populacao-e-amostra"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-055",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "População e amostra",
+    "nivel": 1,
+    "conceito": "Viés de seleção",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Viés de seleção ocorre quando alguns integrantes têm menor chance de entrar na amostra. Exemplo: entrevistar apenas visitantes de um site.",
+    "nao_confundir": [
+      {
+        "conceito": "Amostra representativa",
+        "diferenca": "Amostra representativa reflete características da população; amostra enviesada favorece certos integrantes."
+      }
+    ],
+    "atencao": "Amostra enviesada pode gerar conclusões incorretas sobre a população.",
+    "fonte": "OpenStax, Introductory Statistics 2e, seção 1.2 — https://openstax.org/books/introductory-statistics-2e/pages/1-2-data-sampling-and-variation-in-data-and-sampling",
+    "tags": [
+      "populacao-e-amostra"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-056",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Análise combinatória",
+    "nivel": 1,
+    "conceito": "Princípio Fundamental da Contagem",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Para escolhas feitas em sequência, multiplique as opções de cada etapa. Exemplo: três camisas e duas calças dão 3 × 2 = 6 trajes.",
+    "nao_confundir": [
+      {
+        "conceito": "Soma de opções",
+        "diferenca": "Soma conta alternativas; multiplicação conta escolhas sucessivas feitas em conjunto."
+      }
+    ],
+    "atencao": "A regra vale para qualquer número de etapas: o total é o produto das opções de todas.",
+    "fonte": "OpenStax, Contemporary Mathematics, seção 7.1 (Multiplication Rule for Counting) — https://openstax.org/books/contemporary-mathematics/pages/7-1-the-multiplication-rule-for-counting",
+    "tags": [
+      "principio-multiplicativo",
+      "analise-combinatoria"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-057",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Análise combinatória",
+    "nivel": 1,
+    "conceito": "Fatorial",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Fatorial n! multiplica inteiros positivos de n até 1. Exemplo: 4! = 4 × 3 × 2 × 1 = 24.",
+    "nao_confundir": [
+      {
+        "conceito": "Potência",
+        "diferenca": "Potência repete o fator: 4⁴ = 256; fatorial decresce: 4! = 24."
+      }
+    ],
+    "atencao": "O valor de 0! é 1, não zero.",
+    "fonte": "OpenStax, Contemporary Mathematics, seção 7.2 — https://openstax.org/books/contemporary-mathematics/pages/7-2-permutations",
+    "tags": [
+      "fatorial",
+      "analise-combinatoria"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-058",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Análise combinatória",
+    "nivel": 1,
+    "conceito": "Permutação simples",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Permutação simples conta ordens diferentes de todos os itens distintos. Exemplo: três livros em fila geram 3! = 6 ordens.",
+    "nao_confundir": [
+      {
+        "conceito": "Combinação",
+        "diferenca": "Combinação seleciona itens sem considerar a ordem; permutação conta cada ordem."
+      }
+    ],
+    "atencao": "Com n itens distintos, todos usados, há n! ordens: cinco pessoas em fila geram 120.",
+    "fonte": "OpenStax, Contemporary Mathematics, seção 7.2 — https://openstax.org/books/contemporary-mathematics/pages/7-2-permutations",
+    "tags": [
+      "permutacao",
+      "analise-combinatoria"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-059",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Análise combinatória",
+    "nivel": 1,
+    "conceito": "Arranjo (a ordem importa)",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Arranjo escolhe p itens entre n e considera a ordem. Exemplo: A(5,2) = 5 × 4 = 20.",
+    "nao_confundir": [
+      {
+        "conceito": "Combinação",
+        "diferenca": "Combinação escolhe p entre n sem considerar ordem; C(5,2) = 10."
+      }
+    ],
+    "atencao": "A(n,p) = n! ÷ (n − p)!; com p = n, vira a permutação simples n!.",
+    "fonte": "OpenStax, Contemporary Mathematics, seção 7.2 (permutations of n taken r, que muitos livros brasileiros chamam de arranjo) — https://openstax.org/books/contemporary-mathematics/pages/7-2-permutations",
+    "tags": [
+      "arranjo",
+      "analise-combinatoria"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-060",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Análise combinatória",
+    "nivel": 1,
+    "conceito": "Combinação (a ordem não importa)",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Combinação escolhe p itens entre n sem considerar a ordem. Exemplo: C(5,2) = 5! ÷ (2! × 3!) = 10.",
+    "nao_confundir": [
+      {
+        "conceito": "Arranjo",
+        "diferenca": "Arranjo conta cada ordem; combinação conta somente o grupo escolhido."
+      }
+    ],
+    "atencao": "A combinação é o arranjo dividido por p!: C(5,2) = 20 ÷ 2 = 10.",
+    "fonte": "OpenStax, Contemporary Mathematics, seção 7.3 — https://openstax.org/books/contemporary-mathematics/pages/7-3-combinations",
+    "tags": [
+      "combinacao",
+      "analise-combinatoria"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-061",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Análise combinatória",
+    "nivel": 1,
+    "conceito": "Anagrama com letras repetidas",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Anagrama é rearranjo das letras de uma palavra. Exemplo: MAMA tem 4! ÷ (2! × 2!) = 6 anagramas distintos.",
+    "nao_confundir": [
+      {
+        "conceito": "Permutação simples",
+        "diferenca": "Permutação simples usa itens distintos; anagrama pode repetir letras."
+      }
+    ],
+    "atencao": "Divida pelo fatorial da quantidade de cada letra repetida.",
+    "fonte": "OpenStax, College Algebra 2e, seção 9.5 (permutations of non-distinct objects) — https://openstax.org/books/college-algebra-2e/pages/9-5-counting-principles",
+    "tags": [
+      "anagramas",
+      "permutacao",
+      "fatorial",
+      "analise-combinatoria"
+    ]
   }
 ]
