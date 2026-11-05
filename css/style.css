@@ -1894,3 +1894,10 @@ body.modo-aprender .sidebar { background-color: #11102e; border-right-color: #2a
     .ft-lista-assunto { max-height: calc(100vh - 17rem); overflow-y: auto; }
 }
 @media (prefers-reduced-motion: reduce) { .ft-tela { transition: none; } }
+
+/* Celular: na barra de cima ficam só Aprender e Foco; Meu dia e Simulados ficam no menu ☰ (05/11/2026).
+   Os botões continuam no HTML: o menu os aciona por id. */
+@media (max-width: 768px) {
+    #btn-meu-dia, #btn-painel-simulado { display: none; }
+    .barra-botoes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
