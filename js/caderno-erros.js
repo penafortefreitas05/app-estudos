@@ -13,14 +13,14 @@ const CHAVE_EXPLICACOES = 'appEstudos_ExplicacoesIA';
 const CHAVE_USO_IA = 'appEstudos_UsoIA';
 const PAGINA = 10;
 
-export const ESTADOS = [['abertas', 'Ainda na revisão'], ['superadas', 'Superadas']];
+export const ESTADOS = [['abertas', 'Para refazer'], ['superadas', 'Já acertei depois']];
 
 // Questões com pelo menos um erro, da mais recente para a mais antiga
 export function listarErros(questoes, historico) {
     return questoes
         .map((q) => ({ q, h: historico[String(q.id)] }))
         .filter(({ h }) => h && (h.erros || 0) > 0)
-        .map(({ q, h }) => ({ q, h, estado: h.revisaoEm ? 'abertas' : 'superadas' }))
+        .map(({ q, h }) => ({ q, h, estado: h.ultimaResposta === 'errado' ? 'abertas' : 'superadas' }))
         .sort((a, b) => (b.h.ultimaData || 0) - (a.h.ultimaData || 0));
 }
 
@@ -134,7 +134,7 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, naFila =
     function desenhar() {
         const todosDoEstado = itens.filter((i) => i.estado === estado);
         const por = contar(itens);
-        sub.textContent = itens.length ? `${por.abertas} ainda na revisão · ${por.superadas} superadas` : '';
+        sub.textContent = itens.length ? `${por.abertas} para refazer · ${por.superadas} já acertadas depois` : '';
         elEstados.innerHTML = ESTADOS.map(([id, nome]) =>
             `<button type="button" class="ce-chip ${estado === id ? 'ativo' : ''}" data-ce="estado" data-v="${id}">${nome} <span>${por[id]}</span></button>`).join('');
         elMaterias.innerHTML = materiasDe(todosDoEstado).length
@@ -147,7 +147,8 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, naFila =
         } else if (!lista.length) {
             elLista.innerHTML = '<p class="ce-vazio">Nada por aqui com esse filtro.</p>';
         } else {
-            elLista.innerHTML = lista.slice(0, mostrando).map(cartao).join('') +
+            elLista.innerHTML = (estado === 'abertas' ? `<button type="button" class="ce-btn ce-todas" data-ce="refazer-todas">Refazer ${materia ? 'esta matéria' : 'todas'} no Foco (${lista.length})</button>` : '') +
+                lista.slice(0, mostrando).map(cartao).join('') +
                 (lista.length > mostrando ? `<button type="button" class="ce-mais" data-ce="mais">Mostrar mais (${lista.length - mostrando})</button>` : '');
         }
         textoUso();
@@ -165,6 +166,10 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, naFila =
         if (acao === 'estado') { estado = alvo.dataset.v; materia = ''; mostrando = PAGINA; return desenhar(); }
         if (acao === 'materia') { materia = alvo.dataset.v; mostrando = PAGINA; return desenhar(); }
         if (acao === 'mais') { mostrando += PAGINA; return desenhar(); }
+        if (acao === 'refazer-todas') {
+            const lista = filtrarItens(itens, { estado, materia, busca }).map((i) => i.q);
+            fechar(); if (aoRefazer && lista.length) aoRefazer(lista); return;
+        }
         const art = alvo.closest('.ce-item');
         const item = art && itens.find((i) => String(i.q.id) === art.dataset.id);
         if (!item) return;

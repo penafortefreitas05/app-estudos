@@ -271,5 +271,11 @@ export function atualizarFilaDoDia(questoes, historico, hoje = diaLocal()) {
     return filaAtual;
 }
 
+// Usada na sincronização com a nuvem: a fila gravada no aparelho para hoje (ou null)
+export const filaGuardadaHoje = (hoje = diaLocal()) => { const f = lerFilaDoDia(); return f && f.dia === hoje ? f : null; };
+export function guardarFilaDoDia(f) {
+    try { localStorage.setItem(CHAVE_FILA_DIA, JSON.stringify({ dia: f.dia, ids: f.ids, venciam: f.venciam || 0 })); } catch (e) { /* refaz na próxima */ }
+}
+
 export const filaDeHoje = () => filaAtual;
 export const naFila = (id) => filaAtual.ids.has(String(id));

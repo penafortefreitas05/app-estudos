@@ -789,3 +789,21 @@ export async function pedirExplicacaoIA(questaoId, respostaUsuario) {
         return { ok: false, code: 'rede', message: 'Sem conexão com a IA agora.' };
     }
 }
+
+// ---------- Fila do dia na nuvem (uma só por conta, igual no celular e no computador) ----------
+// Quem abre primeiro no dia grava; os outros aparelhos usam a mesma. Falha de rede = null.
+export async function lerFilaDoDiaNuvem(dia) {
+    try {
+        const { data, error } = await supabaseClient.from('fila_do_dia').select('ids, venciam').eq('dia', dia).maybeSingle();
+        if (error || !data || !Array.isArray(data.ids)) return null;
+        return { dia, ids: data.ids.map(String), venciam: Number(data.venciam) || 0 };
+    } catch (e) { return null; }
+}
+
+export async function gravarFilaDoDiaNuvem(fila) {
+    try {
+        const { error } = await supabaseClient.from('fila_do_dia')
+            .upsert({ dia: fila.dia, ids: fila.ids, venciam: fila.venciam || 0 }, { onConflict: 'user_id,dia', ignoreDuplicates: true });
+        return !error;
+    } catch (e) { return false; }
+}

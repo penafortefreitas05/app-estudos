@@ -1955,3 +1955,4 @@ body.modo-aprender .sidebar { background-color: #11102e; border-right-color: #2a
 .ce-mais { all: unset; box-sizing: border-box; width: 100%; padding: 0.7rem; text-align: center; color: #93c5fd; border: 1px dashed #334155; border-radius: 10px; cursor: pointer; }
 .ce-vazio { padding: 1rem; text-align: center; color: #94a3b8; }
 .ce-chip:focus-visible, .ce-btn:focus-visible, .ce-sair:focus-visible, .ce-mais:focus-visible { outline: 2px solid #93c5fd; outline-offset: 2px; }
+.ce-todas { margin-bottom: 0.8rem; border-color: #4f46e5; color: #c7d2fe; }
