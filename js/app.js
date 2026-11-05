@@ -1625,6 +1625,9 @@ function aplicarModoAuth(modo) {
 // Antes, isso recarregava tudo e apagava o simulado em andamento. Agora só recarrega
 // quando a pessoa logada muda de fato (login, logout ou troca de conta).
 supabaseClient.auth.onAuthStateChange((event, session) => {
+    // Aberto sem internet: o "sem sessão" que chega depois do tempo de espera não é um logout
+    if (abertoSemRede && !session && event !== 'SIGNED_OUT') return;
+    if (abertoSemRede && session) abertoSemRede = false;
     usuarioAtual = session?.user || null;
 
     if (usuarioAtual) {
@@ -1907,6 +1910,7 @@ async function carregarBancoDeQuestoes(questoesChegando = null) {
 
     // Usuário logado: a nuvem (Supabase) é a única fonte das questões.
     // Se ela falhar, o app diz isso (antes mostrava 2 questões de exemplo como se fossem o banco).
+    if (abertoSemRede) { mostrarErroDeCarga(); return; }
     container.innerHTML = '<p class="aviso-vazio">Carregando questões...</p>';
     const resultado = await (questoesChegando || buscarQuestoes());
     if (resultado.erro) {
@@ -1988,6 +1992,12 @@ function mostrarErroDeCarga() {
     const botao = document.getElementById("btn-tentar-carregar");
     if (botao) {
         botao.addEventListener("click", async () => {
+            // Abriu sem internet: com a internet de volta, recarrega para entrar de verdade na conta
+            if (abertoSemRede) {
+                if (navigator.onLine) location.reload();
+                else showToast("Ainda sem internet.", "info");
+                return;
+            }
             botao.disabled = true;
             botao.textContent = "Carregando...";
             await carregarBancoDeQuestoes();
@@ -1995,27 +2005,62 @@ function mostrarErroDeCarga() {
     }
 }
 
+// Sessão guardada pelo Supabase no aparelho (só para abrir o app sem internet).
+function usuarioSalvoNoAparelho() {
+    try {
+        for (let i = 0; i < localStorage.length; i++) {
+            const chave = localStorage.key(i);
+            if (!/^sb-.+-auth-token$/.test(chave)) continue;
+            const s = JSON.parse(localStorage.getItem(chave));
+            if (s && s.user && s.user.id && s.user.email) return s.user;
+        }
+    } catch (e) { /* sem sessão guardada */ }
+    return null;
+}
+
+// Aberto sem internet com login guardado: vale o login do aparelho. O Supabase tenta renovar o
+// token vencido e, sem rede, demora ~30 s e devolve "sem sessão": o app virava visitante e
+// escondia o Aprender. Aqui o app abre direto, sem chamar a nuvem; o Aprender e os cartões não
+// precisam dela. Quando a internet volta, o toque em "Atualizar"/reabrir sincroniza.
+let abertoSemRede = false;
+
 async function iniciarApp() {
     // 0. Remove do navegador o cache antigo de questões importadas (não é mais usado)
     limparCacheAntigoDeQuestoes();
 
     // 1. Verifica sessão ativa antes de puxar histórico/questões
-    try {
-        const { data: { session } } = await supabaseClient.auth.getSession();
-        usuarioAtual = session?.user || null;
-    } catch (e) {
-        usuarioAtual = null;
+    const salvo = usuarioSalvoNoAparelho();
+    if (!navigator.onLine && salvo) {
+        usuarioAtual = salvo;
+        abertoSemRede = true;
+    } else {
+        try {
+            const limite = new Promise(resolve => setTimeout(() => resolve({ data: { session: null }, error: { name: 'AuthRetryableFetchError' } }), 8000));
+            const { data: { session }, error } = await Promise.race([supabaseClient.auth.getSession(), limite]);
+            usuarioAtual = session?.user || null;
+            if (!usuarioAtual && salvo && error && /Retryable|Fetch/i.test(error.name || '')) {
+                usuarioAtual = salvo;
+                abertoSemRede = true;
+            }
+        } catch (e) {
+            usuarioAtual = null;
+        }
+    }
+    if (abertoSemRede) {
+        if (userEmail) userEmail.innerText = usuarioAtual.email;
+        if (userAvatar) userAvatar.innerText = usuarioAtual.email.charAt(0).toUpperCase();
+        showToast("Sem internet. O Aprender funciona; as questões voltam quando a internet voltar.", "info", 6000);
     }
 
     // 2. As questões começam a chegar já; enquanto isso, reenvia respostas pendentes
     //    (sem internet) e lê o histórico. Antes era tudo em fila, um depois do outro.
-    const questoesChegando = usuarioAtual ? buscarQuestoes() : null;
+    const questoesChegando = (usuarioAtual && !abertoSemRede) ? buscarQuestoes() : null;
     if (usuarioAtual) container.innerHTML = '<p class="aviso-vazio">Carregando questões...</p>';
-    await enviarFilaPendente();
+    if (!abertoSemRede) await enviarFilaPendente();
 
     // 3. Carrega histórico (LocalStorage + Supabase historico_respostas)
     try {
-        historico = await carregarHistorico();
+        historico = await carregarHistorico({ semNuvem: abertoSemRede });
     } catch (e) {
         console.warn("[FocoPro] Erro ao carregar histórico:", e);
         historico = {};
