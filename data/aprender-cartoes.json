@@ -10801,5 +10801,387 @@
       "regencia-verbal",
       "preferir"
     ]
+  },
+  {
+    "id": "card-pt-n1-018",
+    "materia": "Português",
+    "assunto": "Sintaxe — termos e orações",
+    "nivel": 1,
+    "conceito": "Sujeito simples e composto",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Sujeito simples tem um núcleo, a palavra principal; composto tem mais de um. Exemplo: Ana e Rui chegaram.",
+    "nao_confundir": [
+      {
+        "conceito": "Sujeito oculto",
+        "diferenca": "Oculto não aparece, mas a concordância do verbo o revela: Chegamos cedo."
+      },
+      {
+        "conceito": "Sujeito indeterminado",
+        "diferenca": "Indeterminado existe, mas não se identifica: Ligaram para você."
+      }
+    ],
+    "atencao": "Com verbo impessoal, a oração não tem sujeito: Havia alertas; faz dois anos.",
+    "fonte": "Fundação Cecierj (governo do Rio de Janeiro), Formação continuada em Língua Portuguesa — https://canal.cecierj.edu.br/012016/332bcf75afdd6861f46a55e193cf6c03.pdf ; Supremo Tribunal Federal, EAD, Concordância verbal, Aula 5 (verbos impessoais) — https://ead.stf.jus.br/cursos/concordancia-verbal/Aula%205/aula5.html ; apoio: Secretaria de Educação do Espírito Santo, Referencial Pedagógico, 2ª série, 29ª semana (sujeito indeterminado) — https://curriculo.sedu.es.gov.br/curriculo/wp-content/uploads/2024/09/RPE-2a-serie-LP-29a-semana-f.pdf",
+    "tags": [
+      "sintaxe",
+      "sujeito"
+    ]
+  },
+  {
+    "id": "card-pt-n1-019",
+    "materia": "Português",
+    "assunto": "Sintaxe — termos e orações",
+    "nivel": 1,
+    "conceito": "Predicado verbal e nominal",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Predicado é o que se diz do sujeito; o verbal informa uma ação, e o nominal atribui ao sujeito uma característica. Exemplo: A tela está lenta.",
+    "nao_confundir": [
+      {
+        "conceito": "Predicativo do sujeito",
+        "diferenca": "Predicativo é a característica atribuída ao sujeito: lenta, em A tela está lenta."
+      }
+    ],
+    "atencao": "Predicado nominal tem verbo de ligação, como ser, estar, parecer e permanecer, e predicativo do sujeito.",
+    "fonte": "Tribunal Regional Federal da 3ª Região, Conexão Emag, Concordância com o verbo SER (II) — https://www.trf3.jus.br/emag/emagconecta/conexaoemag-lingua-portuguesa/concordancia-com-o-verbo-ser-ii ; Fundação Cecierj (governo do Rio de Janeiro), Formação continuada em Língua Portuguesa — https://canal.cecierj.edu.br/012016/332bcf75afdd6861f46a55e193cf6c03.pdf ; apoio: Portal eduCapes (Capes), Predicado e predicativo — https://educapes.capes.gov.br/bitstream/capes/746004/2/7)%20Predicado%20e%20predicativo.pdf",
+    "tags": [
+      "sintaxe",
+      "predicado-nominal"
+    ]
+  },
+  {
+    "id": "card-pt-n1-020",
+    "materia": "Português",
+    "assunto": "Sintaxe — termos e orações",
+    "nivel": 1,
+    "conceito": "Objeto direto e indireto",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Objeto completa o sentido do verbo: o direto vem sem preposição; o indireto, com preposição. Exemplo: Enviei o arquivo à equipe.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: Procedeu o exame da prova; certo: Procedeu ao exame da prova."
+      }
+    ],
+    "atencao": "Lhe substitui objeto indireto; o substitui objeto direto: Enviei-lhe o documento; enviei-o.",
+    "fonte": "Tribunal de Justiça de Minas Gerais, Gotas de Língua Portuguesa 213, Uso de lhe e o — https://bd-login.tjmg.jus.br/jspui/bitstream/tjmg/12646/1/213%20Uso%20de%20'lhe'%20e%20'o'.pdf ; Tribunal Regional do Trabalho da 4ª Região, Na Ponta da Língua, O verbo proceder — https://www.trt4.jus.br/portais/trt4/modulos/noticias/50768784",
+    "tags": [
+      "sintaxe",
+      "objeto-direto",
+      "objeto-indireto"
+    ]
+  },
+  {
+    "id": "card-pt-n1-021",
+    "materia": "Português",
+    "assunto": "Sintaxe — termos e orações",
+    "nivel": 1,
+    "conceito": "Adjunto adverbial",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Adjunto adverbial é o termo que indica circunstância, como tempo, lugar, modo ou causa. Exemplo: A equipe chegou cedo.",
+    "nao_confundir": [
+      {
+        "conceito": "Objeto",
+        "diferenca": "Objeto completa o verbo; adjunto adverbial informa uma circunstância."
+      }
+    ],
+    "atencao": "Na ordem direta (sujeito, verbo, objeto), o adjunto adverbial vem no fim e não leva vírgula.",
+    "fonte": "Escola Fazendária do Paraná (Secretaria da Fazenda do PR), Dicas de Português, Adjunto adverbial — https://efaz.fazenda.pr.gov.br/Pagina/Dicas-de-Portugues-0 ; apoio: MEC, Portal do Professor, Adjunto adnominal e adjunto adverbial — https://portaldoprofessor.mec.gov.br/fichaTecnicaAula.html?aula=31450",
+    "tags": [
+      "sintaxe",
+      "adjunto-adverbial"
+    ]
+  },
+  {
+    "id": "card-pt-n1-022",
+    "materia": "Português",
+    "assunto": "Sintaxe — termos e orações",
+    "nivel": 1,
+    "conceito": "Aposto",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Aposto é termo que explica, resume ou especifica um nome da frase. Exemplo: Recife, capital pernambucana, cresceu.",
+    "nao_confundir": [
+      {
+        "conceito": "Vocativo",
+        "diferenca": "Aposto se refere a um nome da frase; vocativo chama o interlocutor: Equipe, aguardem."
+      }
+    ],
+    "atencao": "O aposto pode resumir termos anteriores: Senhas, crachás e chaves, tudo foi trocado.",
+    "fonte": "Tribunal de Justiça de Mato Grosso, Dicas do Professor Germano, Nomes — https://www.tjmt.jus.br/Noticias/41151 ; Fundação Alexandre de Gusmão, Manual de Revisão, verbete Vírgula — https://funag.gov.br/manual/index.php?title=V%C3%ADrgula ; apoio: Secretaria de Educação do Espírito Santo, Referencial Pedagógico, 2ª série, 37ª semana (aposto resumidor) — https://curriculo.sedu.es.gov.br/curriculo/wp-content/uploads/2024/11/RPE-2a-serie-37a-semana-.pdf",
+    "tags": [
+      "sintaxe",
+      "aposto"
+    ]
+  },
+  {
+    "id": "card-pt-n1-023",
+    "materia": "Português",
+    "assunto": "Sintaxe — termos e orações",
+    "nivel": 1,
+    "conceito": "Orações coordenadas e subordinadas",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Oração é trecho organizado em torno de um verbo; a coordenada é sintaticamente independente, e a subordinada depende de outra, a principal. Exemplo: Saí, mas voltei.",
+    "nao_confundir": [
+      {
+        "conceito": "Oração subordinada",
+        "diferenca": "Em Sei que você voltou, a oração que você voltou completa Sei."
+      }
+    ],
+    "atencao": "A subordinada exerce uma função, como a de objeto, na oração principal; a coordenada, não.",
+    "fonte": "Universidade Federal de Catalão, Linguagem – Estudos e Pesquisas, v. 15, n. 2, 2011, quadro de definições de Bechara e de Cunha e Cintra — https://periodicos.ufcat.edu.br/index.php/lep/article/download/32423/17280/136611 ; Escola de Serviço Público do Espírito Santo, Redação Oficial, Módulo I — https://esesp.es.gov.br/Media/Agenda%20Municipal/APOSTILA_COMPLETA_ROMI.pdf ; apoio: Secretaria de Educação do Espírito Santo, Referencial Pedagógico, 8º ano — https://curriculo.sedu.es.gov.br/curriculo/wp-content/uploads/2025/08/RPE_LP_8_Q_20_25_08_2025.pdf ; gramática impressa só como apoio: Cunha e Cintra, Nova Gramática do Português Contemporâneo, 2008",
+    "tags": [
+      "sintaxe",
+      "oracoes-coordenadas",
+      "oracoes-subordinadas"
+    ]
+  },
+  {
+    "id": "card-pt-n1-024",
+    "materia": "Português",
+    "assunto": "Sintaxe — termos e orações",
+    "nivel": 1,
+    "conceito": "Conjunção coordenativa e subordinativa",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Conjunção liga termos ou orações; coordenativa liga ideias independentes, subordinativa introduz oração dependente. Exemplo: Saí porque anoiteceu.",
+    "nao_confundir": [
+      {
+        "conceito": "Porque",
+        "diferenca": "Porque é coordenativa quando explica (Vá, porque é tarde) e subordinativa quando indica causa."
+      }
+    ],
+    "atencao": "Mas é coordenativa; embora, de sentido parecido, é subordinativa: Saí, embora chovesse.",
+    "fonte": "Escola de Serviço Público do Espírito Santo, Redação Oficial, Módulo I, itens 2.2.1 e 2.2.2 — https://esesp.es.gov.br/Media/Agenda%20Municipal/APOSTILA_COMPLETA_ROMI.pdf ; Câmara Municipal de Ubá, Oficina de Redação, Aula 06 (conjunções coordenativas e subordinativas, com base em Bechara) — https://www.uba.mg.leg.br/institucional-1/cac/enem/apostilas-enem/2019/redacao/aula-06-oficina-de-redacao.pdf/@@download/file/Aula%2006%20-%20Oficina%20de%20reda%C3%A7%C3%A3o.pdf",
+    "tags": [
+      "sintaxe",
+      "conjuncoes"
+    ]
+  },
+  {
+    "id": "card-pt-n1-025",
+    "materia": "Português",
+    "assunto": "Pontuação",
+    "nivel": 1,
+    "conceito": "Vírgula entre sujeito e verbo",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Não se usa vírgula única entre sujeito e verbo nem entre verbo e complemento. Exemplo: A equipe enviou o arquivo.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: A equipe, enviou o arquivo; certo: A equipe enviou o arquivo."
+      }
+    ],
+    "atencao": "Mesmo longo, o sujeito não se separa do verbo por vírgula.",
+    "fonte": "Senado Federal, Manual de Comunicação da Secom, verbete Vírgula — https://www12.senado.leg.br/manualdecomunicacao/estilos/virgula ; Tribunal Regional Federal da 3ª Região, Conexão Emag, Emprego da Vírgula (I) — https://www.trf3.jus.br/emag/emagconecta/conexaoemag-lingua-portuguesa/emprego-da-virgula-i",
+    "tags": [
+      "pontuacao",
+      "virgula"
+    ]
+  },
+  {
+    "id": "card-pt-n1-026",
+    "materia": "Português",
+    "assunto": "Pontuação",
+    "nivel": 1,
+    "conceito": "Vírgula com adjunto deslocado",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Adjunto adverbial deslocado com mais de três palavras vem separado por vírgula. Exemplo: No fim da tarde, o portal caiu.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: Ontem à noite o sistema, caiu; certo: Ontem à noite, o sistema caiu."
+      }
+    ],
+    "atencao": "Com até três palavras, o adjunto adverbial deslocado pode dispensar a vírgula: Hoje o portal caiu.",
+    "fonte": "Senado Federal, Manual de Comunicação da Secom, verbete Adjunto adverbial deslocado — https://www12.senado.leg.br/manualdecomunicacao/estilos/adjunto-adverbial-deslocado ; Senado Federal, Manual de Comunicação da Secom, verbete Vírgula — https://www12.senado.leg.br/manualdecomunicacao/estilos/virgula",
+    "tags": [
+      "pontuacao",
+      "virgula"
+    ]
+  },
+  {
+    "id": "card-pt-n1-027",
+    "materia": "Português",
+    "assunto": "Pontuação",
+    "nivel": 1,
+    "conceito": "Vírgula com vocativo",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Vocativo chama alguém e fica separado do restante da frase por vírgula. Exemplo: Pessoal, enviem o relatório.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: Obrigado Ana, pela ajuda; certo: Obrigado, Ana, pela ajuda."
+      }
+    ],
+    "atencao": "O vocativo é sempre separado por vírgula, no início, no meio ou no fim da frase.",
+    "fonte": "Fundação Alexandre de Gusmão, Manual de Revisão, verbete Vírgula — https://funag.gov.br/manual/index.php?title=V%C3%ADrgula ; Tribunal Regional Federal da 3ª Região, Conexão Emag, Emprego da Vírgula (I) — https://www.trf3.jus.br/emag/emagconecta/conexaoemag-lingua-portuguesa/emprego-da-virgula-i ; apoio: Universidade Federal de Pelotas, Projeto Auxilia, O uso da vírgula — https://wp.ufpel.edu.br/projetoauxilia/files/2020/09/Redacao-Aula-8.pdf",
+    "tags": [
+      "pontuacao",
+      "virgula",
+      "vocativo"
+    ]
+  },
+  {
+    "id": "card-pt-n1-028",
+    "materia": "Português",
+    "assunto": "Pontuação",
+    "nivel": 1,
+    "conceito": "Vírgula com aposto explicativo",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Aposto explicativo fica isolado por vírgulas; no meio da frase, leva vírgula antes e depois. Exemplo: O edital, documento do concurso, saiu.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: O edital, documento do concurso saiu; certo: O edital, documento do concurso, saiu."
+      }
+    ],
+    "atencao": "Aposto especificativo, como Amazonas em o rio Amazonas, não leva vírgula.",
+    "fonte": "Tribunal Regional Federal da 3ª Região, Conexão Emag, Emprego da Vírgula (I) — https://www.trf3.jus.br/emag/emagconecta/conexaoemag-lingua-portuguesa/emprego-da-virgula-i ; Escola de Governo do Distrito Federal, Escrever bem (aposto especificativo sem vírgula) — https://egov.df.gov.br/wp-content/uploads/2023/01/ESCREVER-BEM-E-BOOK.pdf ; Supremo Tribunal Federal, EAD, O emprego da vírgula em 4 lições, Aula 3 — https://ead.stf.jus.br/cursos/empregodavirgula/aula3/",
+    "tags": [
+      "pontuacao",
+      "virgula",
+      "aposto"
+    ]
+  },
+  {
+    "id": "card-pt-n1-029",
+    "materia": "Português",
+    "assunto": "Pontuação",
+    "nivel": 1,
+    "conceito": "Vírgula em oração adjetiva",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Oração adjetiva, iniciada por pronome relativo, descreve um nome: a restritiva limita e fica sem vírgula; a explicativa comenta e vem entre vírgulas. Exemplo: Os servidores que faltaram serão ouvidos.",
+    "nao_confundir": [
+      {
+        "conceito": "Oração explicativa",
+        "diferenca": "Os servidores, que faltaram, serão ouvidos: todos faltaram."
+      }
+    ],
+    "atencao": "Sem vírgulas, a oração cria um subgrupo; entre vírgulas, apenas explica o termo inteiro.",
+    "fonte": "Fundação Alexandre de Gusmão, Manual de Revisão, verbete Vírgula — https://funag.gov.br/manual/index.php?title=V%C3%ADrgula ; Supremo Tribunal Federal, EAD, Caminhos da pontuação, Aula 3 — https://ead.stf.jus.br/cursos/caminhosdapontuacao/aula3/",
+    "tags": [
+      "pontuacao",
+      "virgula",
+      "oracoes-adjetivas"
+    ]
+  },
+  {
+    "id": "card-pt-n1-030",
+    "materia": "Português",
+    "assunto": "Pontuação",
+    "nivel": 1,
+    "conceito": "Dois-pontos para anunciar conteúdo",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Dois-pontos anunciam enumeração, explicação ou citação. Exemplo: Separei três itens: chave, cartão e senha.",
+    "nao_confundir": [
+      {
+        "conceito": "Vírgula",
+        "diferenca": "Dois-pontos anunciam o que vem; vírgula separa os itens da enumeração."
+      }
+    ],
+    "atencao": "Depois de dois-pontos, explicação ou enumeração começa com minúscula: Fixou duas metas: cortar custos e prazos.",
+    "fonte": "Tribunal de Justiça de São Paulo, Escola Judicial dos Servidores, Dicas de Língua Portuguesa, item 2.3 Dois pontos — https://www.tjsp.jus.br/Download/EJUS/AVAS/DicasLinguaPortuguesa/DicasLinguaPortuguesa.pdf ; Escola de Governo do Distrito Federal, Redação oficial, Aula 3 — https://egov.df.gov.br/wp-content/uploads/2023/01/Apresentacao_Redacao-oficial_Aula-3_Ivan-Gusmao-Cavalcante.pdf",
+    "tags": [
+      "pontuacao",
+      "dois-pontos"
+    ]
+  },
+  {
+    "id": "card-pt-n1-031",
+    "materia": "Português",
+    "assunto": "Colocação pronominal",
+    "nivel": 1,
+    "conceito": "Ênclise depois do verbo",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Pronome átono (me, te, se, o, a, lhe, nos) apoia-se no verbo; na ênclise, vem depois dele, ligado por hífen. Exemplo: Disseram-me a data.",
+    "nao_confundir": [
+      {
+        "conceito": "Próclise",
+        "diferenca": "Ênclise põe o pronome depois do verbo; próclise põe antes."
+      }
+    ],
+    "atencao": "Frase não começa por pronome átono na norma-padrão: Disseram-me, não Me disseram.",
+    "fonte": "Fundação Alexandre de Gusmão, Manual de Revisão, verbete Colocação pronominal — https://funag.gov.br/manual/index.php?title=Coloca%C3%A7%C3%A3o_pronominal",
+    "tags": [
+      "colocacao-pronominal",
+      "enclise"
+    ]
+  },
+  {
+    "id": "card-pt-n1-032",
+    "materia": "Português",
+    "assunto": "Colocação pronominal",
+    "nivel": 1,
+    "conceito": "Próclise antes do verbo",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Próclise põe o pronome átono antes do verbo e é obrigatória depois de palavra atrativa, como a negação. Exemplo: Não me avisaram da reunião.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: Não avisaram-me; certo: Não me avisaram."
+      }
+    ],
+    "atencao": "A próclise é obrigatória com palavra negativa e conjunção subordinativa: Sei que me ouviram.",
+    "fonte": "Fundação Alexandre de Gusmão, Manual de Revisão, verbete Colocação pronominal — https://funag.gov.br/manual/index.php?title=Coloca%C3%A7%C3%A3o_pronominal ; Tribunal Regional Federal da 3ª Região, Conexão Emag, Colocação pronominal (II) – próclise (palavras negativas, conjunções subordinativas) — https://www.trf3.jus.br/emag/emagconecta/conexaoemag-lingua-portuguesa/colocacao-pronominal-ii-proclise",
+    "tags": [
+      "colocacao-pronominal",
+      "proclise"
+    ]
+  },
+  {
+    "id": "card-pt-n1-033",
+    "materia": "Português",
+    "assunto": "Colocação pronominal",
+    "nivel": 1,
+    "conceito": "Mesóclise nos tempos futuros",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Mesóclise põe o pronome no meio do verbo e ocorre nos futuros do presente e do pretérito. Exemplo: Entregar-lhe-ei o acesso.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: Entregarei-lhe o acesso; certo: Entregar-lhe-ei o acesso."
+      }
+    ],
+    "atencao": "Com palavra atrativa, a próclise prevalece mesmo no futuro: Não lhe entregarei o acesso.",
+    "fonte": "Fundação Alexandre de Gusmão, Manual de Revisão, verbete Colocação pronominal — https://funag.gov.br/manual/index.php?title=Coloca%C3%A7%C3%A3o_pronominal",
+    "tags": [
+      "colocacao-pronominal",
+      "mesoclise"
+    ]
+  },
+  {
+    "id": "card-pt-n1-034",
+    "materia": "Português",
+    "assunto": "Colocação pronominal",
+    "nivel": 1,
+    "conceito": "Pronome em locução verbal",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Locução verbal junta um verbo auxiliar ao principal; com infinitivo, o pronome sempre pode vir depois do principal. Exemplo: Posso preparar-me para a reunião.",
+    "nao_confundir": [
+      {
+        "conceito": "Com negação",
+        "diferenca": "Com negação, também vale a ênclise ao infinitivo: Não posso preparar-me."
+      }
+    ],
+    "atencao": "Pronome não vem depois de particípio (preparado, feito): Tinha-se preparado; nunca Tinha preparado-se.",
+    "fonte": "Fundação Alexandre de Gusmão, Manual de Revisão, verbete Colocação pronominal — https://funag.gov.br/manual/index.php?title=Coloca%C3%A7%C3%A3o_pronominal",
+    "tags": [
+      "colocacao-pronominal"
+    ]
   }
 ]
