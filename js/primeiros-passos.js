@@ -15,12 +15,16 @@ const CHAVE_PERFIS = 'appEstudos_Perfis';
 const CHAVE_DICAS = 'appEstudos_DicasVistas';
 const CHAVE_META_AVISADA = 'appEstudos_MetaAvisadaEm';
 
+// O "alvo" é o concurso em estudo e vale para o app todo (Aprender, Revisar, Caderno, Questões).
+// Os valores são as trilhas do banco (coluna 'concursos' das questões).
 export const OPCOES_ALVO = [
-    { valor: 'tribunais', texto: 'Tribunais' },
-    { valor: 'bacen-tcu', texto: 'Bacen / TCU' },
-    { valor: 'legislativo', texto: 'Senado / Câmara' },
-    { valor: 'indefinido', texto: 'Ainda não sei' }
+    { valor: 'ti', texto: 'TI: tribunais, TCU e outros', detalhe: 'Banco geral de TI' },
+    { valor: 'bacen', texto: 'Banco Central (TI)' },
+    { valor: 'bnb', texto: 'BNB' }
 ];
+export const TRILHAS_VALIDAS = OPCOES_ALVO.map(o => o.valor);
+export const OPCOES_DIAS = [[1, 'Seg'], [2, 'Ter'], [3, 'Qua'], [4, 'Qui'], [5, 'Sex'], [6, 'Sáb'], [0, 'Dom']];
+export const OPCOES_HORAS = [1, 2, 3, 4];
 export const OPCOES_EXPERIENCIA = [
     { valor: 'comecando', texto: 'Estou começando', detalhe: 'Começo pelo nível Iniciante' },
     { valor: 'um-pouco', texto: 'Sei um pouco', detalhe: 'Iniciante primeiro, depois prova' },
@@ -60,10 +64,10 @@ export function carregarPerfil(uid) {
     return perfilAtivo;
 }
 
-export function salvarPerfil(uid, perfil) {
+export function salvarPerfil(uid, perfil, atualizadoEm = Date.now()) {
     if (!uid) return;
     const todos = lerJSON(CHAVE_PERFIS, {});
-    todos[uid] = { ...perfil, atualizadoEm: Date.now() };
+    todos[uid] = { ...perfil, atualizadoEm };
     gravarJSON(CHAVE_PERFIS, todos);
     perfilAtivo = todos[uid];
 }
@@ -204,9 +208,11 @@ export function abrirBoasVindas({ materias = [], perfilAtual = null, onConcluir 
     const escolhas = {
         alvo: perfilAtual?.alvo || null,
         experiencia: perfilAtual?.experiencia || null,
-        meta: perfilAtual?.meta || null
+        meta: perfilAtual?.meta || null,
+        dias: Array.isArray(perfilAtual?.dias) ? [...perfilAtual.dias] : [],
+        horas: perfilAtual?.horas || null
     };
-    const passos = ['alvo', 'experiencia', 'meta'];
+    const passos = ['alvo', 'experiencia', 'meta', 'dias', 'horas'];
     if (materias.length) passos.push('materia');
     let passo = 0;
 
@@ -223,7 +229,9 @@ export function abrirBoasVindas({ materias = [], perfilAtual = null, onConcluir 
         const perfil = {
             alvo: escolhas.alvo || 'indefinido',
             experiencia: escolhas.experiencia || 'comecando',
-            meta: escolhas.meta || 10
+            meta: escolhas.meta || 10,
+            dias: [...escolhas.dias].sort((x, y) => x - y),
+            horas: escolhas.horas || 0
         };
         onConcluir && onConcluir({ perfil, materia: materia || null });
     };
@@ -239,9 +247,9 @@ export function abrirBoasVindas({ materias = [], perfilAtual = null, onConcluir 
         const progresso = `<p class="bv-progresso">${passo + 1} de ${passos.length}</p>`;
         let corpo = '';
         if (atual === 'alvo') {
-            corpo = `<h3 id="bv-titulo" class="modal-titulo">Qual é o seu alvo?</h3>
-                <p class="modal-mensagem">Fica no seu perfil. Em breve, o app usa para priorizar o que cai na sua prova.</p>
-                <div class="bv-opcoes">${OPCOES_ALVO.map(o => opcao('alvo', o.valor, o.texto)).join('')}</div>`;
+            corpo = `<h3 id="bv-titulo" class="modal-titulo">Qual concurso você está estudando agora?</h3>
+                <p class="modal-mensagem">Um por vez. O app inteiro passa a mostrar só o que serve para ele. Dá para trocar depois.</p>
+                <div class="bv-opcoes">${OPCOES_ALVO.map(o => opcao('alvo', o.valor, o.texto, o.detalhe || '')).join('')}</div>`;
         } else if (atual === 'experiencia') {
             corpo = `<h3 id="bv-titulo" class="modal-titulo">Quanto você já sabe de TI?</h3>
                 <p class="modal-mensagem">Decide por qual nível de questão você começa.</p>
@@ -250,6 +258,17 @@ export function abrirBoasVindas({ materias = [], perfilAtual = null, onConcluir 
             corpo = `<h3 id="bv-titulo" class="modal-titulo">Quantas questões por dia?</h3>
                 <p class="modal-mensagem">Comece pequeno: constância vale mais que volume. Dá para mudar depois.</p>
                 <div class="bv-opcoes bv-opcoes-linha">${OPCOES_META.map(n => opcao('meta', n, `${n} questões`)).join('')}</div>`;
+        } else if (atual === 'dias') {
+            corpo = `<h3 id="bv-titulo" class="modal-titulo">Em quais dias da semana você estuda?</h3>
+                <p class="modal-mensagem">Marque os dias. O app monta o seu plano em cima deles.</p>
+                <div class="bv-opcoes bv-opcoes-linha bv-dias">${OPCOES_DIAS.map(([n, nome]) => {
+                    const m = escolhas.dias.includes(n);
+                    return `<button type="button" class="bv-opcao${m ? ' marcada' : ''}" data-dia="${n}" aria-pressed="${m}"><span class="bv-opcao-texto">${nome}</span></button>`;
+                }).join('')}</div>`;
+        } else if (atual === 'horas') {
+            corpo = `<h3 id="bv-titulo" class="modal-titulo">Quanto tempo você tem por dia de estudo?</h3>
+                <p class="modal-mensagem">Pode ser o tempo realista, não o ideal. O plano cabe nele.</p>
+                <div class="bv-opcoes bv-opcoes-linha">${OPCOES_HORAS.map(n => opcao('horas', n, n === 4 ? '4 h ou mais' : `${n} h`)).join('')}</div>`;
         } else {
             corpo = `<h3 id="bv-titulo" class="modal-titulo">Por onde começar?</h3>
                 <p class="modal-mensagem">Um assunto por vez: primeiro um exemplo resolvido, depois questões para você provar que aprendeu.</p>
@@ -260,7 +279,7 @@ export function abrirBoasVindas({ materias = [], perfilAtual = null, onConcluir 
                     </button>`).join('')}</div>`;
         }
         const ultimo = passo === passos.length - 1;
-        const podeAvancar = atual === 'materia' || escolhas[atual] !== null;
+        const podeAvancar = atual === 'materia' || (atual === 'dias' ? escolhas.dias.length > 0 : escolhas[atual] !== null);
         card.innerHTML = `${progresso}${corpo}
             <div class="modal-acoes bv-acoes">
                 <button type="button" class="btn-link bv-pular">${atual === 'materia' ? 'Agora não' : 'Pular'}</button>
@@ -275,7 +294,14 @@ export function abrirBoasVindas({ materias = [], perfilAtual = null, onConcluir 
         const op = e.target.closest('.bv-opcao[data-grupo]');
         if (op) {
             const v = op.dataset.valor;
-            escolhas[op.dataset.grupo] = op.dataset.grupo === 'meta' ? Number(v) : v;
+            escolhas[op.dataset.grupo] = ['meta', 'horas'].includes(op.dataset.grupo) ? Number(v) : v;
+            desenhar();
+            return;
+        }
+        const dia = e.target.closest('.bv-opcao[data-dia]');
+        if (dia) {
+            const n = Number(dia.dataset.dia);
+            escolhas.dias = escolhas.dias.includes(n) ? escolhas.dias.filter(x => x !== n) : [...escolhas.dias, n];
             desenhar();
             return;
         }

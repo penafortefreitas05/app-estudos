@@ -1956,3 +1956,37 @@ body.modo-aprender .sidebar { background-color: #11102e; border-right-color: #2a
 .ce-vazio { padding: 1rem; text-align: center; color: #94a3b8; }
 .ce-chip:focus-visible, .ce-btn:focus-visible, .ce-sair:focus-visible, .ce-mais:focus-visible { outline: 2px solid #93c5fd; outline-offset: 2px; }
 .ce-todas { margin-bottom: 0.8rem; border-color: #4f46e5; color: #c7d2fe; }
+/* Caderno de erros: abas e matérias em grade, tudo do mesmo tamanho */
+.ce-estados { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+.ce-estados .ce-chip { justify-content: center; text-align: center; border-radius: 10px; min-height: 2.6rem; display: inline-flex; align-items: center; }
+.ce-materias { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+.ce-mat { all: unset; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; min-height: 3.1rem; padding: 0.5rem 0.75rem; border: 1px solid #1e293b; border-radius: 10px; background: #0f172a; color: #cbd5e1; font-size: 0.84rem; font-weight: 600; line-height: 1.2; cursor: pointer; min-width: 0; }
+.ce-mat.todas { grid-column: 1 / -1; min-height: 2.6rem; }
+.ce-mat-nome { min-width: 0; overflow-wrap: anywhere; }
+.ce-mat-n { flex: none; min-width: 1.7rem; padding: 0.1rem 0.45rem; border-radius: 999px; background: #1e293b; color: #93c5fd; font-size: 0.8rem; text-align: center; }
+.ce-mat.ativo { background: #1d4ed8; border-color: #3b82f6; color: #fff; }
+.ce-mat.ativo .ce-mat-n { background: #1e40af; color: #dbeafe; }
+.ce-mat:focus-visible { outline: 2px solid #93c5fd; outline-offset: 2px; }
+.bv-opcoes.bv-dias { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
+.bv-opcoes.bv-dias .bv-opcao { min-width: 0; padding-left: 0.3rem; padding-right: 0.3rem; }
+/* Aprender: cartão "Meu plano" */
+.at-plano { padding: 0.9rem 1rem; margin-bottom: 1rem; border: 1px solid #312e81; border-radius: 14px; background: #1e1b4b; color: #e0e7ff; max-width: 34rem; }
+.at-plano-titulo { margin: 0 0 0.5rem; font-weight: 700; font-size: 1rem; color: #fff; }
+.at-plano-texto { margin: 0 0 0.6rem; font-size: 0.88rem; color: #c7d2fe; }
+.at-plano-bloco { margin-bottom: 0.5rem; }
+.at-plano-materia { margin: 0 0 0.25rem; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; color: #a5b4fc; }
+.at-plano-assunto { all: unset; box-sizing: border-box; display: block; width: 100%; padding: 0.55rem 0.7rem; margin-bottom: 0.3rem; border-radius: 9px; background: #312e81; font-size: 0.92rem; cursor: pointer; overflow-wrap: anywhere; }
+.at-plano-assunto.feito { opacity: 0.65; }
+.at-plano-q { margin: 0.5rem 0; font-size: 0.92rem; }
+.at-plano-q span { color: #a5b4fc; font-size: 0.8rem; }
+.at-plano-semana { margin: 0.4rem 0; font-size: 0.86rem; }
+.at-plano-semana summary { cursor: pointer; color: #c7d2fe; padding: 0.4rem 0; }
+.at-plano-dia { padding: 0.5rem 0.6rem; margin-top: 0.4rem; border-radius: 9px; background: #27246b; }
+.at-plano-dia.hoje { border: 1px solid #818cf8; }
+.at-plano-dia-nome { margin: 0 0 0.2rem; font-weight: 700; }
+.at-plano-dia-nome span { font-weight: 500; color: #a5b4fc; font-size: 0.8rem; margin-left: 0.3rem; }
+.at-plano-dia-linha { margin: 0 0 0.15rem; font-size: 0.82rem; color: #c7d2fe; overflow-wrap: anywhere; }
+.at-plano-btn, .at-plano-link { all: unset; box-sizing: border-box; cursor: pointer; }
+.at-plano-btn { display: inline-flex; align-items: center; min-height: 2.6rem; padding: 0.5rem 1rem; border-radius: 10px; background: #4f46e5; color: #fff; font-weight: 600; }
+.at-plano-link { display: inline-block; padding: 0.4rem 0; font-size: 0.82rem; color: #a5b4fc; text-decoration: underline; }
+.at-plano-btn:focus-visible, .at-plano-link:focus-visible, .at-plano-assunto:focus-visible { outline: 2px solid #c7d2fe; outline-offset: 2px; }
