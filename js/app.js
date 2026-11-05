@@ -22,6 +22,7 @@ import {
     marcarMateriaAtiva
 } from './ui.js';
 import { abrirAprender } from './aprender-tela.js';
+import { montarBackupAprendidos, mesclarBackupAprendidos } from './leitura.js';
 import { abrirFiltros } from './filtros-tela.js';
 // ==================== FIM ====================
 
@@ -168,6 +169,48 @@ btnExportar.title = "Baixa um arquivo com todo o seu histórico de estudo";
 // Ficam antes do "Sair", que é sempre o último item de "Minha conta"
 const antesDoSair = document.getElementById("btn-auth-acao");
 if (gavetaFerramentas) gavetaFerramentas.insertBefore(btnExportar, antesDoSair);
+
+// Backup das marcas "Aprendi" do Aprender (ficam só neste aparelho)
+const btnSalvarAprendidos = criarBotaoSidebar("📚 Salvar meu progresso do Aprender");
+btnSalvarAprendidos.title = "Baixa um arquivo com os assuntos que você marcou como aprendidos";
+const btnRestaurarAprendidos = criarBotaoSidebar("📥 Restaurar progresso do Aprender");
+btnRestaurarAprendidos.title = "Lê um arquivo salvo antes e junta com o que já está neste aparelho";
+if (gavetaFerramentas) {
+    gavetaFerramentas.insertBefore(btnSalvarAprendidos, antesDoSair);
+    gavetaFerramentas.insertBefore(btnRestaurarAprendidos, antesDoSair);
+}
+btnSalvarAprendidos.addEventListener("click", () => {
+    const backup = montarBackupAprendidos();
+    const n = Object.keys(backup.aprendidos).length;
+    if (!n) { showToast("Você ainda não marcou nenhum assunto como aprendido.", "info"); return; }
+    const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `focopro-aprender-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    showToast(`Progresso salvo: ${n} assunto(s).`, "sucesso");
+});
+btnRestaurarAprendidos.addEventListener("click", () => {
+    const entrada = document.createElement("input");
+    entrada.type = "file";
+    entrada.accept = "application/json,.json";
+    entrada.addEventListener("change", async () => {
+        const arquivo = entrada.files && entrada.files[0];
+        if (!arquivo) return;
+        try {
+            const r = mesclarBackupAprendidos(JSON.parse(await arquivo.text()));
+            if (!r.ok) { showToast(r.erro, "erro"); return; }
+            showToast(`Progresso restaurado: ${r.novos} novo(s), ${r.atualizados} atualizado(s).`, "sucesso");
+        } catch (e) {
+            showToast("Não consegui ler esse arquivo.", "erro");
+        }
+    });
+    entrada.click();
+});
 
 // Backup do banco de questões: só o admin vê (a RLS também barra os outros no servidor)
 const btnBackupBanco = criarBotaoSidebar("🗄️ Backup do banco de questões");
