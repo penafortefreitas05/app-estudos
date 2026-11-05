@@ -133,7 +133,7 @@ export const DICAS = {
     },
     'primeiro-erro': {
         titulo: 'Errou? Ela volta amanhã',
-        texto: 'As questões que você erra aparecem amanhã em “Revisar hoje”, e depois em 3, 7 e 21 dias. Leia a explicação abaixo da questão. Se ainda ficar dúvida, toque em “Entender meu erro com IA”.'
+        texto: 'As questões que você erra aparecem amanhã em “Revisar hoje”, e depois em 3, 7 e 21 dias. Leia a explicação abaixo da questão. Se ainda ficar dúvida, abra o “Caderno de erros” e toque em “Entender meu erro com IA”.'
     },
     'primeira-duvida': {
         titulo: 'Acertou na dúvida',

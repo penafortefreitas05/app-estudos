@@ -12,6 +12,7 @@
 //   AI_MODEL               (opcional; modelo principal)
 //   RATE_LIMIT_MAX         (opcional; padrão 15 chamadas)
 //   RATE_LIMIT_JANELA_MIN  (opcional; padrão 10 minutos)
+//   LIMITE_DIARIO          (opcional; padrão 10 explicações NOVAS por usuário por dia)
 // Variáveis já fornecidas automaticamente pelo Supabase (não precisa configurar):
 //   SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
 // ============================================================
@@ -33,6 +34,9 @@ const LIMITE = { pergunta: 4000, alternativas: 8, textoAlternativa: 1000, rotulo
 
 const RATE_LIMIT_MAX = Number(Deno.env.get("RATE_LIMIT_MAX") ?? "15");
 const RATE_LIMIT_JANELA_MIN = Number(Deno.env.get("RATE_LIMIT_JANELA_MIN") ?? "10");
+// Teto por dia (decidido com o Nathan em 05/11/2026). Só chamada nova ao Gemini conta; explicação
+// que já está no cache não gasta. O dia vira à meia-noite de Brasília (UTC-3, sem horário de verão).
+const LIMITE_DIARIO = Number(Deno.env.get("LIMITE_DIARIO") ?? "10");
 
 const MSG = {
   invalida: "Não foi possível processar esta questão.",
@@ -43,6 +47,7 @@ const MSG = {
   metodo: "Método não permitido.",
   semLogin: "Faça login para usar a explicação com IA.",
   limiteUsuario: `Você atingiu o limite de perguntas à IA por agora. Tente novamente em até ${RATE_LIMIT_JANELA_MIN} minuto(s).`,
+  limiteDiario: `Você usou as ${LIMITE_DIARIO} explicações novas com IA de hoje. Elas voltam amanhã. As que já foram geradas continuam abrindo.`,
 };
 
 // ---------- CORS: só origens da allowlist (lida a cada requisição) ----------
@@ -345,8 +350,31 @@ async function salvarNoCache(admin: ReturnType<typeof criarClienteAdmin>, entrad
   if (error) console.error("Erro ao salvar explicacoes_ia_cache:", error.message);
 }
 
-// Conta quantas chamadas REAIS à IA esse usuário já fez na janela de tempo (acerto de cache não conta aqui).
-async function verificarERegistrarUso(admin: ReturnType<typeof criarClienteAdmin>, userId: string): Promise<boolean> {
+// Início do dia de hoje em Brasília, como instante UTC
+function inicioDoDiaBrasilia(): string {
+  const agora = new Date(Date.now() - 3 * 3_600_000); // relógio de Brasília como se fosse UTC
+  const meiaNoite = Date.UTC(agora.getUTCFullYear(), agora.getUTCMonth(), agora.getUTCDate());
+  return new Date(meiaNoite + 3 * 3_600_000).toISOString();
+}
+
+// Quantas chamadas REAIS à IA o usuário já fez hoje (acerto de cache não conta). null se falhou.
+async function contarUsoHoje(admin: ReturnType<typeof criarClienteAdmin>, userId: string): Promise<number | null> {
+  const { count, error } = await admin
+    .from("uso_ia_edge")
+    .select("id", { count: "exact", head: true })
+    .eq("user_id", userId)
+    .gte("criado_em", inicioDoDiaBrasilia());
+  if (error) {
+    console.error("Erro ao contar uso diário em uso_ia_edge:", error.message);
+    return null;
+  }
+  return count ?? 0;
+}
+
+type Veredito = { ok: true; usoHoje: number | null; registroId: number | string | null } | { ok: false; motivo: "janela" | "dia" };
+
+// Confere o limite da janela curta e o teto do dia e, se passar, registra a chamada.
+async function verificarERegistrarUso(admin: ReturnType<typeof criarClienteAdmin>, userId: string): Promise<Veredito> {
   const desde = new Date(Date.now() - RATE_LIMIT_JANELA_MIN * 60_000).toISOString();
 
   const { count, error: erroContagem } = await admin
@@ -357,15 +385,17 @@ async function verificarERegistrarUso(admin: ReturnType<typeof criarClienteAdmin
 
   if (erroContagem) {
     console.error("Erro ao consultar uso_ia_edge:", erroContagem.message);
-    return true; // falha de infraestrutura não deve travar o estudante
+    return { ok: true, usoHoje: null, registroId: null }; // falha de infraestrutura não deve travar o estudante
   }
+  if ((count ?? 0) >= RATE_LIMIT_MAX) return { ok: false, motivo: "janela" };
 
-  if ((count ?? 0) >= RATE_LIMIT_MAX) return false;
+  const usoAntes = await contarUsoHoje(admin, userId);
+  if (usoAntes !== null && usoAntes >= LIMITE_DIARIO) return { ok: false, motivo: "dia" };
 
-  const { error: erroInsert } = await admin.from("uso_ia_edge").insert({ user_id: userId });
+  const { data: registro, error: erroInsert } = await admin.from("uso_ia_edge").insert({ user_id: userId }).select("id").single();
   if (erroInsert) console.error("Erro ao registrar uso_ia_edge:", erroInsert.message);
 
-  return true;
+  return { ok: true, usoHoje: usoAntes === null ? null : usoAntes + 1, registroId: registro?.id ?? null };
 }
 
 // ---------- Handler ----------
@@ -407,12 +437,16 @@ async function handler(req: Request): Promise<Response> {
   // 1. Cache primeiro: se já existe, devolve na hora e não consome o limite de uso nem chama o Gemini.
   const explicacaoCache = await buscarNoCache(admin, entrada);
   if (explicacaoCache) {
-    return resposta({ ok: true, explicacao: explicacaoCache, deCache: true }, 200, cors);
+    const usoHoje = await contarUsoHoje(admin, usuario.id);
+    return resposta({ ok: true, explicacao: explicacaoCache, deCache: true, usoHoje, limiteDia: LIMITE_DIARIO }, 200, cors);
   }
 
   // 2. Sem cache: aí sim conta no limite de uso do usuário.
-  const dentroDoLimite = await verificarERegistrarUso(admin, usuario.id);
-  if (!dentroDoLimite) {
+  const veredito = await verificarERegistrarUso(admin, usuario.id);
+  if (!veredito.ok) {
+    if (veredito.motivo === "dia") {
+      return resposta({ ok: false, code: "daily_limit", message: MSG.limiteDiario, usoHoje: LIMITE_DIARIO, limiteDia: LIMITE_DIARIO }, 429, cors);
+    }
     return resposta({ ok: false, code: "rate_limited", message: MSG.limiteUsuario }, 429, cors);
   }
 
@@ -425,6 +459,8 @@ async function handler(req: Request): Promise<Response> {
   const resultado = await chamarModelo(apiKey, entrada);
 
   if ("erro" in resultado) {
+    // Falha da IA não gasta o teto do aluno: devolve a chamada registrada
+    if (veredito.registroId !== null) await admin.from("uso_ia_edge").delete().eq("id", veredito.registroId);
     if (resultado.erro === "rate_limited") {
       return resposta({ ok: false, code: "rate_limited", message: MSG.limite }, 429, cors);
     }
@@ -434,7 +470,7 @@ async function handler(req: Request): Promise<Response> {
   // 3. Guarda no cache para a próxima pessoa que errar da mesma forma.
   await salvarNoCache(admin, entrada, resultado.texto);
 
-  return resposta({ ok: true, explicacao: resultado.texto, deCache: false }, 200, cors);
+  return resposta({ ok: true, explicacao: resultado.texto, deCache: false, usoHoje: veredito.usoHoje, limiteDia: LIMITE_DIARIO }, 200, cors);
 }
 
 Deno.serve(handler);

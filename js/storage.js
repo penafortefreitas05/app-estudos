@@ -11,11 +11,14 @@ const CHAVE_DIAS_ESTUDO = 'appEstudos_DiasEstudo';
 // Resumo do histórico da nuvem já lido (uma entrada por questão) + até onde já foi lido.
 // Ao abrir, o app só baixa as respostas novas desde então (antes baixava a vida inteira).
 const CHAVE_CACHE_NUVEM = 'appEstudos_ResumoNuvem';
+const VERSAO_CACHE_NUVEM = 2;
 
 function lerCacheNuvem() {
     try {
         const c = JSON.parse(localStorage.getItem(CHAVE_CACHE_NUVEM) || 'null');
-        return (c && typeof c === 'object' && c.mapa && typeof c.mapa === 'object') ? c : null;
+        // v2: o resumo guarda a letra errada de cada questão (Caderno de erros). Resumo antigo
+        // (sem versão) é descartado uma vez: a próxima abertura online baixa tudo de novo.
+        return (c && typeof c === 'object' && c.v === VERSAO_CACHE_NUVEM && c.mapa && typeof c.mapa === 'object') ? c : null;
     } catch (e) {
         return null;
     }
@@ -147,7 +150,7 @@ export async function carregarHistorico({ semNuvem = false } = {}) {
             const historicoNuvem = consolidarRegistrosNuvem(linhas, base);
             const ultima = linhas.length ? linhas[linhas.length - 1].created_at : null;
             const cursor = ultima || (modo === 'incremental' ? cacheAnterior.cursor : null);
-            if (cursor) gravarCacheNuvem({ userId, cursor, total, mapa: historicoNuvem });
+            if (cursor) gravarCacheNuvem({ v: VERSAO_CACHE_NUVEM, userId, cursor, total, mapa: historicoNuvem });
             else apagarCacheNuvem(); // nuvem vazia
 
             Object.entries(historicoNuvem).forEach(([qId, dadosNuvem]) => {

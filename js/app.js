@@ -24,6 +24,7 @@ import {
 import { abrirAprender } from './aprender-tela.js';
 import { montarBackupAprendidos, mesclarBackupAprendidos } from './leitura.js';
 import { abrirFiltros } from './filtros-tela.js';
+import { abrirCaderno } from './caderno-erros.js';
 // ==================== FIM ====================
 
 // ---------- 1.2 Supabase (banco e cliente) ----------
@@ -44,7 +45,8 @@ import {
     listarReportesAbertos,
     fecharReporte,
     exportarBackupDoBanco,
-    carregarRespostasRecentes
+    carregarRespostasRecentes,
+    pedirExplicacaoIA
 } from './supabase.js';
 
 // ---------- 1.3 Autenticação ----------
@@ -65,7 +67,7 @@ import {
 // ---------- 1.45 Revisão espaçada ----------
 import { resumirPorDia, renderizarMeuDia } from './meu-dia.js';
 import { renderizarDetalhesDaConta } from './conta.js';
-import { aplicarResposta, novoRegistro, venceHoje, formatarDiaCurto, somarDias } from './revisao.js';
+import { aplicarResposta, novoRegistro, venceHoje, formatarDiaCurto, somarDias, atualizarFilaDoDia, filaDeHoje, naFila, TETO_DIARIO } from './revisao.js';
 
 // ---------- 1.5 Simulado (cronômetro e finalização) ----------
 import {
@@ -416,7 +418,7 @@ function ordenarParaEstudo(lista) {
     const misturar = !(selectMateria && selectMateria.value) && !tagSelecionada;
     const grupo = (q) => {
         const h = historico[String(q.id)];
-        if (venceHoje(h, hoje)) return 0;
+        if (venceHoje(h, hoje) && naFila(q.id)) return 0;
         if (!h || !h.tentativas) return 1;
         return 2;
     };
@@ -596,7 +598,7 @@ function revisarHojeDaMateria(materia) {
     pararCronometro(displayCronometro);
     const hoje = diaLocal();
     const paraHoje = questoes
-        .filter(q => (q.materia || "Geral") === materia && venceHoje(historico[String(q.id)], hoje))
+        .filter(q => (q.materia || "Geral") === materia && naFila(q.id) && venceHoje(historico[String(q.id)], hoje))
         .sort((a, b) => historico[String(a.id)].revisaoEm.localeCompare(historico[String(b.id)].revisaoEm));
     if (paraHoje.length === 0) {
         showToast(`Nada para revisar hoje em ${materia}.`, "info", 4000);
@@ -1194,18 +1196,24 @@ if (btnModoRevisao) {
         simulado = null;
         pararCronometro(displayCronometro);
 
-        // Só o que vence hoje (ou já venceu), dos mais atrasados para os mais recentes
+        // A fila do dia: até o teto, com uma amostra de cada assunto (ver revisao.js)
         const hoje = diaLocal();
-        const paraHoje = questoes
-            .filter(q => venceHoje(historico[String(q.id)], hoje))
-            .sort((a, b) => historico[String(a.id)].revisaoEm.localeCompare(historico[String(b.id)].revisaoEm));
+        atualizarFilaDoDia(questoes, historico);
+        const fila = filaDeHoje();
+        const paraHoje = fila.restantes;
 
         if (paraHoje.length === 0) {
-            // Mostra quando é a próxima, para não parecer que a revisão sumiu
-            const futuras = Object.values(historico).map(h => h && h.revisaoEm).filter(Boolean).sort();
-            const msg = futuras.length
-                ? `Nada para revisar hoje. Próxima revisão em ${formatarDiaCurto(futuras[0])} (${futuras.filter(d => d === futuras[0]).length} questão(ões)).`
-                : "Nada para revisar. Questões que você errar ou acertar na dúvida aparecem aqui no dia certo.";
+            const fora = Math.max(0, (fila.venciam || 0) - fila.total);
+            let msg;
+            if (fila.total > 0) {
+                msg = `Revisão de hoje concluída: ${fila.feitas} questão(ões).${fora ? ` Outras ${fora} esperam no Caderno de erros.` : ''}`;
+            } else {
+                // Mostra quando é a próxima, para não parecer que a revisão sumiu
+                const futuras = Object.values(historico).map(h => h && h.revisaoEm).filter(d => d && d > hoje).sort();
+                msg = futuras.length
+                    ? `Nada para revisar hoje. Próxima revisão em ${formatarDiaCurto(futuras[0])} (${futuras.filter(d => d === futuras[0]).length} questão(ões)).`
+                    : "Nada para revisar. Questões que você errar ou acertar na dúvida aparecem aqui no dia certo.";
+            }
             if (foco) sairFoco({ silencioso: true });
             renderizarQuestoes(container, [], historico, msg);
             showToast(msg, "info", 4000);
@@ -1215,8 +1223,8 @@ if (btnModoRevisao) {
         // No Modo Foco, a revisão do dia vira a fila do foco (uma por vez)
         if (foco) entrarFoco(paraHoje, { silencioso: true });
         else renderizarQuestoes(container, paraHoje, historico, "", { restaurarRespostas: false });
-        const atrasadas = paraHoje.filter(q => historico[String(q.id)].revisaoEm < hoje).length;
-        showToast(`${paraHoje.length} para revisar hoje${atrasadas ? ` (${atrasadas} atrasada${atrasadas > 1 ? 's' : ''})` : ''}. Responda sem olhar o gabarito.`, "info");
+        const fora = Math.max(0, (fila.venciam || 0) - fila.total);
+        showToast(`${paraHoje.length} para revisar hoje${fora ? ` (outras ${fora} no Caderno de erros)` : ''}. Responda sem olhar o gabarito.`, "info");
     });
 }
 
@@ -2372,10 +2380,8 @@ if (gavetaDesempenho) {
 const CHAVE_SEMANA_DISPENSADA = "appEstudos_ResumoSemanaDispensado";
 
 function questoesParaRevisarHoje() {
-    const hoje = diaLocal();
-    return questoes
-        .filter(q => venceHoje(historico[String(q.id)], hoje))
-        .sort((a, b) => historico[String(a.id)].revisaoEm.localeCompare(historico[String(b.id)].revisaoEm));
+    atualizarFilaDoDia(questoes, historico);
+    return filaDeHoje().restantes;
 }
 
 // Semana passada (segunda a domingo), com o que o histórico guarda: dias estudados (exato) e
@@ -2671,6 +2677,24 @@ if (btnAbrirBarra) btnAbrirBarra.addEventListener("click", () => aplicarBarraRec
         if (alvo) {
             alvo.click();
             fecharGaveta();
+            return;
+        }
+        if (item.dataset.acao === "caderno") {
+            fecharGaveta();
+            if (!usuarioAtual) { mostrarEntradaVisitante(); return; }
+            if (!questoes.length) { showToast("O caderno abre quando as questões carregarem. Isso precisa de internet.", "info", 5000); return; }
+            abrirCaderno({
+                questoes, historico, naFila,
+                pedirIA: pedirExplicacaoIA,
+                aoRefazer: (q) => {
+                    simulado = null;
+                    pararCronometro(displayCronometro);
+                    if (foco) entrarFoco([q], { silencioso: true });
+                    else renderizarQuestoes(container, [q], historico, "", { restaurarRespostas: false });
+                    const principal = document.querySelector(".main-content");
+                    if (principal) principal.scrollTo({ top: 0, behavior: "smooth" });
+                }
+            });
             return;
         }
         if (item.dataset.acao === "questoes") {

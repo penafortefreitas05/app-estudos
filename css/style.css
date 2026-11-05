@@ -1925,3 +1925,33 @@ body.modo-aprender .sidebar { background-color: #11102e; border-right-color: #2a
 .leitura-acoes { flex-wrap: wrap; }
 .leitura-btn.praticar { flex: 1 1 100%; background: transparent; border-color: #4338ca; color: #c7d2fe; }
 .leitura-btn.praticar:hover { background: #1e1b4b; }
+
+/* ---------- Caderno de erros (js/caderno-erros.js) ---------- */
+.ce-tela { position: fixed; inset: 0; z-index: 950; height: 100dvh; display: flex; flex-direction: column; background: #0b1220; color: #e2e8f0; overflow-x: hidden; }
+.ce-topo, .ce-corpo { width: 100%; max-width: 46rem; margin: 0 auto; box-sizing: border-box; }
+.ce-topo { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem; padding: max(1rem, env(safe-area-inset-top)) 1rem 0.5rem; }
+.ce-titulo { margin: 0; font-size: 1.25rem; color: #f8fafc; }
+.ce-sub { margin: 0.2rem 0 0; font-size: 0.82rem; color: #93c5fd; }
+.ce-sair { all: unset; box-sizing: border-box; flex: none; width: 2.6rem; height: 2.6rem; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; color: #94a3b8; font-size: 1.1rem; cursor: pointer; }
+.ce-sair:hover { background: #1e293b; }
+.ce-corpo { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 0.4rem 1rem max(1.2rem, env(safe-area-inset-bottom)); }
+.ce-estados, .ce-materias { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 0.7rem; }
+.ce-chip { all: unset; box-sizing: border-box; padding: 0.5rem 0.85rem; border: 1px solid #1e293b; border-radius: 999px; background: #0f172a; font-size: 0.88rem; font-weight: 600; color: #cbd5e1; cursor: pointer; line-height: 1.25; }
+.ce-chip span { color: #64748b; font-weight: 500; margin-left: 0.2rem; }
+.ce-chip.ativo { background: #1d4ed8; border-color: #3b82f6; color: #fff; }
+.ce-chip.ativo span { color: #bfdbfe; }
+.ce-busca { box-sizing: border-box; width: 100%; min-height: 2.7rem; padding: 0.5rem 0.8rem; margin-bottom: 0.5rem; border: 1px solid #1e293b; border-radius: 10px; background: #0f172a; color: #f8fafc; font-size: 1rem; }
+.ce-uso { margin: 0 0 0.7rem; font-size: 0.78rem; color: #94a3b8; }
+.ce-lista { display: flex; flex-direction: column; gap: 0.7rem; }
+.ce-item { padding: 0.85rem; border: 1px solid #1e293b; border-radius: 12px; background: #0f172a; min-width: 0; overflow-wrap: anywhere; }
+.ce-meta { margin: 0 0 0.3rem; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; color: #93c5fd; }
+.ce-pergunta { margin: 0 0 0.4rem; font-size: 0.95rem; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.ce-info { margin: 0 0 0.6rem; font-size: 0.78rem; color: #94a3b8; }
+.ce-acoes { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.ce-btn { all: unset; box-sizing: border-box; padding: 0.55rem 0.9rem; min-height: 2.6rem; display: inline-flex; align-items: center; border: 1px solid #334155; border-radius: 10px; font-size: 0.88rem; font-weight: 600; color: #e2e8f0; cursor: pointer; }
+.ce-btn.ia { border-color: #4f46e5; color: #c7d2fe; }
+.ce-btn:disabled { opacity: 0.6; cursor: wait; }
+.ce-ia { margin-top: 0.7rem; padding: 0.7rem 0.8rem; border-left: 3px solid #6366f1; background: #111a2e; border-radius: 0 8px 8px 0; font-size: 0.9rem; line-height: 1.45; white-space: pre-wrap; }
+.ce-mais { all: unset; box-sizing: border-box; width: 100%; padding: 0.7rem; text-align: center; color: #93c5fd; border: 1px dashed #334155; border-radius: 10px; cursor: pointer; }
+.ce-vazio { padding: 1rem; text-align: center; color: #94a3b8; }
+.ce-chip:focus-visible, .ce-btn:focus-visible, .ce-sair:focus-visible, .ce-mais:focus-visible { outline: 2px solid #93c5fd; outline-offset: 2px; }

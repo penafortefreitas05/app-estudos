@@ -4,7 +4,7 @@
 
 import { carregarDiasDeEstudo, diaLocal } from './storage.js';
 import { atualizarNivelConta } from './conta.js';
-import { venceHoje, somarDias } from './revisao.js';
+import { venceHoje, somarDias, atualizarFilaDoDia, naFila, filaDeHoje, TETO_DIARIO } from './revisao.js';
 import { NIVEIS, ORDEM_MACROS } from './api.js';
 import { atualizarMetaNaTela } from './primeiros-passos.js';
 
@@ -278,7 +278,8 @@ export function classificarStatus(qId, historico) {
     const h = historico[String(qId)] || historico[qId];
     if (!h || !h.tentativas) return { texto: "Não Respondida", classe: "badge-neutro" };
 
-    if (venceHoje(h)) return { texto: "Revisar hoje 🔁", classe: "badge-alerta" };
+    if (venceHoje(h) && naFila(qId)) return { texto: "Revisar hoje 🔁", classe: "badge-alerta" };
+    if (venceHoje(h)) return { texto: "Na revisão 🔁", classe: "badge-alerta" };
     // Errou: diz o que vai acontecer, sem julgar (antes: "Caderno de Erros ❌" em vermelho)
     if (h.status === 'erro') return { texto: h.revisaoEm === somarDias(diaLocal(), 1) ? "Volta amanhã 🔁" : "Na revisão 🔁", classe: "badge-alerta" };
     if (h.status === 'dominada') return { texto: "Dominada 🎯", classe: "badge-sucesso" };
@@ -291,6 +292,7 @@ export function classificarStatus(qId, historico) {
 export function atualizarPlacar(historico, questoes) {
     if (!historico) historico = {};
     if (!questoes) questoes = [];
+    atualizarFilaDoDia(questoes, historico);
 
     let totalAcertos = 0;
     let totalErros = 0;
@@ -331,7 +333,7 @@ export function atualizarPlacar(historico, questoes) {
         }
 
         // Contador do botão "Revisar hoje": questões cuja revisão vence hoje (ou já venceu)
-        if (qAssociada && venceHoje(h)) {
+        if (qAssociada && venceHoje(h) && naFila(idKey)) {
             qtdCadernoErros++;
         }
     });
@@ -348,7 +350,12 @@ export function atualizarPlacar(historico, questoes) {
     const elMiniErros = document.getElementById("mini-erros");
     if (elMiniAcertos) elMiniAcertos.textContent = totalAcertos;
     if (elMiniErros) elMiniErros.textContent = totalErros;
-    if (elContadorRevisao) elContadorRevisao.innerText = qtdCadernoErros;
+    if (elContadorRevisao) {
+        elContadorRevisao.innerText = qtdCadernoErros;
+        const f = filaDeHoje();
+        const fora = Math.max(0, (f.venciam || 0) - f.total);
+        elContadorRevisao.parentElement.title = `Fila de hoje: no máximo ${TETO_DIARIO} questões${fora ? `. Outras ${fora} esperam no Caderno de erros` : ''}`;
+    }
 
     // --- Os 3 números: sequência, cobertura e matérias a reforçar ---
     const sequencia = calcularSequencia(carregarDiasDeEstudo());
@@ -530,7 +537,7 @@ function renderizarDesempenhoMaterias(materiasMap, questoes = [], historico = {}
         const mat = q.materia || "Geral";
         if (!extra[mat]) extra[mat] = { revisarHoje: 0, niveis: {} };
         const h = historico[String(q.id)];
-        if (venceHoje(h)) extra[mat].revisarHoje++;
+        if (venceHoje(h) && naFila(q.id)) extra[mat].revisarHoje++;
         const n = Number(q.nivel) || 3;
         if (!extra[mat].niveis[n]) extra[mat].niveis[n] = { total: 0, feitas: 0 };
         extra[mat].niveis[n].total++;
