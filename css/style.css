@@ -1853,3 +1853,44 @@ body.modo-aprender .sidebar { background-color: #11102e; border-right-color: #2a
 }
 .at-lista > li { display: flex; }
 .at-lista > li > .at-assunto { height: 100%; align-content: start; }
+
+/* ==================== TELA DE FILTROS (05/11/2026) ==================== */
+.ft-tela { position: fixed; inset: 0; z-index: 950; display: flex; flex-direction: column; background: #0b1220; color: #e2e8f0; opacity: 0; transition: opacity 0.18s ease; }
+.ft-tela.visivel { opacity: 1; }
+.ft-topo, .ft-corpo, .ft-rodape { width: 100%; max-width: 64rem; margin: 0 auto; box-sizing: border-box; }
+.ft-topo { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem; padding: max(1rem, env(safe-area-inset-top)) 1rem 0.5rem; }
+.ft-titulo { margin: 0; font-size: 1.25rem; color: #f8fafc; }
+.ft-sub { margin: 0.2rem 0 0; font-size: 0.82rem; color: #93c5fd; font-variant-numeric: tabular-nums; }
+.ft-sair { all: unset; box-sizing: border-box; flex: none; width: 2.6rem; height: 2.6rem; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; color: #94a3b8; font-size: 1.1rem; cursor: pointer; }
+.ft-sair:hover { background: #1e293b; }
+.ft-corpo { flex: 1; min-height: 0; overflow-y: auto; padding: 0.4rem 1rem 1rem; }
+.ft-sec { margin-bottom: 1.1rem; }
+.ft-sec:empty { display: none; }
+.ft-sec-titulo { margin: 0 0 0.5rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #94a3b8; }
+.ft-dica { text-transform: none; letter-spacing: 0; font-weight: 500; color: #64748b; margin-left: 0.3rem; }
+.ft-chips { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.ft-chip { all: unset; box-sizing: border-box; padding: 0.5rem 0.85rem; border: 1px solid #1e293b; border-radius: 999px; background: #0f172a; font-size: 0.88rem; font-weight: 600; color: #cbd5e1; cursor: pointer; line-height: 1.25; }
+.ft-chip:hover { border-color: #334155; }
+.ft-chip.ativo { background: #1d4ed8; border-color: #3b82f6; color: #fff; }
+.ft-busca { box-sizing: border-box; width: 100%; min-height: 2.7rem; padding: 0.5rem 0.8rem; margin-bottom: 0.5rem; border: 1px solid #1e293b; border-radius: 10px; background: #0f172a; color: #f8fafc; font-size: 1rem; }
+.ft-busca:focus { outline: 2px solid #3b82f6; outline-offset: 1px; }
+.ft-lista-assunto { display: flex; flex-direction: column; gap: 0.15rem; }
+.ft-assunto, .ft-mais { all: unset; box-sizing: border-box; display: block; width: 100%; padding: 0.65rem 0.7rem; border-radius: 8px; font-size: 0.92rem; line-height: 1.3; color: #e2e8f0; cursor: pointer; }
+.ft-assunto:hover, .ft-mais:hover { background: #172036; }
+.ft-assunto.ativo { background: #1e3a5f; color: #fff; font-weight: 600; }
+.ft-assunto.todos { color: #93c5fd; }
+.ft-grupo { margin: 0.8rem 0.3rem 0.2rem; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #64748b; }
+.ft-mais { margin-top: 0.5rem; text-align: center; color: #93c5fd; border: 1px dashed #334155; }
+.ft-vazio { padding: 0.8rem; text-align: center; color: #94a3b8; font-size: 0.9rem; }
+.ft-chip:focus-visible, .ft-assunto:focus-visible, .ft-sair:focus-visible, .ft-ver:focus-visible, .ft-limpar:focus-visible, .ft-mais:focus-visible { outline: 2px solid #93c5fd; outline-offset: 2px; }
+.ft-rodape { display: flex; gap: 0.7rem; padding: 0.7rem 1rem max(0.8rem, env(safe-area-inset-bottom)); border-top: 1px solid #1e293b; background: #0b1220; }
+.ft-limpar { all: unset; box-sizing: border-box; flex: none; padding: 0 1.1rem; min-height: 3rem; display: inline-flex; align-items: center; border: 1px solid #334155; border-radius: 12px; font-weight: 600; color: #cbd5e1; cursor: pointer; }
+.ft-limpar:hover { background: #172036; }
+.ft-ver { all: unset; box-sizing: border-box; flex: 1; min-height: 3rem; display: inline-flex; align-items: center; justify-content: center; border-radius: 12px; background: #2563eb; color: #fff; font-weight: 700; cursor: pointer; }
+.ft-ver:hover { background: #1d4ed8; }
+@media (min-width: 900px) {
+    .ft-grade { display: grid; grid-template-columns: minmax(18rem, 24rem) 1fr; gap: 2rem; align-items: start; }
+    .ft-sec-assunto { position: sticky; top: 0; }
+    .ft-lista-assunto { max-height: calc(100vh - 17rem); overflow-y: auto; }
+}
+@media (prefers-reduced-motion: reduce) { .ft-tela { transition: none; } }
