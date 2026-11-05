@@ -105,7 +105,7 @@ function consolidarRegistrosNuvem(registrosNuvem, mapaNuvem = {}) {
 }
 
 // Lê o histórico (Une LocalStorage + Tabela historico_respostas do Supabase)
-export async function carregarHistorico() {
+export async function carregarHistorico({ semNuvem = false } = {}) {
     let historicoLocal = {};
 
     // 1. Carrega do LocalStorage imediatamente
@@ -129,14 +129,15 @@ export async function carregarHistorico() {
 
     // 2. Se o usuário estiver logado, busca na nuvem só o que é novo e mescla
     // (favoritos/anotações saem na mesma hora, em paralelo — ver etapa 3)
-    const promessaFavoritos = carregarFavoritosEAnotacoes().catch(err => {
+    // semNuvem: abriu sem internet. Nenhuma chamada ao Supabase (ela ficaria esperando ~30 s).
+    const promessaFavoritos = semNuvem ? Promise.resolve(null) : carregarFavoritosEAnotacoes().catch(err => {
         console.warn("Favoritos/anotações: usando só o que está neste aparelho:", err.message);
         return null;
     });
 
     try {
         const cacheAnterior = lerCacheNuvem();
-        const resultado = await carregarHistoricoIncremental(cacheAnterior);
+        const resultado = semNuvem ? null : await carregarHistoricoIncremental(cacheAnterior);
         if (resultado) {
             const { modo, linhas, total, userId } = resultado;
             // Cada resposta na nuvem tem data: recupera os dias de estudo, de qualquer aparelho
@@ -199,7 +200,7 @@ export async function carregarHistorico() {
     }
 
     // 4. Reenvia favoritos/anotações que ficaram pendentes (sem internet no momento, etc.)
-    enviarFilaFavoritosPendente();
+    if (!semNuvem) enviarFilaFavoritosPendente();
 
     return historicoLocal;
 }
