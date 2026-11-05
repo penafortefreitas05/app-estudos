@@ -64,6 +64,29 @@ function gravarAprendidos(v) {
     try { localStorage.setItem(CHAVE_APRENDIDOS, JSON.stringify(v)); } catch (e) { /* segue sem guardar */ }
 }
 
+// Backup das marcas "Aprendi": arquivo { tipo, versao, exportadoEm, aprendidos }.
+export function montarBackupAprendidos(hoje = hojeLocal()) {
+    return { tipo: 'focopro-aprendidos', versao: 1, exportadoEm: hoje, aprendidos: lerAprendidos() };
+}
+
+// Junta o arquivo com o que já existe no aparelho: fica a marca de data mais recente de cada assunto.
+// Devolve { ok, novos, atualizados, ignorados } ou { ok:false, erro }.
+export function mesclarBackupAprendidos(arquivo) {
+    const origem = arquivo && arquivo.tipo === 'focopro-aprendidos' ? arquivo.aprendidos : null;
+    if (!origem || typeof origem !== 'object' || Array.isArray(origem)) return { ok: false, erro: 'Esse arquivo não é um backup do Aprender.' };
+    const atual = lerAprendidos();
+    let novos = 0, atualizados = 0, ignorados = 0;
+    for (const [k, v] of Object.entries(origem)) {
+        const valido = k.includes('|') && v && /^\d{4}-\d{2}-\d{2}$/.test(String(v.data));
+        if (!valido) { ignorados++; continue; }
+        const nivel = Math.max(0, Math.min(Number(v.nivel) || 0, 4));
+        if (!atual[k]) { atual[k] = { data: v.data, nivel }; novos++; }
+        else if (v.data > atual[k].data || (v.data === atual[k].data && nivel > (Number(atual[k].nivel) || 0))) { atual[k] = { data: v.data, nivel }; atualizados++; }
+    }
+    gravarAprendidos(atual);
+    return { ok: true, novos, atualizados, ignorados };
+}
+
 export function marcarAprendi(materia, assunto, hoje = hojeLocal()) {
     const v = lerAprendidos();
     const k = chaveAssunto(materia, assunto);
