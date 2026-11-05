@@ -46,7 +46,9 @@ import {
     fecharReporte,
     exportarBackupDoBanco,
     carregarRespostasRecentes,
-    pedirExplicacaoIA
+    pedirExplicacaoIA,
+    lerFilaDoDiaNuvem,
+    gravarFilaDoDiaNuvem
 } from './supabase.js';
 
 // ---------- 1.3 Autenticação ----------
@@ -67,7 +69,7 @@ import {
 // ---------- 1.45 Revisão espaçada ----------
 import { resumirPorDia, renderizarMeuDia } from './meu-dia.js';
 import { renderizarDetalhesDaConta } from './conta.js';
-import { aplicarResposta, novoRegistro, venceHoje, formatarDiaCurto, somarDias, atualizarFilaDoDia, filaDeHoje, naFila, TETO_DIARIO } from './revisao.js';
+import { aplicarResposta, novoRegistro, venceHoje, formatarDiaCurto, somarDias, atualizarFilaDoDia, filaDeHoje, naFila, TETO_DIARIO, filaGuardadaHoje, guardarFilaDoDia } from './revisao.js';
 
 // ---------- 1.5 Simulado (cronômetro e finalização) ----------
 import {
@@ -1892,6 +1894,24 @@ function buscarQuestoes() {
 }
 
 // questoesChegando: a busca já iniciada por buscarQuestoes() (opcional)
+// Uma fila por conta: a nuvem manda. Se hoje ainda não tem fila lá, este aparelho monta e grava;
+// se dois aparelhos gravarem juntos, vale a primeira (e o outro relê).
+async function sincronizarFilaDoDia() {
+    try {
+        const hoje = diaLocal();
+        let nuvem = await lerFilaDoDiaNuvem(hoje);
+        if (!nuvem) {
+            atualizarFilaDoDia(questoes, historico);
+            const local = filaGuardadaHoje(hoje);
+            if (local && local.ids.length) {
+                await gravarFilaDoDiaNuvem(local);
+                nuvem = await lerFilaDoDiaNuvem(hoje);
+            }
+        }
+        if (nuvem) guardarFilaDoDia(nuvem);
+    } catch (e) { console.warn("[FocoPro] Fila do dia sem nuvem:", e); }
+}
+
 async function carregarBancoDeQuestoes(questoesChegando = null) {
     // O botão de importar questões só aparece para o admin
     const botaoImportarQuestoes = document.getElementById('btnAbrirImportar');
@@ -1935,6 +1955,7 @@ async function carregarBancoDeQuestoes(questoesChegando = null) {
     atualizarSelectConcurso(todas, trilha);
 
     porId = new Map(questoes.map(q => [String(q.id), q]));
+    await sincronizarFilaDoDia();
 
     // U9: o front não traz mais o gabarito de quem ainda não respondeu. Pra quem já respondeu
     // antes (neste aparelho ou em outro, via histórico sincronizado), devolve o gabarito já
@@ -2686,11 +2707,12 @@ if (btnAbrirBarra) btnAbrirBarra.addEventListener("click", () => aplicarBarraRec
             abrirCaderno({
                 questoes, historico, naFila,
                 pedirIA: pedirExplicacaoIA,
-                aoRefazer: (q) => {
+                aoRefazer: (qOuLista) => {
+                    const lista = Array.isArray(qOuLista) ? qOuLista : [qOuLista];
                     simulado = null;
                     pararCronometro(displayCronometro);
-                    if (foco) entrarFoco([q], { silencioso: true });
-                    else renderizarQuestoes(container, [q], historico, "", { restaurarRespostas: false });
+                    // Refazer abre sempre no Modo Foco: uma questão por vez, só as da lista
+                    entrarFoco(lista, { silencioso: true, titulo: "Caderno de erros" });
                     const principal = document.querySelector(".main-content");
                     if (principal) principal.scrollTo({ top: 0, behavior: "smooth" });
                 }
