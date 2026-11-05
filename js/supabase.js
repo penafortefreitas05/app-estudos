@@ -769,3 +769,23 @@ export async function carregarRespostasRecentes(dias = 7) {
         return null;
     }
 }
+
+
+// ---------- Explicação do erro com IA (Caderno de erros) ----------
+// A função de servidor lê a questão e o gabarito do banco; o navegador manda só o id e a letra
+// que errou. Devolve { ok, explicacao, deCache, usoHoje, limiteDia } ou { ok:false, code, message }.
+export async function pedirExplicacaoIA(questaoId, respostaUsuario) {
+    try {
+        const { data, error } = await supabaseClient.functions.invoke('super-function', {
+            body: { questaoId, respostaUsuario }
+        });
+        if (error) {
+            let corpo = null;
+            try { corpo = await error.context.json(); } catch (e) { /* sem corpo legível */ }
+            return { ok: false, code: (corpo && corpo.code) || 'rede', message: (corpo && corpo.message) || 'Sem conexão com a IA agora.' };
+        }
+        return data && typeof data === 'object' ? data : { ok: false, code: 'resposta', message: 'A IA não respondeu direito. Tente de novo.' };
+    } catch (e) {
+        return { ok: false, code: 'rede', message: 'Sem conexão com a IA agora.' };
+    }
+}
