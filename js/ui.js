@@ -129,11 +129,12 @@ export function textoGabaritoDe(q) {
 // ---------- 3. COMPONENTES DE INTERFACE ----------
 // opcoes.rotulo(valor): texto mostrado no lugar do valor cru (ex.: nível 1 → "Iniciante")
 // opcoes.numerico: ordena 1, 2, 3... em vez de alfabético
+// opcoes.semContagem: só o nome na opção (a contagem fica na Cobertura do edital)
 // opcoes.mostrarTotal: põe o total de questões na opção "Todos" (só o filtro de nível usa,
 // para o número não se repetir em todos os filtros)
 export function preencherSelect(selectElement, textoPadrao, propriedade, listaQuestoes, opcoes = {}) {
     if (!selectElement) return;
-    const { rotulo = (v) => v, numerico = false, mostrarTotal = false } = opcoes;
+    const { rotulo = (v) => v, numerico = false, mostrarTotal = false, semContagem = false } = opcoes;
     const contagem = {};
     listaQuestoes.forEach(q => {
         const val = q[propriedade];
@@ -146,7 +147,7 @@ export function preencherSelect(selectElement, textoPadrao, propriedade, listaQu
         .forEach(valor => {
             const opt = document.createElement("option");
             opt.value = valor;
-            opt.textContent = `${rotulo(valor)} (${contagem[valor]})`;
+            opt.textContent = semContagem ? rotulo(valor) : `${rotulo(valor)} (${contagem[valor]})`;
             selectElement.appendChild(opt);
         });
 }
@@ -253,6 +254,22 @@ export function renderizarCoberturaEdital(container, ordemMacros, listaQuestoes)
             </details>
         `;
     });
+
+    // Bancas: a contagem saiu do filtro e fica aqui (05/11/2026)
+    const porBanca = {};
+    listaQuestoes.forEach(q => {
+        const b = String(q.bancaExibida || '').trim();
+        if (b) porBanca[b] = (porBanca[b] || 0) + 1;
+    });
+    const bancas = Object.entries(porBanca).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'pt-BR'));
+    if (bancas.length) {
+        partes.push(`
+            <details class="cobertura-macro">
+                <summary>🏛️ Por banca <span class="cobertura-contagem">${bancas.length}</span></summary>
+                <ul class="cobertura-lista">${bancas.map(([b, n]) => `<li><span>${esc(b)}</span><span class="cobertura-contagem">${n}</span></li>`).join('')}</ul>
+            </details>
+        `);
+    }
 
     container.innerHTML = partes.join('');
 }

@@ -22,7 +22,7 @@ import {
     marcarMateriaAtiva
 } from './ui.js';
 import { abrirAprender } from './aprender-tela.js';
-import { ligarSeletorAssunto } from './seletor-assunto.js';
+import { abrirFiltros } from './filtros-tela.js';
 // ==================== FIM ====================
 
 // ---------- 1.2 Supabase (banco e cliente) ----------
@@ -92,6 +92,7 @@ import {
 import { normalizarQuestao, ORDEM_MACROS, NIVEIS, nivelInformadoEhInvalido } from './api.js';
 
 // Filtro de nível: mostra o nome ("Iniciante") e ordena 1→4
+const OPCOES_SEM_CONTAGEM = { semContagem: true };
 const OPCOES_SELECT_NIVEL = { rotulo: (v) => NIVEIS[v] || v, numerico: true, mostrarTotal: true };
 
 // ==================== FIM: 1. IMPORTAÇÕES DE MÓDULOS ====================
@@ -134,7 +135,6 @@ const container = document.getElementById("container-questoes");
 const selectBanca = document.getElementById("filtro-banca");
 const selectMateria = document.getElementById("filtro-materia");
 const selectTag = document.getElementById("filtro-tag");
-ligarSeletorAssunto(selectTag); // botão com busca no lugar da lista nativa; o select segue como fonte da verdade
 const selectAno = document.getElementById("filtro-ano");
 const selectNivel = document.getElementById("filtro-nivel");
 const selectStatus = document.getElementById("filtro-status");
@@ -597,7 +597,6 @@ if (dashboardMaterias) {
 // ---------- 6b. PAINÉIS DO TOPO (Filtros / Simulado) ----------
 // Só um painel aberto por vez; tocar no mesmo botão fecha.
 const paineisTopo = [
-    { botao: document.getElementById("btn-painel-filtros"), painel: document.getElementById("painel-filtros") },
     { botao: document.getElementById("btn-painel-simulado"), painel: document.getElementById("painel-simulado") }
 ].filter(p => p.botao && p.painel);
 
@@ -614,6 +613,17 @@ function fecharPaineis() {
 }
 
 paineisTopo.forEach(p => p.botao.addEventListener("click", () => alternarPainel(p)));
+
+// "Filtros": abre a tela de js/filtros-tela.js. Os <select> do painel antigo seguem escondidos e valendo.
+const btnPainelFiltros = document.getElementById("btn-painel-filtros");
+if (btnPainelFiltros) btnPainelFiltros.addEventListener("click", () => {
+    fecharPaineis();
+    abrirFiltros({
+        selects: { concurso: selectConcurso, materia: selectMateria, banca: selectBanca, ano: selectAno, tag: selectTag },
+        contagem: () => ((document.getElementById("barra-contagem") || {}).textContent || "").split(" · ")[0],
+        aoLimpar: () => { const b = document.getElementById("btn-todas"); if (b) b.click(); }
+    });
+});
 
 // Número no botão "Mais filtros" = quantos filtros do painel (matéria, banca, assunto, ano) estão ativos
 function atualizarBadgeFiltros() {
@@ -1840,9 +1850,9 @@ async function carregarBancoDeQuestoes(questoesChegando = null) {
         questoes = [];
         porId = new Map();
 
-        preencherSelect(selectBanca, "🏛️ Todas as Bancas", "bancaExibida", questoes);
-        preencherSelect(selectMateria, "📖 Todas as Matérias", "materia", questoes);
-        preencherSelect(selectAno, "📅 Todos os Anos", "ano", questoes);
+        preencherSelect(selectBanca, "🏛️ Todas as Bancas", "bancaExibida", questoes, OPCOES_SEM_CONTAGEM);
+        preencherSelect(selectMateria, "📖 Todas as Matérias", "materia", questoes, OPCOES_SEM_CONTAGEM);
+        preencherSelect(selectAno, "📅 Todos os Anos", "ano", questoes, OPCOES_SEM_CONTAGEM);
         preencherSelect(selectNivel, "📶 Todos os Níveis", "nivel", questoes, OPCOES_SELECT_NIVEL);
         atualizarSelectAssunto();
 
@@ -1879,9 +1889,9 @@ async function carregarBancoDeQuestoes(questoesChegando = null) {
         if (h && h.gabaritoRevelado) q.gabarito = h.gabaritoRevelado;
     });
 
-    preencherSelect(selectBanca, "🏛️ Todas as Bancas", "bancaExibida", questoes);
-    preencherSelect(selectMateria, "📖 Todas as Matérias", "materia", questoes);
-    preencherSelect(selectAno, "📅 Todos os Anos", "ano", questoes);
+    preencherSelect(selectBanca, "🏛️ Todas as Bancas", "bancaExibida", questoes, OPCOES_SEM_CONTAGEM);
+    preencherSelect(selectMateria, "📖 Todas as Matérias", "materia", questoes, OPCOES_SEM_CONTAGEM);
+    preencherSelect(selectAno, "📅 Todos os Anos", "ano", questoes, OPCOES_SEM_CONTAGEM);
     preencherSelect(selectNivel, "📶 Todos os Níveis", "nivel", questoes, OPCOES_SELECT_NIVEL);
     atualizarSelectAssunto();
     // Filtro de ano só aparece quando alguma questão tem ano cadastrado
