@@ -1326,6 +1326,12 @@ body.modo-foco .questoes-grid { max-width: 860px; width: 100%; margin: 0 auto; }
 
 /* Visitante: sem login não há questões, então a barra de busca/filtros sai */
 body.visitante .top-bar { display: none; }
+/* Sem login: só a tela de entrada, sem menu lateral nem botão ☰ */
+body.visitante .sidebar,
+body.visitante .menu-toggle-input,
+body.visitante label[for="menu-toggle"] { display: none !important; }
+body.visitante .top-bar-mobile, body.visitante .btn-abrir-barra { display: none !important; }
+body.visitante .entrada-visitante { margin-top: 12vh; }
 
 .entrada-visitante {
     max-width: 620px;

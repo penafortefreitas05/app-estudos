@@ -13,7 +13,7 @@
 // POR ISSO: a cada publicação que muda qualquer arquivo do site, suba o número do CACHE_NAME.
 // Sem isso, quem já tem o app continua na versão antiga.
 
-const CACHE_NAME = 'focopro-v106';
+const CACHE_NAME = 'focopro-v107';
 
 const RECURSOS_ESTATICOS = [
     './',

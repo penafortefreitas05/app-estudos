@@ -1957,12 +1957,7 @@ function mostrarEntradaVisitante() {
     container.innerHTML = `
         <section class="entrada-visitante" aria-labelledby="entrada-titulo">
             <p class="entrada-marca">FocoPro ✦</p>
-            <h1 id="entrada-titulo" class="entrada-titulo">Estude para concursos de TI, do zero até o nível da prova.</h1>
-            <ul class="entrada-lista">
-                <li><strong>Comece pelo básico.</strong> As questões vêm em níveis: Iniciante, Intermediário e de prova.</li>
-                <li><strong>Revisão no dia certo.</strong> O que você errar volta amanhã, depois em 3, 7 e 21 dias.</li>
-                <li><strong>Entenda o erro.</strong> Toda questão tem explicação, e a IA explica o seu erro quando você pedir.</li>
-            </ul>
+            <h1 id="entrada-titulo" class="entrada-titulo">Entre para continuar</h1>
             <div class="entrada-acoes">
                 <button type="button" class="btn-primary btn-entrada" data-modo-auth="cadastro">Criar conta</button>
                 <button type="button" class="btn-secondary btn-entrada" data-modo-auth="login">Já tenho conta</button>
