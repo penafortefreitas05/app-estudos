@@ -26,6 +26,7 @@ import { montarBackupAprendidos, mesclarBackupAprendidos } from './leitura.js';
 import { abrirFiltros } from './filtros-tela.js';
 import { abrirCaderno } from './caderno-erros.js';
 import { salvarPacote, lerPacote, infoPacote, descreverPacote } from './offline-pacote.js';
+import { modeloDoConcurso, quotasDoModelo, sortearPeloModelo } from './modelo-prova.js';
 import { abrirSimulado, abrirResultado, lerSimuladosLocais, guardarSimuladoLocal, mesclarSimulados, novoId } from './simulado-tela.js';
 // ==================== FIM ====================
 
@@ -302,6 +303,9 @@ function sortearSimulado(filtradas, qtd, historicoAtual, opcoes = {}) {
         pool = embaralharArray(pool);
     }
 
+    if (opcoes.modelo) {
+        return sortearPeloModelo(pool, qtd, opcoes.modelo);
+    }
     if (opcoes.equilibrar) {
         return distribuirPorMateria(pool, qtd);
     }
@@ -669,9 +673,11 @@ function fecharPaineis() {
 paineisTopo.forEach(p => p.botao.addEventListener("click", () => alternarPainel(p)));
 
 // ---------- Simulado em página inteira ----------
+let modeloSimulado = null; // padrão da prova escolhido na tela do simulado (vale para o próximo sorteio)
 function abrirTelaSimulado() {
     abrirSimulado({
         disponiveis: () => filtrarQuestoes().length,
+        modelo: (() => { const m = modeloDoConcurso(trilhaAtual()); return m ? { nome: m.nome, quotas: (n) => quotasDoModelo(m, n) } : null; })(),
         aoFiltros: () => abrirFiltros({
             selects: { concurso: selectConcurso, materia: selectMateria, banca: selectBanca, ano: selectAno, tag: selectTag },
             contagem: () => ((document.getElementById("barra-contagem") || {}).textContent || "").split(" · ")[0],
@@ -681,6 +687,7 @@ function abrirTelaSimulado() {
         aoComecar: (d) => {
             const set = (id, v) => { const e = document.getElementById(id); if (e) e.value = v; };
             const marca = (id, v) => { const e = document.getElementById(id); if (e) e.checked = v; };
+            modeloSimulado = d.modelo ? modeloDoConcurso(trilhaAtual()) : null;
             set("qtd-simulado", d.qtd);
             set("tempo-simulado", d.tempo || "");
             marca("check-equilibrar", d.equilibrar);
@@ -795,7 +802,7 @@ async function responder(card, botao) {
                 gabaritoDiv.innerHTML = `📌 Alternativa <strong>(${esc(letraEscolhida)})</strong> registrada${confiancaAtual === 'duvida' ? ' <strong>na dúvida</strong>' : ''}. Você pode alterar antes de finalizar.`;
             }
         }
-        showToast(`Questão registrada: alternativa ${letraEscolhida}`, "info", 1800);
+        if (!(foco && foco.simulado)) showToast(`Questão registrada: alternativa ${letraEscolhida}`, "info", 1800);
         return;
     }
 
@@ -1102,7 +1109,7 @@ if (container) {
         const btnFinalizar = e.target.closest("#btn-finalizar-simulado, #btn-finalizar");
         if (btnFinalizar && simulado) {
             pararCronometro(displayCronometro);
-            finalizarSimulado(simulado, container, porId, historico, questoes, false);
+            pedirFinalizarSimulado();
             return;
         }
 
@@ -1193,12 +1200,14 @@ if (btnSimulado) {
         const opcoesSimulado = {
             equilibrar: checkEquilibrar ? checkEquilibrar.checked : false,
             somenteNovas: checkNovas ? checkNovas.checked : false,
-            priorizarErros: checkPriorizarErros ? checkPriorizarErros.checked : false
+            priorizarErros: checkPriorizarErros ? checkPriorizarErros.checked : false,
+            modelo: modeloSimulado
         };
+        modeloSimulado = null;
 
         const filtradas = filtrarQuestoes();
         pararCronometro(displayCronometro);
-        if (foco) sairFoco({ silencioso: true }); // simulado é sempre em lista, com correção no fim
+        if (foco) sairFoco({ silencioso: true });
 
         const sorteadas = sortearSimulado(filtradas, qtd, historico, opcoesSimulado);
 
@@ -1214,18 +1223,16 @@ if (btnSimulado) {
             return;
         }
 
+        // O simulado roda no Modo Foco: uma questão por vez, sem gabarito até finalizar
         simulado = { ids: sorteadas.map(q => q.id), respostas: {}, inicio: Date.now(), finalizado: false };
-        renderizarQuestoes(container, sorteadas, historico, undefined, { restaurarRespostas: false });
-        adicionarBotaoFinalizar(container);
+        entrarFoco(sorteadas, { titulo: "Simulado", simulado: true, silencioso: true });
 
         fecharPaineis();
-        const mainContent = document.querySelector(".main-content");
-        if (mainContent) mainContent.scrollTo({ top: 0, behavior: "smooth" });
         showToast(`Simulado iniciado com ${sorteadas.length} questões!`, "info");
 
         if (tempo > 0) {
             iniciarCronometro(tempo, displayCronometro, () => {
-                finalizarSimulado(simulado, container, porId, historico, questoes, true);
+                finalizarSimuladoAtual(true);
             });
         }
     });
@@ -1357,18 +1364,20 @@ function entrarFoco(lista, opcoes = {}) {
         showToast("Nenhuma questão com esses filtros para o Modo Foco.", "alerta");
         return;
     }
-    if (simulado) {
+    if (simulado && !opcoes.simulado) {
         if (!simulado.finalizado) showToast("Simulado encerrado sem correção.", "alerta");
         simulado = null;
         pararCronometro(displayCronometro);
     }
     foco = {
+        simulado: Boolean(opcoes.simulado),
         lista: [...lista], indice: 0, cards: new Map(),
         titulo: opcoes.titulo || "", guiada: Boolean(opcoes.guiada),
         exemplos: opcoes.exemplos || new Set(), // ids mostrados como exemplo resolvido (Aprender)
         aprender: opcoes.aprender || null       // { materia, nome } do assunto em estudo
     };
     document.body.classList.add("modo-foco");
+    document.body.classList.toggle("foco-simulado", Boolean(opcoes.simulado));
     // Aprender é um ambiente à parte (fundo índigo); Foco comum segue o fundo de sempre
     document.body.classList.toggle("modo-aprender", Boolean(opcoes.aprender));
     if (btnModoFoco) btnModoFoco.setAttribute("aria-pressed", "true");
@@ -1381,7 +1390,7 @@ function sairFoco(opcoes = {}) {
     if (!foco) return;
     const idAtual = foco.lista[foco.indice] ? String(foco.lista[foco.indice].id) : "";
     foco = null;
-    document.body.classList.remove("modo-foco", "modo-aprender");
+    document.body.classList.remove("modo-foco", "modo-aprender", "foco-simulado");
     if (btnModoFoco) btnModoFoco.setAttribute("aria-pressed", "false");
     if (opcoes.silencioso) return; // quem chamou vai desenhar outra coisa no lugar
     aplicarFiltros();
@@ -1393,6 +1402,7 @@ function sairFoco(opcoes = {}) {
 // Filtro mudou com o foco aberto (ex.: tocar numa matéria do painel): troca a fila e
 // continua na mesma questão se ela ainda estiver na lista nova.
 function atualizarListaFoco(lista) {
+    if (foco && foco.simulado) return; // o simulado em andamento mantém as questões sorteadas
     if (!lista.length) {
         sairFoco({ silencioso: true });
         renderizarQuestoes(container, [], historico, undefined, { paginar: true });
@@ -1443,9 +1453,9 @@ function desenharFoco() {
     barra.className = "foco-barra";
     barra.innerHTML = `
         <button type="button" class="btn-painel foco-anterior" ${foco.indice === 0 ? "disabled" : ""} aria-label="Questão anterior">←</button>
-        <span class="foco-posicao" aria-live="polite">${foco.titulo ? `<span class="foco-titulo">${esc(foco.titulo)}</span>` : ""}${fim ? "Fim da lista" : rotuloPosicaoFoco()}</span>
+        <span class="foco-posicao" aria-live="polite">${foco.titulo ? `<span class="foco-titulo">${esc(foco.titulo)}</span>` : ""}${fim ? "Fim da lista" : rotuloPosicaoFoco()}${foco.simulado ? ` <span class="foco-marcadas">· ${marcadasNoSimulado()} marcadas</span>` : ""}</span>
         <button type="button" class="btn-painel foco-proxima" ${fim ? "disabled" : ""} aria-label="Próxima questão">→</button>
-        <button type="button" class="btn-painel foco-sair">✕ Sair do foco</button>`;
+        <button type="button" class="btn-painel foco-sair">${foco.simulado ? "✕ Sair" : "✕ Sair do foco"}</button>`;
 
     // Barrinha de avanço da lista: enche a cada questão e dá a vontade de chegar ao fim
     const avanco = document.createElement("div");
@@ -1455,7 +1465,17 @@ function desenharFoco() {
 
     const partes = [barra, avanco];
     if (fim) {
-        partes.push(resumoFoco());
+        partes.push(foco.simulado ? resumoSimulado() : resumoFoco());
+    } else if (foco.simulado) {
+        partes.push(cardDoFoco(foco.lista[foco.indice]));
+        const rodape = document.createElement("div");
+        rodape.className = "foco-rodape";
+        rodape.innerHTML = simulado && simulado.finalizado
+            ? `<button type="button" class="btn-primary btn-largo foco-proxima">Próxima questão →</button>`
+            : `<button type="button" class="btn-primary btn-largo foco-proxima">Próxima questão →</button>
+               <button type="button" class="btn-link foco-finalizar">🏁 Finalizar simulado</button>
+               <p class="foco-atalhos">Marque a alternativa e avance. A correção vem só no fim. Teclado: <kbd>A</kbd>–<kbd>E</kbd> escolhe · <kbd>Enter</kbd> registra e avança · <kbd>←</kbd> <kbd>→</kbd> navegam</p>`;
+        partes.push(rodape);
     } else {
         partes.push(cardDoFoco(foco.lista[foco.indice]));
         const rodape = document.createElement("div");
@@ -1507,8 +1527,87 @@ function resumoFoco() {
     return caixa;
 }
 
+function marcadasNoSimulado() {
+    if (!foco || !simulado) return 0;
+    return foco.lista.filter(q => simulado.respostas[String(q.id)]).length;
+}
+
+// Tela final do simulado no Foco: antes de finalizar, quantas marcou; depois, como rever a correção
+function resumoSimulado() {
+    const total = foco.lista.length;
+    const marcadas = marcadasNoSimulado();
+    const caixa = document.createElement("div");
+    caixa.className = "foco-resumo";
+    caixa.innerHTML = simulado && simulado.finalizado
+        ? `<p class="foco-resumo-titulo">🏁 Simulado finalizado</p>
+           <p>Use <strong>←</strong> para rever a correção, questão a questão.</p>
+           <div class="foco-resumo-acoes">
+               <button type="button" class="btn-painel foco-anterior">← Voltar para a última</button>
+               <button type="button" class="btn-primary foco-sair">Sair do simulado</button>
+           </div>`
+        : `<p class="foco-resumo-titulo">🏁 Fim do simulado</p>
+           <p>Você marcou <strong>${marcadas}</strong> de <strong>${total}</strong>${total - marcadas ? `; <strong>${total - marcadas}</strong> ficam em branco` : ""}.</p>
+           <div class="foco-resumo-acoes">
+               <button type="button" class="btn-painel foco-anterior">← Revisar respostas</button>
+               <button type="button" class="btn-primary foco-finalizar">🏁 Finalizar simulado</button>
+           </div>`;
+    return caixa;
+}
+
+// Corrige o simulado do Foco: garante os cards de todas as questões (as não visitadas ficam em branco)
+async function finalizarSimuladoAtual(porTempo = false) {
+    if (!simulado || simulado.finalizado) return;
+    let buscarCard = null;
+    if (foco && foco.simulado) {
+        foco.lista.forEach(q => cardDoFoco(q));
+        buscarCard = (id) => foco.cards.get(String(id)) || null;
+    }
+    await finalizarSimulado(simulado, container, porId, historico, questoes, porTempo, buscarCard);
+    if (simulado && simulado.finalizado) {
+        pararCronometro(displayCronometro);
+        if (foco && foco.simulado) irPara(foco.lista.length);
+    }
+}
+
+async function pedirFinalizarSimulado() {
+    if (!simulado || simulado.finalizado) return;
+    const total = simulado.ids.length;
+    const brancas = foco && foco.simulado ? total - marcadasNoSimulado() : 0;
+    if (brancas > 0) {
+        const ok = await showConfirmModal({
+            titulo: "Finalizar o simulado?",
+            mensagem: `${brancas === 1 ? "Falta 1 questão" : `Faltam ${brancas} questões`} sem resposta. Elas contam como erro.`,
+            textoConfirmar: "Finalizar", textoCancelar: "Voltar"
+        });
+        if (!ok) return;
+    }
+    finalizarSimuladoAtual(false);
+}
+
+// Sair do Foco; no simulado ainda não corrigido, confirma antes (as respostas se perdem)
+async function pedirSaidaFoco() {
+    if (!foco) return;
+    if (foco.simulado && simulado && !simulado.finalizado) {
+        const ok = await showConfirmModal({
+            titulo: "Sair do simulado?",
+            mensagem: "Suas respostas não serão corrigidas nem contadas.",
+            textoConfirmar: "Sair", textoCancelar: "Continuar", corPerigo: true
+        });
+        if (!ok) return;
+    }
+    if (foco.simulado) { simulado = null; pararCronometro(displayCronometro); }
+    sairFoco();
+}
+
 function irPara(indice) {
     if (!foco) return;
+    // Simulado: a alternativa marcada na questão que está saindo fica registrada
+    if (foco.simulado && simulado && !simulado.finalizado) {
+        const atual = foco.lista[foco.indice];
+        const cardAtual = atual && foco.cards.get(String(atual.id));
+        const marcada = cardAtual && cardAtual.querySelector(".radio-opcao:checked");
+        if (marcada && simulado.respostas[String(atual.id)] !== marcada.value) responder(cardAtual, null);
+    }
     foco.indice = Math.max(0, Math.min(indice, foco.lista.length)); // == length é a tela final
     desenharFoco();
 }
@@ -1530,7 +1629,7 @@ function colocarIrmaNoFoco(irma) {
 
 if (btnModoFoco) {
     btnModoFoco.addEventListener("click", () => {
-        if (foco) sairFoco();
+        if (foco) pedirSaidaFoco();
         else entrarFoco(ordenarParaEstudo(filtrarQuestoes()));
     });
 }
@@ -1540,7 +1639,8 @@ if (container) {
         if (!foco) return;
         if (e.target.closest(".foco-proxima")) irPara(foco.indice + 1);
         else if (e.target.closest(".foco-anterior")) irPara(foco.indice - 1);
-        else if (e.target.closest(".foco-sair")) sairFoco();
+        else if (e.target.closest(".foco-finalizar")) pedirFinalizarSimulado();
+        else if (e.target.closest(".foco-sair")) pedirSaidaFoco();
     });
 }
 
@@ -1593,13 +1693,18 @@ document.addEventListener("keydown", (e) => {
     const card = cardAtualDoFoco();
     if (e.key === "Escape") {
         e.preventDefault();
-        sairFoco();
+        pedirSaidaFoco();
     } else if (e.key === "ArrowRight") {
         e.preventDefault();
         irPara(foco.indice + 1);
     } else if (e.key === "ArrowLeft") {
         e.preventDefault();
         irPara(foco.indice - 1);
+    } else if (e.key === "Enter" && foco.simulado) {
+        e.preventDefault();
+        if (!simulado || simulado.finalizado || !card) irPara(foco.indice + 1);
+        else if (!card.querySelector(".radio-opcao:checked")) showToast("Escolha uma alternativa (A–E) antes de avançar.", "alerta", 1800);
+        else { responderPeloTeclado(card, e.shiftKey); irPara(foco.indice + 1); }
     } else if (e.key === "Enter") {
         e.preventDefault();
         const corrigida = card && (card.dataset.exemplo === "1" || card.querySelector(".btn-refazer:not([hidden])"));

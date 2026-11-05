@@ -2056,3 +2056,9 @@ body.modo-aprender .sidebar { background-color: #11102e; border-right-color: #2a
 .sm-chip:focus-visible, .sm-opcao:focus-visible, .sm-comecar:focus-visible, .sm-sec-btn:focus-visible, .sm-item-topo:focus-visible, .sm-link:focus-visible, .sm-sair:focus-visible, .sm-mais:focus-visible { outline: 2px solid #93c5fd; outline-offset: 2px; }
 .menu-texto { display: flex; flex-direction: column; min-width: 0; }
 .menu-sub { display: block; margin-top: 0.1rem; font-size: 0.72rem; font-weight: 400; color: #94a3b8; }
+.sm-chip.sm-larga { grid-column: 1 / -1; }
+.sm-modelo { margin: 0.6rem 0 0; font-size: 0.78rem; color: #93c5fd; line-height: 1.5; }
+/* Simulado no Modo Foco: o cronômetro aparece como uma pílula fixa no canto */
+body.modo-foco.foco-simulado #display-cronometro { display: block !important; width: fit-content; margin: 0.4rem auto 0; padding: 0.25rem 0.8rem; border-radius: 999px; background: #0f172a; border: 1px solid #334155; color: #fde68a; font-size: 0.82rem; font-weight: 700; }
+.foco-marcadas { color: #93c5fd; font-weight: 500; font-size: 0.8em; }
+.foco-rodape .foco-finalizar { all: unset; display: block; margin: 0.8rem auto 0; padding: 0.5rem; color: #93c5fd; text-decoration: underline; cursor: pointer; text-align: center; font-size: 0.9rem; }

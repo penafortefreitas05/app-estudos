@@ -15,7 +15,7 @@ const PAGINA = 8;
 
 export const OPCOES_QTD = [10, 20, 40, 60];
 export const OPCOES_EXTRA = [
-    ['equilibrar', '⚖️ Equilibrar matérias', 'Sorteia um pouco de cada matéria'],
+    ['equilibrar', '⚖️ Um pouco de cada matéria', 'Sorteio parelho entre as matérias'],
     ['somenteNovas', '🆕 Só questões novas', 'Nada que você já respondeu'],
     ['priorizarErros', '🎯 Priorizar meus erros', 'Começa pelo que você errou ou vence na revisão']
 ];
@@ -76,12 +76,13 @@ export function novoId() {
 // ---------- Tela de montar + histórico ----------
 // opcoes.disponiveis(): quantas questões os filtros atuais deixam
 // opcoes.aoComecar({ qtd, tempo, equilibrar, somenteNovas, priorizarErros })
+// opcoes.modelo: { nome, quotas(qtd) } do concurso escolhido (padrão da prova) ou null
 // opcoes.aoFiltros(): abre a tela de filtros (esta fecha e reabre quando os filtros fecharem)
 // opcoes.carregarHistorico(): Promise<lista> (aparelho + nuvem)
-export function abrirSimulado({ disponiveis = () => 0, aoComecar, aoFiltros, carregarHistorico } = {}) {
+export function abrirSimulado({ disponiveis = () => 0, aoComecar, aoFiltros, carregarHistorico, modelo = null } = {}) {
     if (document.querySelector('.sm-tela')) return;
-    const cfg = { qtd: 20, tempo: 'sem', equilibrar: true, somenteNovas: false, priorizarErros: false, ...ler(CHAVE_CONFIG, {}) };
-    if (!OPCOES_QTD.includes(cfg.qtd)) cfg.qtd = 20;
+    const cfg = { qtd: 20, tempo: 'sem', equilibrar: true, modelo: true, somenteNovas: false, priorizarErros: false, ...ler(CHAVE_CONFIG, {}) };
+    if (![...OPCOES_QTD, 120].includes(cfg.qtd) || (cfg.qtd === 120 && !modelo)) cfg.qtd = 20;
     let historico = lerSimuladosLocais();
     let mostrando = PAGINA;
     let aberto = null;
@@ -125,7 +126,7 @@ export function abrirSimulado({ disponiveis = () => 0, aoComecar, aoFiltros, car
         corpo.innerHTML = `
             <section class="sm-sec">
                 <h3 class="sm-sec-titulo">Quantas questões</h3>
-                <div class="sm-chips sm-g4">${OPCOES_QTD.map(n => chip('qtd', n, n, cfg.qtd === n)).join('')}</div>
+                <div class="sm-chips sm-g4">${OPCOES_QTD.map(n => chip('qtd', n, n, cfg.qtd === n)).join('')}${modelo ? chip('qtd', 120, '120 · prova completa', cfg.qtd === 120).replace('class="sm-chip', 'class="sm-chip sm-larga') : ''}</div>
                 <h3 class="sm-sec-titulo">Tempo</h3>
                 <div class="sm-chips sm-g2">
                     ${chip('tempo', 'sem', 'Sem tempo', cfg.tempo === 'sem')}
@@ -134,8 +135,9 @@ export function abrirSimulado({ disponiveis = () => 0, aoComecar, aoFiltros, car
                     ${chip('tempo', 120, '120 min', String(cfg.tempo) === '120')}
                 </div>
                 <h3 class="sm-sec-titulo">Como sortear</h3>
-                <div class="sm-opcoes">${OPCOES_EXTRA.map(([k, nome, det]) => `
+                <div class="sm-opcoes">${(modelo ? [['modelo', `📋 ${modelo.nome}`, 'Cada matéria na proporção da prova']] : []).concat(OPCOES_EXTRA.filter(([k]) => !(modelo && k === 'equilibrar'))).map(([k, nome, det]) => `
                     <button type="button" class="sm-opcao${cfg[k] ? ' ativo' : ''}" data-sm="extra" data-v="${k}" aria-pressed="${cfg[k]}"><span class="sm-opcao-nome">${nome}</span><span class="sm-opcao-det">${det}</span><span class="sm-opcao-marca" aria-hidden="true">${cfg[k] ? '✓' : ''}</span></button>`).join('')}</div>
+                ${modelo && cfg.modelo ? `<p class="sm-modelo">${modelo.quotas(cfg.qtd).map(([m, n]) => `${esc(m.replace(/ &.*$/, '').replace(/,.*$/, ''))} ${n}`).join(' · ')}</p>` : ''}
                 <p class="sm-filtros">Usa os filtros atuais: <b>${total}</b> ${total === 1 ? 'questão disponível' : 'questões disponíveis'}.
                     <button type="button" class="sm-link" data-sm="filtros">Mudar filtros</button></p>
                 <button type="button" class="sm-comecar" data-sm="comecar" ${real ? '' : 'disabled'}>${real ? `▶ Começar simulado (${real} ${real === 1 ? 'questão' : 'questões'}${minutos() ? ` · ${minutos()} min` : ''})` : 'Nenhuma questão com esses filtros'}</button>
@@ -175,7 +177,7 @@ export function abrirSimulado({ disponiveis = () => 0, aoComecar, aoFiltros, car
         if (a === 'item') { aberto = aberto === v ? null : v; return desenhar(); }
         if (a === 'filtros') { fechar(); if (aoFiltros) aoFiltros(); return; }
         if (a === 'comecar') {
-            const dados = { qtd: cfg.qtd, tempo: minutos(), equilibrar: cfg.equilibrar, somenteNovas: cfg.somenteNovas, priorizarErros: cfg.priorizarErros };
+            const dados = { qtd: cfg.qtd, tempo: minutos(), modelo: Boolean(modelo && cfg.modelo), equilibrar: modelo ? false : cfg.equilibrar, somenteNovas: cfg.somenteNovas, priorizarErros: cfg.priorizarErros };
             fechar();
             if (aoComecar) aoComecar(dados);
         }
