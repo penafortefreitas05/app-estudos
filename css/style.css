@@ -1901,3 +1901,21 @@ body.modo-aprender .sidebar { background-color: #11102e; border-right-color: #2a
     #btn-meu-dia, #btn-painel-simulado { display: none; }
     .barra-botoes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+/* Correções do celular (05/11/2026): fonte recolhida e sem estourar a largura; telas cheias sem transição de
+   opacidade (no Android a transição deixava pedaços da tela sem desenhar até o primeiro toque). */
+.leitura, .aprender-tela, .ft-tela { opacity: 1; transition: none; }
+.leitura { height: 100vh; height: 100dvh; }
+.leitura-corpo { overflow-x: hidden; }
+.leitura-cartao, .leitura-fim { min-width: 0; overflow-wrap: anywhere; }
+.leitura-fonte { margin: 1.2rem 0 0; font-size: 0.78rem; line-height: 1.4; color: #818cf8; }
+.leitura-fonte summary { cursor: pointer; padding: 0.3rem 0; }
+.leitura-fonte ul { margin: 0.3rem 0 0; padding-left: 1.1rem; }
+.leitura-fonte li + li { margin-top: 0.3rem; }
+.leitura-fonte a { color: #a5b4fc; text-decoration: underline; }
+
+/* Leitura sem controle por cartão (05/11/2026): ← Anterior / Próximo →; no fim, Ler novamente / Aprendi / Praticar */
+.leitura-btn:disabled { opacity: 0.35; cursor: default; }
+.leitura-acoes { flex-wrap: wrap; }
+.leitura-btn.praticar { flex: 1 1 100%; background: transparent; border-color: #4338ca; color: #c7d2fe; }
+.leitura-btn.praticar:hover { background: #1e1b4b; }

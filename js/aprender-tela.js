@@ -3,31 +3,28 @@
 // ============================================================
 // Decidido em 05/11/2026: o Aprender deixa de ser uma janela com lista única e passa a ser uma tela:
 //   - "Continuar" no topo (último assunto aberto, ou o próximo ainda não feito);
-//   - matérias com barra de progresso (cartões entendidos);
-//   - assuntos da matéria escolhida, na ordem em que ensinam, com filtro (Todos, Não vistos,
-//     Em andamento, Entendidos) e busca.
+//   - matérias com barra de progresso (assuntos aprendidos);
+//   - assuntos da matéria escolhida, na ordem em que ensinam, com filtro (Todos, Não lidos,
+//     Aprendidos) e busca.
 // Celular: duas vistas (matérias → assuntos, com botão voltar). Computador (>= 900px): duas colunas.
-// O "Entendi" continua guardado no aparelho por js/leitura.js; esta tela só lê esse estado.
+// O "Aprendi" (uma marca por assunto) é guardado no aparelho por js/leitura.js; esta tela só lê esse estado.
 
 import { esc } from './ui.js';
-import { assuntosComCartoes, abrirLeitura, lerEntendidos, contarEntendidos } from './leitura.js';
+import { assuntosComCartoes, abrirLeitura, lerAprendidos, assuntoAprendido, migrarEntendidos } from './leitura.js';
 
 const CHAVE_ULTIMO = 'appEstudos_AprenderUltimo';
 
 export const FILTROS = [
     ['todos', 'Todos'],
-    ['novos', 'Não vistos'],
-    ['andamento', 'Em andamento'],
-    ['feitos', 'Entendidos']
+    ['novos', 'Não lidos'],
+    ['feitos', 'Aprendidos']
 ];
 
 // ---------- Regras puras (testáveis sem tela) ----------
 
-// Estado de um assunto: novos (0 entendidos), andamento (alguns) ou feitos (todos)
-export function estadoDe(cartoes, entendidos = {}) {
-    const feitos = contarEntendidos(cartoes, entendidos);
-    const total = cartoes.length;
-    return { feitos, total, estado: feitos === 0 ? 'novos' : (feitos >= total ? 'feitos' : 'andamento') };
+// Estado de um assunto: feitos (marcou "Aprendi") ou novos
+export function estadoDe(assunto, aprendidos = {}) {
+    return assuntoAprendido(assunto.materia, assunto.assunto, aprendidos) ? 'feitos' : 'novos';
 }
 
 // Agrupa [{materia, assunto, cartoes}] por matéria. Matérias na ordem dada (as demais, em ordem alfabética);
@@ -42,49 +39,39 @@ export function agruparPorMateria(lista, ordemMaterias = []) {
     return [...ordemMaterias.filter(m => mapa.has(m)), ...extras].map(materia => ({ materia, assuntos: mapa.get(materia) }));
 }
 
-// Progresso de uma matéria em cartões e em assuntos
-export function progressoDaMateria(assuntos, entendidos = {}) {
-    let cartoes = 0, feitosCartoes = 0, assuntosFeitos = 0;
-    assuntos.forEach(a => {
-        const e = estadoDe(a.cartoes, entendidos);
-        cartoes += e.total;
-        feitosCartoes += e.feitos;
-        if (e.estado === 'feitos') assuntosFeitos += 1;
-    });
-    return { cartoes, feitosCartoes, assuntos: assuntos.length, assuntosFeitos };
+// Progresso de uma matéria em assuntos
+export function progressoDaMateria(assuntos, aprendidos = {}) {
+    const feitos = assuntos.filter(a => estadoDe(a, aprendidos) === 'feitos').length;
+    return { assuntos: assuntos.length, assuntosFeitos: feitos, cartoes: assuntos.reduce((n, a) => n + a.cartoes.length, 0) };
 }
 
-// O que o botão "Continuar" oferece: { materia, assunto, tipo } ou null quando tudo está entendido
-//   continuar: o último assunto aberto ainda não terminou
-//   proximo:   o último terminou; vai para o próximo da matéria (ou o primeiro pendente de qualquer matéria)
+// O que o botão "Continuar" oferece: { materia, assunto, tipo } ou null quando tudo foi aprendido
+//   continuar: o último assunto aberto ainda não foi marcado "Aprendi"
+//   proximo:   o último foi aprendido; vai para o próximo da matéria (ou o primeiro pendente de qualquer matéria)
 //   comecar:   nunca abriu nada
-export function escolherContinuar(grupos, ultimo, entendidos = {}) {
-    const pendente = a => estadoDe(a.cartoes, entendidos).estado !== 'feitos';
-    const achado = (materia, assunto) => {
-        const g = grupos.find(x => x.materia === materia);
-        const i = g ? g.assuntos.findIndex(a => a.assunto === assunto) : -1;
-        return i >= 0 ? { g, i } : null;
-    };
-    const ref = ultimo ? achado(ultimo.materia, ultimo.assunto) : null;
-    if (ref) {
-        if (pendente(ref.g.assuntos[ref.i])) return { materia: ultimo.materia, assunto: ultimo.assunto, tipo: 'continuar' };
-        const depois = ref.g.assuntos.slice(ref.i + 1).find(pendente);
+export function escolherContinuar(grupos, ultimo, aprendidos = {}) {
+    const pendente = a => estadoDe(a, aprendidos) !== 'feitos';
+    const g0 = ultimo ? grupos.find(x => x.materia === ultimo.materia) : null;
+    const i0 = g0 ? g0.assuntos.findIndex(a => a.assunto === ultimo.assunto) : -1;
+    if (i0 >= 0) {
+        if (pendente(g0.assuntos[i0])) return { materia: ultimo.materia, assunto: ultimo.assunto, tipo: 'continuar' };
+        const depois = g0.assuntos.slice(i0 + 1).find(pendente);
         if (depois) return { materia: depois.materia, assunto: depois.assunto, tipo: 'proximo' };
     }
     for (const g of grupos) {
         const a = g.assuntos.find(pendente);
-        if (a) return { materia: g.materia, assunto: a.assunto, tipo: ref ? 'proximo' : 'comecar' };
+        if (a) return { materia: g.materia, assunto: a.assunto, tipo: i0 >= 0 ? 'proximo' : 'comecar' };
     }
     return null;
 }
 
-const semAcento = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+const semAcento = s => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 
 // Filtra os assuntos de uma matéria por situação e por texto
-export function filtrarAssuntos(assuntos, filtro, busca, entendidos = {}) {
+export function filtrarAssuntos(assuntos, filtro, busca, aprendidos = {}) {
     const termo = semAcento(busca).trim();
     return assuntos.filter(a => {
-        if (filtro !== 'todos' && estadoDe(a.cartoes, entendidos).estado !== filtro) return false;
+        if (filtro !== 'todos' && estadoDe(a, aprendidos) !== filtro) return false;
         return !termo || semAcento(a.assunto).includes(termo);
     });
 }
@@ -111,6 +98,7 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
     if (document.querySelector('.aprender-tela')) return true;
     const lista = await assuntosComCartoes();
     if (!lista.length) return false;
+    migrarEntendidos(lista); // converte o "Entendi" por cartão da versão antiga (uma vez por aparelho)
     const grupos = agruparPorMateria(lista, ordemMaterias);
 
     const ultimo = lerUltimo();
@@ -160,68 +148,68 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
         const pct = total ? Math.round(feitos * 100 / total) : 0;
         return `<span class="at-barra" aria-hidden="true"><i style="width:${pct}%"></i></span>`;
     }
+    const dataCurta = iso => { const [a, m, d] = String(iso || '').split('-'); return d && m ? `${d}/${m}` : ''; };
+    const cartoesTxt = n => `${n} ${n === 1 ? 'cartão' : 'cartões'}`;
 
-    function desenharTopo(entendidos) {
-        const total = lista.reduce((n, a) => n + a.cartoes.length, 0);
-        const feitos = lista.reduce((n, a) => n + contarEntendidos(a.cartoes, entendidos), 0);
-        q('.at-sub').textContent = `${feitos} de ${total} cartões entendidos · ${lista.length} assuntos`;
-        const c = escolherContinuar(grupos, lerUltimo(), entendidos);
+    function desenharTopo(aprendidos) {
+        const feitos = lista.filter(a => estadoDe(a, aprendidos) === 'feitos').length;
+        q('.at-sub').textContent = `${feitos} de ${lista.length} assuntos aprendidos · ${lista.reduce((n, a) => n + a.cartoes.length, 0)} cartões`;
+        const c = escolherContinuar(grupos, lerUltimo(), aprendidos);
         const area = q('.at-continuar-area');
         if (!c) {
-            area.innerHTML = '<p class="at-tudo">🎉 Você marcou todos os cartões como entendidos. Use "Ler de novo" em qualquer assunto para revisar.</p>';
+            area.innerHTML = '<p class="at-tudo">🎉 Você marcou todos os assuntos como aprendidos. Abra qualquer um para ler de novo.</p>';
             return;
         }
         const a = lista.find(x => x.materia === c.materia && x.assunto === c.assunto);
-        const e = estadoDe(a.cartoes, entendidos);
         const rotulo = c.tipo === 'continuar' ? 'Continuar' : (c.tipo === 'proximo' ? 'Próximo' : 'Começar');
         area.innerHTML = `
             <button type="button" class="at-continuar" data-acao="continuar" data-materia="${esc(c.materia)}" data-assunto="${esc(c.assunto)}">
                 <span class="at-continuar-rotulo">${rotulo}</span>
                 <span class="at-continuar-nome">${esc(c.assunto)}</span>
-                <span class="at-continuar-det">${esc(c.materia)} · ${e.feitos} de ${e.total} entendidos</span>
+                <span class="at-continuar-det">${esc(c.materia)} · ${cartoesTxt(a.cartoes.length)}</span>
             </button>`;
     }
 
-    function desenharMaterias(entendidos) {
+    function desenharMaterias(aprendidos) {
         q('.at-materias').innerHTML = grupos.map(g => {
-            const p = progressoDaMateria(g.assuntos, entendidos);
+            const p = progressoDaMateria(g.assuntos, aprendidos);
             const ativa = g.materia === materia;
             return `<button type="button" class="at-materia${ativa ? ' ativa' : ''}" data-acao="materia" data-materia="${esc(g.materia)}" aria-current="${ativa ? 'true' : 'false'}">
                 <span class="at-materia-texto">${esc(g.materia)}</span>
-                ${barra(p.feitosCartoes, p.cartoes)}
-                <span class="at-materia-det">${p.assuntosFeitos} de ${p.assuntos} assuntos · ${p.feitosCartoes}/${p.cartoes} cartões</span>
+                ${barra(p.assuntosFeitos, p.assuntos)}
+                <span class="at-materia-det">${p.assuntosFeitos} de ${p.assuntos} assuntos aprendidos</span>
             </button>`;
         }).join('');
     }
 
-    function desenharLista(entendidos) {
+    function desenharLista(aprendidos) {
         const grupo = grupos.find(g => g.materia === materia) || grupos[0];
-        const p = progressoDaMateria(grupo.assuntos, entendidos);
+        const p = progressoDaMateria(grupo.assuntos, aprendidos);
         q('.at-materia-nome').textContent = grupo.materia;
-        q('.at-materia-prog').textContent = `${p.assuntosFeitos} de ${p.assuntos} assuntos entendidos`;
-        const contagem = { todos: grupo.assuntos.length, novos: 0, andamento: 0, feitos: 0 };
-        grupo.assuntos.forEach(a => { contagem[estadoDe(a.cartoes, entendidos).estado] += 1; });
+        q('.at-materia-prog').textContent = `${p.assuntosFeitos} de ${p.assuntos} assuntos aprendidos`;
+        const contagem = { todos: grupo.assuntos.length, novos: 0, feitos: 0 };
+        grupo.assuntos.forEach(a => { contagem[estadoDe(a, aprendidos)] += 1; });
         q('.at-chips').innerHTML = FILTROS.map(([id, nome]) =>
             `<button type="button" class="at-chip${id === filtro ? ' ativo' : ''}" data-acao="filtro" data-filtro="${id}" aria-pressed="${id === filtro}">${nome} <span>${contagem[id]}</span></button>`).join('');
-        const visiveis = filtrarAssuntos(grupo.assuntos, filtro, busca, entendidos);
+        const visiveis = filtrarAssuntos(grupo.assuntos, filtro, busca, aprendidos);
         q('.at-lista').innerHTML = visiveis.length ? visiveis.map(a => {
-            const e = estadoDe(a.cartoes, entendidos);
-            const icone = e.estado === 'feitos' ? '✓' : (e.estado === 'andamento' ? '◐' : '○');
-            return `<li><button type="button" class="at-assunto ${e.estado}" data-acao="assunto" data-materia="${esc(a.materia)}" data-assunto="${esc(a.assunto)}">
-                <span class="at-assunto-icone" aria-hidden="true">${icone}</span>
+            const estado = estadoDe(a, aprendidos);
+            const marca = aprendidos[`${a.materia}|${a.assunto}`];
+            const detalhe = estado === 'feitos' ? `Aprendido${dataCurta(marca && marca.data) ? ' em ' + dataCurta(marca.data) : ''} · ${cartoesTxt(a.cartoes.length)}` : cartoesTxt(a.cartoes.length);
+            return `<li><button type="button" class="at-assunto ${estado}" data-acao="assunto" data-materia="${esc(a.materia)}" data-assunto="${esc(a.assunto)}">
+                <span class="at-assunto-icone" aria-hidden="true">${estado === 'feitos' ? '✓' : '○'}</span>
                 <span class="at-assunto-texto"><span class="at-assunto-nome">${esc(a.assunto)}</span>
-                <span class="at-assunto-det">${e.feitos} de ${e.total} entendidos</span></span>
-                ${barra(e.feitos, e.total)}
+                <span class="at-assunto-det">${detalhe}</span></span>
             </button></li>`;
         }).join('') : `<li class="at-vazio">${busca.trim() ? 'Nenhum assunto com esse texto.' : 'Nenhum assunto neste filtro.'}</li>`;
     }
 
     function desenhar() {
-        const entendidos = lerEntendidos();
+        const aprendidos = lerAprendidos();
         el.dataset.vista = vista;
-        desenharTopo(entendidos);
-        desenharMaterias(entendidos);
-        desenharLista(entendidos);
+        desenharTopo(aprendidos);
+        desenharMaterias(aprendidos);
+        desenharLista(aprendidos);
     }
 
     function abrirAssunto(mat, nome) {
@@ -248,7 +236,7 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
                 q('.at-busca').value = '';
                 desenhar();
                 return q('.at-assuntos').scrollIntoView({ block: 'start' });
-            case 'filtro': filtro = d.filtro; return desenharLista(lerEntendidos());
+            case 'filtro': filtro = d.filtro; return desenharLista(lerAprendidos());
             case 'continuar':
             case 'assunto': return abrirAssunto(d.materia, d.assunto);
         }
@@ -276,7 +264,7 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
         const botao = e.target.closest('[data-acao]');
         if (botao) agir(botao);
     });
-    q('.at-busca').addEventListener('input', (e) => { busca = e.target.value; desenharLista(lerEntendidos()); });
+    q('.at-busca').addEventListener('input', (e) => { busca = e.target.value; desenharLista(lerAprendidos()); });
     document.addEventListener('keydown', aoTeclar);
 
     document.body.classList.add('modo-aprender');
