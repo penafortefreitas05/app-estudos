@@ -9928,5 +9928,500 @@
       "windows-server",
       "windows-admin-center"
     ]
+  },
+  {
+    "id": "card-gov-n1-019",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Gestão de serviços (ITIL)",
+    "nivel": 1,
+    "conceito": "Entrega e resultado de serviço",
+    "termo_ingles": "Output; Outcome",
+    "traducao": "Output: entrega gerada por uma atividade; outcome: resultado que o cliente obtém com essa entrega.",
+    "resumo": "Output é o que uma atividade entrega; outcome é o resultado que o cliente obtém com essa entrega.",
+    "nao_confundir": [
+      {
+        "conceito": "Valor",
+        "diferenca": "Output e outcome são entregas e resultados; valor é cocriado com o cliente."
+      }
+    ],
+    "atencao": "As atividades do provedor, sozinhas, não criam valor: ele só se realiza quando o consumidor usa o serviço.",
+    "fonte": "AXELOS, ITIL 4: Connecting the key concepts, Part 1 (2019) — https://www.axelos.com/news/blogs/april-2019/itil-4-connecting-the-key-concepts-blog-part-1",
+    "tags": [
+      "itil-v4",
+      "output",
+      "outcome"
+    ]
+  },
+  {
+    "id": "card-gov-n1-020",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Gestão de serviços (ITIL)",
+    "nivel": 1,
+    "conceito": "Acordo de nível de serviço",
+    "termo_ingles": "Service Level Agreement (SLA)",
+    "traducao": "Acordo de nível de serviço: registra metas e compromissos acordados para a prestação de um serviço.",
+    "resumo": "O SLA formaliza os níveis de serviço acordados entre o provedor e o cliente, como metas de disponibilidade e tempo de resposta.",
+    "nao_confundir": [
+      {
+        "conceito": "Gestão de nível de serviço",
+        "diferenca": "É a prática que define e acompanha metas; o SLA é o acordo documentado."
+      }
+    ],
+    "atencao": "Sem um nível de serviço acordado, o que tende a ser entregue é o melhor esforço.",
+    "fonte": "AXELOS, ITIL 4 Practitioner: Service Level Management (metas baseadas no negócio; acordo documentado como o SLA) — https://dev2.axelos.com/certifications/itil-service-management/itil-practices-manager/itil-4-specialist-collaborate-assure-and-improve/itil-4-practitioner-service-level-management ; AXELOS, blog ITIL 4 Practitioner: Service Level Management Practice (melhor esforço) — https://uat2.axelos.com/resource-hub/blog/itil_4_practitioner_service_level_management_practice",
+    "tags": [
+      "itil-v4",
+      "sla",
+      "nivel-de-servico"
+    ]
+  },
+  {
+    "id": "card-gov-n1-021",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Gestão de serviços (ITIL)",
+    "nivel": 1,
+    "conceito": "Banco de dados de gerenciamento de configuração",
+    "termo_ingles": "Configuration Management Database (CMDB)",
+    "traducao": "Banco de dados de gerenciamento de configuração: reúne registros dos itens de configuração e de suas relações.",
+    "resumo": "Itens de configuração são os componentes do serviço, como servidores e aplicações; a CMDB registra dados e relações deles.",
+    "nao_confundir": [
+      {
+        "conceito": "Inventário de ativos",
+        "diferenca": "Lista ativos; a CMDB registra itens de configuração e também seus relacionamentos."
+      }
+    ],
+    "atencao": "A gestão de configuração do serviço fornece informação precisa e confiável, quando e onde for necessária.",
+    "fonte": "PeopleCert, ITIL 4 Practitioner: Service Configuration Management (propósito) — https://www.peoplecert.org/browse-certifications/it-governance-and-service-management/ITIL-1 ; PeopleCert Community, Beyond IT Service Management: ITIL as a Strategic Enabler of Data Governance (CMDB e ICs) — https://community.peoplecert.org/public/clubs/itil/blogs/beyond-it-service-management-itil-as-a-strategic-enabler-of-data-governance-and-management",
+    "tags": [
+      "itil",
+      "cmdb",
+      "gerenciamento-de-configuracao"
+    ]
+  },
+  {
+    "id": "card-gov-n1-022",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Gestão de serviços (ITIL)",
+    "nivel": 1,
+    "conceito": "Central de serviços",
+    "termo_ingles": "Service Desk",
+    "traducao": "Central de serviços: ponto de entrada e de contato entre o provedor de serviços e os usuários.",
+    "resumo": "A central de serviços recebe demandas dos usuários, encaminha atendimentos e mantém a comunicação com o provedor.",
+    "nao_confundir": [
+      {
+        "conceito": "Equipe de suporte técnico",
+        "diferenca": "Resolve questões técnicas; a central de serviços coordena o contato com os usuários."
+      }
+    ],
+    "atencao": "A central de serviços capta a demanda por resolução de incidentes e por solicitações de serviço.",
+    "fonte": "AXELOS, ITIL 4 Practitioner: Service Desk (ponto de entrada; captar demanda por incidentes e solicitações) — https://dev2.axelos.com/certifications/itil-service-management/itil-practices-manager/itil-4-specialist-monitor-support-and-fulfil/itil-4-practitioner-service-desk",
+    "tags": [
+      "itil",
+      "service-desk"
+    ]
+  },
+  {
+    "id": "card-gov-n1-023",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Gestão de serviços (ITIL)",
+    "nivel": 1,
+    "conceito": "Habilitação de mudanças",
+    "termo_ingles": "Change Enablement",
+    "traducao": "Habilitação de mudanças: avalia riscos e permite que mudanças sejam realizadas com controle.",
+    "resumo": "Essa prática busca aumentar o sucesso das mudanças, avaliando riscos, autorizando alterações e coordenando sua execução.",
+    "nao_confundir": [
+      {
+        "conceito": "Gerenciamento de mudanças clássico",
+        "diferenca": "Visto como freio; a habilitação cria salvaguardas para mudar no ritmo do negócio."
+      }
+    ],
+    "atencao": "Diferente do gerenciamento de mudanças, foca mais em habilitar e apoiar do que em impedir.",
+    "fonte": "AXELOS, ITIL 4 Practitioner: Change Enablement (propósito) — https://dev2.axelos.com/certifications/itil-service-management/itil-practices-manager/itil-4-specialist-plan-implement-and-control/itil-4-practitioner-change-enablement ; AXELOS, blog Change Enablement – change with customer value in mind — https://dev2.axelos.com/resource-hub/blog/itil_4_practitioner_change_enablement",
+    "tags": [
+      "itil-v4",
+      "gerenciamento-de-mudancas"
+    ]
+  },
+  {
+    "id": "card-gov-n1-024",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Gestão de serviços (ITIL)",
+    "nivel": 1,
+    "conceito": "Princípios orientadores",
+    "termo_ingles": "Guiding Principles",
+    "traducao": "Princípios orientadores: recomendações que direcionam decisões e ações da organização.",
+    "resumo": "Os sete: foco no valor; começar onde está; progredir iterativamente com feedback; colaborar e promover visibilidade; pensar e trabalhar holisticamente; manter simples e prático; otimizar e automatizar.",
+    "nao_confundir": [
+      {
+        "conceito": "Processo",
+        "diferenca": "Define atividades relacionadas; princípio orientador recomenda como decidir e agir."
+      }
+    ],
+    "atencao": "São orientações universais que ajudam a organização a tomar decisões e a gerir serviços.",
+    "fonte": "PeopleCert ATV, Optimizing IT Monitoring with ITIL 4 (os sete princípios) — https://atv.peoplecert.org/itil4-peoplecert-accredited-monitoring-tools/ ; PeopleCert Community, ITIL is not the problem (2026; sete orientações universais) — https://community.peoplecert.org/public/clubs/itil/blogs/itil-is-not-the-problem-anti-patterns-that-destroy-its-value-2026-06-19",
+    "tags": [
+      "itil-v4",
+      "principios-orientadores"
+    ]
+  },
+  {
+    "id": "card-gov-n1-025",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Governança de dados (DMBOK)",
+    "nivel": 1,
+    "conceito": "Data steward",
+    "termo_ingles": "Data Steward",
+    "traducao": "Data steward: profissional que gere os dados de uma área em nome de quem responde por eles.",
+    "resumo": "No dia a dia, o data steward cuida do uso e da qualidade dos dados de uma área; as decisões cabem ao responsável.",
+    "nao_confundir": [
+      {
+        "conceito": "Responsável pelos dados (data owner)",
+        "diferenca": "Detém os direitos e decide sobre os dados; o steward os gere por ele."
+      }
+    ],
+    "atencao": "Steward não é dono: responde por gerir algo que pertence a outra pessoa.",
+    "fonte": "NIST ISPAB (2014), apresentação Data Governance / Stewardship (Stewardship is not ownership) — https://csrc.nist.gov/csrc/media/events/ispab-october-2014-meeting/documents/oct22_cloud-privacy_tfinneran.pdf",
+    "tags": [
+      "dmbok",
+      "governanca-de-dados",
+      "papeis",
+      "dama"
+    ]
+  },
+  {
+    "id": "card-gov-n1-026",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Governança de dados (DMBOK)",
+    "nivel": 1,
+    "conceito": "Dimensões da qualidade de dados",
+    "termo_ingles": "Data Quality Dimensions",
+    "traducao": "Dimensões da qualidade de dados: características mensuráveis usadas para avaliar a qualidade.",
+    "resumo": "A DAMA UK define seis: precisão, completude, unicidade, consistência, atualidade e validade.",
+    "nao_confundir": [
+      {
+        "conceito": "Validade",
+        "diferenca": "Validade: dado na faixa e no formato esperados; precisão: dado corresponde à realidade."
+      }
+    ],
+    "atencao": "Completude não é precisão: um conjunto completo ainda pode ter valores incorretos.",
+    "fonte": "UK Government, The Government Data Quality Framework (2020), seis dimensões da DAMA UK — https://www.gov.uk/government/publications/the-government-data-quality-framework/the-government-data-quality-framework ; GOV.UK, Meet the data quality dimensions (2021) — https://www.gov.uk/government/news/meet-the-data-quality-dimensions",
+    "tags": [
+      "dmbok",
+      "qualidade-de-dados"
+    ]
+  },
+  {
+    "id": "card-gov-n1-027",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Governança de dados (DMBOK)",
+    "nivel": 1,
+    "conceito": "Segurança de dados",
+    "termo_ingles": "Data Security",
+    "traducao": "Segurança de dados: protege os dados contra acesso não autorizado e violações.",
+    "resumo": "É uma das áreas da gestão de dados descritas pela DAMA, ao lado de governança, qualidade e metadados.",
+    "nao_confundir": [
+      {
+        "conceito": "Governança de dados",
+        "diferenca": "Define responsabilidades, políticas e direitos de decisão; segurança protege contra acesso indevido."
+      }
+    ],
+    "atencao": "Para a DAMA, segurança de dados é chave para a conformidade legal e a confiança pública.",
+    "fonte": "DAMA International, What is Data Management?, seções Data Security e Data Governance — https://dama.org/about-dama/what-is-data-management/",
+    "tags": [
+      "dmbok",
+      "riscos",
+      "governanca-de-dados"
+    ]
+  },
+  {
+    "id": "card-gov-n1-028",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Governança de dados (DMBOK)",
+    "nivel": 1,
+    "conceito": "Metadados de negócio e técnicos",
+    "termo_ingles": "Business and technical metadata",
+    "traducao": "Metadados de negócio e técnicos: os primeiros dão contexto ao dado; os segundos trazem informação de TI sobre ele.",
+    "resumo": "Metadado de negócio dá contexto, como dizer que uma tabela guarda o cadastro de fornecedores; o técnico traz nomes de colunas, tipos e versões.",
+    "nao_confundir": [
+      {
+        "conceito": "Dado",
+        "diferenca": "É o registro em si; o metadado de negócio explica o que esse registro significa."
+      }
+    ],
+    "atencao": "A área de negócio e os especialistas no domínio enriquecem o metadado de negócio.",
+    "fonte": "Revista do TCU nº 137, The purpose of data governance (seção Glossaries and metadata) — https://revista.tcu.gov.br/ojs/index.php/RTCU/article/download/1383/1556/2526",
+    "tags": [
+      "dmbok",
+      "metadados",
+      "governanca-de-dados"
+    ]
+  },
+  {
+    "id": "card-gov-n1-029",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Gerenciamento de projetos (PMBOK)",
+    "nivel": 1,
+    "conceito": "Definição de projeto",
+    "termo_ingles": "Project",
+    "traducao": "Projeto: esforço temporário para criar produto, serviço ou resultado único.",
+    "resumo": "Na definição clássica do PMI, anterior à 8ª edição, projeto é esforço temporário para criar produto, serviço ou resultado único.",
+    "nao_confundir": [
+      {
+        "conceito": "Operação",
+        "diferenca": "Mantém atividades contínuas e recorrentes; projeto tem duração limitada e entrega única."
+      }
+    ],
+    "atencao": "Temporário indica que há início e fim para o trabalho do projeto ou de uma fase dele.",
+    "fonte": "PMI, What is a Project (definição clássica) — https://www.pmi.org/about/what-is-a-project ; PMI, PMP Examination Content Outline 2026 (natureza temporária) — https://www.pmi.org/-/media/pmi/documents/public/pdf/certifications/new-pmp-examination-content-outline-2026.pdf",
+    "tags": [
+      "pmbok",
+      "definicao-de-projeto"
+    ]
+  },
+  {
+    "id": "card-gov-n1-030",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Gerenciamento de projetos (PMBOK)",
+    "nivel": 1,
+    "conceito": "Grupos de processos",
+    "termo_ingles": "Project Management Process Groups",
+    "traducao": "Grupos de processos de gerenciamento de projetos: agrupamentos de processos conforme suas finalidades.",
+    "resumo": "Até a 6ª edição do PMBOK, os cinco grupos são iniciação, planejamento, execução, monitoramento e controle, e encerramento; na 7ª, viraram um dos modelos.",
+    "nao_confundir": [
+      {
+        "conceito": "Fases do ciclo de vida",
+        "diferenca": "Organizam etapas do projeto; grupos de processos agrupam processos de gerenciamento."
+      }
+    ],
+    "atencao": "Grupos de processos de gerenciamento de projetos não são fases do projeto.",
+    "fonte": "PMI, What is a Project (grupos não são fases) — https://www.pmi.org/about/what-is-a-project ; PMI, PMBOK Guide – Seventh Edition, FAQ público (Process Groups como um dos modelos) — https://www.pmi.org/-/media/pmi/documents/public/pdf/pmbok-standards/pmbok-guide-public-faqs-1-july-2021.pdf ; PMI Learning Library, One Solution for Project Success (cinco grupos, PMBOK 5ª ed.) — https://www.pmi.org/learning/library/one-solution-for-project-success-11130",
+    "tags": [
+      "pmbok",
+      "grupos-de-processos"
+    ]
+  },
+  {
+    "id": "card-gov-n1-031",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Gerenciamento de projetos (PMBOK)",
+    "nivel": 1,
+    "conceito": "Estrutura analítica do projeto",
+    "termo_ingles": "Work Breakdown Structure (WBS)",
+    "traducao": "Estrutura analítica do projeto: decomposição hierárquica do trabalho em partes menores orientadas às entregas.",
+    "resumo": "A EAP é a decomposição hierárquica, orientada às entregas, do trabalho a executar; ela organiza e define todo o escopo do projeto.",
+    "nao_confundir": [
+      {
+        "conceito": "Cronograma",
+        "diferenca": "Organiza atividades no tempo; a EAP decompõe o escopo do trabalho."
+      }
+    ],
+    "atencao": "Regra dos 100%: o trabalho dos níveis inferiores soma exatamente o do nível superior, sem faltar nem sobrar.",
+    "fonte": "PMI, Practice Standard for Work Breakdown Structures (regra dos 100%: a EAP inclui 100% do trabalho definido pelo escopo) — https://www.pmi.org/learning/library/practice-standard-work-breakdown-structures-8063 ; definição de EAP como decomposição hierárquica orientada às entregas (PMBOK 5ª ed., citada em texto de apoio) — https://www.project-management-prepcast.com/free/pmp-exam/tips/302-work-breakdown-structure-wbs-as-defined-in-the-pmbok-guide",
+    "tags": [
+      "pmbok",
+      "eap",
+      "escopo"
+    ]
+  },
+  {
+    "id": "card-gov-n1-032",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Gerenciamento de projetos (PMBOK)",
+    "nivel": 1,
+    "conceito": "Caminho crítico",
+    "termo_ingles": "Critical Path",
+    "traducao": "Caminho crítico: sequência de atividades dependentes que determina a duração do projeto.",
+    "resumo": "Segundo o Léxico do PMI 5.0, é a sequência de atividades que forma o caminho mais longo e determina a menor duração possível.",
+    "nao_confundir": [
+      {
+        "conceito": "Folga total",
+        "diferenca": "Folga é quanto a atividade pode atrasar sem adiar o fim do projeto."
+      }
+    ],
+    "atencao": "Caminho quase crítico é um caminho do cronograma com folga total baixa.",
+    "fonte": "PMI Lexicon of Project Management Terms, versão 5.0 (jan. 2026), verbetes critical path, total float e near-critical path — https://www.pmi.org/-/media/pmi/documents/registered/pdf/pmbok-standards/pmi-lexicon-pm-terms.pdf",
+    "tags": [
+      "pmbok",
+      "cronograma",
+      "caminho-critico",
+      "diagrama-de-rede"
+    ]
+  },
+  {
+    "id": "card-gov-n1-033",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Gerenciamento de projetos (PMBOK)",
+    "nivel": 1,
+    "conceito": "Partes interessadas",
+    "termo_ingles": "Stakeholders",
+    "traducao": "Partes interessadas (stakeholders): pessoas, grupos ou organizações que podem afetar ou ser afetados pelo projeto.",
+    "resumo": "No Léxico do PMI 5.0, é quem pode afetar, ser afetado ou se perceber afetado por decisão, atividade ou resultado.",
+    "nao_confundir": [
+      {
+        "conceito": "Equipe do projeto",
+        "diferenca": "Executa o trabalho; partes interessadas incluem também pessoas externas à equipe."
+      }
+    ],
+    "atencao": "Clientes, patrocinadores, a organização executora e o público podem ser partes interessadas.",
+    "fonte": "PMI Lexicon of Project Management Terms, versão 5.0 (jan. 2026), verbete stakeholder — https://www.pmi.org/-/media/pmi/documents/registered/pdf/pmbok-standards/pmi-lexicon-pm-terms.pdf ; PMI Learning Library, Planning effective stakeholder management strategies (exemplos do PMBOK) — https://www.pmi.org/learning/library/planning-effective-stakeholder-management-strategies-development-6058",
+    "tags": [
+      "pmbok",
+      "partes-interessadas"
+    ]
+  },
+  {
+    "id": "card-gov-n1-034",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Gestão de processos (BPM e BPMN)",
+    "nivel": 1,
+    "conceito": "Gestão de processos de negócio",
+    "termo_ingles": "Business Process Management (BPM)",
+    "traducao": "Gestão de processos de negócio: abordagem disciplinada para identificar, desenhar, executar, documentar, medir, monitorar e controlar processos.",
+    "resumo": "Para a ABPMP, BPM é disciplina de gestão apoiada por tecnologias, voltada a resultados consistentes e alinhados à estratégia.",
+    "nao_confundir": [
+      {
+        "conceito": "Automação de processos",
+        "diferenca": "Automatiza tarefas; BPM também envolve identificar, medir, monitorar e controlar processos."
+      }
+    ],
+    "atencao": "BPM abrange processos de negócio automatizados e não automatizados.",
+    "fonte": "ABPMP International, BPM Profession (definição do BPM CBOK) — https://www.abpmp.org/page/BPM_Profession",
+    "tags": [
+      "bpm",
+      "ciclo-bpm"
+    ]
+  },
+  {
+    "id": "card-gov-n1-035",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Gestão de processos (BPM e BPMN)",
+    "nivel": 1,
+    "conceito": "Notação de processos de negócio",
+    "termo_ingles": "Business Process Model and Notation (BPMN)",
+    "traducao": "Notação de modelagem de processos de negócio: padrão gráfico para representar processos e seus elementos.",
+    "resumo": "A BPMN 2.0 define elementos gráficos como eventos, atividades, gateways e fluxos de sequência para representar processos.",
+    "nao_confundir": [
+      {
+        "conceito": "BPM",
+        "diferenca": "É uma disciplina de gestão; BPMN é uma notação gráfica para representar processos."
+      }
+    ],
+    "atencao": "A BPMN 2.0 distingue eventos, atividades e gateways como objetos de fluxo.",
+    "fonte": "OMG, Business Process Model and Notation 2.0 — https://www.omg.org/spec/BPMN/2.0/ ; OMG, Introduction to BPMN (Flow Objects) — https://www.omg.org/bpmn/Documents/Introduction_to_BPMN.pdf",
+    "tags": [
+      "bpmn",
+      "modelagem"
+    ]
+  },
+  {
+    "id": "card-gov-n1-036",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Gestão de processos (BPM e BPMN)",
+    "nivel": 1,
+    "conceito": "Processo na situação atual",
+    "termo_ingles": "AS-IS",
+    "traducao": "AS-IS: representação de como o processo funciona atualmente.",
+    "resumo": "O modelo AS-IS descreve o funcionamento presente do processo, incluindo atividades e fluxo praticados pela organização.",
+    "nao_confundir": [
+      {
+        "conceito": "TO-BE",
+        "diferenca": "Representa o processo desejado; AS-IS representa o funcionamento atual."
+      }
+    ],
+    "atencao": "Quando o processo é novo, a modelagem da situação atual (AS-IS) pode ser dispensada.",
+    "fonte": "INPI, Portaria DIREX nº 001/2023, seção 5.1 (AS IS) — https://www.gov.br/inpi/pt-br/central-de-conteudo/legislacao/arquivos/documentos/2023direx_01_aprova_documentos_do_sistema_de_gestao_da_qualidade.pdf ; TCE-MG, Metodologia de Gerenciamento de Processos de Negócio, seção 4.3.2 (dispensa do AS IS) — https://www.tce.mg.gov.br/img/METODOLOGIA_DE_GERENCIAMENTO_DE_PROCESSOS_DE_NEGOCIO.pdf",
+    "tags": [
+      "as-is",
+      "mapeamento"
+    ]
+  },
+  {
+    "id": "card-gov-n1-037",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Gestão de processos (BPM e BPMN)",
+    "nivel": 1,
+    "conceito": "Processo na situação desejada",
+    "termo_ingles": "TO-BE",
+    "traducao": "TO-BE: situação ideal ou futura do processo de negócio.",
+    "resumo": "O modelo TO-BE descreve o processo pretendido depois das melhorias planejadas para seu funcionamento.",
+    "nao_confundir": [
+      {
+        "conceito": "AS-IS",
+        "diferenca": "Representa o funcionamento atual; TO-BE representa o funcionamento desejado."
+      }
+    ],
+    "atencao": "O TO-BE incorpora as melhorias identificadas e remove os gargalos do processo.",
+    "fonte": "INPI, Portaria DIREX nº 001/2023, seção 5.1 (TO BE) — https://www.gov.br/inpi/pt-br/central-de-conteudo/legislacao/arquivos/documentos/2023direx_01_aprova_documentos_do_sistema_de_gestao_da_qualidade.pdf",
+    "tags": [
+      "to-be",
+      "mapeamento"
+    ]
+  },
+  {
+    "id": "card-gov-n1-038",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Gestão de processos (BPM e BPMN)",
+    "nivel": 1,
+    "conceito": "Eventos em BPMN",
+    "termo_ingles": "Events",
+    "traducao": "Eventos: elementos que representam ocorrências que afetam o fluxo de um processo.",
+    "resumo": "Evento é algo que acontece durante o processo e afeta seu fluxo; costuma ter uma causa (gatilho) ou um impacto (resultado).",
+    "nao_confundir": [
+      {
+        "conceito": "Atividade",
+        "diferenca": "Representa trabalho realizado; evento representa uma ocorrência no fluxo."
+      }
+    ],
+    "atencao": "Há três tipos de evento, conforme o momento em que afetam o fluxo: início, intermediário e fim.",
+    "fonte": "OMG, Introduction to BPMN (Events) — https://www.omg.org/bpmn/Documents/Introduction_to_BPMN.pdf",
+    "tags": [
+      "bpmn",
+      "eventos"
+    ]
+  },
+  {
+    "id": "card-gov-n1-039",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Gestão de processos (BPM e BPMN)",
+    "nivel": 1,
+    "conceito": "Gateways em BPMN",
+    "termo_ingles": "Gateways",
+    "traducao": "Gateways: controlam a divergência e a convergência do fluxo de sequência.",
+    "resumo": "Um gateway pode direcionar o fluxo para caminhos alternativos ou paralelos e reunir caminhos conforme suas regras.",
+    "nao_confundir": [
+      {
+        "conceito": "Evento",
+        "diferenca": "Representa uma ocorrência; gateway controla a divisão ou junção dos caminhos."
+      }
+    ],
+    "atencao": "Exclusivo segue um só caminho; inclusivo, de um a todos; paralelo define caminhos simultâneos.",
+    "fonte": "OMG, Introduction to BPMN (Gateway) — https://www.omg.org/bpmn/Documents/Introduction_to_BPMN.pdf ; OMG BPMN Tutorial (tipos de gateway) — https://www.omg.org/bpmn/Documents/OMG_BPMN_Tutorial.pdf",
+    "tags": [
+      "bpmn",
+      "gateways"
+    ]
+  },
+  {
+    "id": "card-gov-n1-040",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Gestão de processos (BPM e BPMN)",
+    "nivel": 1,
+    "conceito": "Pools e raias em BPMN",
+    "termo_ingles": "Pools; Lanes",
+    "traducao": "Pool: participante do processo; raia (lane): subdivisão do pool que organiza atividades.",
+    "resumo": "Na BPMN, o pool delimita um participante; as raias organizam e categorizam as atividades dentro dele.",
+    "nao_confundir": [
+      {
+        "conceito": "Fluxo de mensagem",
+        "diferenca": "Mostra a comunicação entre dois participantes (pools); fluxo de sequência ordena atividades."
+      }
+    ],
+    "atencao": "Fluxo de sequência não cruza a borda do pool; entre pools, usa-se fluxo de mensagem.",
+    "fonte": "OMG, Introduction to BPMN (Swimlanes, Message Flow) — https://www.omg.org/bpmn/Documents/Introduction_to_BPMN.pdf ; OMG BPMN Tutorial (fluxo de mensagem entre pools) — https://www.omg.org/bpmn/Documents/OMG_BPMN_Tutorial.pdf",
+    "tags": [
+      "bpmn",
+      "raias",
+      "pools"
+    ]
   }
 ]
