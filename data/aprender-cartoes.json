@@ -11183,5 +11183,390 @@
     "tags": [
       "colocacao-pronominal"
     ]
+  },
+  {
+    "id": "card-pt-n1-035",
+    "materia": "Português",
+    "assunto": "Semântica e reescrita",
+    "nivel": 1,
+    "conceito": "Denotação",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Denotação é o sentido literal e convencional da palavra. Exemplo: A pedra rolou pela rua.",
+    "nao_confundir": [
+      {
+        "conceito": "Conotação",
+        "diferenca": "Conotação é o sentido figurado, que depende do contexto: coração de pedra."
+      }
+    ],
+    "atencao": "A mesma palavra pode ser denotativa ou conotativa: pedra no jardim; coração de pedra.",
+    "fonte": "Instituto Federal do Espírito Santo, Caderno Interdisciplinar de Redação, cap. 3, p. 10 — https://repositorio.ifes.edu.br/server/api/core/bitstreams/954b565f-4b1f-4bca-99d2-a94eb0c2ea7b/content",
+    "tags": [
+      "denotacao",
+      "conotacao",
+      "semantica"
+    ]
+  },
+  {
+    "id": "card-pt-n1-036",
+    "materia": "Português",
+    "assunto": "Semântica e reescrita",
+    "nivel": 1,
+    "conceito": "Sinônimo",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Sinônimo é palavra de sentido igual ou parecido ao de outra naquela frase. Exemplo: A reunião foi breve; o encontro foi curto.",
+    "nao_confundir": [
+      {
+        "conceito": "Antônimo",
+        "diferenca": "Antônimo tem sentido contrário; sinônimo tem sentido semelhante no contexto."
+      }
+    ],
+    "atencao": "Sinônimo depende do contexto: em nota alta, elevada serve; em pessoa alta, não.",
+    "fonte": "Fundação Cecierj, Revista Educação Pública, Léxico e Semântica — https://educacaopublica.cecierj.edu.br/artigos/8/28/leacutexico-e-semacircntica ; apoio: Universidade Federal de Campina Grande, Relações semântico-lexicais e coesão textual — https://dspace.sti.ufcg.edu.br/bitstream/riufcg/45906/1/RELA%C3%87%C3%95ES%20SEM%C3%82NTICO-LEXICAIS%20E%20COES%C3%83O%20TEXTUAL%20-%20EVENTO%20VIII%20SELIMEL%20ET%2002%202013.pdf",
+    "tags": [
+      "sinonimos",
+      "antonimos",
+      "semantica",
+      "reescrita"
+    ]
+  },
+  {
+    "id": "card-pt-n1-037",
+    "materia": "Português",
+    "assunto": "Semântica e reescrita",
+    "nivel": 1,
+    "conceito": "Polissemia",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Polissemia é uma mesma palavra com vários sentidos relacionados. Exemplo: o pé da mesa; o pé de alface; meu pé doeu.",
+    "nao_confundir": [
+      {
+        "conceito": "Homonímia",
+        "diferenca": "Homonímia: sentidos sem relação entre si, como banco (assento) e banco (instituição)."
+      }
+    ],
+    "atencao": "Manga (fruta) e manga (da camisa) são, em muitos livros, homônimas, não caso de polissemia.",
+    "fonte": "Fundação Cecierj, Introdução à semântica (homonímia e polissemia, com base em Cançado, 2012) — https://canal.cecierj.edu.br/122016/89e37050506a18d67892651721082ce9.pdf ; Instituto Federal do Espírito Santo, Caderno Interdisciplinar de Redação, cap. 3, p. 10 — https://repositorio.ifes.edu.br/server/api/core/bitstreams/954b565f-4b1f-4bca-99d2-a94eb0c2ea7b/content ; Fundação Cecierj, Revista Educação Pública, Léxico e Semântica — https://educacaopublica.cecierj.edu.br/artigos/8/28/leacutexico-e-semacircntica",
+    "tags": [
+      "polissemia",
+      "semantica"
+    ]
+  },
+  {
+    "id": "card-pt-n1-038",
+    "materia": "Português",
+    "assunto": "Semântica e reescrita",
+    "nivel": 1,
+    "conceito": "Reescrita por conjunção",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Trocar a conjunção só mantém o sentido se a nova tiver o mesmo valor: mas e porém indicam oposição. Exemplo: A fila andou, porém o atendimento demorou.",
+    "nao_confundir": [
+      {
+        "conceito": "Conjunção de causa",
+        "diferenca": "Porque indica causa; mas indica oposição; trocar uma pela outra muda o sentido."
+      }
+    ],
+    "atencao": "Trocar mas por portanto muda oposição para conclusão.",
+    "fonte": "Rede e-Tec Brasil, IFSul, Português, Módulo 2, Aula 10 (conectivos de adversidade e de conclusão) — http://idiomas.ifsul.edu.br/conteudo/portugues/modulo_02/aula_10/pdf/POR_M2_C2_A10.pdf ; Fundação Cecierj, Roteiro de Atividades (troca de conectivo que mantém o sentido) — https://canal.cecierj.edu.br/012016/07a123e76469037c237fe6b0bea87098.pdf",
+    "tags": [
+      "reescrita",
+      "conjuncoes",
+      "semantica"
+    ]
+  },
+  {
+    "id": "card-pt-n1-039",
+    "materia": "Português",
+    "assunto": "Semântica e reescrita",
+    "nivel": 1,
+    "conceito": "Deslocamento do termo",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Mudar a posição de um termo pode mudar o sentido. Exemplo: Só Rui revisou o mapa; Rui revisou só o mapa.",
+    "nao_confundir": [
+      {
+        "conceito": "Deslocamento sem mudança",
+        "diferenca": "Deslocar o adjunto adverbial costuma manter o sentido: Ontem Rui saiu; Rui saiu ontem."
+      }
+    ],
+    "atencao": "Reescrita com termo deslocado só é correta se o sentido ficar igual e sem ambiguidade.",
+    "fonte": "Escola Fazendária do Paraná, Dicas de Português (posição do advérbio só) — https://efaz.fazenda.pr.gov.br/Pagina/Dicas-de-Portugues-0 ; Tribunal de Justiça de Minas Gerais, Gotas de Língua Portuguesa 74, Ambiguidade I — https://bd-login.tjmg.jus.br/jspui/bitstream/tjmg/7701/4/74%20Ambiguidade%20I.doc ; Escola de Serviço Público do Espírito Santo, Redação Oficial, Módulo I (adjunto adverbial deslocável) — https://esesp.es.gov.br/Media/esesp/Agenda%20Municipal/APOSTILA_COMPLETA_ROMI.pdf",
+    "tags": [
+      "deslocamento",
+      "reescrita",
+      "semantica"
+    ]
+  },
+  {
+    "id": "card-pt-n1-040",
+    "materia": "Português",
+    "assunto": "Semântica e reescrita",
+    "nivel": 1,
+    "conceito": "Voz passiva analítica",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Voz passiva analítica usa ser mais particípio (forma em -do, -da) e equivale à sintética, com se. Exemplo: Alugam-se salas; salas são alugadas.",
+    "nao_confundir": [
+      {
+        "conceito": "Se indeterminador",
+        "diferenca": "Com preposição, o se indetermina o sujeito; verbo no singular: Precisa-se de salas."
+      }
+    ],
+    "atencao": "Na sintética e na analítica, o verbo concorda com o sujeito: Concederam-se os mandados.",
+    "fonte": "Supremo Tribunal Federal, EAD, Concordância verbal, Aula 2 (vozes verbais) — https://ead.stf.jus.br/cursos/concordancia-verbal/Aula%202/aula2.html ; Universidade Federal da Fronteira Sul, Sequência didática sobre o uso do se — https://portaleventos.uffs.edu.br/index.php/JORNADA/article/download/24591/17489/101798",
+    "tags": [
+      "voz-passiva-sintetica",
+      "reescrita"
+    ]
+  },
+  {
+    "id": "card-pt-n1-041",
+    "materia": "Português",
+    "assunto": "Coesão e referenciação",
+    "nivel": 1,
+    "conceito": "Coesão",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Coesão é a ligação entre as partes do texto, feita por pronomes, sinônimos e conjunções. Exemplo: Lia chegou cedo, mas ela não entrou.",
+    "nao_confundir": [
+      {
+        "conceito": "Coerência",
+        "diferenca": "Coerência é o sentido lógico do texto; coesão é a ligação entre as partes."
+      }
+    ],
+    "atencao": "Uma palavra pode retomar um termo anterior ou anunciar um termo posterior.",
+    "fonte": "Universidade Federal do Tocantins, dissertação sobre coesão referencial (coesão × coerência; referencial retoma ou introduz) — https://repositorio.uft.edu.br/bitstream/11612/2931/1/Alcina%20Maria%20Barra%20de%20Oliveira%20-%20Disserta%C3%A7%C3%A3o.pdf ; apoio: Secretaria de Educação do Espírito Santo, Referencial Pedagógico, 1ª série, 22ª semana (coesão e coerência) — https://curriculo.sedu.es.gov.br/curriculo/wp-content/uploads/2024/07/RPE-LP-1aserie-22a-semana.pdf",
+    "tags": [
+      "coesao",
+      "referenciacao"
+    ]
+  },
+  {
+    "id": "card-pt-n1-042",
+    "materia": "Português",
+    "assunto": "Coesão e referenciação",
+    "nivel": 1,
+    "conceito": "Anáfora",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Referenciação liga uma expressão a um elemento do texto; anáfora retoma o anterior. Exemplo: Bia abriu a janela; ela sorriu.",
+    "nao_confundir": [
+      {
+        "conceito": "Catáfora",
+        "diferenca": "Catáfora anuncia o que vem depois: Só quero isto: silêncio."
+      }
+    ],
+    "atencao": "Isto e este costumam anunciar o que vem; isso e esse retomam o que já foi dito.",
+    "fonte": "Senado Federal, Manual de Comunicação da Secom, verbete Este/esse, esta/essa, isto/isso — https://www12.senado.leg.br/manualdecomunicacao/estilos/este-esse-esta-essa-isto-isso ; Tribunal de Justiça de São Paulo, Escola Judicial dos Servidores, Dicas de Língua Portuguesa, item 3.5 — https://www.tjsp.jus.br/Download/EJUS/AVAS/DicasLinguaPortuguesa/DicasLinguaPortuguesa.pdf ; apoio: Secretaria de Educação do Espírito Santo, Referencial Pedagógico, 2ª série, 14ª semana (anáfora e catáfora) — https://curriculo.sedu.es.gov.br/curriculo/wp-content/uploads/2024/05/lp2serie14semana0307JUN24160524.pdf",
+    "tags": [
+      "referenciacao",
+      "anafora",
+      "catafora",
+      "coesao"
+    ]
+  },
+  {
+    "id": "card-pt-n1-043",
+    "materia": "Português",
+    "assunto": "Coesão e referenciação",
+    "nivel": 1,
+    "conceito": "Coesão lexical",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Coesão lexical retoma termo por repetição, sinônimo ou hiperônimo, palavra de categoria ampla. Exemplo: A pera caiu; a fruta amassou.",
+    "nao_confundir": [
+      {
+        "conceito": "Coesão por pronome",
+        "diferenca": "Pronome retoma o termo por substituição gramatical: A pera caiu; ela amassou."
+      }
+    ],
+    "atencao": "A repetição da mesma palavra também é coesão lexical e pode ser recurso de estilo.",
+    "fonte": "Universidade Federal da Grande Dourados, Revista Arredia, Mecanismos de coesão no texto Aula de inglês — https://ojs.ufgd.edu.br/arredia/article/download/1744/1123/5799 ; Universidade Federal do Tocantins, dissertação sobre coesão referencial (coesão × coerência; referencial retoma ou introduz) — https://repositorio.uft.edu.br/bitstream/11612/2931/1/Alcina%20Maria%20Barra%20de%20Oliveira%20-%20Disserta%C3%A7%C3%A3o.pdf",
+    "tags": [
+      "coesao",
+      "coesao-lexical"
+    ]
+  },
+  {
+    "id": "card-pt-n1-044",
+    "materia": "Português",
+    "assunto": "Coesão e referenciação",
+    "nivel": 1,
+    "conceito": "Pronome relativo cujo",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Cujo liga termos em relação de posse e concorda com o item possuído. Exemplo: Conheci a autora cujo livro venceu.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: cujo o livro; certo: cujo livro."
+      }
+    ],
+    "atencao": "Cujo pode vir com a preposição que o verbo pede: a autora de cujo livro gostei.",
+    "fonte": "Tribunal de Justiça de Minas Gerais, Gotas de Língua Portuguesa 222, Uso do pronome cujo — https://bd-login.tjmg.jus.br/jspui/bitstream/tjmg/12946/1/222%20Uso%20do%20pronome%20'cujo'%20e%20suas%20vari%C3%A1veis.pdf ; Tribunal de Justiça de Santa Catarina, Dicas de português, Cujo — https://www.tjsc.jus.br/web/servidor/dicas-de-portugues/-/asset_publisher/0rjJEBzj2Oes/content/cujo",
+    "tags": [
+      "pronome-relativo",
+      "cujo",
+      "coesao"
+    ]
+  },
+  {
+    "id": "card-pt-n1-045",
+    "materia": "Português",
+    "assunto": "Coesão e referenciação",
+    "nivel": 1,
+    "conceito": "Conjunções de oposição",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Conjunções de oposição, como mas, porém, contudo e todavia, contrapõem ideias. Exemplo: A loja abriu, mas o sistema falhou.",
+    "nao_confundir": [
+      {
+        "conceito": "Adição",
+        "diferenca": "E soma ideias; mas contrapõe: A loja abriu e vendeu; abriu, mas falhou."
+      }
+    ],
+    "atencao": "Porém, contudo e todavia podem deslocar-se na oração, entre vírgulas; mas vem sempre no início.",
+    "fonte": "Fundação Alexandre de Gusmão, Manual de Revisão, verbete Vírgula — https://funag.gov.br/manual/index.php?title=V%C3%ADrgula ; Escola Fazendária do Paraná, Dicas de Português (adversativas) — https://efaz.fazenda.pr.gov.br/Pagina/Dicas-de-Portugues-0",
+    "tags": [
+      "conjuncoes",
+      "oposicao",
+      "coesao"
+    ]
+  },
+  {
+    "id": "card-pt-n1-046",
+    "materia": "Português",
+    "assunto": "Interpretação de texto",
+    "nivel": 1,
+    "conceito": "Compreensão literal",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Compreensão literal localiza a informação que está escrita no texto. Exemplo: O texto diz que o prédio abre às oito.",
+    "nao_confundir": [
+      {
+        "conceito": "Inferência",
+        "diferenca": "Inferência conclui informação implícita com apoio nas pistas do texto."
+      }
+    ],
+    "atencao": "A informação literal pode aparecer no texto com palavras diferentes das usadas no enunciado.",
+    "fonte": "INEP, Saeb, Matriz de Língua Portuguesa da 8ª série, Comentários sobre os Tópicos e Descritores — https://download.inep.gov.br/educacao_basica/prova_brasil_saeb/menu_do_professor/prova_lingua_portuguesa/matrizes_lp_8_serie/TopicoI_LP_8a_serie_EF_PROF.pdf",
+    "tags": [
+      "compreensao-literal",
+      "inferencia",
+      "interpretacao-de-texto"
+    ]
+  },
+  {
+    "id": "card-pt-n1-047",
+    "materia": "Português",
+    "assunto": "Interpretação de texto",
+    "nivel": 1,
+    "conceito": "Inferência",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Inferência é concluir uma informação que não está escrita, mas que as pistas do texto permitem. Exemplo: Ele chegou encharcado; infere-se que chovia.",
+    "nao_confundir": [
+      {
+        "conceito": "Conhecimento de mundo",
+        "diferenca": "O leitor usa o que sabe, mas a conclusão precisa ser autorizada pelo texto."
+      }
+    ],
+    "atencao": "Inferência se apoia nas marcas do texto; conclusão sem essas marcas não é inferência.",
+    "fonte": "INEP, Saeb, Matriz de Língua Portuguesa da 8ª série, Comentários sobre os Tópicos e Descritores — https://download.inep.gov.br/educacao_basica/prova_brasil_saeb/menu_do_professor/prova_lingua_portuguesa/matrizes_lp_8_serie/TopicoI_LP_8a_serie_EF_PROF.pdf (D4) ; MEC, Portal do Professor, Você sabe fazer inferências — https://portaldoprofessor.mec.gov.br/fichaTecnicaAula.html?aula=49268",
+    "tags": [
+      "inferencia",
+      "interpretacao-de-texto"
+    ]
+  },
+  {
+    "id": "card-pt-n1-048",
+    "materia": "Português",
+    "assunto": "Interpretação de texto",
+    "nivel": 1,
+    "conceito": "Ideia central",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Ideia central é a mensagem principal do texto. Exemplo: Três parágrafos defendem que a biblioteca deve ampliar o horário.",
+    "nao_confundir": [
+      {
+        "conceito": "Detalhe",
+        "diferenca": "Detalhe é informação específica; ideia central resume a mensagem principal."
+      }
+    ],
+    "atencao": "Um exemplo ou detalhe citado no texto não é a ideia central.",
+    "fonte": "INEP, Saeb, Matriz de Língua Portuguesa da 8ª série, Comentários sobre os Tópicos e Descritores — https://download.inep.gov.br/educacao_basica/prova_brasil_saeb/menu_do_professor/prova_lingua_portuguesa/matrizes_lp_8_serie/TopicoI_LP_8a_serie_EF_PROF.pdf (D6)",
+    "tags": [
+      "ideia-central",
+      "interpretacao-de-texto"
+    ]
+  },
+  {
+    "id": "card-pt-n1-049",
+    "materia": "Português",
+    "assunto": "Interpretação de texto",
+    "nivel": 1,
+    "conceito": "Fato",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Fato é informação que pode ser verificada. Exemplo: O atendimento terminou às cinco.",
+    "nao_confundir": [
+      {
+        "conceito": "Opinião",
+        "diferenca": "Opinião é a interpretação que o autor dá ao fato, não o fato."
+      }
+    ],
+    "atencao": "Uma avaliação do autor não se torna fato só por aparecer no texto.",
+    "fonte": "INEP, Saeb, Matriz de Língua Portuguesa da 8ª série, Comentários sobre os Tópicos e Descritores — https://download.inep.gov.br/educacao_basica/prova_brasil_saeb/menu_do_professor/prova_lingua_portuguesa/matrizes_lp_8_serie/TopicoI_LP_8a_serie_EF_PROF.pdf (D14)",
+    "tags": [
+      "fato-e-opiniao",
+      "interpretacao-de-texto"
+    ]
+  },
+  {
+    "id": "card-pt-n1-050",
+    "materia": "Português",
+    "assunto": "Interpretação de texto",
+    "nivel": 1,
+    "conceito": "Causa e consequência",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Causa é o fato que produz outro; consequência é o resultado. Exemplo: A bateria acabou, por isso o aparelho desligou.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: em Choveu, por isso a rua molhou, a causa é molhou; certo: é choveu."
+      }
+    ],
+    "atencao": "A relação pode vir sem conjunção: A bateria acabou. O aparelho desligou.",
+    "fonte": "Universidade Federal do Norte do Tocantins, Entreletras, A realização léxico-gramatical de relações conjuntivas causais — https://periodicos.ufnt.edu.br/index.php/entreletras/article/download/14391/20516 ; apoio: Secretaria da Educação do Tocantins, Guia de Aprendizagem, descritor D8 (causa e consequência) — https://central3.to.gov.br/arquivo/357210/",
+    "tags": [
+      "causa-consequencia",
+      "relacoes-semanticas",
+      "interpretacao-de-texto"
+    ]
+  },
+  {
+    "id": "card-pt-n1-051",
+    "materia": "Português",
+    "assunto": "Interpretação de texto",
+    "nivel": 1,
+    "conceito": "Tipologia textual",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Tipologia textual é o modo de organizar o texto: narração conta fatos; descrição caracteriza; dissertação expõe ou defende ideias; injunção dá instruções. Exemplo: Abra o menu e clique em Entrar.",
+    "nao_confundir": [
+      {
+        "conceito": "Gênero textual",
+        "diferenca": "Gênero é o formato social, como bula ou e-mail; tipo é o modo de organizar."
+      }
+    ],
+    "atencao": "Um texto pode combinar tipos, embora um deles predomine.",
+    "fonte": "Fundação Cecierj, Pré-Vestibular, Português, vol. 1, unidade 2 (tipos textuais e tipo predominante) — https://canal.cecierj.edu.br/042022/a205887b2635b3f593ce443d1603fa7d.pdf ; Fundação Cecierj, Redação de Textos Acadêmicos (gênero × tipo) — https://canal.cecierj.edu.br/122016/2e3f7141ec9fa9f9ee9e1285ff04ddae.pdf",
+    "tags": [
+      "tipologia-textual",
+      "interpretacao-de-texto"
+    ]
   }
 ]
