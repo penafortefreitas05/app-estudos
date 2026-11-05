@@ -10,6 +10,7 @@
 // O "Aprendi" (uma marca por assunto) é guardado no aparelho por js/leitura.js; esta tela só lê esse estado.
 
 import { esc } from './ui.js';
+import { montarPlano } from './plano.js';
 import { assuntosComCartoes, abrirLeitura, lerAprendidos, assuntoAprendido, migrarEntendidos } from './leitura.js';
 
 const CHAVE_ULTIMO = 'appEstudos_AprenderUltimo';
@@ -92,12 +93,17 @@ function guardarUltimo(materia, assunto) {
 // opcoes.ordemMaterias: ordem das matérias na lista
 // opcoes.temQuestoes(materia, assunto): se true, a leitura mostra "Praticar" no fim
 // opcoes.aoPraticar(materia, assunto): chamado depois de fechar leitura e tela
+// opcoes.assuntoVisivel(materia, assunto): false esconde o assunto (concurso escolhido no perfil)
+// opcoes.perfil: perfil do usuário (dias e horas montam o plano); opcoes.aoConfigurarPlano(): abre o perfil
 // opcoes.materia: matéria já escolhida ao abrir (ex.: primeira sessão guiada)
 // Devolve false quando não há cartões carregados (ex.: sem internet na primeira vez).
-export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => false, aoPraticar, materia: materiaInicial } = {}) {
+export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => false, aoPraticar, materia: materiaInicial, assuntoVisivel = null, perfil = null, aoConfigurarPlano } = {}) {
     if (document.querySelector('.aprender-tela')) return true;
-    const lista = await assuntosComCartoes();
-    if (!lista.length) return false;
+    const todos = await assuntosComCartoes();
+    if (!todos.length) return false;
+    // Segue o concurso do perfil: só os assuntos com questões dele. Se o filtro esvaziar tudo, mostra todos.
+    const doConcurso = assuntoVisivel ? todos.filter(a => assuntoVisivel(a.materia, a.assunto)) : todos;
+    const lista = doConcurso.length ? doConcurso : todos;
     migrarEntendidos(lista); // converte o "Entendi" por cartão da versão antiga (uma vez por aparelho)
     const grupos = agruparPorMateria(lista, ordemMaterias);
 
@@ -125,6 +131,7 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
             <button type="button" class="at-sair" data-acao="fechar" aria-label="Fechar o Aprender">✕</button>
         </header>
         <div class="at-corpo">
+            <div class="at-plano-area"></div>
             <div class="at-continuar-area"></div>
             <div class="at-grade">
                 <nav class="at-materias" aria-label="Matérias"></nav>
@@ -170,6 +177,37 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
             </button>`;
     }
 
+    function desenharPlano(aprendidos) {
+        const area = q('.at-plano-area');
+        const plano = montarPlano({ perfil, grupos, aprendidos });
+        if (!plano) {
+            area.innerHTML = `<div class="at-plano"><p class="at-plano-titulo">📅 Meu plano</p>
+                <p class="at-plano-texto">Diga quais dias você estuda e quanto tempo tem. O app monta a semana para você.</p>
+                <button type="button" class="at-plano-btn" data-acao="configurar-plano">Montar meu plano</button></div>`;
+            return;
+        }
+        const blocosHtml = (d) => d.blocos.length ? d.blocos.map(b => `
+            <div class="at-plano-bloco"><p class="at-plano-materia">${esc(b.materia)}</p>
+            ${b.assuntos.map(a => `<button type="button" class="at-plano-assunto${a.feito ? ' feito' : ''}" data-acao="assunto" data-materia="${esc(b.materia)}" data-assunto="${esc(a.assunto)}"><span aria-hidden="true">${a.feito ? '✓' : '○'}</span> ${esc(a.assunto)}</button>`).join('')}</div>`).join('')
+            : '<p class="at-plano-texto">Sem assuntos novos: foque em questões e na revisão.</p>';
+        const hoje = plano.dias.find(d => d.hoje);
+        let topo;
+        if (hoje) {
+            topo = `<p class="at-plano-titulo">📅 Hoje, ${esc(hoje.nome.toLowerCase())}</p>${blocosHtml(hoje)}
+                <p class="at-plano-q">🎯 <b>${hoje.questoes} questões</b> <span>(a revisão do dia entra nessa conta)</span></p>`;
+        } else {
+            const prox = plano.proximo || plano.dias[0];
+            topo = `<p class="at-plano-titulo">📅 Hoje é dia de descanso</p>
+                <p class="at-plano-texto">Seu próximo dia de estudo: <b>${esc(prox.nome.toLowerCase())}</b>${plano.proximo ? '' : ' (semana que vem)'}.</p>`;
+        }
+        const semana = plano.dias.map(d => `
+            <div class="at-plano-dia${d.hoje ? ' hoje' : ''}"><p class="at-plano-dia-nome">${esc(d.nome)}${d.hoje ? ' · hoje' : ''} <span>${d.questoes} questões</span></p>
+            ${d.blocos.map(b => `<p class="at-plano-dia-linha"><b>${esc(b.materia)}</b>: ${b.assuntos.map(a => (a.feito ? '✓ ' : '') + esc(a.assunto)).join(', ')}</p>`).join('') || '<p class="at-plano-dia-linha">Questões e revisão</p>'}</div>`).join('');
+        area.innerHTML = `<div class="at-plano">${topo}
+            <details class="at-plano-semana"><summary>Ver a semana (${plano.dias.length} ${plano.dias.length === 1 ? 'dia' : 'dias'} · ${plano.horas} h por dia)</summary>${semana}</details>
+            <button type="button" class="at-plano-link" data-acao="configurar-plano">Ajustar dias e horas</button></div>`;
+    }
+
     function desenharMaterias(aprendidos) {
         q('.at-materias').innerHTML = grupos.map(g => {
             const p = progressoDaMateria(g.assuntos, aprendidos);
@@ -208,6 +246,7 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
         const aprendidos = lerAprendidos();
         el.dataset.vista = vista;
         desenharTopo(aprendidos);
+        desenharPlano(aprendidos);
         desenharMaterias(aprendidos);
         desenharLista(aprendidos);
     }
@@ -236,6 +275,10 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
                 q('.at-busca').value = '';
                 desenhar();
                 return q('.at-assuntos').scrollIntoView({ block: 'start' });
+            case 'configurar-plano':
+                fechar();
+                if (typeof aoConfigurarPlano === 'function') aoConfigurarPlano();
+                return;
             case 'filtro': filtro = d.filtro; return desenharLista(lerAprendidos());
             case 'continuar':
             case 'assunto': return abrirAssunto(d.materia, d.assunto);

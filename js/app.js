@@ -48,7 +48,9 @@ import {
     carregarRespostasRecentes,
     pedirExplicacaoIA,
     lerFilaDoDiaNuvem,
-    gravarFilaDoDiaNuvem
+    gravarFilaDoDiaNuvem,
+    lerPerfilNuvem,
+    gravarPerfilNuvem
 } from './supabase.js';
 
 // ---------- 1.3 Autenticação ----------
@@ -1094,7 +1096,7 @@ function atualizarSelectConcurso(todas, trilha) {
     const comQuestoes = new Set(todas.flatMap(trilhasDe));
     [...selectConcurso.options].forEach(o => { o.hidden = o.disabled = !comQuestoes.has(o.value); });
     selectConcurso.value = trilha;
-    selectConcurso.hidden = comQuestoes.size <= 1;
+    selectConcurso.hidden = true; // a escolha agora fica no perfil (🎯 Meta diária e perfil)
 }
 if (selectConcurso) selectConcurso.addEventListener("change", () => {
     try { localStorage.setItem(CHAVE_TRILHA, selectConcurso.value); } catch (e) { /* fica só nesta sessão */ }
@@ -1894,6 +1896,58 @@ function buscarQuestoes() {
 }
 
 // questoesChegando: a busca já iniciada por buscarQuestoes() (opcional)
+// Os assuntos que têm questões no concurso escolhido ficam guardados no aparelho, para o Aprender
+// filtrar por concurso também sem internet (offline `questoes` fica vazio).
+const CHAVE_ASSUNTOS_TRILHA = 'appEstudos_AssuntosTrilha';
+function guardarAssuntosDaTrilha(trilha) {
+    try {
+        const chaves = [...new Set(questoes.map(q => `${q.materia}|${q.assunto}`))];
+        if (chaves.length) localStorage.setItem(CHAVE_ASSUNTOS_TRILHA, JSON.stringify({ trilha, chaves }));
+    } catch (e) { /* segue sem guardar */ }
+}
+function assuntoDoConcurso() {
+    try {
+        const g = JSON.parse(localStorage.getItem(CHAVE_ASSUNTOS_TRILHA) || 'null');
+        if (!g || g.trilha !== trilhaAtual() || !Array.isArray(g.chaves) || !g.chaves.length) return null;
+        const set = new Set(g.chaves);
+        return (materia, assunto) => set.has(`${materia}|${assunto}`);
+    } catch (e) { return null; }
+}
+
+// ---------- Perfil: o concurso (alvo) é a trilha do app inteiro ----------
+// Salva no aparelho e na nuvem. Se o concurso mudou, recarrega o banco já com a nova trilha.
+async function guardarPerfilDoUsuario(perfil) {
+    const agora = Date.now();
+    salvarPerfil(usuarioAtual.id, perfil, agora);
+    gravarPerfilNuvem(perfil, agora);
+    const trocou = TRILHAS.includes(perfil.alvo) && perfil.alvo !== trilhaAtual();
+    if (TRILHAS.includes(perfil.alvo)) {
+        try { localStorage.setItem(CHAVE_TRILHA, perfil.alvo); } catch (e) { /* fica só nesta sessão */ }
+    }
+    if (trocou) {
+        [selectMateria, selectBanca, selectTag].forEach(sel => { if (sel) sel.value = ""; });
+        if (ultimaListaDaNuvem) { await carregarBancoDeQuestoes(Promise.resolve({ questoes: ultimaListaDaNuvem })); return; }
+    }
+    aplicarFiltros();
+}
+
+// Na abertura: o perfil mais novo vence (nuvem ou aparelho). Sem rede, fica o do aparelho.
+async function sincronizarPerfil() {
+    try {
+        carregarPerfil(usuarioAtual.id);
+        const local = obterPerfilAtivo();
+        const nuvem = await lerPerfilNuvem();
+        if (nuvem && (!local || nuvem.atualizadoEm > (local.atualizadoEm || 0))) {
+            salvarPerfil(usuarioAtual.id, nuvem.perfil, nuvem.atualizadoEm);
+        } else if (local && (!nuvem || (local.atualizadoEm || 0) > nuvem.atualizadoEm)) {
+            const { atualizadoEm, ...semData } = local;
+            gravarPerfilNuvem(semData, atualizadoEm || Date.now());
+        }
+        const p = obterPerfilAtivo();
+        if (p && TRILHAS.includes(p.alvo)) localStorage.setItem(CHAVE_TRILHA, p.alvo);
+    } catch (e) { console.warn("[FocoPro] Perfil sem nuvem:", e); }
+}
+
 // Uma fila por conta: a nuvem manda. Se hoje ainda não tem fila lá, este aparelho monta e grava;
 // se dois aparelhos gravarem juntos, vale a primeira (e o outro relê).
 async function sincronizarFilaDoDia() {
@@ -1950,11 +2004,13 @@ async function carregarBancoDeQuestoes(questoesChegando = null) {
     ultimaListaDaNuvem = daNuvem;
 
     const todas = mesclarQuestoes(daNuvem);
+    await sincronizarPerfil();
     const trilha = trilhaAtual();
     questoes = todas.filter(q => trilhasDe(q).includes(trilha));
     atualizarSelectConcurso(todas, trilha);
 
     porId = new Map(questoes.map(q => [String(q.id), q]));
+    guardarAssuntosDaTrilha(trilha);
     await sincronizarFilaDoDia();
 
     // U9: o front não traz mais o gabarito de quem ainda não respondeu. Pra quem já respondeu
@@ -2326,8 +2382,7 @@ function abrirBoasVindasCompleta() {
     abrirBoasVindas({
         materias: materiasParaPrimeiraSessao(),
         onConcluir: ({ perfil, materia }) => {
-            salvarPerfil(usuarioAtual.id, perfil);
-            aplicarFiltros(); // a ordem das questões depende do perfil
+            guardarPerfilDoUsuario(perfil); // a ordem das questões e o concurso dependem do perfil
             if (materia) abrirEscolhaAprender({ materia });
             else mostrarDica("antes-de-responder");
         }
@@ -2349,23 +2404,22 @@ function reagirAPrimeirosPassos({ acertou, confianca }) {
 
 // "Meta diária e perfil" na gaveta: as 3 perguntas de novo, com as respostas atuais marcadas
 const btnPerfilMeta = document.getElementById("btn-perfil-meta");
-if (btnPerfilMeta) {
-    btnPerfilMeta.addEventListener("click", () => {
-        if (!usuarioAtual) {
-            showToast("Entre na sua conta para definir sua meta.", "alerta");
-            return;
+function configurarPerfil({ voltarAoAprender = true } = {}) {
+    if (!usuarioAtual) {
+        showToast("Entre na sua conta para definir sua meta.", "alerta");
+        return;
+    }
+    abrirBoasVindas({
+        materias: [],
+        perfilAtual: obterPerfilAtivo(),
+        onConcluir: async ({ perfil }) => {
+            await guardarPerfilDoUsuario(perfil);
+            showToast(`Perfil salvo. Meta: ${perfil.meta} questões por dia.`, "sucesso");
+            if (voltarAoAprender && perfil.dias && perfil.dias.length) abrirEscolhaAprender();
         }
-        abrirBoasVindas({
-            materias: [],
-            perfilAtual: obterPerfilAtivo(),
-            onConcluir: ({ perfil }) => {
-                salvarPerfil(usuarioAtual.id, perfil);
-                aplicarFiltros();
-                showToast(`Perfil salvo. Meta: ${perfil.meta} questões por dia.`, "sucesso");
-            }
-        });
     });
 }
+if (btnPerfilMeta) btnPerfilMeta.addEventListener("click", () => configurarPerfil({ voltarAoAprender: false }));
 // ==================== FIM: 14. PRIMEIRA SESSÃO ====================
 
 // ==================== INÍCIO: 15. BARRA LATERAL (Minha conta e Meu desempenho) ====================
@@ -2657,6 +2711,9 @@ function praticarAssunto(materia, assunto) {
 async function abrirEscolhaAprender(opcoes = {}) {
     const abriu = await abrirAprender({
         ordemMaterias: [...new Set([...MATERIAS_PARA_COMECAR, ...ORDEM_MACROS])],
+        assuntoVisivel: assuntoDoConcurso(),
+        perfil: obterPerfilAtivo(),
+        aoConfigurarPlano: configurarPerfil,
         temQuestoes: (materia, assunto) => questoes.some(q => q.materia === materia && q.assunto === assunto),
         aoPraticar: praticarAssunto,
         materia: opcoes.materia

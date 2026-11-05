@@ -807,3 +807,20 @@ export async function gravarFilaDoDiaNuvem(fila) {
         return !error;
     } catch (e) { return false; }
 }
+
+// ---------- Perfil na nuvem (concurso, meta, dias e horas: igual em todos os aparelhos) ----------
+export async function lerPerfilNuvem() {
+    try {
+        const { data, error } = await supabaseClient.from('perfis').select('perfil, atualizado_em').maybeSingle();
+        if (error || !data || !data.perfil) return null;
+        return { perfil: data.perfil, atualizadoEm: Date.parse(data.atualizado_em) || 0 };
+    } catch (e) { return null; }
+}
+
+export async function gravarPerfilNuvem(perfil, atualizadoEm) {
+    try {
+        const { error } = await supabaseClient.from('perfis')
+            .upsert({ perfil, atualizado_em: new Date(atualizadoEm).toISOString() }, { onConflict: 'user_id' });
+        return !error;
+    } catch (e) { return false; }
+}

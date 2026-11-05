@@ -137,9 +137,10 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, naFila =
         sub.textContent = itens.length ? `${por.abertas} para refazer · ${por.superadas} já acertadas depois` : '';
         elEstados.innerHTML = ESTADOS.map(([id, nome]) =>
             `<button type="button" class="ce-chip ${estado === id ? 'ativo' : ''}" data-ce="estado" data-v="${id}">${nome} <span>${por[id]}</span></button>`).join('');
-        elMaterias.innerHTML = materiasDe(todosDoEstado).length
-            ? `<button type="button" class="ce-chip ${materia === '' ? 'ativo' : ''}" data-ce="materia" data-v="">Todas</button>` +
-              materiasDe(todosDoEstado).map(([m, n]) => `<button type="button" class="ce-chip ${materia === m ? 'ativo' : ''}" data-ce="materia" data-v="${esc(m)}">${esc(m)} <span>${n}</span></button>`).join('')
+        const mats = materiasDe(todosDoEstado);
+        elMaterias.innerHTML = mats.length
+            ? `<button type="button" class="ce-mat todas ${materia === '' ? 'ativo' : ''}" data-ce="materia" data-v=""><span class="ce-mat-nome">Todas as matérias</span><span class="ce-mat-n">${todosDoEstado.length}</span></button>` +
+              mats.map(([m, n]) => `<button type="button" class="ce-mat ${materia === m ? 'ativo' : ''}" data-ce="materia" data-v="${esc(m)}"><span class="ce-mat-nome">${esc(m)}</span><span class="ce-mat-n">${n}</span></button>`).join('')
             : '';
         const lista = filtrarItens(itens, { estado, materia, busca });
         if (!itens.length) {
