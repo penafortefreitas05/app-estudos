@@ -824,3 +824,27 @@ export async function gravarPerfilNuvem(perfil, atualizadoEm) {
         return !error;
     } catch (e) { return false; }
 }
+
+// ---------- Histórico de simulados (nuvem) ----------
+// reg: { id, em (ISO), total, acertos, brancos, segundos, porTempo, concurso, porMateria }
+export async function salvarSimuladoNuvem(reg) {
+    try {
+        const { error } = await supabaseClient.from('simulados').upsert({
+            id: reg.id, criado_em: reg.em, total: reg.total, acertos: reg.acertos, brancos: reg.brancos || 0,
+            segundos: reg.segundos || 0, por_tempo: Boolean(reg.porTempo), concurso: reg.concurso || null,
+            por_materia: reg.porMateria || {}
+        }, { onConflict: 'id', ignoreDuplicates: true });
+        return !error;
+    } catch (e) { return false; }
+}
+
+export async function listarSimuladosNuvem() {
+    try {
+        const { data, error } = await supabaseClient.from('simulados')
+            .select('id, criado_em, total, acertos, brancos, segundos, por_tempo, concurso, por_materia')
+            .order('criado_em', { ascending: false }).limit(100);
+        if (error || !Array.isArray(data)) return null;
+        return data.map(r => ({ id: r.id, em: r.criado_em, total: r.total, acertos: r.acertos, brancos: r.brancos || 0,
+            segundos: r.segundos || 0, porTempo: r.por_tempo, concurso: r.concurso, porMateria: r.por_materia || {} }));
+    } catch (e) { return null; }
+}

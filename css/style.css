@@ -1997,3 +1997,60 @@ body.modo-aprender .sidebar { background-color: #11102e; border-right-color: #2a
 .ft-grade .ft-chip { display: flex; align-items: center; min-width: 0; min-height: 3.1rem; padding: 0.5rem 0.75rem; border-radius: 10px; font-size: 0.84rem; line-height: 1.2; overflow-wrap: anywhere; }
 .ft-g3 .ft-chip { justify-content: center; text-align: center; min-height: 2.7rem; padding: 0.5rem 0.3rem; }
 .ft-grade .ft-chip.todos { grid-column: 1 / -1; min-height: 2.6rem; }
+/* ===== Simulado em página inteira ===== */
+.sm-tela { position: fixed; inset: 0; z-index: 950; height: 100dvh; display: flex; flex-direction: column; background: #0b1220; color: #e2e8f0; overflow-x: hidden; }
+.sm-topo, .sm-corpo { width: 100%; max-width: 46rem; margin: 0 auto; box-sizing: border-box; }
+.sm-topo { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem; padding: max(1rem, env(safe-area-inset-top)) 1rem 0.5rem; }
+.sm-titulo { margin: 0; font-size: 1.25rem; color: #f8fafc; }
+.sm-sub { margin: 0.2rem 0 0; font-size: 0.82rem; color: #93c5fd; }
+.sm-sair { all: unset; box-sizing: border-box; flex: none; width: 2.6rem; height: 2.6rem; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; color: #cbd5e1; font-size: 1.1rem; cursor: pointer; }
+.sm-sair:hover { background: #1e293b; }
+.sm-corpo { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 0.4rem 1rem max(1.5rem, env(safe-area-inset-bottom)); }
+.sm-sec { margin-bottom: 1.4rem; }
+.sm-sec-titulo { margin: 1rem 0 0.5rem; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #94a3b8; }
+.sm-sec-titulo:first-child { margin-top: 0; }
+.sm-dica { text-transform: none; letter-spacing: 0; font-weight: 500; color: #64748b; margin-left: 0.3rem; }
+.sm-chips { display: grid; gap: 0.5rem; }
+.sm-g4 { grid-template-columns: repeat(4, 1fr); }
+.sm-g2 { grid-template-columns: 1fr 1fr; }
+.sm-chip, .sm-opcao, .sm-comecar, .sm-sec-btn, .sm-mais, .sm-item-topo, .sm-link { all: unset; box-sizing: border-box; cursor: pointer; }
+.sm-chip { display: flex; align-items: center; justify-content: center; min-height: 2.8rem; padding: 0.4rem; border: 1px solid #1e293b; border-radius: 10px; background: #0f172a; color: #cbd5e1; font-size: 0.9rem; font-weight: 600; text-align: center; }
+.sm-chip.ativo { background: #1d4ed8; border-color: #3b82f6; color: #fff; }
+.sm-opcoes { display: flex; flex-direction: column; gap: 0.5rem; }
+.sm-opcao { display: grid; grid-template-columns: 1fr auto; column-gap: 0.6rem; align-items: center; padding: 0.65rem 0.8rem; border: 1px solid #1e293b; border-radius: 10px; background: #0f172a; }
+.sm-opcao-nome { font-size: 0.92rem; font-weight: 600; color: #e2e8f0; }
+.sm-opcao-det { grid-column: 1; font-size: 0.78rem; color: #94a3b8; }
+.sm-opcao-marca { grid-column: 2; grid-row: 1 / span 2; width: 1.5rem; height: 1.5rem; display: inline-flex; align-items: center; justify-content: center; border: 1px solid #334155; border-radius: 6px; font-size: 0.9rem; color: #fff; }
+.sm-opcao.ativo { border-color: #3b82f6; }
+.sm-opcao.ativo .sm-opcao-marca { background: #1d4ed8; border-color: #3b82f6; }
+.sm-filtros { margin: 0.9rem 0 0.8rem; font-size: 0.86rem; color: #cbd5e1; }
+.sm-link { color: #93c5fd; text-decoration: underline; margin-left: 0.3rem; }
+.sm-comecar { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 3.1rem; padding: 0.6rem 1rem; border-radius: 12px; background: #2563eb; color: #fff; font-weight: 700; font-size: 0.98rem; text-align: center; }
+.sm-comecar[disabled] { background: #1e293b; color: #64748b; cursor: not-allowed; }
+.sm-sec-btn { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 2.9rem; padding: 0.5rem 1rem; margin-top: 0.5rem; border: 1px solid #334155; border-radius: 12px; color: #e2e8f0; font-weight: 600; font-size: 0.92rem; text-align: center; }
+.sm-aviso { margin: 0.6rem 0 0; font-size: 0.76rem; color: #64748b; }
+.sm-vazio { margin: 0.2rem 0 0.6rem; font-size: 0.88rem; color: #94a3b8; }
+.sm-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 0.8rem; }
+.sm-stats div { padding: 0.6rem; border: 1px solid #1e293b; border-radius: 10px; background: #0f172a; text-align: center; }
+.sm-stats b { display: block; font-size: 1.2rem; color: #f8fafc; }
+.sm-stats span { font-size: 0.74rem; color: #94a3b8; }
+.sm-tendencia { display: flex; align-items: flex-end; gap: 0.35rem; height: 3.4rem; margin-bottom: 0.9rem; padding: 0.3rem 0.5rem; border: 1px solid #1e293b; border-radius: 10px; background: #0f172a; }
+.sm-tendencia i { flex: 1; min-width: 0; border-radius: 3px 3px 0 0; background: #3b82f6; }
+.sm-historico { display: flex; flex-direction: column; gap: 0.5rem; }
+.sm-item { border: 1px solid #1e293b; border-radius: 10px; background: #0f172a; overflow: hidden; }
+.sm-item-topo { display: grid; grid-template-columns: 3.2rem 1fr auto; gap: 0.5rem; align-items: center; width: 100%; padding: 0.7rem 0.8rem; font-size: 0.9rem; }
+.sm-item-data { color: #93c5fd; font-weight: 700; }
+.sm-item-nota b { color: #f8fafc; }
+.sm-item-tempo { color: #94a3b8; font-size: 0.82rem; }
+.sm-item-det { padding: 0.2rem 0.8rem 0.8rem; }
+.sm-linha { display: grid; grid-template-columns: minmax(0, 1fr) 4.5rem 2.6rem; gap: 0.5rem; align-items: center; padding: 0.3rem 0; font-size: 0.84rem; }
+.sm-linha-nome { overflow-wrap: anywhere; }
+.sm-linha-barra { height: 0.5rem; border-radius: 999px; background: #1e293b; overflow: hidden; }
+.sm-linha-barra i { display: block; height: 100%; background: #3b82f6; }
+.sm-linha-n { text-align: right; color: #94a3b8; }
+.sm-mais { display: block; width: 100%; margin-top: 0.6rem; padding: 0.7rem; text-align: center; color: #93c5fd; border: 1px dashed #334155; border-radius: 10px; }
+.sm-nota { display: flex; align-items: baseline; justify-content: center; gap: 0.8rem; padding: 1rem 0 0.3rem; }
+.sm-nota b { font-size: 2.6rem; color: #f8fafc; }
+.sm-nota span { font-size: 1.4rem; color: #93c5fd; font-weight: 700; }
+.sm-comp { margin: 0 0 0.9rem; text-align: center; font-size: 0.9rem; color: #cbd5e1; }
+.sm-chip:focus-visible, .sm-opcao:focus-visible, .sm-comecar:focus-visible, .sm-sec-btn:focus-visible, .sm-item-topo:focus-visible, .sm-link:focus-visible, .sm-sair:focus-visible, .sm-mais:focus-visible { outline: 2px solid #93c5fd; outline-offset: 2px; }
