@@ -25,6 +25,7 @@ import { abrirAprender } from './aprender-tela.js';
 import { montarBackupAprendidos, mesclarBackupAprendidos } from './leitura.js';
 import { abrirFiltros } from './filtros-tela.js';
 import { abrirCaderno } from './caderno-erros.js';
+import { abrirSimulado, abrirResultado, lerSimuladosLocais, guardarSimuladoLocal, mesclarSimulados, novoId } from './simulado-tela.js';
 // ==================== FIM ====================
 
 // ---------- 1.2 Supabase (banco e cliente) ----------
@@ -50,7 +51,9 @@ import {
     lerFilaDoDiaNuvem,
     gravarFilaDoDiaNuvem,
     lerPerfilNuvem,
-    gravarPerfilNuvem
+    gravarPerfilNuvem,
+    salvarSimuladoNuvem,
+    listarSimuladosNuvem
 } from './supabase.js';
 
 // ---------- 1.3 Autenticação ----------
@@ -645,9 +648,7 @@ if (dashboardMaterias) {
 
 // ---------- 6b. PAINÉIS DO TOPO (Filtros / Simulado) ----------
 // Só um painel aberto por vez; tocar no mesmo botão fecha.
-const paineisTopo = [
-    { botao: document.getElementById("btn-painel-simulado"), painel: document.getElementById("painel-simulado") }
-].filter(p => p.botao && p.painel);
+const paineisTopo = []; // o painel do simulado virou a página js/simulado-tela.js (os campos dele seguem escondidos e valendo)
 
 function alternarPainel(alvo, abrir) {
     paineisTopo.forEach(p => {
@@ -662,6 +663,66 @@ function fecharPaineis() {
 }
 
 paineisTopo.forEach(p => p.botao.addEventListener("click", () => alternarPainel(p)));
+
+// ---------- Simulado em página inteira ----------
+function abrirTelaSimulado() {
+    abrirSimulado({
+        disponiveis: () => filtrarQuestoes().length,
+        aoFiltros: () => abrirFiltros({
+            selects: { concurso: selectConcurso, materia: selectMateria, banca: selectBanca, ano: selectAno, tag: selectTag },
+            contagem: () => ((document.getElementById("barra-contagem") || {}).textContent || "").split(" · ")[0],
+            aoLimpar: () => { const b = document.getElementById("btn-todas"); if (b) b.click(); },
+            aoFechar: () => setTimeout(abrirTelaSimulado, 200)
+        }),
+        aoComecar: (d) => {
+            const set = (id, v) => { const e = document.getElementById(id); if (e) e.value = v; };
+            const marca = (id, v) => { const e = document.getElementById(id); if (e) e.checked = v; };
+            set("qtd-simulado", d.qtd);
+            set("tempo-simulado", d.tempo || "");
+            marca("check-equilibrar", d.equilibrar);
+            marca("check-novas", d.somenteNovas);
+            marca("check-priorizar-erros", d.priorizarErros);
+            const b = document.getElementById("btn-simulado");
+            if (b) b.click();
+        },
+        carregarHistorico: async () => {
+            const locais = lerSimuladosLocais();
+            const nuvem = usuarioAtual ? await listarSimuladosNuvem() : null;
+            // O que só existe no aparelho (feito sem internet) sobe agora
+            if (nuvem) {
+                const ids = new Set(nuvem.map(r => r.id));
+                locais.filter(r => !ids.has(r.id)).forEach(r => salvarSimuladoNuvem(r));
+            }
+            return mesclarSimulados(locais, nuvem);
+        }
+    });
+}
+const btnPainelSimulado = document.getElementById("btn-painel-simulado");
+if (btnPainelSimulado) btnPainelSimulado.addEventListener("click", () => {
+    if (!usuarioAtual) { mostrarEntradaVisitante(); return; }
+    abrirTelaSimulado();
+});
+
+// Ao finalizar: guarda no aparelho e na nuvem e abre a página do resultado
+document.addEventListener("focopro:simulado-finalizado", (e) => {
+    const d = e.detail;
+    if (!d || !d.total) return;
+    const anteriores = lerSimuladosLocais();
+    const reg = { id: novoId(), em: new Date().toISOString(), total: d.total, acertos: d.acertos, brancos: d.brancos,
+        segundos: d.segundos, porTempo: d.porTempo, concurso: trilhaAtual(), porMateria: d.porMateria };
+    guardarSimuladoLocal(reg);
+    if (usuarioAtual) salvarSimuladoNuvem(reg);
+    abrirResultado(d, anteriores, {
+        aoRefazer: (ids) => {
+            const lista = ids.map(id => porId.get(String(id))).filter(Boolean);
+            simulado = null;
+            pararCronometro(displayCronometro);
+            entrarFoco(lista, { silencioso: true, titulo: "Simulado: o que errei" });
+        },
+        aoCaderno: () => { const i = document.querySelector('.menu-item[data-acao="caderno"]'); if (i) i.click(); },
+        aoNovo: abrirTelaSimulado
+    });
+});
 
 // "Filtros": abre a tela de js/filtros-tela.js. Os <select> do painel antigo seguem escondidos e valendo.
 const btnPainelFiltros = document.getElementById("btn-painel-filtros");

@@ -121,7 +121,10 @@ export async function finalizarSimulado(simulado, container, porId, historico, q
     }
 
     let acertosSimulado = 0;
-    let falhasDeCorrecao = 0; // só questões sem gabarito cadastrado (problema do dado)
+    let falhasDeCorrecao = 0;
+    const porMateriaSim = {};
+    const erradasSim = [];
+    let brancosSim = 0; // só questões sem gabarito cadastrado (problema do dado)
     const respostasParaNuvem = [];
 
     itens.forEach((it, i) => {
@@ -134,6 +137,12 @@ export async function finalizarSimulado(simulado, container, porId, historico, q
         }
 
         q.gabarito = resultado.gabarito; // fica em memória pra qualquer novo render usar
+        const mat = q.materia || 'Geral';
+        if (!porMateriaSim[mat]) porMateriaSim[mat] = { t: 0, a: 0 };
+        porMateriaSim[mat].t++;
+        if (!temResposta) brancosSim++;
+        else if (resultado.acertou) porMateriaSim[mat].a++;
+        else erradasSim.push(idStr);
 
         if (card && temResposta) {
             const acertou = resultado.acertou;
@@ -180,9 +189,18 @@ export async function finalizarSimulado(simulado, container, porId, historico, q
     if (btnFinalizar) btnFinalizar.innerText = "✓ Simulado Finalizado";
 
     const taxa = totalQuestoes > 0 ? ((acertosSimulado / totalQuestoes) * 100).toFixed(1) : 0;
-    const msgTempo = porTempo ? " (Tempo Esgotado)" : "";
-    const avisoFalhas = falhasDeCorrecao > 0
-        ? ` (${falhasDeCorrecao} questão${falhasDeCorrecao > 1 ? "ões" : ""} sem gabarito cadastrado, fora da correção)`
-        : "";
-    showToast(`Simulado finalizado${msgTempo}! Nota: ${acertosSimulado}/${totalQuestoes} (${taxa}%)${avisoFalhas}`, "sucesso", 6000);
+    // A página de resultado (js/simulado-tela.js) é aberta pelo app ao receber este evento
+    document.dispatchEvent(new CustomEvent("focopro:simulado-finalizado", {
+        detail: {
+            total: totalQuestoes - falhasDeCorrecao,
+            acertos: acertosSimulado,
+            brancos: brancosSim,
+            segundos: Math.max(0, Math.round((Date.now() - (simulado.inicio || Date.now())) / 1000)),
+            porTempo,
+            porMateria: porMateriaSim,
+            erradas: erradasSim,
+            semGabarito: falhasDeCorrecao
+        }
+    }));
+    console.info(`[FocoPro] Simulado finalizado: ${acertosSimulado}/${totalQuestoes} (${taxa}%)`);
 }

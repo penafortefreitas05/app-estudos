@@ -21,7 +21,8 @@ export function opcoesDe(select) {
 // opcoes.selects: { concurso, materia, banca, ano, tag } (elementos <select>)
 // opcoes.contagem(): texto da contagem atual (ex.: "123 questões")
 // opcoes.aoLimpar(): limpa tudo (clica no "Limpar filtros" existente)
-export function abrirFiltros({ selects, contagem = () => '', aoLimpar } = {}) {
+// opcoes.aoFechar(): chamado ao fechar a tela
+export function abrirFiltros({ selects, contagem = () => '', aoLimpar, aoFechar } = {}) {
     if (document.querySelector('.ft-tela') || !selects) return;
     const { concurso, materia, banca, ano, tag } = selects;
     let buscaAssunto = '';
@@ -117,6 +118,7 @@ export function abrirFiltros({ selects, contagem = () => '', aoLimpar } = {}) {
         el.classList.remove('visivel');
         document.body.classList.remove('ft-aberta');
         setTimeout(() => el.remove(), 180);
+        if (typeof aoFechar === 'function') aoFechar();
         if (focoAntes && typeof focoAntes.focus === 'function' && document.contains(focoAntes)) focoAntes.focus({ preventScroll: true });
     }
     function aoTeclar(e) {
