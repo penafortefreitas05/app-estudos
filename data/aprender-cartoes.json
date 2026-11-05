@@ -10423,5 +10423,383 @@
       "raias",
       "pools"
     ]
+  },
+  {
+    "id": "card-pt-n1-001",
+    "materia": "Português",
+    "assunto": "Crase",
+    "nivel": 1,
+    "conceito": "Crase como fusão de a com a",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Crase é a fusão da preposição a com o artigo a, marcada pelo acento grave. Exemplo: A equipe voltou à sala.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: vi à sala; certo: vi a sala, pois ver não pede a."
+      }
+    ],
+    "atencao": "Quando o nome não admite artigo, não há crase: vou a Campinas.",
+    "fonte": "Câmara dos Deputados, Agência Câmara, Conheça as regras da crase — https://www.camara.leg.br/noticias/66100-conheca-as-regras-da-crase/ ; Senado Federal, Manual de Comunicação da Secom, verbete Crase — https://www12.senado.leg.br/manualdecomunicacao/estilos/crase",
+    "tags": [
+      "crase"
+    ]
+  },
+  {
+    "id": "card-pt-n1-002",
+    "materia": "Português",
+    "assunto": "Crase",
+    "nivel": 1,
+    "conceito": "Crase antes de masculino e verbo",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Não se usa crase antes de palavra masculina nem de verbo. Exemplo: Caminhei a pé.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: começou à revisar; certo: começou a revisar."
+      }
+    ],
+    "atencao": "Também não há crase antes de pronomes pessoais: o pedido foi entregue a ela.",
+    "fonte": "Senado Federal, Manual de Comunicação da Secom, verbete Crase (palavras masculinas, verbos no infinitivo, pronomes pessoais) — https://www12.senado.leg.br/manualdecomunicacao/estilos/crase ; Câmara dos Deputados, Conheça as regras da crase — https://www.camara.leg.br/noticias/66100-conheca-as-regras-da-crase/",
+    "tags": [
+      "crase",
+      "palavras-masculinas",
+      "verbos"
+    ]
+  },
+  {
+    "id": "card-pt-n1-003",
+    "materia": "Português",
+    "assunto": "Crase",
+    "nivel": 1,
+    "conceito": "Crase nas horas definidas",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Use crase nas indicações de horas definidas. Exemplo: A reunião começa às nove horas.",
+    "nao_confundir": [
+      {
+        "conceito": "Hora indeterminada",
+        "diferenca": "Sem hora definida, não há crase: irá a uma hora qualquer."
+      }
+    ],
+    "atencao": "Com entre e para antes das horas, não há crase: entre as 9h e as 11h.",
+    "fonte": "Senado Federal, Manual de Comunicação da Secom, verbete Hora — https://www12.senado.leg.br/manualdecomunicacao/estilos/hora",
+    "tags": [
+      "crase",
+      "horas"
+    ]
+  },
+  {
+    "id": "card-pt-n1-004",
+    "materia": "Português",
+    "assunto": "Crase",
+    "nivel": 1,
+    "conceito": "Crase em locuções iniciadas por palavra feminina",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Locução adverbial é grupo de palavras que indica modo, tempo ou lugar; se começa por palavra feminina, leva crase. Exemplo: Revisou o texto às pressas.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: à pé; certo: a pé, pois pé é palavra masculina."
+      }
+    ],
+    "atencao": "Também levam crase locuções como à custa de e à medida que, iniciadas por palavra feminina.",
+    "fonte": "Tribunal Regional Federal da 3ª Região, Conexão Emag – Língua Portuguesa, Crase (II), item 3 — https://www.trf3.jus.br/emag/emagconecta/conexaoemag-lingua-portuguesa/crase-ii ; Senado Federal, Manual de Comunicação da Secom, verbete Crase — https://www12.senado.leg.br/manualdecomunicacao/estilos/crase",
+    "tags": [
+      "crase",
+      "locucoes-adverbiais"
+    ]
+  },
+  {
+    "id": "card-pt-n1-005",
+    "materia": "Português",
+    "assunto": "Crase",
+    "nivel": 1,
+    "conceito": "Crase com aquele, aquela, aquilo e a qual",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Se a palavra anterior pede a, ela se une a aquele, aquela, aquilo e a qual. Exemplo: Referi-me àquela regra.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: conheci àquela regra; certo: conheci aquela regra, pois conhecer não pede a."
+      }
+    ],
+    "atencao": "Aquele e aquilo levam crase mesmo sem ser palavras femininas: referi-me àquele caso.",
+    "fonte": "Senado Federal, Manual de Comunicação da Secom, verbete Crase (exceção de aquele e aquilo) — https://www12.senado.leg.br/manualdecomunicacao/estilos/crase ; Câmara dos Deputados, Conheça as regras da crase, item 2 — https://www.camara.leg.br/noticias/66100-conheca-as-regras-da-crase/ ; Ministério da Saúde, Manual de redação e estilo da Editora MS, 3ª ed., Crase (a + a qual = à qual) — https://bvsms.saude.gov.br/bvs/publicacoes/manual_redacao_estilo_editorams_3ed.pdf",
+    "tags": [
+      "crase",
+      "pronomes"
+    ]
+  },
+  {
+    "id": "card-pt-n1-006",
+    "materia": "Português",
+    "assunto": "Concordância",
+    "nivel": 1,
+    "conceito": "Verbo com sujeito composto",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Sujeito é o termo de quem se fala; composto tem dois nomes ou mais. Antes do verbo, pede plural. Exemplo: A tela e o teclado falharam.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: a tela e o teclado falhou; certo: a tela e o teclado falharam."
+      }
+    ],
+    "atencao": "Com o verbo antes do sujeito composto, ele pode concordar com o mais próximo ou ir ao plural.",
+    "fonte": "Senado Federal, Manual de Comunicação da Secom, verbete Concordância verbal (sujeito composto) — https://www12.senado.leg.br/manualdecomunicacao/estilos/concordancia-verbal",
+    "tags": [
+      "concordancia-verbal",
+      "sujeito-composto"
+    ]
+  },
+  {
+    "id": "card-pt-n1-007",
+    "materia": "Português",
+    "assunto": "Concordância",
+    "nivel": 1,
+    "conceito": "Verbo com sujeito depois dele",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Sujeito posposto é o que vem depois do verbo; mesmo assim o verbo concorda com ele. Exemplo: Chegaram novas mensagens.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: chegou mensagens; certo: chegaram mensagens."
+      }
+    ],
+    "atencao": "O verbo concorda com o sujeito mesmo deslocado: ao banco chegaram duas mensagens.",
+    "fonte": "Governo de Santa Catarina, Secretaria de Estado da Administração, Manual de Padronização e Redação dos Atos Oficiais, item 4.2.2 (concordância regular) — https://www.sea.sc.gov.br/wp-content/uploads/2019/10/Manual_de_redacao.pdf",
+    "tags": [
+      "concordancia-verbal",
+      "sujeito-posposto"
+    ]
+  },
+  {
+    "id": "card-pt-n1-008",
+    "materia": "Português",
+    "assunto": "Concordância",
+    "nivel": 1,
+    "conceito": "Haver e fazer sem sujeito",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Verbo impessoal não tem sujeito e fica no singular: haver com sentido de existir e fazer marcando tempo. Exemplo: Havia alertas; faz dois dias.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: haviam alertas; certo: havia alertas."
+      }
+    ],
+    "atencao": "Haver indicando tempo decorrido também fica no singular: há dois anos que espero.",
+    "fonte": "Senado Federal, Manual de Comunicação da Secom, verbete Concordância verbal (verbos impessoais) — https://www12.senado.leg.br/manualdecomunicacao/estilos/concordancia-verbal",
+    "tags": [
+      "concordancia-verbal",
+      "verbos-impessoais"
+    ]
+  },
+  {
+    "id": "card-pt-n1-009",
+    "materia": "Português",
+    "assunto": "Concordância",
+    "nivel": 1,
+    "conceito": "Concordância na voz passiva com se",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Voz passiva sintética: verbo com se e sujeito que recebe a ação; o verbo concorda com ele. Exemplo: Publicam-se relatórios.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: publica-se relatórios; certo: publicam-se relatórios."
+      },
+      {
+        "conceito": "Se com verbo que pede preposição",
+        "diferenca": "Fica no singular: precisa-se de técnicos; aqui o se indetermina o sujeito."
+      }
+    ],
+    "atencao": "Sujeito plural leva o verbo ao plural na passiva com se: vendem-se casas.",
+    "fonte": "Governo de Santa Catarina, SEA, Manual de Padronização e Redação dos Atos Oficiais, item 4.2.2.3.19 (partícula apassivadora) — https://www.sea.sc.gov.br/wp-content/uploads/2019/10/Manual_de_redacao.pdf ; Senado Federal, Manual de Comunicação da Secom, verbete Concordância verbal (se indeterminador) — https://www12.senado.leg.br/manualdecomunicacao/estilos/concordancia-verbal",
+    "tags": [
+      "concordancia-verbal",
+      "voz-passiva-sintetica"
+    ]
+  },
+  {
+    "id": "card-pt-n1-010",
+    "materia": "Português",
+    "assunto": "Concordância",
+    "nivel": 1,
+    "conceito": "Concordância de anexo",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Anexo, quando qualifica um substantivo, concorda com ele em gênero e número. Exemplo: Seguem anexas as planilhas.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: seguem anexo as planilhas; certo: seguem anexas as planilhas."
+      }
+    ],
+    "atencao": "Já a expressão em anexo é invariável: as planilhas vão em anexo.",
+    "fonte": "Senado Federal, Manual de Comunicação da Secom, verbete Anexo — https://www12.senado.leg.br/manualdecomunicacao/estilos/anexo",
+    "tags": [
+      "concordancia-nominal",
+      "anexo"
+    ]
+  },
+  {
+    "id": "card-pt-n1-011",
+    "materia": "Português",
+    "assunto": "Concordância",
+    "nivel": 1,
+    "conceito": "Verbo com um dos que",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Pronome relativo é o que retoma um nome anterior. Em um dos que, o verbo vai ao plural. Exemplo: Ele é um dos técnicos que revisam o código.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: foi um dos que votou; certo: foi um dos que votaram."
+      }
+    ],
+    "atencao": "A regra vale também para uma das que: uma das leis que entraram em vigor.",
+    "fonte": "Senado Federal, Manual de Comunicação da Secom, verbete Concordância verbal (um dos que) — https://www12.senado.leg.br/manualdecomunicacao/estilos/concordancia-verbal",
+    "tags": [
+      "concordancia-verbal",
+      "pronome-relativo"
+    ]
+  },
+  {
+    "id": "card-pt-n1-012",
+    "materia": "Português",
+    "assunto": "Regência",
+    "nivel": 1,
+    "conceito": "Aspirar com sentidos diferentes",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Regência é a preposição que o verbo exige no complemento. Aspirar a: desejar; aspirar algo: respirar. Exemplo: Aspiro a uma vaga.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: aspirar uma vaga; certo: aspirar a uma vaga."
+      }
+    ],
+    "atencao": "Antes de pronome relativo, aspirar mantém o a: o cargo a que aspiro.",
+    "fonte": "Ministério da Saúde, Manual de redação e estilo da Editora MS, 2ª ed., cap. 9, Regências para verbos comuns (Aspirar) — https://bvsms.saude.gov.br/bvs/publicacoes/manual_redacao_estilo_editora_MS_2ed.pdf ; TJMG, Gotas da Língua Portuguesa nº 161, Regência do verbo aspirar — https://bd-login.tjmg.jus.br/jspui/bitstream/tjmg/11338/1/161%20Reg%C3%AAncia%20do%20verbo%20aspirar.pdf ; Governo do Distrito Federal, Escola de Governo, Redação oficial – aula 4 (aspirar; relativo mantém a regência) — https://egov.df.gov.br/wp-content/uploads/2023/01/Apresentacao_Redacao-oficial_Aula-4_Ivan-Gusmao-Cavalcante.pdf",
+    "tags": [
+      "regencia-verbal",
+      "aspirar"
+    ]
+  },
+  {
+    "id": "card-pt-n1-013",
+    "materia": "Português",
+    "assunto": "Regência",
+    "nivel": 1,
+    "conceito": "Assistir com sentidos diferentes",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Assistir a significa presenciar; assistir alguém significa ajudar. Exemplo: Assisti à palestra; o médico assistiu o paciente.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: assisti o jogo; certo: assisti ao jogo."
+      }
+    ],
+    "atencao": "No sentido de presenciar, assistir não admite voz passiva: evite a reunião foi assistida.",
+    "fonte": "Senado Federal, Manual de Comunicação da Secom, verbete Assistir — https://www12.senado.leg.br/manualdecomunicacao/estilos/assistir ; Governo do Espírito Santo, ESESP, Redação Oficial Módulo I (assistir não se apassiva) — https://esesp.es.gov.br/Media/Agenda%20Municipal/APOSTILA_COMPLETA_ROMI.pdf",
+    "tags": [
+      "regencia-verbal",
+      "assistir"
+    ]
+  },
+  {
+    "id": "card-pt-n1-014",
+    "materia": "Português",
+    "assunto": "Regência",
+    "nivel": 1,
+    "conceito": "Chegar e ir ao destino",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Para indicar destino, chegar e ir pedem a. Exemplo: Cheguei ao banco e fui à agência.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: chegou no banco; certo: chegou ao banco."
+      }
+    ],
+    "atencao": "Chegar e ir pedem a, não em: cheguei ao banco. Já entrar pede em.",
+    "fonte": "Superior Tribunal de Justiça, Manual de Padronização de Textos do STJ, verbete a algum lugar — https://scon.stj.jus.br/docs_intranet/comunicacao/interna/Manual_atualizado.pdf ; Ministério da Saúde, Manual de redação e estilo da Editora MS, 3ª ed., Regências (Chegar, ir) — https://bvsms.saude.gov.br/bvs/publicacoes/manual_redacao_estilo_editorams_3ed.pdf ; TRF3, Conexão Emag – Onde/Aonde (entrar não é regido por a) — https://www.trf3.jus.br/emag/emagconecta/conexaoemag-lingua-portuguesa/onde-aonde/",
+    "tags": [
+      "regencia-verbal",
+      "chegar"
+    ]
+  },
+  {
+    "id": "card-pt-n1-015",
+    "materia": "Português",
+    "assunto": "Regência",
+    "nivel": 1,
+    "conceito": "Implicar no sentido de acarretar",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Implicar, no sentido de acarretar, liga-se diretamente ao complemento, sem preposição. Exemplo: A mudança implica custos.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: implica em custos; certo: implica custos."
+      }
+    ],
+    "atencao": "Em outros sentidos muda: implicar com alguém é ter implicância; implicar alguém em algo, comprometê-lo.",
+    "fonte": "Senado Federal, Manual de Comunicação da Secom, verbete Implicar — https://www12.senado.leg.br/manualdecomunicacao/estilos/implicar ; TRT4, Os 50 erros de português mais comuns no mundo do trabalho, item 19 — https://www.trt4.jus.br/portais/escola/modulos/noticias/415280",
+    "tags": [
+      "regencia-verbal",
+      "implicar"
+    ]
+  },
+  {
+    "id": "card-pt-n1-016",
+    "materia": "Português",
+    "assunto": "Regência",
+    "nivel": 1,
+    "conceito": "Obedecer e desobedecer",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Obedecer e desobedecer pedem a antes do complemento. Exemplo: Obedeço às regras e desobedeço à ordem.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: obedecer as regras; certo: obedecer às regras."
+      }
+    ],
+    "atencao": "Obedecer pede a com pessoa ou coisa: obedecer aos pais, obedecer à lei.",
+    "fonte": "FUNAG, Manual de Revisão, Vocabulário (obedecer, desobedecer) — https://funag.gov.br/manual/index.php?title=Vocabul%C3%A1rio ; TJMG, Gotas da Língua Portuguesa nº 259, Regência dos verbos Obedecer e Desobedecer — https://bd.tjmg.jus.br/bitstreams/987cb41a-c488-41d3-843c-103cfe49eb63/download",
+    "tags": [
+      "regencia-verbal",
+      "obedecer"
+    ]
+  },
+  {
+    "id": "card-pt-n1-017",
+    "materia": "Português",
+    "assunto": "Regência",
+    "nivel": 1,
+    "conceito": "Preferir uma coisa a outra",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Preferir uma coisa a outra exige a antes da segunda. Exemplo: Prefiro revisar a improvisar.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: prefiro revisar do que improvisar; certo: prefiro revisar a improvisar."
+      }
+    ],
+    "atencao": "Prefira X a Y; nessa construção, não use mais, antes nem do que.",
+    "fonte": "Ministério da Saúde, Manual de redação e estilo da Editora MS, 2ª ed., cap. 9 (Preferir) — https://bvsms.saude.gov.br/bvs/publicacoes/manual_redacao_estilo_editora_MS_2ed.pdf ; MEC, Rede e-Tec, Comunicação Empresarial, 4.1 Regência verbal (preferir) — https://redeetec.mec.gov.br/images/stories/pdf/proeja/comunic_empresarial.pdf",
+    "tags": [
+      "regencia-verbal",
+      "preferir"
+    ]
   }
 ]
