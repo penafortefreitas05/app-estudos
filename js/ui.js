@@ -168,7 +168,8 @@ export function preencherSelectAssunto(selectElement, listaQuestoes, materia, or
     });
 
     const ordenarAssuntos = obj => Object.entries(obj).sort((a, b) => a[0].localeCompare(b[0], 'pt-BR'));
-    const opcao = ([assunto, n]) => `<option value="${esc(assunto)}">${esc(assunto)} (${n})</option>`;
+    // Só o nome na lista (05/11/2026); a contagem vai em data-n, para o seletor com busca agrupar os assuntos pequenos
+    const opcao = ([assunto, n]) => `<option value="${esc(assunto)}" data-n="${n}">${esc(assunto)}</option>`;
 
     let html = `<option value="">🏷️ Todos os Assuntos</option>`;
     if (materia) {

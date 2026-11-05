@@ -21,8 +21,8 @@ import {
     textoGabaritoDe,
     marcarMateriaAtiva
 } from './ui.js';
-import { montarTrilha, proximoAssunto, resumoDasTrilhas, questaoPonte } from './aprender.js';
-import { assuntosComCartoes, abrirLeitura, contarEntendidos } from './leitura.js';
+import { abrirAprender } from './aprender-tela.js';
+import { ligarSeletorAssunto } from './seletor-assunto.js';
 // ==================== FIM ====================
 
 // ---------- 1.2 Supabase (banco e cliente) ----------
@@ -134,6 +134,7 @@ const container = document.getElementById("container-questoes");
 const selectBanca = document.getElementById("filtro-banca");
 const selectMateria = document.getElementById("filtro-materia");
 const selectTag = document.getElementById("filtro-tag");
+ligarSeletorAssunto(selectTag); // botão com busca no lugar da lista nativa; o select segue como fonte da verdade
 const selectAno = document.getElementById("filtro-ano");
 const selectNivel = document.getElementById("filtro-nivel");
 const selectStatus = document.getElementById("filtro-status");
@@ -1368,7 +1369,7 @@ function resumoFoco() {
         <p>${respondidas
             ? `Você respondeu <strong>${respondidas}</strong> nesta sessão e acertou <strong>${acertos}</strong> (${Math.round(acertos * 100 / respondidas)}%).`
             : "Nenhuma questão respondida nesta sessão."}</p>
-        ${textoAmanha}${textoGuiada}${textoAprender()}
+        ${textoAmanha}${textoGuiada}
         <div class="foco-resumo-acoes">
             <button type="button" class="btn-painel foco-anterior">← Voltar para a última</button>
             <button type="button" class="btn-primary foco-sair">Sair do foco</button>
@@ -2205,7 +2206,7 @@ function abrirBoasVindasCompleta() {
         onConcluir: ({ perfil, materia }) => {
             salvarPerfil(usuarioAtual.id, perfil);
             aplicarFiltros(); // a ordem das questões depende do perfil
-            if (materia) iniciarAprender(materia, null, { guiada: true });
+            if (materia) abrirEscolhaAprender({ materia });
             else mostrarDica("antes-de-responder");
         }
     });
@@ -2413,51 +2414,9 @@ explicacoesDesempenho.forEach(el => {
 });
 // ==================== FIM: 16. HOJE ====================
 
-// ==================== INÍCIO: 17. APRENDER (cartão de dois lados por assunto) ====================
-// Lado 1, Aprenda: a 1ª questão do assunto, já resolvida, com o comentário.
-// Lado 2, Prove: as outras questões Iniciante do mesmo assunto, uma por vez, no Modo Foco.
-// As regras (ordem, estado de cada assunto, ponte para a prova) ficam em js/aprender.js.
-const CHAVE_ULTIMA_MATERIA_APRENDER = "appEstudos_UltimaMateriaAprender";
-
-async function iniciarAprender(materia, nomeAssunto = null, opcoes = {}) {
-    const trilha = montarTrilha(materia, questoes, historico);
-    const assunto = nomeAssunto ? trilha.find(a => a.nome === nomeAssunto) : proximoAssunto(trilha);
-    if (!assunto) {
-        showToast(trilha.length ? `Você já aprendeu todos os assuntos de ${materia}. 🎉` : "Essa matéria ainda não tem questões de Iniciante.", "info", 4000);
-        return;
-    }
-    try { localStorage.setItem(CHAVE_ULTIMA_MATERIA_APRENDER, materia); } catch (e) { /* segue */ }
-    // Fase 2: "Entenda em 1 minuto" abre o assunto, se já existir texto para ele
-    const resumo = await obterResumoDoAssunto(materia, assunto.nome);
-    const cartaoResumo = resumo ? { id: `resumo:${materia}|${assunto.nome}`, resumo } : null;
-    const lista = [...(cartaoResumo ? [cartaoResumo] : []), ...(assunto.exemplo ? [assunto.exemplo] : []), ...assunto.prova];
-    const idsDeLeitura = [cartaoResumo, assunto.exemplo].filter(Boolean).map(x => String(x.id));
-    entrarFoco(lista, {
-        titulo: `Aprender · ${assunto.nome}`,
-        exemplos: new Set(idsDeLeitura),
-        aprender: { materia, nome: assunto.nome },
-        guiada: Boolean(opcoes.guiada),
-        silencioso: true
-    });
-    setTimeout(() => mostrarDica("aprender"), 300);
-}
-
-// "Entenda em 1 minuto" (Fase 2): um texto curto por assunto, em data/resumos-assunto.json.
-// Arquivo estático (não tem gabarito, não precisa de banco). Se não carregar, o Aprender
-// segue sem o cartão, como na Fase 1.
-let resumosPorAssunto = null;
-async function obterResumoDoAssunto(materia, nome) {
-    if (!resumosPorAssunto) {
-        try {
-            const resp = await fetch("./data/resumos-assunto.json");
-            const lista = resp.ok ? await resp.json() : [];
-            resumosPorAssunto = new Map(lista.map(r => [`${r.materia}|${r.assunto}`, r]));
-        } catch (e) {
-            return null; // tenta de novo na próxima vez
-        }
-    }
-    return resumosPorAssunto.get(`${materia}|${nome}`) || null;
-}
+// ==================== INÍCIO: 17. APRENDER (tela de matérias e assuntos + modo leitura) ====================
+// A trilha antiga (exemplo resolvido + prova) foi removida em 05/11/2026. A tela fica em js/aprender-tela.js
+// e a leitura dos cartões em js/leitura.js.
 
 // Molde v2 (aprovado em 28/10): resumo + nao_confundir + palavras_chave + pegadinha.
 // O campo "modelo" troca só os rótulos: "conceito" (matérias de TI) ou "regra" (Português, RLM).
@@ -2549,40 +2508,6 @@ function cardExemplo(q) {
     return card;
 }
 
-// Texto do fim da sessão de Aprender: o estado do assunto e o que fazer em seguida
-function textoAprender() {
-    if (!foco || !foco.aprender) return "";
-    const { materia, nome } = foco.aprender;
-    const trilha = montarTrilha(materia, questoes, historico);
-    const assunto = trilha.find(a => a.nome === nome);
-    if (!assunto) return "";
-    const proximo = trilha.find(a => a.estado === "nao-visto" && a.nome !== nome);
-    const aprendidos = trilha.filter(a => a.estado === "aprendido").length;
-    const ponte = assunto.estado === "aprendido" ? questaoPonte(assunto, questoes, historico) : null;
-
-    const estado = assunto.estado === "aprendido"
-        ? `<p class="aprender-estado ok">✓ <strong>${esc(nome)}</strong>: aprendido. Acerte as questões dele de novo, com certeza, em outro dia, e elas viram Dominadas.</p>`
-        : `<p class="aprender-estado"><strong>${esc(nome)}</strong>: ${assunto.certas} de ${assunto.total} certas. Com ${assunto.minimo} certas ele conta como aprendido. As que você errou voltam amanhã.</p>`;
-    const progresso = `<p class="aprender-progresso">${esc(materia)}: ${aprendidos} de ${trilha.length} assuntos aprendidos.</p>`;
-    const botoes = [
-        ponte ? `<button type="button" class="btn-secondary aprender-ponte" data-id="${esc(ponte.id)}">🎯 Tentar 1 questão ${Number(ponte.nivel) === 2 ? "do Intermediário" : "de prova"} desse assunto</button>` : "",
-        proximo ? `<button type="button" class="btn-primary aprender-proximo" data-materia="${esc(materia)}" data-assunto="${esc(proximo.nome)}">📖 Próximo: ${esc(proximo.nome)}</button>` : ""
-    ].join("");
-    return `${estado}${progresso}${botoes ? `<div class="foco-resumo-acoes">${botoes}</div>` : ""}`;
-}
-
-if (container) {
-    container.addEventListener("click", (e) => {
-        const proximo = e.target.closest(".aprender-proximo");
-        if (proximo) { iniciarAprender(proximo.dataset.materia, proximo.dataset.assunto); return; }
-        const ponte = e.target.closest(".aprender-ponte");
-        if (ponte) {
-            const q = porId.get(String(ponte.dataset.id));
-            if (q) entrarFoco([q], { titulo: `Desafio · ${q.assunto || q.materia}`, silencioso: true });
-        }
-    });
-}
-
 // Aprender 2.0: "Praticar" ao fim da leitura. Leva para a lista de questões do assunto (Testar), com os
 // outros filtros limpos para a lista não ficar vazia sem explicação. O nível não é filtrado: a ordem de
 // estudo já põe o Iniciante primeiro.
@@ -2607,83 +2532,16 @@ function praticarAssunto(materia, assunto) {
     showToast(`Praticando ${assunto}: ${quantas} ${quantas === 1 ? "questão" : "questões"}.`, "info", 3000);
 }
 
-// "📖 Aprender" no cartão Hoje: escolher a matéria (a última usada vem primeiro).
-// Aprender 2.0 (piloto, 01/11): os assuntos que já têm cartões novos aparecem num bloco à parte,
-// no topo, e abrem o modo leitura (js/leitura.js). A trilha antiga continua igual.
-async function abrirEscolhaAprender() {
-    if (document.querySelector(".escolha-aprender")) return;
-    const novos = await assuntosComCartoes();
-    const resumo = resumoDasTrilhas(questoes, historico);
-    let ultima = null;
-    try { ultima = localStorage.getItem(CHAVE_ULTIMA_MATERIA_APRENDER); } catch (e) { /* segue */ }
-    const ordem = [...new Set([ultima, ...MATERIAS_PARA_COMECAR, ...ORDEM_MACROS, ...Object.keys(resumo)])]
-        .filter(m => m && resumo[m] && resumo[m].total > 0);
-    if (!ordem.length && !novos.length) {
-        showToast("Ainda não há questões de Iniciante para aprender.", "info");
-        return;
-    }
-
-    const blocoLeitura = novos.length ? `
-            <div class="ea-novo">
-                <p class="ea-novo-titulo">✨ Novo · modo leitura (piloto)</p>
-                <div class="bv-opcoes">${novos.map((a, i) => {
-                    const lidos = contarEntendidos(a.cartoes);
-                    return `<button type="button" class="bv-opcao ea-leitura" data-indice="${i}">
-                        <span class="bv-opcao-texto">📖 ${esc(a.assunto)}</span>
-                        <span class="bv-opcao-detalhe">${esc(a.materia)} · ${a.cartoes.length} cartões · ${lidos} entendidos</span></button>`;
-                }).join("")}</div>
-            </div>` : "";
-
-    const overlay = document.createElement("div");
-    overlay.className = "modal-overlay boas-vindas escolha-aprender";
-    overlay.innerHTML = `
-        <div class="modal-card boas-vindas-card" role="dialog" aria-modal="true" aria-labelledby="ea-titulo">
-            <h3 id="ea-titulo" class="modal-titulo">📖 O que aprender agora?</h3>${blocoLeitura}
-            <p class="modal-mensagem">Um assunto por vez: um exemplo resolvido e depois a sua vez.</p>
-            <div class="bv-opcoes">${ordem.map(m => {
-                const r = resumo[m];
-                const detalhe = r.proximo
-                    ? `Próximo: ${r.proximo.nome} · ${r.aprendidos} de ${r.total} assuntos`
-                    : `Tudo aprendido ✓ · ${r.total} assuntos`;
-                const bolas = Math.min(r.total, 24);
-                const feitas = r.total ? Math.round(r.aprendidos * bolas / r.total) : 0;
-                const caminho = Array.from({ length: bolas }, (_, i) => `<i class="trilha-bola${i < feitas ? " feita" : (i === feitas && r.proximo ? " atual" : "")}"></i>`).join("");
-                return `<button type="button" class="bv-opcao" data-materia="${esc(m)}" ${r.proximo ? "" : "disabled"}>
-                    <span class="bv-opcao-texto">${esc(m)}</span><span class="trilha-caminho" aria-hidden="true">${caminho}</span><span class="bv-opcao-detalhe">${esc(detalhe)}</span></button>`;
-            }).join("")}</div>
-            <div class="modal-acoes"><button type="button" class="btn-secondary ea-cancelar">Cancelar</button></div>
-        </div>`;
-    document.body.appendChild(overlay);
-    requestAnimationFrame(() => overlay.classList.add("visible"));
-    const primeira = overlay.querySelector(".bv-opcao:not([disabled])");
-    if (primeira) primeira.focus({ preventScroll: true });
-
-    const fechar = () => {
-        overlay.classList.remove("visible");
-        document.removeEventListener("keydown", aoTeclar);
-        setTimeout(() => overlay.remove(), 200);
-    };
-    const aoTeclar = (e) => { if (e.key === "Escape") fechar(); };
-    document.addEventListener("keydown", aoTeclar);
-    overlay.addEventListener("click", (e) => {
-        const leitura = e.target.closest(".ea-leitura");
-        if (leitura) {
-            const escolhido = novos[Number(leitura.dataset.indice)];
-            fechar();
-            if (escolhido) {
-                // O botão "Praticar" só aparece se o assunto tem questões no banco
-                const temQuestoes = questoes.some(q => q.materia === escolhido.materia && q.assunto === escolhido.assunto);
-                abrirLeitura(escolhido.cartoes, {
-                    titulo: escolhido.assunto,
-                    aoPraticar: temQuestoes ? () => praticarAssunto(escolhido.materia, escolhido.assunto) : undefined
-                });
-            }
-            return;
-        }
-        const op = e.target.closest(".bv-opcao[data-materia]");
-        if (op && !op.disabled) { fechar(); iniciarAprender(op.dataset.materia); return; }
-        if (e.target === overlay || e.target.closest(".ea-cancelar")) fechar();
+// "📖 Aprender": abre a tela nova (matérias → assuntos), em js/aprender-tela.js.
+// Sem os cartões (primeira vez sem internet), avisa em vez de abrir vazio.
+async function abrirEscolhaAprender(opcoes = {}) {
+    const abriu = await abrirAprender({
+        ordemMaterias: [...new Set([...MATERIAS_PARA_COMECAR, ...ORDEM_MACROS])],
+        temQuestoes: (materia, assunto) => questoes.some(q => q.materia === materia && q.assunto === assunto),
+        aoPraticar: praticarAssunto,
+        materia: opcoes.materia
     });
+    if (!abriu) showToast("Os cartões do Aprender não carregaram. Abra o app com internet uma vez para baixá-los.", "info", 5000);
 }
 // ==================== FIM: 17. APRENDER ====================
 
