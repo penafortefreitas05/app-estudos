@@ -25,6 +25,7 @@ import { abrirAprender } from './aprender-tela.js';
 import { montarBackupAprendidos, mesclarBackupAprendidos } from './leitura.js';
 import { abrirFiltros } from './filtros-tela.js';
 import { abrirCaderno } from './caderno-erros.js';
+import { salvarPacote, lerPacote, infoPacote, descreverPacote } from './offline-pacote.js';
 import { abrirSimulado, abrirResultado, lerSimuladosLocais, guardarSimuladoLocal, mesclarSimulados, novoId } from './simulado-tela.js';
 // ==================== FIM ====================
 
@@ -53,7 +54,10 @@ import {
     lerPerfilNuvem,
     gravarPerfilNuvem,
     salvarSimuladoNuvem,
-    listarSimuladosNuvem
+    listarSimuladosNuvem,
+    baixarPacoteOffline,
+    definirGabaritosOffline,
+    definirUsuarioOffline
 } from './supabase.js';
 
 // ---------- 1.3 Autenticação ----------
@@ -1975,6 +1979,38 @@ function assuntoDoConcurso() {
     } catch (e) { return null; }
 }
 
+// ---------- Pacote offline: botão do menu ----------
+function atualizarStatusPacote() {
+    const el = document.getElementById("pacote-status");
+    if (el) el.textContent = descreverPacote();
+}
+let baixandoPacote = false;
+async function baixarPacoteDoMenu(botao) {
+    if (!usuarioAtual) { mostrarEntradaVisitante(); return; }
+    if (abertoSemRede || !navigator.onLine) { showToast("Para baixar o pacote você precisa estar com internet.", "alerta"); return; }
+    if (baixandoPacote) return;
+    baixandoPacote = true;
+    const el = document.getElementById("pacote-status");
+    const fecharGaveta = () => { const t = document.getElementById("menu-toggle"); if (t) t.checked = false; };
+    try {
+        const pacote = await baixarPacoteOffline((t) => { if (el) el.textContent = t; });
+        if (!pacote.questoes.length) throw new Error("O banco veio vazio.");
+        if (el) el.textContent = "Salvando no aparelho...";
+        await salvarPacote(pacote);
+        definirGabaritosOffline(pacote.gabaritos);
+        const faltam = pacote.questoes.filter(q => !pacote.gabaritos[String(q.id)]).length;
+        showToast(`Pacote baixado: ${pacote.questoes.length} questões com gabarito${faltam ? ` (${faltam} sem gabarito cadastrado)` : ""}. Já dá para estudar sem internet.`, "sucesso", 6000);
+        fecharGaveta();
+    } catch (erro) {
+        console.warn("[FocoPro] Falha ao baixar o pacote offline:", erro);
+        showToast("Não consegui baixar o pacote agora. Confira a internet e tente de novo.", "erro", 6000);
+    } finally {
+        baixandoPacote = false;
+        atualizarStatusPacote();
+    }
+}
+atualizarStatusPacote();
+
 // ---------- Perfil: o concurso (alvo) é a trilha do app inteiro ----------
 // Salva no aparelho e na nuvem. Se o concurso mudou, recarrega o banco já com a nova trilha.
 async function guardarPerfilDoUsuario(perfil) {
@@ -1996,6 +2032,7 @@ async function guardarPerfilDoUsuario(perfil) {
 async function sincronizarPerfil() {
     try {
         carregarPerfil(usuarioAtual.id);
+        if (abertoSemRede) return; // sem rede: fica o perfil do aparelho
         const local = obterPerfilAtivo();
         const nuvem = await lerPerfilNuvem();
         if (nuvem && (!local || nuvem.atualizadoEm > (local.atualizadoEm || 0))) {
@@ -2014,6 +2051,7 @@ async function sincronizarPerfil() {
 async function sincronizarFilaDoDia() {
     try {
         const hoje = diaLocal();
+        if (abertoSemRede) { atualizarFilaDoDia(questoes, historico); return; } // sem rede: fila do aparelho
         let nuvem = await lerFilaDoDiaNuvem(hoje);
         if (!nuvem) {
             atualizarFilaDoDia(questoes, historico);
@@ -2053,13 +2091,23 @@ async function carregarBancoDeQuestoes(questoesChegando = null) {
 
     // Usuário logado: a nuvem (Supabase) é a única fonte das questões.
     // Se ela falhar, o app diz isso (antes mostrava 2 questões de exemplo como se fossem o banco).
-    if (abertoSemRede) { mostrarErroDeCarga(); return; }
-    container.innerHTML = '<p class="aviso-vazio">Carregando questões...</p>';
-    const resultado = await (questoesChegando || buscarQuestoes());
-    if (resultado.erro) {
-        console.warn("[FocoPro] Erro ao buscar questões da nuvem:", resultado.erro);
-        mostrarErroDeCarga();
-        return;
+    // Pacote offline (menu "Baixar para estudar offline"): serve quando não há internet ou a busca falha
+    const pacote = await lerPacote();
+    if (pacote) definirGabaritosOffline(pacote.gabaritos);
+    const doPacote = () => ({ questoes: pacote.questoes.map((q, i) => normalizarQuestao({ ...q }, i)), doPacote: true });
+    let resultado;
+    if (abertoSemRede) {
+        if (!pacote) { mostrarErroDeCarga(); return; }
+        resultado = doPacote();
+    } else {
+        container.innerHTML = '<p class="aviso-vazio">Carregando questões...</p>';
+        resultado = await (questoesChegando || buscarQuestoes());
+        if (resultado.erro) {
+            console.warn("[FocoPro] Erro ao buscar questões da nuvem:", resultado.erro);
+            if (!pacote) { mostrarErroDeCarga(); return; }
+            resultado = doPacote();
+            showToast("Sem conexão com o servidor. Usando as questões baixadas neste aparelho.", "info", 5000);
+        }
     }
     const daNuvem = resultado.questoes;
     ultimaListaDaNuvem = daNuvem;
@@ -2192,10 +2240,11 @@ async function iniciarApp() {
             usuarioAtual = null;
         }
     }
+    definirUsuarioOffline(abertoSemRede && usuarioAtual ? usuarioAtual.id : null);
     if (abertoSemRede) {
         if (userEmail) userEmail.innerText = usuarioAtual.email;
         if (userAvatar) userAvatar.innerText = usuarioAtual.email.charAt(0).toUpperCase();
-        showToast("Sem internet. O Aprender funciona; as questões voltam quando a internet voltar.", "info", 6000);
+        showToast(infoPacote() ? "Sem internet. Usando o pacote baixado neste aparelho." : "Sem internet. O Aprender funciona; as questões voltam quando a internet voltar.", "info", 6000);
     }
 
     // 2. As questões começam a chegar já; enquanto isso, reenvia respostas pendentes
@@ -2816,6 +2865,10 @@ if (btnAbrirBarra) btnAbrirBarra.addEventListener("click", () => aplicarBarraRec
         if (alvo) {
             alvo.click();
             fecharGaveta();
+            return;
+        }
+        if (item.dataset.acao === "pacote-offline") {
+            baixarPacoteDoMenu(item);
             return;
         }
         if (item.dataset.acao === "caderno") {

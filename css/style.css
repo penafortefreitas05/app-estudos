@@ -2054,3 +2054,5 @@ body.modo-aprender .sidebar { background-color: #11102e; border-right-color: #2a
 .sm-nota span { font-size: 1.4rem; color: #93c5fd; font-weight: 700; }
 .sm-comp { margin: 0 0 0.9rem; text-align: center; font-size: 0.9rem; color: #cbd5e1; }
 .sm-chip:focus-visible, .sm-opcao:focus-visible, .sm-comecar:focus-visible, .sm-sec-btn:focus-visible, .sm-item-topo:focus-visible, .sm-link:focus-visible, .sm-sair:focus-visible, .sm-mais:focus-visible { outline: 2px solid #93c5fd; outline-offset: 2px; }
+.menu-texto { display: flex; flex-direction: column; min-width: 0; }
+.menu-sub { display: block; margin-top: 0.1rem; font-size: 0.72rem; font-weight: 400; color: #94a3b8; }
