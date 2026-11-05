@@ -67,7 +67,7 @@ export function adicionarBotaoFinalizar(container) {
 // ---------- 3. PROCESSAMENTO E CONTABILIZAÇÃO EM LOTE ----------
 // Assíncrona (U9): o gabarito de cada questão só vem do servidor na hora de finalizar,
 // corrigido via RPC — nenhuma questão do simulado leva o gabarito consigo antes disso.
-export async function finalizarSimulado(simulado, container, porId, historico, questoes, porTempo = false) {
+export async function finalizarSimulado(simulado, container, porId, historico, questoes, porTempo = false, buscarCard = null) {
     if (!simulado || simulado.finalizado) return;
     simulado.finalizado = true;
 
@@ -86,7 +86,7 @@ export async function finalizarSimulado(simulado, container, porId, historico, q
         const q = porId.get(idStr);
         if (!q) return null;
 
-        const card = container.querySelector(`.card-questao[data-id="${CSS.escape(idStr)}"]`);
+        const card = buscarCard ? buscarCard(idStr) : container.querySelector(`.card-questao[data-id="${CSS.escape(idStr)}"]`);
         const radioMarcado = card ? card.querySelector(".radio-opcao:checked") : null;
         const respostaDada = simulado.respostas[idStr] || simulado.respostas[q.id] || (radioMarcado ? radioMarcado.value : null);
         const temResposta = (respostaDada !== undefined && respostaDada !== null && String(respostaDada).trim() !== "");
