@@ -11568,5 +11568,454 @@
       "tipologia-textual",
       "interpretacao-de-texto"
     ]
+  },
+  {
+    "id": "card-rlm-n1-028",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Proposições e conectivos lógicos",
+    "nivel": 1,
+    "conceito": "Proposição e valor lógico",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Proposição é frase declarativa que pode ser julgada verdadeira ou falsa; esse resultado é seu valor lógico. Exemplo: O alarme tocou.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: Traga o relatório é proposição; certo: ordem não é proposição."
+      }
+    ],
+    "atencao": "Ordens, pedidos e perguntas não são proposições, pois não podem ser julgados verdadeiros ou falsos.",
+    "fonte": "OpenStax, Contemporary Mathematics, seção 2.1 — https://openstax.org/books/contemporary-mathematics/pages/2-1-statements-and-quantifiers",
+    "tags": [
+      "proposicoes",
+      "valor-logico"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-029",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Proposições e conectivos lógicos",
+    "nivel": 1,
+    "conceito": "Negação de uma proposição",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Conectivo é o operador que forma proposições novas; a negação (~) atua sobre uma só e troca o valor lógico. Exemplo: A sala não está aberta.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: negar Ana é alta dá Ana é baixa; certo: Ana não é alta."
+      }
+    ],
+    "atencao": "Dupla negação volta ao valor original: ~(~p) equivale a p.",
+    "fonte": "OpenStax, Contemporary Mathematics, seção 2.1 — https://openstax.org/books/contemporary-mathematics/pages/2-1-statements-and-quantifiers",
+    "tags": [
+      "proposicoes",
+      "valor-logico",
+      "conectivos"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-030",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Proposições e conectivos lógicos",
+    "nivel": 1,
+    "conceito": "Conjunção",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Conjunção (∧), lida como e, liga duas proposições e só é verdadeira se ambas forem verdadeiras. Exemplo: A senha é válida e o acesso foi liberado.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: basta uma ser verdadeira; certo: as duas precisam ser verdadeiras."
+      }
+    ],
+    "atencao": "Na lógica, mas também é conjunção: Choveu, mas saí equivale a Choveu e saí.",
+    "fonte": "OpenStax, Contemporary Mathematics, seção 2.2 — https://openstax.org/books/contemporary-mathematics/pages/2-2-compound-statements",
+    "tags": [
+      "conectivos",
+      "conjuncao"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-031",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Proposições e conectivos lógicos",
+    "nivel": 1,
+    "conceito": "Disjunção inclusiva",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Na lógica, a disjunção (∨), lida como ou, é inclusiva: é verdadeira se ao menos uma parte for verdadeira. Exemplo: O pedido foi aceito ou revisado.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: p ou q é falsa se ambas são verdadeiras; certo: é verdadeira."
+      }
+    ],
+    "atencao": "A disjunção inclusiva só é falsa quando ambas as proposições são falsas.",
+    "fonte": "OpenStax, Contemporary Mathematics, seção 2.2 — https://openstax.org/books/contemporary-mathematics/pages/2-2-compound-statements",
+    "tags": [
+      "conectivos",
+      "disjuncao"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-032",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Proposições e conectivos lógicos",
+    "nivel": 1,
+    "conceito": "Condicional",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Condicional (→) tem a forma se p, então q: p é o antecedente, e q, o consequente. Exemplo: Se chove, então a rua molha.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: com antecedente falso, a condicional é falsa; certo: é verdadeira."
+      }
+    ],
+    "atencao": "A condicional só é falsa quando o antecedente é verdadeiro e o consequente é falso.",
+    "fonte": "OpenStax, Contemporary Mathematics, seção 2.2 — https://openstax.org/books/contemporary-mathematics/pages/2-2-compound-statements",
+    "tags": [
+      "conectivos",
+      "condicional"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-033",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Proposições e conectivos lógicos",
+    "nivel": 1,
+    "conceito": "Bicondicional",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Bicondicional (↔) significa se e somente se; é verdadeira quando as proposições têm o mesmo valor lógico. Exemplo: A luz acende se e somente se o botão está ligado.",
+    "nao_confundir": [
+      {
+        "conceito": "Condicional",
+        "diferenca": "Condicional vale numa direção; bicondicional exige as duas: p → q e q → p."
+      }
+    ],
+    "atencao": "Com valores lógicos diferentes, a bicondicional é falsa.",
+    "fonte": "OpenStax, Contemporary Mathematics, seção 2.2 — https://openstax.org/books/contemporary-mathematics/pages/2-2-compound-statements",
+    "tags": [
+      "conectivos",
+      "bicondicional",
+      "tabela-verdade"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-034",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Equivalências e negações lógicas",
+    "nivel": 1,
+    "conceito": "Equivalência lógica",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Duas proposições são equivalentes quando têm o mesmo valor lógico em todas as combinações. Exemplo: Ana estuda e Rui trabalha equivale a Rui trabalha e Ana estuda.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Uma coincidência de valor não basta; equivalência exige igualdade em todas as combinações."
+      }
+    ],
+    "atencao": "A tabela-verdade confirma a equivalência quando as colunas coincidem em todas as linhas.",
+    "fonte": "OpenStax, Contemporary Mathematics, seção 2.5 — https://openstax.org/books/contemporary-mathematics/pages/2-5-equivalent-statements",
+    "tags": [
+      "equivalencia"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-035",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Equivalências e negações lógicas",
+    "nivel": 1,
+    "conceito": "Leis de De Morgan",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Ao negar, negue cada parte e troque e por ou, ou ou por e. Exemplo: ~(p ∧ q) equivale a ~p ∨ ~q.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Ao negar a conjunção, não mantenha e entre as partes negadas."
+      }
+    ],
+    "atencao": "Negar A porta abriu ou a luz acendeu dá A porta não abriu e a luz não acendeu.",
+    "fonte": "OpenStax, Contemporary Mathematics, seção 2.6 (De Morgan's Laws) — https://openstax.org/books/contemporary-mathematics/pages/2-6-de-morgans-laws",
+    "tags": [
+      "negacao",
+      "de-morgan"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-036",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Equivalências e negações lógicas",
+    "nivel": 1,
+    "conceito": "Negação do condicional",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Negar um condicional é afirmar o antecedente e negar o consequente. Exemplo: negar Se chove, saio é dizer Chove e não saio.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: ~(p → q) equivale a p → ~q; certo: equivale a p ∧ ~q."
+      }
+    ],
+    "atencao": "A negação do condicional não é outro condicional: é uma conjunção.",
+    "fonte": "OpenStax, Contemporary Mathematics, seção 2.6 (Negation of a conditional) — https://openstax.org/books/contemporary-mathematics/pages/2-6-de-morgans-laws",
+    "tags": [
+      "negacao",
+      "condicional"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-037",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Equivalências e negações lógicas",
+    "nivel": 1,
+    "conceito": "Contrapositiva do condicional",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "A contrapositiva de p → q é ~q → ~p e equivale a ela. Exemplo: Se há fumaça, há fogo equivale a Se não há fogo, não há fumaça.",
+    "nao_confundir": [
+      {
+        "conceito": "Recíproca e inversa",
+        "diferenca": "Recíproca q → p e inversa ~p → ~q não equivalem a p → q."
+      }
+    ],
+    "atencao": "Recíproca e inversa equivalem entre si, mas não ao condicional original.",
+    "fonte": "OpenStax, Contemporary Mathematics, seção 2.5 — https://openstax.org/books/contemporary-mathematics/pages/2-5-equivalent-statements",
+    "tags": [
+      "equivalencia",
+      "condicional",
+      "contrapositiva"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-038",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Equivalências e negações lógicas",
+    "nivel": 1,
+    "conceito": "Condicional como disjunção",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "O condicional p → q equivale a não p ou q. Exemplo: Se o arquivo existe, então pode ser aberto equivale a o arquivo não existe ou pode ser aberto.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: p → q equivale a p ∨ ~q; certo: equivale a ~p ∨ q."
+      }
+    ],
+    "atencao": "Como o condicional, ~p ∨ q é verdadeira sempre que p é falsa.",
+    "fonte": "OpenStax, Contemporary Mathematics, seção 2.5 — https://openstax.org/books/contemporary-mathematics/pages/2-5-equivalent-statements",
+    "tags": [
+      "equivalencia",
+      "condicional"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-039",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Lógica de argumentação e quantificadores",
+    "nivel": 1,
+    "conceito": "Argumento, premissas e conclusão",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Argumento reúne premissas, afirmações de apoio, e conclusão, afirmação derivada delas. É válido se a conclusão decorre das premissas. Exemplo: Se chove, a rua molha; chove; logo, a rua molha.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Validade avalia a ligação lógica; verdade avalia se uma afirmação corresponde aos fatos."
+      }
+    ],
+    "atencao": "A validade não garante que as premissas ou a conclusão sejam verdadeiras no mundo real.",
+    "fonte": "OpenStax, Contemporary Mathematics, seção 2.1 e 2.7 — https://openstax.org/books/contemporary-mathematics/pages/2-1-statements-and-quantifiers ; https://openstax.org/books/contemporary-mathematics/pages/2-7-logical-arguments",
+    "tags": [
+      "argumentos",
+      "premissas",
+      "validade"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-040",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Lógica de argumentação e quantificadores",
+    "nivel": 1,
+    "conceito": "Encadeamento de condicionais",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Encadeamento: de p → q e q → r conclui-se p → r. Exemplo: Se chove, a rua molha; se molha, há trânsito; logo, se chove, há trânsito.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: concluir r → p; certo: concluir p → r."
+      }
+    ],
+    "atencao": "Conclui-se p → r, e não r: sem saber se p ocorreu, nada se afirma sobre r.",
+    "fonte": "OpenStax, Contemporary Mathematics, seção 2.7 (chain rule, hypothetical syllogism) — https://openstax.org/books/contemporary-mathematics/pages/2-7-logical-arguments",
+    "tags": [
+      "argumentos",
+      "premissas",
+      "silogismo"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-041",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Lógica de argumentação e quantificadores",
+    "nivel": 1,
+    "conceito": "Quantificadores todo, algum e nenhum",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Quantificador indica quantos membros uma afirmação abrange: todo inclui todos, algum indica ao menos um, nenhum indica zero. Exemplo: Algum pedido foi aprovado.",
+    "nao_confundir": [
+      {
+        "conceito": "Todo e algum",
+        "diferenca": "Todo exige que todos tenham a propriedade; algum exige ao menos um."
+      }
+    ],
+    "atencao": "Algum não significa exatamente um: Algum A é B vale se houver um ou mais.",
+    "fonte": "OpenStax, Contemporary Mathematics, seção 2.1 — https://openstax.org/books/contemporary-mathematics/pages/2-1-statements-and-quantifiers",
+    "tags": [
+      "quantificadores",
+      "algum",
+      "nenhum"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-042",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Lógica de argumentação e quantificadores",
+    "nivel": 1,
+    "conceito": "Contrárias e contraditórias",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Na lógica tradicional, supondo que existam A, contrárias não podem ser ambas verdadeiras, mas podem ser ambas falsas. Exemplo: Todo A é B e Nenhum A é B.",
+    "nao_confundir": [
+      {
+        "conceito": "Contraditórias",
+        "diferenca": "Contraditórias não podem ser ambas verdadeiras nem ambas falsas."
+      }
+    ],
+    "atencao": "Todo A é B e Algum A não é B são contraditórias: sempre uma verdadeira, outra falsa.",
+    "fonte": "Stanford Encyclopedia of Philosophy, The Traditional Square of Opposition — https://plato.stanford.edu/entries/square/",
+    "tags": [
+      "argumentos",
+      "quantificadores"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-043",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Lógica de argumentação e quantificadores",
+    "nivel": 1,
+    "conceito": "Negação de quantificadores",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Negar Todo A é B é dizer Algum A não é B; negar Algum A é B é dizer Nenhum A é B. Exemplo: Nem todo relatório está completo.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Negar todo A é B não resulta em nenhum A ser B."
+      }
+    ],
+    "atencao": "A negação de Nenhum A é B é Algum A é B.",
+    "fonte": "OpenStax, Contemporary Mathematics, seção 2.1, tabela 2.2 — https://openstax.org/books/contemporary-mathematics/pages/2-1-statements-and-quantifiers",
+    "tags": [
+      "quantificadores",
+      "algum",
+      "nenhum"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-044",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Conjuntos",
+    "nivel": 1,
+    "conceito": "União de conjuntos",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "União (∪) reúne os elementos que estão em A, em B ou em ambos. Exemplo: {1,2} ∪ {2,3} = {1,2,3}.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: contar duas vezes os elementos comuns; certo: cada elemento conta uma vez."
+      }
+    ],
+    "atencao": "Para contar a união, some os totais de A e B e subtraia os comuns, contados duas vezes.",
+    "fonte": "OpenStax, Contemporary Mathematics, seção 1.4 — https://openstax.org/books/contemporary-mathematics/pages/1-4-set-operations-with-two-sets",
+    "tags": [
+      "conjuntos",
+      "uniao",
+      "inclusao-exclusao"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-045",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Conjuntos",
+    "nivel": 1,
+    "conceito": "Interseção",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Interseção (∩) contém elementos que pertencem aos dois conjuntos. Exemplo: {1,2,3} ∩ {2,3,4} = {2,3}.",
+    "nao_confundir": [
+      {
+        "conceito": "União",
+        "diferenca": "Interseção reúne os elementos comuns; união reúne os de A, de B ou de ambos."
+      }
+    ],
+    "atencao": "Sem elementos comuns, a interseção é o conjunto vazio, e os conjuntos são chamados disjuntos.",
+    "fonte": "OpenStax, Contemporary Mathematics, seção 1.4 e 2.1 — https://openstax.org/books/contemporary-mathematics/pages/1-4-set-operations-with-two-sets",
+    "tags": [
+      "conjuntos",
+      "intersecao"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-046",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Conjuntos",
+    "nivel": 1,
+    "conceito": "Diferença entre conjuntos",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "A diferença A−B contém os elementos de A que não pertencem a B. Exemplo: {1,2,3}−{2,3,4} = {1}.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "A−B mantém elementos exclusivos de A; B−A mantém elementos exclusivos de B."
+      }
+    ],
+    "atencao": "A − B retira de A os elementos comuns a B; elementos que só estão em B não entram.",
+    "fonte": "OpenStax, Contemporary Mathematics, seção 1.4 (Sets Challenge: A − B) — https://openstax.org/books/contemporary-mathematics/pages/1-4-set-operations-with-two-sets",
+    "tags": [
+      "conjuntos",
+      "diferenca"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-047",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Conjuntos",
+    "nivel": 1,
+    "conceito": "Inclusão e subconjunto",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "A ⊆ B quando todo elemento de A também está em B; no diagrama de Venn, A fica dentro de B. Exemplo: {1} ⊆ {1,2}.",
+    "nao_confundir": [
+      {
+        "conceito": "Pertinência",
+        "diferenca": "∈ liga elemento a conjunto, como 1 ∈ {1,2}; ⊆ liga conjunto a conjunto."
+      }
+    ],
+    "atencao": "Todo conjunto é subconjunto de si mesmo, e o vazio é subconjunto de qualquer conjunto.",
+    "fonte": "OpenStax, Contemporary Mathematics, seção 1.2 — https://openstax.org/books/contemporary-mathematics/pages/1-2-subsets",
+    "tags": [
+      "conjuntos",
+      "inclusao",
+      "subconjuntos",
+      "diagrama-de-venn"
+    ]
   }
 ]
