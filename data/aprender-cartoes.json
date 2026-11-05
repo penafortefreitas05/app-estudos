@@ -12017,5 +12017,279 @@
       "subconjuntos",
       "diagrama-de-venn"
     ]
+  },
+  {
+    "id": "card-gov-n1-041",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Contratações de TI (Lei 14.133 e IN SGD)",
+    "nivel": 1,
+    "conceito": "Modalidades de licitação",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Modalidade é a forma legal de licitar: pregão, concorrência, concurso, leilão e diálogo competitivo. Exemplo: pregão para bens e serviços comuns.",
+    "nao_confundir": [
+      {
+        "conceito": "Procedimento auxiliar",
+        "diferenca": "Procedimento auxiliar apoia a licitação; modalidade define sua forma legal."
+      }
+    ],
+    "atencao": "É vedado criar outras modalidades ou combinar as cinco previstas na Lei 14.133/2021.",
+    "fonte": "Lei nº 14.133/2021, vigente, arts. 6º, XLI, e 28, § 2º — https://legis.senado.leg.br/norma/33382036/publicacao/33383820",
+    "tags": [
+      "modalidades",
+      "lei-14133"
+    ]
+  },
+  {
+    "id": "card-gov-n1-042",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Contratações de TI (Lei 14.133 e IN SGD)",
+    "nivel": 1,
+    "conceito": "Inexigibilidade de licitação",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Inexigibilidade permite contratar sem licitação quando a competição é inviável. Exemplo: fornecedor exclusivo para o objeto.",
+    "nao_confundir": [
+      {
+        "conceito": "Dispensa",
+        "diferenca": "Dispensa permite não licitar em hipótese legal, embora a competição seja possível."
+      }
+    ],
+    "atencao": "A exclusividade do fornecedor deve ser comprovada, e é vedada a preferência por marca específica.",
+    "fonte": "Lei nº 14.133/2021, vigente, art. 74, I e § 1º, texto em normas.leg.br — https://normas.leg.br/?urn=urn:lex:br:federal:lei:2021-04-01;14133 ; TCU, Licitações e Contratos: Orientações e Jurisprudência, 5.10.1.1 Fornecedor exclusivo — https://licitacoesecontratos.tcu.gov.br/5-10-1-1-fornecedor-exclusivo-inciso-i/",
+    "tags": [
+      "inexigibilidade",
+      "dispensa",
+      "lei-14133"
+    ]
+  },
+  {
+    "id": "card-gov-n1-043",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Contratações de TI (Lei 14.133 e IN SGD)",
+    "nivel": 1,
+    "conceito": "Estudo Técnico Preliminar",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Estudo Técnico Preliminar (ETP) é o documento que caracteriza o interesse público envolvido e a melhor solução para a contratação.",
+    "nao_confundir": [
+      {
+        "conceito": "Termo de Referência",
+        "diferenca": "Termo de Referência descreve objeto e condições; ETP avalia a viabilidade antes dele."
+      }
+    ],
+    "atencao": "O ETP é a primeira etapa do planejamento e serve de base ao Termo de Referência.",
+    "fonte": "Lei nº 14.133/2021, vigente, art. 6º, XX — https://legis.senado.leg.br/norma/33382036/publicacao/33383820 ; TCU, Licitações e Contratos: Orientações e Jurisprudência, 4. Planejamento da contratação — https://licitacoesecontratos.tcu.gov.br/4-planejamento-da-contratacao/",
+    "tags": [
+      "etp",
+      "planejamento-da-contratacao",
+      "lei-14133"
+    ]
+  },
+  {
+    "id": "card-gov-n1-044",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Contratações de TI (Lei 14.133 e IN SGD)",
+    "nivel": 1,
+    "conceito": "Termo de Referência",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Termo de Referência (TR) descreve o objeto, os requisitos e as condições para contratar bens ou serviços.",
+    "nao_confundir": [
+      {
+        "conceito": "Projeto básico",
+        "diferenca": "Projeto básico serve a obras e serviços de engenharia; TR, a bens e serviços."
+      }
+    ],
+    "atencao": "A fundamentação do TR referencia os estudos preliminares correspondentes.",
+    "fonte": "Lei nº 14.133/2021, vigente, art. 6º, XXIII e XXV — https://legis.senado.leg.br/norma/33382036/publicacao/33383820",
+    "tags": [
+      "termo-de-referencia",
+      "etp",
+      "lei-14133"
+    ]
+  },
+  {
+    "id": "card-gov-n1-045",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Contratações de TI (Lei 14.133 e IN SGD)",
+    "nivel": 1,
+    "conceito": "Sistema de Registro de Preços",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Sistema de Registro de Preços registra formalmente preços de bens e serviços para contratações futuras. Exemplo: ata com preços de notebooks.",
+    "nao_confundir": [
+      {
+        "conceito": "Ata de registro de preços",
+        "diferenca": "Ata é documento com objeto, preços, fornecedores e condições para futura contratação."
+      }
+    ],
+    "atencao": "A existência de preços registrados não obriga a Administração a contratar.",
+    "fonte": "Lei nº 14.133/2021, vigente, arts. 6º, XLV e XLVI, e 83, texto em normas.leg.br — https://normas.leg.br/?urn=urn:lex:br:federal:lei:2021-04-01;14133 ; TCU, Licitações e Contratos: Orientações e Jurisprudência, 5.9.4 Sistema de Registro de Preços — https://licitacoesecontratos.tcu.gov.br/5-9-4-sistema-de-registro-de-precos-2/",
+    "tags": [
+      "registro-de-precos",
+      "lei-14133"
+    ]
+  },
+  {
+    "id": "card-gov-n1-046",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Contratações de TI (Lei 14.133 e IN SGD)",
+    "nivel": 1,
+    "conceito": "Sanções administrativas",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Sanção administrativa é a penalidade ao licitante ou contratado. São quatro: multa, advertência, declaração de inidoneidade e impedimento de licitar e contratar.",
+    "nao_confundir": [
+      {
+        "conceito": "Impedimento e inidoneidade",
+        "diferenca": "Impedimento vale no ente sancionador, até três anos; inidoneidade, em todos, por três a seis."
+      }
+    ],
+    "atencao": "A multa pode ser aplicada junto com advertência, impedimento ou declaração de inidoneidade.",
+    "fonte": "Lei nº 14.133/2021, vigente, art. 156, §§ 4º, 5º e 7º ; TCU, Licitações e Contratos: Orientações e Jurisprudência, 5.8 Infrações e sanções administrativas — https://licitacoesecontratos.tcu.gov.br/5-8-infracoes-e-sancoes-administrativas-licitantes/ ; Escola de Contas do TCE-MG, Infrações e sanções em contratos administrativos (transcreve o § 7º) — https://escoladecontas.tce.mg.gov.br/wp-content/uploads/2024/09/infracoes_e_sancoes_em_contratos_administrativos.pdf",
+    "tags": [
+      "sancoes-administrativas",
+      "multas",
+      "lei-14133"
+    ]
+  },
+  {
+    "id": "card-gov-n1-047",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Contratações de TI (Lei 14.133 e IN SGD)",
+    "nivel": 1,
+    "conceito": "Fiscalização do contrato",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Fiscal do contrato é representante designado da Administração que acompanha a execução e registra ocorrências.",
+    "nao_confundir": [
+      {
+        "conceito": "Preposto",
+        "diferenca": "Preposto representa a contratada na execução; fiscal representa a Administração."
+      }
+    ],
+    "atencao": "O apoio de terceiros não exime o fiscal de sua responsabilidade nos limites das informações recebidas.",
+    "fonte": "Lei nº 14.133/2021, vigente, arts. 117, § 4º, II, e 118, texto em normas.leg.br — https://normas.leg.br/?urn=urn:lex:br:federal:lei:2021-04-01;14133",
+    "tags": [
+      "fiscalizacao-de-contratos",
+      "lei-14133"
+    ]
+  },
+  {
+    "id": "card-gov-n1-048",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Contratações de TI (Lei 14.133 e IN SGD)",
+    "nivel": 1,
+    "conceito": "Portal Nacional de Contratações Públicas",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Portal Nacional de Contratações Públicas (PNCP) é o sítio oficial que divulga, de forma centralizada e obrigatória, os atos exigidos pela Lei 14.133/2021.",
+    "nao_confundir": [
+      {
+        "conceito": "Divulgação complementar",
+        "diferenca": "O portal do ente pode complementar a divulgação centralizada no PNCP."
+      }
+    ],
+    "atencao": "A divulgação no PNCP é condição indispensável para a eficácia do contrato e de seus aditamentos.",
+    "fonte": "Lei nº 14.133/2021, vigente, arts. 94 e 174, texto em normas.leg.br — https://normas.leg.br/?urn=urn:lex:br:federal:lei:2021-04-01;14133 ; TCU, Licitações e Contratos: Orientações e Jurisprudência, 5.11.7 Divulgação — https://licitacoesecontratos.tcu.gov.br/5-11-7-divulgacao/",
+    "tags": [
+      "pncp",
+      "transparencia",
+      "lei-14133"
+    ]
+  },
+  {
+    "id": "card-gov-n1-049",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Normas de TI do Poder Judiciário (CNJ)",
+    "nivel": 1,
+    "conceito": "Estratégia de segurança cibernética",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "A Resolução 396/2021 do Conselho Nacional de Justiça (CNJ), vigente, institui a Estratégia Nacional de Segurança Cibernética do Poder Judiciário (ENSEC-PJ).",
+    "nao_confundir": [
+      {
+        "conceito": "ETIR",
+        "diferenca": "A equipe de incidentes atua em cada órgão; a estratégia é nacional."
+      }
+    ],
+    "atencao": "A Resolução 396/2021 exclui o Supremo Tribunal Federal de seu âmbito.",
+    "fonte": "Resolução CNJ nº 396, de 7 de junho de 2021, vigente — https://atos.cnj.jus.br/atos/detalhar/3975",
+    "tags": [
+      "cnj",
+      "resolucao-cnj-396",
+      "resolucoes"
+    ]
+  },
+  {
+    "id": "card-gov-n1-050",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Normas de TI do Poder Judiciário (CNJ)",
+    "nivel": 1,
+    "conceito": "Equipe de resposta a incidentes",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "A Equipe de Tratamento e Resposta a Incidentes (ETIR) de cada órgão trata incidentes cibernéticos. Exemplo: conter um ataque.",
+    "nao_confundir": [
+      {
+        "conceito": "Comitê de Governança de Segurança da Informação",
+        "diferenca": "O comitê assessora a alta administração; a ETIR integra a rede de resposta a incidentes."
+      }
+    ],
+    "atencao": "Cabe à alta administração de cada órgão do Judiciário, exceto o STF, instituir e implementar sua ETIR.",
+    "fonte": "Resolução CNJ nº 396, de 7 de junho de 2021, vigente — https://atos.cnj.jus.br/atos/detalhar/3975, art. 19, caput e V",
+    "tags": [
+      "etir",
+      "incidentes",
+      "resolucao-cnj-396"
+    ]
+  },
+  {
+    "id": "card-gov-n1-051",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Normas de TI do Poder Judiciário (CNJ)",
+    "nivel": 1,
+    "conceito": "Modelo de requisitos MoReq-Jus",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "A Resolução CNJ 522/2023, vigente, institui o MoReq-Jus, modelo de requisitos para sistemas de gestão de processos e documentos do Judiciário.",
+    "nao_confundir": [
+      {
+        "conceito": "Sistema de gestão",
+        "diferenca": "MoReq-Jus não é um sistema: é o conjunto de requisitos que os sistemas devem cumprir."
+      }
+    ],
+    "atencao": "Mesmo divididos em módulos e microsserviços, esses sistemas do Judiciário devem aderir ao MoReq-Jus.",
+    "fonte": "Resolução CNJ nº 522, de 18 de setembro de 2023, vigente, arts. 1º, 2º e 10 (revoga a Resolução CNJ nº 91/2009) — https://atos.cnj.jus.br/atos/detalhar/5266 ; texto também no STJ — https://www.stj.jus.br/internet_docs/biblioteca/clippinglegislacao/Res_522_2023_CNJ.pdf",
+    "tags": [
+      "moreq-jus",
+      "resolucao-cnj-522",
+      "cnj",
+      "microsservicos"
+    ]
+  },
+  {
+    "id": "card-gov-n1-052",
+    "materia": "Governança, Gestão & Projetos de TI",
+    "assunto": "Normas de TI do Poder Judiciário (CNJ)",
+    "nivel": 1,
+    "conceito": "Portaria CNJ 162/2021",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "A Portaria CNJ 162/2021, vigente, aprova protocolos e manuais criados pela Resolução 396/2021 para a estratégia de segurança cibernética do Judiciário.",
+    "nao_confundir": [
+      {
+        "conceito": "Resolução CNJ 396/2021",
+        "diferenca": "A resolução institui a estratégia; a portaria aprova protocolos e manuais."
+      }
+    ],
+    "atencao": "Entre os protocolos aprovados estão o de prevenção de incidentes e o de gerenciamento de crises cibernéticas.",
+    "fonte": "Portaria CNJ nº 162, de 10 de junho de 2021, vigente — CNJ, Normativos de Segurança da Informação — https://www.cnj.jus.br/tecnologia-da-informacao-e-comunicacao/seguranca-da-informacao/normativos/ ; Resolução CNJ nº 396, de 7 de junho de 2021, vigente — https://atos.cnj.jus.br/atos/detalhar/3975, art. 25",
+    "tags": [
+      "portaria-cnj-162",
+      "resolucao-cnj-396",
+      "cnj"
+    ]
   }
 ]
