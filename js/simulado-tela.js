@@ -139,7 +139,7 @@ export function abrirSimulado({ disponiveis = () => 0, aoComecar, aoFiltros, car
                 <p class="sm-filtros">Usa os filtros atuais: <b>${total}</b> ${total === 1 ? 'questão disponível' : 'questões disponíveis'}.
                     <button type="button" class="sm-link" data-sm="filtros">Mudar filtros</button></p>
                 <button type="button" class="sm-comecar" data-sm="comecar" ${real ? '' : 'disabled'}>${real ? `▶ Começar simulado (${real} ${real === 1 ? 'questão' : 'questões'}${minutos() ? ` · ${minutos()} min` : ''})` : 'Nenhuma questão com esses filtros'}</button>
-                <p class="sm-aviso">A correção do simulado precisa de internet. Sem conexão, estude no Aprender.</p>
+                <p class="sm-aviso">Sem internet, o simulado funciona se você tiver baixado o pacote offline (menu ☰).</p>
             </section>
             <section class="sm-sec">
                 <h3 class="sm-sec-titulo">Seus simulados</h3>

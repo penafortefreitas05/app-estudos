@@ -107,6 +107,32 @@ async function inserirLinhas(linhas) {
     }
 }
 
+// ---------- Pacote offline ----------
+// Gabaritos baixados (questaoId -> resposta_correta), usados só quando a correção pelo servidor
+// não responde (sem internet). Com internet, o servidor continua sendo quem corrige.
+let gabaritosOffline = null;
+export function definirGabaritosOffline(mapa) { gabaritosOffline = mapa && Object.keys(mapa).length ? mapa : null; }
+export const temGabaritosOffline = () => Boolean(gabaritosOffline);
+
+// Usuário guardado no aparelho (app aberto sem rede): as respostas vão para a fila com o id dele
+let usuarioOfflineId = null;
+export function definirUsuarioOffline(id) { usuarioOfflineId = id || null; }
+
+// Baixa todas as questões e todos os gabaritos. onProgresso(texto) opcional.
+export async function baixarPacoteOffline(onProgresso = () => {}) {
+    onProgresso('Baixando as questões...');
+    const questoes = await buscarTodasAsPaginas(() => supabaseClient.from('questoes').select('*').order('id', { ascending: true }));
+    onProgresso(`Baixando os gabaritos (${questoes.length} questões)...`);
+    const gabaritos = {};
+    for (let inicio = 0; ; inicio += TAMANHO_PAGINA) {
+        const { data, error } = await supabaseClient.rpc('baixar_gabaritos', { p_offset: inicio, p_limite: TAMANHO_PAGINA });
+        if (error) throw error;
+        (data || []).forEach(l => { gabaritos[String(l.questao_id)] = String(l.resposta_correta); });
+        if (!data || data.length < TAMANHO_PAGINA) break;
+    }
+    return { baixadoEm: new Date().toISOString(), questoes, gabaritos };
+}
+
 /**
  * Grava várias respostas de uma vez (simulado) ou uma só (modo estudo).
  * Cada item: { questaoId, materia, banca, acertou, respostaEscolhida, momento? }
@@ -116,10 +142,23 @@ export async function salvarRespostasEmLote(respostas) {
     if (!Array.isArray(respostas) || respostas.length === 0) return true;
 
     let user = null;
+    if (usuarioOfflineId && typeof navigator !== 'undefined' && navigator.onLine === false) {
+        gravarFila([...lerFila(), ...respostas.map(r => montarLinha(usuarioOfflineId, r))]);
+        return false; // sem internet: direto para a fila, sem esperar a sessão
+    }
     try {
-        const { data: { session } } = await supabaseClient.auth.getSession();
+        // Sem internet e com login vencido, getSession pode demorar ~27 s: espera no máximo 4 s
+        const { data: { session } } = await Promise.race([
+            supabaseClient.auth.getSession(),
+            new Promise((_, rejeita) => setTimeout(() => rejeita(new Error('sessão demorou')), 4000))
+        ]);
         user = session?.user || null;
     } catch (e) { /* segue sem usuário */ }
+    if (!user && usuarioOfflineId) {
+        // App aberto sem rede com o login salvo: guarda na fila; sobe quando a conexão voltar
+        gravarFila([...lerFila(), ...respostas.map(r => montarLinha(usuarioOfflineId, r))]);
+        return false;
+    }
     if (!user) return false; // visitante: só o histórico local
 
     const linhas = respostas.map(r => montarLinha(user.id, r));
@@ -611,10 +650,15 @@ function erroDeRpcInexistente(erro) {
 export async function corrigirResposta(questao, respostaEscolhida) {
     let motivo;
     try {
-        const { data, error } = await supabaseClient.rpc('verificar_resposta', {
+        if (gabaritosOffline && typeof navigator !== 'undefined' && navigator.onLine === false) throw new Error('sem internet');
+        const chamada = supabaseClient.rpc('verificar_resposta', {
             p_questao_id: String(questao.id),
             p_resposta: String(respostaEscolhida)
         });
+        // Com pacote offline, não espera a internet: 5 s sem resposta e corrige com o gabarito baixado
+        const { data, error } = gabaritosOffline
+            ? await Promise.race([chamada, new Promise((_, rejeita) => setTimeout(() => rejeita(new Error('sem resposta do servidor')), 5000))])
+            : await chamada;
         if (error) throw error;
         const linha = Array.isArray(data) ? data[0] : data;
         if (linha && linha.gabarito) {
@@ -622,6 +666,12 @@ export async function corrigirResposta(questao, respostaEscolhida) {
         }
         motivo = 'nao-encontrada'; // função existe, mas essa questão não está em questoes_gabarito
     } catch (erro) {
+        const bruto = gabaritosOffline && gabaritosOffline[String(questao.id)];
+        if (!erroDeRpcInexistente(erro) && bruto) {
+            // Sem internet, mas com o pacote baixado: corrige com o gabarito do aparelho
+            const gabarito = gabaritoDe({ ...questao, gabarito: bruto, resposta_correta: bruto });
+            return { acertou: String(respostaEscolhida).trim().toUpperCase() === gabarito, gabarito };
+        }
         if (!erroDeRpcInexistente(erro)) {
             // Internet caiu, servidor fora, sessão expirada...: NÃO corrige com gabarito local.
             // Quem chama mostra "tente de novo" — corrigir errado é pior do que esperar.
