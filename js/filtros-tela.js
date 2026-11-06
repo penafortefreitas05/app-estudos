@@ -43,6 +43,7 @@ export function abrirFiltros({ selects, contagem = () => '', aoLimpar, aoFechar 
             <button type="button" class="ft-sair" data-ft="fechar" aria-label="Fechar os filtros">✕</button>
         </header>
         <div class="ft-corpo">
+            <div class="ft-ativos" aria-live="polite"></div>
             <div class="ft-grade">
                 <div class="ft-col">
                     <section class="ft-sec ft-sec-concurso"></section>
@@ -90,7 +91,18 @@ export function abrirFiltros({ selects, contagem = () => '', aoLimpar, aoFechar 
             </div>`;
     }
 
+    // Resumo dos filtros em uso, cada um com ✕ para tirar (concurso fica no perfil, não entra aqui)
+    function desenharAtivos() {
+        const lista = [['Matéria', materia], ['Banca', banca], ['Ano', ano], ['Assunto', tag]]
+            .filter(([, sel]) => sel && sel.value)
+            .map(([nome, sel]) => ({ nome, id: sel.id, valor: sel.value }));
+        q('.ft-ativos').innerHTML = lista.length
+            ? `<span class="ft-ativos-titulo">Filtros ativos (${lista.length})</span>${lista.map(f => `<button type="button" class="ft-ativo" data-campo="${f.id}" data-valor="" aria-label="Tirar filtro ${esc(f.nome)}: ${esc(f.valor)}"><span>${esc(f.nome)}: ${esc(f.valor)}</span><span aria-hidden="true">✕</span></button>`).join('')}`
+            : '<span class="ft-ativos-vazio">Nenhum filtro ativo: mostrando tudo.</span>';
+    }
+
     function desenhar(manterBusca = false) {
+        desenharAtivos();
         q('.ft-sub').textContent = contagem();
         q('.ft-ver').textContent = `Ver ${contagem() || 'questões'}`;
         q('.ft-sec-concurso').innerHTML = concurso && !concurso.hidden ? bloco('Concurso', concurso, null) : '';
