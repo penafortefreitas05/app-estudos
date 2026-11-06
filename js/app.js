@@ -1979,9 +1979,16 @@ if (btnMeuDia && modalMeuDia) {
     btnMeuDia.addEventListener('click', async () => {
         conteudoMeuDia.innerHTML = '<p class="modal-mensagem">Carregando…</p>';
         modalMeuDia.classList.add('visible');
-        const dados = await carregarRespostasRecentes(7);
+        // Sem internet o pedido à nuvem pode demorar muito: avisa na hora (e desiste depois de 8 s)
+        const semRede = navigator.onLine === false;
+        const dados = semRede ? null : await Promise.race([
+            carregarRespostasRecentes(7),
+            new Promise(resolve => setTimeout(() => resolve(null), 8000))
+        ]);
         if (!dados) {
-            conteudoMeuDia.innerHTML = '<p class="modal-mensagem">Entre na sua conta (e confira a internet) para ver o seu dia. Os números vêm do histórico guardado na nuvem.</p>';
+            conteudoMeuDia.innerHTML = semRede
+                ? '<p class="modal-mensagem">📴 Sem internet. O "Meu dia" usa o histórico guardado na nuvem e abre quando o sinal voltar. Suas respostas de agora ficam guardadas no aparelho e sobem sozinhas.</p>'
+                : '<p class="modal-mensagem">Entre na sua conta (e confira a internet) para ver o seu dia. Os números vêm do histórico guardado na nuvem.</p>';
             return;
         }
         renderizarMeuDia(conteudoMeuDia, resumirPorDia(dados.linhas, dados.jaVistas, 7));
