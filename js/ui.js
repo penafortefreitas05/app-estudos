@@ -352,6 +352,7 @@ export function atualizarPlacar(historico, questoes) {
     if (elMiniErros) elMiniErros.textContent = totalErros;
     if (elContadorRevisao) {
         elContadorRevisao.innerText = qtdCadernoErros;
+        elContadorRevisao.parentElement.classList.toggle('tem', qtdCadernoErros > 0);
         const f = filaDeHoje();
         const fora = Math.max(0, (f.venciam || 0) - f.total);
         elContadorRevisao.parentElement.title = `Fila de hoje: no máximo ${TETO_DIARIO} questões${fora ? `. Outras ${fora} esperam no Caderno de erros` : ''}`;
@@ -722,8 +723,6 @@ function desenharCards(container, lista, historico, restaurarRespostas) {
                     ${htmlAlternativas}
                 </div>
 
-                ${htmlTags ? `<div class="tags-container">${htmlTags}</div>` : ''}
-
                 <div class="card-footer">
                     <div class="card-actions-row">
                         <div class="botoes-resposta">
@@ -739,10 +738,7 @@ function desenharCards(container, lista, historico, restaurarRespostas) {
                         <div class="explicacao-texto"></div>
                     </div>
 
-                    <div class="area-reporte">
-                        <button type="button" class="btn-reportar" data-id="${esc(idStr)}" title="Gabarito errado, enunciado confuso, questão desatualizada...">🚩 Reportar problema</button>
-                    </div>
-
+                    <div class="rodape-discreto">
                     <div class="area-anotacao">
                         <button type="button" class="btn-anotacao-toggle">
                             📝 <span>${anotacao ? 'Editar Anotação Pessoal' : 'Adicionar Anotação Pessoal'}</span>
@@ -754,6 +750,12 @@ function desenharCards(container, lista, historico, restaurarRespostas) {
                             </div>
                         </div>
                     </div>
+                    <div class="area-reporte">
+                        <button type="button" class="btn-reportar" data-id="${esc(idStr)}" title="Gabarito errado, enunciado confuso, questão desatualizada...">🚩 Reportar problema</button>
+                    </div>
+                    </div>
+
+                    ${htmlTags ? `<div class="tags-container">${htmlTags}</div>` : ''}
                 </div>
             </article>
         `;
