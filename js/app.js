@@ -468,7 +468,7 @@ function aplicarFiltros() {
         atualizarListaFoco(filtradas);
     } else {
         const mensagem = algumFiltroAtivo()
-            ? "Nenhuma questão com esses filtros."
+            ? "🔎 Nenhuma questão com esses filtros."
             : "Nenhuma questão encontrada.";
         renderizarQuestoes(container, filtradas, historico, mensagem, { paginar: true });
         // Estado vazio que ensina: diz o próximo passo em vez de só "nada aqui"
@@ -2933,7 +2933,7 @@ function cardExemplo(q) {
     return card;
 }
 
-// Aprender 2.0: "Praticar" ao fim da leitura. Leva para a lista de questões do assunto (Testar), com os
+// Aprender 2.0: "Praticar" ao fim da leitura. Leva direto às questões do assunto no Modo Foco, com os
 // outros filtros limpos para a lista não ficar vazia sem explicação. O nível não é filtrado: a ordem de
 // estudo já põe o Iniciante primeiro.
 function praticarAssunto(materia, assunto) {
@@ -2951,10 +2951,10 @@ function praticarAssunto(materia, assunto) {
     if (selectMateria) selectMateria.value = materia;
     tagSelecionada = "";
     atualizarSelectAssunto();
-    definirTag(assunto); // também chama aplicarFiltros
-    const mainContent = document.querySelector(".main-content");
-    if (mainContent) mainContent.scrollTo({ top: 0, behavior: "smooth" });
-    showToast(`Praticando ${assunto}: ${quantas} ${quantas === 1 ? "questão" : "questões"}.`, "info", 3000);
+    definirTag(assunto); // também chama aplicarFiltros (a lista fica pronta para quando sair do Foco)
+    // Vai direto para as questões do assunto, uma por vez, no Modo Foco
+    entrarFoco(ordenarParaEstudo(filtrarQuestoes()), { silencioso: true, titulo: `Praticando: ${assunto}` });
+    showToast(`Praticando ${assunto}: ${quantas} ${quantas === 1 ? "questão" : "questões"}. Esc para sair.`, "info", 3000);
 }
 
 // "📖 Aprender": abre a tela nova (matérias → assuntos), em js/aprender-tela.js.
