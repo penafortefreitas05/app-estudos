@@ -131,8 +131,8 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
             <button type="button" class="at-sair" data-acao="fechar" aria-label="Fechar o Aprender">✕</button>
         </header>
         <div class="at-corpo">
-            <div class="at-plano-area"></div>
             <div class="at-continuar-area"></div>
+            <div class="at-plano-area"></div>
             <div class="at-grade">
                 <nav class="at-materias" aria-label="Matérias"></nav>
                 <section class="at-assuntos" aria-label="Assuntos da matéria">
@@ -168,7 +168,7 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
             return;
         }
         const a = lista.find(x => x.materia === c.materia && x.assunto === c.assunto);
-        const rotulo = c.tipo === 'continuar' ? 'Continuar' : (c.tipo === 'proximo' ? 'Próximo' : 'Começar');
+        const rotulo = c.tipo === 'continuar' ? 'Continuar de onde parei' : (c.tipo === 'proximo' ? 'Próximo assunto' : 'Começar por aqui');
         area.innerHTML = `
             <button type="button" class="at-continuar" data-acao="continuar" data-materia="${esc(c.materia)}" data-assunto="${esc(c.assunto)}">
                 <span class="at-continuar-rotulo">${rotulo}</span>
@@ -193,7 +193,7 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
         const hoje = plano.dias.find(d => d.hoje);
         let topo;
         if (hoje) {
-            topo = `<p class="at-plano-titulo">📅 Hoje, ${esc(hoje.nome.toLowerCase())}</p>${blocosHtml(hoje)}
+            topo = `<p class="at-plano-titulo">📅 Plano de hoje · ${esc(hoje.nome.toLowerCase())}</p>${blocosHtml(hoje)}
                 <p class="at-plano-q">🎯 <b>${hoje.questoes} questões</b> <span>(a revisão do dia entra nessa conta)</span></p>`;
         } else {
             const prox = plano.proximo || plano.dias[0];
