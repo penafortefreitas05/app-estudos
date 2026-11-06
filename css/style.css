@@ -2177,3 +2177,9 @@ body.modo-foco.foco-simulado #display-cronometro { display: block !important; wi
 .ce-btn.principal:hover { background: #1d4ed8; }
 .ce-todas.principal { width: 100%; justify-content: center; min-height: 3rem; font-size: 1rem; }
 .ce-info.urgente { color: #fcd34d; font-weight: 600; }
+
+/* Home no celular (v124): aparo leve do placar, sem tirar nenhum indicador */
+@media (max-width: 768px) {
+    .totais-nota { display: none; }
+    .placar-dia { gap: 0.5rem 0.8rem; padding: 0.3rem 0.6rem; }
+}
