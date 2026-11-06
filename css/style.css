@@ -2108,3 +2108,7 @@ body.modo-foco.foco-simulado #display-cronometro { display: block !important; wi
     .placar-dia .meta-hoje { width: 100%; }
 }
 .meta-hoje-topo { gap: 0.9rem; }
+
+/* v117: bloco da meta no computador não deixa o texto passar por cima do vizinho */
+.placar-dia .meta-hoje { width: auto; min-width: 11.5rem; flex: 0 0 auto; }
+.placar-dia .meta-hoje-topo { gap: 0.9rem; }
