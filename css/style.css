@@ -2162,3 +2162,18 @@ body.modo-foco.foco-simulado #display-cronometro { display: block !important; wi
 .at-plano { padding: 0.7rem 0.9rem; margin-bottom: 1rem; }
 .at-plano-titulo { margin-bottom: 0.35rem; font-size: 0.92rem; }
 .at-plano-bloco { margin-bottom: 0.3rem; }
+
+/* Filtros ativos (v123): resumo no topo da tela de Filtros, cada chip se remove com ✕ */
+.ft-ativos { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin-bottom: 0.9rem; }
+.ft-ativos-titulo { width: 100%; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #94a3b8; }
+.ft-ativos-vazio { font-size: 0.85rem; color: #64748b; }
+.ft-ativo { all: unset; box-sizing: border-box; display: inline-flex; align-items: center; gap: 0.5rem; min-height: 36px; max-width: 100%; padding: 0 0.7rem; border: 1px solid #3b82f6; border-radius: 999px; background: rgba(59, 130, 246, 0.12); color: #bfdbfe; font-size: 0.85rem; cursor: pointer; }
+.ft-ativo span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ft-ativo:hover { background: rgba(59, 130, 246, 0.22); }
+.ft-ativo:focus-visible { outline: 2px solid #93c5fd; outline-offset: 2px; }
+
+/* Caderno de erros (v123): "Refazer" é a ação principal; IA fica secundária; fila de hoje em destaque */
+.ce-btn.principal { background: #2563eb; border-color: #2563eb; color: #fff; }
+.ce-btn.principal:hover { background: #1d4ed8; }
+.ce-todas.principal { width: 100%; justify-content: center; min-height: 3rem; font-size: 1rem; }
+.ce-info.urgente { color: #fcd34d; font-weight: 600; }

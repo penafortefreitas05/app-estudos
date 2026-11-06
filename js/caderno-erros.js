@@ -122,9 +122,9 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, naFila =
             <article class="ce-item" data-id="${esc(String(q.id))}">
                 <p class="ce-meta">${esc(q.materia || 'Geral')} · ${esc(q.assunto || 'Geral')}</p>
                 <p class="ce-pergunta">${esc(q.pergunta || '')}</p>
-                <p class="ce-info">${h.erros} ${h.erros === 1 ? 'erro' : 'erros'} · ${esc(volta)}</p>
+                <p class="ce-info${naFila(q.id) ? ' urgente' : ''}">${naFila(q.id) ? '⏰ ' : ''}${h.erros} ${h.erros === 1 ? 'erro' : 'erros'} · ${esc(volta)}</p>
                 <div class="ce-acoes">
-                    <button type="button" class="ce-btn" data-ce="refazer">Refazer</button>
+                    <button type="button" class="ce-btn principal" data-ce="refazer">▶ Refazer</button>
                     ${letra ? `<button type="button" class="ce-btn ia" data-ce="ia">${guardada ? 'Ver explicação' : 'Entender meu erro com IA'}</button>` : ''}
                 </div>
                 <div class="ce-ia" ${guardada ? '' : 'hidden'}>${esc(guardada)}</div>
@@ -148,7 +148,7 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, naFila =
         } else if (!lista.length) {
             elLista.innerHTML = '<p class="ce-vazio">Nada por aqui com esse filtro.</p>';
         } else {
-            elLista.innerHTML = (estado === 'abertas' ? `<button type="button" class="ce-btn ce-todas" data-ce="refazer-todas">Refazer ${materia ? 'esta matéria' : 'todas'} no Foco (${lista.length})</button>` : '') +
+            elLista.innerHTML = (estado === 'abertas' ? `<button type="button" class="ce-btn ce-todas principal" data-ce="refazer-todas">▶ Refazer ${materia ? 'esta matéria' : 'todas'} no Foco (${lista.length})</button>` : '') +
                 lista.slice(0, mostrando).map(cartao).join('') +
                 (lista.length > mostrando ? `<button type="button" class="ce-mais" data-ce="mais">Mostrar mais (${lista.length - mostrando})</button>` : '');
         }
