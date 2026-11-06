@@ -112,7 +112,8 @@ export function abrirSimulado({ disponiveis = () => 0, aoComecar, aoFiltros, car
     const aoTeclar = (e) => { if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); fechar(); } };
     document.addEventListener('keydown', aoTeclar, true);
 
-    const minutos = () => (cfg.tempo === 'sem' ? 0 : cfg.tempo === 'sug' ? tempoSugerido(cfg.qtd) : Number(cfg.tempo));
+    const qtdReal = () => Math.max(1, Math.min(cfg.qtd, disponiveis() || cfg.qtd));
+    const minutos = () => (cfg.tempo === 'sem' ? 0 : cfg.tempo === 'sug' ? tempoSugerido(qtdReal()) : Number(cfg.tempo));
     const chip = (grupo, valor, texto, ativo) => `<button type="button" class="sm-chip${ativo ? ' ativo' : ''}" data-sm="${grupo}" data-v="${valor}" aria-pressed="${ativo}">${texto}</button>`;
 
     function desenhar() {
@@ -130,16 +131,17 @@ export function abrirSimulado({ disponiveis = () => 0, aoComecar, aoFiltros, car
                 <h3 class="sm-sec-titulo">Tempo</h3>
                 <div class="sm-chips sm-g2">
                     ${chip('tempo', 'sem', 'Sem tempo', cfg.tempo === 'sem')}
-                    ${chip('tempo', 'sug', `Sugerido · ${tempoSugerido(cfg.qtd)} min`, cfg.tempo === 'sug')}
+                    ${chip('tempo', 'sug', `Sugerido · ${tempoSugerido(qtdReal())} min`, cfg.tempo === 'sug')}
                     ${chip('tempo', 60, '60 min', String(cfg.tempo) === '60')}
                     ${chip('tempo', 120, '120 min', String(cfg.tempo) === '120')}
                 </div>
                 <h3 class="sm-sec-titulo">Como sortear</h3>
                 <div class="sm-opcoes">${(modelo ? [['modelo', `📋 ${modelo.nome}`, 'Cada matéria na proporção da prova']] : []).concat(OPCOES_EXTRA.filter(([k]) => !(modelo && k === 'equilibrar'))).map(([k, nome, det]) => `
                     <button type="button" class="sm-opcao${cfg[k] ? ' ativo' : ''}" data-sm="extra" data-v="${k}" aria-pressed="${cfg[k]}"><span class="sm-opcao-nome">${nome}</span><span class="sm-opcao-det">${det}</span><span class="sm-opcao-marca" aria-hidden="true">${cfg[k] ? '✓' : ''}</span></button>`).join('')}</div>
-                ${modelo && cfg.modelo ? `<p class="sm-modelo">${modelo.quotas(cfg.qtd).map(([m, n]) => `${esc(m.replace(/ &.*$/, '').replace(/,.*$/, ''))} ${n}`).join(' · ')}</p>` : ''}
+                ${modelo && cfg.modelo ? `<p class="sm-modelo">${modelo.quotas(qtdReal()).map(([m, n]) => `${esc(m.replace(/ &.*$/, '').replace(/,.*$/, ''))} ${n}`).join(' · ')}</p>` : ''}
                 <p class="sm-filtros">Usa os filtros atuais: <b>${total}</b> ${total === 1 ? 'questão disponível' : 'questões disponíveis'}.
                     <button type="button" class="sm-link" data-sm="filtros">Mudar filtros</button></p>
+                ${total > 0 && cfg.qtd > total ? `<p class="sm-ajuste" role="status">⚠️ Você escolheu ${cfg.qtd}, mas só há ${total} com esses filtros. O simulado terá ${total}.</p>` : ''}
                 <button type="button" class="sm-comecar" data-sm="comecar" ${real ? '' : 'disabled'}>${real ? `▶ Começar simulado (${real} ${real === 1 ? 'questão' : 'questões'}${minutos() ? ` · ${minutos()} min` : ''})` : 'Nenhuma questão com esses filtros'}</button>
                 <p class="sm-aviso">Sem internet, o simulado funciona se você tiver baixado o pacote offline (menu ☰).</p>
             </section>

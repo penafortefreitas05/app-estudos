@@ -2153,3 +2153,12 @@ body.modo-foco.foco-simulado #display-cronometro { display: block !important; wi
 /* Estado vazio (busca ou filtros sem resultado): mais visível e com a saída à mão */
 .aviso-vazio:has(.btn-limpar-vazio) { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.6rem 1rem; padding: 2rem 1rem; text-align: center; color: #94a3b8; border: 1px dashed #334155; border-radius: 12px; font-size: 1rem; }
 .aviso-vazio .btn-limpar-vazio { min-height: 40px; padding: 0 1rem; border: 1px solid #3b82f6; border-radius: 8px; color: #93c5fd; background: transparent; font-weight: 600; cursor: pointer; }
+
+/* Simulado: aviso quando a quantidade escolhida passa do que existe (v122) */
+.sm-ajuste { margin: 0.5rem 0 0.75rem; padding: 0.6rem 0.8rem; border: 1px solid #b45309; border-radius: 10px; background: rgba(245, 158, 11, 0.08); color: #fcd34d; font-size: 0.92rem; line-height: 1.4; }
+
+/* Aprender (v122): Continuar em primeiro; plano de hoje mais compacto, logo abaixo */
+.at-continuar { margin-bottom: 0.75rem; box-shadow: 0 0 0 2px rgba(165, 180, 252, 0.35); }
+.at-plano { padding: 0.7rem 0.9rem; margin-bottom: 1rem; }
+.at-plano-titulo { margin-bottom: 0.35rem; font-size: 0.92rem; }
+.at-plano-bloco { margin-bottom: 0.3rem; }
