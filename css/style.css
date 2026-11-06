@@ -2149,3 +2149,7 @@ body.modo-foco.foco-simulado #display-cronometro { display: block !important; wi
 /* Tags: secundárias, no fim do cartão */
 .tags-container { margin: 0; gap: 0.4rem; }
 .tag-item { font-size: 0.7rem; padding: 0.2rem 0.6rem; background: transparent; border: 1px solid #1e293b; color: #64748b; }
+
+/* Estado vazio (busca ou filtros sem resultado): mais visível e com a saída à mão */
+.aviso-vazio:has(.btn-limpar-vazio) { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.6rem 1rem; padding: 2rem 1rem; text-align: center; color: #94a3b8; border: 1px dashed #334155; border-radius: 12px; font-size: 1rem; }
+.aviso-vazio .btn-limpar-vazio { min-height: 40px; padding: 0 1rem; border: 1px solid #3b82f6; border-radius: 8px; color: #93c5fd; background: transparent; font-weight: 600; cursor: pointer; }

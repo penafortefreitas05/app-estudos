@@ -344,6 +344,11 @@ export function atualizarPlacar(historico, questoes) {
 
     if (elAcertos) elAcertos.innerText = totalAcertos;
     if (elErros) elErros.innerText = totalErros;
+    // singular quando for 1 ("1 acerto", "1 erro")
+    const rotuloAcertos = document.getElementById("rotulo-acertos");
+    const rotuloErros = document.getElementById("rotulo-erros");
+    if (rotuloAcertos) rotuloAcertos.textContent = totalAcertos === 1 ? "acerto" : "acertos";
+    if (rotuloErros) rotuloErros.textContent = totalErros === 1 ? "erro" : "erros";
 
     // Placar rápido do topo (celular)
     const elMiniAcertos = document.getElementById("mini-acertos");
@@ -364,6 +369,8 @@ export function atualizarPlacar(historico, questoes) {
     const criticas = Object.keys(materiasMap).filter(mat => ehMateriaCritica(materiasMap[mat]));
 
     definirTexto("stat-sequencia", sequencia.atual);
+    const rotuloSeq = document.getElementById("rotulo-sequencia");
+    if (rotuloSeq) rotuloSeq.textContent = sequencia.atual === 1 ? "dia" : "dias";
     definirTexto("stat-sequencia-detalhe",
         sequencia.recorde === 0 ? "responda 1 questão"
             : sequencia.atual > 0 && !sequencia.estudouHoje ? "responda hoje!"
