@@ -2385,7 +2385,10 @@ async function iniciarApp() {
     if (abertoSemRede) {
         if (userEmail) userEmail.innerText = usuarioAtual.email;
         if (userAvatar) userAvatar.innerText = usuarioAtual.email.charAt(0).toUpperCase();
-        showToast(infoPacote() ? "Sem internet. Usando o pacote baixado neste aparelho." : "Sem internet. O Aprender funciona; as questões voltam quando a internet voltar.", "info", 6000);
+        // Uma vez por sessão: reabrir ou recarregar sem rede não repete o aviso
+        let jaAvisou = false;
+        try { jaAvisou = sessionStorage.getItem("focopro_avisou_offline") === "1"; sessionStorage.setItem("focopro_avisou_offline", "1"); } catch (e) { /* sem sessionStorage: avisa */ }
+        if (!jaAvisou) showToast(infoPacote() ? "Sem internet. Usando o pacote baixado neste aparelho." : "Sem internet. O Aprender funciona; as questões voltam quando a internet voltar.", "info", 6000);
     }
 
     // 2. As questões começam a chegar já; enquanto isso, reenvia respostas pendentes
@@ -2742,7 +2745,8 @@ function resumoSemanaPassada() {
 function colocarCartaoHoje() {
     if (!container) return;
     const antigo = container.querySelector(".cartao-hoje");
-    if (!usuarioAtual || foco || simulado || !questoes.length) {
+    // Busca/filtro sem resultado: o cartão "Hoje" some para não contradizer o aviso de lista vazia
+    if (!usuarioAtual || foco || simulado || !questoes.length || container.querySelector(".aviso-vazio")) {
         if (antigo) antigo.remove();
         return;
     }
