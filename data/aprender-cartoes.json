@@ -16303,5 +16303,530 @@
   "tags": [
     "politica-monetaria-regras-versus-discricionariedade-modelos-de-credibilidade-convencionais-e-nao-convencionais-objetivos-e-instrumentos-regime-de-metas-para-a-inflacao"
   ]
+},
+{
+  "id": "card-dad-n1-001",
+  "materia": "Direito Administrativo",
+  "assunto": "Conceito, requisitos e atributos",
+  "nivel": 1,
+  "conceito": "Ato administrativo",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "É manifestação da Administração que produz efeitos jurídicos sob regras públicas. Exemplo: órgão concede licença.",
+  "nao_confundir": [
+    {
+      "conceito": "Ato material",
+      "diferenca": "Ato material é execução física; ato administrativo produz efeitos jurídicos."
+    }
+  ],
+  "atencao": "Anulação e revogação ficam sempre sujeitas à apreciação do Judiciário.",
+  "fonte": "STF, Súmula 473: https://portal.stf.jus.br/jurisprudencia/sumariosumulas.asp?base=30&sumula=1602",
+  "tags": [
+    "conceito-requisitos-e-atributos"
+  ]
+},
+{
+  "id": "card-dad-n1-002",
+  "materia": "Direito Administrativo",
+  "assunto": "Conceito, requisitos e atributos",
+  "nivel": 1,
+  "conceito": "Requisitos do ato",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "São competência, finalidade, forma, motivo e objeto. Exemplo: autoridade competente concede licença prevista em lei.",
+  "nao_confundir": [
+    {
+      "conceito": "Atributos",
+      "diferenca": "Requisitos compõem o ato; atributos são características de sua atuação."
+    }
+  ],
+  "atencao": "Vícios de competência, forma, objeto, motivo ou finalidade podem causar nulidade.",
+  "fonte": "Lei nº 4.717/1965, art. 2º: https://www.planalto.gov.br/ccivil_03/leis/l4717.htm",
+  "tags": [
+    "conceito-requisitos-e-atributos"
+  ]
+},
+{
+  "id": "card-dad-n1-003",
+  "materia": "Direito Administrativo",
+  "assunto": "Conceito, requisitos e atributos",
+  "nivel": 1,
+  "conceito": "Motivo do ato",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "É a situação de fato e de direito que fundamenta o ato. Exemplo: infração comprovada justifica sanção.",
+  "nao_confundir": [
+    {
+      "conceito": "Motivação",
+      "diferenca": "Motivo é fundamento; motivação é exposição das razões da decisão."
+    }
+  ],
+  "atencao": "Quando a lei exige motivação, ela precisa ser explícita, clara e congruente.",
+  "fonte": "Lei nº 9.784/1999 (texto atualizado no portal da Câmara: https://www2.camara.leg.br/legin/fed/lei/1999/lei-9784-29-janeiro-1999-322239-normaatualizada-pl.html), art. 50, § 1º",
+  "tags": [
+    "conceito-requisitos-e-atributos"
+  ]
+},
+{
+  "id": "card-dad-n1-004",
+  "materia": "Direito Administrativo",
+  "assunto": "Conceito, requisitos e atributos",
+  "nivel": 1,
+  "conceito": "Presunção de legitimidade",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "O ato administrativo é considerado conforme a lei até prova contrária. Exemplo: multa pode ser contestada.",
+  "nao_confundir": [
+    {
+      "conceito": "Presunção absoluta",
+      "diferenca": "Presunção absoluta não admite contestação; a legitimidade do ato admite prova contrária."
+    }
+  ],
+  "atencao": "A presunção é relativa: admite prova em contrário, e quem alega a ilegitimidade deve prová-la.",
+  "fonte": "MORAES, Larissa Barbosa de. Noções básicas referentes ao ato administrativo. Faculdades Integradas Santa Cruz, 2014: https://unisantacruz.edu.br/revistas-old/index.php/JICEX/article/view/1116/1123",
+  "tags": [
+    "conceito-requisitos-e-atributos"
+  ]
+},
+{
+  "id": "card-dad-n1-005",
+  "materia": "Direito Administrativo",
+  "assunto": "Conceito, requisitos e atributos",
+  "nivel": 1,
+  "conceito": "Desvio de finalidade",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Ocorre quando o agente usa sua competência para objetivo diferente do previsto. Exemplo: punir desafeto pessoal.",
+  "nao_confundir": [
+    {
+      "conceito": "Excesso de poder",
+      "diferenca": "Desvio altera o objetivo; excesso ultrapassa os limites da competência."
+    }
+  ],
+  "atencao": "O fim previsto pode estar explícito ou implícito na regra de competência.",
+  "fonte": "Lei nº 4.717/1965, art. 2º, parágrafo único, alínea e: https://www.planalto.gov.br/ccivil_03/leis/l4717.htm",
+  "tags": [
+    "conceito-requisitos-e-atributos"
+  ]
+},
+{
+  "id": "card-dad-n1-006",
+  "materia": "Direito Administrativo",
+  "assunto": "Discricionariedade e vinculação",
+  "nivel": 1,
+  "conceito": "Ato vinculado",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "A lei determina os requisitos e a decisão, sem escolha de conveniência. Exemplo: emitir documento após cumprir exigências.",
+  "nao_confundir": [
+    {
+      "conceito": "Ato discricionário",
+      "diferenca": "Vinculado não permite escolha; discricionário admite escolha dentro da lei."
+    }
+  ],
+  "atencao": "A Administração obedece ao princípio da legalidade também quando não há margem de escolha.",
+  "fonte": "Constituição Federal de 1988 (publicação original no portal da Câmara: https://www2.camara.leg.br/legin/fed/consti/1988/constituicao-1988-5-outubro-1988-322142-publicacaooriginal-1-pl.html), art. 37, caput; Lei nº 9.784/1999 (texto atualizado no portal da Câmara: https://www2.camara.leg.br/legin/fed/lei/1999/lei-9784-29-janeiro-1999-322239-normaatualizada-pl.html), art. 2º",
+  "tags": [
+    "discricionariedade-e-vinculacao"
+  ]
+},
+{
+  "id": "card-dad-n1-007",
+  "materia": "Direito Administrativo",
+  "assunto": "Discricionariedade e vinculação",
+  "nivel": 1,
+  "conceito": "Ato discricionário",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "A lei permite escolher entre decisões legais conforme conveniência e oportunidade. Exemplo: definir horário de atendimento permitido.",
+  "nao_confundir": [
+    {
+      "conceito": "Ato arbitrário",
+      "diferenca": "Discricionário permite escolha legal; arbitrário desrespeita limites legais."
+    }
+  ],
+  "atencao": "Decisões discricionárias também obedecem à legalidade e à finalidade pública.",
+  "fonte": "Lei nº 9.784/1999 (texto atualizado no portal da Câmara: https://www2.camara.leg.br/legin/fed/lei/1999/lei-9784-29-janeiro-1999-322239-normaatualizada-pl.html), art. 2º",
+  "tags": [
+    "discricionariedade-e-vinculacao"
+  ]
+},
+{
+  "id": "card-dad-n1-008",
+  "materia": "Direito Administrativo",
+  "assunto": "Discricionariedade e vinculação",
+  "nivel": 1,
+  "conceito": "Mérito administrativo",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "É a avaliação de conveniência e oportunidade nas escolhas autorizadas por lei. Exemplo: escolher local de serviço.",
+  "nao_confundir": [
+    {
+      "conceito": "Legalidade",
+      "diferenca": "Mérito avalia conveniência; legalidade verifica respeito às normas."
+    }
+  ],
+  "atencao": "A revogação por conveniência ou oportunidade cabe à Administração e respeita os direitos adquiridos.",
+  "fonte": "Lei nº 9.784/1999 (texto atualizado no portal da Câmara: https://www2.camara.leg.br/legin/fed/lei/1999/lei-9784-29-janeiro-1999-322239-normaatualizada-pl.html), art. 53",
+  "tags": [
+    "discricionariedade-e-vinculacao"
+  ]
+},
+{
+  "id": "card-dad-n1-009",
+  "materia": "Direito Administrativo",
+  "assunto": "Discricionariedade e vinculação",
+  "nivel": 1,
+  "conceito": "Limites da discricionariedade",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Escolhas administrativas devem respeitar finalidade, proporcionalidade e razoabilidade. Exemplo: sanção proporcional à infração.",
+  "nao_confundir": [
+    {
+      "conceito": "Liberdade irrestrita",
+      "diferenca": "Discricionariedade tem limites legais; liberdade irrestrita não teria limites."
+    }
+  ],
+  "atencao": "A Administração deve observar adequação entre meios e fins, vedados excessos além do necessário.",
+  "fonte": "Lei nº 9.784/1999 (texto atualizado no portal da Câmara: https://www2.camara.leg.br/legin/fed/lei/1999/lei-9784-29-janeiro-1999-322239-normaatualizada-pl.html), art. 2º, parágrafo único, VI",
+  "tags": [
+    "discricionariedade-e-vinculacao"
+  ]
+},
+{
+  "id": "card-dad-n1-010",
+  "materia": "Direito Administrativo",
+  "assunto": "Discricionariedade e vinculação",
+  "nivel": 1,
+  "conceito": "Controle judicial do ato",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "O Judiciário pode examinar ilegalidades de atos administrativos. Exemplo: anular punição sem fundamento legal.",
+  "nao_confundir": [
+    {
+      "conceito": "Revogação por mérito",
+      "diferenca": "Controle judicial examina ilegalidade; revogação administrativa avalia conveniência."
+    }
+  ],
+  "atencao": "Lesão ou ameaça a direito não pode ser excluída da apreciação judicial.",
+  "fonte": "Constituição Federal de 1988 (publicação original no portal da Câmara: https://www2.camara.leg.br/legin/fed/consti/1988/constituicao-1988-5-outubro-1988-322142-publicacaooriginal-1-pl.html), art. 5º, XXXV",
+  "tags": [
+    "discricionariedade-e-vinculacao"
+  ]
+},
+{
+  "id": "card-dad-n1-011",
+  "materia": "Direito Administrativo",
+  "assunto": "Anulação, revogação e convalidação",
+  "nivel": 1,
+  "conceito": "Anulação administrativa",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "A Administração desfaz ato ilegal. Exemplo: cancelar nomeação feita contra exigência legal.",
+  "nao_confundir": [
+    {
+      "conceito": "Revogação",
+      "diferenca": "Anulação corrige ilegalidade; revogação encerra ato válido por conveniência."
+    }
+  ],
+  "atencao": "Havendo vício de legalidade, a Administração tem o dever de anular os próprios atos.",
+  "fonte": "Lei nº 9.784/1999 (texto atualizado no portal da Câmara: https://www2.camara.leg.br/legin/fed/lei/1999/lei-9784-29-janeiro-1999-322239-normaatualizada-pl.html), art. 53",
+  "tags": [
+    "anulacao-revogacao-e-convalidacao"
+  ]
+},
+{
+  "id": "card-dad-n1-012",
+  "materia": "Direito Administrativo",
+  "assunto": "Anulação, revogação e convalidação",
+  "nivel": 1,
+  "conceito": "Revogação administrativa",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "A Administração encerra ato válido por conveniência ou oportunidade. Exemplo: encerrar autorização que deixou de ser necessária.",
+  "nao_confundir": [
+    {
+      "conceito": "Anulação",
+      "diferenca": "Revogação desfaz ato válido; anulação desfaz ato ilegal."
+    }
+  ],
+  "atencao": "A revogação deve respeitar os direitos adquiridos.",
+  "fonte": "Lei nº 9.784/1999 (texto atualizado no portal da Câmara: https://www2.camara.leg.br/legin/fed/lei/1999/lei-9784-29-janeiro-1999-322239-normaatualizada-pl.html), art. 53",
+  "tags": [
+    "anulacao-revogacao-e-convalidacao"
+  ]
+},
+{
+  "id": "card-dad-n1-013",
+  "materia": "Direito Administrativo",
+  "assunto": "Anulação, revogação e convalidação",
+  "nivel": 1,
+  "conceito": "Convalidação",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "É correção administrativa de defeito sanável do ato. Exemplo: corrigir falha de competência delegável.",
+  "nao_confundir": [
+    {
+      "conceito": "Anulação",
+      "diferenca": "Convalidação corrige defeito sanável; anulação desfaz ato ilegal."
+    }
+  ],
+  "atencao": "Convalidar exige ausência de lesão ao interesse público e de prejuízo a terceiros.",
+  "fonte": "Lei nº 9.784/1999 (texto atualizado no portal da Câmara: https://www2.camara.leg.br/legin/fed/lei/1999/lei-9784-29-janeiro-1999-322239-normaatualizada-pl.html), art. 55",
+  "tags": [
+    "anulacao-revogacao-e-convalidacao"
+  ]
+},
+{
+  "id": "card-dad-n1-014",
+  "materia": "Direito Administrativo",
+  "assunto": "Anulação, revogação e convalidação",
+  "nivel": 1,
+  "conceito": "Prazo para anular",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Em regra, o direito de anular atos favoráveis ao destinatário decai em cinco anos. Exemplo: benefício concedido sem fraude.",
+  "nao_confundir": [
+    {
+      "conceito": "Prazo de recurso",
+      "diferenca": "Prazo de anulação limita revisão administrativa; prazo de recurso limita contestação do interessado."
+    }
+  ],
+  "atencao": "O prazo de cinco anos não protege beneficiário com má-fé comprovada.",
+  "fonte": "Lei nº 9.784/1999 (texto atualizado no portal da Câmara: https://www2.camara.leg.br/legin/fed/lei/1999/lei-9784-29-janeiro-1999-322239-normaatualizada-pl.html), art. 54",
+  "tags": [
+    "anulacao-revogacao-e-convalidacao"
+  ]
+},
+{
+  "id": "card-dad-n1-015",
+  "materia": "Direito Administrativo",
+  "assunto": "Anulação, revogação e convalidação",
+  "nivel": 1,
+  "conceito": "Autotutela administrativa",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "A Administração controla seus próprios atos, anulando os ilegais e revogando os inconvenientes. Exemplo: corrigir decisão interna.",
+  "nao_confundir": [
+    {
+      "conceito": "Controle judicial",
+      "diferenca": "Autotutela é revisão pela Administração; controle judicial é revisão pelo Judiciário."
+    }
+  ],
+  "atencao": "Atos ilegais não geram direitos; por isso a Administração pode anulá-los.",
+  "fonte": "STF, Súmula 346: https://portal.stf.jus.br/jurisprudencia/sumariosumulas.asp?base=30&sumula=1576; STF, Súmula 473: https://portal.stf.jus.br/jurisprudencia/sumariosumulas.asp?base=30&sumula=1602",
+  "tags": [
+    "anulacao-revogacao-e-convalidacao"
+  ]
+},
+{
+  "id": "card-dad-n1-016",
+  "materia": "Direito Administrativo",
+  "assunto": "Espécies de poder: hierárquico, disciplinar, regulamentar, de polícia e normativo",
+  "nivel": 1,
+  "conceito": "Poder hierárquico",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Organiza e fiscaliza tarefas entre órgãos e agentes subordinados. Exemplo: chefia distribui atividades.",
+  "nao_confundir": [
+    {
+      "conceito": "Poder disciplinar",
+      "diferenca": "Hierárquico organiza atividades; disciplinar apura infrações e aplica sanções."
+    }
+  ],
+  "atencao": "A avocação de competência inferior exige caráter excepcional, temporário e motivos relevantes justificados.",
+  "fonte": "Lei nº 9.784/1999 (texto atualizado no portal da Câmara: https://www2.camara.leg.br/legin/fed/lei/1999/lei-9784-29-janeiro-1999-322239-normaatualizada-pl.html), art. 15",
+  "tags": [
+    "especies-de-poder-hierarquico-disciplinar-regulamentar-de-policia-e-normativo"
+  ]
+},
+{
+  "id": "card-dad-n1-017",
+  "materia": "Direito Administrativo",
+  "assunto": "Espécies de poder: hierárquico, disciplinar, regulamentar, de polícia e normativo",
+  "nivel": 1,
+  "conceito": "Poder disciplinar",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Permite apurar infrações e aplicar sanções a pessoas sujeitas à disciplina administrativa. Exemplo: servidor responde a processo.",
+  "nao_confundir": [
+    {
+      "conceito": "Poder de polícia",
+      "diferenca": "Disciplinar alcança vínculo administrativo específico; polícia limita atividades de particulares em geral."
+    }
+  ],
+  "atencao": "A sanção administrativa exige observância do contraditório e da ampla defesa.",
+  "fonte": "Constituição Federal de 1988 (publicação original no portal da Câmara: https://www2.camara.leg.br/legin/fed/consti/1988/constituicao-1988-5-outubro-1988-322142-publicacaooriginal-1-pl.html), art. 5º, LV",
+  "tags": [
+    "especies-de-poder-hierarquico-disciplinar-regulamentar-de-policia-e-normativo"
+  ]
+},
+{
+  "id": "card-dad-n1-018",
+  "materia": "Direito Administrativo",
+  "assunto": "Espécies de poder: hierárquico, disciplinar, regulamentar, de polícia e normativo",
+  "nivel": 1,
+  "conceito": "Poder regulamentar",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Permite editar regulamentos para executar leis. Exemplo: decreto detalha procedimento legal.",
+  "nao_confundir": [
+    {
+      "conceito": "Poder legislativo",
+      "diferenca": "Regulamento executa lei; legislação estabelece regras legais novas."
+    }
+  ],
+  "atencao": "Decretos e regulamentos de execução destinam-se à fiel execução das leis.",
+  "fonte": "Constituição Federal de 1988 (publicação original no portal da Câmara: https://www2.camara.leg.br/legin/fed/consti/1988/constituicao-1988-5-outubro-1988-322142-publicacaooriginal-1-pl.html), art. 84, IV",
+  "tags": [
+    "especies-de-poder-hierarquico-disciplinar-regulamentar-de-policia-e-normativo"
+  ]
+},
+{
+  "id": "card-dad-n1-019",
+  "materia": "Direito Administrativo",
+  "assunto": "Espécies de poder: hierárquico, disciplinar, regulamentar, de polícia e normativo",
+  "nivel": 1,
+  "conceito": "Poder de polícia",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Limita atividades e direitos individuais para proteger interesses coletivos. Exemplo: fiscalização sanitária de restaurante.",
+  "nao_confundir": [
+    {
+      "conceito": "Poder disciplinar",
+      "diferenca": "Polícia alcança atividades particulares; disciplinar exige vínculo administrativo específico."
+    }
+  ],
+  "atencao": "O poder de polícia é regular quando exercido pelo órgão competente, nos limites da lei e com o devido processo.",
+  "fonte": "Código Tributário Nacional (Lei nº 5.172/1966), art. 78 (portal da Câmara: https://www2.camara.leg.br/legin/fed/lei/1960-1969/lei-5172-25-outubro-1966-358971-normaatualizada-pl.html)",
+  "tags": [
+    "especies-de-poder-hierarquico-disciplinar-regulamentar-de-policia-e-normativo"
+  ]
+},
+{
+  "id": "card-dad-n1-020",
+  "materia": "Direito Administrativo",
+  "assunto": "Espécies de poder: hierárquico, disciplinar, regulamentar, de polícia e normativo",
+  "nivel": 1,
+  "conceito": "Poder normativo",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "É a edição de regras gerais pela Administração dentro da competência legal. Exemplo: órgão publica instrução regulamentadora.",
+  "nao_confundir": [
+    {
+      "conceito": "Poder regulamentar",
+      "diferenca": "Normativo abrange regras administrativas; regulamentar inclui decretos de execução da lei."
+    }
+  ],
+  "atencao": "Atos normativos não podem ser delegados na disciplina do processo administrativo federal.",
+  "fonte": "Lei nº 9.784/1999 (texto atualizado no portal da Câmara: https://www2.camara.leg.br/legin/fed/lei/1999/lei-9784-29-janeiro-1999-322239-normaatualizada-pl.html), art. 13, I",
+  "tags": [
+    "especies-de-poder-hierarquico-disciplinar-regulamentar-de-policia-e-normativo"
+  ]
+},
+{
+  "id": "card-dad-n1-021",
+  "materia": "Direito Administrativo",
+  "assunto": "Administração direta e indireta",
+  "nivel": 1,
+  "conceito": "Administração direta",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Reúne órgãos integrantes da estrutura do próprio ente político. Exemplo: ministério da União.",
+  "nao_confundir": [
+    {
+      "conceito": "Administração indireta",
+      "diferenca": "Direta reúne órgãos do ente; indireta reúne entidades com personalidade própria."
+    }
+  ],
+  "atencao": "Na esfera federal, a Administração direta inclui Presidência da República e ministérios.",
+  "fonte": "Decreto-Lei nº 200/1967: https://www.planalto.gov.br/ccivil_03/decreto-lei/del0200.htm, art. 4º, I",
+  "tags": [
+    "administracao-direta-e-indireta"
+  ]
+},
+{
+  "id": "card-dad-n1-022",
+  "materia": "Direito Administrativo",
+  "assunto": "Administração direta e indireta",
+  "nivel": 1,
+  "conceito": "Administração indireta",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Reúne entidades com personalidade jurídica própria para desempenhar atividades administrativas. Exemplo: autarquia federal.",
+  "nao_confundir": [
+    {
+      "conceito": "Administração direta",
+      "diferenca": "Indireta reúne entidades próprias; direta reúne órgãos do ente político."
+    }
+  ],
+  "atencao": "Autarquias, empresas públicas, sociedades de economia mista e fundações públicas integram a Administração indireta.",
+  "fonte": "Decreto-Lei nº 200/1967: https://www.planalto.gov.br/ccivil_03/decreto-lei/del0200.htm, art. 4º, II",
+  "tags": [
+    "administracao-direta-e-indireta"
+  ]
+},
+{
+  "id": "card-dad-n1-023",
+  "materia": "Direito Administrativo",
+  "assunto": "Administração direta e indireta",
+  "nivel": 1,
+  "conceito": "Desconcentração administrativa",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Distribui tarefas entre órgãos da mesma pessoa jurídica. Exemplo: criar departamento dentro de ministério.",
+  "nao_confundir": [
+    {
+      "conceito": "Descentralização",
+      "diferenca": "Desconcentração mantém hierarquia entre órgãos; descentralização cria outra pessoa, sob controle."
+    }
+  ],
+  "atencao": "Órgãos da Administração direta permanecem integrados à estrutura do ente político.",
+  "fonte": "Decreto-Lei nº 200/1967: https://www.planalto.gov.br/ccivil_03/decreto-lei/del0200.htm, art. 4º, I",
+  "tags": [
+    "administracao-direta-e-indireta"
+  ]
+},
+{
+  "id": "card-dad-n1-024",
+  "materia": "Direito Administrativo",
+  "assunto": "Administração direta e indireta",
+  "nivel": 1,
+  "conceito": "Autarquia",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "É entidade pública criada por lei para executar atividade típica estatal. Exemplo: instituto federal de fiscalização.",
+  "nao_confundir": [
+    {
+      "conceito": "Empresa pública",
+      "diferenca": "Autarquia é pessoa de direito público; empresa pública possui personalidade de direito privado."
+    }
+  ],
+  "atencao": "A autarquia é criada por lei e tem personalidade jurídica, patrimônio e receita próprios.",
+  "fonte": "Decreto-Lei nº 200/1967: https://www.planalto.gov.br/ccivil_03/decreto-lei/del0200.htm, art. 5º, I",
+  "tags": [
+    "administracao-direta-e-indireta"
+  ]
+},
+{
+  "id": "card-dad-n1-025",
+  "materia": "Direito Administrativo",
+  "assunto": "Administração direta e indireta",
+  "nivel": 1,
+  "conceito": "Empresa pública",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "É entidade de direito privado com capital integralmente público e pode adotar qualquer forma admitida em direito. Exemplo: empresa estatal prestadora de serviços.",
+  "nao_confundir": [
+    {
+      "conceito": "Sociedade de economia mista",
+      "diferenca": "Empresa pública tem capital público; sociedade de economia mista admite capital privado."
+    }
+  ],
+  "atencao": "A autarquia é criada por lei específica; a empresa pública tem a instituição autorizada por lei específica.",
+  "fonte": "Decreto-Lei nº 200/1967: https://www.planalto.gov.br/ccivil_03/decreto-lei/del0200.htm, art. 5º, II; Constituição Federal, art. 37, XIX (texto da EC 19/1998, Senado: https://legis.senado.leg.br/sdleg-getter/documento?dm=4777080)",
+  "tags": [
+    "administracao-direta-e-indireta"
+  ]
 }
 ]
