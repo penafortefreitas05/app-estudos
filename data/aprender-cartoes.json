@@ -13295,7 +13295,7 @@
         "diferenca": "Errado: 200 × 0,15 = preço final; certo: 200 × 0,85 = 170."
       }
     ],
-    "atencao": "Descontar 20% e depois acrescentar 20% não restaura o valor: 100 × 0,80 × 1,20 = 96.",
+    "atencao": "Descontos sucessivos não se somam: o segundo incide sobre o preço já reduzido.",
     "fonte": "OpenStax, Prealgebra 2e, seção 6.3, Solve Sales Tax, Commission, and Discount Applications: https://openstax.org/books/prealgebra-2e/pages/6-3-solve-sales-tax-commission-and-discount-applications; OpenStax, Contemporary Mathematics, seção 6.2, Discounts, Markups, and Sales Tax: https://openstax.org/books/contemporary-mathematics/pages/6-2-discounts-markups-and-sales-tax",
     "tags": [
       "porcentagem",
@@ -13618,7 +13618,7 @@
     "conceito": "Equação do primeiro grau",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "Equação do primeiro grau contém uma incógnita, valor desconhecido, sem potência superior a 1. Exemplo: x + 15 = 42; x = 42 − 15 = 27.",
+    "resumo": "Equação é uma igualdade com valor desconhecido; solução é o valor que a torna verdadeira. Exemplo: x + 15 = 42; x = 42 − 15 = 27.",
     "nao_confundir": [
       {
         "conceito": "Erro comum",
@@ -13626,7 +13626,7 @@
       }
     ],
     "atencao": "Ao isolar a incógnita, preserve a igualdade aplicando operações equivalentes aos dois lados.",
-    "fonte": "OpenStax, Prealgebra 2e, seção 2.3, Solve Equations Using the Subtraction and Addition Properties of Equality: https://openstax.org/books/prealgebra-2e/pages/2-3-solve-equations-using-the-subtraction-and-addition-properties-of-equality",
+    "fonte": "OpenStax, Prealgebra, seção 2.3, Solving Equations Using the Subtraction and Addition Properties of Equality: https://openstax.org/books/prealgebra/pages/2-3-solving-equations-using-the-subtraction-and-addition-properties-of-equality",
     "tags": [
       "problemas",
       "equacao-do-primeiro-grau"
