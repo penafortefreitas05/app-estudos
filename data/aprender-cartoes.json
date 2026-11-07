@@ -12934,8 +12934,8 @@
     "resumo": "Apresenta informações ou explicações sobre um assunto, sem precisar defender uma tese. Exemplo: A água passa ao estado sólido quando congela.",
     "nao_confundir": [
       {
-        "conceito": "Erro comum",
-        "diferenca": "Expositivo explica um assunto; argumentativo apresenta razões para defender um ponto de vista."
+        "conceito": "Texto argumentativo",
+        "diferenca": "O expositivo explica um assunto; o argumentativo apresenta razões para defender um ponto de vista."
       }
     ],
     "atencao": "A presença de informações não torna um texto exclusivamente expositivo; elas também podem sustentar argumentos.",
@@ -12973,7 +12973,7 @@
     "conceito": "Grafia com s, ss, ç e xc",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "Palavras derivadas mantêm a grafia da origem: análise dá analisar; paralisia dá paralisar; exceto dá exceção. Exemplo: A equipe decidiu analisar a exceção antes de paralisar o serviço.",
+    "resumo": "Palavras derivadas mantêm o s da palavra de origem: análise dá analisar; paralisia dá paralisar. Exemplo: A equipe decidiu analisar a exceção antes de paralisar o serviço.",
     "nao_confundir": [
       {
         "conceito": "Erro comum",
@@ -12994,7 +12994,7 @@
     "conceito": "Acentuação após o Acordo Ortográfico",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "O Acordo Ortográfico de 1990 eliminou determinados acentos gráficos, sinais que marcam sílabas. Exemplo: A assembleia aprovou a ideia apresentada.",
+    "resumo": "O Acordo Ortográfico de 1990 eliminou determinados acentos gráficos, sinais que marcam a sílaba tônica ou o timbre da vogal. Exemplo: A assembleia aprovou a ideia apresentada.",
     "nao_confundir": [
       {
         "conceito": "Erro comum",
@@ -13081,7 +13081,7 @@
     "resumo": "O pretérito perfeito indica fato concluído; o imperfeito indica ação habitual ou em andamento no passado. Exemplo: Ontem terminei; antes estudava diariamente.",
     "nao_confundir": [
       {
-        "conceito": "Erro comum",
+        "conceito": "Perfeito × imperfeito",
         "diferenca": "Terminei apresenta conclusão; terminava apresenta hábito ou andamento no passado."
       }
     ],
@@ -13102,8 +13102,8 @@
     "resumo": "O futuro do pretérito indica fato que depende de uma condição ou fato posterior a um momento passado. Exemplo: Eu viajaria se tivesse férias.",
     "nao_confundir": [
       {
-        "conceito": "Erro comum",
-        "diferenca": "Viajarei indica futuro; viajaria pode indicar consequência de uma hipótese."
+        "conceito": "Futuro do presente",
+        "diferenca": "Viajarei indica fato futuro; viajaria indica consequência de uma hipótese."
       }
     ],
     "atencao": "Trocar viajaria por viajarei pode alterar uma possibilidade condicionada para uma afirmação sobre o futuro.",
@@ -13186,7 +13186,7 @@
     "resumo": "Homônimos são palavras de sentidos distintos que apresentam a mesma grafia ou pronúncia. Exemplo: O banco da praça fica diante do banco comercial.",
     "nao_confundir": [
       {
-        "conceito": "Erro comum",
+        "conceito": "Parônimos",
         "diferenca": "Homônimos coincidem na grafia ou pronúncia; parônimos apenas se parecem na forma e pronúncia."
       }
     ],
@@ -13207,7 +13207,7 @@
     "resumo": "Parônimos são palavras com grafia e pronúncia parecidas, mas significados diferentes. Exemplo: A descrição do caso foi feita com discrição.",
     "nao_confundir": [
       {
-        "conceito": "Erro comum",
+        "conceito": "Descrição e discrição",
         "diferenca": "Descrição é ato de descrever; discrição é reserva no comportamento."
       }
     ],
