@@ -12596,5 +12596,289 @@
       "fatorial",
       "analise-combinatoria"
     ]
+  },
+  {
+    "id": "card-rs-n1-107",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
+    "nivel": 1,
+    "conceito": "Máscara de sub-rede",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "A máscara no Protocolo de Internet versão 4 (IPv4) indica quais bits do endereço IP pertencem à rede; os demais identificam o dispositivo. Exemplo: 255.255.255.0.",
+    "nao_confundir": [
+      {
+        "conceito": "Endereço IP",
+        "diferenca": "Endereço IP identifica um dispositivo; máscara separa a parte de rede da do dispositivo."
+      }
+    ],
+    "atencao": "Os bits 1 da máscara marcam a rede e a sub-rede juntas, não só a sub-rede.",
+    "fonte": "[RFC 950 — Internet Standard Subnetting Procedure](https://www.rfc-editor.org/rfc/rfc950.html)",
+    "tags": [
+      "camada-de-rede"
+    ]
+  },
+  {
+    "id": "card-rs-n1-108",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
+    "nivel": 1,
+    "conceito": "CIDR e prefixo /24",
+    "termo_ingles": "Classless Inter-Domain Routing",
+    "traducao": "Roteamento interdomínios sem classes: representa redes pelo tamanho do prefixo.",
+    "resumo": "O Roteamento Interdomínios sem Classes (CIDR) indica o tamanho do prefixo; em 192.0.2.0/24, os 24 bits iniciais identificam a rede (máscara 255.255.255.0).",
+    "nao_confundir": [
+      {
+        "conceito": "Máscara de sub-rede",
+        "diferenca": "Máscara marca bits de rede e dispositivo; prefixo CIDR conta os bits iniciais da rede."
+      }
+    ],
+    "atencao": "/24 significa 24 bits de prefixo, não 24 dispositivos.",
+    "fonte": "[RFC 4632 — Classless Inter-domain Routing](https://www.rfc-editor.org/rfc/rfc4632.html)",
+    "tags": [
+      "camada-de-rede"
+    ]
+  },
+  {
+    "id": "card-rs-n1-109",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
+    "nivel": 1,
+    "conceito": "IPv6",
+    "termo_ingles": "Internet Protocol version 6",
+    "traducao": "Protocolo de Internet versão 6: sucessor do IPv4, com endereços muito maiores.",
+    "resumo": "O Protocolo de Internet versão 6 (IPv6) usa endereços de 128 bits, escritos em hexadecimal com dois-pontos; o IPv4 usa 32 bits em decimal com pontos.",
+    "nao_confundir": [
+      {
+        "conceito": "ARP",
+        "diferenca": "No IPv4, o ARP descobre o MAC; no IPv6, a descoberta de vizinhos faz isso."
+      }
+    ],
+    "atencao": "O IPv6 não tem broadcast (envio a todos da rede); usa multicast, envio a um grupo de interessados.",
+    "fonte": "[RFC 8200 — IPv6 Specification](https://www.rfc-editor.org/rfc/rfc8200.html); [RFC 4291 — IP Version 6 Addressing Architecture](https://www.rfc-editor.org/rfc/rfc4291.html); [RFC 4861 — Neighbor Discovery for IPv6](https://www.rfc-editor.org/rfc/rfc4861.html)",
+    "tags": [
+      "ipv6",
+      "camada-de-rede"
+    ]
+  },
+  {
+    "id": "card-rs-n1-110",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
+    "nivel": 1,
+    "conceito": "DHCP",
+    "termo_ingles": "Dynamic Host Configuration Protocol",
+    "traducao": "Protocolo de Configuração Dinâmica de Hosts: distribui endereço IP e opções de configuração.",
+    "resumo": "O Protocolo de Configuração Dinâmica de Hosts (DHCP) permite que um servidor atribua endereços IP e envie opções de configuração aos clientes.",
+    "nao_confundir": [
+      {
+        "conceito": "Endereço MAC",
+        "diferenca": "DHCP atribui endereço IP; endereço MAC vem gravado na placa de rede."
+      }
+    ],
+    "atencao": "O servidor DHCP recebe pedidos na porta UDP 67; o cliente recebe respostas na porta UDP 68.",
+    "fonte": "[RFC 2131 — Dynamic Host Configuration Protocol](https://www.rfc-editor.org/rfc/rfc2131.html)",
+    "tags": [
+      "dhcp"
+    ]
+  },
+  {
+    "id": "card-rs-n1-111",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
+    "nivel": 1,
+    "conceito": "ICMP, ping e traceroute",
+    "termo_ingles": "Internet Control Message Protocol",
+    "traducao": "Protocolo de Mensagens de Controle da Internet: transporta mensagens de controle e erro do IP.",
+    "resumo": "O Protocolo de Mensagens de Controle da Internet (ICMP) inclui Pedido e Resposta de Eco, usados pelo ping, e Tempo Excedido, usada pelo traceroute para listar roteadores do caminho.",
+    "nao_confundir": [
+      {
+        "conceito": "TCP e UDP",
+        "diferenca": "ICMP informa condições da rede; TCP e UDP transportam dados de aplicações."
+      }
+    ],
+    "atencao": "O ICMP é parte integrante do IP e deve ser implementado por todo módulo IP.",
+    "fonte": "[RFC 792 — Internet Control Message Protocol](https://www.rfc-editor.org/rfc/rfc792.html); [RFC 1470 — FYI on a Network Management Tool Catalog](https://www.rfc-editor.org/rfc/rfc1470.html)",
+    "tags": [
+      "camada-de-rede"
+    ]
+  },
+  {
+    "id": "card-rs-n1-112",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
+    "nivel": 1,
+    "conceito": "Abertura TCP de três vias",
+    "termo_ingles": "Three-way handshake",
+    "traducao": "Abertura de três vias: troca inicial que estabelece uma conexão TCP.",
+    "resumo": "A abertura TCP troca Pedido de Sincronização (SYN), Resposta de Sincronização e Confirmação (SYN-ACK), e Confirmação (ACK), antes dos dados.",
+    "nao_confundir": [
+      {
+        "conceito": "Confirmação (ACK)",
+        "diferenca": "ACK confirma recebimento; a abertura TCP usa três mensagens para estabelecer a conexão."
+      }
+    ],
+    "atencao": "O estabelecimento padrão da conexão usa três segmentos: SYN, SYN-ACK e ACK.",
+    "fonte": "[RFC 9293 — Transmission Control Protocol](https://www.rfc-editor.org/rfc/rfc9293.html)",
+    "tags": [
+      "tcp",
+      "camada-de-transporte"
+    ]
+  },
+  {
+    "id": "card-rs-n1-113",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Roteamento, switching e SDN",
+    "nivel": 1,
+    "conceito": "STP",
+    "termo_ingles": "Spanning Tree Protocol",
+    "traducao": "Protocolo de Árvore de Abrangência: evita laços em redes comutadas, bloqueando caminhos redundantes.",
+    "resumo": "O Protocolo de Árvore de Abrangência (STP) evita laços de camada 2, quadros circulando sem fim, entre switches ligados por mais de um caminho.",
+    "nao_confundir": [
+      {
+        "conceito": "Roteamento",
+        "diferenca": "STP controla caminhos redundantes entre switches; roteador encaminha pacotes entre redes."
+      }
+    ],
+    "atencao": "O STP não remove os caminhos redundantes: coloca-os em estado de bloqueio.",
+    "fonte": "[Cisco — Understand Spanning Tree PortFast and BPDU Guard Features](https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/10586-65.html)",
+    "tags": [
+      "switch",
+      "mac"
+    ]
+  },
+  {
+    "id": "card-rs-n1-114",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Roteamento, switching e SDN",
+    "nivel": 1,
+    "conceito": "BGP e sistema autônomo",
+    "termo_ingles": "Border Gateway Protocol",
+    "traducao": "Protocolo de Gateway de Borda: troca informações de roteamento entre sistemas autônomos.",
+    "resumo": "O Protocolo de Gateway de Borda (BGP) troca rotas entre sistemas autônomos (AS), conjuntos de roteadores sob administração técnica comum.",
+    "nao_confundir": [
+      {
+        "conceito": "OSPF",
+        "diferenca": "OSPF distribui rotas dentro de um sistema autônomo; BGP troca rotas entre sistemas autônomos."
+      }
+    ],
+    "atencao": "O BGP também liga roteadores do mesmo sistema autônomo (BGP interno), não só de sistemas diferentes.",
+    "fonte": "[RFC 4271 — A Border Gateway Protocol 4 (BGP-4)](https://www.rfc-editor.org/rfc/rfc4271.html)",
+    "tags": [
+      "ospf"
+    ]
+  },
+  {
+    "id": "card-rs-n1-115",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Roteamento, switching e SDN",
+    "nivel": 1,
+    "conceito": "Rota padrão e gateway padrão",
+    "termo_ingles": "Default route / default gateway",
+    "traducao": "Rota padrão: rota de último recurso; gateway padrão: roteador usado para encaminhá-la.",
+    "resumo": "A rota padrão é usada quando nenhuma rota específica atende o destino; o gateway padrão é o roteador da rede local que recebe esse tráfego.",
+    "nao_confundir": [
+      {
+        "conceito": "Rota específica",
+        "diferenca": "Rota específica corresponde a uma rede indicada; rota padrão atende destinos sem rota específica."
+      }
+    ],
+    "atencao": "A rota padrão tem prefixo de tamanho zero (0.0.0.0/0 em IPv4), não é o endereço do gateway.",
+    "fonte": "[RFC 1812 — Requirements for IP Version 4 Routers](https://www.rfc-editor.org/rfc/rfc1812.html); [RFC 1058 — Routing Information Protocol](https://www.rfc-editor.org/rfc/rfc1058.html)",
+    "tags": [
+      "ospf"
+    ]
+  },
+  {
+    "id": "card-rs-n1-116",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Protocolos de aplicação (DNS, HTTP, SMTP, LDAP)",
+    "nivel": 1,
+    "conceito": "FTP",
+    "termo_ingles": "File Transfer Protocol",
+    "traducao": "Protocolo de Transferência de Arquivos: transfere arquivos entre cliente e servidor.",
+    "resumo": "O Protocolo de Transferência de Arquivos (FTP) usa uma conexão de controle para comandos, na porta 21, e outra conexão de dados para os arquivos.",
+    "nao_confundir": [
+      {
+        "conceito": "Conexão de controle",
+        "diferenca": "A conexão de controle leva comandos; a conexão de dados transfere arquivos."
+      }
+    ],
+    "atencao": "O FTP original não oferece confidencialidade; ela só existe quando se acrescentam extensões de segurança.",
+    "fonte": "[RFC 959 — File Transfer Protocol](https://www.rfc-editor.org/rfc/rfc959.html); [RFC 4217 — Securing FTP with TLS](https://www.rfc-editor.org/rfc/rfc4217.html)",
+    "tags": [
+      "cliente-servidor"
+    ]
+  },
+  {
+    "id": "card-rs-n1-117",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Protocolos de aplicação (DNS, HTTP, SMTP, LDAP)",
+    "nivel": 1,
+    "conceito": "SSH",
+    "termo_ingles": "Secure Shell",
+    "traducao": "Shell Seguro: permite login remoto e outros serviços seguros em redes inseguras.",
+    "resumo": "O Shell Seguro (SSH) dá acesso remoto a outro computador por canal criptografado. Substitui o Telnet, protocolo de terminal remoto mais antigo.",
+    "nao_confundir": [
+      {
+        "conceito": "Telnet",
+        "diferenca": "Telnet oferece terminal remoto sem segurança própria; SSH oferece login remoto seguro sobre rede insegura."
+      }
+    ],
+    "atencao": "O SSH não serve só para terminal remoto: também protege outros serviços de rede.",
+    "fonte": "[RFC 4251 — The Secure Shell (SSH) Protocol Architecture](https://www.rfc-editor.org/rfc/rfc4251.html); [RFC 854 — Telnet Protocol Specification](https://www.rfc-editor.org/rfc/rfc854.html)",
+    "tags": [
+      "cliente-servidor"
+    ]
+  },
+  {
+    "id": "card-rs-n1-118",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Protocolos de aplicação (DNS, HTTP, SMTP, LDAP)",
+    "nivel": 1,
+    "conceito": "SFTP e FTPS",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "O Protocolo de Transferência de Arquivos do SSH (SFTP) roda dentro do SSH. O FTP sobre TLS (FTPS) usa a Segurança da Camada de Transporte (TLS), que criptografa a conexão.",
+    "nao_confundir": [
+      {
+        "conceito": "FTP",
+        "diferenca": "FTP transfere sem proteção própria; FTPS acrescenta TLS ao mesmo FTP."
+      }
+    ],
+    "atencao": "O SFTP opera sobre o transporte criptografado do SSH; quem usa FTP com TLS é o FTPS.",
+    "fonte": "[OpenBSD — sftp(1)](https://man.openbsd.org/sftp); [draft-ietf-secsh-filexfer-02 — SSH File Transfer Protocol](https://datatracker.ietf.org/doc/html/draft-ietf-secsh-filexfer-02); [RFC 4217 — Securing FTP with TLS](https://www.rfc-editor.org/rfc/rfc4217.html)",
+    "tags": [
+      "tls",
+      "cliente-servidor"
+    ]
+  },
+  {
+    "id": "card-rs-n1-119",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Protocolos de aplicação (DNS, HTTP, SMTP, LDAP)",
+    "nivel": 1,
+    "conceito": "Portas conhecidas",
+    "termo_ingles": "Well-known ports",
+    "traducao": "Portas conhecidas: números registrados para serviços e protocolos de transporte.",
+    "resumo": "Portas de 0 a 1023 reservadas a serviços padrão: HTTP 80, HTTPS 443, SMTP 25, SSH 22, FTP 21, DNS 53, POP3 110, IMAP 143, LDAP 389, SNMP 161.",
+    "nao_confundir": [
+      {
+        "conceito": "Porta registrada",
+        "diferenca": "Porta conhecida vai de 0 a 1023; porta registrada vai de 1024 a 49151."
+      }
+    ],
+    "atencao": "HTTPS (HTTP com TLS) usa 443; HTTP sem proteção usa 80.",
+    "fonte": "[RFC 6335 — IANA Procedures for Service Name and Port Number](https://www.rfc-editor.org/rfc/rfc6335.html); [IANA — Service Name and Transport Protocol Port Number Registry](https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml)",
+    "tags": [
+      "http",
+      "https",
+      "smtp",
+      "dns",
+      "imap",
+      "pop3",
+      "ldap",
+      "snmp"
+    ]
   }
 ]
