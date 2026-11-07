@@ -12880,5 +12880,362 @@
       "ldap",
       "snmp"
     ]
+  },
+  {
+    "id": "card-pt-n1-052",
+    "materia": "Português",
+    "assunto": "Reconhecimento de tipos e gêneros textuais",
+    "nivel": 1,
+    "conceito": "Gênero textual",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Gênero textual é uma forma de comunicação reconhecida pela finalidade e organização, como notícia, receita ou ofício. Exemplo: A notícia informou a inauguração da biblioteca.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: notícia é um tipo textual; certo: notícia é um gênero textual."
+      }
+    ],
+    "atencao": "Um gênero pode reunir diferentes tipos textuais; a finalidade comunicativa ajuda a identificá-lo.",
+    "fonte": "INEP, Matriz de Referência de Língua Portuguesa do Saeb: https://download.inep.gov.br/educacao_basica/saeb/matriz_referencia/matriz_referencia_lingua_portuguesa.pdf",
+    "tags": [
+      "reconhecimento-de-tipos-e-generos-textuais"
+    ]
+  },
+  {
+    "id": "card-pt-n1-053",
+    "materia": "Português",
+    "assunto": "Reconhecimento de tipos e gêneros textuais",
+    "nivel": 1,
+    "conceito": "Texto dissertativo-argumentativo",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Defende uma tese, isto é, um ponto de vista, por meio de argumentos, razões que procuram sustentá-la. Exemplo: Bibliotecas públicas são necessárias porque ampliam o acesso aos livros.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: toda opinião constitui argumentação; certo: argumentar exige razões que sustentem a tese."
+      }
+    ],
+    "atencao": "Apresentar uma opinião isolada não equivale a desenvolver uma argumentação.",
+    "fonte": "INEP, Matriz de Referência de Língua Portuguesa do Saeb: https://download.inep.gov.br/educacao_basica/saeb/matriz_referencia/matriz_referencia_lingua_portuguesa.pdf",
+    "tags": [
+      "reconhecimento-de-tipos-e-generos-textuais"
+    ]
+  },
+  {
+    "id": "card-pt-n1-054",
+    "materia": "Português",
+    "assunto": "Reconhecimento de tipos e gêneros textuais",
+    "nivel": 1,
+    "conceito": "Texto expositivo",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Apresenta informações ou explicações sobre um assunto, sem precisar defender uma tese. Exemplo: A água passa ao estado sólido quando congela.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Expositivo explica um assunto; argumentativo apresenta razões para defender um ponto de vista."
+      }
+    ],
+    "atencao": "A presença de informações não torna um texto exclusivamente expositivo; elas também podem sustentar argumentos.",
+    "fonte": "INEP, Matriz de Referência de Língua Portuguesa do Saeb: https://download.inep.gov.br/educacao_basica/saeb/matriz_referencia/matriz_referencia_lingua_portuguesa.pdf",
+    "tags": [
+      "reconhecimento-de-tipos-e-generos-textuais"
+    ]
+  },
+  {
+    "id": "card-pt-n1-055",
+    "materia": "Português",
+    "assunto": "Reconhecimento de tipos e gêneros textuais",
+    "nivel": 1,
+    "conceito": "Ofício",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Ofício é o expediente do padrão ofício, usado na comunicação oficial escrita entre órgãos e autoridades. Exemplo: O órgão encaminhou um ofício solicitando documentos.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: memorando continua expediente próprio; certo: na 3ª edição, ele se chama ofício."
+      }
+    ],
+    "atencao": "Até a 2ª edição, ofício, aviso e memorando diferiam pela finalidade, não pela forma.",
+    "fonte": "Manual de Redação da Presidência da República, 3ª edição, 2018, capítulo do padrão ofício (cópia aberta em PDF): https://files.ufgd.edu.br/arquivos/arquivos/78/PROTOCOLO/Normas%20Internas/Manual%20de%20Reda%C3%A7%C3%A3o%20da%20Presid%C3%AAncia%20da%20Rep%C3%BAblica%20-%203%C2%AA%20edi%C3%A7%C3%A3o,%20revista,%20atualizada%20e%20ampliada.pdf",
+    "tags": [
+      "reconhecimento-de-tipos-e-generos-textuais"
+    ]
+  },
+  {
+    "id": "card-pt-n1-056",
+    "materia": "Português",
+    "assunto": "Domínio da ortografia oficial",
+    "nivel": 1,
+    "conceito": "Grafia com s, ss, ç e xc",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Palavras derivadas mantêm a grafia da origem: análise dá analisar; paralisia dá paralisar; exceto dá exceção. Exemplo: A equipe decidiu analisar a exceção antes de paralisar o serviço.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: excessão e paralização; certo: exceção e paralisação."
+      }
+    ],
+    "atencao": "Exceção escreve-se com xc e cê-cedilha; analisar e paralisar escrevem-se com s.",
+    "fonte": "Academia Brasileira de Letras, Vocabulário Ortográfico da Língua Portuguesa (VOLP), consulta de verbetes: https://www.academia.org.br/nossa-lingua/busca-no-vocabulario",
+    "tags": [
+      "dominio-da-ortografia-oficial"
+    ]
+  },
+  {
+    "id": "card-pt-n1-057",
+    "materia": "Português",
+    "assunto": "Domínio da ortografia oficial",
+    "nivel": 1,
+    "conceito": "Acentuação após o Acordo Ortográfico",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "O Acordo Ortográfico de 1990 eliminou determinados acentos gráficos, sinais que marcam sílabas. Exemplo: A assembleia aprovou a ideia apresentada.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: idéia, assembléia, vôo e lêem; certo: ideia, assembleia, voo e leem."
+      }
+    ],
+    "atencao": "Ditongos abertos ei e oi em paroxítonas perderam acento; também caiu o circunflexo em oo e ee.",
+    "fonte": "Decreto nº 6.583/2008, Acordo Ortográfico da Língua Portuguesa, Anexo I, Bases IX e X: https://www.planalto.gov.br/ccivil_03/_ato2007-2010/2008/decreto/d6583.htm; Senado Federal, Manual de Comunicação da Secom (2023), verbete Acentuação: https://www12.senado.leg.br/manualdecomunicacao/manual_comunicacao.pdf",
+    "tags": [
+      "dominio-da-ortografia-oficial"
+    ]
+  },
+  {
+    "id": "card-pt-n1-058",
+    "materia": "Português",
+    "assunto": "Domínio da ortografia oficial",
+    "nivel": 1,
+    "conceito": "Os quatro porquês",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Por que inicia pergunta ou equivale a por qual motivo; porque explica; por quê fecha frase ou antecede pausa; porquê é substantivo. Exemplo: Não sei por que saiu.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: Não entendo o porque da demora; certo: Não entendo o porquê da demora."
+      }
+    ],
+    "atencao": "Por que separado também aparece em frase afirmativa, indicando motivo; porquê vem precedido de artigo.",
+    "fonte": "TRF3, Conexão Emag — Língua Portuguesa: https://www.trf3.jus.br/emag/emagconecta/conexaoemag-lingua-portuguesa/por-que-por-que; https://www.trf3.jus.br/emag/emagconecta/conexaoemag-lingua-portuguesa/porque-porque",
+    "tags": [
+      "dominio-da-ortografia-oficial"
+    ]
+  },
+  {
+    "id": "card-pt-n1-059",
+    "materia": "Português",
+    "assunto": "Domínio da ortografia oficial",
+    "nivel": 1,
+    "conceito": "Mal e mau",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Mal é contrário de bem; mau é contrário de bom e caracteriza algo ou alguém. Exemplo: O mau atendimento deixou o cliente mal.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: O serviço funciona mau; certo: O serviço funciona mal."
+      }
+    ],
+    "atencao": "Mal pode ser advérbio ou substantivo, como em o mal; mau é adjetivo e acompanha substantivo.",
+    "fonte": "TJSP, Escola Judicial dos Servidores, Dicas de Língua Portuguesa, Mal/Mau: https://www.tjsp.jus.br/Download/EJUS/AVAS/DicasLinguaPortuguesa/mau-ou-mal.pdf",
+    "tags": [
+      "dominio-da-ortografia-oficial"
+    ]
+  },
+  {
+    "id": "card-pt-n1-060",
+    "materia": "Português",
+    "assunto": "Emprego de tempos e modos verbais",
+    "nivel": 1,
+    "conceito": "Modos verbais",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "O indicativo apresenta fatos; o subjuntivo expressa hipóteses ou desejos; o imperativo transmite ordens ou pedidos. Exemplo: Ele trabalha; talvez trabalhe; trabalhe agora.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: pode ser que ele trabalha; certo: pode ser que ele trabalhe."
+      }
+    ],
+    "atencao": "Certeza pede indicativo: afirmou que há saída. Possibilidade pede subjuntivo: pode ser que haja saída.",
+    "fonte": "TRF3, Conexão Emag — Língua Portuguesa, Usos do subjuntivo: https://www.trf3.jus.br/emag/emagconecta/conexaoemag-lingua-portuguesa/usos-do-subjuntivo; Cunha e Cintra, Nova Gramática do Português Contemporâneo",
+    "tags": [
+      "emprego-de-tempos-e-modos-verbais"
+    ]
+  },
+  {
+    "id": "card-pt-n1-061",
+    "materia": "Português",
+    "assunto": "Emprego de tempos e modos verbais",
+    "nivel": 1,
+    "conceito": "Pretérito perfeito e imperfeito",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "O pretérito perfeito indica fato concluído; o imperfeito indica ação habitual ou em andamento no passado. Exemplo: Ontem terminei; antes estudava diariamente.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Terminei apresenta conclusão; terminava apresenta hábito ou andamento no passado."
+      }
+    ],
+    "atencao": "O imperfeito não afirma, por si só, que a ação chegou ao fim.",
+    "fonte": "Revista SOLETRAS (UERJ), ano I, n. 2, 2001, sobre o emprego do pretérito perfeito e do imperfeito: https://www.e-publicacoes.uerj.br/soletras/article/download/4418/3223/17062; Revista Tabuleiro de Letras (UNEB), v. 15, n. 2, 2021: https://revistas.uneb.br/index.php/tabuleirodeletras/article/download/11541/9210/38889; Cunha e Cintra, Nova Gramática do Português Contemporâneo",
+    "tags": [
+      "emprego-de-tempos-e-modos-verbais"
+    ]
+  },
+  {
+    "id": "card-pt-n1-062",
+    "materia": "Português",
+    "assunto": "Emprego de tempos e modos verbais",
+    "nivel": 1,
+    "conceito": "Futuro do pretérito",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "O futuro do pretérito indica fato que depende de uma condição ou fato posterior a um momento passado. Exemplo: Eu viajaria se tivesse férias.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Viajarei indica futuro; viajaria pode indicar consequência de uma hipótese."
+      }
+    ],
+    "atencao": "Trocar viajaria por viajarei pode alterar uma possibilidade condicionada para uma afirmação sobre o futuro.",
+    "fonte": "Revista Tabuleiro de Letras (UNEB), v. 15, n. 2, 2021, A alternância entre o futuro do pretérito e o pretérito imperfeito: https://revistas.uneb.br/index.php/tabuleirodeletras/article/download/11541/9210/38889; Cunha e Cintra, Nova Gramática do Português Contemporâneo",
+    "tags": [
+      "emprego-de-tempos-e-modos-verbais"
+    ]
+  },
+  {
+    "id": "card-pt-n1-063",
+    "materia": "Português",
+    "assunto": "Emprego de tempos e modos verbais",
+    "nivel": 1,
+    "conceito": "Correlação verbal com se",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Na hipótese irreal ou improvável, se acompanha o pretérito imperfeito do subjuntivo e combina com o futuro do pretérito. Exemplo: Se estudasse, aprenderia.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: Se estudasse, aprenderá; certo: Se estudasse, aprenderia."
+      }
+    ],
+    "atencao": "Na hipótese irreal, também se aceita o pretérito imperfeito do indicativo: Se estudasse, aprendia.",
+    "fonte": "TRF3, Conexão Emag — Língua Portuguesa, Correlação verbal em frases condicionais: https://www.trf3.jus.br/emag/emagconecta/conexaoemag-lingua-portuguesa/correlacao-verbal-em-frases-condicionais",
+    "tags": [
+      "emprego-de-tempos-e-modos-verbais"
+    ]
+  },
+  {
+    "id": "card-pt-n1-064",
+    "materia": "Português",
+    "assunto": "Significação das palavras",
+    "nivel": 1,
+    "conceito": "Conotação",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Conotação é o uso de uma palavra em sentido figurado, diferente do sentido literal. Exemplo: A notícia acendeu uma esperança na comunidade.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Denotação usa sentido literal; conotação usa sentido figurado, dependente do contexto."
+      }
+    ],
+    "atencao": "O sentido figurado depende do contexto; acender uma esperança não descreve fogo real.",
+    "fonte": "INEP, Matriz de Referência de Língua Portuguesa do Saeb: https://download.inep.gov.br/educacao_basica/saeb/matriz_referencia/matriz_referencia_lingua_portuguesa.pdf; UNIFAL-MG, Letras para Todos, Semântica (apostila): https://www.unifal-mg.edu.br/letrasparatodos/wp-content/uploads/sites/259/2024/07/Semantica_Edvando_Sa.pdf",
+    "tags": [
+      "significacao-das-palavras"
+    ]
+  },
+  {
+    "id": "card-pt-n1-065",
+    "materia": "Português",
+    "assunto": "Significação das palavras",
+    "nivel": 1,
+    "conceito": "Antônimo",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Antônimos são palavras de sentidos opostos em determinado contexto. Exemplo: O corredor estava vazio pela manhã e cheio à tarde.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: claro e rápido são antônimos; certo: claro e escuro apresentam oposição."
+      }
+    ],
+    "atencao": "Palavras apenas diferentes não são necessariamente antônimas; deve existir oposição de sentido.",
+    "fonte": "UNIFAL-MG, Letras para Todos, Semântica (apostila): https://www.unifal-mg.edu.br/letrasparatodos/wp-content/uploads/sites/259/2024/07/Semantica_Edvando_Sa.pdf; Cunha e Cintra, Nova Gramática do Português Contemporâneo",
+    "tags": [
+      "significacao-das-palavras"
+    ]
+  },
+  {
+    "id": "card-pt-n1-066",
+    "materia": "Português",
+    "assunto": "Significação das palavras",
+    "nivel": 1,
+    "conceito": "Homônimos",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Homônimos são palavras de sentidos distintos que apresentam a mesma grafia ou pronúncia. Exemplo: O banco da praça fica diante do banco comercial.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Homônimos coincidem na grafia ou pronúncia; parônimos apenas se parecem na forma e pronúncia."
+      }
+    ],
+    "atencao": "Em muitos livros, manga da camisa e manga fruta são homônimos perfeitos: mesma grafia e pronúncia.",
+    "fonte": "UNIFAL-MG, Letras para Todos, Semântica (apostila): https://www.unifal-mg.edu.br/letrasparatodos/wp-content/uploads/sites/259/2024/07/Semantica_Edvando_Sa.pdf; Cunha e Cintra, Nova Gramática do Português Contemporâneo",
+    "tags": [
+      "significacao-das-palavras"
+    ]
+  },
+  {
+    "id": "card-pt-n1-067",
+    "materia": "Português",
+    "assunto": "Significação das palavras",
+    "nivel": 1,
+    "conceito": "Parônimos",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Parônimos são palavras com grafia e pronúncia parecidas, mas significados diferentes. Exemplo: A descrição do caso foi feita com discrição.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Descrição é ato de descrever; discrição é reserva no comportamento."
+      }
+    ],
+    "atencao": "Cumprimento é saudação ou execução; comprimento é medida de extensão.",
+    "fonte": "UNIFAL-MG, Letras para Todos, Semântica (apostila): https://www.unifal-mg.edu.br/letrasparatodos/wp-content/uploads/sites/259/2024/07/Semantica_Edvando_Sa.pdf; Cunha e Cintra, Nova Gramática do Português Contemporâneo",
+    "tags": [
+      "significacao-das-palavras"
+    ]
+  },
+  {
+    "id": "card-pt-n1-068",
+    "materia": "Português",
+    "assunto": "Significação das palavras",
+    "nivel": 1,
+    "conceito": "Hiperônimo e hipônimo",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Hiperônimo nomeia categoria abrangente; hipônimo nomeia elemento específico dessa categoria. Exemplo: A mangueira é uma árvore cultivada no pomar.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Árvore é hiperônimo de mangueira; mangueira é hipônimo de árvore."
+      }
+    ],
+    "atencao": "O hiperônimo é o termo mais amplo: animal é hiperônimo de gato, e não o contrário.",
+    "fonte": "Secretaria da Educação da Bahia, Língua Portuguesa, 1ª série, Hiperonímia x Hiponímia: https://estudantes.educacao.ba.gov.br/sites/default/files/private/midiateca/documentos/2020/semanaiiiensinomedio1aserielinguaportuguesa02.pdf; UNIFAL-MG, Letras para Todos, Semântica (apostila): https://www.unifal-mg.edu.br/letrasparatodos/wp-content/uploads/sites/259/2024/07/Semantica_Edvando_Sa.pdf",
+    "tags": [
+      "significacao-das-palavras"
+    ]
   }
 ]
