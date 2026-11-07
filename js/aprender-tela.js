@@ -11,6 +11,7 @@
 
 import { esc } from './ui.js';
 import { montarPlano } from './plano.js';
+import { ordenarAssuntos } from './ordem-assuntos.js';
 import { assuntosComCartoes, abrirLeitura, lerAprendidos, assuntoAprendido, migrarEntendidos } from './leitura.js';
 
 const CHAVE_ULTIMO = 'appEstudos_AprenderUltimo';
@@ -29,7 +30,7 @@ export function estadoDe(assunto, aprendidos = {}) {
 }
 
 // Agrupa [{materia, assunto, cartoes}] por matéria. Matérias na ordem dada (as demais, em ordem alfabética);
-// assuntos na ordem em que aparecem no arquivo de cartões (a ordem didática dos lotes).
+// assuntos na ordem de pré-requisitos da sala de aula (js/ordem-assuntos.js); o que não está lá, na ordem do arquivo de cartões.
 export function agruparPorMateria(lista, ordemMaterias = []) {
     const mapa = new Map();
     lista.forEach(a => {
@@ -37,7 +38,7 @@ export function agruparPorMateria(lista, ordemMaterias = []) {
         mapa.get(a.materia).push(a);
     });
     const extras = [...mapa.keys()].filter(m => !ordemMaterias.includes(m)).sort((x, y) => x.localeCompare(y, 'pt-BR'));
-    return [...ordemMaterias.filter(m => mapa.has(m)), ...extras].map(materia => ({ materia, assuntos: mapa.get(materia) }));
+    return [...ordemMaterias.filter(m => mapa.has(m)), ...extras].map(materia => ({ materia, assuntos: ordenarAssuntos(materia, mapa.get(materia)) }));
 }
 
 // Progresso de uma matéria em assuntos
