@@ -14811,5 +14811,447 @@
       "c-sharp",
       "dotnet"
     ]
+  },
+  {
+    "id": "card-dev-n1-066",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Acessibilidade (e-MAG, WCAG)",
+    "nivel": 1,
+    "conceito": "Acessibilidade na web",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Acessibilidade na web permite que pessoas com deficiência percebam, compreendam e utilizem conteúdos e funcionalidades. Exemplo: formulário utilizável sem mouse.",
+    "nao_confundir": [
+      {
+        "conceito": "Usabilidade",
+        "diferenca": "Acessibilidade remove barreiras para pessoas com deficiência; usabilidade trata da facilidade de uso."
+      }
+    ],
+    "atencao": "Uma página acessível deve permitir operar suas funcionalidades pelo teclado, sem exigir o uso do mouse.",
+    "fonte": "W3C WAI, Introduction to Web Accessibility: https://www.w3.org/WAI/fundamentals/accessibility-intro/",
+    "tags": [
+      "wcag",
+      "w3c"
+    ]
+  },
+  {
+    "id": "card-dev-n1-067",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Acessibilidade (e-MAG, WCAG)",
+    "nivel": 1,
+    "conceito": "Modelo de Acessibilidade em Governo Eletrônico",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "O Modelo de Acessibilidade em Governo Eletrônico (e-MAG) orienta a acessibilidade de conteúdos digitais governamentais brasileiros. Exemplo: portal público acessível.",
+    "nao_confundir": [
+      {
+        "conceito": "WCAG",
+        "diferenca": "WCAG é o padrão internacional do W3C; o e-MAG é versão especializada para o governo."
+      }
+    ],
+    "atencao": "A adoção do e-MAG é obrigatória para os órgãos do SISP; estados e municípios podem aderir voluntariamente.",
+    "fonte": "Governo Federal, e-MAG 3.1: https://emag.governoeletronico.gov.br/; Portaria do e-MAG, art. 1º, §§ 1º e 2º: https://www.gov.br/governodigital/pt-br/legislacao/portaria3_eMAG1.pdf",
+    "tags": [
+      "e-mag",
+      "wcag"
+    ]
+  },
+  {
+    "id": "card-dev-n1-068",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Acessibilidade (e-MAG, WCAG)",
+    "nivel": 1,
+    "conceito": "Quatro princípios de acessibilidade",
+    "termo_ingles": "WCAG",
+    "traducao": "diretrizes de acessibilidade para conteúdo web",
+    "resumo": "As WCAG organizam requisitos em quatro princípios: perceptível, operável, compreensível e robusto. Exemplo: navegar só pelo teclado atende ao princípio operável.",
+    "nao_confundir": [
+      {
+        "conceito": "Critério de sucesso",
+        "diferenca": "Princípios organizam a acessibilidade; critérios de sucesso são condições verificáveis."
+      }
+    ],
+    "atencao": "Perceptível: a informação pode ser percebida pelo usuário; operável: componentes e navegação podem ser usados.",
+    "fonte": "W3C, WCAG 2.2: https://www.w3.org/TR/WCAG22/, seção Principles",
+    "tags": [
+      "wcag",
+      "w3c"
+    ]
+  },
+  {
+    "id": "card-dev-n1-069",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Acessibilidade (e-MAG, WCAG)",
+    "nivel": 1,
+    "conceito": "Níveis de conformidade WCAG",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "As diretrizes WCAG definem três níveis de conformidade: A, AA e AAA, com exigências progressivas. Exemplo: AA exige atender A e AA.",
+    "nao_confundir": [
+      {
+        "conceito": "Critério de sucesso",
+        "diferenca": "Critério de sucesso é o requisito verificável; nível indica o grau de exigência."
+      }
+    ],
+    "atencao": "A conformidade AAA exige atender critérios dos três níveis; não é recomendada como requisito geral para sites inteiros.",
+    "fonte": "W3C, WCAG 2.2: https://www.w3.org/TR/WCAG22/; Understanding Conformance: https://www.w3.org/WAI/WCAG22/Understanding/conformance",
+    "tags": [
+      "wcag",
+      "w3c"
+    ]
+  },
+  {
+    "id": "card-dev-n1-070",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Acessibilidade (e-MAG, WCAG)",
+    "nivel": 1,
+    "conceito": "Texto alternativo de imagens",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Texto alternativo descreve a informação ou função de imagens para quem não consegue vê-las. Exemplo: <img src=\"grafico.png\" alt=\"Receita crescente\">.",
+    "nao_confundir": [
+      {
+        "conceito": "Legenda",
+        "diferenca": "Legenda aparece como conteúdo da página; texto alternativo substitui a informação visual."
+      }
+    ],
+    "atencao": "Imagem só decorativa deve poder ser ignorada pela tecnologia assistiva; a informativa precisa de alternativa equivalente.",
+    "fonte": "W3C, WCAG 2.2: https://www.w3.org/TR/WCAG22/, critério 1.1.1 Non-text Content",
+    "tags": [
+      "wcag",
+      "html",
+      "leitores-de-tela"
+    ]
+  },
+  {
+    "id": "card-dev-n1-071",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Acessibilidade (e-MAG, WCAG)",
+    "nivel": 1,
+    "conceito": "Contraste visual",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Contraste visual é a diferença de luminosidade entre texto e fundo, necessária para facilitar a leitura. Exemplo: texto escuro sobre fundo claro.",
+    "nao_confundir": [
+      {
+        "conceito": "Uso da cor",
+        "diferenca": "Cor não pode ser o único meio de informar; contraste mede a diferença de luminosidade."
+      }
+    ],
+    "atencao": "No nível AA, texto comum exige contraste mínimo de 4,5:1; texto grande, 3:1.",
+    "fonte": "W3C, WCAG 2.2: https://www.w3.org/TR/WCAG22/, critério 1.4.3 Contrast (Minimum)",
+    "tags": [
+      "wcag",
+      "w3c"
+    ]
+  },
+  {
+    "id": "card-dev-n1-072",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Portais, CMS, busca e gestão de conteúdo",
+    "nivel": 1,
+    "conceito": "Portal corporativo",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Portal corporativo reúne informações e acesso a diferentes sistemas em um ponto de entrada. Exemplo: funcionários consultam documentos e serviços internos.",
+    "nao_confundir": [
+      {
+        "conceito": "Site informativo",
+        "diferenca": "Portal integra informações e serviços; site informativo concentra-se na apresentação de conteúdo."
+      }
+    ],
+    "atencao": "O administrador do portal pode definir permissões de acesso para usuários e grupos da organização.",
+    "fonte": "DIAS, Cláudia Augusto. Portal corporativo: conceitos e características. Ciência da Informação (IBICT), v. 30, n. 1, p. 50-60, 2001: https://revista.ibict.br/ciinf/article/download/938/975/1033",
+    "tags": [
+      "portais-corporativos",
+      "integracao",
+      "personalizacao"
+    ]
+  },
+  {
+    "id": "card-dev-n1-073",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Portais, CMS, busca e gestão de conteúdo",
+    "nivel": 1,
+    "conceito": "Sistema de gerenciamento de conteúdo",
+    "termo_ingles": "CMS",
+    "traducao": "content management system",
+    "resumo": "Sistema de gerenciamento de conteúdo (CMS) permite criar, editar e publicar conteúdo por uma interface administrativa. Exemplo: atualizar notícia no WordPress.",
+    "nao_confundir": [
+      {
+        "conceito": "Portal corporativo",
+        "diferenca": "CMS gerencia publicações; portal reúne acesso a informações e serviços."
+      }
+    ],
+    "atencao": "O tema modifica a forma como o site é exibido, sem modificar o software subjacente.",
+    "fonte": "WordPress.org, Documentation, Work with Themes: https://wordpress.org/documentation/article/work-with-themes/",
+    "tags": [
+      "cms",
+      "web-2-0"
+    ]
+  },
+  {
+    "id": "card-dev-n1-074",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Portais, CMS, busca e gestão de conteúdo",
+    "nivel": 1,
+    "conceito": "Gestão eletrônica de documentos",
+    "termo_ingles": "GED",
+    "traducao": "electronic document management",
+    "resumo": "Gestão eletrônica de documentos (GED) organiza o armazenamento e a recuperação de documentos digitais. Exemplo: localizar contrato pelo número.",
+    "nao_confundir": [
+      {
+        "conceito": "ECM (gestão de conteúdo empresarial)",
+        "diferenca": "GED concentra-se em documentos; ECM abrange outros conteúdos e processos."
+      }
+    ],
+    "atencao": "Com versionamento, as versões anteriores do documento são salvas junto com a versão atual.",
+    "fonte": "Microsoft Learn, SharePoint, Plan document versioning, content approval, and check-out controls: https://learn.microsoft.com/en-us/sharepoint/governance/versioning-content-approval-and-check-out-planning",
+    "tags": [
+      "ged",
+      "ecm"
+    ]
+  },
+  {
+    "id": "card-dev-n1-075",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Portais, CMS, busca e gestão de conteúdo",
+    "nivel": 1,
+    "conceito": "Rastreamento e indexação",
+    "termo_ingles": "crawler",
+    "traducao": "rastreador",
+    "resumo": "Rastreador visita páginas para descobrir conteúdo; indexação organiza informações para recuperação nas buscas. Exemplo: buscador encontra nova página publicada.",
+    "nao_confundir": [
+      {
+        "conceito": "Ranqueamento",
+        "diferenca": "Indexação guarda a página no índice; ranqueamento ordena os resultados da busca."
+      }
+    ],
+    "atencao": "No Google, uma página rastreada não tem inclusão garantida no índice nem aparição garantida nos resultados.",
+    "fonte": "Google Search Central, In-depth guide to how Google Search works: https://developers.google.com/search/docs/fundamentals/how-search-works",
+    "tags": [
+      "crawlers",
+      "indexacao",
+      "google"
+    ]
+  },
+  {
+    "id": "card-dev-n1-076",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Portais, CMS, busca e gestão de conteúdo",
+    "nivel": 1,
+    "conceito": "Operadores de busca",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Operadores de busca restringem resultados conforme condições escritas na pesquisa. Exemplo: site:gov.br orçamento busca páginas desse domínio.",
+    "nao_confundir": [
+      {
+        "conceito": "Aspas",
+        "diferenca": "Aspas buscam a frase exata; site: limita os resultados a um domínio."
+      }
+    ],
+    "atencao": "No Google, site: restringe resultados a domínio ou endereço informado, mas não garante listar todas as páginas.",
+    "fonte": "Google Search Central, How To Use the Site Search Operator: https://developers.google.com/search/docs/monitor-debug/search-operators/all-search-site",
+    "tags": [
+      "operadores-de-busca",
+      "google"
+    ]
+  },
+  {
+    "id": "card-dev-n1-077",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Portais, CMS, busca e gestão de conteúdo",
+    "nivel": 1,
+    "conceito": "Permissões de publicação",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Permissões de publicação definem quem pode criar, editar ou publicar conteúdo em um sistema. Exemplo: redator prepara notícia; editor publica.",
+    "nao_confundir": [
+      {
+        "conceito": "Fluxo de aprovação",
+        "diferenca": "Permissões autorizam ações; fluxo de aprovação define etapas antes da publicação."
+      }
+    ],
+    "atencao": "No WordPress, funções de usuário determinam capacidades diferentes, como editar publicações próprias ou publicar conteúdo.",
+    "fonte": "WordPress.org, Documentation, Roles and Capabilities: https://wordpress.org/documentation/article/roles-and-capabilities/",
+    "tags": [
+      "cms",
+      "permissoes"
+    ]
+  },
+  {
+    "id": "card-dev-n1-078",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Desenvolvimento mobile",
+    "nivel": 1,
+    "conceito": "Aplicativo nativo",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Aplicativo nativo é desenvolvido para uma plataforma móvel específica, usando suas ferramentas e recursos. Exemplo: aplicativo Android desenvolvido em Kotlin.",
+    "nao_confundir": [
+      {
+        "conceito": "Aplicativo híbrido",
+        "diferenca": "Nativo usa as ferramentas de uma plataforma; híbrido usa tecnologias web num contêiner."
+      }
+    ],
+    "atencao": "No Android, o app pode pedir acesso à câmera, à localização e ao Bluetooth; o usuário precisa conceder.",
+    "fonte": "Android Developers, Application fundamentals: https://developer.android.com/guide/components/fundamentals",
+    "tags": [
+      "mobile",
+      "arquitetura-mobile"
+    ]
+  },
+  {
+    "id": "card-dev-n1-079",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Desenvolvimento mobile",
+    "nivel": 1,
+    "conceito": "Aplicativo híbrido",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Aplicativo híbrido usa HTML, CSS e JavaScript dentro de um contêiner instalado, servindo a várias plataformas. Exemplo: tela exibida numa WebView.",
+    "nao_confundir": [
+      {
+        "conceito": "Aplicativo nativo",
+        "diferenca": "Híbrido utiliza conteúdo web no aplicativo; nativo utiliza componentes da plataforma."
+      }
+    ],
+    "atencao": "No Cordova, o app roda num contêiner próprio de cada plataforma e usa interfaces para acessar recursos do aparelho.",
+    "fonte": "Apache Cordova, Overview: https://cordova.apache.org/docs/en/latest/guide/overview/",
+    "tags": [
+      "mobile",
+      "arquitetura-mobile"
+    ]
+  },
+  {
+    "id": "card-dev-n1-080",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Desenvolvimento mobile",
+    "nivel": 1,
+    "conceito": "Aplicativo web progressivo",
+    "termo_ingles": "PWA",
+    "traducao": "aplicativo web progressivo",
+    "resumo": "Aplicativo web progressivo (PWA) usa tecnologias web e oferece experiência parecida com a de aplicativo instalado. Exemplo: site instalado no aparelho que funciona offline.",
+    "nao_confundir": [
+      {
+        "conceito": "Aplicativo híbrido",
+        "diferenca": "PWA é aplicação web aprimorada; híbrido utiliza um contêiner de aplicativo."
+      }
+    ],
+    "atencao": "O funcionamento offline depende de recursos como service worker e Cache, que guarda respostas para reuso.",
+    "fonte": "MDN Web Docs, Progressive web apps: https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps",
+    "tags": [
+      "mobile"
+    ]
+  },
+  {
+    "id": "card-dev-n1-081",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Desenvolvimento mobile",
+    "nivel": 1,
+    "conceito": "Arquitetura em camadas no mobile",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Arquitetura em camadas separa a interface, que exibe dados, da camada de dados, que contém as regras de negócio. Exemplo: a tela mostra o saldo vindo dos dados.",
+    "nao_confundir": [
+      {
+        "conceito": "MVVM",
+        "diferenca": "MVVM organiza a camada de interface; camadas organizam o aplicativo inteiro."
+      }
+    ],
+    "atencao": "No Android, recomenda-se ao menos duas camadas, interface e dados; a camada de domínio é opcional.",
+    "fonte": "Android Developers, Guide to app architecture: https://developer.android.com/topic/architecture",
+    "tags": [
+      "mobile",
+      "arquitetura-mobile"
+    ]
+  },
+  {
+    "id": "card-dev-n1-082",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "UX e UI design",
+    "nivel": 1,
+    "conceito": "Experiência do usuário e interface",
+    "termo_ingles": "UX, UI",
+    "traducao": "user experience, user interface",
+    "resumo": "Experiência do usuário (UX) abrange todos os aspectos da interação com empresa, serviços e produtos; interface (UI) reúne os elementos de interação. Exemplo: o botão Pagar é UI.",
+    "nao_confundir": [
+      {
+        "conceito": "Usabilidade",
+        "diferenca": "UX abrange toda a experiência; usabilidade mede a facilidade de realizar tarefas."
+      }
+    ],
+    "atencao": "Segundo a NN/g, é importante distinguir a experiência total do usuário da interface do usuário.",
+    "fonte": "Nielsen Norman Group, The Definition of User Experience (UX): https://www.nngroup.com/articles/definition-user-experience/",
+    "tags": [
+      "ux",
+      "ui"
+    ]
+  },
+  {
+    "id": "card-dev-n1-083",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "UX e UI design",
+    "nivel": 1,
+    "conceito": "Wireframe",
+    "termo_ingles": "wireframe",
+    "traducao": "esboço estrutural de interface",
+    "resumo": "Wireframe é um esboço que organiza elementos e conteúdos de uma tela antes do acabamento visual. Exemplo: posições de menu e botões.",
+    "nao_confundir": [
+      {
+        "conceito": "Protótipo",
+        "diferenca": "Wireframe mostra estrutura; protótipo simula aspectos da interação com a interface."
+      }
+    ],
+    "atencao": "O wireframe mostra layout e conteúdo da página, mas não descreve bem a interação.",
+    "fonte": "Nielsen Norman Group, Wireflows: https://www.nngroup.com/articles/wireflows/",
+    "tags": [
+      "wireframe",
+      "ux"
+    ]
+  },
+  {
+    "id": "card-dev-n1-084",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "UX e UI design",
+    "nivel": 1,
+    "conceito": "Protótipo de interface",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Protótipo representa uma proposta de interface para testar seu funcionamento antes da implementação final. Exemplo: simular passagem entre telas.",
+    "nao_confundir": [
+      {
+        "conceito": "Wireframe",
+        "diferenca": "Wireframe mostra a estrutura estática; protótipo simula a interação."
+      }
+    ],
+    "atencao": "Protótipos podem ser clicáveis ou estáticos, de alta ou de baixa fidelidade.",
+    "fonte": "Nielsen Norman Group, UX Prototypes: Low Fidelity vs. High Fidelity: https://www.nngroup.com/articles/ux-prototype-hi-lo-fidelity/",
+    "tags": [
+      "prototipo",
+      "ux"
+    ]
+  },
+  {
+    "id": "card-dev-n1-085",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "UX e UI design",
+    "nivel": 1,
+    "conceito": "Consistência de interface",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Consistência de interface mantém padrões de aparência e comportamento para ações semelhantes. Exemplo: botão Salvar funciona da mesma forma nas telas.",
+    "nao_confundir": [
+      {
+        "conceito": "Flexibilidade",
+        "diferenca": "Consistência repete padrões; flexibilidade oferece atalhos a usuários experientes."
+      }
+    ],
+    "atencao": "Consistência interna vale dentro do produto; externa segue as convenções já estabelecidas no mercado.",
+    "fonte": "Nielsen Norman Group, 10 Usability Heuristics for User Interface Design, heurística 4, Consistency and Standards. https://www.nngroup.com/articles/ten-usability-heuristics/",
+    "tags": [
+      "ux",
+      "ui"
+    ]
   }
 ]
