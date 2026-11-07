@@ -13237,5 +13237,399 @@
     "tags": [
       "significacao-das-palavras"
     ]
+  },
+  {
+    "id": "card-rlm-n1-062",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Porcentagem e proporção",
+    "nivel": 1,
+    "conceito": "Porcentagem de um valor",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Para calcular uma porcentagem, divida a taxa por 100 e multiplique pelo valor. Exemplo: 20% de 350 = 0,20 × 350 = 70.",
+    "nao_confundir": [
+      {
+        "conceito": "Percentual de uma parte",
+        "diferenca": "Calcular uma parte exige multiplicar; descobrir seu percentual exige dividir pelo total."
+      }
+    ],
+    "atencao": "Converta a taxa antes de multiplicar: 20% corresponde a 0,20, não a 20.",
+    "fonte": "OpenStax, Prealgebra 2e, seção 6.2, Solve General Applications of Percent: https://openstax.org/books/prealgebra-2e/pages/6-2-solve-general-applications-of-percent; OpenStax, Contemporary Mathematics, seção 6.1, Understanding Percent: https://openstax.org/books/contemporary-mathematics/pages/6-1-understanding-percent",
+    "tags": [
+      "porcentagem"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-063",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Porcentagem e proporção",
+    "nivel": 1,
+    "conceito": "Percentual de uma parte",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Para descobrir o percentual, divida a parte pelo total e multiplique por 100. Exemplo: 45 ÷ 180 × 100 = 25%.",
+    "nao_confundir": [
+      {
+        "conceito": "Porcentagem de um valor",
+        "diferenca": "Porcentagem de um valor parte da taxa; percentual de uma parte calcula a taxa."
+      }
+    ],
+    "atencao": "O denominador deve representar o total usado como referência; trocar parte e total altera o resultado.",
+    "fonte": "OpenStax, Prealgebra 2e, seção 6.2, Solve General Applications of Percent: https://openstax.org/books/prealgebra-2e/pages/6-2-solve-general-applications-of-percent",
+    "tags": [
+      "porcentagem"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-064",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Porcentagem e proporção",
+    "nivel": 1,
+    "conceito": "Fator de desconto e acréscimo",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Desconto multiplica por 1 menos a taxa decimal; acréscimo, por 1 mais a taxa. Exemplo: desconto de 15%: 200 × 0,85 = 170.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: 200 × 0,15 = preço final; certo: 200 × 0,85 = 170."
+      }
+    ],
+    "atencao": "Descontar 20% e depois acrescentar 20% não restaura o valor: 100 × 0,80 × 1,20 = 96.",
+    "fonte": "OpenStax, Prealgebra 2e, seção 6.3, Solve Sales Tax, Commission, and Discount Applications: https://openstax.org/books/prealgebra-2e/pages/6-3-solve-sales-tax-commission-and-discount-applications; OpenStax, Contemporary Mathematics, seção 6.2, Discounts, Markups, and Sales Tax: https://openstax.org/books/contemporary-mathematics/pages/6-2-discounts-markups-and-sales-tax",
+    "tags": [
+      "porcentagem",
+      "desconto"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-065",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Porcentagem e proporção",
+    "nivel": 1,
+    "conceito": "Aumentos sucessivos",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Aumentos sucessivos incidem sobre valores já aumentados; multiplique os fatores. Exemplo: 100 × 1,10 × 1,10 = 121.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: dois aumentos de 10% somam 20%; certo: o aumento acumulado é 21%."
+      }
+    ],
+    "atencao": "O segundo percentual incide sobre 110, não sobre os 100 iniciais.",
+    "fonte": "OpenStax, Prealgebra 2e, seção 6.2, Solve General Applications of Percent: https://openstax.org/books/prealgebra-2e/pages/6-2-solve-general-applications-of-percent",
+    "tags": [
+      "porcentagem",
+      "aumentos-sucessivos"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-066",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Porcentagem e proporção",
+    "nivel": 1,
+    "conceito": "Razão e proporção",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Razão compara valores por divisão; proporção é igualdade entre duas razões. Exemplo: 2/3 = 4/6, pois 2 × 6 = 3 × 4.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: 2/3 = 4/5; certo: 2/3 = 4/6."
+      }
+    ],
+    "atencao": "Em a/b = c/d, extremos são a e d; meios, b e c; a × d = b × c.",
+    "fonte": "Portal da Matemática OBMEP, Material Teórico, Razões e Proporções, propriedade fundamental (meios e extremos): https://cdnportaldaobmep.impa.br/portaldaobmep/uploads/material_teorico/4otxo8876ayo0.pdf; OpenStax, Prealgebra 2e, seção 6.5, Solve Proportions and their Applications: https://openstax.org/books/prealgebra-2e/pages/6-5-solve-proportions-and-their-applications",
+    "tags": [
+      "razao",
+      "proporcao"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-067",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Regra de três e razão",
+    "nivel": 1,
+    "conceito": "Regra de três direta",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Grandezas diretamente proporcionais variam pelo mesmo fator; use uma proporção. Exemplo: 2 cadernos custam 10; 4 custam 10 × 4 ÷ 2 = 20.",
+    "nao_confundir": [
+      {
+        "conceito": "Grandezas inversas",
+        "diferenca": "Nas diretas, dobrar uma dobra a outra; nas inversas, a outra cai pela metade."
+      }
+    ],
+    "atencao": "A relação direta exige uma razão constante; crescerem juntas não basta para garantir proporcionalidade.",
+    "fonte": "Portal da Matemática OBMEP, Material Teórico, Módulo de Razões e Proporções, Regra de Três Simples e Composta (7º ano): https://cdnportaldaobmep.impa.br/portaldaobmep/uploads/material_teorico/cerygqoxg9w04.pdf; OpenStax, Elementary Algebra 2e, seção 8.9, Use Direct and Inverse Variation: https://openstax.org/books/elementary-algebra-2e/pages/8-9-use-direct-and-inverse-variation",
+    "tags": [
+      "regra-de-tres",
+      "grandezas-diretas"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-068",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Regra de três e razão",
+    "nivel": 1,
+    "conceito": "Regra de três inversa",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Grandezas inversamente proporcionais mantêm o produto constante. Exemplo: 4 trabalhadores fazem uma tarefa em 6 dias; 8 levam 4 × 6 ÷ 8 = 3 dias.",
+    "nao_confundir": [
+      {
+        "conceito": "Grandezas diretas",
+        "diferenca": "Nas diretas, a razão é constante; nas inversas, o produto é constante."
+      }
+    ],
+    "atencao": "A relação inversa entre trabalhadores e tempo pressupõe mesma tarefa e produtividade constante.",
+    "fonte": "Portal da Matemática OBMEP, Material Teórico, Módulo de Razões e Proporções, Regra de Três Simples e Composta (7º ano): https://cdnportaldaobmep.impa.br/portaldaobmep/uploads/material_teorico/cerygqoxg9w04.pdf; OpenStax, Elementary Algebra 2e, seção 8.9, Use Direct and Inverse Variation: https://openstax.org/books/elementary-algebra-2e/pages/8-9-use-direct-and-inverse-variation",
+    "tags": [
+      "regra-de-tres",
+      "grandezas-inversas"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-069",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Regra de três e razão",
+    "nivel": 1,
+    "conceito": "Escala de um mapa",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Escala compara distância no mapa com distância real, usando a mesma unidade. Exemplo: 1:50.000; 4 cm × 50.000 = 200.000 cm = 2 km.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: 200.000 cm = 200 m; certo: 200.000 cm = 2.000 m."
+      }
+    ],
+    "atencao": "Converta as unidades após calcular: 100 centímetros equivalem a 1 metro; 1.000 metros equivalem a 1 quilômetro.",
+    "fonte": "Secretaria de Estado da Educação de Goiás, Matemática 9º ano, escalas (escala = medida no mapa ÷ medida real; sem unidade indicada, admite-se o centímetro): https://portal.educacao.go.gov.br/wp-content/uploads/2020/09/9o-MAT-2aquinzena-3o-corte.pdf",
+    "tags": [
+      "escala",
+      "razao"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-070",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Regra de três e razão",
+    "nivel": 1,
+    "conceito": "Divisão em partes proporcionais",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Divida o total pela soma dos pesos e multiplique cada peso pelo resultado. Exemplo: 120 na razão 1:2:3; 120 ÷ 6 = 20; partes: 20, 40, 60.",
+    "nao_confundir": [
+      {
+        "conceito": "Divisão igualitária",
+        "diferenca": "Na igualitária, todos recebem o mesmo; na proporcional, cada parte acompanha seu peso."
+      }
+    ],
+    "atencao": "A soma das partes deve reproduzir o total: 20 + 40 + 60 = 120.",
+    "fonte": "Rígel Rabelo, Razão e Proporção / Regras de Três (material de apoio hospedado em daffy.ufs.br), seção 5, Divisão proporcional: https://daffy.ufs.br/uploads/page_attach/path/8460/Raz_o__propor__o_e_regras_de_tr_s.pdf",
+    "tags": [
+      "divisao-proporcional",
+      "razao"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-071",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Juros simples e compostos",
+    "nivel": 1,
+    "conceito": "Juros simples",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Juros simples incidem sobre o capital inicial: J = C × i × t. Exemplo: 1.000 × 0,02 × 5 = 100 de juros.",
+    "nao_confundir": [
+      {
+        "conceito": "Juros compostos",
+        "diferenca": "Nos simples, calcula-se sobre o capital inicial; nos compostos, sobre o saldo acumulado."
+      }
+    ],
+    "atencao": "Na fórmula, i é a taxa decimal e t é o número de períodos na mesma unidade.",
+    "fonte": "OpenStax, Contemporary Mathematics, seção 6.3, Simple Interest: https://openstax.org/books/contemporary-mathematics/pages/6-3-simple-interest",
+    "tags": [
+      "juros-simples",
+      "formula"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-072",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Juros simples e compostos",
+    "nivel": 1,
+    "conceito": "Montante",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Montante é o capital inicial mais os juros acumulados: M = C + J. Exemplo: capital 1.000 + juros 100 = montante 1.100.",
+    "nao_confundir": [
+      {
+        "conceito": "Juros",
+        "diferenca": "Juros são o rendimento; montante é o capital somado ao rendimento."
+      }
+    ],
+    "atencao": "Quando a questão pede somente os juros, não inclua o capital inicial na resposta.",
+    "fonte": "OpenStax, Contemporary Mathematics, seção 6.3, Simple Interest: https://openstax.org/books/contemporary-mathematics/pages/6-3-simple-interest",
+    "tags": [
+      "montante"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-073",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Juros simples e compostos",
+    "nivel": 1,
+    "conceito": "Juros compostos",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Juros compostos incidem sobre o saldo acumulado: M = C × (1 + i)^t. Exemplo: 1.000 × 1,10^2 = 1.210.",
+    "nao_confundir": [
+      {
+        "conceito": "Juros simples",
+        "diferenca": "Nos simples, a base permanece fixa; nos compostos, os juros acumulados também rendem."
+      }
+    ],
+    "atencao": "Em dois períodos de 10%, o montante de 1.000 é 1.210, não 1.200.",
+    "fonte": "OpenStax, Contemporary Mathematics, seção 6.4, Compound Interest: https://openstax.org/books/contemporary-mathematics/pages/6-4-compound-interest",
+    "tags": [
+      "juros-compostos",
+      "formula"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-074",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Juros simples e compostos",
+    "nivel": 1,
+    "conceito": "Taxas proporcionais nos juros simples",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Em juros simples, taxas proporcionais são obtidas dividindo a taxa pelo número de períodos correspondentes. Exemplo: 12% ao ano ÷ 12 = 1% ao mês.",
+    "nao_confundir": [
+      {
+        "conceito": "Taxa equivalente nos compostos",
+        "diferenca": "Nos compostos, 1% ao mês equivale a cerca de 12,68% ao ano, não 12%."
+      }
+    ],
+    "atencao": "Dividir a taxa anual por 12 para obter a mensal só vale nos juros simples.",
+    "fonte": "OpenStax, Contemporary Mathematics, seção 6.3, Simple Interest: https://openstax.org/books/contemporary-mathematics/pages/6-3-simple-interest; OpenStax, Contemporary Mathematics, seção 6.4, Compound Interest: https://openstax.org/books/contemporary-mathematics/pages/6-4-compound-interest",
+    "tags": [
+      "taxas-proporcionais",
+      "juros-simples"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-075",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Juros simples e compostos",
+    "nivel": 1,
+    "conceito": "Compatibilidade entre taxa e prazo",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "A taxa e o prazo devem usar a mesma unidade de tempo. Exemplo: 2% ao mês por 1 ano corresponde a 12 períodos mensais.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: usar t = 1 com taxa mensal; certo: usar t = 12."
+      }
+    ],
+    "atencao": "Com taxa mensal, conte o prazo em meses: 1 ano são 12 meses; 1 semestre, 6 meses.",
+    "fonte": "OpenStax, Contemporary Mathematics, seção 6.3, Simple Interest: https://openstax.org/books/contemporary-mathematics/pages/6-3-simple-interest",
+    "tags": [
+      "formula",
+      "taxas-proporcionais"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-076",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Sequências e problemas de raciocínio",
+    "nivel": 1,
+    "conceito": "Progressão aritmética e termo geral",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Progressão aritmética soma uma razão fixa r; a_n = a_1 + (n−1) × r. Exemplo: a_1 = 3, r = 4; a_4 = 3 + 3 × 4 = 15.",
+    "nao_confundir": [
+      {
+        "conceito": "Progressão geométrica",
+        "diferenca": "A aritmética soma uma razão fixa; a geométrica multiplica por uma razão fixa."
+      }
+    ],
+    "atencao": "Use n−1: do primeiro ao quarto termo existem três aumentos, não quatro.",
+    "fonte": "OpenStax, College Algebra 2e, seção 9.2, Arithmetic Sequences: https://openstax.org/books/college-algebra-2e/pages/9-2-arithmetic-sequences",
+    "tags": [
+      "sequencias",
+      "progressao-aritmetica",
+      "termo-geral"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-077",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Sequências e problemas de raciocínio",
+    "nivel": 1,
+    "conceito": "Progressão geométrica",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Progressão geométrica multiplica cada termo por uma razão fixa. Exemplo: 2, 6, 18, 54; razão 3; próximo termo = 54 × 3 = 162.",
+    "nao_confundir": [
+      {
+        "conceito": "Progressão aritmética",
+        "diferenca": "Na aritmética, a diferença é constante; na geométrica, a razão entre termos é constante."
+      }
+    ],
+    "atencao": "A razão geométrica é obtida dividindo termos consecutivos, não subtraindo.",
+    "fonte": "OpenStax, College Algebra 2e, seção 9.3, Geometric Sequences: https://openstax.org/books/college-algebra-2e/pages/9-3-geometric-sequences",
+    "tags": [
+      "sequencias",
+      "progressao-geometrica"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-078",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Sequências e problemas de raciocínio",
+    "nivel": 1,
+    "conceito": "Sequência de Fibonacci",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Na sequência de Fibonacci iniciada por 1 e 1, cada termo seguinte soma os dois anteriores. Exemplo: 1, 1, 2, 3, 5, 8, 13.",
+    "nao_confundir": [
+      {
+        "conceito": "Progressão aritmética",
+        "diferenca": "Na aritmética, soma-se um valor fixo; em Fibonacci, somam-se os dois termos anteriores."
+      }
+    ],
+    "atencao": "Para continuar essa sequência, some os dois últimos termos, não uma diferença fixa.",
+    "fonte": "OpenStax, College Algebra 2e, seção 9.1, Sequences and Their Notations: https://openstax.org/books/college-algebra-2e/pages/9-1-sequences-and-their-notations",
+    "tags": [
+      "sequencias",
+      "fibonacci"
+    ]
+  },
+  {
+    "id": "card-rlm-n1-079",
+    "materia": "Raciocínio Lógico & Matemática",
+    "assunto": "Sequências e problemas de raciocínio",
+    "nivel": 1,
+    "conceito": "Equação do primeiro grau",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Equação do primeiro grau contém uma incógnita, valor desconhecido, sem potência superior a 1. Exemplo: x + 15 = 42; x = 42 − 15 = 27.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro comum",
+        "diferenca": "Errado: x + 15 = 42, x = 57; certo: x = 27."
+      }
+    ],
+    "atencao": "Ao isolar a incógnita, preserve a igualdade aplicando operações equivalentes aos dois lados.",
+    "fonte": "OpenStax, Prealgebra 2e, seção 2.3, Solve Equations Using the Subtraction and Addition Properties of Equality: https://openstax.org/books/prealgebra-2e/pages/2-3-solve-equations-using-the-subtraction-and-addition-properties-of-equality",
+    "tags": [
+      "problemas",
+      "equacao-do-primeiro-grau"
+    ]
   }
 ]
