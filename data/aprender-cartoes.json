@@ -16828,5 +16828,530 @@
   "tags": [
     "administracao-direta-e-indireta"
   ]
-}
+},
+  {
+    "id": "card-dad-n1-026",
+    "materia": "Direito Administrativo",
+    "assunto": "Serviços públicos: conceito e princípios",
+    "nivel": 1,
+    "conceito": "Serviço público",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Serviço público é atividade que o poder público presta, na forma da lei, diretamente ou por concessão ou permissão. Exemplo: transporte coletivo municipal.",
+    "nao_confundir": [
+      {
+        "conceito": "Atividade econômica em sentido estrito",
+        "diferenca": "Serviço público é dever estatal delegável; atividade econômica é, em regra, livre iniciativa."
+      }
+    ],
+    "atencao": "A Constituição exige licitação sempre que o serviço é delegado por concessão ou permissão.",
+    "fonte": "Constituição Federal de 1988, art. 175.",
+    "tags": [
+      "servicos-publicos-conceito-e-principios"
+    ]
+  },
+  {
+    "id": "card-dad-n1-027",
+    "materia": "Direito Administrativo",
+    "assunto": "Serviços públicos: conceito e princípios",
+    "nivel": 1,
+    "conceito": "Concessão de serviço público",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Concessão delega serviço, mediante licitação, a pessoa jurídica ou consórcio, por prazo determinado e por sua conta e risco. Exemplo: rodovia concedida.",
+    "nao_confundir": [
+      {
+        "conceito": "Permissão",
+        "diferenca": "Concessão é contratada por prazo determinado; permissão é delegação contratual precária."
+      }
+    ],
+    "atencao": "A concessão de serviço público exige licitação na modalidade concorrência ou diálogo competitivo.",
+    "fonte": "Lei nº 8.987/1995, art. 2º, II.",
+    "tags": [
+      "servicos-publicos-conceito-e-principios"
+    ]
+  },
+  {
+    "id": "card-dad-n1-028",
+    "materia": "Direito Administrativo",
+    "assunto": "Serviços públicos: conceito e princípios",
+    "nivel": 1,
+    "conceito": "Permissão de serviço público",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Permissão delega serviço público mediante licitação, a título precário, a pessoa física ou jurídica. Exemplo: linha de transporte permitida.",
+    "nao_confundir": [
+      {
+        "conceito": "Concessão",
+        "diferenca": "Concessão tem prazo determinado e só pessoa jurídica; permissão é precária e admite pessoa física."
+      }
+    ],
+    "atencao": "A permissão é formalizada por contrato de adesão, observadas a precariedade e a revogabilidade unilateral.",
+    "fonte": "Lei nº 8.987/1995, arts. 2º, IV, e 40.",
+    "tags": [
+      "servicos-publicos-conceito-e-principios"
+    ]
+  },
+  {
+    "id": "card-dad-n1-029",
+    "materia": "Direito Administrativo",
+    "assunto": "Serviços públicos: conceito e princípios",
+    "nivel": 1,
+    "conceito": "Serviço adequado",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Serviço adequado cumpre as oito condições legais: continuidade, regularidade, segurança, eficiência, generalidade, atualidade, cortesia e tarifas módicas. Exemplo: ônibus regular e seguro.",
+    "nao_confundir": [
+      {
+        "conceito": "Gratuidade",
+        "diferenca": "Modicidade significa tarifa acessível; gratuidade significa ausência de cobrança."
+      }
+    ],
+    "atencao": "Atualidade, na lei, abrange técnicas e equipamentos modernos, sua conservação e a melhoria e expansão do serviço.",
+    "fonte": "Lei nº 8.987/1995, art. 6º, §§ 1º e 2º.",
+    "tags": [
+      "servicos-publicos-conceito-e-principios"
+    ]
+  },
+  {
+    "id": "card-dad-n1-030",
+    "materia": "Direito Administrativo",
+    "assunto": "Serviços públicos: conceito e princípios",
+    "nivel": 1,
+    "conceito": "Continuidade do serviço",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Continuidade exige prestação sem interrupções injustificadas. Exemplo: abastecimento de água mantido regularmente.",
+    "nao_confundir": [
+      {
+        "conceito": "Regularidade",
+        "diferenca": "Continuidade proíbe interrupção injustificada; regularidade exige prestação em padrão constante."
+      }
+    ],
+    "atencao": "Interrupção emergencial não caracteriza descontinuidade; corte por inadimplência exige aviso e consideração do interesse coletivo.",
+    "fonte": "Lei nº 8.987/1995, art. 6º, § 3º.",
+    "tags": [
+      "servicos-publicos-conceito-e-principios"
+    ]
+  },
+  {
+    "id": "card-dad-n1-031",
+    "materia": "Direito Administrativo",
+    "assunto": "Uso e abuso do poder",
+    "nivel": 1,
+    "conceito": "Uso legítimo do poder",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "O agente público deve exercer sua competência para a finalidade prevista em lei. Exemplo: fiscal interdita estabelecimento por risco comprovado.",
+    "nao_confundir": [
+      {
+        "conceito": "Abuso de poder",
+        "diferenca": "Uso legítimo respeita competência e finalidade; abuso viola algum desses limites."
+      }
+    ],
+    "atencao": "A lei veda impor obrigações, restrições ou sanções além do estritamente necessário ao interesse público.",
+    "fonte": "Lei nº 4.717/1965, art. 2º, parágrafo único, e; Lei nº 9.784/1999, art. 2º, parágrafo único, VI.",
+    "tags": [
+      "uso-e-abuso-do-poder"
+    ]
+  },
+  {
+    "id": "card-dad-n1-032",
+    "materia": "Direito Administrativo",
+    "assunto": "Uso e abuso do poder",
+    "nivel": 1,
+    "conceito": "Abuso de poder",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Abuso de poder é gênero com duas espécies: excesso de poder e desvio de finalidade. Exemplo: fiscal usa inspeção para retaliar comerciante.",
+    "nao_confundir": [
+      {
+        "conceito": "Abuso de autoridade",
+        "diferenca": "Abuso de autoridade é crime da Lei 13.869; abuso de poder é vício do ato."
+      }
+    ],
+    "atencao": "Na Lei da Ação Popular, incompetência e desvio de finalidade são vícios distintos, e ambos anulam o ato.",
+    "fonte": "Lei nº 4.717/1965, art. 2º, a e e, e parágrafo único, a e e.",
+    "tags": [
+      "uso-e-abuso-do-poder"
+    ]
+  },
+  {
+    "id": "card-dad-n1-033",
+    "materia": "Direito Administrativo",
+    "assunto": "Uso e abuso do poder",
+    "nivel": 1,
+    "conceito": "Excesso de poder",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Excesso de poder ocorre quando agente ultrapassa a competência que a lei lhe atribui. Exemplo: servidor decide assunto reservado a outra autoridade.",
+    "nao_confundir": [
+      {
+        "conceito": "Desvio de finalidade",
+        "diferenca": "Excesso ultrapassa competência; desvio utiliza competência existente para finalidade ilegal."
+      }
+    ],
+    "atencao": "A Administração pode convalidar defeito sanável se não houver dano ao interesse público ou a terceiros.",
+    "fonte": "Lei nº 4.717/1965, art. 2º, a; Lei nº 9.784/1999, art. 55.",
+    "tags": [
+      "uso-e-abuso-do-poder"
+    ]
+  },
+  {
+    "id": "card-dad-n1-034",
+    "materia": "Direito Administrativo",
+    "assunto": "Uso e abuso do poder",
+    "nivel": 1,
+    "conceito": "Desvio de finalidade",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Desvio de finalidade, ou desvio de poder, ocorre quando o ato busca fim diverso do legal, mesmo que de interesse público. Exemplo: remover servidor para puni-lo.",
+    "nao_confundir": [
+      {
+        "conceito": "Excesso de poder",
+        "diferenca": "Desvio altera a finalidade legal; excesso ultrapassa os poderes atribuídos."
+      }
+    ],
+    "atencao": "A finalidade que vincula o ato pode estar prevista de forma explícita ou implícita na regra de competência.",
+    "fonte": "Lei nº 4.717/1965, art. 2º, parágrafo único, e.",
+    "tags": [
+      "uso-e-abuso-do-poder"
+    ]
+  },
+  {
+    "id": "card-dad-n1-035",
+    "materia": "Direito Administrativo",
+    "assunto": "Uso e abuso do poder",
+    "nivel": 1,
+    "conceito": "Anulação por abuso",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Ato praticado com abuso é ilegal e pode ser anulado pela Administração ou pelo Judiciário. Exemplo: decisão motivada por perseguição é anulada.",
+    "nao_confundir": [
+      {
+        "conceito": "Revogação",
+        "diferenca": "Anulação retira ato ilegal; revogação retira ato válido por conveniência administrativa."
+      }
+    ],
+    "atencao": "Se o ato gerou efeitos favoráveis, a Administração decai do direito de anulá-lo em cinco anos, salvo má-fé.",
+    "fonte": "Lei nº 4.717/1965, art. 2º, e; Lei nº 9.784/1999, arts. 53 e 54.",
+    "tags": [
+      "uso-e-abuso-do-poder"
+    ]
+  },
+  {
+    "id": "card-dad-n1-036",
+    "materia": "Direito Administrativo",
+    "assunto": "Improbidade administrativa",
+    "nivel": 1,
+    "conceito": "Improbidade administrativa",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Improbidade é conduta dolosa prevista em lei que viola a probidade na função pública. Exemplo: agente recebe vantagem indevida por ato funcional.",
+    "nao_confundir": [
+      {
+        "conceito": "Crime",
+        "diferenca": "Improbidade gera sanções da Lei 8.429; crime exige tipo penal e processo criminal."
+      }
+    ],
+    "atencao": "A lei considera improbidade as condutas dolosas tipificadas nos seus artigos 9º, 10 e 11.",
+    "fonte": "Lei nº 8.429/1992, art. 1º, § 1º, redação da Lei nº 14.230/2021.",
+    "tags": [
+      "improbidade-administrativa"
+    ]
+  },
+  {
+    "id": "card-dad-n1-037",
+    "materia": "Direito Administrativo",
+    "assunto": "Improbidade administrativa",
+    "nivel": 1,
+    "conceito": "Dolo na improbidade",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Dolo, na improbidade, é a vontade livre e consciente de obter um dos resultados ilícitos dos arts. 9º, 10 ou 11. Exemplo: agente direciona benefício ilegal deliberadamente.",
+    "nao_confundir": [
+      {
+        "conceito": "Voluntariedade",
+        "diferenca": "Dolo busca resultado ilícito; voluntariedade é apenas agir por vontade própria."
+      }
+    ],
+    "atencao": "A mera voluntariedade do agente não basta para caracterizar dolo.",
+    "fonte": "Lei nº 8.429/1992, art. 1º, § 2º.",
+    "tags": [
+      "improbidade-administrativa"
+    ]
+  },
+  {
+    "id": "card-dad-n1-038",
+    "materia": "Direito Administrativo",
+    "assunto": "Improbidade administrativa",
+    "nivel": 1,
+    "conceito": "Enriquecimento ilícito",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Enriquecimento ilícito envolve receber vantagem patrimonial indevida em razão da função, mediante dolo. Exemplo: agente aceita propina para favorecer interessado.",
+    "nao_confundir": [
+      {
+        "conceito": "Prejuízo ao erário",
+        "diferenca": "Enriquecimento ilícito exige vantagem indevida, mesmo sem dano; prejuízo ao erário exige perda pública."
+      }
+    ],
+    "atencao": "Adquirir, para si ou para outrem, bens desproporcionais à renda do agente também configura o art. 9º.",
+    "fonte": "Lei nº 8.429/1992, art. 9º, caput e VII, redação da Lei nº 14.230/2021.",
+    "tags": [
+      "improbidade-administrativa"
+    ]
+  },
+  {
+    "id": "card-dad-n1-039",
+    "materia": "Direito Administrativo",
+    "assunto": "Improbidade administrativa",
+    "nivel": 1,
+    "conceito": "Prejuízo ao erário",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Prejuízo ao erário é conduta dolosa que gera perda, desvio ou dilapidação de bens públicos. Exemplo: pagar serviço não prestado, com perda aos cofres.",
+    "nao_confundir": [
+      {
+        "conceito": "Enriquecimento ilícito",
+        "diferenca": "Prejuízo ao erário exige perda pública; enriquecimento ilícito envolve vantagem patrimonial indevida."
+      }
+    ],
+    "atencao": "A lei exige ação ou omissão dolosa que cause perda patrimonial efetiva e comprovada.",
+    "fonte": "Lei nº 8.429/1992, art. 10, caput.",
+    "tags": [
+      "improbidade-administrativa"
+    ]
+  },
+  {
+    "id": "card-dad-n1-040",
+    "materia": "Direito Administrativo",
+    "assunto": "Improbidade administrativa",
+    "nivel": 1,
+    "conceito": "Prescrição da improbidade",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "A ação para aplicar sanções de improbidade prescreve, em regra, em oito anos. Exemplo: prazo contado da ocorrência do fato.",
+    "nao_confundir": [
+      {
+        "conceito": "Ressarcimento",
+        "diferenca": "Prescrição limita a pretensão sancionadora; ressarcimento busca recompor dano ao patrimônio público."
+      }
+    ],
+    "atencao": "O ressarcimento ao erário fundado em ato doloso de improbidade é imprescritível, segundo o STF.",
+    "fonte": "Lei nº 8.429/1992, art. 23, caput; CF, art. 37, § 5º; STF, RE 852.475 (Tema 897).",
+    "tags": [
+      "improbidade-administrativa"
+    ]
+  },
+  {
+    "id": "card-dad-n1-041",
+    "materia": "Direito Administrativo",
+    "assunto": "Provimento, vacância, remoção, redistribuição e substituição",
+    "nivel": 1,
+    "conceito": "Provimento de cargo",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Provimento é o preenchimento legal de cargo público. Exemplo: nomeação de pessoa aprovada em concurso.",
+    "nao_confundir": [
+      {
+        "conceito": "Vacância",
+        "diferenca": "Provimento preenche cargo; vacância deixa cargo sem ocupante."
+      }
+    ],
+    "atencao": "Formas vigentes: nomeação, promoção, readaptação, reversão, aproveitamento, reintegração e recondução.",
+    "fonte": "Lei nº 8.112/1990, art. 8º.",
+    "tags": [
+      "provimento-vacancia-remocao-redistribuicao-e-substituicao"
+    ]
+  },
+  {
+    "id": "card-dad-n1-042",
+    "materia": "Direito Administrativo",
+    "assunto": "Provimento, vacância, remoção, redistribuição e substituição",
+    "nivel": 1,
+    "conceito": "Vacância de cargo",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Vacância ocorre quando cargo deixa de estar ocupado, nas hipóteses legais. Exemplo: servidor se aposenta.",
+    "nao_confundir": [
+      {
+        "conceito": "Provimento",
+        "diferenca": "Vacância desocupa cargo; provimento coloca alguém nele."
+      }
+    ],
+    "atencao": "Promoção e readaptação aparecem tanto entre as formas de provimento quanto entre as hipóteses de vacância.",
+    "fonte": "Lei nº 8.112/1990, arts. 8º e 33.",
+    "tags": [
+      "provimento-vacancia-remocao-redistribuicao-e-substituicao"
+    ]
+  },
+  {
+    "id": "card-dad-n1-043",
+    "materia": "Direito Administrativo",
+    "assunto": "Provimento, vacância, remoção, redistribuição e substituição",
+    "nivel": 1,
+    "conceito": "Exoneração",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Exoneração é desligamento de cargo público sem natureza de penalidade disciplinar. Exemplo: servidor pede saída do cargo efetivo.",
+    "nao_confundir": [
+      {
+        "conceito": "Demissão",
+        "diferenca": "Exoneração não é penalidade; demissão é sanção disciplinar prevista em lei."
+      }
+    ],
+    "atencao": "Cargo em comissão: exoneração a juízo da autoridade ou a pedido; cargo efetivo: a pedido ou de ofício.",
+    "fonte": "Lei nº 8.112/1990, arts. 34, 35 e 127.",
+    "tags": [
+      "provimento-vacancia-remocao-redistribuicao-e-substituicao"
+    ]
+  },
+  {
+    "id": "card-dad-n1-044",
+    "materia": "Direito Administrativo",
+    "assunto": "Provimento, vacância, remoção, redistribuição e substituição",
+    "nivel": 1,
+    "conceito": "Remoção",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Remoção é o deslocamento do servidor no mesmo quadro, havendo ou não mudança de sede. Exemplo: servidor muda de unidade do órgão.",
+    "nao_confundir": [
+      {
+        "conceito": "Redistribuição",
+        "diferenca": "Remoção desloca servidor; redistribuição desloca cargo efetivo entre órgãos ou entidades."
+      }
+    ],
+    "atencao": "Há remoção a pedido independente do interesse da Administração: acompanhar cônjuge deslocado, saúde ou processo seletivo.",
+    "fonte": "Lei nº 8.112/1990, art. 36, caput e parágrafo único, III.",
+    "tags": [
+      "provimento-vacancia-remocao-redistribuicao-e-substituicao"
+    ]
+  },
+  {
+    "id": "card-dad-n1-045",
+    "materia": "Direito Administrativo",
+    "assunto": "Provimento, vacância, remoção, redistribuição e substituição",
+    "nivel": 1,
+    "conceito": "Redistribuição",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Redistribuição desloca cargo efetivo, ocupado ou vago, para outro órgão ou entidade do mesmo Poder. Exemplo: cargo transferido entre autarquias federais.",
+    "nao_confundir": [
+      {
+        "conceito": "Remoção",
+        "diferenca": "Redistribuição desloca cargo; remoção desloca servidor dentro do mesmo quadro."
+      }
+    ],
+    "atencao": "A redistribuição ocorre de ofício para ajustar a lotação e a força de trabalho às necessidades dos serviços.",
+    "fonte": "Lei nº 8.112/1990, art. 37, caput e § 1º.",
+    "tags": [
+      "provimento-vacancia-remocao-redistribuicao-e-substituicao"
+    ]
+  },
+  {
+    "id": "card-dad-n1-046",
+    "materia": "Direito Administrativo",
+    "assunto": "Direitos e vantagens",
+    "nivel": 1,
+    "conceito": "Vencimento",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Vencimento é retribuição em dinheiro pelo exercício do cargo público, fixada em lei. Exemplo: valor básico mensal do cargo.",
+    "nao_confundir": [
+      {
+        "conceito": "Remuneração",
+        "diferenca": "Vencimento é parcela básica; remuneração soma vencimento e vantagens pecuniárias permanentes legais."
+      }
+    ],
+    "atencao": "A Constituição declara irredutíveis os vencimentos, com as ressalvas que ela própria indica.",
+    "fonte": "Lei nº 8.112/1990, art. 40; CF, art. 37, XV.",
+    "tags": [
+      "direitos-e-vantagens"
+    ]
+  },
+  {
+    "id": "card-dad-n1-047",
+    "materia": "Direito Administrativo",
+    "assunto": "Direitos e vantagens",
+    "nivel": 1,
+    "conceito": "Remuneração",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Remuneração soma ao vencimento do cargo efetivo as vantagens pecuniárias permanentes fixadas em lei. Exemplo: vencimento de 3.000 mais vantagem permanente de 500.",
+    "nao_confundir": [
+      {
+        "conceito": "Vencimento",
+        "diferenca": "Remuneração inclui vantagens permanentes; vencimento corresponde à retribuição básica do cargo."
+      }
+    ],
+    "atencao": "Indenizações não se incorporam ao vencimento ou provento para qualquer efeito.",
+    "fonte": "Lei nº 8.112/1990, arts. 41 e 49, § 1º.",
+    "tags": [
+      "direitos-e-vantagens"
+    ]
+  },
+  {
+    "id": "card-dad-n1-048",
+    "materia": "Direito Administrativo",
+    "assunto": "Direitos e vantagens",
+    "nivel": 1,
+    "conceito": "Indenizações",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Indenizações compensam despesas do servidor nas situações legais. Exemplo: diária paga em viagem a serviço.",
+    "nao_confundir": [
+      {
+        "conceito": "Gratificações",
+        "diferenca": "Indenização compensa despesas; gratificação é vantagem remuneratória prevista em lei."
+      }
+    ],
+    "atencao": "Ajuda de custo, diárias, transporte e auxílio-moradia são indenizações legais.",
+    "fonte": "Lei nº 8.112/1990, arts. 49 e 51.",
+    "tags": [
+      "direitos-e-vantagens"
+    ]
+  },
+  {
+    "id": "card-dad-n1-049",
+    "materia": "Direito Administrativo",
+    "assunto": "Direitos e vantagens",
+    "nivel": 1,
+    "conceito": "Férias",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Servidor tem trinta dias de férias, com adicional de um terço; o primeiro período exige doze meses de exercício. Exemplo: descanso anual.",
+    "nao_confundir": [
+      {
+        "conceito": "Licença",
+        "diferenca": "Férias são descanso anual; licença é afastamento por motivo legal específico."
+      }
+    ],
+    "atencao": "As férias podem acumular até dois períodos por necessidade do serviço, ressalvadas hipóteses legais.",
+    "fonte": "Lei nº 8.112/1990, arts. 76 e 77, caput e § 1º.",
+    "tags": [
+      "direitos-e-vantagens"
+    ]
+  },
+  {
+    "id": "card-dad-n1-050",
+    "materia": "Direito Administrativo",
+    "assunto": "Direitos e vantagens",
+    "nivel": 1,
+    "conceito": "Licença para trato de assuntos particulares",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Servidor efetivo pode obter licença sem remuneração para interesses particulares, conforme decisão administrativa. Exemplo: afastamento para projeto pessoal.",
+    "nao_confundir": [
+      {
+        "conceito": "Férias",
+        "diferenca": "Licença particular suspende trabalho sem remuneração; férias são descanso anual remunerado."
+      }
+    ],
+    "atencao": "A licença não pode ser concedida em estágio probatório e dura até três anos consecutivos.",
+    "fonte": "Lei nº 8.112/1990, art. 91.",
+    "tags": [
+      "direitos-e-vantagens"
+    ]
+  }
 ]
