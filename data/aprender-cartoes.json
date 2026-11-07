@@ -15253,5 +15253,1055 @@
       "ux",
       "ui"
     ]
-  }
+  },
+{
+  "id": "card-eco-n1-001",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Formas de organização da atividade econômica, o papel dos preços, custo de oportunidade e fronteiras das possibilidades de produção",
+  "nivel": 1,
+  "conceito": "Escassez",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Recursos limitados exigem escolhas entre usos possíveis. Exemplo: uma hora de estudo impede trabalhar nessa hora.",
+  "nao_confundir": [
+    {
+      "conceito": "Abundância",
+      "diferenca": "Escassez envolve limites diante dos desejos; abundância significa disponibilidade suficiente para determinado uso."
+    }
+  ],
+  "atencao": "Escassez significa que os desejos humanos por bens, serviços e recursos superam o que está disponível.",
+  "fonte": "OpenStax, Principles of Microeconomics 3e, 1.1 What Is Economics: https://openstax.org/books/principles-microeconomics-3e/pages/1-1-what-is-economics-and-why-is-it-important",
+  "tags": [
+    "formas-de-organizacao-da-atividade-economica-o-papel-dos-precos-custo-de-oportunidade-e-fronteiras-das-possibilidades-de-producao"
+  ]
+},
+{
+  "id": "card-eco-n1-002",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Formas de organização da atividade econômica, o papel dos preços, custo de oportunidade e fronteiras das possibilidades de produção",
+  "nivel": 1,
+  "conceito": "Custo de oportunidade",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Custo de oportunidade é o valor da melhor alternativa abandonada. Exemplo: estudar impede receber R$ 80 por um turno de trabalho.",
+  "nao_confundir": [
+    {
+      "conceito": "Gasto financeiro",
+      "diferenca": "Gasto financeiro exige pagamento; custo de oportunidade inclui ganhos sacrificados sem pagamento."
+    }
+  ],
+  "atencao": "Custos afundados já ocorreram e não podem ser recuperados; não devem afetar a decisão atual.",
+  "fonte": "OpenStax, Principles of Microeconomics 3e, 2.1 Budget Constraint: https://openstax.org/books/principles-microeconomics-3e/pages/2-1-how-individuals-make-choices-based-on-their-budget-constraint",
+  "tags": [
+    "formas-de-organizacao-da-atividade-economica-o-papel-dos-precos-custo-de-oportunidade-e-fronteiras-das-possibilidades-de-producao"
+  ]
+},
+{
+  "id": "card-eco-n1-003",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Formas de organização da atividade econômica, o papel dos preços, custo de oportunidade e fronteiras das possibilidades de produção",
+  "nivel": 1,
+  "conceito": "Fronteira de possibilidades de produção",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "A fronteira mostra combinações máximas de dois bens com recursos e tecnologia disponíveis. Exemplo: produzir 10 livros ou 5 mesas.",
+  "nao_confundir": [
+    {
+      "conceito": "Ponto interno",
+      "diferenca": "Ponto interno desperdiça capacidade; ponto na fronteira utiliza plenamente os recursos disponíveis."
+    }
+  ],
+  "atencao": "Qualquer escolha dentro da fronteira é ineficiente; produzir fora dela exige recursos que a sociedade não tem.",
+  "fonte": "OpenStax, Principles of Microeconomics 3e, 2.2 The Production Possibilities Frontier: https://openstax.org/books/principles-microeconomics-3e/pages/2-2-the-production-possibilities-frontier-and-social-choices",
+  "tags": [
+    "formas-de-organizacao-da-atividade-economica-o-papel-dos-precos-custo-de-oportunidade-e-fronteiras-das-possibilidades-de-producao"
+  ]
+},
+{
+  "id": "card-eco-n1-004",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Formas de organização da atividade econômica, o papel dos preços, custo de oportunidade e fronteiras das possibilidades de produção",
+  "nivel": 1,
+  "conceito": "Preços como sinais",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Preços orientam decisões descentralizadas de compra e produção. Exemplo: preço maior incentiva fornecedores a oferecer mais.",
+  "nao_confundir": [
+    {
+      "conceito": "Planejamento central",
+      "diferenca": "Preços coordenam escolhas de compradores e vendedores; planejamento central define produção por decisões administrativas."
+    }
+  ],
+  "atencao": "Na economia de mercado, a decisão é descentralizada: forças de mercado, não governos, determinam as decisões econômicas.",
+  "fonte": "OpenStax, Principles of Microeconomics 3e, 1.4 How To Organize Economies: https://openstax.org/books/principles-microeconomics-3e/pages/1-4-how-to-organize-economies-an-overview-of-economic-systems",
+  "tags": [
+    "formas-de-organizacao-da-atividade-economica-o-papel-dos-precos-custo-de-oportunidade-e-fronteiras-das-possibilidades-de-producao"
+  ]
+},
+{
+  "id": "card-eco-n1-005",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Formas de organização da atividade econômica, o papel dos preços, custo de oportunidade e fronteiras das possibilidades de produção",
+  "nivel": 1,
+  "conceito": "Organização econômica mista",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Economia mista combina decisões de mercado com atuação do governo. Exemplo: empresas privadas coexistem com serviços públicos.",
+  "nao_confundir": [
+    {
+      "conceito": "Economia planificada",
+      "diferenca": "Na economia planificada, autoridades decidem a produção; na mista, mercado e governo participam."
+    }
+  ],
+  "atencao": "A maioria das economias reais é mista; mercados e regulações do governo estão sempre entrelaçados.",
+  "fonte": "OpenStax, Principles of Microeconomics 3e, 1.4 How To Organize Economies: https://openstax.org/books/principles-microeconomics-3e/pages/1-4-how-to-organize-economies-an-overview-of-economic-systems",
+  "tags": [
+    "formas-de-organizacao-da-atividade-economica-o-papel-dos-precos-custo-de-oportunidade-e-fronteiras-das-possibilidades-de-producao"
+  ]
+},
+{
+  "id": "card-eco-n1-006",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Teoria do consumidor. Teoria da firma",
+  "nivel": 1,
+  "conceito": "Restrição orçamentária",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Restrição orçamentária limita compras pela renda e pelos preços. Exemplo: R$ 20 compram até quatro produtos de R$ 5.",
+  "nao_confundir": [
+    {
+      "conceito": "Preferência do consumidor",
+      "diferenca": "Restrição mostra o que cabe no orçamento; preferência indica quais combinações a pessoa deseja."
+    }
+  ],
+  "atencao": "Com renda fixa, aumento do preço de um produto reduz a quantidade máxima comprável dele.",
+  "fonte": "OpenStax, Principles of Microeconomics 3e, 2.1 Budget Constraint: https://openstax.org/books/principles-microeconomics-3e/pages/2-1-how-individuals-make-choices-based-on-their-budget-constraint",
+  "tags": [
+    "teoria-do-consumidor-teoria-da-firma"
+  ]
+},
+{
+  "id": "card-eco-n1-007",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Teoria do consumidor. Teoria da firma",
+  "nivel": 1,
+  "conceito": "Utilidade do consumidor",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Utilidade representa a satisfação atribuída ao consumo. Exemplo: uma fruta pode trazer satisfação maior que outra.",
+  "nao_confundir": [
+    {
+      "conceito": "Preço do produto",
+      "diferenca": "Utilidade representa satisfação; preço representa quanto se paga para adquirir o produto."
+    }
+  ],
+  "atencao": "O consumidor compra o item com maior utilidade marginal por real gasto, isto é, utilidade dividida pelo preço.",
+  "fonte": "OpenStax, Principles of Microeconomics 3e, 6.1 Consumption Choices: https://openstax.org/books/principles-microeconomics-3e/pages/6-1-consumption-choices",
+  "tags": [
+    "teoria-do-consumidor-teoria-da-firma"
+  ]
+},
+{
+  "id": "card-eco-n1-008",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Teoria do consumidor. Teoria da firma",
+  "nivel": 1,
+  "conceito": "Curva de indiferença",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Curva de indiferença reúne combinações de bens que oferecem igual satisfação. Exemplo: duas cestas diferentes podem agradar igualmente.",
+  "nao_confundir": [
+    {
+      "conceito": "Restrição orçamentária",
+      "diferenca": "Indiferença representa satisfação igual; restrição orçamentária representa combinações que a renda permite comprar."
+    }
+  ],
+  "atencao": "Curvas de indiferença mais altas representam nível de utilidade maior que as mais baixas.",
+  "fonte": "OpenStax, Principles of Microeconomics 3e, Appendix B, Indifference Curves: https://openstax.org/books/principles-microeconomics-3e/pages/b-indifference-curves",
+  "tags": [
+    "teoria-do-consumidor-teoria-da-firma"
+  ]
+},
+{
+  "id": "card-eco-n1-009",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Teoria do consumidor. Teoria da firma",
+  "nivel": 1,
+  "conceito": "Custo marginal",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Custo marginal é o acréscimo no custo total ao produzir outra unidade. Exemplo: custo sobe R$ 8 por unidade adicional.",
+  "nao_confundir": [
+    {
+      "conceito": "Custo fixo",
+      "diferenca": "Custo fixo não varia com a quantidade produzida; custo marginal mede acréscimos de produção."
+    }
+  ],
+  "atencao": "Custo marginal é a variação do custo total dividida pela variação da quantidade produzida.",
+  "fonte": "OpenStax, Principles of Microeconomics 3e, 7.3 Costs in the Short Run: https://openstax.org/books/principles-microeconomics-3e/pages/7-3-costs-in-the-short-run",
+  "tags": [
+    "teoria-do-consumidor-teoria-da-firma"
+  ]
+},
+{
+  "id": "card-eco-n1-010",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Teoria do consumidor. Teoria da firma",
+  "nivel": 1,
+  "conceito": "Lucro econômico",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Lucro econômico subtrai da receita custos pagos e oportunidades sacrificadas. Exemplo: receita 100, gastos 60, oportunidade 20; lucro 20.",
+  "nao_confundir": [
+    {
+      "conceito": "Lucro contábil",
+      "diferenca": "Lucro contábil desconta custos registrados; lucro econômico também considera oportunidades sacrificadas."
+    }
+  ],
+  "atencao": "Custo implícito é o custo de oportunidade de usar recursos que a empresa já possui.",
+  "fonte": "OpenStax, Principles of Microeconomics 3e, 7.1 Explicit and Implicit Costs: https://openstax.org/books/principles-microeconomics-3e/pages/7-1-explicit-and-implicit-costs-and-accounting-and-economic-profit",
+  "tags": [
+    "teoria-do-consumidor-teoria-da-firma"
+  ]
+},
+{
+  "id": "card-eco-n1-011",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Elasticidade da demanda",
+  "nivel": 1,
+  "conceito": "Elasticidade-preço da demanda",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Elasticidade-preço mede a variação percentual da quantidade demandada dividida pela variação percentual do preço. Exemplo: −10% ÷ 20% = −0,5.",
+  "nao_confundir": [
+    {
+      "conceito": "Inclinação da demanda",
+      "diferenca": "Inclinação mede mudanças em unidades; elasticidade compara mudanças percentuais."
+    }
+  ],
+  "atencao": "Na demanda usual, a elasticidade-preço tem sinal negativo; a classificação usa seu valor absoluto.",
+  "fonte": "OpenStax, Principles of Microeconomics 3e, 5.1 Price Elasticity: https://openstax.org/books/principles-microeconomics-3e/pages/5-1-price-elasticity-of-demand-and-price-elasticity-of-supply",
+  "tags": [
+    "elasticidade-da-demanda"
+  ]
+},
+{
+  "id": "card-eco-n1-012",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Elasticidade da demanda",
+  "nivel": 1,
+  "conceito": "Demanda elástica",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Demanda é elástica quando o valor absoluto da elasticidade-preço supera 1. Exemplo: preço sobe 10%; quantidade cai 20%.",
+  "nao_confundir": [
+    {
+      "conceito": "Demanda inelástica",
+      "diferenca": "Elástica reage proporcionalmente mais que o preço; inelástica reage proporcionalmente menos."
+    }
+  ],
+  "atencao": "Elasticidade igual a 1 caracteriza demanda unitária, não demanda elástica.",
+  "fonte": "OpenStax, Principles of Microeconomics 3e, 5.1 Price Elasticity: https://openstax.org/books/principles-microeconomics-3e/pages/5-1-price-elasticity-of-demand-and-price-elasticity-of-supply",
+  "tags": [
+    "elasticidade-da-demanda"
+  ]
+},
+{
+  "id": "card-eco-n1-013",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Elasticidade da demanda",
+  "nivel": 1,
+  "conceito": "Receita total e elasticidade",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Receita total é preço vezes quantidade vendida; a elasticidade indica se ela sobe ou cai quando o preço muda. Exemplo: R$ 10 × 100 = R$ 1.000.",
+  "nao_confundir": [
+    {
+      "conceito": "Demanda elástica",
+      "diferenca": "Na elástica, subir o preço reduz a receita total; na inelástica, aumenta."
+    }
+  ],
+  "atencao": "Com demanda inelástica, a alta percentual do preço supera a queda da quantidade, e a receita total sobe.",
+  "fonte": "OpenStax, Principles of Microeconomics 3e, 5.3 Elasticity and Pricing: https://openstax.org/books/principles-microeconomics-3e/pages/5-3-elasticity-and-pricing",
+  "tags": [
+    "elasticidade-da-demanda"
+  ]
+},
+{
+  "id": "card-eco-n1-014",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Elasticidade da demanda",
+  "nivel": 1,
+  "conceito": "Elasticidade-renda da demanda",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Elasticidade-renda compara variações percentuais da quantidade demandada e da renda. Exemplo: demanda sobe 4% quando renda sobe 10%; elasticidade 0,4.",
+  "nao_confundir": [
+    {
+      "conceito": "Elasticidade-preço",
+      "diferenca": "Elasticidade-renda mede reação à renda; elasticidade-preço mede reação ao preço do próprio bem."
+    }
+  ],
+  "atencao": "Elasticidade-renda negativa caracteriza bem inferior; positiva caracteriza bem normal.",
+  "fonte": "OpenStax, Principles of Microeconomics 3e, 5.4 Elasticity in Areas Other Than Price: https://openstax.org/books/principles-microeconomics-3e/pages/5-4-elasticity-in-areas-other-than-price",
+  "tags": [
+    "elasticidade-da-demanda"
+  ]
+},
+{
+  "id": "card-eco-n1-015",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Elasticidade da demanda",
+  "nivel": 1,
+  "conceito": "Elasticidade cruzada da demanda",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Elasticidade cruzada mede a reação da demanda de um bem ao preço de outro. Exemplo: preço do café sobe; procura por chá aumenta.",
+  "nao_confundir": [
+    {
+      "conceito": "Elasticidade-renda",
+      "diferenca": "Elasticidade cruzada compara dois bens; elasticidade-renda compara demanda e renda."
+    }
+  ],
+  "atencao": "Elasticidade cruzada positiva indica substitutos; negativa indica complementares, mantidas as demais condições.",
+  "fonte": "OpenStax, Principles of Microeconomics 3e, 5.4 Elasticity in Areas Other Than Price: https://openstax.org/books/principles-microeconomics-3e/pages/5-4-elasticity-in-areas-other-than-price",
+  "tags": [
+    "elasticidade-da-demanda"
+  ]
+},
+{
+  "id": "card-eco-n1-016",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Análise de concentração e competição. Organização industrial",
+  "nivel": 1,
+  "conceito": "Concorrência perfeita",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Concorrência perfeita reúne muitos vendedores de produto idêntico, sem poder individual de fixar preços. Exemplo: mercado teórico com numerosos produtores iguais.",
+  "nao_confundir": [
+    {
+      "conceito": "Monopólio",
+      "diferenca": "Concorrência perfeita tem muitos ofertantes; monopólio possui um único ofertante."
+    }
+  ],
+  "atencao": "A empresa em concorrência perfeita produz onde preço, receita marginal e custo marginal se igualam.",
+  "fonte": "OpenStax, Principles of Microeconomics 3e, 8.1 Perfect Competition: https://openstax.org/books/principles-microeconomics-3e/pages/8-1-perfect-competition-and-why-it-matters; 8.2: https://openstax.org/books/principles-microeconomics-3e/pages/8-2-how-perfectly-competitive-firms-make-output-decisions",
+  "tags": [
+    "analise-de-concentracao-e-competicao-organizacao-industrial"
+  ]
+},
+{
+  "id": "card-eco-n1-017",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Análise de concentração e competição. Organização industrial",
+  "nivel": 1,
+  "conceito": "Monopólio",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Monopólio ocorre quando existe um único vendedor em determinado mercado. Exemplo: fornecedor exclusivo de serviço sem substituto próximo.",
+  "nao_confundir": [
+    {
+      "conceito": "Oligopólio",
+      "diferenca": "Monopólio tem um vendedor; oligopólio tem poucos vendedores interdependentes."
+    }
+  ],
+  "atencao": "A curva de demanda do monopolista é a própria demanda do mercado; essa demanda limita o preço.",
+  "fonte": "OpenStax, Principles of Microeconomics 3e, 9.2 Profit-Maximizing Monopoly: https://openstax.org/books/principles-microeconomics-3e/pages/9-2-how-a-profit-maximizing-monopoly-chooses-output-and-price",
+  "tags": [
+    "analise-de-concentracao-e-competicao-organizacao-industrial"
+  ]
+},
+{
+  "id": "card-eco-n1-018",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Análise de concentração e competição. Organização industrial",
+  "nivel": 1,
+  "conceito": "Oligopólio",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Oligopólio reúne poucas empresas cujas decisões afetam as concorrentes. Exemplo: duas empresas dominam determinada rota aérea.",
+  "nao_confundir": [
+    {
+      "conceito": "Concorrência perfeita",
+      "diferenca": "Oligopólio tem poucas empresas interdependentes; concorrência perfeita reúne muitas empresas sem influência individual no preço."
+    }
+  ],
+  "atencao": "Oligopolistas podem competir duramente ou fazer conluio e agir como um monopólio.",
+  "fonte": "OpenStax, Principles of Microeconomics 3e, 10.2 Oligopoly: https://openstax.org/books/principles-microeconomics-3e/pages/10-2-oligopoly",
+  "tags": [
+    "analise-de-concentracao-e-competicao-organizacao-industrial"
+  ]
+},
+{
+  "id": "card-eco-n1-019",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Análise de concentração e competição. Organização industrial",
+  "nivel": 1,
+  "conceito": "Concorrência monopolística",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Concorrência monopolística combina numerosos vendedores com produtos diferenciados. Exemplo: restaurantes com cardápios e marcas distintos.",
+  "nao_confundir": [
+    {
+      "conceito": "Monopólio",
+      "diferenca": "Concorrência monopolística tem vários vendedores diferenciados; monopólio tem vendedor único."
+    }
+  ],
+  "atencao": "A diferenciação permite subir o preço sem perder todos os clientes, mas a concorrência continua.",
+  "fonte": "OpenStax, Principles of Microeconomics 3e, 10.1 Monopolistic Competition: https://openstax.org/books/principles-microeconomics-3e/pages/10-1-monopolistic-competition",
+  "tags": [
+    "analise-de-concentracao-e-competicao-organizacao-industrial"
+  ]
+},
+{
+  "id": "card-eco-n1-020",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Análise de concentração e competição. Organização industrial",
+  "nivel": 1,
+  "conceito": "Índice de concentração de mercado",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "O índice de Herfindahl-Hirschman (HHI) soma os quadrados das participações das empresas, em pontos percentuais. Exemplo: 60² + 40² = 5.200.",
+  "nao_confundir": [
+    {
+      "conceito": "Participação de mercado",
+      "diferenca": "Participação mede a parcela de uma empresa; o índice reúne as parcelas de todas."
+    }
+  ],
+  "atencao": "No monopólio, a única empresa tem 100% do mercado, e o HHI é 100² = 10.000.",
+  "fonte": "OpenStax, Principles of Microeconomics 3e, 11.1 Corporate Mergers: https://openstax.org/books/principles-microeconomics-3e/pages/11-1-corporate-mergers",
+  "tags": [
+    "analise-de-concentracao-e-competicao-organizacao-industrial"
+  ]
+},
+{
+  "id": "card-eco-n1-021",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Falhas de mercado: informação assimétrica, seleção adversa e risco moral (moral hazard). Externalidades e bens públicos",
+  "nivel": 1,
+  "conceito": "Externalidade negativa",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Externalidade negativa é prejuízo imposto a terceiros sem compensação pelo mercado. Exemplo: fábrica polui o ar da vizinhança.",
+  "nao_confundir": [
+    {
+      "conceito": "Custo privado",
+      "diferenca": "Custo privado recai sobre quem produz; externalidade negativa prejudica terceiros."
+    }
+  ],
+  "atencao": "Com externalidade negativa, o mercado produz quantidade maior que a socialmente eficiente.",
+  "fonte": "OpenStax, Principles of Microeconomics 3e, 12.1 The Economics of Pollution: https://openstax.org/books/principles-microeconomics-3e/pages/12-1-the-economics-of-pollution",
+  "tags": [
+    "falhas-de-mercado-informacao-assimetrica-selecao-adversa-e-risco-moral-moral-hazard-externalidades-e-bens-publicos"
+  ]
+},
+{
+  "id": "card-eco-n1-022",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Falhas de mercado: informação assimétrica, seleção adversa e risco moral (moral hazard). Externalidades e bens públicos",
+  "nivel": 1,
+  "conceito": "Externalidade positiva",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Externalidade positiva beneficia terceiros sem pagamento correspondente. Exemplo: vacinação reduz transmissão de doenças para outras pessoas.",
+  "nao_confundir": [
+    {
+      "conceito": "Benefício privado",
+      "diferenca": "Benefício privado favorece quem consome; externalidade positiva também beneficia terceiros."
+    }
+  ],
+  "atencao": "Com externalidade positiva, a quantidade de mercado fica abaixo da quantidade socialmente ótima.",
+  "fonte": "OpenStax, Principles of Microeconomics 3e, 13.1 Investments in Innovation: https://openstax.org/books/principles-microeconomics-3e/pages/13-1-investments-in-innovation",
+  "tags": [
+    "falhas-de-mercado-informacao-assimetrica-selecao-adversa-e-risco-moral-moral-hazard-externalidades-e-bens-publicos"
+  ]
+},
+{
+  "id": "card-eco-n1-023",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Falhas de mercado: informação assimétrica, seleção adversa e risco moral (moral hazard). Externalidades e bens públicos",
+  "nivel": 1,
+  "conceito": "Bem público puro",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Bem público puro permite uso simultâneo sem reduzir disponibilidade e dificulta excluir não pagantes. Exemplo: defesa nacional.",
+  "nao_confundir": [
+    {
+      "conceito": "Bem privado",
+      "diferenca": "Bem privado costuma permitir exclusão e ter consumo rival; bem público puro apresenta características opostas."
+    }
+  ],
+  "atencao": "Na definição estrita, bem público não inclui necessariamente todo bem financiado por tributos.",
+  "fonte": "OpenStax, Principles of Microeconomics 3e, 13.3 Public Goods: https://openstax.org/books/principles-microeconomics-3e/pages/13-3-public-goods",
+  "tags": [
+    "falhas-de-mercado-informacao-assimetrica-selecao-adversa-e-risco-moral-moral-hazard-externalidades-e-bens-publicos"
+  ]
+},
+{
+  "id": "card-eco-n1-024",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Falhas de mercado: informação assimétrica, seleção adversa e risco moral (moral hazard). Externalidades e bens públicos",
+  "nivel": 1,
+  "conceito": "Informação assimétrica",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Informação assimétrica ocorre quando uma parte sabe mais que outra numa negociação. Exemplo: vendedor conhece defeitos ocultos do carro.",
+  "nao_confundir": [
+    {
+      "conceito": "Informação completa",
+      "diferenca": "Informação completa pressupõe conhecimento relevante compartilhado; informação assimétrica apresenta diferença entre as partes."
+    }
+  ],
+  "atencao": "A informação imperfeita pode desencorajar compradores e vendedores de participar do mercado.",
+  "fonte": "OpenStax, Principles of Microeconomics 3e, 16.1 Imperfect and Asymmetric Information: https://openstax.org/books/principles-microeconomics-3e/pages/16-1-the-problem-of-imperfect-information-and-asymmetric-information",
+  "tags": [
+    "falhas-de-mercado-informacao-assimetrica-selecao-adversa-e-risco-moral-moral-hazard-externalidades-e-bens-publicos"
+  ]
+},
+{
+  "id": "card-eco-n1-025",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Falhas de mercado: informação assimétrica, seleção adversa e risco moral (moral hazard). Externalidades e bens públicos",
+  "nivel": 1,
+  "conceito": "Seleção adversa",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Seleção adversa surge quando características ocultas antes do contrato afetam quem participa. Exemplo: comprador desconhece qualidade de carros usados.",
+  "nao_confundir": [
+    {
+      "conceito": "Risco moral",
+      "diferenca": "Seleção adversa envolve características ocultas antes do contrato; risco moral envolve ações ocultas depois."
+    }
+  ],
+  "atencao": "No seguro, a seleção adversa leva pessoas de baixo risco a deixar de comprar a apólice.",
+  "fonte": "OpenStax, Principles of Microeconomics 3e, 16.2 Insurance and Imperfect Information: https://openstax.org/books/principles-microeconomics-3e/pages/16-2-insurance-and-imperfect-information",
+  "tags": [
+    "falhas-de-mercado-informacao-assimetrica-selecao-adversa-e-risco-moral-moral-hazard-externalidades-e-bens-publicos"
+  ]
+},
+{
+  "id": "card-eco-n1-026",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Contas nacionais",
+  "nivel": 1,
+  "conceito": "Produto interno bruto",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Produto interno bruto (PIB) mede o valor dos bens e serviços finais produzidos no território. Exemplo: pão vendido ao consumidor.",
+  "nao_confundir": [
+    {
+      "conceito": "Produto nacional bruto",
+      "diferenca": "Produto interno considera território; produto nacional considera renda da produção atribuída a residentes."
+    }
+  ],
+  "atencao": "O PIB exclui bens intermediários, isto é, bens usados para produzir outros bens.",
+  "fonte": "OpenStax, Principles of Macroeconomics 3e, 6.1 Measuring GDP: https://openstax.org/books/principles-macroeconomics-3e/pages/6-1-measuring-the-size-of-the-economy-gross-domestic-product",
+  "tags": [
+    "contas-nacionais"
+  ]
+},
+{
+  "id": "card-eco-n1-027",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Contas nacionais",
+  "nivel": 1,
+  "conceito": "PIB pela despesa",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "PIB pela despesa soma consumo, investimento, gastos públicos e exportações, subtraindo importações. Exemplo: 60 + 20 + 30 + 10 − 5 = 115.",
+  "nao_confundir": [
+    {
+      "conceito": "Bens intermediários",
+      "diferenca": "Bens intermediários não entram no PIB pela despesa; só bens e serviços finais."
+    }
+  ],
+  "atencao": "No PIB, investimento é a compra de bens de capital novos, não de ações ou títulos.",
+  "fonte": "OpenStax, Principles of Macroeconomics 3e, 6.1 Measuring GDP: https://openstax.org/books/principles-macroeconomics-3e/pages/6-1-measuring-the-size-of-the-economy-gross-domestic-product",
+  "tags": [
+    "contas-nacionais"
+  ]
+},
+{
+  "id": "card-eco-n1-028",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Contas nacionais",
+  "nivel": 1,
+  "conceito": "PIB real",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "PIB real mede produção com preços constantes, isolando variações de preços. Exemplo: quantidade igual e preço maior não elevam PIB real.",
+  "nao_confundir": [
+    {
+      "conceito": "PIB nominal",
+      "diferenca": "PIB nominal usa preços correntes; PIB real usa preços de referência."
+    }
+  ],
+  "atencao": "O PIB nominal pode subir por aumento da produção, por aumento dos preços ou por ambos.",
+  "fonte": "OpenStax, Principles of Macroeconomics 3e, 6.2 Adjusting Nominal Values to Real Values: https://openstax.org/books/principles-macroeconomics-3e/pages/6-2-adjusting-nominal-values-to-real-values",
+  "tags": [
+    "contas-nacionais"
+  ]
+},
+{
+  "id": "card-eco-n1-029",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Contas nacionais",
+  "nivel": 1,
+  "conceito": "PIB por habitante",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "PIB por habitante divide o produto interno bruto pela população. Exemplo: PIB 1.000 e população 100 resultam em 10.",
+  "nao_confundir": [
+    {
+      "conceito": "Distribuição de renda",
+      "diferenca": "PIB por habitante é uma média; distribuição de renda mostra diferenças entre pessoas."
+    }
+  ],
+  "atencao": "O PIB por habitante dá só uma ideia aproximada das diferenças de padrão de vida entre países.",
+  "fonte": "OpenStax, Principles of Macroeconomics 3e, 6.4 Comparing GDP among Countries: https://openstax.org/books/principles-macroeconomics-3e/pages/6-4-comparing-gdp-among-countries",
+  "tags": [
+    "contas-nacionais"
+  ]
+},
+{
+  "id": "card-eco-n1-030",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Contas nacionais",
+  "nivel": 1,
+  "conceito": "Produto nacional bruto",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Produto nacional bruto (PNB) considera a produção associada à renda dos residentes. Exemplo: PIB 100 menos renda líquida enviada 10 = 90.",
+  "nao_confundir": [
+    {
+      "conceito": "Produto interno bruto",
+      "diferenca": "Produto interno considera produção territorial; produto nacional ajusta a renda líquida recebida do exterior."
+    }
+  ],
+  "atencao": "Para o IBGE, a renda nacional bruta é o PIB mais os rendimentos líquidos dos fatores recebidos do exterior.",
+  "fonte": "IBGE, Sistema de Contas Nacionais, Nota Metodológica nº 05, Glossário, verbete renda nacional bruta: https://ftp.ibge.gov.br/Contas_Nacionais/Sistema_de_Contas_Nacionais/Notas_Metodologicas_2010/05_glossario_referencias.pdf",
+  "tags": [
+    "contas-nacionais"
+  ]
+},
+{
+  "id": "card-eco-n1-031",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Multiplicador monetário, criação e destruição de moeda",
+  "nivel": 1,
+  "conceito": "Base monetária",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Base monetária reúne moeda emitida em circulação e reservas bancárias no banco central. Exemplo: dinheiro em espécie mais reservas dos bancos.",
+  "nao_confundir": [
+    {
+      "conceito": "Depósitos bancários",
+      "diferenca": "Base monetária inclui reservas e cédulas; depósitos à vista são obrigações bancárias ao público."
+    }
+  ],
+  "atencao": "A base monetária, também chamada de emissão primária de moeda, é o passivo monetário do Banco Central.",
+  "fonte": "Banco Central do Brasil, Dados Abertos, série BM - Papel moeda em circulação (SGS 1786), conceito de base monetária: https://dadosabertos.bcb.gov.br/dataset/1786-sgs",
+  "tags": [
+    "multiplicador-monetario-criacao-e-destruicao-de-moeda"
+  ]
+},
+{
+  "id": "card-eco-n1-032",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Multiplicador monetário, criação e destruição de moeda",
+  "nivel": 1,
+  "conceito": "Meios de pagamento restritos",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Meios de pagamento M1 reúnem papel-moeda em poder do público e depósitos à vista. Exemplo: dinheiro na carteira e saldo movimentável.",
+  "nao_confundir": [
+    {
+      "conceito": "Base monetária",
+      "diferenca": "M1 inclui depósitos à vista do público; base monetária inclui reservas dos bancos."
+    }
+  ],
+  "atencao": "Só conta o papel-moeda em circulação; o guardado nos cofres dos bancos fica fora do M1.",
+  "fonte": "OpenStax, Principles of Macroeconomics 3e, 14.2 Measuring Money: https://openstax.org/books/principles-macroeconomics-3e/pages/14-2-measuring-money-currency-m1-and-m2; Banco Central do Brasil, Dados Abertos, série Meios de pagamento (M1): https://dadosabertos.bcb.gov.br/dataset/27789-sgs",
+  "tags": [
+    "multiplicador-monetario-criacao-e-destruicao-de-moeda"
+  ]
+},
+{
+  "id": "card-eco-n1-033",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Multiplicador monetário, criação e destruição de moeda",
+  "nivel": 1,
+  "conceito": "Criação bancária de moeda",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Bancos criam depósitos quando concedem empréstimos e creditam contas à vista. Exemplo: empréstimo de R$ 100 aumenta depósito do cliente.",
+  "nao_confundir": [
+    {
+      "conceito": "Impressão de cédulas",
+      "diferenca": "Empréstimo cria moeda escritural em depósitos; emissão física de cédulas cabe à autoridade monetária."
+    }
+  ],
+  "atencao": "O sistema bancário pode literalmente criar moeda ao conceder empréstimos.",
+  "fonte": "OpenStax, Principles of Macroeconomics 3e, 14.4 How Banks Create Money: https://openstax.org/books/principles-macroeconomics-3e/pages/14-4-how-banks-create-money",
+  "tags": [
+    "multiplicador-monetario-criacao-e-destruicao-de-moeda"
+  ]
+},
+{
+  "id": "card-eco-n1-034",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Multiplicador monetário, criação e destruição de moeda",
+  "nivel": 1,
+  "conceito": "Multiplicador monetário",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Multiplicador relaciona meios de pagamento e base monetária. Exemplo: sem dinheiro retido pelo público e reserva de 20%, multiplicador = 1 ÷ 0,20 = 5.",
+  "nao_confundir": [
+    {
+      "conceito": "Taxa de reserva",
+      "diferenca": "Taxa de reserva é parcela retida pelos bancos; multiplicador mede expansão dos depósitos."
+    }
+  ],
+  "atencao": "Se o público guarda dinheiro fora dos bancos ou os bancos retêm reservas extras, o multiplicador diminui.",
+  "fonte": "OpenStax, Principles of Macroeconomics 3e, 14.4 How Banks Create Money: https://openstax.org/books/principles-macroeconomics-3e/pages/14-4-how-banks-create-money",
+  "tags": [
+    "multiplicador-monetario-criacao-e-destruicao-de-moeda"
+  ]
+},
+{
+  "id": "card-eco-n1-035",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Multiplicador monetário, criação e destruição de moeda",
+  "nivel": 1,
+  "conceito": "Recolhimento compulsório",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Recolhimento compulsório obriga bancos a manter parcela de recursos conforme regras do banco central. Exemplo: reservar 20 de cada 100 depositados.",
+  "nao_confundir": [
+    {
+      "conceito": "Empréstimo bancário",
+      "diferenca": "Compulsório retém recursos exigidos; empréstimo disponibiliza crédito ao cliente."
+    }
+  ],
+  "atencao": "Elevar o recolhimento compulsório deixa os bancos com menos dinheiro disponível para emprestar.",
+  "fonte": "OpenStax, Principles of Macroeconomics 3e, 15.3 How a Central Bank Executes Monetary Policy: https://openstax.org/books/principles-macroeconomics-3e/pages/15-3-how-a-central-bank-executes-monetary-policy",
+  "tags": [
+    "multiplicador-monetario-criacao-e-destruicao-de-moeda"
+  ]
+},
+{
+  "id": "card-eco-n1-036",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Balanço de pagamentos",
+  "nivel": 1,
+  "conceito": "Balanço de pagamentos",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Balanço de pagamentos registra transações econômicas entre residentes e não residentes. Exemplo: exportação brasileira vendida a comprador estrangeiro.",
+  "nao_confundir": [
+    {
+      "conceito": "Balança comercial",
+      "diferenca": "Balança comercial registra bens; balanço de pagamentos abrange também serviços, rendas e operações financeiras."
+    }
+  ],
+  "atencao": "O balanço de pagamentos reúne bens e serviços, renda primária, renda secundária, conta capital e conta financeira.",
+  "fonte": "Banco Central do Brasil, Nota Metodológica nº 1, Adoção do BPM6 (2014): https://www.bcb.gov.br/ftp/infecon/nm1bpm6p.pdf",
+  "tags": [
+    "balanco-de-pagamentos"
+  ]
+},
+{
+  "id": "card-eco-n1-037",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Balanço de pagamentos",
+  "nivel": 1,
+  "conceito": "Conta corrente externa",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Conta corrente registra bens, serviços e rendas entre residentes e exterior. Exemplo: exportações, turismo e juros recebidos.",
+  "nao_confundir": [
+    {
+      "conceito": "Conta financeira",
+      "diferenca": "Conta corrente registra bens, serviços e rendas; conta financeira registra ativos e passivos financeiros."
+    }
+  ],
+  "atencao": "Renda primária registra valores pagos ou recebidos pelo uso temporário de recursos financeiros, como juros.",
+  "fonte": "Banco Central do Brasil, Nota Metodológica nº 1, Adoção do BPM6 (2014): https://www.bcb.gov.br/ftp/infecon/nm1bpm6p.pdf",
+  "tags": [
+    "balanco-de-pagamentos"
+  ]
+},
+{
+  "id": "card-eco-n1-038",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Balanço de pagamentos",
+  "nivel": 1,
+  "conceito": "Conta financeira externa",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Conta financeira registra transações com ativos e passivos financeiros externos. Exemplo: estrangeiro compra participação em empresa brasileira.",
+  "nao_confundir": [
+    {
+      "conceito": "Conta capital",
+      "diferenca": "Conta financeira registra investimentos e empréstimos; conta capital registra transferências de capital."
+    }
+  ],
+  "atencao": "A conta capital abrange transferências de capital e compra e venda de ativos não financeiros não produzidos.",
+  "fonte": "Banco Central do Brasil, Nota Metodológica nº 1, Adoção do BPM6 (2014): https://www.bcb.gov.br/ftp/infecon/nm1bpm6p.pdf",
+  "tags": [
+    "balanco-de-pagamentos"
+  ]
+},
+{
+  "id": "card-eco-n1-039",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Balanço de pagamentos",
+  "nivel": 1,
+  "conceito": "Reservas internacionais",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Reservas internacionais são ativos externos sob controle da autoridade monetária. Exemplo: títulos estrangeiros mantidos pelo banco central.",
+  "nao_confundir": [
+    {
+      "conceito": "Reservas bancárias",
+      "diferenca": "Reservas bancárias são depósitos dos bancos no banco central; internacionais são ativos externos."
+    }
+  ],
+  "atencao": "No balanço de pagamentos, os ativos de reserva aparecem como rubrica da conta financeira.",
+  "fonte": "Banco Central do Brasil, Nota Metodológica nº 1, Adoção do BPM6 (2014): https://www.bcb.gov.br/ftp/infecon/nm1bpm6p.pdf",
+  "tags": [
+    "balanco-de-pagamentos"
+  ]
+},
+{
+  "id": "card-eco-n1-040",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Balanço de pagamentos",
+  "nivel": 1,
+  "conceito": "Déficit em conta corrente",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Déficit em conta corrente ocorre quando saídas correntes superam entradas correntes. Exemplo: pagamentos externos de 120 e recebimentos de 100.",
+  "nao_confundir": [
+    {
+      "conceito": "Déficit comercial",
+      "diferenca": "Déficit comercial compara exportações e importações de bens; déficit corrente abrange outras transações."
+    }
+  ],
+  "atencao": "A conta corrente reúne os fluxos de bens, serviços, renda primária e renda secundária.",
+  "fonte": "Banco Central do Brasil, Nota Metodológica nº 1, Adoção do BPM6 (2014): https://www.bcb.gov.br/ftp/infecon/nm1bpm6p.pdf",
+  "tags": [
+    "balanco-de-pagamentos"
+  ]
+},
+{
+  "id": "card-eco-n1-041",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Política fiscal. Déficit e dívida pública",
+  "nivel": 1,
+  "conceito": "Política fiscal",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Política fiscal utiliza receitas e despesas públicas para influenciar a economia. Exemplo: governo amplia investimentos em estradas.",
+  "nao_confundir": [
+    {
+      "conceito": "Política monetária",
+      "diferenca": "Política fiscal atua sobre orçamento público; política monetária atua sobre juros e condições monetárias."
+    }
+  ],
+  "atencao": "Política fiscal é o uso dos gastos públicos e dos tributos para influenciar a trajetória da economia.",
+  "fonte": "OpenStax, Principles of Macroeconomics 3e, 17.4 Using Fiscal Policy: https://openstax.org/books/principles-macroeconomics-3e/pages/17-4-using-fiscal-policy-to-fight-recession-unemployment-and-inflation",
+  "tags": [
+    "politica-fiscal-deficit-e-divida-publica"
+  ]
+},
+{
+  "id": "card-eco-n1-042",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Política fiscal. Déficit e dívida pública",
+  "nivel": 1,
+  "conceito": "Resultado primário",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Resultado primário compara receitas e despesas públicas sem juros da dívida. Exemplo: receitas 100 e despesas primárias 90 geram superávit 10.",
+  "nao_confundir": [
+    {
+      "conceito": "Resultado nominal",
+      "diferenca": "Resultado primário exclui juros; resultado nominal incorpora os juros da dívida."
+    }
+  ],
+  "atencao": "Resultado primário é o resultado nominal menos os juros nominais incidentes sobre a dívida.",
+  "fonte": "Câmara dos Deputados, Conceitos Relevantes em Dívida Pública (Consultoria Legislativa): https://www2.camara.leg.br/a-camara/estruturaadm/altosestudos/pdf/conceitosrelevantes.pdf/view; Banco Central do Brasil, Dados Abertos, NFSP, série 4641: https://dadosabertos.bcb.gov.br/en/dataset/4641-nfsp-sem-desvalorizacao-cambial---fluxo-mensal-corrente---resultado-primario---total---banco-c",
+  "tags": [
+    "politica-fiscal-deficit-e-divida-publica"
+  ]
+},
+{
+  "id": "card-eco-n1-043",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Política fiscal. Déficit e dívida pública",
+  "nivel": 1,
+  "conceito": "Resultado nominal",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Resultado nominal incorpora juros da dívida ao resultado fiscal. Exemplo: superávit primário 10 e juros 15 geram déficit nominal 5.",
+  "nao_confundir": [
+    {
+      "conceito": "Resultado primário",
+      "diferenca": "Resultado primário desconsidera juros; resultado nominal considera essa despesa financeira."
+    }
+  ],
+  "atencao": "O resultado nominal também é chamado de necessidades de financiamento do setor público (NFSP).",
+  "fonte": "Câmara dos Deputados, Conceitos Relevantes em Dívida Pública (Consultoria Legislativa): https://www2.camara.leg.br/a-camara/estruturaadm/altosestudos/pdf/conceitosrelevantes.pdf/view",
+  "tags": [
+    "politica-fiscal-deficit-e-divida-publica"
+  ]
+},
+{
+  "id": "card-eco-n1-044",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Política fiscal. Déficit e dívida pública",
+  "nivel": 1,
+  "conceito": "Dívida pública bruta",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Dívida pública bruta soma obrigações de dívida do setor considerado, sem descontar ativos financeiros. Exemplo: obrigações de R$ 100.",
+  "nao_confundir": [
+    {
+      "conceito": "Dívida líquida",
+      "diferenca": "Dívida bruta não desconta ativos; dívida líquida desconta ativos financeiros definidos pela metodologia."
+    }
+  ],
+  "atencao": "Dívida líquida é a dívida bruta menos os créditos do setor público não financeiro e do Banco Central.",
+  "fonte": "Câmara dos Deputados, Conceitos Relevantes em Dívida Pública (Consultoria Legislativa): https://www2.camara.leg.br/a-camara/estruturaadm/altosestudos/pdf/conceitosrelevantes.pdf/view",
+  "tags": [
+    "politica-fiscal-deficit-e-divida-publica"
+  ]
+},
+{
+  "id": "card-eco-n1-045",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Política fiscal. Déficit e dívida pública",
+  "nivel": 1,
+  "conceito": "Política fiscal expansionista",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Política fiscal expansionista eleva a demanda por meio de mais gastos ou menos tributos. Exemplo: governo amplia compras durante recessão.",
+  "nao_confundir": [
+    {
+      "conceito": "Política fiscal contracionista",
+      "diferenca": "Expansionista estimula a demanda; contracionista a contém com menos gastos ou mais tributos."
+    }
+  ],
+  "atencao": "Política fiscal expansionista eleva a demanda agregada; a contracionista faz o contrário.",
+  "fonte": "OpenStax, Principles of Macroeconomics 3e, 17.4 Using Fiscal Policy: https://openstax.org/books/principles-macroeconomics-3e/pages/17-4-using-fiscal-policy-to-fight-recession-unemployment-and-inflation",
+  "tags": [
+    "politica-fiscal-deficit-e-divida-publica"
+  ]
+},
+{
+  "id": "card-eco-n1-046",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Política monetária: regras versus discricionariedade; modelos de credibilidade; convencionais e não convencionais; objetivos e instrumentos; regime de metas para a inflação",
+  "nivel": 1,
+  "conceito": "Política monetária",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Política monetária ajusta condições de juros e liquidez para influenciar inflação e atividade. Exemplo: banco central eleva a taxa básica.",
+  "nao_confundir": [
+    {
+      "conceito": "Política fiscal",
+      "diferenca": "Política monetária usa juros e liquidez; política fiscal usa receitas e despesas públicas."
+    }
+  ],
+  "atencao": "Política monetária contracionista, com juros mais altos, reduz investimento e consumo financiado: dois componentes da demanda.",
+  "fonte": "OpenStax, Principles of Macroeconomics 3e, 15.4 Monetary Policy and Economic Outcomes: https://openstax.org/books/principles-macroeconomics-3e/pages/15-4-monetary-policy-and-economic-outcomes",
+  "tags": [
+    "politica-monetaria-regras-versus-discricionariedade-modelos-de-credibilidade-convencionais-e-nao-convencionais-objetivos-e-instrumentos-regime-de-metas-para-a-inflacao"
+  ]
+},
+{
+  "id": "card-eco-n1-047",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Política monetária: regras versus discricionariedade; modelos de credibilidade; convencionais e não convencionais; objetivos e instrumentos; regime de metas para a inflação",
+  "nivel": 1,
+  "conceito": "Taxa Selic",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "A taxa Selic é a taxa básica de juros da economia brasileira. Exemplo: sua meta orienta juros de curto prazo.",
+  "nao_confundir": [
+    {
+      "conceito": "Taxa de empréstimo",
+      "diferenca": "Selic é referência básica; taxa cobrada do consumidor inclui custos e riscos bancários."
+    }
+  ],
+  "atencao": "O Copom, formado pelo presidente e pelos diretores do Banco Central, define a Selic a cada 45 dias.",
+  "fonte": "Banco Central do Brasil, Comitê de Política Monetária (Copom): https://www.bcb.gov.br/controleinflacao/copom; Plano Diretor de Acompanhamento da Taxa Selic: https://www.bcb.gov.br/content/controleinflacao/taxa-selic-doc/plano-diretor-de-acompanhamento-da-taxa-selic-PDA-TS.pdf",
+  "tags": [
+    "politica-monetaria-regras-versus-discricionariedade-modelos-de-credibilidade-convencionais-e-nao-convencionais-objetivos-e-instrumentos-regime-de-metas-para-a-inflacao"
+  ]
+},
+{
+  "id": "card-eco-n1-048",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Política monetária: regras versus discricionariedade; modelos de credibilidade; convencionais e não convencionais; objetivos e instrumentos; regime de metas para a inflação",
+  "nivel": 1,
+  "conceito": "Operações de mercado aberto",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Operações de mercado aberto compram ou vendem títulos para ajustar liquidez bancária. Exemplo: banco central compra títulos e injeta reservas.",
+  "nao_confundir": [
+    {
+      "conceito": "Recolhimento compulsório",
+      "diferenca": "Mercado aberto negocia títulos; compulsório exige retenção de recursos pelos bancos."
+    }
+  ],
+  "atencao": "Quando o banco central compra títulos, o dinheiro vai aos bancos e aumenta a moeda em circulação.",
+  "fonte": "OpenStax, Principles of Macroeconomics 3e, 15.3 How a Central Bank Executes Monetary Policy: https://openstax.org/books/principles-macroeconomics-3e/pages/15-3-how-a-central-bank-executes-monetary-policy",
+  "tags": [
+    "politica-monetaria-regras-versus-discricionariedade-modelos-de-credibilidade-convencionais-e-nao-convencionais-objetivos-e-instrumentos-regime-de-metas-para-a-inflacao"
+  ]
+},
+{
+  "id": "card-eco-n1-049",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Política monetária: regras versus discricionariedade; modelos de credibilidade; convencionais e não convencionais; objetivos e instrumentos; regime de metas para a inflação",
+  "nivel": 1,
+  "conceito": "Regime de metas de inflação",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Regime de metas estabelece objetivo público para inflação e acompanhamento pelo banco central. Exemplo: meta central e intervalo de tolerância.",
+  "nao_confundir": [
+    {
+      "conceito": "Taxa Selic",
+      "diferenca": "Meta de inflação é objetivo para preços; meta Selic é instrumento de política monetária."
+    }
+  ],
+  "atencao": "A meta é descumprida quando a inflação em doze meses se desvia por seis meses consecutivos do intervalo de tolerância.",
+  "fonte": "Brasil, Decreto nº 12.079, de 26 de junho de 2024, art. 2º: https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2024/decreto/D12079.htm",
+  "tags": [
+    "politica-monetaria-regras-versus-discricionariedade-modelos-de-credibilidade-convencionais-e-nao-convencionais-objetivos-e-instrumentos-regime-de-metas-para-a-inflacao"
+  ]
+},
+{
+  "id": "card-eco-n1-050",
+  "materia": "Micro e Macroeconomia",
+  "assunto": "Política monetária: regras versus discricionariedade; modelos de credibilidade; convencionais e não convencionais; objetivos e instrumentos; regime de metas para a inflação",
+  "nivel": 1,
+  "conceito": "Credibilidade monetária",
+  "termo_ingles": "",
+  "traducao": "",
+  "resumo": "Credibilidade monetária é confiança de que o banco central cumprirá o objetivo anunciado. Exemplo: expectativas de inflação aproximam-se da meta.",
+  "nao_confundir": [
+    {
+      "conceito": "Discricionariedade",
+      "diferenca": "Credibilidade envolve confiança nas decisões; discricionariedade permite decidir medidas conforme circunstâncias."
+    }
+  ],
+  "atencao": "Friedman defendia regra de crescimento estável da moeda, dando ao banco central menos discricionariedade.",
+  "fonte": "OpenStax, Principles of Macroeconomics 3e, 15.5 Pitfalls for Monetary Policy: https://openstax.org/books/principles-macroeconomics-3e/pages/15-5-pitfalls-for-monetary-policy",
+  "tags": [
+    "politica-monetaria-regras-versus-discricionariedade-modelos-de-credibilidade-convencionais-e-nao-convencionais-objetivos-e-instrumentos-regime-de-metas-para-a-inflacao"
+  ]
+}
 ]
