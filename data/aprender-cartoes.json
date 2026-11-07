@@ -14295,5 +14295,521 @@
       "python",
       "excecoes"
     ]
+  },
+  {
+    "id": "card-dev-n1-043",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Java",
+    "nivel": 1,
+    "conceito": "Bytecode e máquina virtual Java",
+    "termo_ingles": "bytecode, JVM",
+    "traducao": "código intermediário, máquina virtual Java",
+    "resumo": "Java compila código-fonte em bytecode, executado pela máquina virtual Java (JVM). Exemplo: o mesmo arquivo .class pode funcionar em diferentes sistemas.",
+    "nao_confundir": [
+      {
+        "conceito": "Código de máquina",
+        "diferenca": "Bytecode é intermediário; código de máquina contém instruções específicas do processador."
+      }
+    ],
+    "atencao": "Algumas JVMs, como a HotSpot, recompilam para código nativo, durante a execução, os trechos mais usados.",
+    "fonte": "Oracle, The Java Tutorials, About the Java Technology: https://docs.oracle.com/javase/tutorial/getStarted/intro/definition.html",
+    "tags": [
+      "java",
+      "jvm",
+      "bytecode"
+    ]
+  },
+  {
+    "id": "card-dev-n1-044",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Java",
+    "nivel": 1,
+    "conceito": "Classe e objeto em Java",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Em Java, classe define características e comportamentos; objeto é uma instância dessa classe. Exemplo: class Conta {} define Conta; new Conta() cria objeto.",
+    "nao_confundir": [
+      {
+        "conceito": "Construtor",
+        "diferenca": "Classe é o modelo; construtor, chamado com new, inicializa o objeto criado."
+      }
+    ],
+    "atencao": "Em Java, cada objeto tem seus próprios valores para as variáveis de instância.",
+    "fonte": "Oracle, The Java Tutorials, Understanding Class Members: https://docs.oracle.com/javase/tutorial/java/javaOO/classvars.html",
+    "tags": [
+      "java"
+    ]
+  },
+  {
+    "id": "card-dev-n1-045",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Java",
+    "nivel": 1,
+    "conceito": "Herança e polimorfismo em Java",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Em Java, extends estabelece herança; no polimorfismo, subclasses compartilham funções da superclasse e definem comportamentos próprios. Exemplo: class Gato extends Animal {}.",
+    "nao_confundir": [
+      {
+        "conceito": "Sobrecarga",
+        "diferenca": "Sobrescrita redefine método herdado; sobrecarga cria métodos de mesmo nome com parâmetros diferentes."
+      }
+    ],
+    "atencao": "A JVM chama o método do objeto referido pela variável, não o definido pelo tipo da variável.",
+    "fonte": "Oracle, The Java Tutorials, Inheritance: https://docs.oracle.com/javase/tutorial/java/IandI/subclasses.html; Polymorphism: https://docs.oracle.com/javase/tutorial/java/IandI/polymorphism.html",
+    "tags": [
+      "java",
+      "heranca",
+      "polimorfismo"
+    ]
+  },
+  {
+    "id": "card-dev-n1-046",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Java",
+    "nivel": 1,
+    "conceito": "Classe abstrata e interface",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Em Java, classe abstrata serve como base não instanciável; interface define um contrato para classes. Exemplo: abstract class Animal {}; interface Voador {}.",
+    "nao_confundir": [
+      {
+        "conceito": "Classe concreta",
+        "diferenca": "Classe abstrata não pode ser instanciada; classe concreta pode ser criada com new."
+      }
+    ],
+    "atencao": "Em Java, uma classe estende uma só classe, abstrata ou não, mas pode implementar várias interfaces.",
+    "fonte": "Oracle, The Java Tutorials, Abstract Methods and Classes: https://docs.oracle.com/javase/tutorial/java/IandI/abstract.html",
+    "tags": [
+      "java",
+      "classe-abstrata",
+      "interfaces"
+    ]
+  },
+  {
+    "id": "card-dev-n1-047",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Java",
+    "nivel": 1,
+    "conceito": "Static e final",
+    "termo_ingles": "static, final",
+    "traducao": "membro da classe, restrição de alteração",
+    "resumo": "Em Java, static associa membros à classe; final restringe alterações conforme o elemento declarado. Exemplo: static int total; final int limite = 10.",
+    "nao_confundir": [
+      {
+        "conceito": "Constante",
+        "diferenca": "Constante combina static e final; o valor do campo não pode mudar."
+      }
+    ],
+    "atencao": "Em Java, método final não pode ser sobrescrito, e classe final não pode ter subclasses.",
+    "fonte": "Oracle, The Java Tutorials, Understanding Class Members: https://docs.oracle.com/javase/tutorial/java/javaOO/classvars.html; Writing Final Classes and Methods: https://docs.oracle.com/javase/tutorial/java/IandI/final.html",
+    "tags": [
+      "java",
+      "static",
+      "final"
+    ]
+  },
+  {
+    "id": "card-dev-n1-048",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Java",
+    "nivel": 1,
+    "conceito": "Coletor de lixo",
+    "termo_ingles": "garbage collector",
+    "traducao": "coletor de lixo",
+    "resumo": "Em Java, o coletor de lixo recupera a memória de objetos sem referências. Exemplo: após obj = null, sem outras referências, o objeto pode ser coletado.",
+    "nao_confundir": [
+      {
+        "conceito": "Liberação manual",
+        "diferenca": "Coletor recupera memória automaticamente; liberação manual exige ação explícita do programador."
+      }
+    ],
+    "atencao": "O coletor age automaticamente quando julga o momento certo; todas as referências ao objeto precisam ser descartadas.",
+    "fonte": "Oracle, The Java Tutorials, Using Objects, The Garbage Collector: https://docs.oracle.com/javase/tutorial/java/javaOO/usingobject.html",
+    "tags": [
+      "java",
+      "jvm",
+      "garbage-collector"
+    ]
+  },
+  {
+    "id": "card-dev-n1-049",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "HTML e CSS",
+    "nivel": 1,
+    "conceito": "Estrutura HTML e estilo CSS",
+    "termo_ingles": "HTML, CSS",
+    "traducao": "linguagem de marcação de hipertexto, folhas de estilo em cascata",
+    "resumo": "HTML estrutura o conteúdo da página; CSS define sua apresentação visual. Exemplo: <h1>Título</h1> cria título; h1 { color: blue; } colore.",
+    "nao_confundir": [
+      {
+        "conceito": "JavaScript",
+        "diferenca": "HTML estrutura e CSS apresenta; JavaScript define o comportamento da página."
+      }
+    ],
+    "atencao": "CSS pode alterar a aparência da página sem mudar a estrutura HTML.",
+    "fonte": "MDN Web Docs, HTML: Linguagem de Marcação de Hipertexto: https://developer.mozilla.org/pt-BR/docs/Web/HTML",
+    "tags": [
+      "html",
+      "css"
+    ]
+  },
+  {
+    "id": "card-dev-n1-050",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "HTML e CSS",
+    "nivel": 1,
+    "conceito": "Elementos e atributos HTML",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Em HTML, elemento representa conteúdo; atributo fornece informações adicionais ao elemento. Exemplo: <a href=\"pagina.html\">Abrir</a> cria um link.",
+    "nao_confundir": [
+      {
+        "conceito": "Tag",
+        "diferenca": "Tag marca início ou fim; elemento reúne tags de abertura, conteúdo e fechamento."
+      }
+    ],
+    "atencao": "No HTML, o atributo href de <a> indica a URL para a qual o link aponta.",
+    "fonte": "MDN Web Docs, HTML: Linguagem de Marcação de Hipertexto: https://developer.mozilla.org/pt-BR/docs/Web/HTML; elemento a: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a",
+    "tags": [
+      "html",
+      "links"
+    ]
+  },
+  {
+    "id": "card-dev-n1-051",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "HTML e CSS",
+    "nivel": 1,
+    "conceito": "HTML semântico",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "HTML semântico usa elementos que indicam a função do conteúdo. Exemplo: <nav>Menu</nav> identifica uma região de navegação.",
+    "nao_confundir": [
+      {
+        "conceito": "Div",
+        "diferenca": "Nav identifica navegação; div agrupa conteúdo sem indicar função semântica específica."
+      }
+    ],
+    "atencao": "Header representa conteúdo introdutório; main, o conteúdo dominante; footer, o rodapé da seção.",
+    "fonte": "MDN Web Docs, HTML elements reference: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements",
+    "tags": [
+      "html",
+      "html5"
+    ]
+  },
+  {
+    "id": "card-dev-n1-052",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "HTML e CSS",
+    "nivel": 1,
+    "conceito": "Seletores CSS",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Em CSS, seletores identificam quais elementos recebem estilos. Exemplo: .aviso { color: red; } estiliza elementos da classe aviso.",
+    "nao_confundir": [
+      {
+        "conceito": "Seletor de tipo",
+        "diferenca": "p seleciona todos os parágrafos; .aviso seleciona só os de classe aviso."
+      }
+    ],
+    "atencao": "O seletor de id (#) seleciona o elemento cujo id coincide exatamente com o valor indicado.",
+    "fonte": "MDN Web Docs, ID selectors: https://developer.mozilla.org/en-US/docs/Web/CSS/ID_selectors; CSS selectors: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors",
+    "tags": [
+      "css",
+      "seletores"
+    ]
+  },
+  {
+    "id": "card-dev-n1-053",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "HTML e CSS",
+    "nivel": 1,
+    "conceito": "Modelo de caixa CSS",
+    "termo_ingles": "box model",
+    "traducao": "modelo de caixa",
+    "resumo": "No CSS, cada caixa possui conteúdo, preenchimento interno, borda e margem externa. Exemplo: padding: 10px cria espaço interno.",
+    "nao_confundir": [
+      {
+        "conceito": "Padding e margin",
+        "diferenca": "Padding fica entre conteúdo e borda; margin fica fora da borda."
+      }
+    ],
+    "atencao": "De fora para dentro: margin, border, padding, content; box-sizing: border-box inclui borda e preenchimento na largura definida.",
+    "fonte": "MDN Web Docs, Introduction to the CSS box model: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_box_model/Introduction_to_the_CSS_box_model",
+    "tags": [
+      "css",
+      "padding",
+      "box-model"
+    ]
+  },
+  {
+    "id": "card-dev-n1-054",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "HTML e CSS",
+    "nivel": 1,
+    "conceito": "Formulários HTML",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Em HTML, form reúne campos de entrada; input recebe dados e label identifica o campo. Exemplo: <input required> exige preenchimento.",
+    "nao_confundir": [
+      {
+        "conceito": "Label",
+        "diferenca": "Label identifica o campo e se liga a ele pelo atributo for, igual ao id."
+      }
+    ],
+    "atencao": "Validação no navegador não é medida completa de segurança; os dados também devem ser validados no servidor.",
+    "fonte": "MDN Web Docs, Client-side form validation: https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Form_validation",
+    "tags": [
+      "html5",
+      "formularios"
+    ]
+  },
+  {
+    "id": "card-dev-n1-055",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "JavaScript e TypeScript",
+    "nivel": 1,
+    "conceito": "JavaScript e DOM",
+    "termo_ingles": "DOM",
+    "traducao": "modelo de objetos do documento",
+    "resumo": "JavaScript pode modificar páginas pelo modelo de objetos do documento (DOM), representação em árvore dos elementos. Exemplo: document.title = 'Início'.",
+    "nao_confundir": [
+      {
+        "conceito": "HTML e DOM",
+        "diferenca": "HTML descreve a estrutura; DOM representa o documento como objetos manipuláveis."
+      }
+    ],
+    "atencao": "O DOM não faz parte da linguagem JavaScript; é uma API da web, ausente do núcleo do Node.js.",
+    "fonte": "MDN Web Docs, Introduction to the DOM: https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction",
+    "tags": [
+      "javascript",
+      "dom"
+    ]
+  },
+  {
+    "id": "card-dev-n1-056",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "JavaScript e TypeScript",
+    "nivel": 1,
+    "conceito": "Let, const e var",
+    "termo_ingles": "let, const, var",
+    "traducao": "declarações de variáveis",
+    "resumo": "Em JavaScript, let permite reatribuição; const impede reatribuição; var possui escopo de função. Exemplo: let x = 2; x = 3.",
+    "nao_confundir": [
+      {
+        "conceito": "Var",
+        "diferenca": "var vale na função inteira; let e const valem só no bloco onde foram declaradas."
+      }
+    ],
+    "atencao": "Const impede reatribuir a variável, mas, se o valor for objeto, suas propriedades podem mudar.",
+    "fonte": "MDN Web Docs, let: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let; const: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const",
+    "tags": [
+      "javascript",
+      "const",
+      "let-var",
+      "escopo"
+    ]
+  },
+  {
+    "id": "card-dev-n1-057",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "JavaScript e TypeScript",
+    "nivel": 1,
+    "conceito": "Igualdade em JavaScript",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Em JavaScript, == permite conversão de tipos na comparação; === compara sem conversão de tipos. Exemplo: 5 == '5' é true; 5 === '5' é false.",
+    "nao_confundir": [
+      {
+        "conceito": "Atribuição",
+        "diferenca": "= atribui um valor; == e === comparam valores."
+      }
+    ],
+    "atencao": "Em JavaScript, === entre objetos só resulta true se os dois forem o mesmo objeto.",
+    "fonte": "MDN Web Docs, Strict equality: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Strict_equality",
+    "tags": [
+      "javascript",
+      "operadores",
+      "igualdade"
+    ]
+  },
+  {
+    "id": "card-dev-n1-058",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "JavaScript e TypeScript",
+    "nivel": 1,
+    "conceito": "Promise e async/await",
+    "termo_ingles": "Promise, async/await",
+    "traducao": "promessa, sintaxe para operações assíncronas",
+    "resumo": "Em JavaScript, Promise representa resultado futuro; async/await facilita trabalhar com esse resultado. Exemplo: async function f() { return 5; } devolve Promise.",
+    "nao_confundir": [
+      {
+        "conceito": "Await",
+        "diferenca": "Promise representa resultado futuro; await aguarda sua resolução dentro de execução assíncrona."
+      }
+    ],
+    "atencao": "Await pausa só a função assíncrona até a Promise se resolver; nunca bloqueia a thread principal.",
+    "fonte": "MDN Web Docs, await: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await",
+    "tags": [
+      "javascript",
+      "promises",
+      "async-await"
+    ]
+  },
+  {
+    "id": "card-dev-n1-059",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "JavaScript e TypeScript",
+    "nivel": 1,
+    "conceito": "TypeScript",
+    "termo_ingles": "TypeScript",
+    "traducao": "linguagem JavaScript com sistema de tipos",
+    "resumo": "TypeScript acrescenta verificação estática de tipos ao JavaScript e gera JavaScript para execução. Exemplo: let idade: number = 20.",
+    "nao_confundir": [
+      {
+        "conceito": "JavaScript",
+        "diferenca": "TypeScript verifica tipos durante o desenvolvimento; JavaScript executa sem exigir essas declarações."
+      }
+    ],
+    "atencao": "Os tipos do TypeScript geralmente são removidos na geração de JavaScript; não realizam validação automática em execução.",
+    "fonte": "Microsoft, TypeScript Handbook, The Basics: https://www.typescriptlang.org/docs/handbook/2/basic-types.html",
+    "tags": [
+      "typescript",
+      "tipagem"
+    ]
+  },
+  {
+    "id": "card-dev-n1-060",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "JavaScript e TypeScript",
+    "nivel": 1,
+    "conceito": "Tipagem estática e dinâmica",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Tipagem estática verifica tipos antes da execução; dinâmica verifica operações durante a execução. Exemplo: em TypeScript, let n: number = \"a\" gera erro antes de rodar.",
+    "nao_confundir": [
+      {
+        "conceito": "Tipagem forte",
+        "diferenca": "Estática ou dinâmica indica quando se verifica o tipo; forte indica pouca conversão automática."
+      }
+    ],
+    "atencao": "JavaScript só oferece tipagem dinâmica: é preciso executar o código para ver o que acontece.",
+    "fonte": "Microsoft, TypeScript Handbook, The Basics: https://www.typescriptlang.org/docs/handbook/2/basic-types.html",
+    "tags": [
+      "typescript",
+      "tipagem",
+      "javascript"
+    ]
+  },
+  {
+    "id": "card-dev-n1-061",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "C# e .NET",
+    "nivel": 1,
+    "conceito": "C# e plataforma .NET",
+    "termo_ingles": ".NET",
+    "traducao": "plataforma de desenvolvimento e execução",
+    "resumo": "C# é linguagem orientada a objetos e fortemente tipada; .NET fornece ambiente para executar aplicações. Exemplo: Console.WriteLine(5) exibe 5.",
+    "nao_confundir": [
+      {
+        "conceito": "Linguagem e plataforma",
+        "diferenca": "C# define instruções do programa; .NET fornece recursos para executá-lo."
+      }
+    ],
+    "atencao": "O .NET é gratuito, multiplataforma e de código aberto, e roda programas escritos em várias linguagens.",
+    "fonte": "Microsoft Learn, Introduction to .NET: https://learn.microsoft.com/en-us/dotnet/core/introduction",
+    "tags": [
+      "c-sharp",
+      "dotnet"
+    ]
+  },
+  {
+    "id": "card-dev-n1-062",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "C# e .NET",
+    "nivel": 1,
+    "conceito": "Laços de repetição em C#",
+    "termo_ingles": "for, foreach, while",
+    "traducao": "estruturas de repetição",
+    "resumo": "Em C#, for repete com contador e condição; foreach percorre os elementos de uma coleção; while repete enquanto a condição for verdadeira. Exemplo: foreach (var n in lista).",
+    "nao_confundir": [
+      {
+        "conceito": "Do-while",
+        "diferenca": "while pode não executar nenhuma vez; do-while executa pelo menos uma vez."
+      }
+    ],
+    "atencao": "Em C#, while verifica a condição antes de cada repetição; pode não executar nenhuma vez.",
+    "fonte": "Microsoft Learn, Iteration statements: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/iteration-statements",
+    "tags": [
+      "c-sharp",
+      "lacos-de-repeticao"
+    ]
+  },
+  {
+    "id": "card-dev-n1-063",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "C# e .NET",
+    "nivel": 1,
+    "conceito": "Operadores lógicos em C#",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Em C#, && exige que as duas condições sejam verdadeiras; || exige ao menos uma. Exemplo: (3 > 1) && (2 > 5) resulta em false.",
+    "nao_confundir": [
+      {
+        "conceito": "Operadores & e |",
+        "diferenca": "&& pode pular o segundo operando; & sempre avalia os dois."
+      }
+    ],
+    "atencao": "Em C#, && não avalia a direita se a esquerda for false; ||, se a esquerda for true.",
+    "fonte": "Microsoft Learn, C# language reference, Boolean logical operators: https://learn.microsoft.com/dotnet/csharp/language-reference/operators/boolean-logical-operators",
+    "tags": [
+      "c-sharp",
+      "operadores"
+    ]
+  },
+  {
+    "id": "card-dev-n1-064",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "C# e .NET",
+    "nivel": 1,
+    "conceito": "Classes e namespaces em C#",
+    "termo_ingles": "namespace",
+    "traducao": "espaço de nomes",
+    "resumo": "Em C#, classe define objetos; namespace organiza nomes de tipos para evitar conflitos. Exemplo: namespace Banco { class Conta {} }.",
+    "nao_confundir": [
+      {
+        "conceito": "Namespace",
+        "diferenca": "Classe define um tipo; namespace agrupa nomes de tipos relacionados."
+      }
+    ],
+    "atencao": "Namespace agrupa tipos relacionados e evita colisão de nomes; o nome completo, como System.Console, identifica o tipo.",
+    "fonte": "Microsoft Learn, Namespaces: https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/namespaces",
+    "tags": [
+      "c-sharp",
+      "dotnet"
+    ]
+  },
+  {
+    "id": "card-dev-n1-065",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "C# e .NET",
+    "nivel": 1,
+    "conceito": "Tipos de valor e referência",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Em C#, tipo de valor guarda a própria instância; tipo de referência guarda uma referência a ela. Exemplo: int b = a; mudar b não altera a.",
+    "nao_confundir": [
+      {
+        "conceito": "Tipo de referência",
+        "diferenca": "Copiar valor duplica dados; copiar referência mantém acesso ao mesmo objeto."
+      }
+    ],
+    "atencao": "Em C#, operações em uma variável de tipo de valor afetam só a instância guardada nela.",
+    "fonte": "Microsoft Learn, Value types: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/value-types",
+    "tags": [
+      "c-sharp",
+      "dotnet"
+    ]
   }
 ]
