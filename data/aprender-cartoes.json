@@ -17857,5 +17857,593 @@
     "tags": [
       "politica-macroprudencial-e-estabilidade-financeira"
     ]
+  },
+  {
+    "id": "card-est-n1-001",
+    "materia": "Estatística e Econometria",
+    "assunto": "Distribuições de probabilidade, esperança matemática, momentos, esperança condicionais",
+    "nivel": 1,
+    "conceito": "Variável aleatória",
+    "termo_ingles": "random variable",
+    "traducao": "variável aleatória",
+    "resumo": "Variável aleatória associa um número ao resultado de um experimento incerto. Exemplo: número de caras em dois lançamentos: 0, 1 ou 2.",
+    "nao_confundir": [
+      {
+        "conceito": "Evento",
+        "diferenca": "Evento é um conjunto de resultados; a variável dá um número a cada resultado."
+      }
+    ],
+    "atencao": "A variável é descrita em palavras (X), e seus valores possíveis, em números (x).",
+    "fonte": "OpenStax, Introductory Statistics 2e, cap. 4, introdução.",
+    "tags": [
+      "distribuicoes-de-probabilidade-esperanca-matematica-momentos-esperanca-condicionais"
+    ]
+  },
+  {
+    "id": "card-est-n1-002",
+    "materia": "Estatística e Econometria",
+    "assunto": "Distribuições de probabilidade, esperança matemática, momentos, esperança condicionais",
+    "nivel": 1,
+    "conceito": "Distribuição de probabilidade",
+    "termo_ingles": "probability distribution",
+    "traducao": "distribuição de probabilidade",
+    "resumo": "Distribuição de probabilidade associa chances aos valores de uma variável aleatória. Exemplo: moeda honesta: 0 caras = 50%; 1 cara = 50%, em um lançamento.",
+    "nao_confundir": [
+      {
+        "conceito": "Variável contínua",
+        "diferenca": "Na contínua, a probabilidade vem de intervalos; um ponto isolado tem probabilidade zero."
+      }
+    ],
+    "atencao": "Na distribuição discreta, cada probabilidade fica entre 0 e 1, e a soma de todas é 1.",
+    "fonte": "OpenStax, Introductory Statistics 2e, seção 4.1.",
+    "tags": [
+      "distribuicoes-de-probabilidade-esperanca-matematica-momentos-esperanca-condicionais"
+    ]
+  },
+  {
+    "id": "card-est-n1-003",
+    "materia": "Estatística e Econometria",
+    "assunto": "Distribuições de probabilidade, esperança matemática, momentos, esperança condicionais",
+    "nivel": 1,
+    "conceito": "Esperança matemática",
+    "termo_ingles": "expected value",
+    "traducao": "valor esperado",
+    "resumo": "Esperança matemática é a média dos valores ponderados pelas respectivas probabilidades. Exemplo: 0 com 25% e 2 com 75% resulta em 1,5.",
+    "nao_confundir": [
+      {
+        "conceito": "Média de uma amostra",
+        "diferenca": "A média amostral usa observações coletadas; a esperança usa probabilidades da distribuição."
+      }
+    ],
+    "atencao": "A esperança pode ser 1,5 mesmo quando a variável só assume 0 ou 2.",
+    "fonte": "OpenStax, Introductory Statistics 2e, seção 4.2.",
+    "tags": [
+      "distribuicoes-de-probabilidade-esperanca-matematica-momentos-esperanca-condicionais"
+    ]
+  },
+  {
+    "id": "card-est-n1-004",
+    "materia": "Estatística e Econometria",
+    "assunto": "Distribuições de probabilidade, esperança matemática, momentos, esperança condicionais",
+    "nivel": 1,
+    "conceito": "Variância de variável aleatória",
+    "termo_ingles": "variance",
+    "traducao": "variância",
+    "resumo": "Variância mede a dispersão dos valores em torno da esperança. Exemplo: 0 e 2 com chances iguais têm esperança 1 e variância 1.",
+    "nao_confundir": [
+      {
+        "conceito": "Desvio padrão",
+        "diferenca": "O desvio padrão é a raiz quadrada da variância e usa a unidade original."
+      }
+    ],
+    "atencao": "Somar uma constante não altera a variância; multiplicar por 2 multiplica a variância por 4.",
+    "fonte": "OpenStax, Introductory Statistics 2e, seção 4.2; H. Pishro-Nik, Introduction to Probability, Statistics and Random Processes (probabilitycourse.com), seção 3.2.4.",
+    "tags": [
+      "distribuicoes-de-probabilidade-esperanca-matematica-momentos-esperanca-condicionais"
+    ]
+  },
+  {
+    "id": "card-est-n1-005",
+    "materia": "Estatística e Econometria",
+    "assunto": "Lei dos grandes números",
+    "nivel": 1,
+    "conceito": "Lei dos grandes números",
+    "termo_ingles": "law of large numbers",
+    "traducao": "lei dos grandes números",
+    "resumo": "Com mais observações, a média da amostra se aproxima da média da população, para variáveis i.i.d. com esperança finita. Exemplo: proporção de caras tende a 50%.",
+    "nao_confundir": [
+      {
+        "conceito": "Teorema central do limite",
+        "diferenca": "O teorema trata da distribuição aproximadamente normal da média; a lei, da convergência."
+      }
+    ],
+    "atencao": "Com mais repetições, a frequência relativa e a probabilidade teórica ficam cada vez mais próximas.",
+    "fonte": "OpenStax, Introductory Statistics 2e, seção 4.2; H. Pishro-Nik, Introduction to Probability, Statistics and Random Processes (probabilitycourse.com), seção 7.1.1.",
+    "tags": [
+      "lei-dos-grandes-numeros"
+    ]
+  },
+  {
+    "id": "card-est-n1-006",
+    "materia": "Estatística e Econometria",
+    "assunto": "Lei dos grandes números",
+    "nivel": 1,
+    "conceito": "Convergência em probabilidade",
+    "termo_ingles": "convergence in probability",
+    "traducao": "convergência em probabilidade",
+    "resumo": "Convergência em probabilidade: a chance de a sequência se afastar do limite mais que qualquer margem fixa tende a zero. Exemplo: proporção de caras longe de 50% fica rara.",
+    "nao_confundir": [
+      {
+        "conceito": "Convergência quase certa",
+        "diferenca": "Quase certa é mais forte: a sequência converge com probabilidade um."
+      }
+    ],
+    "atencao": "A probabilidade de um desvio fixo diminui; não há garantia para uma amostra específica.",
+    "fonte": "H. Pishro-Nik, Introduction to Probability, Statistics and Random Processes (probabilitycourse.com), seção 7.2.5.",
+    "tags": [
+      "lei-dos-grandes-numeros"
+    ]
+  },
+  {
+    "id": "card-est-n1-007",
+    "materia": "Estatística e Econometria",
+    "assunto": "Lei dos grandes números",
+    "nivel": 1,
+    "conceito": "Lei forte dos grandes números",
+    "termo_ingles": "strong law of large numbers",
+    "traducao": "lei forte dos grandes números",
+    "resumo": "A lei forte estabelece que a média amostral converge quase certamente à média populacional sob condições apropriadas. Exemplo: média de lançamentos independentes de moeda honesta aproxima-se de 50%.",
+    "nao_confundir": [
+      {
+        "conceito": "Lei fraca",
+        "diferenca": "A lei fraca dá convergência em probabilidade, exigência menos forte que a quase certa."
+      }
+    ],
+    "atencao": "A lei forte vale para variáveis i.i.d. com esperança finita, sem exigir distribuição normal.",
+    "fonte": "H. Pishro-Nik, Introduction to Probability, Statistics and Random Processes (probabilitycourse.com), seções 7.1.1 e 7.2.7.",
+    "tags": [
+      "lei-dos-grandes-numeros"
+    ]
+  },
+  {
+    "id": "card-est-n1-008",
+    "materia": "Estatística e Econometria",
+    "assunto": "Lei dos grandes números",
+    "nivel": 1,
+    "conceito": "Falácia do jogador",
+    "termo_ingles": "gambler's fallacy",
+    "traducao": "falácia do jogador",
+    "resumo": "Falácia do jogador é esperar compensação imediata de resultados independentes. Exemplo: após cinco caras, a próxima moeda honesta continua com 50% de chance de coroa.",
+    "nao_confundir": [
+      {
+        "conceito": "Lei dos grandes números",
+        "diferenca": "A lei descreve médias de muitas repetições, não compensação no próximo resultado."
+      }
+    ],
+    "atencao": "A lei dos grandes números fala de proporções em muitas repetições, não de compensar desvios recentes.",
+    "fonte": "OpenStax, Introductory Statistics 2e, seções 3.2 e 4.2.",
+    "tags": [
+      "lei-dos-grandes-numeros"
+    ]
+  },
+  {
+    "id": "card-est-n1-009",
+    "materia": "Estatística e Econometria",
+    "assunto": "Inferência: Estimação de parâmetros por ponto e por intervalo de confiança; Testes de hipóteses; Amostragem",
+    "nivel": 1,
+    "conceito": "Amostragem aleatória",
+    "termo_ingles": "simple random sampling",
+    "traducao": "amostragem aleatória simples",
+    "resumo": "Amostragem aleatória simples seleciona indivíduos de modo que cada conjunto de tamanho fixo tenha igual chance. Exemplo: sortear 10 nomes entre 100.",
+    "nao_confundir": [
+      {
+        "conceito": "Amostragem por conveniência",
+        "diferenca": "Conveniência usa quem está disponível; não é aleatória."
+      }
+    ],
+    "atencao": "Amostra por conveniência pode dar bons resultados em alguns casos e resultados muito enviesados em outros.",
+    "fonte": "OpenStax, Introductory Statistics 2e, seção 1.2.",
+    "tags": [
+      "inferencia-estimacao-de-parametros-por-ponto-e-por-intervalo-de-confianca-testes-de-hipoteses-amostragem"
+    ]
+  },
+  {
+    "id": "card-est-n1-010",
+    "materia": "Estatística e Econometria",
+    "assunto": "Inferência: Estimação de parâmetros por ponto e por intervalo de confiança; Testes de hipóteses; Amostragem",
+    "nivel": 1,
+    "conceito": "Estimador",
+    "termo_ingles": "estimator",
+    "traducao": "estimador",
+    "resumo": "Estimador é uma regra que calcula um valor para uma característica populacional usando a amostra. Exemplo: calcular a média de 4 e 6 estima a média populacional.",
+    "nao_confundir": [
+      {
+        "conceito": "Estimativa",
+        "diferenca": "Estimativa é o resultado numérico obtido ao aplicar o estimador à amostra."
+      }
+    ],
+    "atencao": "A média amostral é a estimativa pontual usada para a média populacional desconhecida.",
+    "fonte": "OpenStax, Introductory Statistics 2e, seção 8.1.",
+    "tags": [
+      "inferencia-estimacao-de-parametros-por-ponto-e-por-intervalo-de-confianca-testes-de-hipoteses-amostragem"
+    ]
+  },
+  {
+    "id": "card-est-n1-011",
+    "materia": "Estatística e Econometria",
+    "assunto": "Inferência: Estimação de parâmetros por ponto e por intervalo de confiança; Testes de hipóteses; Amostragem",
+    "nivel": 1,
+    "conceito": "Intervalo de confiança",
+    "termo_ingles": "confidence interval",
+    "traducao": "intervalo de confiança",
+    "resumo": "Intervalo de confiança é construído por um método que cobre o valor populacional em certa proporção de amostras repetidas. Exemplo: intervalo calculado de 48 a 52.",
+    "nao_confundir": [
+      {
+        "conceito": "Estimativa pontual",
+        "diferenca": "Estimativa pontual fornece um único número; intervalo fornece uma faixa de valores."
+      }
+    ],
+    "atencao": "Confiança de 95% refere-se ao método, não à chance do parâmetro fixo no intervalo observado.",
+    "fonte": "OpenStax, Introductory Statistics 2e, seção 8.1.",
+    "tags": [
+      "inferencia-estimacao-de-parametros-por-ponto-e-por-intervalo-de-confianca-testes-de-hipoteses-amostragem"
+    ]
+  },
+  {
+    "id": "card-est-n1-012",
+    "materia": "Estatística e Econometria",
+    "assunto": "Inferência: Estimação de parâmetros por ponto e por intervalo de confiança; Testes de hipóteses; Amostragem",
+    "nivel": 1,
+    "conceito": "Valor-p",
+    "termo_ingles": "p-value",
+    "traducao": "valor-p",
+    "resumo": "Valor-p é a probabilidade, supondo verdadeira a hipótese nula, de obter resultado igual ou mais extremo que o da amostra. Exemplo: valor-p de 0,03.",
+    "nao_confundir": [
+      {
+        "conceito": "Probabilidade de H0 ser verdadeira",
+        "diferenca": "O valor-p supõe H0 verdadeira; não mede a chance de H0 ser verdadeira."
+      }
+    ],
+    "atencao": "Rejeita-se a hipótese nula quando o nível de significância α é maior que o valor-p.",
+    "fonte": "OpenStax, Introductory Statistics 2e, seção 9.4.",
+    "tags": [
+      "inferencia-estimacao-de-parametros-por-ponto-e-por-intervalo-de-confianca-testes-de-hipoteses-amostragem"
+    ]
+  },
+  {
+    "id": "card-est-n1-013",
+    "materia": "Estatística e Econometria",
+    "assunto": "Regressão simples e múltipla",
+    "nivel": 1,
+    "conceito": "Reta de regressão",
+    "termo_ingles": "regression line",
+    "traducao": "reta de regressão",
+    "resumo": "Reta de regressão prevê a variável resposta a partir de uma explicativa. Exemplo: previsão = 2 + 3 × horas: 2 com zero horas, mais 3 por hora.",
+    "nao_confundir": [
+      {
+        "conceito": "Correlação",
+        "diferenca": "Correlação mede associação linear; regressão fornece uma equação para estimar valores."
+      }
+    ],
+    "atencao": "Associação não é causalidade: a reta não prova que mais horas causam a mudança prevista.",
+    "fonte": "Penn State, STAT 501, seções 1.2 e 1.5.",
+    "tags": [
+      "regressao-simples-e-multipla"
+    ]
+  },
+  {
+    "id": "card-est-n1-014",
+    "materia": "Estatística e Econometria",
+    "assunto": "Regressão simples e múltipla",
+    "nivel": 1,
+    "conceito": "Resíduo de regressão",
+    "termo_ingles": "residual",
+    "traducao": "resíduo",
+    "resumo": "Resíduo é a diferença entre o valor observado e o previsto pela regressão. Exemplo: observado 10 e previsto 8 produzem resíduo 2.",
+    "nao_confundir": [
+      {
+        "conceito": "Erro do modelo",
+        "diferenca": "O erro envolve a relação populacional desconhecida; o resíduo usa a previsão estimada."
+      }
+    ],
+    "atencao": "Resíduos podem ser positivos, negativos ou zero; não são necessariamente iguais aos erros populacionais.",
+    "fonte": "Penn State, STAT 501, seção 1.2.",
+    "tags": [
+      "regressao-simples-e-multipla"
+    ]
+  },
+  {
+    "id": "card-est-n1-015",
+    "materia": "Estatística e Econometria",
+    "assunto": "Regressão simples e múltipla",
+    "nivel": 1,
+    "conceito": "Mínimos quadrados ordinários",
+    "termo_ingles": "ordinary least squares",
+    "traducao": "mínimos quadrados ordinários",
+    "resumo": "Mínimos quadrados ordinários escolhe coeficientes para minimizar a soma dos quadrados dos resíduos. Exemplo: resíduos 2 e −1 geram soma 2² + 1² = 5.",
+    "nao_confundir": [
+      {
+        "conceito": "Soma dos resíduos",
+        "diferenca": "Somar resíduos com sinais pode gerar cancelamentos; quadrados evitam esse cancelamento."
+      }
+    ],
+    "atencao": "Ajustar por mínimos quadrados não garante interpretação causal dos coeficientes.",
+    "fonte": "Penn State, STAT 501, seções 1.2 e 1.5.",
+    "tags": [
+      "regressao-simples-e-multipla"
+    ]
+  },
+  {
+    "id": "card-est-n1-016",
+    "materia": "Estatística e Econometria",
+    "assunto": "Regressão simples e múltipla",
+    "nivel": 1,
+    "conceito": "Coeficiente de determinação",
+    "termo_ingles": "coefficient of determination",
+    "traducao": "coeficiente de determinação",
+    "resumo": "R² é a proporção da variação da resposta reduzida ao considerar os preditores do modelo. Exemplo: R² = 0,8 indica 80%.",
+    "nao_confundir": [
+      {
+        "conceito": "Correlação",
+        "diferenca": "Correlação mede associação linear entre duas variáveis; R² avalia o ajuste da regressão."
+      }
+    ],
+    "atencao": "O R² só pode subir ao incluir variáveis; o R² ajustado penaliza preditores extras.",
+    "fonte": "Penn State, STAT 501, seções 1.5 e 10.3.",
+    "tags": [
+      "regressao-simples-e-multipla"
+    ]
+  },
+  {
+    "id": "card-est-n1-017",
+    "materia": "Estatística e Econometria",
+    "assunto": "Processos estocásticos",
+    "nivel": 1,
+    "conceito": "Processo estocástico",
+    "termo_ingles": "stochastic process",
+    "traducao": "processo estocástico",
+    "resumo": "Processo estocástico é uma sequência de variáveis aleatórias associadas a momentos ou posições. Exemplo: quantidade incerta de atendimentos a cada hora.",
+    "nao_confundir": [
+      {
+        "conceito": "Variável aleatória",
+        "diferenca": "Uma variável aleatória descreve um resultado incerto; o processo reúne resultados indexados no tempo."
+      }
+    ],
+    "atencao": "Um processo pode apresentar dependência entre valores de horas consecutivas.",
+    "fonte": "H. Pishro-Nik, Introduction to Probability, Statistics and Random Processes (probabilitycourse.com), seção 10.1.0; Penn State, STAT 510, seção 1.1.",
+    "tags": [
+      "processos-estocasticos"
+    ]
+  },
+  {
+    "id": "card-est-n1-018",
+    "materia": "Estatística e Econometria",
+    "assunto": "Processos estocásticos",
+    "nivel": 1,
+    "conceito": "Trajetória de um processo",
+    "termo_ingles": "sample path",
+    "traducao": "trajetória amostral",
+    "resumo": "Trajetória é a sequência de valores efetivamente observados em uma realização do processo. Exemplo: atendimentos por hora: 2, 4, 3.",
+    "nao_confundir": [
+      {
+        "conceito": "Processo estocástico",
+        "diferenca": "O processo descreve resultados possíveis; a trajetória mostra uma sequência realizada."
+      }
+    ],
+    "atencao": "Cada trajetória possível também é chamada de realização ou função amostral.",
+    "fonte": "H. Pishro-Nik, Introduction to Probability, Statistics and Random Processes (probabilitycourse.com), seção 10.1.0.",
+    "tags": [
+      "processos-estocasticos"
+    ]
+  },
+  {
+    "id": "card-est-n1-019",
+    "materia": "Estatística e Econometria",
+    "assunto": "Processos estocásticos",
+    "nivel": 1,
+    "conceito": "Ruído branco",
+    "termo_ingles": "white noise",
+    "traducao": "ruído branco",
+    "resumo": "Ruído branco é um processo com média zero, variância constante e ausência de correlação entre períodos distintos. Exemplo: série que flutua ao redor de zero sem padrão.",
+    "nao_confundir": [
+      {
+        "conceito": "Independência",
+        "diferenca": "Ausência de correlação não garante independência entre os valores do processo."
+      }
+    ],
+    "atencao": "Ruído branco não precisa seguir distribuição normal.",
+    "fonte": "A. Guntuboyina, Statistics 153 (Time Series), Lecture Five, UC Berkeley, 2012; A. Kipnis, notas de STATS 207 (séries temporais), lição 2.",
+    "tags": [
+      "processos-estocasticos"
+    ]
+  },
+  {
+    "id": "card-est-n1-020",
+    "materia": "Estatística e Econometria",
+    "assunto": "Processos estocásticos",
+    "nivel": 1,
+    "conceito": "Passeio aleatório",
+    "termo_ingles": "random walk",
+    "traducao": "passeio aleatório",
+    "resumo": "Passeio aleatório soma ao valor anterior uma nova variação aleatória. Exemplo: começa em 5; variações +2 e −1 produzem 7 e 6.",
+    "nao_confundir": [
+      {
+        "conceito": "Ruído branco",
+        "diferenca": "Ruído branco descreve variações sem correlação temporal; passeio aleatório acumula essas variações."
+      }
+    ],
+    "atencao": "Com variações independentes de variância positiva, a dispersão do passeio aumenta a cada período.",
+    "fonte": "A. Kipnis, notas de STATS 207 (séries temporais), lição 2.",
+    "tags": [
+      "processos-estocasticos"
+    ]
+  },
+  {
+    "id": "card-est-n1-021",
+    "materia": "Estatística e Econometria",
+    "assunto": "Econometria de séries temporais: Vetor auto regressivo; estacionaridade",
+    "nivel": 1,
+    "conceito": "Série temporal",
+    "termo_ingles": "time series",
+    "traducao": "série temporal",
+    "resumo": "Série temporal reúne observações de uma variável em diferentes momentos. Exemplo: inflação mensal de 2%, 1% e 3% em três meses.",
+    "nao_confundir": [
+      {
+        "conceito": "Dados em corte transversal",
+        "diferenca": "Corte transversal observa unidades distintas em um período; série temporal acompanha momentos."
+      }
+    ],
+    "atencao": "A ordem dos períodos importa porque observações próximas podem estar relacionadas.",
+    "fonte": "Penn State, STAT 510, seção 1.1.",
+    "tags": [
+      "econometria-de-series-temporais-vetor-auto-regressivo-estacionaridade"
+    ]
+  },
+  {
+    "id": "card-est-n1-022",
+    "materia": "Estatística e Econometria",
+    "assunto": "Econometria de séries temporais: Vetor auto regressivo; estacionaridade",
+    "nivel": 1,
+    "conceito": "Defasagem temporal",
+    "termo_ingles": "lag",
+    "traducao": "defasagem",
+    "resumo": "Defasagem é o valor de uma variável em um período anterior. Exemplo: vendas de março 20; em abril, a defasagem de um mês vale 20.",
+    "nao_confundir": [
+      {
+        "conceito": "Valor contemporâneo",
+        "diferenca": "Valor contemporâneo pertence ao período atual; defasagem pertence a período anterior."
+      }
+    ],
+    "atencao": "A defasagem de um período não é o valor do período seguinte.",
+    "fonte": "Penn State, STAT 510, seção 1.1.",
+    "tags": [
+      "econometria-de-series-temporais-vetor-auto-regressivo-estacionaridade"
+    ]
+  },
+  {
+    "id": "card-est-n1-023",
+    "materia": "Estatística e Econometria",
+    "assunto": "Econometria de séries temporais: Vetor auto regressivo; estacionaridade",
+    "nivel": 1,
+    "conceito": "Estacionariedade fraca",
+    "termo_ingles": "weak stationarity",
+    "traducao": "estacionariedade fraca",
+    "resumo": "Estacionariedade fraca exige média e variância constantes e covariância dependente apenas da distância entre períodos. Exemplo: oscilações estáveis ao redor de 10.",
+    "nao_confundir": [
+      {
+        "conceito": "Média constante",
+        "diferenca": "Ter média constante, sozinho, não garante variância e covariâncias estáveis."
+      }
+    ],
+    "atencao": "No passeio aleatório a variância cresce com o tempo; por isso ele não é fracamente estacionário.",
+    "fonte": "A. Guntuboyina, Statistics 153 (Time Series), Lecture Five, UC Berkeley, 2012; A. Kipnis, notas de STATS 207 (séries temporais), lição 2.",
+    "tags": [
+      "econometria-de-series-temporais-vetor-auto-regressivo-estacionaridade"
+    ]
+  },
+  {
+    "id": "card-est-n1-024",
+    "materia": "Estatística e Econometria",
+    "assunto": "Econometria de séries temporais: Vetor auto regressivo; estacionaridade",
+    "nivel": 1,
+    "conceito": "Vetor autorregressivo",
+    "termo_ingles": "vector autoregression",
+    "traducao": "vetor autorregressivo",
+    "resumo": "Vetor autorregressivo modela várias séries usando valores passados delas próprias e das outras. Exemplo: inflação e juros atuais relacionados aos valores de meses anteriores.",
+    "nao_confundir": [
+      {
+        "conceito": "Autorregressão simples",
+        "diferenca": "Autorregressão simples usa o passado de uma série; vetor autorregressivo usa várias séries."
+      }
+    ],
+    "atencao": "No VAR, todas as variáveis entram como dependentes, cada uma com sua própria equação.",
+    "fonte": "Penn State, STAT 510, Lição 11; Stata, manual [TS] var.",
+    "tags": [
+      "econometria-de-series-temporais-vetor-auto-regressivo-estacionaridade"
+    ]
+  },
+  {
+    "id": "card-est-n1-025",
+    "materia": "Estatística e Econometria",
+    "assunto": "Econometria de dados em painel: Efeito fixo; Efeito aleatório. Técnicas de identificação",
+    "nivel": 1,
+    "conceito": "Dados em painel",
+    "termo_ingles": "panel data",
+    "traducao": "dados em painel",
+    "resumo": "Dados em painel acompanham as mesmas unidades em vários períodos. Exemplo: renda das mesmas 10 famílias em 2024 e 2025.",
+    "nao_confundir": [
+      {
+        "conceito": "Série temporal",
+        "diferenca": "Série temporal acompanha uma variável no tempo; painel acompanha várias unidades ao longo do tempo."
+      }
+    ],
+    "atencao": "Observar famílias diferentes em cada ano não constitui painel das mesmas famílias.",
+    "fonte": "O. Torres-Reyna, Panel Data Analysis: Fixed and Random Effects, Princeton University.",
+    "tags": [
+      "econometria-de-dados-em-painel-efeito-fixo-efeito-aleatorio-tecnicas-de-identificacao"
+    ]
+  },
+  {
+    "id": "card-est-n1-026",
+    "materia": "Estatística e Econometria",
+    "assunto": "Econometria de dados em painel: Efeito fixo; Efeito aleatório. Técnicas de identificação",
+    "nivel": 1,
+    "conceito": "Heterogeneidade individual não observada",
+    "termo_ingles": "unobserved individual heterogeneity",
+    "traducao": "heterogeneidade individual não observada",
+    "resumo": "Heterogeneidade individual não observada é uma característica própria de cada unidade que não foi medida. Exemplo: habilidade estável de cada trabalhador.",
+    "nao_confundir": [
+      {
+        "conceito": "Viés de variável omitida",
+        "diferenca": "Surge quando a característica omitida se correlaciona com as variáveis explicativas."
+      }
+    ],
+    "atencao": "Dados em painel ajudam a tratar o viés de variável omitida causado por heterogeneidade.",
+    "fonte": "O. Torres-Reyna, Panel Data Analysis: Fixed and Random Effects, Princeton University.",
+    "tags": [
+      "econometria-de-dados-em-painel-efeito-fixo-efeito-aleatorio-tecnicas-de-identificacao"
+    ]
+  },
+  {
+    "id": "card-est-n1-027",
+    "materia": "Estatística e Econometria",
+    "assunto": "Econometria de dados em painel: Efeito fixo; Efeito aleatório. Técnicas de identificação",
+    "nivel": 1,
+    "conceito": "Efeitos fixos",
+    "termo_ingles": "fixed effects",
+    "traducao": "efeitos fixos",
+    "resumo": "Efeitos fixos usam a variação dentro de cada unidade ao longo do tempo, removendo características constantes. Exemplo: mudanças salariais do mesmo trabalhador.",
+    "nao_confundir": [
+      {
+        "conceito": "Efeitos aleatórios",
+        "diferenca": "Efeitos aleatórios pressupõem ausência de correlação entre característica individual e variáveis explicativas."
+      }
+    ],
+    "atencao": "Variáveis constantes no tempo, como sexo, são absorvidas pelo intercepto e não têm coeficiente estimado.",
+    "fonte": "O. Torres-Reyna, Panel Data Analysis: Fixed and Random Effects, Princeton University.",
+    "tags": [
+      "econometria-de-dados-em-painel-efeito-fixo-efeito-aleatorio-tecnicas-de-identificacao"
+    ]
+  },
+  {
+    "id": "card-est-n1-028",
+    "materia": "Estatística e Econometria",
+    "assunto": "Econometria de dados em painel: Efeito fixo; Efeito aleatório. Técnicas de identificação",
+    "nivel": 1,
+    "conceito": "Efeitos aleatórios",
+    "termo_ingles": "random effects",
+    "traducao": "efeitos aleatórios",
+    "resumo": "Efeitos aleatórios modelam diferenças individuais não observadas supondo ausência de correlação delas com variáveis explicativas. Exemplo: acompanhar escolas com diferenças individuais não relacionadas aos fatores estudados.",
+    "nao_confundir": [
+      {
+        "conceito": "Efeitos fixos",
+        "diferenca": "Efeitos fixos permitem correlação entre características individuais constantes e variáveis explicativas."
+      }
+    ],
+    "atencao": "O teste de Hausman verifica se as características individuais se correlacionam com os regressores.",
+    "fonte": "O. Torres-Reyna, Panel Data Analysis: Fixed and Random Effects, Princeton University.",
+    "tags": [
+      "econometria-de-dados-em-painel-efeito-fixo-efeito-aleatorio-tecnicas-de-identificacao"
+    ]
   }
 ]
