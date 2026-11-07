@@ -17353,5 +17353,509 @@
     "tags": [
       "direitos-e-vantagens"
     ]
+  },
+  {
+    "id": "card-eco-n1-051",
+    "materia": "Micro e Macroeconomia",
+    "assunto": "Principais modelos macroeconômicos: modelo clássico, modelo novo-keynesiano, modelos de oferta e demanda agregadas; modelos de crescimento; modelos de escolha intertemporal (consumo, investimento, gastos do governo e conta corrente)",
+    "nivel": 1,
+    "conceito": "Demanda agregada",
+    "termo_ingles": "aggregate demand",
+    "traducao": "demanda agregada",
+    "resumo": "Demanda agregada é o gasto total com bens e serviços domésticos para cada nível geral de preços. Exemplo: gastos de famílias, empresas, governo e exterior.",
+    "nao_confundir": [
+      {
+        "conceito": "Demanda de mercado",
+        "diferenca": "Demanda agregada soma gastos da economia inteira; demanda de mercado trata de um só bem."
+      }
+    ],
+    "atencao": "Basta um componente (consumo, investimento, gasto público ou exportações líquidas) subir para a curva ir à direita.",
+    "fonte": "OpenStax, Principles of Macroeconomics 3e, seções 11.2 e 11.4.",
+    "tags": [
+      "principais-modelos-macroeconomicos-modelo-classico-modelo-novo-keynesiano-modelos-de-oferta-e-demanda-agregadas-modelos-de-crescimento-modelos-de-escolha-intertemporal-consumo-investimento-gastos-do-governo-e-conta-corrente"
+    ]
+  },
+  {
+    "id": "card-eco-n1-052",
+    "materia": "Micro e Macroeconomia",
+    "assunto": "Principais modelos macroeconômicos: modelo clássico, modelo novo-keynesiano, modelos de oferta e demanda agregadas; modelos de crescimento; modelos de escolha intertemporal (consumo, investimento, gastos do governo e conta corrente)",
+    "nivel": 1,
+    "conceito": "Oferta agregada",
+    "termo_ingles": "aggregate supply",
+    "traducao": "oferta agregada",
+    "resumo": "Oferta agregada é a quantidade total de produto (PIB real) que as empresas produzem e vendem a cada nível de preços. Exemplo: produção nacional anual.",
+    "nao_confundir": [
+      {
+        "conceito": "Demanda agregada",
+        "diferenca": "Oferta agregada trata de produção; demanda agregada trata de gasto planejado."
+      }
+    ],
+    "atencao": "No curto prazo a curva é inclinada; no longo prazo é vertical, no nível do PIB potencial.",
+    "fonte": "OpenStax, Principles of Macroeconomics 3e, seções 11.2 e 13.1.",
+    "tags": [
+      "principais-modelos-macroeconomicos-modelo-classico-modelo-novo-keynesiano-modelos-de-oferta-e-demanda-agregadas-modelos-de-crescimento-modelos-de-escolha-intertemporal-consumo-investimento-gastos-do-governo-e-conta-corrente"
+    ]
+  },
+  {
+    "id": "card-eco-n1-053",
+    "materia": "Micro e Macroeconomia",
+    "assunto": "Principais modelos macroeconômicos: modelo clássico, modelo novo-keynesiano, modelos de oferta e demanda agregadas; modelos de crescimento; modelos de escolha intertemporal (consumo, investimento, gastos do governo e conta corrente)",
+    "nivel": 1,
+    "conceito": "Modelo clássico",
+    "termo_ingles": "classical model",
+    "traducao": "modelo clássico",
+    "resumo": "No modelo clássico, preços e salários flexíveis ajustam os mercados e a produção fica no PIB potencial; variáveis nominais não alteram as reais (neutralidade da moeda).",
+    "nao_confundir": [
+      {
+        "conceito": "Visão novo-keynesiana",
+        "diferenca": "Modelo clássico supõe flexibilidade; visão novo-keynesiana admite preços e salários lentos para mudar."
+      }
+    ],
+    "atencao": "No longo prazo, um aumento da demanda agregada termina em preços mais altos, não em mais produção.",
+    "fonte": "OpenStax, Principles of Macroeconomics 3e, seção 13.1.",
+    "tags": [
+      "principais-modelos-macroeconomicos-modelo-classico-modelo-novo-keynesiano-modelos-de-oferta-e-demanda-agregadas-modelos-de-crescimento-modelos-de-escolha-intertemporal-consumo-investimento-gastos-do-governo-e-conta-corrente"
+    ]
+  },
+  {
+    "id": "card-eco-n1-054",
+    "materia": "Micro e Macroeconomia",
+    "assunto": "Principais modelos macroeconômicos: modelo clássico, modelo novo-keynesiano, modelos de oferta e demanda agregadas; modelos de crescimento; modelos de escolha intertemporal (consumo, investimento, gastos do governo e conta corrente)",
+    "nivel": 1,
+    "conceito": "Crescimento econômico",
+    "termo_ingles": "economic growth",
+    "traducao": "crescimento econômico",
+    "resumo": "Crescimento econômico é aumento da produção real de bens e serviços ao longo do tempo. Exemplo: mais máquinas ampliam a produção.",
+    "nao_confundir": [
+      {
+        "conceito": "Recuperação cíclica",
+        "diferenca": "Crescimento amplia capacidade produtiva; recuperação reocupa capacidade ociosa após recessão."
+      }
+    ],
+    "atencao": "Crescimento não depende só de mais máquinas: a tecnologia costuma ser o principal fator.",
+    "fonte": "OpenStax, Principles of Macroeconomics 3e, seção 7.3.",
+    "tags": [
+      "principais-modelos-macroeconomicos-modelo-classico-modelo-novo-keynesiano-modelos-de-oferta-e-demanda-agregadas-modelos-de-crescimento-modelos-de-escolha-intertemporal-consumo-investimento-gastos-do-governo-e-conta-corrente"
+    ]
+  },
+  {
+    "id": "card-eco-n1-055",
+    "materia": "Micro e Macroeconomia",
+    "assunto": "Principais modelos macroeconômicos: modelo clássico, modelo novo-keynesiano, modelos de oferta e demanda agregadas; modelos de crescimento; modelos de escolha intertemporal (consumo, investimento, gastos do governo e conta corrente)",
+    "nivel": 1,
+    "conceito": "Escolha intertemporal",
+    "termo_ingles": "intertemporal choice",
+    "traducao": "escolha intertemporal",
+    "resumo": "Escolha intertemporal decide quanto consumir hoje e quanto guardar para consumir depois. Exemplo: poupar 100 reais para o próximo ano.",
+    "nao_confundir": [
+      {
+        "conceito": "Restrição orçamentária intertemporal",
+        "diferenca": "Escolha intertemporal decide a divisão; a restrição mostra as combinações possíveis de consumo."
+      }
+    ],
+    "atencao": "Juros maiores encarecem o consumo presente (efeito substituição), mas enriquecem quem poupa (efeito renda).",
+    "fonte": "OpenStax, Principles of Economics 3e, seção 6.4 (não aberta).",
+    "tags": [
+      "principais-modelos-macroeconomicos-modelo-classico-modelo-novo-keynesiano-modelos-de-oferta-e-demanda-agregadas-modelos-de-crescimento-modelos-de-escolha-intertemporal-consumo-investimento-gastos-do-governo-e-conta-corrente"
+    ]
+  },
+  {
+    "id": "card-eco-n1-056",
+    "materia": "Micro e Macroeconomia",
+    "assunto": "Mercado de trabalho – determinação dos salários no modelo novo-keynesiano e clássico e taxa natural de desemprego",
+    "nivel": 1,
+    "conceito": "Força de trabalho",
+    "termo_ingles": "labor force",
+    "traducao": "força de trabalho",
+    "resumo": "Força de trabalho reúne pessoas de 14 anos ou mais ocupadas ou desocupadas, estas disponíveis e procurando trabalho. Exemplo: 90 ocupados mais 10 desocupados.",
+    "nao_confundir": [
+      {
+        "conceito": "População total",
+        "diferenca": "Força de trabalho inclui ocupados e desocupados; população total inclui também pessoas fora dela."
+      }
+    ],
+    "atencao": "Quem está disponível mas não procurou trabalho, como o desalentado, fica fora da força de trabalho.",
+    "fonte": "IBGE Explica, Desemprego (PNAD Contínua).",
+    "tags": [
+      "mercado-de-trabalho-determinacao-dos-salarios-no-modelo-novo-keynesiano-e-classico-e-taxa-natural-de-desemprego"
+    ]
+  },
+  {
+    "id": "card-eco-n1-057",
+    "materia": "Micro e Macroeconomia",
+    "assunto": "Mercado de trabalho – determinação dos salários no modelo novo-keynesiano e clássico e taxa natural de desemprego",
+    "nivel": 1,
+    "conceito": "Taxa de desocupação",
+    "termo_ingles": "unemployment rate",
+    "traducao": "taxa de desemprego",
+    "resumo": "Taxa de desocupação é desocupados divididos pela força de trabalho, vezes cem. Exemplo: 10 ÷ 100 × 100 = 10%.",
+    "nao_confundir": [
+      {
+        "conceito": "Taxa de participação",
+        "diferenca": "Participação divide a força de trabalho pela população em idade de trabalhar."
+      }
+    ],
+    "atencao": "Estudantes e donas de casa que não procuram trabalho ficam fora do denominador.",
+    "fonte": "IBGE Explica, Desemprego (PNAD Contínua).",
+    "tags": [
+      "mercado-de-trabalho-determinacao-dos-salarios-no-modelo-novo-keynesiano-e-classico-e-taxa-natural-de-desemprego"
+    ]
+  },
+  {
+    "id": "card-eco-n1-058",
+    "materia": "Micro e Macroeconomia",
+    "assunto": "Mercado de trabalho – determinação dos salários no modelo novo-keynesiano e clássico e taxa natural de desemprego",
+    "nivel": 1,
+    "conceito": "Desemprego friccional",
+    "termo_ingles": "frictional unemployment",
+    "traducao": "desemprego friccional",
+    "resumo": "Desemprego friccional surge durante a procura e troca de empregos. Exemplo: profissional deixa vaga e busca outra.",
+    "nao_confundir": [
+      {
+        "conceito": "Desemprego estrutural",
+        "diferenca": "Friccional decorre de busca temporária; estrutural decorre de incompatibilidade persistente entre vagas e trabalhadores."
+      }
+    ],
+    "atencao": "Mesmo com economia aquecida pode existir desemprego friccional.",
+    "fonte": "OpenStax, Principles of Macroeconomics 3e, seção 8.4.",
+    "tags": [
+      "mercado-de-trabalho-determinacao-dos-salarios-no-modelo-novo-keynesiano-e-classico-e-taxa-natural-de-desemprego"
+    ]
+  },
+  {
+    "id": "card-eco-n1-059",
+    "materia": "Micro e Macroeconomia",
+    "assunto": "Mercado de trabalho – determinação dos salários no modelo novo-keynesiano e clássico e taxa natural de desemprego",
+    "nivel": 1,
+    "conceito": "Desemprego estrutural",
+    "termo_ingles": "structural unemployment",
+    "traducao": "desemprego estrutural",
+    "resumo": "Desemprego estrutural ocorre quando habilidades ou localização dos trabalhadores não combinam com vagas disponíveis. Exemplo: vaga exige qualificação inexistente.",
+    "nao_confundir": [
+      {
+        "conceito": "Desemprego cíclico",
+        "diferenca": "Estrutural decorre de descompasso entre vagas e pessoas; cíclico aumenta nas recessões."
+      }
+    ],
+    "atencao": "O desempregado estrutural não tem as habilidades que o mercado de trabalho valoriza.",
+    "fonte": "OpenStax, Principles of Macroeconomics 3e, seção 8.4.",
+    "tags": [
+      "mercado-de-trabalho-determinacao-dos-salarios-no-modelo-novo-keynesiano-e-classico-e-taxa-natural-de-desemprego"
+    ]
+  },
+  {
+    "id": "card-eco-n1-060",
+    "materia": "Micro e Macroeconomia",
+    "assunto": "Mercado de trabalho – determinação dos salários no modelo novo-keynesiano e clássico e taxa natural de desemprego",
+    "nivel": 1,
+    "conceito": "Taxa natural de desemprego",
+    "termo_ingles": "natural rate of unemployment",
+    "traducao": "taxa natural de desemprego",
+    "resumo": "Taxa natural é o desemprego que permanece mesmo com a economia saudável: soma do friccional com o estrutural. Exemplo: trabalhadores mudam de emprego.",
+    "nao_confundir": [
+      {
+        "conceito": "Pleno emprego",
+        "diferenca": "Pleno emprego ocorre na taxa natural; não significa desemprego zero."
+      }
+    ],
+    "atencao": "A taxa natural não é zero e pode mudar ao longo do tempo.",
+    "fonte": "OpenStax, Principles of Macroeconomics 3e, seções 8.4 e 13.1.",
+    "tags": [
+      "mercado-de-trabalho-determinacao-dos-salarios-no-modelo-novo-keynesiano-e-classico-e-taxa-natural-de-desemprego"
+    ]
+  },
+  {
+    "id": "card-eco-n1-061",
+    "materia": "Micro e Macroeconomia",
+    "assunto": "Curva de Phillips, expectativas racionais e inflação",
+    "nivel": 1,
+    "conceito": "Curva de Phillips",
+    "termo_ingles": "Phillips curve",
+    "traducao": "curva de Phillips",
+    "resumo": "Curva de Phillips descreve, no curto prazo, relação inversa entre inflação e desemprego. Exemplo: desemprego cai enquanto a inflação sobe.",
+    "nao_confundir": [
+      {
+        "conceito": "Taxa natural",
+        "diferenca": "Phillips relaciona inflação e desemprego no curto prazo; taxa natural descreve desemprego sem pressão cíclica."
+      }
+    ],
+    "atencao": "No longo prazo a curva é vertical: não há troca permanente entre inflação e desemprego.",
+    "fonte": "OpenStax, Principles of Macroeconomics 3e, seção 13.2.",
+    "tags": [
+      "curva-de-phillips-expectativas-racionais-e-inflacao"
+    ]
+  },
+  {
+    "id": "card-eco-n1-062",
+    "materia": "Micro e Macroeconomia",
+    "assunto": "Curva de Phillips, expectativas racionais e inflação",
+    "nivel": 1,
+    "conceito": "Expectativas adaptativas",
+    "termo_ingles": "adaptive expectations",
+    "traducao": "expectativas adaptativas",
+    "resumo": "Expectativas adaptativas usam inflação passada para prever a futura. Exemplo: inflação de 5% orienta previsão do próximo ano.",
+    "nao_confundir": [
+      {
+        "conceito": "Expectativas racionais",
+        "diferenca": "Adaptativas usam inflação passada; racionais consideram informações disponíveis e o funcionamento da economia."
+      }
+    ],
+    "atencao": "Expectativas adaptativas não acertam necessariamente a inflação efetiva de cada período.",
+    "fonte": "Punjabi University, Macro Economic Analysis, lição 1.1 (expectativas).",
+    "tags": [
+      "curva-de-phillips-expectativas-racionais-e-inflacao"
+    ]
+  },
+  {
+    "id": "card-eco-n1-063",
+    "materia": "Micro e Macroeconomia",
+    "assunto": "Curva de Phillips, expectativas racionais e inflação",
+    "nivel": 1,
+    "conceito": "Expectativas racionais",
+    "termo_ingles": "rational expectations",
+    "traducao": "expectativas racionais",
+    "resumo": "Expectativas racionais usam informações disponíveis e um modelo da economia para prever inflação. Exemplo: previsão considera anúncio crível de política monetária.",
+    "nao_confundir": [
+      {
+        "conceito": "Expectativas adaptativas",
+        "diferenca": "Racionais incorporam informações disponíveis; adaptativas se apoiam em resultados passados."
+      }
+    ],
+    "atencao": "Erros de previsão podem ocorrer, mas não são sistemáticos, pois os agentes usam a teoria econômica.",
+    "fonte": "Munich Personal RePEc Archive, artigo sobre expectativas racionais e teoria monetária (econwpa 0501001).",
+    "tags": [
+      "curva-de-phillips-expectativas-racionais-e-inflacao"
+    ]
+  },
+  {
+    "id": "card-eco-n1-064",
+    "materia": "Micro e Macroeconomia",
+    "assunto": "Curva de Phillips, expectativas racionais e inflação",
+    "nivel": 1,
+    "conceito": "Inflação de demanda",
+    "termo_ingles": "demand-pull inflation",
+    "traducao": "inflação puxada pela demanda",
+    "resumo": "Inflação de demanda surge quando o gasto agregado cresce além da capacidade de oferta. Exemplo: consumo aumenta com fábricas ocupadas.",
+    "nao_confundir": [
+      {
+        "conceito": "Inflação de custos",
+        "diferenca": "Vem de insumos mais caros e pode somar inflação a recessão: estagflação."
+      }
+    ],
+    "atencao": "Aumento de demanda agregada pode elevar simultaneamente produção e preços no curto prazo.",
+    "fonte": "OpenStax, Principles of Macroeconomics 3e, seções 11.3 e 11.4.",
+    "tags": [
+      "curva-de-phillips-expectativas-racionais-e-inflacao"
+    ]
+  },
+  {
+    "id": "card-eco-n1-065",
+    "materia": "Micro e Macroeconomia",
+    "assunto": "Curva de Phillips, expectativas racionais e inflação",
+    "nivel": 1,
+    "conceito": "Inflação inercial",
+    "termo_ingles": "inertial inflation",
+    "traducao": "inflação inercial",
+    "resumo": "Inflação inercial é persistência de aumentos de preços devido à repetição de reajustes baseados na inflação passada. Exemplo: contrato reajustado anualmente.",
+    "nao_confundir": [
+      {
+        "conceito": "Choque de oferta",
+        "diferenca": "Inércia reproduz reajustes passados; choque de oferta altera custos de produção."
+      }
+    ],
+    "atencao": "Inflação passada pode influenciar a futura mesmo sem novo choque inicial.",
+    "fonte": "Cedeplar/UFMG, Seminário de Diamantina 2010, artigo D10A100 (inflação inercial e indexação).",
+    "tags": [
+      "curva-de-phillips-expectativas-racionais-e-inflacao"
+    ]
+  },
+  {
+    "id": "card-eco-n1-066",
+    "materia": "Micro e Macroeconomia",
+    "assunto": "Modelo de paridade coberta e descoberta de taxa de juros. Modelos de exportação e importação. Regimes cambiais e taxa de câmbio de equilíbrio; termos de troca. Paridade de poder de compra",
+    "nivel": 1,
+    "conceito": "Câmbio nominal",
+    "termo_ingles": "nominal exchange rate",
+    "traducao": "taxa de câmbio nominal",
+    "resumo": "Câmbio nominal indica quantos reais compram uma unidade de moeda estrangeira. Exemplo: um dólar custa cinco reais.",
+    "nao_confundir": [
+      {
+        "conceito": "Câmbio real",
+        "diferenca": "Nominal compara moedas; real ajusta essa comparação pelos níveis de preços."
+      }
+    ],
+    "atencao": "Na cotação em reais por dólar, alta indica depreciação do real; queda indica apreciação.",
+    "fonte": "OpenStax, Principles of Economics 3e, seção 29.1.",
+    "tags": [
+      "modelo-de-paridade-coberta-e-descoberta-de-taxa-de-juros-modelos-de-exportacao-e-importacao-regimes-cambiais-e-taxa-de-cambio-de-equilibrio-termos-de-troca-paridade-de-poder-de-compra"
+    ]
+  },
+  {
+    "id": "card-eco-n1-068",
+    "materia": "Micro e Macroeconomia",
+    "assunto": "Modelo de paridade coberta e descoberta de taxa de juros. Modelos de exportação e importação. Regimes cambiais e taxa de câmbio de equilíbrio; termos de troca. Paridade de poder de compra",
+    "nivel": 1,
+    "conceito": "Regime de câmbio flutuante",
+    "termo_ingles": "floating exchange rate",
+    "traducao": "taxa de câmbio flutuante",
+    "resumo": "No câmbio flutuante, oferta e demanda de moedas determinam a cotação. Exemplo: mais procura por dólares eleva seu preço.",
+    "nao_confundir": [
+      {
+        "conceito": "Câmbio fixo",
+        "diferenca": "Flutuante varia conforme mercado; fixo exige manutenção de paridade anunciada pela autoridade."
+      }
+    ],
+    "atencao": "Câmbio flutuante não impede intervenções ocasionais do banco central.",
+    "fonte": "OpenStax, Principles of Economics 3e, seção 29.4.",
+    "tags": [
+      "modelo-de-paridade-coberta-e-descoberta-de-taxa-de-juros-modelos-de-exportacao-e-importacao-regimes-cambiais-e-taxa-de-cambio-de-equilibrio-termos-de-troca-paridade-de-poder-de-compra"
+    ]
+  },
+  {
+    "id": "card-eco-n1-069",
+    "materia": "Micro e Macroeconomia",
+    "assunto": "Modelo de paridade coberta e descoberta de taxa de juros. Modelos de exportação e importação. Regimes cambiais e taxa de câmbio de equilíbrio; termos de troca. Paridade de poder de compra",
+    "nivel": 1,
+    "conceito": "Paridade do poder de compra",
+    "termo_ingles": "purchasing power parity",
+    "traducao": "paridade do poder de compra",
+    "resumo": "Paridade do poder de compra é o câmbio que iguala o preço de cestas equivalentes entre países. Exemplo: cesta de 10 reais ou 2 dólares indica 5 reais por dólar.",
+    "nao_confundir": [
+      {
+        "conceito": "Câmbio real",
+        "diferenca": "Se a PPC absoluta vale, o câmbio real é igual a um."
+      }
+    ],
+    "atencao": "País com inflação relativamente alta vê sua moeda perder poder de compra e tende a depreciá-la.",
+    "fonte": "OpenStax, Principles of Economics 3e, seção 29.2.",
+    "tags": [
+      "modelo-de-paridade-coberta-e-descoberta-de-taxa-de-juros-modelos-de-exportacao-e-importacao-regimes-cambiais-e-taxa-de-cambio-de-equilibrio-termos-de-troca-paridade-de-poder-de-compra"
+    ]
+  },
+  {
+    "id": "card-eco-n1-070",
+    "materia": "Micro e Macroeconomia",
+    "assunto": "Modelo de paridade coberta e descoberta de taxa de juros. Modelos de exportação e importação. Regimes cambiais e taxa de câmbio de equilíbrio; termos de troca. Paridade de poder de compra",
+    "nivel": 1,
+    "conceito": "Paridade coberta de juros",
+    "termo_ingles": "covered interest parity",
+    "traducao": "paridade coberta de juros",
+    "resumo": "Paridade coberta relaciona os juros de duas moedas ao câmbio fixado hoje em contrato a termo para data futura. Exemplo: investidor trava conversão futura.",
+    "nao_confundir": [
+      {
+        "conceito": "Paridade descoberta",
+        "diferenca": "Coberta fixa câmbio futuro por contrato; descoberta depende da cotação futura esperada."
+      }
+    ],
+    "atencao": "Sem arbitragem, o diferencial de juros corresponde à diferença relativa entre câmbio a termo e à vista.",
+    "fonte": "Deutsche Bundesbank, Monthly Report, jul. 2005, Exchange rates and interest rate differentials, p. 29–32.",
+    "tags": [
+      "modelo-de-paridade-coberta-e-descoberta-de-taxa-de-juros-modelos-de-exportacao-e-importacao-regimes-cambiais-e-taxa-de-cambio-de-equilibrio-termos-de-troca-paridade-de-poder-de-compra"
+    ]
+  },
+  {
+    "id": "card-eco-n1-071",
+    "materia": "Micro e Macroeconomia",
+    "assunto": "Política macroprudencial e estabilidade financeira",
+    "nivel": 1,
+    "conceito": "Risco sistêmico",
+    "termo_ingles": "systemic risk",
+    "traducao": "risco sistêmico",
+    "resumo": "Risco sistêmico é possibilidade de problemas financeiros se espalharem e prejudicarem grande parte do sistema. Exemplo: falência bancária afeta outros bancos.",
+    "nao_confundir": [
+      {
+        "conceito": "Risco individual",
+        "diferenca": "Sistêmico ameaça o conjunto financeiro; individual atinge uma instituição isoladamente."
+      }
+    ],
+    "atencao": "Riscos sistêmicos costumam se acumular em períodos de crescimento excessivo do crédito.",
+    "fonte": "BCBS, Guidance for national authorities operating the countercyclical capital buffer (bcbs187), 2010.",
+    "tags": [
+      "politica-macroprudencial-e-estabilidade-financeira"
+    ]
+  },
+  {
+    "id": "card-eco-n1-072",
+    "materia": "Micro e Macroeconomia",
+    "assunto": "Política macroprudencial e estabilidade financeira",
+    "nivel": 1,
+    "conceito": "Política macroprudencial",
+    "termo_ingles": "macroprudential policy",
+    "traducao": "política macroprudencial",
+    "resumo": "Política macroprudencial procura limitar riscos que ameaçam o sistema financeiro inteiro. Exemplo: exigir reservas adicionais de capital na expansão do crédito.",
+    "nao_confundir": [
+      {
+        "conceito": "Supervisão microprudencial",
+        "diferenca": "Macroprudencial considera riscos do sistema; microprudencial acompanha a segurança de cada instituição."
+      }
+    ],
+    "atencao": "O enfoque macroprudencial olha a relação entre instituições, mercados e economia, não cada banco isolado.",
+    "fonte": "Banco Central do Brasil, apresentação à CFT da Câmara sobre o Comef, 13/09/2011.",
+    "tags": [
+      "politica-macroprudencial-e-estabilidade-financeira"
+    ]
+  },
+  {
+    "id": "card-eco-n1-073",
+    "materia": "Micro e Macroeconomia",
+    "assunto": "Política macroprudencial e estabilidade financeira",
+    "nivel": 1,
+    "conceito": "Capital regulatório",
+    "termo_ingles": "regulatory capital",
+    "traducao": "capital regulatório",
+    "resumo": "Capital regulatório é o recurso próprio que o banco deve manter para absorver perdas, medido contra ativos ponderados pelo risco. Exemplo: crédito arriscado exige mais capital.",
+    "nao_confundir": [
+      {
+        "conceito": "Depósitos",
+        "diferenca": "Capital regulatório é recurso próprio do banco; depósitos são obrigações perante clientes."
+      }
+    ],
+    "atencao": "A exigência mínima é uma razão entre capital regulatório e ativos ponderados pelo risco.",
+    "fonte": "BCBS, The New Basel Capital Accord, Consultative Document 3, parte 2 (cp3part2), §21–22.",
+    "tags": [
+      "politica-macroprudencial-e-estabilidade-financeira"
+    ]
+  },
+  {
+    "id": "card-eco-n1-074",
+    "materia": "Micro e Macroeconomia",
+    "assunto": "Política macroprudencial e estabilidade financeira",
+    "nivel": 1,
+    "conceito": "Colchão contracíclico de capital",
+    "termo_ingles": "countercyclical capital buffer",
+    "traducao": "colchão de capital contracíclico",
+    "resumo": "Colchão contracíclico é capital adicional exigido quando o crédito cresce em excesso, ligado ao acúmulo de risco sistêmico. Exemplo: banco acumula proteção na alta.",
+    "nao_confundir": [
+      {
+        "conceito": "Capital mínimo",
+        "diferenca": "Colchão adiciona proteção variável; capital mínimo é exigência básica permanente."
+      }
+    ],
+    "atencao": "O colchão se forma em tempos normais para absorver perdas no estresse sem corte brusco do crédito.",
+    "fonte": "BCBS, bcbs187 (2010); BIS, discurso Macroprudential policy and the countercyclical buffer, 19/12/2022.",
+    "tags": [
+      "politica-macroprudencial-e-estabilidade-financeira"
+    ]
+  },
+  {
+    "id": "card-eco-n1-075",
+    "materia": "Micro e Macroeconomia",
+    "assunto": "Política macroprudencial e estabilidade financeira",
+    "nivel": 1,
+    "conceito": "Emprestador de última instância",
+    "termo_ingles": "lender of last resort",
+    "traducao": "emprestador de última instância",
+    "resumo": "Banco central pode oferecer liquidez emergencial a instituições financeiras sob condições legais. Exemplo: banco solvente enfrenta saques inesperados.",
+    "nao_confundir": [
+      {
+        "conceito": "Política macroprudencial",
+        "diferenca": "Empréstimo emergencial fornece liquidez; macroprudencial busca reduzir riscos do sistema antecipadamente."
+      }
+    ],
+    "atencao": "Pela doutrina de Bagehot, empresta-se a instituição solvente, contra boa garantia e a taxa punitiva.",
+    "fonte": "Fratianni e Pattison, International Lender of Last Resort, G7 Research Group/Univ. de Toronto, 2001.",
+    "tags": [
+      "politica-macroprudencial-e-estabilidade-financeira"
+    ]
   }
 ]
