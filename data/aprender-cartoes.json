@@ -13764,5 +13764,536 @@
       "emprego-das-classes-de-palavras",
       "substantivo"
     ]
+  },
+  {
+    "id": "card-dev-n1-019",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Estruturas de dados",
+    "nivel": 1,
+    "conceito": "Pilha",
+    "termo_ingles": "stack",
+    "traducao": "pilha",
+    "resumo": "Pilha remove primeiro o último elemento inserido: último a entrar, primeiro a sair (LIFO). Exemplo: empilhar 2, depois 5; retirar devolve 5.",
+    "nao_confundir": [
+      {
+        "conceito": "Fila",
+        "diferenca": "Pilha retira o último inserido; fila retira o primeiro inserido."
+      }
+    ],
+    "atencao": "Na pilha, inserir e retirar ocorrem pela mesma extremidade, chamada topo.",
+    "fonte": "OpenDSA, CS3 Data Structures & Algorithms (Virginia Tech), 5.8 Stacks: https://opendsa-server.cs.vt.edu/ODSA/Books/CS3/html/StackArray.html",
+    "tags": [
+      "pilha",
+      "lifo"
+    ]
+  },
+  {
+    "id": "card-dev-n1-020",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Estruturas de dados",
+    "nivel": 1,
+    "conceito": "Fila",
+    "termo_ingles": "queue",
+    "traducao": "fila",
+    "resumo": "Fila retira primeiro o elemento inserido há mais tempo: primeiro a entrar, primeiro a sair (FIFO). Exemplo: entram Ana e Bia; Ana sai primeiro.",
+    "nao_confundir": [
+      {
+        "conceito": "Deque",
+        "diferenca": "Deque permite inserir e retirar elementos nas duas pontas."
+      }
+    ],
+    "atencao": "Na fila, os elementos são inseridos no fim e removidos pela frente.",
+    "fonte": "OpenDSA, CS3 Data Structures & Algorithms (Virginia Tech), 5.12 Queues: https://opendsa-server.cs.vt.edu/ODSA/Books/CS3/html/Queue.html",
+    "tags": [
+      "fila",
+      "fifo",
+      "deque"
+    ]
+  },
+  {
+    "id": "card-dev-n1-021",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Estruturas de dados",
+    "nivel": 1,
+    "conceito": "Lista baseada em vetor",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Lista baseada em vetor guarda os elementos em posições seguidas, acessadas por índice. Exemplo: em [8, 3, 5], o índice 1 contém 3.",
+    "nao_confundir": [
+      {
+        "conceito": "Lista encadeada",
+        "diferenca": "Vetor guarda posições seguidas; lista encadeada liga nós, percorridos um a um."
+      }
+    ],
+    "atencao": "Ao remover do meio, os elementos seguintes deslocam-se uma posição; no caso médio, o custo é linear.",
+    "fonte": "OpenDSA, CS3 Data Structures & Algorithms (Virginia Tech), 5.3 Array-Based List Implementation: https://opendsa-server.cs.vt.edu/ODSA/Books/CS3/html/ListArray.html",
+    "tags": [
+      "vetor",
+      "lista",
+      "complexidade"
+    ]
+  },
+  {
+    "id": "card-dev-n1-022",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Estruturas de dados",
+    "nivel": 1,
+    "conceito": "Tabela hash",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Tabela hash usa uma função de hash, que calcula a posição da chave na tabela. Exemplo: a chave nome leva ao valor Ana.",
+    "nao_confundir": [
+      {
+        "conceito": "Vetor",
+        "diferenca": "Vetor acessa elementos por índice; tabela hash localiza valores por chave."
+      }
+    ],
+    "atencao": "Duas chaves na mesma posição formam uma colisão; bem implementada, a tabela pode operar em tempo constante.",
+    "fonte": "OpenDSA, CS3 Data Structures & Algorithms (Virginia Tech), 10.1 Introduction to Hashing: https://opendsa-server.cs.vt.edu/ODSA/Books/CS3/html/HashIntro.html",
+    "tags": [
+      "hash",
+      "complexidade"
+    ]
+  },
+  {
+    "id": "card-dev-n1-023",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Estruturas de dados",
+    "nivel": 1,
+    "conceito": "Árvore binária de busca",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Árvore binária de busca guarda nós com até dois filhos: menores ou iguais à esquerda, maiores à direita. Exemplo: 5 tem 3 à esquerda e 8 à direita.",
+    "nao_confundir": [
+      {
+        "conceito": "Árvore binária comum",
+        "diferenca": "Árvore binária limita os filhos a dois; árvore de busca também ordena valores."
+      }
+    ],
+    "atencao": "Uma árvore de busca muito desequilibrada pode ter operações de custo linear, O(n), no pior caso.",
+    "fonte": "OpenDSA, CS3 Data Structures & Algorithms (Virginia Tech), 7.11 Binary Search Trees: https://opendsa-server.cs.vt.edu/ODSA/Books/CS3/html/BST.html",
+    "tags": [
+      "arvore-binaria-de-busca",
+      "complexidade"
+    ]
+  },
+  {
+    "id": "card-dev-n1-024",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Estruturas de dados",
+    "nivel": 1,
+    "conceito": "Percursos em árvore",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Percurso define a ordem de visita aos nós; em ordem visita esquerda, raiz e direita. Exemplo: raiz 5, esquerda 3, direita 8; em ordem: 3, 5, 8.",
+    "nao_confundir": [
+      {
+        "conceito": "Pré-ordem e pós-ordem",
+        "diferenca": "Pré-ordem visita a raiz primeiro; pós-ordem visita a raiz por último."
+      }
+    ],
+    "atencao": "Na árvore binária de busca, a visita em ordem apresenta os valores do menor para o maior.",
+    "fonte": "OpenDSA, CS3 Data Structures & Algorithms (Virginia Tech), 7.5 Binary Tree Traversals: https://opendsa-server.cs.vt.edu/ODSA/Books/CS3/html/BinaryTreeTraversal.html; 7.11 Binary Search Trees: https://opendsa-server.cs.vt.edu/ODSA/Books/CS3/html/BST.html",
+    "tags": [
+      "percurso",
+      "arvore-binaria-de-busca"
+    ]
+  },
+  {
+    "id": "card-dev-n1-025",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Algoritmos (ordenação, busca, complexidade)",
+    "nivel": 1,
+    "conceito": "Algoritmo e complexidade",
+    "termo_ingles": "Big O",
+    "traducao": "notação O grande",
+    "resumo": "Algoritmo é uma sequência de passos; Big O descreve como o custo, em número de operações, cresce com o tamanho n da entrada. Exemplo: examinar n elementos custa O(n).",
+    "nao_confundir": [
+      {
+        "conceito": "Tempo de execução",
+        "diferenca": "Tempo mede duração concreta; Big O descreve crescimento do custo."
+      }
+    ],
+    "atencao": "Custo constante não depende de n; custo linear cresce na proporção de n; quadrático, na de n².",
+    "fonte": "OpenDSA, CS3 Data Structures & Algorithms (Virginia Tech), 4.3 Comparing Algorithms: https://opendsa-server.cs.vt.edu/ODSA/Books/CS3/html/AnalIntro.html; 4.6 Asymptotic Analysis: https://opendsa-server.cs.vt.edu/ODSA/Books/CS3/html/AnalAsymptotic.html",
+    "tags": [
+      "complexidade"
+    ]
+  },
+  {
+    "id": "card-dev-n1-026",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Algoritmos (ordenação, busca, complexidade)",
+    "nivel": 1,
+    "conceito": "Busca sequencial",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Busca sequencial examina elementos um por um até encontrar o procurado ou terminar. Exemplo: buscar 7 em [2, 4, 7] exige três comparações.",
+    "nao_confundir": [
+      {
+        "conceito": "Busca binária",
+        "diferenca": "Sequencial examina elementos individualmente; binária descarta partes de uma lista ordenada."
+      }
+    ],
+    "atencao": "A busca sequencial tem custo O(n) tanto no caso médio quanto no pior caso.",
+    "fonte": "OpenDSA, CS3 Data Structures & Algorithms (Virginia Tech), 4.8 Calculating Program Running Time: https://opendsa-server.cs.vt.edu/ODSA/Books/CS3/html/AnalProgram.html",
+    "tags": [
+      "busca-sequencial",
+      "complexidade"
+    ]
+  },
+  {
+    "id": "card-dev-n1-027",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Algoritmos (ordenação, busca, complexidade)",
+    "nivel": 1,
+    "conceito": "Busca binária",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Busca binária procura em dados ordenados: compara com o centro e descarta uma metade. Exemplo: buscar 8 em [2, 4, 6, 8, 10] descarta 2, 4 e 6.",
+    "nao_confundir": [
+      {
+        "conceito": "Busca sequencial",
+        "diferenca": "Binária exige ordenação; sequencial pode procurar em dados desordenados."
+      }
+    ],
+    "atencao": "A busca binária exige valores ordenados do menor para o maior; seu custo é O(log n).",
+    "fonte": "OpenDSA, CS3 Data Structures & Algorithms (Virginia Tech), 4.8 Calculating Program Running Time, Analyzing Binary Search: https://opendsa-server.cs.vt.edu/ODSA/Books/CS3/html/AnalProgram.html",
+    "tags": [
+      "busca-binaria",
+      "complexidade"
+    ]
+  },
+  {
+    "id": "card-dev-n1-028",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Algoritmos (ordenação, busca, complexidade)",
+    "nivel": 1,
+    "conceito": "Ordenação por bolha",
+    "termo_ingles": "bubble sort",
+    "traducao": "ordenação por bolha",
+    "resumo": "Ordenação por bolha compara vizinhos e troca os que estão fora de ordem; no pior caso custa O(n²). Exemplo: [3, 1, 2] torna-se [1, 2, 3].",
+    "nao_confundir": [
+      {
+        "conceito": "Ordenação por seleção",
+        "diferenca": "Bolha troca vizinhos fora de ordem; seleção leva o menor à sua posição."
+      }
+    ],
+    "atencao": "A cada passagem, o maior valor desloca-se para a direita do vetor, como uma bolha.",
+    "fonte": "OpenDSA, CS3 Data Structures & Algorithms (Virginia Tech), 8.4 Bubble Sort: https://opendsa-server.cs.vt.edu/ODSA/Books/CS3/html/BubbleSort.html",
+    "tags": [
+      "ordenacao",
+      "bubble-sort",
+      "complexidade"
+    ]
+  },
+  {
+    "id": "card-dev-n1-029",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Algoritmos (ordenação, busca, complexidade)",
+    "nivel": 1,
+    "conceito": "Ordenação estável",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Ordenação estável preserva a ordem original de elementos com chaves iguais. Exemplo: Ana(5), Bia(5) continuam nessa ordem após ordenar por número.",
+    "nao_confundir": [
+      {
+        "conceito": "Ordenação instável",
+        "diferenca": "Estável mantém a ordem dos iguais; instável pode alterá-la."
+      }
+    ],
+    "atencao": "A bolha só troca quando a chave é maior que a do vizinho à direita; por isso, iguais não trocam.",
+    "fonte": "OpenDSA, CS3 Data Structures & Algorithms (Virginia Tech), 8.2 Sorting Terminology and Notation: https://opendsa-server.cs.vt.edu/ODSA/Books/CS3/html/SortNotation.html; 8.4 Bubble Sort: https://opendsa-server.cs.vt.edu/ODSA/Books/CS3/html/BubbleSort.html",
+    "tags": [
+      "ordenacao",
+      "estabilidade"
+    ]
+  },
+  {
+    "id": "card-dev-n1-030",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Algoritmos (ordenação, busca, complexidade)",
+    "nivel": 1,
+    "conceito": "Ordenação por intercalação",
+    "termo_ingles": "merge sort",
+    "traducao": "ordenação por intercalação",
+    "resumo": "Ordenação por intercalação (merge sort) divide os dados, ordena as partes e combina os resultados; custa O(n log n). Exemplo: [4, 1, 3, 2] vira [1, 2, 3, 4].",
+    "nao_confundir": [
+      {
+        "conceito": "Ordenação por bolha",
+        "diferenca": "Intercalação divide e combina partes; bolha compara e troca vizinhos."
+      }
+    ],
+    "atencao": "O merge sort intercala em um vetor auxiliar e, por isso, usa o dobro do espaço.",
+    "fonte": "OpenDSA, CS3 Data Structures & Algorithms (Virginia Tech), 8.9 Mergesort Concepts: https://opendsa-server.cs.vt.edu/ODSA/Books/CS3/html/Mergesort.html; 8.10 Implementing Mergesort: https://opendsa-server.cs.vt.edu/ODSA/Books/CS3/html/MergesortImpl.html",
+    "tags": [
+      "ordenacao",
+      "complexidade"
+    ]
+  },
+  {
+    "id": "card-dev-n1-031",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Git e versionamento",
+    "nivel": 1,
+    "conceito": "Git",
+    "termo_ingles": "Git",
+    "traducao": "sistema de controle de versões",
+    "resumo": "Git é um sistema distribuído de controle de versões: cada cópia guarda o histórico completo do projeto. Exemplo: acompanhar mudanças no código de um aplicativo.",
+    "nao_confundir": [
+      {
+        "conceito": "GitHub",
+        "diferenca": "Git é a ferramenta; GitHub é um serviço que hospeda repositórios Git."
+      }
+    ],
+    "atencao": "Para consultar o histórico, o Git lê o banco de dados local, sem precisar ir ao servidor.",
+    "fonte": "Scott Chacon e Ben Straub, Pro Git, 2ª edição, seção 1.3, What is Git: https://git-scm.com/book/en/v2/Getting-Started-What-is-Git%3F",
+    "tags": [
+      "git"
+    ]
+  },
+  {
+    "id": "card-dev-n1-032",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Git e versionamento",
+    "nivel": 1,
+    "conceito": "Repositório e commit",
+    "termo_ingles": "commit",
+    "traducao": "registro de versão",
+    "resumo": "Repositório guarda arquivos e histórico; git add prepara alterações e git commit as registra como uma versão. Exemplo: git add arquivo.txt; git commit -m \"Revisão\".",
+    "nao_confundir": [
+      {
+        "conceito": "Área de preparação",
+        "diferenca": "git add escolhe o que entra no próximo commit; git commit registra essa escolha."
+      }
+    ],
+    "atencao": "O commit registra alterações preparadas para inclusão; arquivos modificados não preparados ficam fora desse registro.",
+    "fonte": "Scott Chacon e Ben Straub, Pro Git, 2ª edição, seção 2.2, Recording Changes to the Repository: https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository",
+    "tags": [
+      "git",
+      "commit"
+    ]
+  },
+  {
+    "id": "card-dev-n1-033",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Git e versionamento",
+    "nivel": 1,
+    "conceito": "Branch",
+    "termo_ingles": "branch",
+    "traducao": "ramo de desenvolvimento",
+    "resumo": "Branch é um ramo de desenvolvimento que permite registrar alterações separadamente de outro ramo. Exemplo: git branch teste cria o ramo teste.",
+    "nao_confundir": [
+      {
+        "conceito": "Commit",
+        "diferenca": "Branch identifica uma linha de desenvolvimento; commit registra uma versão."
+      }
+    ],
+    "atencao": "Criar uma branch não duplica todos os arquivos; no Git, ela funciona como referência para um commit.",
+    "fonte": "Scott Chacon e Ben Straub, Pro Git, 2ª edição, seção 3.1, Branches in a Nutshell: https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell",
+    "tags": [
+      "git",
+      "branch"
+    ]
+  },
+  {
+    "id": "card-dev-n1-034",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Git e versionamento",
+    "nivel": 1,
+    "conceito": "Merge",
+    "termo_ingles": "merge",
+    "traducao": "mesclagem de ramos",
+    "resumo": "Merge integra alterações de outro ramo ao ramo atual. Exemplo: git merge teste incorpora o trabalho de teste ao ramo atual.",
+    "nao_confundir": [
+      {
+        "conceito": "Rebase",
+        "diferenca": "Merge costuma criar commit de junção; rebase reaplica commits e reescreve o histórico."
+      }
+    ],
+    "atencao": "Alterações incompatíveis na mesma região podem causar conflitos que precisam ser resolvidos antes de concluir a mesclagem.",
+    "fonte": "Scott Chacon e Ben Straub, Pro Git, 2ª edição, seções 3.2, Basic Branching and Merging: https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging; e 3.6, Rebasing: https://git-scm.com/book/en/v2/Git-Branching-Rebasing",
+    "tags": [
+      "git",
+      "merge"
+    ]
+  },
+  {
+    "id": "card-dev-n1-035",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Git e versionamento",
+    "nivel": 1,
+    "conceito": "Clone",
+    "termo_ingles": "clone",
+    "traducao": "clonagem de repositório",
+    "resumo": "Clone cria uma cópia local de um repositório existente. Exemplo: git clone https://exemplo.org/projeto.git.",
+    "nao_confundir": [
+      {
+        "conceito": "Pull",
+        "diferenca": "Clone cria um repositório local novo; pull atualiza um repositório existente."
+      }
+    ],
+    "atencao": "O clone traz cópia de praticamente todos os dados do servidor, incluindo cada versão de cada arquivo.",
+    "fonte": "Scott Chacon e Ben Straub, Pro Git, 2ª edição, seção 2.1, Obtendo um Repositório Git: https://git-scm.com/book/pt-br/v2/Fundamentos-de-Git-Obtendo-um-Reposit%C3%B3rio-Git",
+    "tags": [
+      "git",
+      "clone"
+    ]
+  },
+  {
+    "id": "card-dev-n1-036",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Git e versionamento",
+    "nivel": 1,
+    "conceito": "Feature branch",
+    "termo_ingles": "feature branch",
+    "traducao": "ramo de funcionalidade",
+    "resumo": "Feature branch separa o desenvolvimento de uma funcionalidade para integração posterior. Exemplo: criar ramo pagamento, desenvolver e integrar ao principal.",
+    "nao_confundir": [
+      {
+        "conceito": "Branch de longa duração",
+        "diferenca": "Feature branch atende uma funcionalidade; branch de longa duração acompanha várias etapas."
+      }
+    ],
+    "atencao": "Branch de tópico (feature branch) costuma ter curta duração: serve a uma funcionalidade e depois é mesclada.",
+    "fonte": "Scott Chacon e Ben Straub, Pro Git, 2ª edição, seção 3.4, Branching Workflows: https://git-scm.com/book/en/v2/Git-Branching-Branching-Workflows",
+    "tags": [
+      "git",
+      "feature-branch"
+    ]
+  },
+  {
+    "id": "card-dev-n1-037",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Python",
+    "nivel": 1,
+    "conceito": "Indentação",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "No Python 3, a indentação, recuo inicial da linha, define blocos de código. Exemplo: if True: seguido de quatro espaços e print(1) imprime 1.",
+    "nao_confundir": [
+      {
+        "conceito": "Chaves em C e Java",
+        "diferenca": "C e Java delimitam blocos com chaves; Python delimita com indentação."
+      }
+    ],
+    "atencao": "No Python 3, misturar tabulações e espaços de forma inconsistente gera erro TabError.",
+    "fonte": "Python Software Foundation, Python 3, Tutorial, seção 3.2, First Steps Towards Programming: https://docs.python.org/3/tutorial/introduction.html; Referência da Linguagem, seção 2.1.8, Indentation: https://docs.python.org/3/reference/lexical_analysis.html",
+    "tags": [
+      "python",
+      "indentacao"
+    ]
+  },
+  {
+    "id": "card-dev-n1-038",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Python",
+    "nivel": 1,
+    "conceito": "Divisão",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "No Python 3, / dá decimal (float) e // arredonda para baixo. Exemplo: 7 / 2 = 3.5; 7 // 2 = 3; -7 // 2 = -4.",
+    "nao_confundir": [
+      {
+        "conceito": "Resto da divisão",
+        "diferenca": "/ divide; // arredonda o quociente para baixo; % calcula o resto."
+      }
+    ],
+    "atencao": "No Python 3, / entre inteiros gera float; // aplica o arredondamento para baixo (floor).",
+    "fonte": "Python Software Foundation, Python 3, Tutorial, seção 3.1.1, Numbers: https://docs.python.org/3/tutorial/introduction.html; Referência da Linguagem, seção 6.7, Binary arithmetic operations: https://docs.python.org/3/reference/expressions.html",
+    "tags": [
+      "python",
+      "operadores",
+      "divisao"
+    ]
+  },
+  {
+    "id": "card-dev-n1-039",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Python",
+    "nivel": 1,
+    "conceito": "Lista e tupla",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "No Python 3, lista é mutável, podendo ser alterada; tupla é imutável. Exemplo: a = [1, 2]; a.append(3) resulta em [1, 2, 3].",
+    "nao_confundir": [
+      {
+        "conceito": "String",
+        "diferenca": "Lista é mutável; string, como a tupla, é imutável."
+      }
+    ],
+    "atencao": "No Python 3, tuplas podem conter objetos mutáveis; a imutabilidade impede substituir seus elementos, não modificar objetos internos.",
+    "fonte": "Python Software Foundation, Python 3, Tutorial, seções 3.1.3, Lists, e 5.3, Tuples and Sequences. https://docs.python.org/3/tutorial/",
+    "tags": [
+      "python",
+      "listas",
+      "mutabilidade"
+    ]
+  },
+  {
+    "id": "card-dev-n1-040",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Python",
+    "nivel": 1,
+    "conceito": "Dicionário",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "No Python 3, dicionário associa chaves a valores e permite consultar pela chave. Exemplo: d = {'a': 5}; d['a'] devolve 5.",
+    "nao_confundir": [
+      {
+        "conceito": "Lista",
+        "diferenca": "Lista usa índices posicionais; dicionário consulta valores por chaves."
+      }
+    ],
+    "atencao": "No Python 3, tupla só serve de chave se contiver apenas textos, números ou tuplas; listas não servem.",
+    "fonte": "Python Software Foundation, Python 3, Tutorial, seção 5.5, Dictionaries. https://docs.python.org/3/tutorial/datastructures.html",
+    "tags": [
+      "python",
+      "dicionarios"
+    ]
+  },
+  {
+    "id": "card-dev-n1-041",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Python",
+    "nivel": 1,
+    "conceito": "Compreensão de listas",
+    "termo_ingles": "list comprehension",
+    "traducao": "compreensão de listas",
+    "resumo": "No Python 3, compreensão de listas cria uma lista aplicando uma expressão a elementos percorridos. Exemplo: [x*2 for x in [1,2]] resulta em [2,4].",
+    "nao_confundir": [
+      {
+        "conceito": "Laço comum",
+        "diferenca": "Compreensão constrói lista diretamente; laço comum exige instruções explícitas para construí-la."
+      }
+    ],
+    "atencao": "No Python 3, uma condição if na compreensão pode filtrar quais elementos entram na lista resultante.",
+    "fonte": "Python Software Foundation, Python 3, Tutorial, seção 5.1.3, List Comprehensions. https://docs.python.org/3/tutorial/datastructures.html",
+    "tags": [
+      "python",
+      "list-comprehension"
+    ]
+  },
+  {
+    "id": "card-dev-n1-042",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "Python",
+    "nivel": 1,
+    "conceito": "Tratamento de exceções",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "No Python 3, try executa código e except trata exceções, erros detectados durante a execução. Exemplo: em try, int(\"x\") falha; except ValueError imprime inválido.",
+    "nao_confundir": [
+      {
+        "conceito": "Finally",
+        "diferenca": "Except roda com a exceção tratada; finally roda sempre ao fim do try."
+      }
+    ],
+    "atencao": "No Python 3, except ValueError captura essa exceção e suas subclasses; outras exceções podem continuar sem tratamento.",
+    "fonte": "Python Software Foundation, Python 3, Tutorial, seções 8.3, Handling Exceptions, e 8.7, Defining Clean-up Actions. https://docs.python.org/3/tutorial/errors.html",
+    "tags": [
+      "python",
+      "excecoes"
+    ]
   }
 ]
