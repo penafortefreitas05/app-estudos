@@ -13631,5 +13631,138 @@
       "problemas",
       "equacao-do-primeiro-grau"
     ]
+  },
+  {
+    "id": "card-pt-n1-069",
+    "materia": "Português",
+    "assunto": "Emprego das classes de palavras",
+    "nivel": 1,
+    "conceito": "Adjetivo",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Adjetivo caracteriza o substantivo e concorda com ele em gênero e número quando apresenta essas formas. Exemplo: As propostas importantes foram aprovadas.",
+    "nao_confundir": [
+      {
+        "conceito": "Concordância nominal",
+        "diferenca": "Errado: propostas importante; certo: propostas importantes."
+      }
+    ],
+    "atencao": "Bastante concorda quando é adjetivo: recursos bastantes; como advérbio, permanece invariável: pessoas bastante cansadas.",
+    "fonte": "Secretaria Municipal de Educação, Esporte e Lazer de Bom Jesus do Itabapoana-RJ, Língua Portuguesa 8º ano, concordância de bastante e meio: https://smebji.com.br/wp-content/uploads/2023/08/ATIVIDADES-8o-ANO-LINGUA-PORTUGUESA-3a-SEMANA-AGOSTO.pdf. Apoio: Bechara, Evanildo. Moderna Gramática Portuguesa, 39ª edição, Nova Fronteira.",
+    "tags": [
+      "emprego-das-classes-de-palavras",
+      "adjetivo"
+    ]
+  },
+  {
+    "id": "card-pt-n1-070",
+    "materia": "Português",
+    "assunto": "Emprego das classes de palavras",
+    "nivel": 1,
+    "conceito": "Advérbio",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Advérbio modifica verbo, adjetivo ou outro advérbio e não varia em gênero ou número. Exemplo: Elas estavam meio cansadas.",
+    "nao_confundir": [
+      {
+        "conceito": "Adjetivo meio",
+        "diferenca": "Adjetivo varia: meia hora; advérbio não varia: meio cansadas."
+      }
+    ],
+    "atencao": "Em canta muito mal, muito é advérbio de intensidade que modifica o advérbio mal.",
+    "fonte": "TRF3, Conexão Emag — Língua Portuguesa, Meio nervosa ou meia nervosa: https://www.trf3.jus.br/emag/emagconecta/conexaoemag-lingua-portuguesa/meio-nervosa-meia-nervosa; TJMG, Biblioteca Digital, Usos do termo meia: https://bd-login.tjmg.jus.br/jspui/bitstream/tjmg/11324/1/153%20Usos%20do%20termo%20%27meia%27.pdf. Apoio: Bechara, Evanildo. Moderna Gramática Portuguesa, 39ª edição, Nova Fronteira.",
+    "tags": [
+      "emprego-das-classes-de-palavras",
+      "adverbio"
+    ]
+  },
+  {
+    "id": "card-pt-n1-071",
+    "materia": "Português",
+    "assunto": "Emprego das classes de palavras",
+    "nivel": 1,
+    "conceito": "Pronome",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Pronome substitui ou acompanha o substantivo, indicando pessoas ou estabelecendo referências. Exemplo: Minha colega chegou; ela trouxe os documentos.",
+    "nao_confundir": [
+      {
+        "conceito": "Artigo",
+        "diferenca": "Artigo só acompanha o substantivo; pronome pode substituí-lo: ela trouxe."
+      }
+    ],
+    "atencao": "As formas oblíquas o, a, os, as funcionam como objeto direto: em eu o li, o substitui o relatório.",
+    "fonte": "Secretaria de Estado da Administração de Santa Catarina, Manual de Redação, seção 4.4.1, p. 68: https://www.sea.sc.gov.br/wp-content/uploads/2019/10/Manual_de_redacao.pdf. Apoio: Bechara, Evanildo. Moderna Gramática Portuguesa, 39ª edição, Nova Fronteira.",
+    "tags": [
+      "emprego-das-classes-de-palavras",
+      "pronome"
+    ]
+  },
+  {
+    "id": "card-pt-n1-072",
+    "materia": "Português",
+    "assunto": "Emprego das classes de palavras",
+    "nivel": 1,
+    "conceito": "Preposição",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Preposição liga termos e estabelece relações de sentido, como origem, destino ou finalidade. Exemplo: O documento veio de Brasília.",
+    "nao_confundir": [
+      {
+        "conceito": "Conjunção",
+        "diferenca": "Preposição liga um termo ao seu complemento; conjunção liga orações ou termos equivalentes."
+      }
+    ],
+    "atencao": "A contração ocorre quando a preposição se une a outra palavra: de + o = do.",
+    "fonte": "Secretaria da Educação do Espírito Santo, Língua Portuguesa, 1ª série do Ensino Médio, morfossintaxe, p. 6: https://curriculo.sedu.es.gov.br/curriculo/wp-content/uploads/2025/08/RPE_LP_1_Q_18_31_07_25.pdf. Apoio: Bechara, Evanildo. Moderna Gramática Portuguesa, 39ª edição, Nova Fronteira.",
+    "tags": [
+      "emprego-das-classes-de-palavras",
+      "preposicao"
+    ]
+  },
+  {
+    "id": "card-pt-n1-073",
+    "materia": "Português",
+    "assunto": "Emprego das classes de palavras",
+    "nivel": 1,
+    "conceito": "Que: conjunção integrante ou pronome relativo",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Que pode ser conjunção integrante, quando introduz oração subordinada substantiva, ou pronome relativo. Exemplo: Sei que voltarei às 17h.",
+    "nao_confundir": [
+      {
+        "conceito": "Conjunção coordenativa",
+        "diferenca": "Coordenativa liga orações independentes; integrante introduz oração que completa outra."
+      }
+    ],
+    "atencao": "O pronome relativo retoma um termo anterior: em o livro que comprei, que retoma livro.",
+    "fonte": "Secretaria Municipal de Educação de Goiânia, Conexão Escola, Conjunção III: https://sme.goiania.go.gov.br/conexaoescola/ensino_fundamental/lingua-portuguesa-conjuncao-iii/; Secretaria da Educação do Espírito Santo, Língua Portuguesa, 8º ano, pronomes relativos: https://curriculo.sedu.es.gov.br/curriculo/wp-content/uploads/2025/09/RPE_LP_8_Q_22_12_09_2025.pdf. Apoio: Bechara, Evanildo. Moderna Gramática Portuguesa, 39ª edição, Nova Fronteira.",
+    "tags": [
+      "emprego-das-classes-de-palavras",
+      "conjuncao",
+      "pronome-relativo"
+    ]
+  },
+  {
+    "id": "card-pt-n1-074",
+    "materia": "Português",
+    "assunto": "Emprego das classes de palavras",
+    "nivel": 1,
+    "conceito": "Substantivo e substantivação",
+    "termo_ingles": "",
+    "traducao": "",
+    "resumo": "Substantivo nomeia seres, objetos e ideias; palavras de outras classes podem funcionar como substantivo. Exemplo: Esperava um sim e recebeu um não.",
+    "nao_confundir": [
+      {
+        "conceito": "Advérbio de negação",
+        "diferenca": "Advérbio nega a ação: não saiu; substantivo nomeia a resposta: recebeu um não."
+      }
+    ],
+    "atencao": "O artigo antes da palavra costuma marcar a substantivação: esperava um sim e recebeu um não.",
+    "fonte": "PUC-Rio, Biblioteca Digital Maxwell, capítulo Derivação imprópria e conversão categorial: https://www.maxwell.vrac.puc-rio.br/22451/22451_4.PDF. Apoio: Bechara, Evanildo. Moderna Gramática Portuguesa, 39ª edição, Nova Fronteira.",
+    "tags": [
+      "emprego-das-classes-de-palavras",
+      "substantivo"
+    ]
   }
 ]
