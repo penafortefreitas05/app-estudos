@@ -12897,7 +12897,7 @@
       }
     ],
     "atencao": "Um gênero pode reunir diferentes tipos textuais; a finalidade comunicativa ajuda a identificá-lo.",
-    "fonte": "INEP, Matriz de Referência de Língua Portuguesa do Saeb: https://download.inep.gov.br/educacao_basica/saeb/matriz_referencia/matriz_referencia_lingua_portuguesa.pdf",
+    "fonte": "UNIFAL-MG, Letras para Todos, Maria Paula Vieira Peres, Um panorama sobre os gêneros textuais: https://www.unifal-mg.edu.br/letrasparatodos/wp-content/uploads/sites/259/2024/12/Maria-Paula-Peres-Um-panorama-sobre-os-generos-textuais.pdf",
     "tags": [
       "reconhecimento-de-tipos-e-generos-textuais"
     ]
@@ -12913,12 +12913,12 @@
     "resumo": "Defende uma tese, isto é, um ponto de vista, por meio de argumentos, razões que procuram sustentá-la. Exemplo: Bibliotecas públicas são necessárias porque ampliam o acesso aos livros.",
     "nao_confundir": [
       {
-        "conceito": "Erro comum",
-        "diferenca": "Errado: toda opinião constitui argumentação; certo: argumentar exige razões que sustentem a tese."
+        "conceito": "Texto expositivo",
+        "diferenca": "O argumentativo defende uma tese; o expositivo apresenta um assunto ou informações."
       }
     ],
-    "atencao": "Apresentar uma opinião isolada não equivale a desenvolver uma argumentação.",
-    "fonte": "INEP, Matriz de Referência de Língua Portuguesa do Saeb: https://download.inep.gov.br/educacao_basica/saeb/matriz_referencia/matriz_referencia_lingua_portuguesa.pdf",
+    "atencao": "A principal função é defender um posicionamento; os argumentos justificam o raciocínio que busca convencer o leitor.",
+    "fonte": "Secretaria da Educação do Ceará, Coordenadoria da Educação Profissional, Aula D15 (2020): https://www.ced.seduc.ce.gov.br/wp-content/uploads/sites/82/2022/03/mesisedu-aulad15-professor-AVACED.pdf",
     "tags": [
       "reconhecimento-de-tipos-e-generos-textuais"
     ]
@@ -12931,15 +12931,15 @@
     "conceito": "Texto expositivo",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "Apresenta informações ou explicações sobre um assunto, sem precisar defender uma tese. Exemplo: A água passa ao estado sólido quando congela.",
+    "resumo": "Apresenta um assunto ou informações sobre um tema, em geral com teor de neutralidade. Exemplo: A água passa ao estado sólido quando congela.",
     "nao_confundir": [
       {
         "conceito": "Texto argumentativo",
-        "diferenca": "O expositivo explica um assunto; o argumentativo apresenta razões para defender um ponto de vista."
+        "diferenca": "O expositivo apresenta um assunto; o argumentativo defende um posicionamento."
       }
     ],
-    "atencao": "A presença de informações não torna um texto exclusivamente expositivo; elas também podem sustentar argumentos.",
-    "fonte": "INEP, Matriz de Referência de Língua Portuguesa do Saeb: https://download.inep.gov.br/educacao_basica/saeb/matriz_referencia/matriz_referencia_lingua_portuguesa.pdf",
+    "atencao": "O expositivo argumentativo informa sobre o assunto e também defende um ponto de vista com argumentos.",
+    "fonte": "Azup, Língua Portuguesa 8º ano, Aula II, Tipos expositivo e argumentativo: https://app.azup.com.br/wp-content/uploads/Lingua-Portuguesa_8-ano_Aula-II_Tipos-expositivo-e-argumentativo_-resumos-resenhas-de-midia-fichamento.pdf",
     "tags": [
       "reconhecimento-de-tipos-e-generos-textuais"
     ]
@@ -12973,7 +12973,7 @@
     "conceito": "Grafia com s, ss, ç e xc",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "Palavras derivadas mantêm o s da palavra de origem: análise dá analisar; paralisia dá paralisar. Exemplo: A equipe decidiu analisar a exceção antes de paralisar o serviço.",
+    "resumo": "Grafias a fixar: análise e analisar, paralisia e paralisar levam s. Exemplo: A equipe decidiu analisar a exceção antes de paralisar o serviço.",
     "nao_confundir": [
       {
         "conceito": "Erro comum",
@@ -12994,7 +12994,7 @@
     "conceito": "Acentuação após o Acordo Ortográfico",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "O Acordo Ortográfico de 1990 eliminou determinados acentos gráficos, sinais que marcam a sílaba tônica ou o timbre da vogal. Exemplo: A assembleia aprovou a ideia apresentada.",
+    "resumo": "O Acordo Ortográfico de 1990 eliminou determinados acentos gráficos. Exemplo: A assembleia aprovou a ideia apresentada.",
     "nao_confundir": [
       {
         "conceito": "Erro comum",
@@ -13002,7 +13002,7 @@
       }
     ],
     "atencao": "Ditongos abertos ei e oi em paroxítonas perderam acento; também caiu o circunflexo em oo e ee.",
-    "fonte": "Decreto nº 6.583/2008, Acordo Ortográfico da Língua Portuguesa, Anexo I, Bases IX e X: https://www.planalto.gov.br/ccivil_03/_ato2007-2010/2008/decreto/d6583.htm; Senado Federal, Manual de Comunicação da Secom (2023), verbete Acentuação: https://www12.senado.leg.br/manualdecomunicacao/manual_comunicacao.pdf",
+    "fonte": "Senado Federal, Manual de Comunicação, verbete Acentuação: https://www12.senado.leg.br/manualdecomunicacao/estilos/acentuacao",
     "tags": [
       "dominio-da-ortografia-oficial"
     ]
@@ -13043,7 +13043,7 @@
         "diferenca": "Errado: O serviço funciona mau; certo: O serviço funciona mal."
       }
     ],
-    "atencao": "Mal pode ser advérbio ou substantivo, como em o mal; mau é adjetivo e acompanha substantivo.",
+    "atencao": "Mal é antônimo de bem e pode ser advérbio ou substantivo; mau é adjetivo, antônimo de bom.",
     "fonte": "TJSP, Escola Judicial dos Servidores, Dicas de Língua Portuguesa, Mal/Mau: https://www.tjsp.jus.br/Download/EJUS/AVAS/DicasLinguaPortuguesa/mau-ou-mal.pdf",
     "tags": [
       "dominio-da-ortografia-oficial"
@@ -13065,7 +13065,7 @@
       }
     ],
     "atencao": "Certeza pede indicativo: afirmou que há saída. Possibilidade pede subjuntivo: pode ser que haja saída.",
-    "fonte": "TRF3, Conexão Emag — Língua Portuguesa, Usos do subjuntivo: https://www.trf3.jus.br/emag/emagconecta/conexaoemag-lingua-portuguesa/usos-do-subjuntivo; Cunha e Cintra, Nova Gramática do Português Contemporâneo",
+    "fonte": "TRF3, Conexão Emag — Língua Portuguesa, Usos do subjuntivo: https://www.trf3.jus.br/emag/emagconecta/conexaoemag-lingua-portuguesa/usos-do-subjuntivo; SME Goiânia, Os modos verbais: https://sme.goiania.go.gov.br/conexaoescola/ensino_fundamental/lingua-portuguesa-os-modos-verbais/",
     "tags": [
       "emprego-de-tempos-e-modos-verbais"
     ]
@@ -13086,7 +13086,7 @@
       }
     ],
     "atencao": "O imperfeito não afirma, por si só, que a ação chegou ao fim.",
-    "fonte": "Revista SOLETRAS (UERJ), ano I, n. 2, 2001, sobre o emprego do pretérito perfeito e do imperfeito: https://www.e-publicacoes.uerj.br/soletras/article/download/4418/3223/17062; Revista Tabuleiro de Letras (UNEB), v. 15, n. 2, 2021: https://revistas.uneb.br/index.php/tabuleirodeletras/article/download/11541/9210/38889; Cunha e Cintra, Nova Gramática do Português Contemporâneo",
+    "fonte": "Revista SOLETRAS (UERJ), ano I, n. 2, 2001, sobre o emprego do pretérito perfeito e do imperfeito: https://www.e-publicacoes.uerj.br/soletras/article/download/4418/3223/17062; Revista Tabuleiro de Letras (UNEB), v. 15, n. 2, 2021: https://revistas.uneb.br/index.php/tabuleirodeletras/article/download/11541/9210/38889",
     "tags": [
       "emprego-de-tempos-e-modos-verbais"
     ]
@@ -13106,8 +13106,8 @@
         "diferenca": "Viajarei indica fato futuro; viajaria indica consequência de uma hipótese."
       }
     ],
-    "atencao": "Trocar viajaria por viajarei pode alterar uma possibilidade condicionada para uma afirmação sobre o futuro.",
-    "fonte": "Revista Tabuleiro de Letras (UNEB), v. 15, n. 2, 2021, A alternância entre o futuro do pretérito e o pretérito imperfeito: https://revistas.uneb.br/index.php/tabuleirodeletras/article/download/11541/9210/38889; Cunha e Cintra, Nova Gramática do Português Contemporâneo",
+    "atencao": "Tem dois sentidos: fato posterior a um momento passado ou fato dependente de uma condição.",
+    "fonte": "Revista Tabuleiro de Letras (UNEB), v. 15, n. 2, 2021, A alternância entre o futuro do pretérito e o pretérito imperfeito: https://revistas.uneb.br/index.php/tabuleirodeletras/article/download/11541/9210/38889",
     "tags": [
       "emprego-de-tempos-e-modos-verbais"
     ]
@@ -13144,12 +13144,12 @@
     "resumo": "Conotação é o uso de uma palavra em sentido figurado, diferente do sentido literal. Exemplo: A notícia acendeu uma esperança na comunidade.",
     "nao_confundir": [
       {
-        "conceito": "Erro comum",
-        "diferenca": "Denotação usa sentido literal; conotação usa sentido figurado, dependente do contexto."
+        "conceito": "Denotação",
+        "diferenca": "Denotação usa sentido literal; conotação usa sentido figurado."
       }
     ],
-    "atencao": "O sentido figurado depende do contexto; acender uma esperança não descreve fogo real.",
-    "fonte": "INEP, Matriz de Referência de Língua Portuguesa do Saeb: https://download.inep.gov.br/educacao_basica/saeb/matriz_referencia/matriz_referencia_lingua_portuguesa.pdf; UNIFAL-MG, Letras para Todos, Semântica (apostila): https://www.unifal-mg.edu.br/letrasparatodos/wp-content/uploads/sites/259/2024/07/Semantica_Edvando_Sa.pdf",
+    "atencao": "Na conotação, a palavra aparece fora dos padrões dicionarizados; acender uma esperança não descreve fogo real.",
+    "fonte": "Instituto Federal do Espírito Santo, Caderno Interdisciplinar de Redação com orientações para o Enem (2021), seção 3: https://repositorio.ifes.edu.br/server/api/core/bitstreams/954b565f-4b1f-4bca-99d2-a94eb0c2ea7b/content; UNIFAL-MG, Letras para Todos, Semântica (apostila): https://www.unifal-mg.edu.br/letrasparatodos/wp-content/uploads/sites/259/2024/07/Semantica_Edvando_Sa.pdf",
     "tags": [
       "significacao-das-palavras"
     ]
@@ -13162,15 +13162,15 @@
     "conceito": "Antônimo",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "Antônimos são palavras de sentidos opostos em determinado contexto. Exemplo: O corredor estava vazio pela manhã e cheio à tarde.",
+    "resumo": "Antônimos são palavras de sentidos opostos. Exemplo: O corredor estava vazio pela manhã e cheio à tarde.",
     "nao_confundir": [
       {
         "conceito": "Erro comum",
         "diferenca": "Errado: claro e rápido são antônimos; certo: claro e escuro apresentam oposição."
       }
     ],
-    "atencao": "Palavras apenas diferentes não são necessariamente antônimas; deve existir oposição de sentido.",
-    "fonte": "UNIFAL-MG, Letras para Todos, Semântica (apostila): https://www.unifal-mg.edu.br/letrasparatodos/wp-content/uploads/sites/259/2024/07/Semantica_Edvando_Sa.pdf; Cunha e Cintra, Nova Gramática do Português Contemporâneo",
+    "atencao": "Antonímia exige significados opostos: claro e escuro se opõem; claro e rápido apenas diferem.",
+    "fonte": "UNIFAL-MG, Letras para Todos, Semântica (apostila): https://www.unifal-mg.edu.br/letrasparatodos/wp-content/uploads/sites/259/2024/07/Semantica_Edvando_Sa.pdf",
     "tags": [
       "significacao-das-palavras"
     ]
@@ -13191,7 +13191,7 @@
       }
     ],
     "atencao": "Em muitos livros, manga da camisa e manga fruta são homônimos perfeitos: mesma grafia e pronúncia.",
-    "fonte": "UNIFAL-MG, Letras para Todos, Semântica (apostila): https://www.unifal-mg.edu.br/letrasparatodos/wp-content/uploads/sites/259/2024/07/Semantica_Edvando_Sa.pdf; Cunha e Cintra, Nova Gramática do Português Contemporâneo",
+    "fonte": "UNIFAL-MG, Letras para Todos, Semântica (apostila): https://www.unifal-mg.edu.br/letrasparatodos/wp-content/uploads/sites/259/2024/07/Semantica_Edvando_Sa.pdf",
     "tags": [
       "significacao-das-palavras"
     ]
@@ -13211,8 +13211,8 @@
         "diferenca": "Descrição é ato de descrever; discrição é reserva no comportamento."
       }
     ],
-    "atencao": "Cumprimento é saudação ou execução; comprimento é medida de extensão.",
-    "fonte": "UNIFAL-MG, Letras para Todos, Semântica (apostila): https://www.unifal-mg.edu.br/letrasparatodos/wp-content/uploads/sites/259/2024/07/Semantica_Edvando_Sa.pdf; Cunha e Cintra, Nova Gramática do Português Contemporâneo",
+    "atencao": "Cumprimento é saudação; comprimento é medida de extensão.",
+    "fonte": "UNIFAL-MG, Letras para Todos, Semântica (apostila): https://www.unifal-mg.edu.br/letrasparatodos/wp-content/uploads/sites/259/2024/07/Semantica_Edvando_Sa.pdf",
     "tags": [
       "significacao-das-palavras"
     ]
