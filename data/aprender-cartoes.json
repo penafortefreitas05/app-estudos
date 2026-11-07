@@ -12698,7 +12698,7 @@
       }
     ],
     "atencao": "O ICMP é parte integrante do IP e deve ser implementado por todo módulo IP.",
-    "fonte": "[RFC 792 — Internet Control Message Protocol](https://www.rfc-editor.org/rfc/rfc792.html); [RFC 1470 — FYI on a Network Management Tool Catalog](https://www.rfc-editor.org/rfc/rfc1470.html)",
+    "fonte": "[RFC 792 — Internet Control Message Protocol](https://www.rfc-editor.org/rfc/rfc792.html); [Microsoft Learn — tracert (Windows Server)](https://learn.microsoft.com/windows-server/administration/windows-commands/tracert)",
     "tags": [
       "camada-de-rede"
     ]
