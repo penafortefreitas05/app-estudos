@@ -14,6 +14,17 @@ export const NOMES_DIA = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'S
 
 const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
+// Ciclo da semana (decidido em 08/11/2026): com 3 dias ou mais, o ÚLTIMO dia é de comprovação
+// (simulado), o PENÚLTIMO é de recuperação (revisão + Caderno de erros, sem assunto novo) e os
+// demais são de evolução (assunto novo + Praticar). Com menos de 3 dias, todos são de evolução.
+export const TIPOS_DIA = { evolucao: 'evolução', recuperacao: 'recuperação', comprovacao: 'comprovação' };
+export function tipoDoDia(indice, total) {
+    if (total < 3) return 'evolucao';
+    if (indice === total - 1) return 'comprovacao';
+    if (indice === total - 2) return 'recuperacao';
+    return 'evolucao';
+}
+
 // Quantos assuntos novos cabem num dia com essas horas
 export const assuntosPorDia = (horas) => (horas <= 1 ? 1 : horas <= 2 ? 2 : 3);
 
@@ -61,9 +72,14 @@ export function montarPlano({ perfil, grupos, aprendidos = {}, hoje = new Date()
 
     // Segunda a domingo, só nos dias marcados (domingo = 0 vai por último)
     const ordemSemana = [1, 2, 3, 4, 5, 6, 0].filter((n) => diasEscolhidos.includes(n));
-    const dias = ordemSemana.map((n) => {
+    const dias = ordemSemana.map((n, indice) => {
         const data = new Date(segunda);
         data.setDate(segunda.getDate() + ((n + 6) % 7));
+        const tipo = tipoDoDia(indice, ordemSemana.length);
+        if (tipo !== 'evolucao') {
+            const dIso = iso(data);
+            return { dia: n, nome: NOMES_DIA[n], data: dIso, tipo, hoje: dIso === hojeIso, passou: dIso < hojeIso, blocos: [], questoes: 0 };
+        }
         const blocos = [];
         let restantes = nAssuntos;
         for (let m = 0; m < nMaterias && sequencia.length; m++) {
@@ -82,10 +98,10 @@ export function montarPlano({ perfil, grupos, aprendidos = {}, hoje = new Date()
         cursor += nMaterias;
         const total = blocos.reduce((s, b) => s + b.assuntos.length, 0);
         const dataIso = iso(data);
-        return { dia: n, nome: NOMES_DIA[n], data: dataIso, hoje: dataIso === hojeIso, passou: dataIso < hojeIso, blocos, questoes: questoesSugeridas(horas, total) };
+        return { dia: n, nome: NOMES_DIA[n], data: dataIso, tipo, hoje: dataIso === hojeIso, passou: dataIso < hojeIso, blocos, questoes: questoesSugeridas(horas, total) };
     });
 
     const hojeEhDia = dias.some((d) => d.hoje);
     const proximo = dias.find((d) => d.data > hojeIso) || null;
-    return { horas, dias, hojeEhDia, proximo };
+    return { horas, dias, hojeEhDia, proximo, ciclos: ordemSemana.length >= 3 };
 }
