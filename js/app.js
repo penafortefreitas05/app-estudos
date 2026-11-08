@@ -25,6 +25,7 @@ import { abrirAprender } from './aprender-tela.js';
 import { montarBackupAprendidos, mesclarBackupAprendidos } from './leitura.js';
 import { abrirFiltros } from './filtros-tela.js';
 import { abrirCaderno } from './caderno-erros.js';
+import { prioridadesDeRecuperacao } from './prioridade.js';
 import { salvarPacote, lerPacote, infoPacote, descreverPacote } from './offline-pacote.js';
 import { modeloDoConcurso, quotasDoModelo, sortearPeloModelo } from './modelo-prova.js';
 import { abrirSimulado, abrirResultado, lerSimuladosLocais, guardarSimuladoLocal, mesclarSimulados, novoId } from './simulado-tela.js';
@@ -2969,6 +2970,10 @@ async function abrirEscolhaAprender(opcoes = {}) {
         assuntoVisivel: assuntoDoConcurso(),
         perfil: obterPerfilAtivo(),
         aoConfigurarPlano: configurarPerfil,
+        aoAbrirRevisao: () => { const b = document.getElementById("btn-modo-revisao"); if (b) b.click(); },
+        aoAbrirCaderno: () => { const i = document.querySelector('.menu-item[data-acao="caderno"]'); if (i) i.click(); },
+        aoAbrirSimulado: () => { const b = document.getElementById("btn-painel-simulado"); if (b) b.click(); },
+        prioridades: () => prioridadesDeRecuperacao(questoes, historico),
         temQuestoes: (materia, assunto) => questoes.some(q => q.materia === materia && q.assunto === assunto),
         aoPraticar: praticarAssunto,
         materia: opcoes.materia

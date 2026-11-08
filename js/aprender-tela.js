@@ -10,7 +10,7 @@
 // O "Aprendi" (uma marca por assunto) é guardado no aparelho por js/leitura.js; esta tela só lê esse estado.
 
 import { esc } from './ui.js';
-import { montarPlano } from './plano.js';
+import { montarPlano, TIPOS_DIA } from './plano.js';
 import { ordenarAssuntos } from './ordem-assuntos.js';
 import { assuntosComCartoes, abrirLeitura, lerAprendidos, assuntoAprendido, migrarEntendidos } from './leitura.js';
 
@@ -96,9 +96,10 @@ function guardarUltimo(materia, assunto) {
 // opcoes.aoPraticar(materia, assunto): chamado depois de fechar leitura e tela
 // opcoes.assuntoVisivel(materia, assunto): false esconde o assunto (concurso escolhido no perfil)
 // opcoes.perfil: perfil do usuário (dias e horas montam o plano); opcoes.aoConfigurarPlano(): abre o perfil
+// opcoes.aoAbrirRevisao/aoAbrirCaderno/aoAbrirSimulado(): atalhos dos dias de recuperação e comprovação; opcoes.prioridades(): assuntos a focar na recuperação
 // opcoes.materia: matéria já escolhida ao abrir (ex.: primeira sessão guiada)
 // Devolve false quando não há cartões carregados (ex.: sem internet na primeira vez).
-export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => false, aoPraticar, materia: materiaInicial, assuntoVisivel = null, perfil = null, aoConfigurarPlano } = {}) {
+export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => false, aoPraticar, materia: materiaInicial, assuntoVisivel = null, perfil = null, aoConfigurarPlano, aoAbrirRevisao, aoAbrirCaderno, aoAbrirSimulado, prioridades } = {}) {
     if (document.querySelector('.aprender-tela')) return true;
     const todos = await assuntosComCartoes();
     if (!todos.length) return false;
@@ -192,9 +193,24 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
             ${b.assuntos.map(a => `<button type="button" class="at-plano-assunto${a.feito ? ' feito' : ''}" data-acao="assunto" data-materia="${esc(b.materia)}" data-assunto="${esc(a.assunto)}"><span aria-hidden="true">${a.feito ? '✓' : '○'}</span> ${esc(a.assunto)}</button>`).join('')}</div>`).join('')
             : '<p class="at-plano-texto">Sem assuntos novos: foque em questões e na revisão.</p>';
         const hoje = plano.dias.find(d => d.hoje);
+        const tag = (d) => (plano.ciclos ? ` · ${TIPOS_DIA[d.tipo]}` : '');
         let topo;
-        if (hoje) {
-            topo = `<p class="at-plano-titulo">📅 Plano de hoje · ${esc(hoje.nome.toLowerCase())}</p>${blocosHtml(hoje)}
+        if (hoje && hoje.tipo === 'recuperacao') {
+            const prio = typeof prioridades === 'function' ? prioridades() : [];
+            const lista = prio.length
+                ? `<p class="at-plano-texto">Onde focar (mais erros, e os feitos com certeza pesam mais):</p>
+                   ${prio.map(p => `<p class="at-plano-dia-linha"><b>${esc(p.assunto)}</b> <span>${esc(p.materia)} · ${p.erradas} de ${p.respondidas} erradas (${p.taxa}%)${p.comCerteza ? ` · ${p.comCerteza} com certeza` : ''}</span></p>`).join('')}`
+                : '<p class="at-plano-texto">Ainda não há erros suficientes para apontar um assunto. Siga pela revisão do dia.</p>';
+            topo = `<p class="at-plano-titulo">📅 Hoje é dia de recuperação · ${esc(hoje.nome.toLowerCase())}</p>
+                <p class="at-plano-texto">Sem assunto novo. Primeiro a revisão do dia, depois os erros da semana.</p>${lista}
+                <div class="at-plano-acoes"><button type="button" class="at-plano-btn" data-acao="ir-revisao">Revisar hoje</button>
+                <button type="button" class="at-plano-btn" data-acao="ir-caderno">Caderno de erros</button></div>`;
+        } else if (hoje && hoje.tipo === 'comprovacao') {
+            topo = `<p class="at-plano-titulo">📅 Hoje é dia de comprovação · ${esc(hoje.nome.toLowerCase())}</p>
+                <p class="at-plano-texto">Faça um simulado e veja o resultado por matéria. Os erros vão para o Caderno e orientam a próxima semana.</p>
+                <div class="at-plano-acoes"><button type="button" class="at-plano-btn" data-acao="ir-simulado">Fazer simulado</button></div>`;
+        } else if (hoje) {
+            topo = `<p class="at-plano-titulo">📅 Plano de hoje${tag(hoje)} · ${esc(hoje.nome.toLowerCase())}</p>${blocosHtml(hoje)}
                 <p class="at-plano-q">🎯 <b>${hoje.questoes} questões</b> <span>(a revisão do dia entra nessa conta)</span></p>`;
         } else {
             const prox = plano.proximo || plano.dias[0];
@@ -202,10 +218,10 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
                 <p class="at-plano-texto">Seu próximo dia de estudo: <b>${esc(prox.nome.toLowerCase())}</b>${plano.proximo ? '' : ' (semana que vem)'}.</p>`;
         }
         const semana = plano.dias.map(d => `
-            <div class="at-plano-dia${d.hoje ? ' hoje' : ''}"><p class="at-plano-dia-nome">${esc(d.nome)}${d.hoje ? ' · hoje' : ''} <span>${d.questoes} questões</span></p>
-            ${d.blocos.map(b => `<p class="at-plano-dia-linha"><b>${esc(b.materia)}</b>: ${b.assuntos.map(a => (a.feito ? '✓ ' : '') + esc(a.assunto)).join(', ')}</p>`).join('') || '<p class="at-plano-dia-linha">Questões e revisão</p>'}</div>`).join('');
+            <div class="at-plano-dia${d.hoje ? ' hoje' : ''}"><p class="at-plano-dia-nome">${esc(d.nome)}${d.hoje ? ' · hoje' : ''} <span>${d.tipo === 'evolucao' ? `${plano.ciclos ? 'evolução · ' : ''}${d.questoes} questões` : TIPOS_DIA[d.tipo]}</span></p>
+            ${d.tipo === 'recuperacao' ? '<p class="at-plano-dia-linha">Revisar hoje e Caderno de erros</p>' : d.tipo === 'comprovacao' ? '<p class="at-plano-dia-linha">Simulado e resultado por matéria</p>' : d.blocos.map(b => `<p class="at-plano-dia-linha"><b>${esc(b.materia)}</b>: ${b.assuntos.map(a => (a.feito ? '✓ ' : '') + esc(a.assunto)).join(', ')}</p>`).join('') || '<p class="at-plano-dia-linha">Questões e revisão</p>'}</div>`).join('');
         area.innerHTML = `<div class="at-plano">${topo}
-            <details class="at-plano-semana"><summary>Ver a semana (${plano.dias.length} ${plano.dias.length === 1 ? 'dia' : 'dias'} · ${plano.horas} h por dia)</summary>${semana}</details>
+            <details class="at-plano-semana"><summary>Ver a semana (${plano.dias.length} ${plano.dias.length === 1 ? 'dia' : 'dias'} · ${plano.horas} h por dia)</summary>${plano.ciclos ? '' : '<p class="at-plano-texto">Com 3 dias ou mais, o plano ganha um dia de recuperação e um de comprovação.</p>'}${semana}</details>
             <button type="button" class="at-plano-link" data-acao="configurar-plano">Ajustar dias e horas</button></div>`;
     }
 
@@ -280,6 +296,9 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
                 fechar();
                 if (typeof aoConfigurarPlano === 'function') aoConfigurarPlano();
                 return;
+            case 'ir-revisao': fechar(); if (typeof aoAbrirRevisao === 'function') aoAbrirRevisao(); return;
+            case 'ir-caderno': fechar(); if (typeof aoAbrirCaderno === 'function') aoAbrirCaderno(); return;
+            case 'ir-simulado': fechar(); if (typeof aoAbrirSimulado === 'function') aoAbrirSimulado(); return;
             case 'filtro': filtro = d.filtro; return desenharLista(lerAprendidos());
             case 'continuar':
             case 'assunto': return abrirAssunto(d.materia, d.assunto);
