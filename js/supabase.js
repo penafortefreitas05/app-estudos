@@ -104,8 +104,16 @@ function gravarFila(fila) {
     } catch (e) { /* sem localStorage: a fila só não persiste */ }
 }
 
+// Id local de cada linha da fila (A03). Não vai para o banco: serve para tirar da fila exatamente
+// o que foi confirmado e para não reenviar o que outra aba já enviou.
+function novoIdLocal() {
+    try { if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID(); } catch (e) { /* cai no plano B */ }
+    return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`;
+}
+
 function montarLinha(userId, { questaoId, materia, banca, acertou, respostaEscolhida, momento, confianca, gabarito }) {
     const linha = {
+        _lid: novoIdLocal(),
         user_id: userId,
         questao_id: String(questaoId),
         materia: materia || 'Geral',
@@ -135,7 +143,8 @@ function erroDeColunaGabarito(erro) {
 }
 
 async function inserirLinhas(linhas) {
-    let enviar = linhas;
+    // _lid e _t são controles da fila local: nunca vão para o banco
+    let enviar = linhas.map(({ _lid, _t, ...resto }) => resto);
     if (!colunaConfiancaExiste) enviar = enviar.map(({ confianca, ...resto }) => resto);
     if (!colunaGabaritoExiste) enviar = enviar.map(({ gabarito, ...resto }) => resto);
 
@@ -216,7 +225,8 @@ export async function salvarRespostasEmLote(respostas) {
         return true;
     } catch (erro) {
         console.warn("[FocoPro] Sem conexão com a nuvem; respostas guardadas para reenviar:", erro.message);
-        gravarFila([...lerFila(), ...linhas]);
+        // _t: o envio saiu e não foi confirmado. Pode ter chegado ao servidor: o reenvio confere antes.
+        gravarFila([...lerFila(), ...linhas.map(l => ({ ...l, _t: 1 }))]);
         return false;
     }
 }
@@ -226,29 +236,128 @@ export async function salvarRespostaNoHistorico(resposta) {
 }
 
 let enviandoFila = false;
+const TAMANHO_LOTE_FILA = 200;
+
+// Ids locais já confirmados pela nuvem (os últimos 1000). Se duas janelas do app (PWA e aba)
+// lerem a mesma fila, a segunda vê aqui o que a primeira já enviou e não manda de novo.
+const CHAVE_FILA_CONFIRMADOS = 'appEstudos_FilaNuvemConfirmados';
+
+function lerConfirmados() {
+    try {
+        const v = JSON.parse(localStorage.getItem(CHAVE_FILA_CONFIRMADOS) || '[]');
+        return new Set(Array.isArray(v) ? v : []);
+    } catch (e) {
+        return new Set();
+    }
+}
+
+// Confirmado pela nuvem: anota o id e tira da fila SÓ essas linhas. A fila é relida na hora:
+// resposta que entrou nela durante o envio continua lá (antes era apagada junto).
+function confirmarEnvio(ids) {
+    if (!ids.length) return;
+    try {
+        const todos = [...lerConfirmados(), ...ids].slice(-1000);
+        localStorage.setItem(CHAVE_FILA_CONFIRMADOS, JSON.stringify(todos));
+    } catch (e) { /* sem espaço: a fila abaixo ainda é atualizada */ }
+    const enviados = new Set(ids);
+    gravarFila(lerFila().filter(l => !enviados.has(l._lid)));
+}
+
+// Marca "envio saiu, ainda sem confirmação" antes de mandar. Se a resposta do servidor se perder
+// (rede caiu no meio), a próxima tentativa confere na nuvem antes de mandar de novo.
+function marcarTentativa(ids) {
+    const marcar = new Set(ids);
+    gravarFila(lerFila().map(l => (marcar.has(l._lid) && !l._t ? { ...l, _t: 1 } : l)));
+}
+
+const chaveDaLinha = (l) => `${l.questao_id}|${new Date(l.created_at).getTime()}`;
+
+// Quais destas linhas já estão na nuvem (mesma questão, mesmo instante)? Só leitura.
+// Se a consulta falhar, lança o erro: sem conferir, nada duvidoso é reenviado.
+async function chavesJaNaNuvem(userId, linhas) {
+    const tempos = linhas.map(l => new Date(l.created_at).getTime()).filter(Number.isFinite);
+    if (!tempos.length) return new Set();
+    const de = new Date(tempos.reduce((a, b) => Math.min(a, b))).toISOString();
+    const ate = new Date(tempos.reduce((a, b) => Math.max(a, b))).toISOString();
+    const naNuvem = await buscarTodasAsPaginas(() => supabaseClient
+        .from('historico_respostas')
+        .select('questao_id, created_at')
+        .eq('user_id', userId)
+        .gte('created_at', de)
+        .lte('created_at', ate)
+        .order('created_at', { ascending: true }));
+    return new Set(naNuvem.map(chaveDaLinha));
+}
+
+// Uma janela do app por vez mexe na fila (PWA instalado + aba do navegador abertos juntos).
+// Navegador sem essa trava: segue só com a trava desta janela (enviandoFila).
+function comTravaEntreJanelas(nome, fazer) {
+    if (typeof navigator !== 'undefined' && navigator.locks && navigator.locks.request) {
+        return navigator.locks.request(nome, { ifAvailable: true }, (trava) => (trava ? fazer() : undefined));
+    }
+    return fazer();
+}
+
+async function enviarFilaAgora() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    const user = session?.user;
+    if (!user) return;
+
+    // A fila é lida DEPOIS de esperar a sessão (antes era lida antes, e o que entrava nesse
+    // intervalo era apagado). Linhas de versões antigas ganham id local e a marca de "conferir".
+    let fila = lerFila();
+    if (fila.some(l => !l._lid)) {
+        fila = fila.map(l => (l._lid ? l : { ...l, _lid: novoIdLocal(), _t: 1 }));
+        gravarFila(fila);
+    }
+    let minhas = fila.filter(l => l.user_id === user.id);
+    if (minhas.length === 0) return;
+
+    // 1. O que outra janela já enviou só sai da fila
+    const confirmados = lerConfirmados();
+    const jaEnviadas = minhas.filter(l => confirmados.has(l._lid));
+    if (jaEnviadas.length) {
+        confirmarEnvio(jaEnviadas.map(l => l._lid));
+        minhas = minhas.filter(l => !confirmados.has(l._lid));
+    }
+
+    // 2. Envio anterior sem confirmação: confere na nuvem para não gravar a mesma resposta 2 vezes
+    const duvidosas = minhas.filter(l => l._t);
+    if (duvidosas.length) {
+        const naNuvem = await chavesJaNaNuvem(user.id, duvidosas);
+        const repetidas = duvidosas.filter(l => naNuvem.has(chaveDaLinha(l)));
+        if (repetidas.length) {
+            const ids = new Set(repetidas.map(l => l._lid));
+            confirmarEnvio([...ids]);
+            minhas = minhas.filter(l => !ids.has(l._lid));
+        }
+    }
+
+    // 3. Envia em lotes; cada lote confirmado sai da fila na hora
+    let enviadas = 0;
+    for (let i = 0; i < minhas.length; i += TAMANHO_LOTE_FILA) {
+        const lote = minhas.slice(i, i + TAMANHO_LOTE_FILA);
+        const ids = lote.map(l => l._lid);
+        marcarTentativa(ids);
+        await inserirLinhas(lote);
+        confirmarEnvio(ids);
+        enviadas += lote.length;
+    }
+    if (enviadas) console.info(`[FocoPro] ${enviadas} resposta(s) pendente(s) enviadas para a nuvem.`);
+}
 
 /**
  * Reenvia as respostas que ficaram na fila. Só manda as do usuário logado agora.
- * Chamada ao abrir o app, ao fazer login e quando o navegador volta a ficar online.
+ * Chamada ao abrir o app, ao fazer login, quando a sessão é renovada e quando o navegador
+ * volta a ficar online.
  */
 export async function enviarFilaPendente() {
     if (enviandoFila) return;
-    const fila = lerFila();
-    if (fila.length === 0) return;
+    if (lerFila().length === 0) return;
 
     enviandoFila = true;
     try {
-        const { data: { session } } = await supabaseClient.auth.getSession();
-        const user = session?.user;
-        if (!user) return;
-
-        const minhas = fila.filter(l => l.user_id === user.id);
-        const outras = fila.filter(l => l.user_id !== user.id);
-        if (minhas.length === 0) return;
-
-        await inserirLinhas(minhas);
-        gravarFila(outras);
-        console.info(`[FocoPro] ${minhas.length} resposta(s) pendente(s) enviadas para a nuvem.`);
+        await comTravaEntreJanelas('focopro-fila-respostas', enviarFilaAgora);
     } catch (erro) {
         console.warn("[FocoPro] Fila de respostas continua pendente:", erro.message);
     } finally {
