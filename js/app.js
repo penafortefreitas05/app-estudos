@@ -36,6 +36,7 @@ import {
     supabaseClient,
     salvarRespostaNoHistorico,
     enviarFilaPendente,
+    enviarFilaFavoritosPendente,
     limparFilaPendente,
     salvarQuestoesEmMassa,
     carregarTodasQuestoes,
@@ -1849,6 +1850,8 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
     // chamada à nuvem ficava tentando de novo com a tela em "Carregando questões...".
     if (abertoSemRede && session && idUsuarioCarregado !== undefined) abertoSemRede = false;
     usuarioAtual = session?.user || null;
+    // A02: o usuário conhecido fica guardado para as filas (respostas, favoritos e anotações)
+    definirUsuarioOffline(usuarioAtual ? usuarioAtual.id : null);
 
     if (usuarioAtual) {
         if (userEmail) userEmail.innerText = usuarioAtual.email;
@@ -1874,7 +1877,14 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
     if (idUsuarioCarregado === undefined) return;
 
     const idAgora = usuarioAtual ? usuarioAtual.id : null;
-    if (idAgora === idUsuarioCarregado) return;
+    if (idAgora === idUsuarioCarregado) {
+        // Mesma pessoa, sessão renovada (ou confirmada ao voltar para o app): o que ficou nas
+        // filas sem internet sobe agora. Com as filas vazias, isto não chama a nuvem.
+        if (idAgora && (event === 'TOKEN_REFRESHED' || event === 'SIGNED_IN')) {
+            setTimeout(() => { enviarFilaPendente(); enviarFilaFavoritosPendente(); }, 0);
+        }
+        return;
+    }
     idUsuarioCarregado = idAgora;
 
     // setTimeout: chamar o Supabase de dentro deste evento pode travar o cliente (aviso da documentação)
@@ -2406,7 +2416,7 @@ async function iniciarApp() {
             usuarioAtual = null;
         }
     }
-    definirUsuarioOffline(abertoSemRede && usuarioAtual ? usuarioAtual.id : null);
+    definirUsuarioOffline(usuarioAtual ? usuarioAtual.id : null);
     if (abertoSemRede) {
         if (userEmail) userEmail.innerText = usuarioAtual.email;
         if (userAvatar) userAvatar.innerText = usuarioAtual.email.charAt(0).toUpperCase();

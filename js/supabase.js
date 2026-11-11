@@ -171,7 +171,9 @@ let gabaritosOffline = null;
 export function definirGabaritosOffline(mapa) { gabaritosOffline = mapa && Object.keys(mapa).length ? mapa : null; }
 export const temGabaritosOffline = () => Boolean(gabaritosOffline);
 
-// Usuário guardado no aparelho (app aberto sem rede): as respostas vão para a fila com o id dele
+// Usuário conhecido neste aparelho (logado agora ou guardado, com o app aberto sem rede). Se a
+// sessão não puder ser confirmada (sem internet, login vencido), respostas, favoritos e anotações
+// vão para a fila com o id dele e sobem quando a sessão for renovada.
 let usuarioOfflineId = null;
 export function definirUsuarioOffline(id) { usuarioOfflineId = id || null; }
 
@@ -530,7 +532,8 @@ function erroDeTabelaFavoritos(erro) {
     return Boolean(erro) && /favoritos_anotacoes/i.test(`${erro?.message || ''} ${erro?.details || ''} ${erro?.hint || ''}`);
 }
 
-async function enviarUpsertFavorito(linha) {
+async function enviarUpsertFavorito(linhaDaFila) {
+    const { _lid, ...linha } = linhaDaFila; // _lid é controle da fila local: não vai para o banco
     const { error } = await supabaseClient
         .from('favoritos_anotacoes')
         .upsert(linha, { onConflict: 'user_id,questao_id' });
@@ -547,34 +550,42 @@ async function enviarUpsertFavorito(linha) {
 
 let enviandoFilaFavoritos = false;
 
+async function enviarFilaFavoritosAgora() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    const user = session?.user;
+    if (!user) return;
+
+    // Lida depois de esperar a sessão; linhas de versões antigas ganham id local
+    let fila = lerFilaFavoritos();
+    if (fila.some(l => !l._lid)) {
+        fila = fila.map(l => (l._lid ? l : { ...l, _lid: novoIdLocal() }));
+        gravarFilaFavoritos(fila);
+    }
+    const minhas = fila.filter(l => l.user_id === user.id);
+    if (minhas.length === 0) return;
+
+    let enviadas = 0;
+    for (const linha of minhas) {
+        await enviarUpsertFavorito(linha);
+        if (!tabelaFavoritosExiste) return; // tabela ainda não existe: tudo continua na fila
+        // Sai da fila só a linha confirmada; o que entrou durante o envio continua lá
+        gravarFilaFavoritos(lerFilaFavoritos().filter(l => l._lid !== linha._lid));
+        enviadas += 1;
+    }
+    console.info(`[FocoPro] ${enviadas} favorito(s)/anotação(ões) pendente(s) enviados para a nuvem.`);
+}
+
 /**
  * Reenvia favoritos/anotações que ficaram pendentes (sem internet no momento, etc.).
- * Chamada ao carregar o histórico e quando o navegador volta a ficar online.
+ * Chamada ao carregar o histórico, quando a sessão é renovada e quando o navegador volta a ficar online.
  */
 export async function enviarFilaFavoritosPendente() {
     if (enviandoFilaFavoritos || !tabelaFavoritosExiste) return;
-    const fila = lerFilaFavoritos();
-    if (fila.length === 0) return;
+    if (lerFilaFavoritos().length === 0) return;
 
     enviandoFilaFavoritos = true;
     try {
-        const { data: { session } } = await supabaseClient.auth.getSession();
-        const user = session?.user;
-        if (!user) return;
-
-        const minhas = fila.filter(l => l.user_id === user.id);
-        const outras = fila.filter(l => l.user_id !== user.id);
-        if (minhas.length === 0) return;
-
-        for (const linha of minhas) {
-            await enviarUpsertFavorito(linha);
-            if (!tabelaFavoritosExiste) {
-                gravarFilaFavoritos([...outras, ...minhas]); // tabela ainda não existe: devolve tudo pra fila
-                return;
-            }
-        }
-        gravarFilaFavoritos(outras);
-        console.info(`[FocoPro] ${minhas.length} favorito(s)/anotação(ões) pendente(s) enviados para a nuvem.`);
+        await comTravaEntreJanelas('focopro-fila-favoritos', enviarFilaFavoritosAgora);
     } catch (erro) {
         console.warn("[FocoPro] Fila de favoritos/anotações continua pendente:", erro.message);
     } finally {
@@ -587,25 +598,42 @@ if (typeof window !== 'undefined') {
 }
 
 async function salvarCampoFavoritoNaNuvem(questaoId, camposValor, campoCarimbo, momento) {
-    let user = null;
-    try {
-        const { data: { session } } = await supabaseClient.auth.getSession();
-        user = session?.user || null;
-    } catch (e) { /* segue sem usuário */ }
-    if (!user) return; // visitante: fica só no aparelho
-
-    const linha = {
-        user_id: user.id,
+    const montar = (userId) => ({
+        _lid: novoIdLocal(),
+        user_id: userId,
         questao_id: String(questaoId),
         ...camposValor,
         [campoCarimbo]: new Date(momento).toISOString()
-    };
+    });
+    const guardarNaFila = (linha) => gravarFilaFavoritos([...lerFilaFavoritos(), linha]);
 
+    // A02: sem internet, vai direto para a fila com o usuário guardado no aparelho (como as
+    // respostas). Antes, offline com o login vencido a sessão vinha vazia e a mudança era
+    // descartada: ficava só neste aparelho para sempre.
+    if (usuarioOfflineId && typeof navigator !== 'undefined' && navigator.onLine === false) {
+        guardarNaFila(montar(usuarioOfflineId));
+        return;
+    }
+    let user = null;
+    try {
+        const { data: { session } } = await Promise.race([
+            supabaseClient.auth.getSession(),
+            new Promise((_, rejeita) => setTimeout(() => rejeita(new Error('sessão demorou')), 4000))
+        ]);
+        user = session?.user || null;
+    } catch (e) { /* segue sem usuário */ }
+    if (!user && usuarioOfflineId) {
+        guardarNaFila(montar(usuarioOfflineId)); // sobe quando a sessão for renovada
+        return;
+    }
+    if (!user) return; // visitante: fica só no aparelho
+
+    const linha = montar(user.id);
     try {
         await enviarUpsertFavorito(linha);
     } catch (erro) {
         console.warn("[FocoPro] Sem conexão para salvar na nuvem agora; tentando de novo mais tarde:", erro.message);
-        gravarFilaFavoritos([...lerFilaFavoritos(), linha]);
+        guardarNaFila(linha);
     }
 }
 

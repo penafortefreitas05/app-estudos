@@ -2,7 +2,7 @@
 // js/storage.js - Gerenciamento Híbrido (Local / Supabase)
 // ============================================================
 
-import { carregarHistoricoIncremental, carregarFavoritosEAnotacoes, enviarFilaFavoritosPendente } from './supabase.js';
+import { carregarHistoricoIncremental, carregarFavoritosEAnotacoes, enviarFilaFavoritosPendente, salvarFavoritoNaNuvem, salvarAnotacaoNaNuvem } from './supabase.js';
 import { aplicarResposta, novoRegistro, normalizarRegistroAntigo } from './revisao.js';
 
 const CHAVE_HISTORICO = 'appEstudos_Historico';
@@ -199,7 +199,19 @@ export async function carregarHistorico({ semNuvem = false } = {}) {
                 local.anotacaoEm = nuvem.anotacaoEm;
             }
         });
-        localStorage.setItem(CHAVE_HISTORICO, JSON.stringify(historicoLocal));
+        try { localStorage.setItem(CHAVE_HISTORICO, JSON.stringify(historicoLocal)); } catch (e) { /* sem espaço: segue com o que está na memória */ }
+
+        // 3b. A02: o que este aparelho tem de MAIS NOVO que a nuvem sobe agora (um por vez, em
+        // segundo plano). Recupera favoritos e anotações feitos sem internet que nunca entraram
+        // na fila. Depois de subir, os carimbos ficam iguais e nada é reenviado.
+        const paraSubir = [];
+        Object.entries(historicoLocal).forEach(([qId, local]) => {
+            if (!local) return;
+            const nuvem = favoritosNuvem[qId] || { favoritoEm: 0, anotacaoEm: 0 };
+            if ((local.favoritoEm || 0) > nuvem.favoritoEm) paraSubir.push(() => salvarFavoritoNaNuvem(qId, local.favorito, local.favoritoEm));
+            if ((local.anotacaoEm || 0) > nuvem.anotacaoEm) paraSubir.push(() => salvarAnotacaoNaNuvem(qId, local.anotacao, local.anotacaoEm));
+        });
+        if (paraSubir.length) (async () => { for (const subir of paraSubir) await subir(); })().catch(() => {});
     }
 
     // 4. Reenvia favoritos/anotações que ficaram pendentes (sem internet no momento, etc.)
