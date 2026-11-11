@@ -2959,6 +2959,18 @@ function nivelParaPraticar(doAssunto) {
     return pronto && n2.length ? 2 : 1;
 }
 
+const NOMES_NIVEL_PRATICAR = { 1: "Iniciante", 2: "Intermediário" };
+const nivelDoPraticar = (materia, assunto) => nivelParaPraticar(questoes.filter(q => q.materia === materia && q.assunto === assunto));
+
+// Assunto sem questão para praticar: a tela final da leitura diz isso em vez de oferecer o botão.
+// Sem questões carregadas (offline sem pacote) não dá para saber: não afirma nada.
+function avisoSemQuestoes(materia, assunto) {
+    if (!questoes.length || nivelDoPraticar(materia, assunto) !== null) return "";
+    return questoes.some(q => q.materia === materia && q.assunto === assunto)
+        ? "Este assunto ainda não tem questões de nível Iniciante ou Intermediário para praticar."
+        : "Ainda não há questões deste assunto para praticar.";
+}
+
 function praticarAssunto(materia, assunto) {
     const doAssunto = questoes.filter(q => q.materia === materia && q.assunto === assunto);
     if (!doAssunto.length) { showToast("Ainda não há questões deste assunto.", "info"); return; }
@@ -2980,7 +2992,7 @@ function praticarAssunto(materia, assunto) {
     const naoFeita = q => { const h = historico[String(q.id)]; return !h || !h.tentativas; };
     const lista = doAssunto.filter(q => Number(q.nivel) === nivel);
     const ordenada = [...lista.filter(naoFeita), ...lista.filter(q => !naoFeita(q))];
-    const nome = nivel === 1 ? "Iniciante" : "Intermediário";
+    const nome = NOMES_NIVEL_PRATICAR[nivel];
     entrarFoco(ordenada, { silencioso: true, titulo: `Praticando: ${assunto} (${nome})`, praticar: { materia, assunto, nivel } });
     showToast(`Praticando ${assunto}, nível ${nome}: ${ordenada.length} ${ordenada.length === 1 ? "questão" : "questões"}. Esc para sair.`, "info", 3500);
 }
@@ -2997,7 +3009,10 @@ async function abrirEscolhaAprender(opcoes = {}) {
         aoAbrirCaderno: () => { const i = document.querySelector('.menu-item[data-acao="caderno"]'); if (i) i.click(); },
         aoAbrirSimulado: () => { const b = document.getElementById("btn-painel-simulado"); if (b) b.click(); },
         prioridades: () => prioridadesDeRecuperacao(questoes, historico),
-        temQuestoes: (materia, assunto) => questoes.some(q => q.materia === materia && q.assunto === assunto),
+        // Só há "Praticar" quando o assunto tem questão de nível Iniciante ou Intermediário
+        temQuestoes: (materia, assunto) => nivelDoPraticar(materia, assunto) !== null,
+        nivelPraticar: (materia, assunto) => NOMES_NIVEL_PRATICAR[nivelDoPraticar(materia, assunto)] || "",
+        avisoSemQuestoes,
         aoPraticar: praticarAssunto,
         materia: opcoes.materia
     });

@@ -173,7 +173,9 @@ export function fonteHTML(fonte) {
 // aoPraticar (opcional): se vier, a tela final ganha o botão "Praticar" (atalho para as questões do assunto
 // no Testar). Quem chama decide se há questões; sem a função, o botão não aparece.
 // aoAprender (opcional): chamado depois de marcar "Aprendi".
-export function abrirLeitura(cartoes, { titulo, aoFechar, aoPraticar, aoAprender } = {}) {
+// nivelPraticar (opcional): nome do nível que o Praticar abre, para o texto não prometer o nível errado.
+// avisoSemQuestoes (opcional): sem aoPraticar, frase que explica por que não há o que praticar.
+export function abrirLeitura(cartoes, { titulo, aoFechar, aoPraticar, aoAprender, nivelPraticar, avisoSemQuestoes } = {}) {
     if (!Array.isArray(cartoes) || !cartoes.length || document.querySelector('.leitura')) return;
     const assunto = titulo || cartoes[0].assunto;
     const materia = cartoes[0].materia;
@@ -215,8 +217,9 @@ export function abrirLeitura(cartoes, { titulo, aoFechar, aoPraticar, aoAprender
                     <h3 class="leitura-conceito" tabindex="-1">Você leu os ${cartoes.length} cartões</h3>
                     <p>${esc(assunto)}</p>
                     <p class="leitura-fim-dica">${typeof aoPraticar === 'function'
-                        ? '"Aprendi" marca o assunto e já abre as questões dele (nível Iniciante). "Praticar" abre as questões sem marcar.'
+                        ? `"Aprendi" marca o assunto e já abre as questões dele (nível ${esc(nivelPraticar || 'Iniciante')}). "Praticar" abre as questões sem marcar.`
                         : 'Toque em "Aprendi" para marcar o assunto como aprendido.'}</p>
+                    ${typeof aoPraticar !== 'function' && avisoSemQuestoes ? `<p class="leitura-fim-dica leitura-sem-questoes">${esc(avisoSemQuestoes)}</p>` : ''}
                 </div>`;
             acoes.innerHTML = `
                 <button type="button" class="leitura-btn ainda" data-acao="denovo">Ler novamente</button>

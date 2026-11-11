@@ -93,13 +93,15 @@ function guardarUltimo(materia, assunto) {
 
 // opcoes.ordemMaterias: ordem das matérias na lista
 // opcoes.temQuestoes(materia, assunto): se true, a leitura mostra "Praticar" no fim
+// opcoes.nivelPraticar(materia, assunto): nome do nível que o Praticar vai abrir ("Iniciante"...)
+// opcoes.avisoSemQuestoes(materia, assunto): texto para a tela final quando não há o que praticar ("" = nenhum)
 // opcoes.aoPraticar(materia, assunto): chamado depois de fechar leitura e tela
 // opcoes.assuntoVisivel(materia, assunto): false esconde o assunto (concurso escolhido no perfil)
 // opcoes.perfil: perfil do usuário (dias e horas montam o plano); opcoes.aoConfigurarPlano(): abre o perfil
 // opcoes.aoAbrirRevisao/aoAbrirCaderno/aoAbrirSimulado(): atalhos dos dias de recuperação e comprovação; opcoes.prioridades(): assuntos a focar na recuperação
 // opcoes.materia: matéria já escolhida ao abrir (ex.: primeira sessão guiada)
 // Devolve false quando não há cartões carregados (ex.: sem internet na primeira vez).
-export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => false, aoPraticar, materia: materiaInicial, assuntoVisivel = null, perfil = null, aoConfigurarPlano, aoAbrirRevisao, aoAbrirCaderno, aoAbrirSimulado, prioridades } = {}) {
+export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => false, nivelPraticar = () => '', avisoSemQuestoes = () => '', aoPraticar, materia: materiaInicial, assuntoVisivel = null, perfil = null, aoConfigurarPlano, aoAbrirRevisao, aoAbrirCaderno, aoAbrirSimulado, prioridades } = {}) {
     if (document.querySelector('.aprender-tela')) return true;
     const todos = await assuntosComCartoes();
     if (!todos.length) return false;
@@ -273,12 +275,14 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
         if (!a) return;
         guardarUltimo(mat, nome);
         materia = mat;
+        const podePraticar = temQuestoes(mat, nome) && typeof aoPraticar === 'function';
         abrirLeitura(a.cartoes, {
             titulo: a.assunto,
             aoFechar: () => { if (!fechada) desenhar(); },
-            aoPraticar: temQuestoes(mat, nome) && typeof aoPraticar === 'function'
-                ? () => { fechar(); aoPraticar(mat, nome); }
-                : undefined
+            aoPraticar: podePraticar ? () => { fechar(); aoPraticar(mat, nome); } : undefined,
+            nivelPraticar: podePraticar ? nivelPraticar(mat, nome) : '',
+            // Sem o que praticar: o botão é só "Aprendi ✓" (fica no Aprender) e a tela diz por quê
+            avisoSemQuestoes: podePraticar ? '' : avisoSemQuestoes(mat, nome)
         });
     }
 
