@@ -1404,7 +1404,8 @@ function entrarFoco(lista, opcoes = {}) {
         lista: [...lista], indice: 0, cards: new Map(),
         titulo: opcoes.titulo || "", guiada: Boolean(opcoes.guiada),
         exemplos: opcoes.exemplos || new Set(), // ids mostrados como exemplo resolvido (Aprender)
-        aprender: opcoes.aprender || null       // { materia, nome } do assunto em estudo
+        aprender: opcoes.aprender || null,      // { materia, nome } do assunto em estudo
+        praticar: opcoes.praticar || null       // { materia, assunto, nivel }: lista por nível do Praticar
     };
     document.body.classList.add("modo-foco");
     document.body.classList.toggle("foco-simulado", Boolean(opcoes.simulado));
@@ -1433,6 +1434,9 @@ function sairFoco(opcoes = {}) {
 // continua na mesma questão se ela ainda estiver na lista nova.
 function atualizarListaFoco(lista) {
     if (foco && foco.simulado) return; // o simulado em andamento mantém as questões sorteadas
+    // Praticar do Aprender: a lista é só do nível que o cartão ensinou. Um filtro mexido com o
+    // Foco aberto (ex.: tocar numa matéria no menu) não troca essa lista; ele vale ao sair do Foco.
+    if (foco && foco.praticar) return;
     if (!lista.length) {
         sairFoco({ silencioso: true });
         renderizarQuestoes(container, [], historico, undefined, { paginar: true });
@@ -2939,8 +2943,7 @@ function cardExemplo(q) {
 }
 
 // Aprender 2.0: "Praticar" ao fim da leitura. Leva direto às questões do assunto no Modo Foco, com os
-// outros filtros limpos para a lista não ficar vazia sem explicação. O nível não é filtrado: a ordem de
-// estudo já põe o Iniciante primeiro.
+// outros filtros limpos para a lista não ficar vazia sem explicação.
 // Praticar do Aprender: só o nível que o cartão ensinou. Começa no nível 1 (Iniciante); o nível 2
 // entra quando o nível 1 do assunto já tem 70% ou mais de acerto (sobre as respondidas, com pelo
 // menos metade respondida). Avançado e Especialista ficam de fora: cobram mais do que os cartões.
@@ -2978,7 +2981,7 @@ function praticarAssunto(materia, assunto) {
     const lista = doAssunto.filter(q => Number(q.nivel) === nivel);
     const ordenada = [...lista.filter(naoFeita), ...lista.filter(q => !naoFeita(q))];
     const nome = nivel === 1 ? "Iniciante" : "Intermediário";
-    entrarFoco(ordenada, { silencioso: true, titulo: `Praticando: ${assunto} (${nome})` });
+    entrarFoco(ordenada, { silencioso: true, titulo: `Praticando: ${assunto} (${nome})`, praticar: { materia, assunto, nivel } });
     showToast(`Praticando ${assunto}, nível ${nome}: ${ordenada.length} ${ordenada.length === 1 ? "questão" : "questões"}. Esc para sair.`, "info", 3500);
 }
 
