@@ -9,7 +9,11 @@
     const menuToggle = document.getElementById('menu-toggle');
     if (sidebar && menuToggle) {
         sidebar.addEventListener('click', function (e) {
-            if (e.target.closest('button')) menuToggle.checked = false;
+            if (!e.target.closest('button')) return;
+            // Tocar numa matéria do painel abre o detalhe (% de acerto) ali mesmo: o menu fica aberto.
+            // O número de "revisar hoje" dentro do quadradinho leva às questões: aí o menu fecha.
+            const naMateria = e.target.closest('.materia-tile') && !e.target.closest('[data-revisar-materia]');
+            if (!naMateria) menuToggle.checked = false;
         });
     }
 

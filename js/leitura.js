@@ -215,12 +215,12 @@ export function abrirLeitura(cartoes, { titulo, aoFechar, aoPraticar, aoAprender
                     <h3 class="leitura-conceito" tabindex="-1">Você leu os ${cartoes.length} cartões</h3>
                     <p>${esc(assunto)}</p>
                     <p class="leitura-fim-dica">${typeof aoPraticar === 'function'
-                        ? 'Toque em "Aprendi" para marcar o assunto. Para fixar, pratique as questões dele.'
+                        ? '"Aprendi" marca o assunto e já abre as questões dele (nível Iniciante). "Praticar" abre as questões sem marcar.'
                         : 'Toque em "Aprendi" para marcar o assunto como aprendido.'}</p>
                 </div>`;
             acoes.innerHTML = `
                 <button type="button" class="leitura-btn ainda" data-acao="denovo">Ler novamente</button>
-                <button type="button" class="leitura-btn entendi" data-acao="aprendi">Aprendi ✓</button>
+                <button type="button" class="leitura-btn entendi" data-acao="aprendi">${typeof aoPraticar === 'function' ? 'Aprendi ✓ e praticar →' : 'Aprendi ✓'}</button>
                 ${typeof aoPraticar === 'function' ? '<button type="button" class="leitura-btn praticar" data-acao="praticar">Praticar →</button>' : ''}`;
         } else {
             contagem.textContent = `${sessao.indice + 1} de ${cartoes.length}`;
@@ -242,6 +242,8 @@ export function abrirLeitura(cartoes, { titulo, aoFechar, aoPraticar, aoAprender
             marcarAprendi(materia, assunto);
             fechar();
             if (typeof aoAprender === 'function') aoAprender();
+            // Marcou "Aprendi": segue direto para as questões do assunto (antes voltava à tela inicial)
+            if (typeof aoPraticar === 'function') return aoPraticar();
             return;
         }
         if (acao === 'praticar') {

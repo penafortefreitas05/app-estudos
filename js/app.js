@@ -2941,9 +2941,26 @@ function cardExemplo(q) {
 // Aprender 2.0: "Praticar" ao fim da leitura. Leva direto às questões do assunto no Modo Foco, com os
 // outros filtros limpos para a lista não ficar vazia sem explicação. O nível não é filtrado: a ordem de
 // estudo já põe o Iniciante primeiro.
+// Praticar do Aprender: só o nível que o cartão ensinou. Começa no nível 1 (Iniciante); o nível 2
+// entra quando o nível 1 do assunto já tem 70% ou mais de acerto (sobre as respondidas, com pelo
+// menos metade respondida). Avançado e Especialista ficam de fora: cobram mais do que os cartões.
+// Ordem: as ainda não respondidas primeiro, para a conta dos 70% medir o que você sabe agora.
+const MINIMO_PRATICAR = 0.7;
+function nivelParaPraticar(doAssunto) {
+    const n1 = doAssunto.filter(q => Number(q.nivel) === 1);
+    const n2 = doAssunto.filter(q => Number(q.nivel) === 2);
+    if (!n1.length) return n2.length ? 2 : null;
+    const resp = n1.filter(q => { const h = historico[String(q.id)]; return h && h.tentativas; });
+    const certas = resp.filter(q => historico[String(q.id)].ultimaResposta === 'certo').length;
+    const pronto = resp.length >= Math.ceil(n1.length / 2) && certas / resp.length >= MINIMO_PRATICAR;
+    return pronto && n2.length ? 2 : 1;
+}
+
 function praticarAssunto(materia, assunto) {
-    const quantas = questoes.filter(q => q.materia === materia && q.assunto === assunto).length;
-    if (!quantas) { showToast("Ainda não há questões deste assunto.", "info"); return; }
+    const doAssunto = questoes.filter(q => q.materia === materia && q.assunto === assunto);
+    if (!doAssunto.length) { showToast("Ainda não há questões deste assunto.", "info"); return; }
+    const nivel = nivelParaPraticar(doAssunto);
+    if (nivel === null) { showToast("Este assunto ainda não tem questões de nível Iniciante ou Intermediário.", "info", 4000); return; }
     simulado = null;
     pararCronometro(displayCronometro);
     if (foco) sairFoco({ silencioso: true });
@@ -2957,9 +2974,12 @@ function praticarAssunto(materia, assunto) {
     tagSelecionada = "";
     atualizarSelectAssunto();
     definirTag(assunto); // também chama aplicarFiltros (a lista fica pronta para quando sair do Foco)
-    // Vai direto para as questões do assunto, uma por vez, no Modo Foco
-    entrarFoco(ordenarParaEstudo(filtrarQuestoes()), { silencioso: true, titulo: `Praticando: ${assunto}` });
-    showToast(`Praticando ${assunto}: ${quantas} ${quantas === 1 ? "questão" : "questões"}. Esc para sair.`, "info", 3000);
+    const naoFeita = q => { const h = historico[String(q.id)]; return !h || !h.tentativas; };
+    const lista = doAssunto.filter(q => Number(q.nivel) === nivel);
+    const ordenada = [...lista.filter(naoFeita), ...lista.filter(q => !naoFeita(q))];
+    const nome = nivel === 1 ? "Iniciante" : "Intermediário";
+    entrarFoco(ordenada, { silencioso: true, titulo: `Praticando: ${assunto} (${nome})` });
+    showToast(`Praticando ${assunto}, nível ${nome}: ${ordenada.length} ${ordenada.length === 1 ? "questão" : "questões"}. Esc para sair.`, "info", 3500);
 }
 
 // "📖 Aprender": abre a tela nova (matérias → assuntos), em js/aprender-tela.js.
