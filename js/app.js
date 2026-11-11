@@ -229,6 +229,46 @@ btnRestaurarAprendidos.addEventListener("click", () => {
     entrada.click();
 });
 
+// Registro de aberturas (A07): as últimas 20 aberturas do app, para diagnosticar "não abriu".
+// Guardado por js/registro-abertura.js; aqui só o botão que mostra e copia. Nada pessoal.
+const btnRegistroAbertura = criarBotaoSidebar("🩺 Registro de aberturas");
+btnRegistroAbertura.title = "Mostra as últimas aberturas do app (data, internet, versão, etapa e erro) para copiar";
+if (gavetaFerramentas) gavetaFerramentas.insertBefore(btnRegistroAbertura, antesDoSair);
+btnRegistroAbertura.addEventListener("click", () => {
+    const texto = window.FocoProRegistro ? window.FocoProRegistro.texto() : "Registro indisponível neste navegador.";
+    const fundo = document.createElement("div");
+    fundo.className = "modal-overlay visible";
+    fundo.id = "modal-registro-abertura";
+    fundo.innerHTML = `
+        <div class="modal-card" style="max-width: 680px; max-height: 82vh; overflow-y: auto;">
+            <h3 class="modal-titulo">🩺 Registro de aberturas</h3>
+            <p class="modal-mensagem">As últimas aberturas do app neste aparelho, da mais nova para a mais antiga. Não tem dados pessoais.</p>
+            <pre style="white-space: pre-wrap; word-break: break-word; font-size: 0.75rem; text-align: left; max-height: 45vh; overflow: auto; margin: 0 0 1rem;"></pre>
+            <div class="modal-acoes">
+                <button type="button" class="btn-secondary" data-acao="fechar">Fechar</button>
+                <button type="button" class="btn-primary" data-acao="copiar">Copiar</button>
+            </div>
+        </div>`;
+    fundo.querySelector("pre").textContent = texto;
+    fundo.addEventListener("click", async (e) => {
+        if (e.target === fundo || e.target.closest('[data-acao="fechar"]')) { fundo.remove(); return; }
+        if (!e.target.closest('[data-acao="copiar"]')) return;
+        try {
+            await navigator.clipboard.writeText(texto);
+            showToast("Registro copiado. Cole numa mensagem.", "sucesso");
+        } catch (erro) {
+            // Sem permissão de copiar: seleciona o texto para copiar à mão
+            const faixa = document.createRange();
+            faixa.selectNodeContents(fundo.querySelector("pre"));
+            const selecao = window.getSelection();
+            selecao.removeAllRanges();
+            selecao.addRange(faixa);
+            showToast("Texto selecionado: copie com o menu do aparelho.", "info", 5000);
+        }
+    });
+    document.body.appendChild(fundo);
+});
+
 // Backup do banco de questões: só o admin vê (a RLS também barra os outros no servidor)
 const btnBackupBanco = criarBotaoSidebar("🗄️ Backup do banco de questões");
 btnBackupBanco.title = "Baixa todas as questões, gabaritos e reportes num arquivo .json";
@@ -2267,6 +2307,7 @@ async function carregarBancoDeQuestoes(questoesChegando = null) {
         resultado = await (questoesChegando || buscarQuestoes());
         if (resultado.erro) {
             console.warn("[FocoPro] Erro ao buscar questões da nuvem:", resultado.erro);
+            registrarErroDeAbertura(resultado.erro);
             if (!pacote) { mostrarErroDeCarga(); return; }
             resultado = doPacote();
             semNuvem = true;
@@ -2275,6 +2316,7 @@ async function carregarBancoDeQuestoes(questoesChegando = null) {
     }
     const daNuvem = resultado.questoes;
     ultimaListaDaNuvem = daNuvem;
+    registrarEtapa("questoes", { modo: resultado.doPacote ? (abertoSemRede ? "sem-rede, pacote" : "nuvem falhou, pacote") : undefined });
 
     const todas = mesclarQuestoes(daNuvem);
     await sincronizarPerfil(semNuvem);
@@ -2339,6 +2381,7 @@ if (container) {
 
 // Falha ao buscar o banco: aviso + botão para tentar de novo
 function mostrarErroDeCarga() {
+    registrarErroDeAbertura("tela: não foi possível carregar as questões");
     questoes = [];
     porId = new Map();
     container.innerHTML = `
@@ -2387,7 +2430,16 @@ function usuarioSalvoNoAparelho() {
 // precisam dela. Quando a internet volta, o toque em "Atualizar"/reabrir sincroniza.
 let abertoSemRede = false;
 
+// Registro de abertura (A07): anota até onde a inicialização chegou (js/registro-abertura.js)
+function registrarEtapa(nome, extra) {
+    try { if (window.FocoProRegistro) window.FocoProRegistro.etapa(nome, extra); } catch (e) { /* o registro nunca atrapalha a abertura */ }
+}
+function registrarErroDeAbertura(erro) {
+    try { if (window.FocoProRegistro) window.FocoProRegistro.erro(erro); } catch (e) { /* idem */ }
+}
+
 async function iniciarApp() {
+    registrarEtapa("iniciando");
     // 0. Remove do navegador o cache antigo de questões importadas (não é mais usado)
     limparCacheAntigoDeQuestoes();
 
@@ -2417,6 +2469,7 @@ async function iniciarApp() {
         }
     }
     definirUsuarioOffline(usuarioAtual ? usuarioAtual.id : null);
+    registrarEtapa("sessao", { modo: abertoSemRede ? "sem-rede" : (usuarioAtual ? "online" : "visitante") });
     if (abertoSemRede) {
         if (userEmail) userEmail.innerText = usuarioAtual.email;
         if (userAvatar) userAvatar.innerText = usuarioAtual.email.charAt(0).toUpperCase();
@@ -2437,16 +2490,20 @@ async function iniciarApp() {
         historico = await carregarHistorico({ semNuvem: abertoSemRede });
     } catch (e) {
         console.warn("[FocoPro] Erro ao carregar histórico:", e);
+        registrarErroDeAbertura(e);
         historico = {};
     }
+    registrarEtapa("historico");
 
     // 4. Desenha o banco de questões (ou mostra o aviso de login)
     // A05: se algo falhar aqui, a tela mostra o aviso com "Tentar de novo" em vez de ficar parada
     // em "Carregando questões...".
     try {
         await carregarBancoDeQuestoes(questoesChegando);
+        registrarEtapa("pronto", { questoes: questoes.length });
     } catch (e) {
         console.warn("[FocoPro] Erro ao montar as questões:", e);
+        registrarErroDeAbertura(e);
         if (usuarioAtual) mostrarErroDeCarga();
     } finally {
         idUsuarioCarregado = usuarioAtual ? usuarioAtual.id : null;

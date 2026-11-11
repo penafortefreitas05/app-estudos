@@ -29,6 +29,7 @@ const RECURSOS_ESTATICOS = [
     './js/auth.js',
     './js/supabase.js',
     './js/pwa.js',
+    './js/registro-abertura.js',
     './js/revisao.js',
     './js/primeiros-passos.js',
     './js/aprender-tela.js',
