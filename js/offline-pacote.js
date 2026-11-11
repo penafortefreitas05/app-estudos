@@ -18,6 +18,7 @@ function abrir() {
         req.onupgradeneeded = () => { req.result.createObjectStore(LOJA); };
         req.onsuccess = () => resolve(req.result);
         req.onerror = () => reject(req.error || new Error('Falha ao abrir o armazenamento'));
+        req.onblocked = () => reject(new Error('Armazenamento bloqueado por outra aba'));
     });
 }
 
@@ -41,9 +42,16 @@ export async function salvarPacote(pacote) {
     try { if (navigator.storage && navigator.storage.persist) await navigator.storage.persist(); } catch (e) { /* segue */ }
 }
 
+// Limite de tempo (A05): se o armazenamento do navegador não responder, a abertura não fica
+// esperando para sempre; segue como se não houvesse pacote.
+const LIMITE_LEITURA_MS = 6000;
+
 export async function lerPacote() {
     try {
-        const p = await transacao('readonly', (loja) => loja.get(CHAVE_PACOTE));
+        const p = await Promise.race([
+            transacao('readonly', (loja) => loja.get(CHAVE_PACOTE)),
+            new Promise((_, rejeita) => setTimeout(() => rejeita(new Error('armazenamento demorou')), LIMITE_LEITURA_MS))
+        ]);
         return p && Array.isArray(p.questoes) && p.questoes.length ? p : null;
     } catch (e) { return null; }
 }

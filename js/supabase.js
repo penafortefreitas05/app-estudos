@@ -12,8 +12,56 @@ const supabaseUrl = 'https://fghcoxferprkzsemicnw.supabase.co';
 // Chave "anon": é pública por definição. Quem protege os dados é a RLS de cada tabela.
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZnaGNveGZlcnBya3pzZW1pY253Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI1MDg2ODYsImV4cCI6MjEwODA4NDY4Nn0.o2LRgl3s3rL_tYsLE8Ujk_GLWVQj0fPwZv-bgtEP7i4';
 
+// ---------- Tempo limite das chamadas à nuvem (A01) ----------
+// Em wifi sem internet (navio), o navegador diz "online" e cada chamada ficava esperando a rede
+// desistir, sem prazo. Agora toda chamada ao Supabase tem prazo: 8 s para o servidor começar a
+// responder e mais 30 s para a resposta terminar de chegar. Estourou, a chamada falha como
+// "sem conexão" e o app segue com o que tem no aparelho. A função da IA (functions/v1) fica de
+// fora: ela demora de propósito e não participa da abertura.
+const LIMITE_RESPOSTA_MS = 8000;
+const LIMITE_CORPO_MS = 30000;
+
+function fetchComLimite(recurso, opcoes = {}) {
+    const url = typeof recurso === 'string' ? recurso : (recurso && recurso.url) || '';
+    if (url.includes('/functions/v1/') || typeof AbortController === 'undefined') return fetch(recurso, opcoes);
+    const controle = new AbortController();
+    const deFora = opcoes.signal; // quem chamou também pode cancelar
+    const repassar = () => controle.abort();
+    if (deFora) {
+        if (deFora.aborted) controle.abort();
+        else deFora.addEventListener('abort', repassar, { once: true });
+    }
+    let relogio = setTimeout(() => controle.abort(), LIMITE_RESPOSTA_MS);
+    return fetch(recurso, { ...opcoes, signal: controle.signal }).then(
+        (resposta) => {
+            clearTimeout(relogio);
+            relogio = setTimeout(() => controle.abort(), LIMITE_CORPO_MS);
+            return resposta;
+        },
+        (erro) => { clearTimeout(relogio); throw erro; }
+    );
+}
+
 // Instância única de conexão com o Supabase
-export const supabaseClient = createClient(supabaseUrl, supabaseKey);
+export const supabaseClient = createClient(supabaseUrl, supabaseKey, { global: { fetch: fetchComLimite } });
+
+// Teste rápido de rede, feito uma vez na abertura: o servidor responde alguma coisa em até `limiteMs`?
+// Qualquer resposta serve (até erro HTTP): o que interessa é saber se há caminho até a nuvem.
+// 'no-cors': um pedido simples, sem cabeçalhos extras, só para ver se chega.
+export async function nuvemResponde(limiteMs = 6000) {
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) return false;
+    if (typeof AbortController === 'undefined') return true;
+    const controle = new AbortController();
+    const relogio = setTimeout(() => controle.abort(), limiteMs);
+    try {
+        await fetch(`${supabaseUrl}/auth/v1/health`, { mode: 'no-cors', cache: 'no-store', signal: controle.signal });
+        return true;
+    } catch (e) {
+        return false;
+    } finally {
+        clearTimeout(relogio);
+    }
+}
 export const supabase = supabaseClient;
 
 // A API do Supabase devolve no máximo 1000 linhas por consulta (Settings > API > Max Rows).

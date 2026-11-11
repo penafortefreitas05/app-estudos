@@ -59,7 +59,8 @@ import {
     listarSimuladosNuvem,
     baixarPacoteOffline,
     definirGabaritosOffline,
-    definirUsuarioOffline
+    definirUsuarioOffline,
+    nuvemResponde
 } from './supabase.js';
 
 // ---------- 1.3 Autenticação ----------
@@ -1843,7 +1844,10 @@ function aplicarModoAuth(modo) {
 supabaseClient.auth.onAuthStateChange((event, session) => {
     // Aberto sem internet: o "sem sessão" que chega depois do tempo de espera não é um logout
     if (abertoSemRede && !session && event !== 'SIGNED_OUT') return;
-    if (abertoSemRede && session) abertoSemRede = false;
+    // Durante a abertura, a sessão guardada (token ainda válido) chega aqui sem passar pela rede:
+    // ela não prova que a internet voltou. Antes desligava o "sem rede" no meio da abertura e cada
+    // chamada à nuvem ficava tentando de novo com a tela em "Carregando questões...".
+    if (abertoSemRede && session && idUsuarioCarregado !== undefined) abertoSemRede = false;
     usuarioAtual = session?.user || null;
 
     if (usuarioAtual) {
@@ -2175,10 +2179,10 @@ async function guardarPerfilDoUsuario(perfil) {
 }
 
 // Na abertura: o perfil mais novo vence (nuvem ou aparelho). Sem rede, fica o do aparelho.
-async function sincronizarPerfil() {
+async function sincronizarPerfil(semNuvem = abertoSemRede) {
     try {
         carregarPerfil(usuarioAtual.id);
-        if (abertoSemRede) return; // sem rede: fica o perfil do aparelho
+        if (semNuvem) return; // sem rede: fica o perfil do aparelho
         const local = obterPerfilAtivo();
         const nuvem = await lerPerfilNuvem();
         if (nuvem && (!local || nuvem.atualizadoEm > (local.atualizadoEm || 0))) {
@@ -2194,10 +2198,10 @@ async function sincronizarPerfil() {
 
 // Uma fila por conta: a nuvem manda. Se hoje ainda não tem fila lá, este aparelho monta e grava;
 // se dois aparelhos gravarem juntos, vale a primeira (e o outro relê).
-async function sincronizarFilaDoDia() {
+async function sincronizarFilaDoDia(semNuvem = abertoSemRede) {
     try {
         const hoje = diaLocal();
-        if (abertoSemRede) { atualizarFilaDoDia(questoes, historico); return; } // sem rede: fila do aparelho
+        if (semNuvem) { atualizarFilaDoDia(questoes, historico); return; } // sem rede: fila do aparelho
         let nuvem = await lerFilaDoDiaNuvem(hoje);
         if (!nuvem) {
             atualizarFilaDoDia(questoes, historico);
@@ -2242,6 +2246,9 @@ async function carregarBancoDeQuestoes(questoesChegando = null) {
     if (pacote) definirGabaritosOffline(pacote.gabaritos);
     const doPacote = () => ({ questoes: pacote.questoes.map((q, i) => normalizarQuestao({ ...q }, i)), doPacote: true });
     let resultado;
+    // A nuvem não respondeu agora: perfil e fila do dia também ficam com o que está no aparelho
+    // (antes cada um ainda esperava a rede desistir, com a tela em "Carregando questões...").
+    let semNuvem = abertoSemRede;
     if (abertoSemRede) {
         if (!pacote) { mostrarErroDeCarga(); return; }
         resultado = doPacote();
@@ -2252,6 +2259,7 @@ async function carregarBancoDeQuestoes(questoesChegando = null) {
             console.warn("[FocoPro] Erro ao buscar questões da nuvem:", resultado.erro);
             if (!pacote) { mostrarErroDeCarga(); return; }
             resultado = doPacote();
+            semNuvem = true;
             showToast("Sem conexão com o servidor. Usando as questões baixadas neste aparelho.", "info", 5000);
         }
     }
@@ -2259,14 +2267,14 @@ async function carregarBancoDeQuestoes(questoesChegando = null) {
     ultimaListaDaNuvem = daNuvem;
 
     const todas = mesclarQuestoes(daNuvem);
-    await sincronizarPerfil();
+    await sincronizarPerfil(semNuvem);
     const trilha = trilhaAtual();
     questoes = todas.filter(q => trilhasDe(q).includes(trilha));
     atualizarSelectConcurso(todas, trilha);
 
     porId = new Map(questoes.map(q => [String(q.id), q]));
     guardarAssuntosDaTrilha(trilha);
-    await sincronizarFilaDoDia();
+    await sincronizarFilaDoDia(semNuvem);
 
     // U9: o front não traz mais o gabarito de quem ainda não respondeu. Pra quem já respondeu
     // antes (neste aparelho ou em outro, via histórico sincronizado), devolve o gabarito já
@@ -2340,7 +2348,12 @@ function mostrarErroDeCarga() {
             }
             botao.disabled = true;
             botao.textContent = "Carregando...";
-            await carregarBancoDeQuestoes();
+            try {
+                await carregarBancoDeQuestoes();
+            } catch (e) {
+                console.warn("[FocoPro] Erro ao montar as questões:", e);
+                mostrarErroDeCarga();
+            }
         });
     }
 }
@@ -2370,13 +2383,20 @@ async function iniciarApp() {
 
     // 1. Verifica sessão ativa antes de puxar histórico/questões
     const salvo = usuarioSalvoNoAparelho();
-    if (!navigator.onLine && salvo) {
+    // A01: wifi sem internet (navio). O navegador diz "online", mas a nuvem não responde. Um teste
+    // único e curto decide isso já na abertura; sem resposta, o app abre como "sem internet"
+    // (login do aparelho + pacote baixado) e nenhuma outra chamada fica esperando a rede.
+    // A sessão começa a ser lida junto com o teste, para a abertura normal não ficar mais lenta.
+    const sessaoChegando = navigator.onLine ? supabaseClient.auth.getSession() : null;
+    if (sessaoChegando) sessaoChegando.catch(() => {}); // se o teste falhar, esta resposta é ignorada
+    const temNuvem = (navigator.onLine && salvo) ? await nuvemResponde() : true;
+    if ((!navigator.onLine || !temNuvem) && salvo) {
         usuarioAtual = salvo;
         abertoSemRede = true;
     } else {
         try {
             const limite = new Promise(resolve => setTimeout(() => resolve({ data: { session: null }, error: { name: 'AuthRetryableFetchError' } }), 8000));
-            const { data: { session }, error } = await Promise.race([supabaseClient.auth.getSession(), limite]);
+            const { data: { session }, error } = await Promise.race([sessaoChegando || supabaseClient.auth.getSession(), limite]);
             usuarioAtual = session?.user || null;
             if (!usuarioAtual && salvo && error && /Retryable|Fetch/i.test(error.name || '')) {
                 usuarioAtual = salvo;
@@ -2411,8 +2431,16 @@ async function iniciarApp() {
     }
 
     // 4. Desenha o banco de questões (ou mostra o aviso de login)
-    await carregarBancoDeQuestoes(questoesChegando);
-    idUsuarioCarregado = usuarioAtual ? usuarioAtual.id : null;
+    // A05: se algo falhar aqui, a tela mostra o aviso com "Tentar de novo" em vez de ficar parada
+    // em "Carregando questões...".
+    try {
+        await carregarBancoDeQuestoes(questoesChegando);
+    } catch (e) {
+        console.warn("[FocoPro] Erro ao montar as questões:", e);
+        if (usuarioAtual) mostrarErroDeCarga();
+    } finally {
+        idUsuarioCarregado = usuarioAtual ? usuarioAtual.id : null;
+    }
 }
 
 iniciarApp();
