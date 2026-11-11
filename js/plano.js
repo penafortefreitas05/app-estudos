@@ -67,7 +67,14 @@ export function montarPlano({ perfil, grupos, aprendidos = {}, hoje = new Date()
 
     const nAssuntos = assuntosPorDia(horas);
     const nMaterias = horas >= 3 ? 2 : 1;
+    const chave = (a) => `${a.materia}|${a.assunto}`;
     const usados = new Set();
+    // Assunto de dia perdido passa para hoje (A15 da auditoria de 11/11/2026): o que estava num dia
+    // que já passou e não foi aprendido antes de hoje sai daquele dia e entra primeiro no dia de
+    // hoje (ou no próximo dia de evolução da semana), dentro do limite de assuntos do dia.
+    const atrasados = [];
+    const adiados = new Set();
+    const aprendidoAntesDeHoje = (a) => { const v = aprendidos[chave(a)]; return Boolean(v) && String(v.data || '') < hojeIso; };
     let cursor = 0;
 
     // Segunda a domingo, só nos dias marcados (domingo = 0 vai por último)
@@ -76,29 +83,38 @@ export function montarPlano({ perfil, grupos, aprendidos = {}, hoje = new Date()
         const data = new Date(segunda);
         data.setDate(segunda.getDate() + ((n + 6) % 7));
         const tipo = tipoDoDia(indice, ordemSemana.length);
+        const dataIso = iso(data);
+        const passou = dataIso < hojeIso;
         if (tipo !== 'evolucao') {
-            const dIso = iso(data);
-            return { dia: n, nome: NOMES_DIA[n], data: dIso, tipo, hoje: dIso === hojeIso, passou: dIso < hojeIso, blocos: [], questoes: 0 };
+            return { dia: n, nome: NOMES_DIA[n], data: dataIso, tipo, hoje: dataIso === hojeIso, passou, blocos: [], questoes: 0 };
         }
         const blocos = [];
+        const porNoBloco = (a) => {
+            let bloco = blocos.find((b) => b.materia === a.materia);
+            if (!bloco) { bloco = { materia: a.materia, assuntos: [] }; blocos.push(bloco); }
+            bloco.assuntos.push({ assunto: a.assunto, feito: Boolean(aprendidos[chave(a)]) });
+            usados.add(chave(a));
+        };
         let restantes = nAssuntos;
+        let adiadosDoDia = 0; // dia que já passou: a conta de questões dele continua a do plano original
+        if (!passou && atrasados.length) {
+            const cabem = atrasados.splice(0, restantes);
+            cabem.forEach(porNoBloco);
+            restantes -= cabem.length;
+        }
         for (let m = 0; m < nMaterias && sequencia.length; m++) {
             const g = sequencia[(cursor + m) % sequencia.length];
             const quota = m === nMaterias - 1 ? restantes : Math.ceil(restantes / (nMaterias - m));
-            const escolhidos = g.assuntos.filter((a) => !usados.has(`${a.materia}|${a.assunto}`)).slice(0, quota);
-            escolhidos.forEach((a) => usados.add(`${a.materia}|${a.assunto}`));
+            const escolhidos = g.assuntos.filter((a) => !usados.has(chave(a)) && !adiados.has(chave(a))).slice(0, quota);
             restantes -= escolhidos.length;
-            if (escolhidos.length) {
-                blocos.push({
-                    materia: g.materia,
-                    assuntos: escolhidos.map((a) => ({ assunto: a.assunto, feito: Boolean(aprendidos[`${a.materia}|${a.assunto}`]) }))
-                });
-            }
+            escolhidos.forEach((a) => {
+                if (passou && !aprendidoAntesDeHoje(a)) { atrasados.push(a); adiados.add(chave(a)); adiadosDoDia += 1; }
+                else porNoBloco(a);
+            });
         }
         cursor += nMaterias;
-        const total = blocos.reduce((s, b) => s + b.assuntos.length, 0);
-        const dataIso = iso(data);
-        return { dia: n, nome: NOMES_DIA[n], data: dataIso, tipo, hoje: dataIso === hojeIso, passou: dataIso < hojeIso, blocos, questoes: questoesSugeridas(horas, total) };
+        const total = blocos.reduce((s, b) => s + b.assuntos.length, 0) + adiadosDoDia;
+        return { dia: n, nome: NOMES_DIA[n], data: dataIso, tipo, hoje: dataIso === hojeIso, passou, blocos, questoes: questoesSugeridas(horas, total) };
     });
 
     const hojeEhDia = dias.some((d) => d.hoje);
