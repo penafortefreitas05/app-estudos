@@ -8,6 +8,7 @@
 // Os campos do painel antigo seguem escondidos no HTML e valendo: esta tela só os preenche.
 
 import { esc } from './ui.js';
+import { icone } from './icones.js';
 
 const CHAVE_SIMULADOS = 'appEstudos_Simulados';
 const CHAVE_CONFIG = 'appEstudos_SimuladoConfig';
@@ -15,9 +16,9 @@ const PAGINA = 8;
 
 export const OPCOES_QTD = [10, 20, 40, 60];
 export const OPCOES_EXTRA = [
-    ['equilibrar', '⚖️ Um pouco de cada matéria', 'Sorteio parelho entre as matérias'],
-    ['somenteNovas', '🆕 Só questões novas', 'Nada que você já respondeu'],
-    ['priorizarErros', '🎯 Priorizar meus erros', 'Começa pelo que você errou ou vence na revisão']
+    ['equilibrar', `${icone('balanca')}Um pouco de cada matéria`, 'Sorteio parelho entre as matérias'],
+    ['somenteNovas', `${icone('estrela')}Só questões novas`, 'Nada que você já respondeu'],
+    ['priorizarErros', `${icone('alvo')}Priorizar meus erros`, 'Começa pelo que você errou ou vence na revisão']
 ];
 
 // ---------- Regras puras ----------
@@ -95,8 +96,8 @@ export function abrirSimulado({ disponiveis = () => 0, aoComecar, aoFiltros, car
     el.setAttribute('aria-labelledby', 'sm-titulo');
     el.innerHTML = `
         <header class="sm-topo">
-            <div><h2 id="sm-titulo" class="sm-titulo">⏱️ Simulado</h2><p class="sm-sub"></p></div>
-            <button type="button" class="sm-sair" data-sm="fechar" aria-label="Fechar o simulado">✕</button>
+            <div><h2 id="sm-titulo" class="sm-titulo">${icone("relogio", "ic-azul")}Simulado</h2><p class="sm-sub"></p></div>
+            <button type="button" class="sm-sair" data-sm="fechar" aria-label="Fechar o simulado">${icone("fechar")}</button>
         </header>
         <div class="sm-corpo"></div>`;
     document.body.appendChild(el);
@@ -136,14 +137,14 @@ export function abrirSimulado({ disponiveis = () => 0, aoComecar, aoFiltros, car
                     ${chip('tempo', 120, '120 min', String(cfg.tempo) === '120')}
                 </div>
                 <h3 class="sm-sec-titulo">Como sortear</h3>
-                <div class="sm-opcoes">${(modelo ? [['modelo', `📋 ${modelo.nome}`, 'Cada matéria na proporção da prova']] : []).concat(OPCOES_EXTRA.filter(([k]) => !(modelo && k === 'equilibrar'))).map(([k, nome, det]) => `
-                    <button type="button" class="sm-opcao${cfg[k] ? ' ativo' : ''}" data-sm="extra" data-v="${k}" aria-pressed="${cfg[k]}"><span class="sm-opcao-nome">${nome}</span><span class="sm-opcao-det">${det}</span><span class="sm-opcao-marca" aria-hidden="true">${cfg[k] ? '✓' : ''}</span></button>`).join('')}</div>
+                <div class="sm-opcoes">${(modelo ? [['modelo', `${icone('caderno')}${modelo.nome}`, 'Cada matéria na proporção da prova']] : []).concat(OPCOES_EXTRA.filter(([k]) => !(modelo && k === 'equilibrar'))).map(([k, nome, det]) => `
+                    <button type="button" class="sm-opcao${cfg[k] ? ' ativo' : ''}" data-sm="extra" data-v="${k}" aria-pressed="${cfg[k]}"><span class="sm-opcao-nome">${nome}</span><span class="sm-opcao-det">${det}</span><span class="sm-opcao-marca" aria-hidden="true">${cfg[k] ? icone('certo') : ''}</span></button>`).join('')}</div>
                 ${modelo && cfg.modelo ? `<p class="sm-modelo">${modelo.quotas(qtdReal()).map(([m, n]) => `${esc(m.replace(/ &.*$/, '').replace(/,.*$/, ''))} ${n}`).join(' · ')}</p>` : ''}
                 <p class="sm-filtros">Usa os filtros atuais: <b>${total}</b> ${total === 1 ? 'questão disponível' : 'questões disponíveis'}.
                     <button type="button" class="sm-link" data-sm="filtros">Mudar filtros</button></p>
-                ${total > 0 && cfg.qtd > total ? `<p class="sm-ajuste" role="status">⚠️ Você escolheu ${cfg.qtd}, mas só há ${total} com esses filtros. O simulado terá ${total}.</p>` : ''}
-                <button type="button" class="sm-comecar" data-sm="comecar" ${real ? '' : 'disabled'}>${real ? `▶ Começar simulado (${real} ${real === 1 ? 'questão' : 'questões'}${minutos() ? ` · ${minutos()} min` : ''})` : 'Nenhuma questão com esses filtros'}</button>
-                <p class="sm-aviso">Sem internet, o simulado funciona se você tiver baixado o pacote offline (menu ☰).</p>
+                ${total > 0 && cfg.qtd > total ? `<p class="sm-ajuste" role="status">${icone("alerta")}Você escolheu ${cfg.qtd}, mas só há ${total} com esses filtros. O simulado terá ${total}.</p>` : ''}
+                <button type="button" class="sm-comecar" data-sm="comecar" ${real ? '' : 'disabled'}>${real ? `${icone('play')}Começar simulado (${real} ${real === 1 ? 'questão' : 'questões'}${minutos() ? ` · ${minutos()} min` : ''})` : 'Nenhuma questão com esses filtros'}</button>
+                <p class="sm-aviso">Sem internet, o simulado funciona se você tiver baixado o pacote offline (no menu).</p>
             </section>
             <section class="sm-sec">
                 <h3 class="sm-sec-titulo">Seus simulados</h3>
@@ -215,8 +216,8 @@ export function abrirResultado(resultado, anteriores = [], { aoRefazer, aoCadern
     el.setAttribute('aria-labelledby', 'sm-titulo');
     el.innerHTML = `
         <header class="sm-topo">
-            <div><h2 id="sm-titulo" class="sm-titulo">🏁 Resultado</h2><p class="sm-sub">${resultado.porTempo ? 'Tempo esgotado' : 'Simulado finalizado'}</p></div>
-            <button type="button" class="sm-sair" data-sm="fechar" aria-label="Fechar o resultado">✕</button>
+            <div><h2 id="sm-titulo" class="sm-titulo">${icone("feito", "ic-verde")}Resultado</h2><p class="sm-sub">${resultado.porTempo ? 'Tempo esgotado' : 'Simulado finalizado'}</p></div>
+            <button type="button" class="sm-sair" data-sm="fechar" aria-label="Fechar o resultado">${icone("fechar")}</button>
         </header>
         <div class="sm-corpo">
             <section class="sm-sec">
@@ -227,12 +228,12 @@ export function abrirResultado(resultado, anteriores = [], { aoRefazer, aoCadern
             </section>
             <section class="sm-sec">
                 <h3 class="sm-sec-titulo">Por matéria <span class="sm-dica">as mais fracas primeiro</span></h3>
-                ${linhas.map(l => `<div class="sm-linha"><span class="sm-linha-nome">${esc(l.materia)}${l.pct < 60 && l.total >= 2 ? ' ⚠️' : ''}</span><span class="sm-linha-barra"><i style="width:${l.pct}%"></i></span><span class="sm-linha-n">${l.acertos}/${l.total}</span></div>`).join('')}
+                ${linhas.map(l => `<div class="sm-linha"><span class="sm-linha-nome">${esc(l.materia)}${l.pct < 60 && l.total >= 2 ? icone('alerta', 'ic-amarelo') : ''}</span><span class="sm-linha-barra"><i style="width:${l.pct}%"></i></span><span class="sm-linha-n">${l.acertos}/${l.total}</span></div>`).join('')}
             </section>
             <section class="sm-sec sm-acoes">
                 <button type="button" class="sm-comecar" data-sm="correcao">Ver a correção, questão a questão</button>
                 ${refazer.length ? `<button type="button" class="sm-sec-btn" data-sm="refazer">Refazer o que errei no Foco (${refazer.length})</button>` : ''}
-                <button type="button" class="sm-sec-btn" data-sm="caderno">📕 Abrir o Caderno de erros</button>
+                <button type="button" class="sm-sec-btn" data-sm="caderno">${icone("caderno")}Abrir o Caderno de erros</button>
                 <button type="button" class="sm-sec-btn" data-sm="novo">Novo simulado</button>
             </section>
         </div>`;

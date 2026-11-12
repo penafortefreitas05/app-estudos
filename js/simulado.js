@@ -7,6 +7,7 @@ import { salvarHistorico, registrarDiaDeEstudo } from './storage.js';
 import { salvarRespostasEmLote, corrigirResposta } from './supabase.js';
 import { aplicarResposta, novoRegistro } from './revisao.js';
 import { showToast } from './notifications.js';
+import { icone } from './icones.js';
 
 // ---------- 1. CONTROLE DO TEMPO E CRONÔMETRO ----------
 let timerInterval = null;
@@ -17,13 +18,13 @@ export function iniciarCronometro(minutos, displayElement, onFinishCallback) {
 
     let tempoRestante = minutos * 60;
     displayElement.hidden = false;
-    displayElement.innerText = `⏱️ Tempo Restante: ${formatarTempo(tempoRestante)}`;
+    displayElement.textContent = `Tempo restante: ${formatarTempo(tempoRestante)}`;
     displayElement.classList.add("ativo");
 
     timerInterval = setInterval(() => {
         tempoRestante--;
         if (displayElement) {
-            displayElement.innerText = `⏱️ Tempo Restante: ${formatarTempo(tempoRestante)}`;
+            displayElement.textContent = `Tempo restante: ${formatarTempo(tempoRestante)}`;
         }
 
         if (tempoRestante <= 0) {
@@ -58,7 +59,7 @@ export function adicionarBotaoFinalizar(container) {
     div.style.textAlign = "center";
     div.innerHTML = `
         <button type="button" id="btn-finalizar-simulado" class="btn-primary btn-finalizar-simulado">
-            🏁 Finalizar Simulado e Ver Resultado
+            ${icone('feito')}Finalizar simulado e ver resultado
         </button>
     `;
     container.appendChild(div);
@@ -114,7 +115,7 @@ export async function finalizarSimulado(simulado, container, porId, historico, q
         if (porTempo) container.querySelectorAll(".radio-opcao").forEach(r => { r.disabled = true; });
         if (btnFinalizar) {
             btnFinalizar.disabled = false;
-            btnFinalizar.innerText = "🔁 Tentar corrigir de novo";
+            btnFinalizar.innerHTML = `${icone("refazer")}Tentar corrigir de novo`;
         }
         showToast("Sem conexão com o servidor para corrigir o simulado. Suas respostas continuam aqui — confira a internet e toque em \"Tentar corrigir de novo\".", "erro", 8000);
         return;
@@ -186,7 +187,7 @@ export async function finalizarSimulado(simulado, container, porId, historico, q
     // Antes, as respostas do simulado ficavam só neste aparelho
     salvarRespostasEmLote(respostasParaNuvem);
 
-    if (btnFinalizar) btnFinalizar.innerText = "✓ Simulado Finalizado";
+    if (btnFinalizar) btnFinalizar.innerHTML = `${icone("certo")}Simulado finalizado`;
 
     const taxa = totalQuestoes > 0 ? ((acertosSimulado / totalQuestoes) * 100).toFixed(1) : 0;
     // A página de resultado (js/simulado-tela.js) é aberta pelo app ao receber este evento

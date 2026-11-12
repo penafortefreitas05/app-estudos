@@ -12,6 +12,7 @@
 
 import { abrirVideo, formatarDuracao } from './video-aprenda.js';
 import { esc } from './ui.js';
+import { icone } from './icones.js';
 
 const ARQUIVO_CARTOES = './data/aprender-cartoes.json';
 const CHAVE_APRENDIDOS = 'appEstudos_AprenderAprendidos';
@@ -149,9 +150,9 @@ function cartaoHTML(c) {
             ${termo ? `<p class="leitura-termo"><span class="leitura-en">EN</span><strong lang="en">${esc(termo)}</strong><span class="leitura-traducao">→ ${esc(c.traducao || '')}</span></p>` : ''}
             <p class="leitura-resumo">${esc(central)}</p>
             ${exemplo ? `<p class="leitura-exemplo">${esc(exemplo)}</p>` : ''}
-            ${pares.length ? `<section class="leitura-bloco"><h4>🔀 Não confundir</h4><ul>${pares.map(p =>
+            ${pares.length ? `<section class="leitura-bloco"><h4>${icone("ciclo")}Não confundir</h4><ul>${pares.map(p =>
                 `<li><strong>${esc(p.conceito)}</strong>: ${esc(p.diferenca || '')}</li>`).join('')}</ul></section>` : ''}
-            ${c.atencao ? `<section class="leitura-bloco atencao"><h4>⚠️ Atenção</h4><p>${esc(c.atencao)}</p></section>` : ''}
+            ${c.atencao ? `<section class="leitura-bloco atencao"><h4>${icone("alerta")}Atenção</h4><p>${esc(c.atencao)}</p></section>` : ''}
             ${fonteHTML(c.fonte)}
         </article>`;
 }
@@ -193,12 +194,12 @@ export function abrirLeitura(cartoes, { titulo, aoFechar, aoPraticar, aoAprender
     el.innerHTML = `
         <header class="leitura-topo">
             <div>
-                <p class="leitura-faixa">📖 Aprender · leitura</p>
+                <p class="leitura-faixa">${icone("livro")}Aprender · leitura</p>
                 <h2 id="leitura-titulo" class="leitura-titulo">${esc(assunto)}</h2>
             </div>
-            <button type="button" class="leitura-sair" data-acao="fechar" aria-label="Sair da leitura">✕</button>
+            <button type="button" class="leitura-sair" data-acao="fechar" aria-label="Sair da leitura">${icone("fechar")}</button>
         </header>
-        ${videos.length ? `<div class="leitura-videos">${videos.map((v, i) => `<button type="button" class="leitura-video" data-acao="video" data-i="${i}">▶ ${esc(v.titulo)} <span>${formatarDuracao(v.duracao)}</span></button>`).join('')}</div>` : ''}
+        ${videos.length ? `<div class="leitura-videos">${videos.map((v, i) => `<button type="button" class="leitura-video" data-acao="video" data-i="${i}">${icone("play")}${esc(v.titulo)} <span>${formatarDuracao(v.duracao)}</span></button>`).join('')}</div>` : ''}
         <div class="leitura-bolas" aria-hidden="true"></div>
         <p class="leitura-contagem" aria-live="polite"></p>
         <div class="leitura-corpo"></div>
@@ -216,7 +217,7 @@ export function abrirLeitura(cartoes, { titulo, aoFechar, aoPraticar, aoAprender
             contagem.textContent = `${cartoes.length} de ${cartoes.length} cartões lidos`;
             corpo.innerHTML = `
                 <div class="leitura-fim">
-                    <p class="leitura-fim-icone" aria-hidden="true">✓</p>
+                    <p class="leitura-fim-icone" aria-hidden="true">${icone("feito")}</p>
                     <h3 class="leitura-conceito" tabindex="-1">Você leu os ${cartoes.length} cartões</h3>
                     <p>${esc(assunto)}</p>
                     <p class="leitura-fim-dica">${typeof aoPraticar === 'function'

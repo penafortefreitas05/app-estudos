@@ -10,6 +10,7 @@
 // A sessão guiada (C) é montada em app.js, que conhece as questões e o Modo Foco.
 
 import { diaLocal } from './storage.js';
+import { icone } from './icones.js';
 
 const CHAVE_PERFIS = 'appEstudos_Perfis';
 const CHAVE_DICAS = 'appEstudos_DicasVistas';
@@ -139,7 +140,7 @@ export const DICAS = {
     },
     'primeiro-erro': {
         titulo: 'Errou? Ela volta amanhã',
-        texto: 'As questões que você erra aparecem amanhã em “Revisar hoje”, e depois em 3, 7 e 21 dias. Leia a explicação abaixo da questão. Se ainda ficar dúvida, abra o “Caderno de erros” e toque em “Entender meu erro com IA”.'
+        texto: 'As questões que você erra aparecem amanhã em “Revisar hoje”, e depois em 3, 7 e 21 dias. Leia a explicação no bloco vermelho abaixo da questão. Se ainda ficar dúvida, toque em “Entender meu erro com IA”, ali mesmo ou no Caderno de erros.'
     },
     'primeira-duvida': {
         titulo: 'Acertou na dúvida',
@@ -147,7 +148,7 @@ export const DICAS = {
     },
     'tres-numeros': {
         titulo: 'Seus 3 números',
-        texto: '🔥 Dias: dias seguidos estudando (1 folga por semana não zera). 🗺️ Feitas: quanto do app você já respondeu. ⚠️ Reforçar: matérias abaixo de 60% de acerto. No celular, eles ficam no menu ☰.'
+        texto: 'Dias (a chama laranja): dias seguidos estudando (1 folga por semana não zera). Feitas (o círculo verde): quanto do app você já respondeu. Reforçar (o alerta amarelo): matérias abaixo de 60% de acerto. Eles ficam no topo da tela de questões; toque em um para ver a explicação.'
     }
 };
 
@@ -187,7 +188,7 @@ function proximaDica() {
     caixa.dataset.chave = chave;
     caixa.setAttribute('role', 'status');
     caixa.innerHTML = `
-        <p class="dica-titulo">💡 ${esc(dica.titulo)}</p>
+        <p class="dica-titulo">${icone("lampada", "ic-amarelo")}${esc(dica.titulo)}</p>
         <p class="dica-texto">${esc(dica.texto)}</p>
         <button type="button" class="btn-primary dica-ok">Entendi</button>`;
     caixa.querySelector('.dica-ok').addEventListener('click', () => {

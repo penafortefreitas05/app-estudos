@@ -2450,3 +2450,43 @@ body.modo-foco.foco-simulado #display-cronometro { display: block !important; wi
 .cq .area-anotacao { padding-top: 0; border-top: 0; margin-top: 0; }
 .cq .area-anotacao:has(.box-anotacao:not([hidden])) { margin-top: 0.6rem; }
 .cq .feedback-container .acoes-irma { margin-top: 0.5rem; }
+
+/* ============================================================
+   v154 · leitura dos cartões, Simulado e dicas no estilo novo (ícones de traço + pílulas)
+   ============================================================ */
+/* Leitura */
+.leitura-faixa { display: flex; align-items: center; gap: 0.4rem; }
+.leitura-sair .ic { width: 1.2rem; height: 1.2rem; }
+.leitura-sair { border: 1px solid #312e81; }
+.leitura-bloco h4 { display: flex; align-items: center; gap: 0.4rem; }
+.leitura-bloco h4 .ic { width: 1rem; height: 1rem; }
+.leitura-btn { border-radius: 999px; }
+.leitura-video { border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem; }
+.leitura-video .ic { width: 0.9rem; height: 0.9rem; }
+.leitura-fim-icone .ic { width: 2.6rem; height: 2.6rem; color: #a5b4fc; stroke-width: 1.6; }
+.leitura-fonte summary { border-radius: 999px; }
+/* Resumo e exemplo do Foco */
+.resumo-rotulo { display: flex; align-items: center; gap: 0.4rem; }
+.resumo-rotulo .ic { width: 1rem; height: 1rem; }
+/* Simulado */
+.sm-titulo { display: flex; align-items: center; gap: 0.5rem; }
+.sm-titulo .ic { width: 1.25em; height: 1.25em; }
+.sm-sair { border: 1px solid #1e293b; }
+.sm-sair .ic { width: 1.2rem; height: 1.2rem; }
+.sm-chip { border-radius: 999px; }
+.sm-opcao { border-radius: 16px; }
+.sm-opcao-nome { display: inline-flex; align-items: center; gap: 0.45rem; }
+.sm-opcao-nome .ic { width: 1.05rem; height: 1.05rem; color: #93c5fd; }
+.sm-opcao-marca { border-radius: 50%; }
+.sm-opcao-marca .ic { width: 0.9rem; height: 0.9rem; color: #fff; }
+.sm-comecar, .sm-sec-btn { border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem; }
+.sm-comecar .ic, .sm-sec-btn .ic { width: 1rem; height: 1rem; }
+.sm-ajuste { display: flex; align-items: flex-start; gap: 0.45rem; }
+.sm-ajuste .ic { margin-top: 0.15rem; }
+.sm-linha-nome { display: inline-flex; align-items: center; gap: 0.35rem; }
+.sm-linha-nome .ic { width: 0.95rem; height: 0.95rem; }
+.btn-finalizar-simulado { border-radius: 999px; display: inline-flex; align-items: center; gap: 0.45rem; }
+#btn-simulado { border-radius: 999px; }
+/* Dicas de primeiros passos */
+.dica-titulo { display: flex; align-items: center; gap: 0.45rem; }
+.dica-card .dica-ok { border-radius: 999px; }

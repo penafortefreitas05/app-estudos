@@ -873,7 +873,7 @@ async function responder(card, botao) {
             fbContainer.style.display = "block";
             const gabaritoDiv = fbContainer.querySelector(".gabarito-resposta");
             if (gabaritoDiv) {
-                gabaritoDiv.innerHTML = `📌 Alternativa <strong>(${esc(letraEscolhida)})</strong> registrada${confiancaAtual === 'duvida' ? ' <strong>na dúvida</strong>' : ''}. Você pode alterar antes de finalizar.`;
+                gabaritoDiv.innerHTML = `<p class="cq-res-titulo">${icone("certo")}Alternativa (${esc(letraEscolhida)}) registrada${confiancaAtual === 'duvida' ? ' na dúvida' : ''}</p><p class="cq-res-gab">Você pode alterar antes de finalizar.</p>`;
             }
         }
         if (!(foco && foco.simulado)) showToast(`Questão registrada: alternativa ${letraEscolhida}`, "info", 1800);
@@ -2995,8 +2995,8 @@ explicacoesDesempenho.forEach(el => {
 // O campo "modelo" troca só os rótulos: "conceito" (matérias de TI) ou "regra" (Português, RLM).
 // Textos no formato antigo (ideia_central/exemplo) continuam funcionando.
 const ROTULOS_RESUMO = {
-    conceito: { comparar: "🔀 Não confundir", chave: "🔑 Palavras-chave", pegadinha: "⚠️ Pegadinha" },
-    regra: { comparar: "✅ Certo × errado", chave: "💡 Teste rápido", pegadinha: "⚠️ Erro mais comum" }
+    conceito: { comparar: `${icone("ciclo")}Não confundir`, chave: `${icone("busca")}Palavras-chave`, pegadinha: `${icone("alerta")}Pegadinha` },
+    regra: { comparar: `${icone("feito")}Certo × errado`, chave: `${icone("lampada")}Teste rápido`, pegadinha: `${icone("alerta")}Erro mais comum` }
 };
 
 function cardResumo(r) {
@@ -3006,13 +3006,13 @@ function cardResumo(r) {
     card.dataset.respondida = "1";
     const bloco = (rotulo, texto) => texto && String(texto).trim()
         ? `<div class="resumo-bloco"><p class="resumo-rotulo">${rotulo}</p><p>${esc(texto)}</p></div>` : "";
-    const faixa = `<p class="exemplo-faixa">💡 Entenda em 1 minuto · leia e siga para o exemplo.</p>`;
+    const faixa = `<p class="exemplo-faixa">${icone("lampada")}Entenda em 1 minuto · leia e siga para o exemplo.</p>`;
 
     if (typeof r.resumo !== "string") {
         card.innerHTML = `${faixa}
             <p class="resumo-central">${esc(r.ideia_central)}</p>
             ${bloco("Exemplo", r.exemplo)}
-            ${bloco("⚠️ Pegadinha", r.pegadinha)}`;
+            ${bloco(`${icone("alerta")}Pegadinha`, r.pegadinha)}`;
         return card;
     }
 
