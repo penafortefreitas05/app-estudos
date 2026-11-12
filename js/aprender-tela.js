@@ -171,7 +171,7 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
         const c = escolherContinuar(grupos, lerUltimo(), aprendidos);
         const area = q('.at-continuar-area');
         if (!c) {
-            area.innerHTML = '<p class="at-tudo">🎉 Você marcou todos os assuntos como aprendidos. Abra qualquer um para ler de novo.</p>';
+            area.innerHTML = '<p class="at-tudo">Você marcou todos os assuntos como aprendidos. Abra qualquer um para ler de novo.</p>';
             return;
         }
         const a = lista.find(x => x.materia === c.materia && x.assunto === c.assunto);

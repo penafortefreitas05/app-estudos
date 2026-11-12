@@ -81,20 +81,20 @@
                 </summary>
                 <div class="conta-conteudo gaveta-ferramentas-conteudo">
                     <button type="button" id="btn-perfil-meta" class="btn-sidebar">
-                        <span>🎯 Meta diária e perfil</span>
+                        <span class="ic-wrap" data-icone="alvo" data-cor="azul"></span><span>Meta diária e perfil</span>
                     </button>
 
                     <!-- Instalar o app (PWA): js/pwa.js mostra só quando o navegador permite -->
                     <button type="button" id="btn-instalar-app" class="btn-sidebar" hidden>
-                        <span>📲 Instalar no celular</span>
+                        <span class="ic-wrap" data-icone="baixar" data-cor="azul"></span><span>Instalar no celular</span>
                     </button>
 
                     <!-- Só o admin vê (app.js) -->
                     <button type="button" id="btnAbrirImportar" class="btn-sidebar" hidden>
-                        <span>📥 Importar questões em massa</span>
+                        <span>Importar questões em massa</span>
                     </button>
                     <button type="button" id="btn-reportes-admin" class="btn-sidebar" hidden>
-                        <span>🚩 Reportes de questões</span>
+                        <span>Reportes de questões</span>
                         <span class="badge-count" id="contador-reportes">0</span>
                     </button>
 
@@ -217,12 +217,12 @@
 
                 <!-- Fonte dos filtros rápidos: os botões da linha 2 mexem nestes campos -->
                 <div class="filtros-fonte" hidden>
-                    <select id="filtro-nivel" aria-label="Nível"><option value="">📶 Todos os Níveis</option></select>
+                    <select id="filtro-nivel" aria-label="Nível"><option value="">Todos os níveis</option></select>
                     <select id="filtro-status" aria-label="Status">
-                        <option value="">📊 Qualquer Status</option>
-                        <option value="nao-respondida">⬜ Não Respondidas</option>
-                        <option value="acertei">✅ Acertei</option>
-                        <option value="errei">❌ Errei</option>
+                        <option value="">Qualquer situação</option>
+                        <option value="nao-respondida">Não respondidas</option>
+                        <option value="acertei">Acertei</option>
+                        <option value="errei">Errei</option>
                     </select>
                     <input type="checkbox" id="filtro-favoritas">
                 </div>
@@ -234,26 +234,26 @@
                 <div id="painel-filtros" class="painel-topo" hidden>
                     <div class="painel-grade">
                         <select id="filtro-concurso" class="input-dark" aria-label="Concurso" hidden>
-                            <option value="ti">🎯 Concurso: TI (Bacen TI, tribunais, TCU)</option>
-                            <option value="bacen">🎯 Concurso: Bacen (economia e finanças)</option>
-                            <option value="bnb">🎯 Concurso: Banco do Nordeste (BNB)</option>
+                            <option value="ti">Concurso: TI (Bacen TI, tribunais, TCU)</option>
+                            <option value="bacen">Concurso: Bacen (economia e finanças)</option>
+                            <option value="bnb">Concurso: Banco do Nordeste (BNB)</option>
                         </select>
 
                         <select id="filtro-materia" class="input-dark" aria-label="Matéria">
-                            <option value="">📖 Todas as Matérias</option>
+                            <option value="">Todas as matérias</option>
                         </select>
 
                         <select id="filtro-banca" class="input-dark" aria-label="Banca">
-                            <option value="">🏛️ Todas as Bancas</option>
+                            <option value="">Todas as bancas</option>
                         </select>
 
                         <select id="filtro-tag" class="input-dark" aria-label="Assunto">
-                            <option value="">🏷️ Todos os Assuntos</option>
+                            <option value="">Todos os assuntos</option>
                         </select>
 
                         <!-- Some sozinho enquanto as questões não tiverem o campo "ano" -->
                         <select id="filtro-ano" class="input-dark" aria-label="Ano" hidden>
-                            <option value="">📅 Todos os Anos</option>
+                            <option value="">Todos os anos</option>
                         </select>
                     </div>
                     <div class="painel-rodape">
@@ -322,7 +322,7 @@
      <!-- ==================== INÍCIO: MODAL DE COBERTURA DO EDITAL (U11) ==================== -->
 <div id="modal-cobertura" class="modal-overlay">
     <div class="modal-card" style="max-width: 600px; max-height: 82vh; overflow-y: auto;">
-        <h3 class="modal-titulo">📚 Cobertura do Edital</h3>
+        <h3 class="modal-titulo">Cobertura do edital</h3>
         <p class="modal-mensagem">Quantas questões o banco já tem em cada assunto, agrupado por matéria.</p>
         <div id="lista-cobertura-edital"></div>
         <div class="modal-acoes">
@@ -335,7 +335,7 @@
 <!-- ==================== INÍCIO: NÍVEL DA CONTA ==================== -->
 <div id="modal-nivel-conta" class="modal-overlay">
     <div class="modal-card" style="max-width: 520px; max-height: 86vh; overflow-y: auto;">
-        <h3 class="modal-titulo">🏅 Nível da conta</h3>
+        <h3 class="modal-titulo">Nível da conta</h3>
         <div id="conteudo-nivel-conta"></div>
         <div class="modal-acoes">
             <button type="button" id="btn-fechar-nivel-conta" class="btn-secondary">Fechar</button>
@@ -347,7 +347,7 @@
 <!-- ==================== INÍCIO: TELA MEU DIA ==================== -->
 <div id="modal-meu-dia" class="modal-overlay">
     <div class="modal-card" style="max-width: 560px; max-height: 86vh; overflow-y: auto;">
-        <h3 class="modal-titulo">📊 Meu dia</h3>
+        <h3 class="modal-titulo">Meu dia</h3>
         <div id="conteudo-meu-dia"><p class="modal-mensagem">Carregando…</p></div>
         <div class="modal-acoes">
             <button type="button" id="btn-fechar-meu-dia" class="btn-secondary">Fechar</button>
@@ -390,7 +390,7 @@
     <!-- ==================== INÍCIO: MODAIS DE REPORTE (U5) ==================== -->
 <div id="modal-reporte" class="modal-overlay">
     <form class="modal-card" id="form-reporte">
-        <h3 class="modal-titulo">🚩 Reportar problema</h3>
+        <h3 class="modal-titulo">Reportar problema</h3>
         <p class="modal-mensagem" id="reporte-questao-resumo"></p>
         <label for="reporte-tipo" class="campo-rotulo">O que há de errado?</label>
         <select id="reporte-tipo" class="input-dark campo-cheio" required>
@@ -412,7 +412,7 @@
 
 <div id="modal-reportes-admin" class="modal-overlay">
     <div class="modal-card" style="max-width: 680px; max-height: 82vh; overflow-y: auto;">
-        <h3 class="modal-titulo">🚩 Reportes de questões</h3>
+        <h3 class="modal-titulo">Reportes de questões</h3>
         <p class="modal-mensagem">Abertos, do mais antigo para o mais novo. Para corrigir o gabarito: reimporte a questão com o mesmo id.</p>
         <div id="lista-reportes-admin"></div>
         <div class="modal-acoes">

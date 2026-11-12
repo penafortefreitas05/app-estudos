@@ -183,16 +183,16 @@ function criarBotaoSidebar(texto) {
 // ("Importar Histórico" e "Zerar (local)" saíram: o primeiro sobrescrevia tudo sem aviso do
 // que se perdia e o segundo parecia apagar tudo, mas só limpava o cache deste aparelho.)
 const gavetaFerramentas = document.querySelector(".gaveta-ferramentas-conteudo");
-const btnExportar = criarBotaoSidebar("💾 Exportar meus dados (LGPD)");
+const btnExportar = criarBotaoSidebar("Exportar meus dados (LGPD)");
 btnExportar.title = "Baixa um arquivo com todo o seu histórico de estudo";
 // Ficam antes do "Sair", que é sempre o último item de "Minha conta"
 const antesDoSair = document.getElementById("btn-auth-acao");
 if (gavetaFerramentas) gavetaFerramentas.insertBefore(btnExportar, antesDoSair);
 
 // Backup das marcas "Aprendi" do Aprender (ficam só neste aparelho)
-const btnSalvarAprendidos = criarBotaoSidebar("📚 Salvar meu progresso do Aprender");
+const btnSalvarAprendidos = criarBotaoSidebar("Salvar meu progresso do Aprender");
 btnSalvarAprendidos.title = "Baixa um arquivo com os assuntos que você marcou como aprendidos";
-const btnRestaurarAprendidos = criarBotaoSidebar("📥 Restaurar progresso do Aprender");
+const btnRestaurarAprendidos = criarBotaoSidebar("Restaurar progresso do Aprender");
 btnRestaurarAprendidos.title = "Lê um arquivo salvo antes e junta com o que já está neste aparelho";
 if (gavetaFerramentas) {
     gavetaFerramentas.insertBefore(btnSalvarAprendidos, antesDoSair);
@@ -233,7 +233,7 @@ btnRestaurarAprendidos.addEventListener("click", () => {
 
 // Registro de aberturas (A07): as últimas 20 aberturas do app, para diagnosticar "não abriu".
 // Guardado por js/registro-abertura.js; aqui só o botão que mostra e copia. Nada pessoal.
-const btnRegistroAbertura = criarBotaoSidebar("🩺 Registro de aberturas");
+const btnRegistroAbertura = criarBotaoSidebar("Registro de aberturas");
 btnRegistroAbertura.title = "Mostra as últimas aberturas do app (data, internet, versão, etapa e erro) para copiar";
 if (gavetaFerramentas) gavetaFerramentas.insertBefore(btnRegistroAbertura, antesDoSair);
 btnRegistroAbertura.addEventListener("click", () => {
@@ -243,7 +243,7 @@ btnRegistroAbertura.addEventListener("click", () => {
     fundo.id = "modal-registro-abertura";
     fundo.innerHTML = `
         <div class="modal-card" style="max-width: 680px; max-height: 82vh; overflow-y: auto;">
-            <h3 class="modal-titulo">🩺 Registro de aberturas</h3>
+            <h3 class="modal-titulo">Registro de aberturas</h3>
             <p class="modal-mensagem">As últimas aberturas do app neste aparelho, da mais nova para a mais antiga. Não tem dados pessoais.</p>
             <pre style="white-space: pre-wrap; word-break: break-word; font-size: 0.75rem; text-align: left; max-height: 45vh; overflow: auto; margin: 0 0 1rem;"></pre>
             <div class="modal-acoes">
@@ -272,13 +272,13 @@ btnRegistroAbertura.addEventListener("click", () => {
 });
 
 // Backup do banco de questões: só o admin vê (a RLS também barra os outros no servidor)
-const btnBackupBanco = criarBotaoSidebar("🗄️ Backup do banco de questões");
+const btnBackupBanco = criarBotaoSidebar("Backup do banco de questões");
 btnBackupBanco.title = "Baixa todas as questões, gabaritos e reportes num arquivo .json";
 btnBackupBanco.hidden = true;
 if (gavetaFerramentas) gavetaFerramentas.insertBefore(btnBackupBanco, antesDoSair);
 
 // Botão "de verdade": apaga a nuvem inteira, não só o cache deste navegador
-const btnApagarTudo = criarBotaoSidebar("🔥 Apagar TUDO (nuvem + local)");
+const btnApagarTudo = criarBotaoSidebar("Apagar TUDO (nuvem + local)");
 btnApagarTudo.classList.add("danger");
 if (gavetaFerramentas) gavetaFerramentas.insertBefore(btnApagarTudo, antesDoSair);
 // ---------- 5. UTILITÁRIOS E VALIDAÇÃO ----------
@@ -513,7 +513,7 @@ function aplicarFiltros() {
         atualizarListaFoco(filtradas);
     } else {
         const mensagem = algumFiltroAtivo()
-            ? "🔎 Nenhuma questão com esses filtros."
+            ? "Nenhuma questão com esses filtros."
             : "Nenhuma questão encontrada.";
         renderizarQuestoes(container, filtradas, historico, mensagem, { paginar: true });
         // Estado vazio que ensina: diz o próximo passo em vez de só "nada aqui"
@@ -1564,7 +1564,7 @@ function desenharFoco() {
         <button type="button" class="btn-painel foco-anterior" ${foco.indice === 0 ? "disabled" : ""} aria-label="Questão anterior">←</button>
         <span class="foco-posicao" aria-live="polite">${foco.titulo ? `<span class="foco-titulo">${esc(foco.titulo)}</span>` : ""}${fim ? "Fim da lista" : rotuloPosicaoFoco()}${foco.simulado ? ` <span class="foco-marcadas">· ${marcadasNoSimulado()} marcadas</span>` : ""}</span>
         <button type="button" class="btn-painel foco-proxima" ${fim ? "disabled" : ""} aria-label="Próxima questão">→</button>
-        <button type="button" class="btn-painel foco-sair">${foco.simulado ? "✕ Sair" : "✕ Sair do foco"}</button>`;
+        <button type="button" class="btn-painel foco-sair">${icone("fechar")}${foco.simulado ? "Sair" : "Sair do foco"}</button>`;
 
     // Barrinha de avanço da lista: enche a cada questão e dá a vontade de chegar ao fim
     const avanco = document.createElement("div");
@@ -1582,7 +1582,7 @@ function desenharFoco() {
         rodape.innerHTML = simulado && simulado.finalizado
             ? `<button type="button" class="btn-primary btn-largo foco-proxima">Próxima questão →</button>`
             : `<button type="button" class="btn-primary btn-largo foco-proxima">Próxima questão →</button>
-               <button type="button" class="btn-link foco-finalizar">🏁 Finalizar simulado</button>
+               <button type="button" class="btn-link foco-finalizar">${icone("feito")}Finalizar simulado</button>
                <p class="foco-atalhos">Marque a alternativa e avance. A correção vem só no fim. Teclado: <kbd>A</kbd>–<kbd>E</kbd> escolhe · <kbd>Enter</kbd> registra e avança · <kbd>←</kbd> <kbd>→</kbd> navegam</p>`;
         partes.push(rodape);
     } else {
@@ -1615,7 +1615,7 @@ function resumoFoco() {
     });
     // Diz o que acontece amanhã: era o elo que faltava entre a 1ª sessão e a revisão
     const textoAmanha = voltamAmanha
-        ? `<p>${voltamAmanha === 1 ? "<strong>1 questão volta</strong>" : `<strong>${voltamAmanha} questões voltam</strong>`} amanhã em <strong>🔁 Revisar hoje</strong>: as que você errou ou acertou na dúvida.</p>`
+        ? `<p>${voltamAmanha === 1 ? "<strong>1 questão volta</strong>" : `<strong>${voltamAmanha} questões voltam</strong>`} amanhã em <strong>Revisar hoje</strong>: as que você errou ou acertou na dúvida.</p>`
         : (respondidas ? "<p>Nenhuma volta amanhã: você acertou todas com certeza.</p>" : "");
     const textoGuiada = foco.guiada && respondidas
         ? "<p>Amanhã é só abrir o app: primeiro a revisão, depois as questões novas, até bater a meta do dia.</p>"
@@ -1624,7 +1624,7 @@ function resumoFoco() {
     const caixa = document.createElement("div");
     caixa.className = "foco-resumo";
     caixa.innerHTML = `
-        <p class="foco-resumo-titulo">${foco.aprender ? "📖 Fim do assunto" : "🎯 Fim da lista"}</p>
+        <p class="foco-resumo-titulo">${foco.aprender ? `${icone("livro")}Fim do assunto` : `${icone("alvo")}Fim da lista`}</p>
         <p>${respondidas
             ? `Você respondeu <strong>${respondidas}</strong> nesta sessão e acertou <strong>${acertos}</strong> (${Math.round(acertos * 100 / respondidas)}%).`
             : "Nenhuma questão respondida nesta sessão."}</p>
@@ -1648,17 +1648,17 @@ function resumoSimulado() {
     const caixa = document.createElement("div");
     caixa.className = "foco-resumo";
     caixa.innerHTML = simulado && simulado.finalizado
-        ? `<p class="foco-resumo-titulo">🏁 Simulado finalizado</p>
+        ? `<p class="foco-resumo-titulo">${icone("feito")}Simulado finalizado</p>
            <p>Use <strong>←</strong> para rever a correção, questão a questão.</p>
            <div class="foco-resumo-acoes">
                <button type="button" class="btn-painel foco-anterior">← Voltar para a última</button>
                <button type="button" class="btn-primary foco-sair">Sair do simulado</button>
            </div>`
-        : `<p class="foco-resumo-titulo">🏁 Fim do simulado</p>
+        : `<p class="foco-resumo-titulo">${icone("feito")}Fim do simulado</p>
            <p>Você marcou <strong>${marcadas}</strong> de <strong>${total}</strong>${total - marcadas ? `; <strong>${total - marcadas}</strong> ficam em branco` : ""}.</p>
            <div class="foco-resumo-acoes">
                <button type="button" class="btn-painel foco-anterior">← Revisar respostas</button>
-               <button type="button" class="btn-primary foco-finalizar">🏁 Finalizar simulado</button>
+               <button type="button" class="btn-primary foco-finalizar">${icone("feito")}Finalizar simulado</button>
            </div>`;
     return caixa;
 }
@@ -2079,7 +2079,7 @@ if (btnMeuDia && modalMeuDia) {
         ]);
         if (!dados) {
             conteudoMeuDia.innerHTML = semRede
-                ? '<p class="modal-mensagem">📴 Sem internet. O "Meu dia" usa o histórico guardado na nuvem e abre quando o sinal voltar. Suas respostas de agora ficam guardadas no aparelho e sobem sozinhas.</p>'
+                ? '<p class="modal-mensagem">Sem internet. O "Meu dia" usa o histórico guardado na nuvem e abre quando o sinal voltar. Suas respostas de agora ficam guardadas no aparelho e sobem sozinhas.</p>'
                 : '<p class="modal-mensagem">Entre na sua conta (e confira a internet) para ver o seu dia. Os números vêm do histórico guardado na nuvem.</p>';
             return;
         }
@@ -2310,10 +2310,10 @@ async function carregarBancoDeQuestoes(questoesChegando = null) {
         questoes = [];
         porId = new Map();
 
-        preencherSelect(selectBanca, "🏛️ Todas as Bancas", "bancaExibida", questoes, OPCOES_SEM_CONTAGEM);
-        preencherSelect(selectMateria, "📖 Todas as Matérias", "materia", questoes, OPCOES_SEM_CONTAGEM);
-        preencherSelect(selectAno, "📅 Todos os Anos", "ano", questoes, OPCOES_SEM_CONTAGEM);
-        preencherSelect(selectNivel, "📶 Todos os Níveis", "nivel", questoes, OPCOES_SELECT_NIVEL);
+        preencherSelect(selectBanca, "Todas as bancas", "bancaExibida", questoes, OPCOES_SEM_CONTAGEM);
+        preencherSelect(selectMateria, "Todas as matérias", "materia", questoes, OPCOES_SEM_CONTAGEM);
+        preencherSelect(selectAno, "Todos os anos", "ano", questoes, OPCOES_SEM_CONTAGEM);
+        preencherSelect(selectNivel, "Todos os níveis", "nivel", questoes, OPCOES_SELECT_NIVEL);
         atualizarSelectAssunto();
 
         atualizarPlacar(historico, questoes);
@@ -2369,10 +2369,10 @@ async function carregarBancoDeQuestoes(questoesChegando = null) {
         if (h && h.gabaritoRevelado) q.gabarito = h.gabaritoRevelado;
     });
 
-    preencherSelect(selectBanca, "🏛️ Todas as Bancas", "bancaExibida", questoes, OPCOES_SEM_CONTAGEM);
-    preencherSelect(selectMateria, "📖 Todas as Matérias", "materia", questoes, OPCOES_SEM_CONTAGEM);
-    preencherSelect(selectAno, "📅 Todos os Anos", "ano", questoes, OPCOES_SEM_CONTAGEM);
-    preencherSelect(selectNivel, "📶 Todos os Níveis", "nivel", questoes, OPCOES_SELECT_NIVEL);
+    preencherSelect(selectBanca, "Todas as bancas", "bancaExibida", questoes, OPCOES_SEM_CONTAGEM);
+    preencherSelect(selectMateria, "Todas as matérias", "materia", questoes, OPCOES_SEM_CONTAGEM);
+    preencherSelect(selectAno, "Todos os anos", "ano", questoes, OPCOES_SEM_CONTAGEM);
+    preencherSelect(selectNivel, "Todos os níveis", "nivel", questoes, OPCOES_SELECT_NIVEL);
     atualizarSelectAssunto();
     // Filtro de ano só aparece quando alguma questão tem ano cadastrado
     if (selectAno) selectAno.hidden = selectAno.options.length <= 1;
@@ -2393,7 +2393,7 @@ function mostrarEntradaVisitante() {
     document.body.classList.add("visitante");
     container.innerHTML = `
         <section class="entrada-visitante" aria-labelledby="entrada-titulo">
-            <p class="entrada-marca">FocoPro ✦</p>
+            <p class="entrada-marca">FocoPro</p>
             <h1 id="entrada-titulo" class="entrada-titulo">Entre para continuar</h1>
             <div class="entrada-acoes">
                 <button type="button" class="btn-primary btn-entrada" data-modo-auth="cadastro">Criar conta</button>
@@ -2667,7 +2667,7 @@ function desenharReportesAdmin(reportes) {
     const contador = document.getElementById("contador-reportes");
     if (contador) contador.textContent = reportes.length;
     if (!reportes.length) {
-        listaReportesAdmin.innerHTML = `<p class="modal-mensagem">Nenhum reporte aberto. 🎉</p>`;
+        listaReportesAdmin.innerHTML = `<p class="modal-mensagem">Nenhum reporte aberto.</p>`;
         return;
     }
     // Várias pessoas reportando a mesma questão ficam juntas: é o sinal mais forte de problema
@@ -2687,7 +2687,7 @@ function desenharReportesAdmin(reportes) {
                     ${r.comentario ? `<p>${esc(r.comentario)}</p>` : ""}
                 </div>
                 <div class="reporte-acoes">
-                    <button type="button" class="btn-sidebar btn-reporte-fechar" data-status="resolvido" data-id="${esc(r.id)}">✔ Resolvido</button>
+                    <button type="button" class="btn-sidebar btn-reporte-fechar" data-status="resolvido" data-id="${esc(r.id)}">${icone("certo")}Resolvido</button>
                     <button type="button" class="btn-sidebar btn-reporte-fechar" data-status="descartado" data-id="${esc(r.id)}">Descartar</button>
                 </div>
             </li>`).join("");
@@ -2721,7 +2721,7 @@ if (btnReportesAdmin && modalReportesAdmin) {
         const restantes = listaReportesAdmin.querySelectorAll(".reporte-item").length;
         const contador = document.getElementById("contador-reportes");
         if (contador) contador.textContent = restantes;
-        if (!restantes) listaReportesAdmin.innerHTML = `<p class="modal-mensagem">Nenhum reporte aberto. 🎉</p>`;
+        if (!restantes) listaReportesAdmin.innerHTML = `<p class="modal-mensagem">Nenhum reporte aberto.</p>`;
     });
 }
 // ==================== FIM: 13. REPORTAR PROBLEMA NA QUESTÃO (U5) ====================
@@ -2785,7 +2785,7 @@ function reagirAPrimeirosPassos({ acertou, confianca }) {
 
     const estado = atualizarMetaNaTela(historico);
     if (metaBatidaAgora(estado)) {
-        showToast(`🎯 Meta de hoje batida: ${estado.feitas} questões. Pode parar por aqui ou continuar.`, "sucesso", 5000);
+        showToast(`Meta de hoje batida: ${estado.feitas} questões. Pode parar por aqui ou continuar.`, "sucesso", 5000);
     }
 }
 

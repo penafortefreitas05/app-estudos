@@ -8,6 +8,7 @@
 // "Baixar para ver sem internet"; o arquivo vai para um cache próprio (focopro-videos-v1) que o service worker
 // preserva nas atualizações e serve com suporte a Range (sem isso o Chrome do Android não avança o vídeo).
 import { esc } from './ui.js';
+import { icone } from './icones.js';
 
 export const CACHE_VIDEOS = 'focopro-videos-v1';
 const ARQUIVO_LISTA = 'data/videos.json';
@@ -113,7 +114,7 @@ export async function abrirVideo(v, { aoPraticar, nivelPraticar = '', aoFechar, 
                 <p class="video-faixa">${typeof aoContinuar === 'function' ? 'Passo 1 de 3 · vídeo, cartões, questões' : `▶ Aprenda em 1 min · ${formatarDuracao(v.duracao)}`}</p>
                 <h2 id="video-titulo" class="video-titulo">${esc(v.titulo)}</h2>
             </div>
-            <button type="button" class="video-sair" data-acao="fechar" aria-label="Fechar o vídeo">✕</button>
+            <button type="button" class="video-sair" data-acao="fechar" aria-label="Fechar o vídeo">${icone("fechar")}</button>
         </header>
         <div class="video-palco">
             <video class="video-player" controls playsinline preload="metadata" controlslist="nodownload" aria-label="${esc(v.titulo)}"></video>
@@ -136,7 +137,7 @@ export async function abrirVideo(v, { aoPraticar, nivelPraticar = '', aoFechar, 
         const baixado = await videoBaixado(v);
         if (fechada) return;
         area.innerHTML = baixado
-            ? `<p class="video-estado ok">✓ Baixado (${formatarTamanho(v.bytes)})</p>
+            ? `<p class="video-estado ok">${icone("certo")}Baixado (${formatarTamanho(v.bytes)})</p>
                <button type="button" class="video-link" data-acao="remover">Remover do aparelho</button>`
             : `<button type="button" class="video-baixar" data-acao="baixar" aria-label="Baixar o vídeo (${formatarTamanho(v.bytes)}) para ver sem internet" title="Baixar o vídeo">⬇</button>`;
         if (aviso) msg.textContent = aviso;

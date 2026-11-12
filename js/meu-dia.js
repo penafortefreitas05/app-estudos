@@ -2,6 +2,7 @@
 // js/meu-dia.js - Tela "Meu dia": acertos de hoje e dos últimos 7 dias (FocoPro)
 // ============================================================
 import { diaLocal } from './storage.js';
+import { icone } from './icones.js';
 
 const NOMES_DIA = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
 
@@ -55,8 +56,8 @@ export function renderizarMeuDia(raiz, dias) {
     const hoje = dias[dias.length - 1];
     const total = { n: hoje.nova.n + hoje.revisao.n, ac: hoje.nova.ac + hoje.revisao.ac };
     let html = `<div class="dia-hoje">
-        ${linhaGrupo('🔁 Revisão', hoje.revisao)}
-        ${linhaGrupo('✨ Questões novas', hoje.nova)}
+        ${linhaGrupo(`${icone('repetir', 'ic-azul')}Revisão`, hoje.revisao)}
+        ${linhaGrupo(`${icone('estrela', 'ic-amarelo')}Questões novas`, hoje.nova)}
         <div class="dia-total">${linhaGrupo('Total de hoje', total)}</div>
     </div>
     <h4 class="dia-subtitulo">Últimos 7 dias</h4>

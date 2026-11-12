@@ -6,6 +6,7 @@
 // poucas questões ficam recolhidos em "Mostrar mais". Escolher um item grava no <select> e dispara "change".
 
 import { esc } from './ui.js';
+import { icone } from './icones.js';
 
 export const LIMITE_ASSUNTO_PEQUENO = 3; // assuntos com até 3 questões vão para "Mostrar mais"
 
@@ -50,10 +51,10 @@ export function ligarSeletorAssunto(select) {
     select.setAttribute('aria-hidden', 'true');
     select.tabIndex = -1;
 
-    const textoPadrao = () => (select.options[0] && select.options[0].textContent) || '🏷️ Todos os Assuntos';
+    const textoPadrao = () => (select.options[0] && select.options[0].textContent) || 'Todos os assuntos';
     function sincronizar() {
         const sel = select.selectedIndex > 0 ? select.options[select.selectedIndex] : null;
-        botao.textContent = sel ? `🏷️ ${sel.textContent}` : textoPadrao();
+        botao.textContent = sel ? sel.textContent : textoPadrao();
         botao.classList.toggle('ativo', Boolean(sel));
     }
 
@@ -81,7 +82,7 @@ export function ligarSeletorAssunto(select) {
             <div class="sa-folha" role="dialog" aria-modal="true" aria-label="Escolher assunto">
                 <div class="sa-topo">
                     <input type="search" class="sa-busca" placeholder="Buscar assunto..." aria-label="Buscar assunto" autocomplete="off" enterkeyhint="search">
-                    <button type="button" class="sa-fechar" data-sa="fechar" aria-label="Fechar">✕</button>
+                    <button type="button" class="sa-fechar" data-sa="fechar" aria-label="Fechar">${icone("fechar")}</button>
                 </div>
                 <div class="sa-lista"></div>
             </div>`;

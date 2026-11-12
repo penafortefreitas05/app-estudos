@@ -33,7 +33,7 @@
             aviso.id = 'aviso-versao-nova';
             aviso.className = 'aviso-versao-nova';
             aviso.setAttribute('role', 'status');
-            aviso.innerHTML = '<span>✨ Nova versão do FocoPro disponível.</span>' +
+            aviso.innerHTML = '<span>Nova versão do FocoPro disponível.</span>' +
                 '<button type="button" class="btn-primary">Atualizar</button>' +
                 '<button type="button" class="btn-fechar-aviso" aria-label="Depois">✕</button>';
             aviso.querySelector('.btn-primary').addEventListener('click', () => {

@@ -2490,3 +2490,30 @@ body.modo-foco.foco-simulado #display-cronometro { display: block !important; wi
 /* Dicas de primeiros passos */
 .dica-titulo { display: flex; align-items: center; gap: 0.45rem; }
 .dica-card .dica-ok { border-radius: 999px; }
+
+/* v155 · últimos ícones: avisos, filtros, Meu dia, laboratório SQL, Foco e conta */
+.toast-icone { display: inline-flex; align-items: center; justify-content: center; }
+.toast-icone .ic { width: 1.1rem; height: 1.1rem; }
+.toast-sucesso .toast-icone { color: #34d399; }
+.toast-erro .toast-icone { color: #f87171; }
+.toast-alerta .toast-icone { color: #fbbf24; }
+.toast-info .toast-icone { color: #60a5fa; }
+.ft-titulo { display: flex; align-items: center; gap: 0.5rem; }
+.ft-sair .ic, .sa-fechar .ic, .video-sair .ic { width: 1.2rem; height: 1.2rem; }
+.ft-sair, .sa-fechar { display: inline-flex; align-items: center; justify-content: center; }
+.dia-rotulo { display: inline-flex; align-items: center; gap: 0.4rem; }
+.lab-sql p .ic, .lab-dialeto .ic, .lab-ok .ic, .lab-erro .ic { width: 1em; height: 1em; }
+.lab-sql strong .ic { width: 1.05em; height: 1.05em; }
+.btn-lab-sql, .lab-trazer, .lab-tabelas { display: inline-flex; align-items: center; gap: 0.4rem; border-radius: 999px; }
+.foco-sair, .foco-finalizar { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; }
+.foco-resumo-titulo { display: flex; align-items: center; gap: 0.45rem; }
+.video-estado.ok { display: inline-flex; align-items: center; gap: 0.35rem; }
+.btn-limpar-tag, .det-aviso.revisar, .btn-reporte-fechar { display: inline-flex; align-items: center; gap: 0.35rem; }
+.btn-sidebar .ic-wrap { margin-right: 0.45rem; }
+.btn-sidebar > span { display: inline-flex; align-items: center; }
+/* v155 · Filtros, seletor de assunto e janelas: cantos mais redondos e botões em pílula */
+.ft-grade .ft-chip { border-radius: 16px; }
+.ft-grade .ft-chip.todos { border-radius: 999px; }
+.ft-busca, .sa-busca { border-radius: 999px; }
+.ft-limpar, .ft-ver, .ft-ativo, .ft-mais, .sa-mais { border-radius: 999px; }
+.modal .btn-secondary, .modal .btn-primary, .modal-botoes button, .modal-overlay .btn-secondary, .modal-overlay .btn-primary { border-radius: 999px; }

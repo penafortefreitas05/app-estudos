@@ -9,6 +9,7 @@
 // Motor: sql.js 1.14.2 (MIT), em js/vendor/sqljs-1.14.2/.
 
 import { esc } from './ui.js';
+import { icone } from './icones.js';
 
 const PASTA_MOTOR = new URL('./vendor/sqljs-1.14.2/', import.meta.url);
 const LIMITE_LINHAS = 100;
@@ -225,8 +226,8 @@ function montarPainel(card, q) {
 
     const avisoLab = labQuestao
         ? `<div class="lab-dialeto">
-            ${labQuestao.lab_adaptado ? `<p>💡 ${esc(labQuestao.observacao || 'Este laboratório foi adaptado para o SQLite: o dialeto da prova original é diferente.')}</p>` : ''}
-            ${labQuestao.resultado_esperado ? `<p>🎯 Resultado esperado: <strong>${esc(labQuestao.resultado_esperado)}</strong></p>` : ''}
+            ${labQuestao.lab_adaptado ? `<p>${icone("lampada")} ${esc(labQuestao.observacao || 'Este laboratório foi adaptado para o SQLite: o dialeto da prova original é diferente.')}</p>` : ''}
+            ${labQuestao.resultado_esperado ? `<p>${icone("alvo")} Resultado esperado: <strong>${esc(labQuestao.resultado_esperado)}</strong></p>` : ''}
         </div>`
         : '';
 
@@ -234,7 +235,7 @@ function montarPainel(card, q) {
     painel.className = 'lab-sql';
     painel.innerHTML = `
         <div class="lab-topo">
-            <strong>🧪 Laboratório SQL</strong>
+            <strong>${icone("banco")} Laboratório SQL</strong>
             <select class="input-dark lab-base" aria-label="Banco de partida">
                 ${chaveLabQuestao ? `<option value="${chaveLabQuestao}" selected>${esc(BANCOS[chaveLabQuestao].rotulo)}</option>` : ''}
                 ${Object.entries(BANCOS).filter(([chave]) => chave !== chaveLabQuestao && !chave.startsWith('questao_')).map(([chave, b]) =>
@@ -246,8 +247,8 @@ function montarPainel(card, q) {
         <textarea class="lab-editor" rows="6" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Comandos SQL"></textarea>
         <div class="lab-botoes">
             <button type="button" class="btn-primary lab-executar">▶ Executar</button>
-            ${sqlEnunciado ? '<button type="button" class="btn-sidebar lab-trazer">📋 SQL do enunciado</button>' : ''}
-            <button type="button" class="btn-sidebar lab-tabelas">🗂️ Ver tabelas</button>
+            ${sqlEnunciado ? `<button type="button" class="btn-sidebar lab-trazer">${icone('caderno')}SQL do enunciado</button>` : ''}
+            <button type="button" class="btn-sidebar lab-tabelas">${icone("grade")}Ver tabelas</button>
         </div>
         <div class="lab-saida" aria-live="polite"></div>`;
 
@@ -265,17 +266,17 @@ function montarPainel(card, q) {
         const sql = editor.value;
         saida.innerHTML = `<p class="lab-nota">${motorPronto ? 'Executando...' : 'Carregando o motor SQL (só na primeira vez)...'}</p>`;
         const dicas = dicasDeDialeto(sql);
-        const htmlDicas = dicas.length ? `<div class="lab-dialeto">${dicas.map(d => `<p>💡 ${esc(d)}</p>`).join('')}</div>` : '';
+        const htmlDicas = dicas.length ? `<div class="lab-dialeto">${dicas.map(d => `<p>${icone("lampada")} ${esc(d)}</p>`).join('')}</div>` : '';
         try {
             await abrirBanco(seletor.value);
             let resultados = sql.trim() ? await executar(sql) : [];
             if (sqlExtra) resultados = await mostrarTabelas();
             const html = resultados.length
                 ? resultados.map(r => (r.titulo ? `<p class="lab-titulo-tabela">${esc(r.titulo)}</p>` : '') + tabelaHTML(r)).join('')
-                : '<p class="lab-ok">✔ Executado. Nenhuma linha de resultado (comandos como INSERT, UPDATE e DELETE não devolvem linhas; use "Ver tabelas" para ver o efeito).</p>';
+                : `<p class="lab-ok">${icone('certo')} Executado. Nenhuma linha de resultado (comandos como INSERT, UPDATE e DELETE não devolvem linhas; use "Ver tabelas" para ver o efeito).</p>`;
             saida.innerHTML = htmlDicas + html;
         } catch (erro) {
-            saida.innerHTML = htmlDicas + `<p class="lab-erro">✖ ${esc(traduzirErro(erro.message, sql))}</p>`;
+            saida.innerHTML = htmlDicas + `<p class="lab-erro">${icone("fechar")} ${esc(traduzirErro(erro.message, sql))}</p>`;
         } finally {
             ocupado = false;
             botaoExecutar.disabled = false;
@@ -322,11 +323,11 @@ export function alternarLaboratorio(card, q) {
     const botao = card.querySelector('.btn-lab-sql');
     if (aberto) {
         aberto.remove();
-        if (botao) botao.textContent = '🧪 Testar no laboratório SQL';
+        if (botao) botao.innerHTML = `${icone('banco')}Testar no laboratório SQL`;
         return;
     }
     lugar.appendChild(montarPainel(card, q));
-    if (botao) botao.textContent = '✖ Fechar laboratório';
+    if (botao) botao.innerHTML = `${icone('fechar')}Fechar laboratório`;
     const editor = lugar.querySelector('.lab-editor');
     if (editor) editor.focus({ preventScroll: true });
 }

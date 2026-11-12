@@ -3,6 +3,7 @@
 // ============================================================
 // Todo texto entra por textContent: mensagens (inclusive as de erro vindas do servidor)
 // nunca são interpretadas como HTML.
+import { icone as desenharIcone } from './icones.js';
 
 function obterToastContainer() {
     let container = document.getElementById("toast-container");
@@ -20,11 +21,12 @@ export function showToast(mensagem, tipo = 'info', duracao = 3500) {
     const toast = document.createElement("div");
     toast.className = `toast toast-${tipo}`;
 
-    const icones = { sucesso: '✔', erro: '✖', alerta: '⚠', info: 'ℹ' };
+    // Ícones de traço (v155), na cor de cada tipo de aviso
+    const nomes = { sucesso: 'certo', erro: 'fechar', alerta: 'alerta', info: 'lampada' };
 
     const icone = document.createElement("span");
     icone.className = "toast-icone";
-    icone.textContent = icones[tipo] || 'ℹ';
+    icone.innerHTML = desenharIcone(nomes[tipo] || 'lampada');
 
     const texto = document.createElement("span");
     texto.className = "toast-mensagem";

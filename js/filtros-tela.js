@@ -8,6 +8,7 @@
 // A contagem por matéria, assunto e banca fica na Cobertura do edital.
 
 import { esc } from './ui.js';
+import { icone } from './icones.js';
 import { lerGrupos, filtrarGrupos } from './seletor-assunto.js';
 
 // Opções de um <select> como [{ valor, rotulo }], sem a opção "Todos" e sem as escondidas
@@ -15,7 +16,7 @@ export function opcoesDe(select) {
     if (!select) return [];
     return [...select.options]
         .filter(o => o.value && !o.hidden && !o.disabled)
-        .map(o => ({ valor: o.value, rotulo: o.textContent.replace(/^🎯\s*Concurso:\s*/, '').trim() }));
+        .map(o => ({ valor: o.value, rotulo: o.textContent.replace(/^(🎯\s*)?Concurso:\s*/, '').trim() }));
 }
 
 // opcoes.selects: { concurso, materia, banca, ano, tag } (elementos <select>)
@@ -37,10 +38,10 @@ export function abrirFiltros({ selects, contagem = () => '', aoLimpar, aoFechar 
     el.innerHTML = `
         <header class="ft-topo">
             <div>
-                <h2 id="ft-titulo" class="ft-titulo">🎛️ Filtros</h2>
+                <h2 id="ft-titulo" class="ft-titulo">${icone("filtros", "ic-azul")}Filtros</h2>
                 <p class="ft-sub" aria-live="polite"></p>
             </div>
-            <button type="button" class="ft-sair" data-ft="fechar" aria-label="Fechar os filtros">✕</button>
+            <button type="button" class="ft-sair" data-ft="fechar" aria-label="Fechar os filtros">${icone("fechar")}</button>
         </header>
         <div class="ft-corpo">
             <div class="ft-ativos" aria-live="polite"></div>

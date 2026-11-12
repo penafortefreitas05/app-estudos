@@ -173,7 +173,7 @@ export function preencherSelectAssunto(selectElement, listaQuestoes, materia, or
     // Só o nome na lista (05/11/2026); a contagem vai em data-n, para o seletor com busca agrupar os assuntos pequenos
     const opcao = ([assunto, n]) => `<option value="${esc(assunto)}" data-n="${n}">${esc(assunto)}</option>`;
 
-    let html = `<option value="">🏷️ Todos os Assuntos</option>`;
+    let html = `<option value="">Todos os assuntos</option>`;
     if (materia) {
         html += ordenarAssuntos(porMacro[materia] || {}).map(opcao).join('');
     } else {
@@ -208,7 +208,7 @@ export function atualizarChipTag(chipTagElement, tag) {
         return;
     }
     chipTagElement.hidden = false;
-    chipTagElement.innerHTML = `<span>Filtro ativo por assunto: <strong>${esc(tag)}</strong></span> <button type="button" id="btn-limpar-tag" class="btn-limpar-tag">✖ Remover</button>`;
+    chipTagElement.innerHTML = `<span>Filtro ativo por assunto: <strong>${esc(tag)}</strong></span> <button type="button" id="btn-limpar-tag" class="btn-limpar-tag">${icone("fechar")}Remover</button>`;
 }
 
 // ---------- Cobertura do Edital (U11) ----------
@@ -266,7 +266,7 @@ export function renderizarCoberturaEdital(container, ordemMacros, listaQuestoes)
     if (bancas.length) {
         partes.push(`
             <details class="cobertura-macro">
-                <summary>🏛️ Por banca <span class="cobertura-contagem">${bancas.length}</span></summary>
+                <summary>Por banca <span class="cobertura-contagem">${bancas.length}</span></summary>
                 <ul class="cobertura-lista">${bancas.map(([b, n]) => `<li><span>${esc(b)}</span><span class="cobertura-contagem">${n}</span></li>`).join('')}</ul>
             </details>
         `);
@@ -610,7 +610,7 @@ function renderizarDesempenhoMaterias(materiasMap, questoes = [], historico = {}
             <div class="materia-detalhe" data-materia="${esc(mat)}" ${sel ? '' : 'hidden'}>
                 <div class="det-topo"><strong>${esc(mat)}</strong><span class="det-taxa" style="color:${cor}">${comecou ? `${taxa}% de acerto` : 'não começou'}</span></div>
                 ${linhasNivel}
-                ${info.revisarHoje ? `<button type="button" class="det-aviso revisar" data-revisar-materia="${esc(mat)}">🔁 ${info.revisarHoje} para revisar hoje · toque para revisar</button>` : ''}
+                ${info.revisarHoje ? `<button type="button" class="det-aviso revisar" data-revisar-materia="${esc(mat)}">${icone("repetir")}${info.revisarHoje} para revisar hoje · toque para revisar</button>` : ''}
                 ${critica ? '<span class="det-aviso reforcar">Reforçar · toque na matéria para treinar</span>' : ''}
             </div>`;
     });
