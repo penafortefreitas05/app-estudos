@@ -34,5 +34,14 @@
     "arquivo": "videos/tcpudp.mp4",
     "duracao": 105,
     "bytes": 3210675
+  },
+  {
+    "id": "osi",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
+    "titulo": "Modelo OSI: as 7 camadas",
+    "arquivo": "videos/osi.mp4",
+    "duracao": 113,
+    "bytes": 3852352
   }
 ]
