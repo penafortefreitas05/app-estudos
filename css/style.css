@@ -2187,3 +2187,28 @@ body.modo-foco.foco-simulado #display-cronometro { display: block !important; wi
 /* Plano em ciclos (08/11/2026): atalhos dos dias de recuperação e comprovação */
 .at-plano-acoes { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.6rem; }
 .at-plano-dia-linha span { color: #a5b4fc; font-size: 0.8rem; }
+
+
+/* ---- Aprenda em 1 min: vídeo dentro do assunto (11/11/2026) ---- */
+.leitura-videos { width: 100%; max-width: 40rem; margin: 0 auto; padding: 0 1rem 0.4rem; display: flex; flex-direction: column; gap: 0.4rem; }
+.leitura-video { min-height: 2.75rem; border-radius: 12px; border: 1px solid #4338ca; background: #1e1b4b; color: #e0e7ff; font-size: 0.95rem; font-weight: 700; text-align: left; padding: 0.55rem 0.9rem; cursor: pointer; }
+.leitura-video span { color: #a5b4fc; font-weight: 600; margin-left: 0.35rem; }
+.leitura-video:hover { background: #312e81; }
+.leitura-video:focus-visible { outline: 2px solid #c7d2fe; outline-offset: 2px; }
+.video-tela { position: fixed; inset: 0; z-index: 1300; display: flex; flex-direction: column; align-items: center; background: #020617; color: #e2e8f0; opacity: 0; transition: opacity 0.18s; overflow-y: auto; }
+.video-tela.visivel { opacity: 1; }
+.video-topo { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem; width: 100%; max-width: 40rem; padding: max(1rem, env(safe-area-inset-top)) 1rem 0.4rem; }
+.video-faixa { margin: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #a5b4fc; }
+.video-titulo { margin: 0.2rem 0 0; font-size: 1.15rem; line-height: 1.3; }
+.video-sair { min-width: 2.75rem; min-height: 2.75rem; border-radius: 12px; border: 1px solid #334155; background: transparent; color: #e2e8f0; font-size: 1.1rem; cursor: pointer; }
+.video-palco { width: 100%; max-width: 40rem; padding: 0.3rem 1rem; display: flex; justify-content: center; }
+.video-player { width: auto; max-width: 100%; height: min(68vh, 60rem); aspect-ratio: 9 / 16; background: #000; border-radius: 12px; }
+.video-msg { min-height: 1.2rem; margin: 0.3rem 1rem 0; max-width: 40rem; font-size: 0.9rem; color: #fcd34d; text-align: center; }
+.video-offline { width: 100%; max-width: 40rem; padding: 0.2rem 1rem; display: flex; flex-direction: column; align-items: center; gap: 0.3rem; }
+.video-estado.ok { margin: 0; font-size: 0.9rem; color: #86efac; text-align: center; }
+.video-baixar { width: 100%; min-height: 2.75rem; border-radius: 12px; border: 1px solid #4338ca; background: transparent; color: #c7d2fe; font-size: 0.95rem; font-weight: 700; cursor: pointer; }
+.video-baixar:hover:not(:disabled) { background: #1e1b4b; }
+.video-baixar:disabled { opacity: 0.6; cursor: default; }
+.video-link { background: none; border: 0; color: #94a3b8; font-size: 0.85rem; text-decoration: underline; cursor: pointer; min-height: 2.25rem; }
+.video-acoes { width: 100%; max-width: 40rem; display: flex; gap: 0.6rem; padding: 0.5rem 1rem max(1rem, env(safe-area-inset-bottom)); }
+.video-baixar:focus-visible, .video-sair:focus-visible, .video-link:focus-visible { outline: 2px solid #c7d2fe; outline-offset: 2px; }

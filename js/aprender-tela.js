@@ -12,6 +12,7 @@
 import { esc } from './ui.js';
 import { montarPlano, TIPOS_DIA } from './plano.js';
 import { ordenarAssuntos } from './ordem-assuntos.js';
+import { carregarVideos, videosDoAssunto } from './video-aprenda.js';
 import { assuntosComCartoes, abrirLeitura, lerAprendidos, assuntoAprendido, migrarEntendidos } from './leitura.js';
 
 const CHAVE_ULTIMO = 'appEstudos_AprenderUltimo';
@@ -105,6 +106,7 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
     if (document.querySelector('.aprender-tela')) return true;
     const todos = await assuntosComCartoes();
     if (!todos.length) return false;
+    const videos = await carregarVideos(); // vazio se a lista não carregar: a tela segue sem a faixa de vídeo
     // Segue o concurso do perfil: só os assuntos com questões dele. Se o filtro esvaziar tudo, mostra todos.
     const doConcurso = assuntoVisivel ? todos.filter(a => assuntoVisivel(a.materia, a.assunto)) : todos;
     const lista = doConcurso.length ? doConcurso : todos;
@@ -252,7 +254,8 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
         q('.at-lista').innerHTML = visiveis.length ? visiveis.map(a => {
             const estado = estadoDe(a, aprendidos);
             const marca = aprendidos[`${a.materia}|${a.assunto}`];
-            const detalhe = estado === 'feitos' ? `Aprendido${dataCurta(marca && marca.data) ? ' em ' + dataCurta(marca.data) : ''} · ${cartoesTxt(a.cartoes.length)}` : cartoesTxt(a.cartoes.length);
+            const comVideo = videosDoAssunto(videos, a.materia, a.assunto).length ? ' · ▶ vídeo' : '';
+            const detalhe = (estado === 'feitos' ? `Aprendido${dataCurta(marca && marca.data) ? ' em ' + dataCurta(marca.data) : ''} · ${cartoesTxt(a.cartoes.length)}` : cartoesTxt(a.cartoes.length)) + comVideo;
             return `<li><button type="button" class="at-assunto ${estado}" data-acao="assunto" data-materia="${esc(a.materia)}" data-assunto="${esc(a.assunto)}">
                 <span class="at-assunto-icone" aria-hidden="true">${estado === 'feitos' ? '✓' : '○'}</span>
                 <span class="at-assunto-texto"><span class="at-assunto-nome">${esc(a.assunto)}</span>
@@ -282,7 +285,8 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
             aoPraticar: podePraticar ? () => { fechar(); aoPraticar(mat, nome); } : undefined,
             nivelPraticar: podePraticar ? nivelPraticar(mat, nome) : '',
             // Sem o que praticar: o botão é só "Aprendi ✓" (fica no Aprender) e a tela diz por quê
-            avisoSemQuestoes: podePraticar ? '' : avisoSemQuestoes(mat, nome)
+            avisoSemQuestoes: podePraticar ? '' : avisoSemQuestoes(mat, nome),
+            videos: videosDoAssunto(videos, mat, nome)
         });
     }
 
@@ -310,7 +314,7 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
     }
 
     function aoTeclar(e) {
-        if (e.key !== 'Escape' || document.querySelector('.leitura')) return;
+        if (e.key !== 'Escape' || document.querySelector('.leitura') || document.querySelector('.video-tela')) return;
         e.preventDefault();
         if (vista === 'assuntos' && window.matchMedia('(max-width: 899px)').matches) { vista = 'materias'; desenhar(); }
         else fechar();

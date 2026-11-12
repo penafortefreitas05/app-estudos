@@ -10,6 +10,7 @@
 //   - Quem usou a versão antiga ("Entendi" por cartão): se todos os cartões de um assunto estavam
 //     entendidos, ele vira "Aprendi" uma única vez (migrarEntendidos).
 
+import { abrirVideo, formatarDuracao } from './video-aprenda.js';
 import { esc } from './ui.js';
 
 const ARQUIVO_CARTOES = './data/aprender-cartoes.json';
@@ -175,7 +176,8 @@ export function fonteHTML(fonte) {
 // aoAprender (opcional): chamado depois de marcar "Aprendi".
 // nivelPraticar (opcional): nome do nível que o Praticar abre, para o texto não prometer o nível errado.
 // avisoSemQuestoes (opcional): sem aoPraticar, frase que explica por que não há o que praticar.
-export function abrirLeitura(cartoes, { titulo, aoFechar, aoPraticar, aoAprender, nivelPraticar, avisoSemQuestoes } = {}) {
+// videos (opcional): vídeos "Aprenda em 1 min" do assunto (data/videos.json); cada um ganha um botão no topo da leitura.
+export function abrirLeitura(cartoes, { titulo, aoFechar, aoPraticar, aoAprender, nivelPraticar, avisoSemQuestoes, videos = [] } = {}) {
     if (!Array.isArray(cartoes) || !cartoes.length || document.querySelector('.leitura')) return;
     const assunto = titulo || cartoes[0].assunto;
     const materia = cartoes[0].materia;
@@ -196,6 +198,7 @@ export function abrirLeitura(cartoes, { titulo, aoFechar, aoPraticar, aoAprender
             </div>
             <button type="button" class="leitura-sair" data-acao="fechar" aria-label="Sair da leitura">✕</button>
         </header>
+        ${videos.length ? `<div class="leitura-videos">${videos.map((v, i) => `<button type="button" class="leitura-video" data-acao="video" data-i="${i}">▶ ${esc(v.titulo)} <span>${formatarDuracao(v.duracao)}</span></button>`).join('')}</div>` : ''}
         <div class="leitura-bolas" aria-hidden="true"></div>
         <p class="leitura-contagem" aria-live="polite"></p>
         <div class="leitura-corpo"></div>
@@ -238,8 +241,13 @@ export function abrirLeitura(cartoes, { titulo, aoFechar, aoPraticar, aoAprender
         if (tituloCartao) tituloCartao.focus({ preventScroll: true });
     }
 
-    function agir(acao) {
+    function agir(acao, botao) {
         if (acao === 'fechar') return fechar();
+        if (acao === 'video') {
+            const v = videos[Number(botao && botao.dataset.i)];
+            // "Praticar" do vídeo faz o mesmo que o da leitura (sem marcar "Aprendi"): fecha a leitura e abre as questões
+            return abrirVideo(v, { aoPraticar: typeof aoPraticar === 'function' ? () => { fechar(); aoPraticar(); } : undefined, nivelPraticar });
+        }
         if (acao === 'aprendi') {
             if (!naFinal()) return;
             marcarAprendi(materia, assunto);
@@ -265,6 +273,7 @@ export function abrirLeitura(cartoes, { titulo, aoFechar, aoPraticar, aoAprender
 
     // Captura: os atalhos do app (busca "/", letras do Modo Foco) não podem agir por trás da leitura
     function aoTeclar(e) {
+        if (document.querySelector('.video-tela')) return; // o vídeo aberto por cima cuida do teclado
         if (e.ctrlKey || e.metaKey || e.altKey) return;
         if (e.key === 'Tab') {
             const focaveis = [...el.querySelectorAll('button:not([disabled]), summary, a[href]')];
@@ -295,7 +304,7 @@ export function abrirLeitura(cartoes, { titulo, aoFechar, aoPraticar, aoAprender
 
     el.addEventListener('click', (e) => {
         const botao = e.target.closest('[data-acao]');
-        if (botao && !botao.disabled) agir(botao.dataset.acao);
+        if (botao && !botao.disabled) agir(botao.dataset.acao, botao);
     });
     document.addEventListener('keydown', aoTeclar, true);
     document.body.classList.add('modo-aprender');

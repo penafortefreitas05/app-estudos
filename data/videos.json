@@ -1,0 +1,29 @@
+[
+  {
+    "id": "normalizacao",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Normalização",
+    "titulo": "Normalização: repartir a tabela",
+    "arquivo": "videos/normalizacao.mp4",
+    "duracao": 116,
+    "bytes": 4879614
+  },
+  {
+    "id": "scrum",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Scrum",
+    "titulo": "Scrum: o ritmo do time",
+    "arquivo": "videos/scrum.mp4",
+    "duracao": 116,
+    "bytes": 4192645
+  },
+  {
+    "id": "nat",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
+    "titulo": "NAT: a troca no caminho",
+    "arquivo": "videos/nat.mp4",
+    "duracao": 92,
+    "bytes": 3320861
+  }
+]
