@@ -168,11 +168,11 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
             <article class="ce-item" data-id="${esc(String(q.id))}">
                 <p class="ce-meta">${esc(q.materia || 'Geral')} · ${esc(q.assunto || 'Geral')}</p>
                 <p class="ce-pergunta">${esc(q.pergunta || '')}</p>
-                <p class="ce-info${naFila(q.id) ? ' urgente' : ''}">${naFila(q.id) ? '⏰ ' : ''}${h.erros} ${h.erros === 1 ? 'erro' : 'erros'} · ${esc(volta)}</p>
+                <p class="ce-info${naFila(q.id) ? ' urgente' : ''}"><span class="ce-info-n">${h.erros} ${h.erros === 1 ? 'erro' : 'erros'}</span><span class="ce-info-volta">${naFila(q.id) ? '⏰ ' : ''}${esc(volta)}</span></p>
                 <div class="ce-resp" hidden></div>
                 <div class="ce-acoes">
-                    ${pedirGabarito ? '<button type="button" class="ce-btn" data-ce="resposta">Ver resposta e explicação</button>' : ''}
                     <button type="button" class="ce-btn principal" data-ce="refazer">▶ Refazer</button>
+                    ${pedirGabarito ? '<button type="button" class="ce-btn" data-ce="resposta">Ver resposta e explicação</button>' : ''}
                     ${letra ? `<button type="button" class="ce-btn ia" data-ce="ia">${guardada ? 'Ver explicação' : 'Entender meu erro com IA'}</button>` : ''}
                 </div>
                 <div class="ce-ia" ${guardada ? '' : 'hidden'}>${esc(guardada)}</div>
@@ -220,7 +220,7 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
         } else {
             elLista.innerHTML = (estado === 'abertas' ? `<button type="button" class="ce-btn ce-todas principal" data-ce="refazer-todas">▶ Refazer ${materia ? 'esta matéria' : 'todas'} no Foco (${lista.length})</button>` : '') +
                 (estado === 'superadas'
-                    ? listaComNotas([...lista].sort((a, b) => chaveNota(a.q.materia, a.q.assunto).localeCompare(chaveNota(b.q.materia, b.q.assunto), 'pt-BR') || (a.h.ultimaData || 0) - (b.h.ultimaData || 0)).slice(0, mostrando))
+                    ? '<p class="ce-criterio">Superada: você acertou esta questão na última vez que respondeu. Releia de vez em quando para não esquecer.</p>' + listaComNotas([...lista].sort((a, b) => chaveNota(a.q.materia, a.q.assunto).localeCompare(chaveNota(b.q.materia, b.q.assunto), 'pt-BR') || (a.h.ultimaData || 0) - (b.h.ultimaData || 0)).slice(0, mostrando))
                     : lista.slice(0, mostrando).map(cartao).join('')) +
                 (lista.length > mostrando ? `<button type="button" class="ce-mais" data-ce="mais">Mostrar mais (${lista.length - mostrando})</button>` : '');
         }

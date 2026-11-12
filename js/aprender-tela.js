@@ -174,7 +174,7 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
             return;
         }
         const a = lista.find(x => x.materia === c.materia && x.assunto === c.assunto);
-        const rotulo = c.tipo === 'continuar' ? 'Continuar de onde parei' : (c.tipo === 'proximo' ? 'Próximo assunto' : 'Começar por aqui');
+        const rotulo = c.tipo === 'continuar' ? 'Retomar leitura · de onde parei' : (c.tipo === 'proximo' ? 'Próximo assunto' : 'Começar por aqui');
         area.innerHTML = `
             <button type="button" class="at-continuar" data-acao="continuar" data-materia="${esc(c.materia)}" data-assunto="${esc(c.assunto)}">
                 <span class="at-continuar-rotulo">${rotulo}</span>
@@ -214,7 +214,7 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
                 <p class="at-plano-texto">Faça um simulado e veja o resultado por matéria. Os erros vão para o Caderno e orientam a próxima semana.</p>
                 <div class="at-plano-acoes"><button type="button" class="at-plano-btn" data-acao="ir-simulado">Fazer simulado</button></div>`;
         } else if (hoje) {
-            topo = `<p class="at-plano-titulo">📅 Plano de hoje${tag(hoje)} · ${esc(hoje.nome.toLowerCase())}</p>${blocosHtml(hoje)}
+            topo = `<p class="at-plano-titulo">📅 Estudar pelo plano · hoje${tag(hoje)}, ${esc(hoje.nome.toLowerCase())}</p>${blocosHtml(hoje)}
                 <p class="at-plano-q">🎯 <b>${hoje.questoes} questões</b> <span>(a revisão do dia entra nessa conta)</span></p>`;
         } else {
             const prox = plano.proximo || plano.dias[0];
@@ -225,8 +225,8 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
             <div class="at-plano-dia${d.hoje ? ' hoje' : ''}"><p class="at-plano-dia-nome">${esc(d.nome)}${d.hoje ? ' · hoje' : ''} <span>${d.tipo === 'evolucao' ? `${plano.ciclos ? 'evolução · ' : ''}${d.questoes} questões` : TIPOS_DIA[d.tipo]}</span></p>
             ${d.tipo === 'recuperacao' ? '<p class="at-plano-dia-linha">Revisar hoje e Caderno de erros</p>' : d.tipo === 'comprovacao' ? '<p class="at-plano-dia-linha">Simulado e resultado por matéria</p>' : d.blocos.map(b => `<p class="at-plano-dia-linha"><b>${esc(b.materia)}</b>: ${b.assuntos.map(a => (a.feito ? '✓ ' : '') + esc(a.assunto)).join(', ')}</p>`).join('') || '<p class="at-plano-dia-linha">Questões e revisão</p>'}</div>`).join('');
         area.innerHTML = `<div class="at-plano">${topo}
-            <details class="at-plano-semana"><summary>Ver a semana (${plano.dias.length} ${plano.dias.length === 1 ? 'dia' : 'dias'} · ${plano.horas} h por dia)</summary>${plano.ciclos ? '' : '<p class="at-plano-texto">Com 3 dias ou mais, o plano ganha um dia de recuperação e um de comprovação.</p>'}${semana}</details>
-            <button type="button" class="at-plano-link" data-acao="configurar-plano">Ajustar dias e horas</button></div>`;
+            <div class="at-plano-rodape"><details class="at-plano-semana"><summary>Ver a semana (${plano.dias.length} ${plano.dias.length === 1 ? 'dia' : 'dias'} · ${plano.horas} h)</summary>${plano.ciclos ? '' : '<p class="at-plano-texto">Com 3 dias ou mais, o plano ganha um dia de recuperação e um de comprovação.</p>'}${semana}</details>
+            <button type="button" class="at-plano-link" data-acao="configurar-plano">Ajustar dias e horas</button></div></div>`;
     }
 
     function desenharMaterias(aprendidos) {
@@ -254,7 +254,7 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
         q('.at-lista').innerHTML = visiveis.length ? visiveis.map(a => {
             const estado = estadoDe(a, aprendidos);
             const marca = aprendidos[`${a.materia}|${a.assunto}`];
-            const comVideo = videosDoAssunto(videos, a.materia, a.assunto).length ? ' · ▶ vídeo' : '';
+            const comVideo = videosDoAssunto(videos, a.materia, a.assunto).length ? ' <span class="at-selo-video">▶ Vídeo</span>' : '';
             const detalhe = (estado === 'feitos' ? `Aprendido${dataCurta(marca && marca.data) ? ' em ' + dataCurta(marca.data) : ''} · ${cartoesTxt(a.cartoes.length)}` : cartoesTxt(a.cartoes.length)) + comVideo;
             return `<li><button type="button" class="at-assunto ${estado}" data-acao="assunto" data-materia="${esc(a.materia)}" data-assunto="${esc(a.assunto)}">
                 <span class="at-assunto-icone" aria-hidden="true">${estado === 'feitos' ? '✓' : '○'}</span>

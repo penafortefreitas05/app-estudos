@@ -2221,3 +2221,19 @@ body.modo-foco.foco-simulado #display-cronometro { display: block !important; wi
 .ce-nota:focus-visible { outline: 2px solid #c7d2fe; outline-offset: 2px; }
 .video-baixar { width: auto; min-width: 3rem; padding: 0 1rem; font-size: 1.3rem; line-height: 1; }
 .ce-errou { margin: 0.5rem 0 0; font-size: 0.9rem; color: #fca5a5; }
+
+/* v150 · refinamentos da Sala Design (Aprender e Caderno) */
+.at-plano-rodape { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 1rem; margin-top: 0.2rem; }
+.at-plano-rodape .at-plano-semana { margin: 0; }
+.at-plano-rodape .at-plano-semana summary { padding: 0.3rem 0; }
+.at-plano-rodape .at-plano-semana[open] { flex-basis: 100%; order: 2; }
+.at-plano-rodape .at-plano-link { padding: 0.3rem 0; }
+.at-plano .at-plano-q { margin: 0.35rem 0 0.2rem; }
+.at-selo-video { display: inline-block; margin-left: 0.35rem; padding: 0.05rem 0.45rem; border-radius: 999px; background: #312e81; color: #e0e7ff; font-size: 0.72rem; font-weight: 700; line-height: 1.4; vertical-align: 1px; }
+.at-materia.ativa { border-color: #818cf8; background: #25236a; box-shadow: inset 3px 0 0 #818cf8; }
+.ce-info { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; }
+.ce-info-n { font-weight: 700; }
+.ce-info-volta { padding: 0.1rem 0.5rem; border-radius: 999px; background: #1e293b; color: #cbd5e1; font-size: 0.8rem; }
+.ce-info.urgente .ce-info-volta { background: #422006; color: #fde68a; }
+.ce-btn.ia { border-color: #334155; color: #cbd5e1; }
+.ce-criterio { margin: 0 0 0.75rem; padding: 0.55rem 0.75rem; border-left: 3px solid #34d399; border-radius: 8px; background: #0f172a; color: #cbd5e1; font-size: 0.86rem; }
