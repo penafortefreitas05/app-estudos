@@ -2237,3 +2237,13 @@ body.modo-foco.foco-simulado #display-cronometro { display: block !important; wi
 .ce-info.urgente .ce-info-volta { background: #422006; color: #fde68a; }
 .ce-btn.ia { border-color: #334155; color: #cbd5e1; }
 .ce-criterio { margin: 0 0 0.75rem; padding: 0.55rem 0.75rem; border-left: 3px solid #34d399; border-radius: 8px; background: #0f172a; color: #cbd5e1; font-size: 0.86rem; }
+
+/* v151 · Caderno: três botões de símbolo lado a lado; matérias em uma faixa no celular */
+.ce-acoes.ce-icones { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; max-width: 20rem; }
+.ce-icones .ce-btn { justify-content: center; min-height: 2.75rem; padding: 0.4rem; font-size: 1.3rem; line-height: 1; }
+.ce-legenda { margin: 0 0 0.75rem; font-size: 0.8rem; color: #94a3b8; }
+@media (max-width: 640px) {
+    .ce-materias { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 0.45rem; padding-bottom: 0.3rem; scrollbar-width: thin; -webkit-overflow-scrolling: touch; }
+    .ce-mat, .ce-mat.todas { flex: none; min-height: 2.5rem; white-space: nowrap; }
+    .ce-mat-nome { overflow-wrap: normal; }
+}

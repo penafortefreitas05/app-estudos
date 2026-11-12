@@ -170,10 +170,10 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
                 <p class="ce-pergunta">${esc(q.pergunta || '')}</p>
                 <p class="ce-info${naFila(q.id) ? ' urgente' : ''}"><span class="ce-info-n">${h.erros} ${h.erros === 1 ? 'erro' : 'erros'}</span><span class="ce-info-volta">${naFila(q.id) ? '⏰ ' : ''}${esc(volta)}</span></p>
                 <div class="ce-resp" hidden></div>
-                <div class="ce-acoes">
-                    <button type="button" class="ce-btn principal" data-ce="refazer">▶ Refazer</button>
-                    ${pedirGabarito ? '<button type="button" class="ce-btn" data-ce="resposta">Ver resposta e explicação</button>' : ''}
-                    ${letra ? `<button type="button" class="ce-btn ia" data-ce="ia">${guardada ? 'Ver explicação' : 'Entender meu erro com IA'}</button>` : ''}
+                <div class="ce-acoes ce-icones">
+                    <button type="button" class="ce-btn principal" data-ce="refazer" aria-label="Refazer a questão" title="Refazer">↻</button>
+                    ${pedirGabarito ? '<button type="button" class="ce-btn" data-ce="resposta" aria-label="Ver resposta e explicação" title="Resposta e explicação">👁</button>' : ''}
+                    ${letra ? `<button type="button" class="ce-btn ia" data-ce="ia" aria-label="${guardada ? 'Ver a explicação da IA' : 'Entender meu erro com IA'}" title="${guardada ? 'Explicação da IA' : 'Entender meu erro com IA'}">✨</button>` : ''}
                 </div>
                 <div class="ce-ia" ${guardada ? '' : 'hidden'}>${esc(guardada)}</div>
             </article>`;
@@ -218,7 +218,7 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
         } else if (!lista.length) {
             elLista.innerHTML = '<p class="ce-vazio">Nada por aqui com esse filtro.</p>';
         } else {
-            elLista.innerHTML = (estado === 'abertas' ? `<button type="button" class="ce-btn ce-todas principal" data-ce="refazer-todas">▶ Refazer ${materia ? 'esta matéria' : 'todas'} no Foco (${lista.length})</button>` : '') +
+            elLista.innerHTML = (estado === 'abertas' ? `<button type="button" class="ce-btn ce-todas principal" data-ce="refazer-todas">▶ Refazer ${materia ? 'esta matéria' : 'todas'} no Foco (${lista.length})</button><p class="ce-legenda">↻ refazer · 👁 resposta e explicação · ✨ entender o erro com IA</p>` : '') +
                 (estado === 'superadas'
                     ? '<p class="ce-criterio">Superada: você acertou esta questão na última vez que respondeu. Releia de vez em quando para não esquecer.</p>' + listaComNotas([...lista].sort((a, b) => chaveNota(a.q.materia, a.q.assunto).localeCompare(chaveNota(b.q.materia, b.q.assunto), 'pt-BR') || (a.h.ultimaData || 0) - (b.h.ultimaData || 0)).slice(0, mostrando))
                     : lista.slice(0, mostrando).map(cartao).join('')) +
@@ -283,7 +283,7 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
             if (emUso.has(art.dataset.id) || !pedirIA) return;
             emUso.add(art.dataset.id);
             alvo.disabled = true;
-            alvo.textContent = 'Pensando...';
+            alvo.textContent = '…';
             let r;
             try { r = await pedirIA(String(item.q.id), letra); } catch (err) { r = { ok: false, message: 'Sem conexão com a IA agora.' }; }
             emUso.delete(art.dataset.id);
@@ -293,10 +293,11 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
                 if (Number.isFinite(r.usoHoje) && Number.isFinite(r.limiteDia)) gravar(CHAVE_USO_IA, { dia: hojeLocal(), uso: r.usoHoje, limite: r.limiteDia });
                 caixa.textContent = r.explicacao;
                 caixa.hidden = false;
-                alvo.textContent = 'Ver explicação';
+                alvo.textContent = '✨';
+                alvo.setAttribute('aria-label', 'Ver a explicação da IA');
                 textoUso();
             } else {
-                alvo.textContent = 'Entender meu erro com IA';
+                alvo.textContent = '✨';
                 caixa.textContent = (r && r.message) || 'A explicação não veio agora. Tente de novo mais tarde.';
                 caixa.hidden = false;
             }
