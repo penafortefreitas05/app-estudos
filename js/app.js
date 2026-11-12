@@ -22,7 +22,7 @@ import {
     marcarMateriaAtiva
 } from './ui.js';
 import { abrirAprender } from './aprender-tela.js';
-import { montarBackupAprendidos, mesclarBackupAprendidos } from './leitura.js';
+import { montarBackupAprendidos, mesclarBackupAprendidos, assuntosComCartoes } from './leitura.js';
 import { abrirFiltros } from './filtros-tela.js';
 import { abrirCaderno } from './caderno-erros.js';
 import { prioridadesDeRecuperacao } from './prioridade.js';
@@ -3141,7 +3141,7 @@ if (btnAbrirBarra) btnAbrirBarra.addEventListener("click", () => aplicarBarraRec
     if (!menu) return;
     const fecharGaveta = () => { const t = document.getElementById("menu-toggle"); if (t) t.checked = false; };
 
-    menu.addEventListener("click", (e) => {
+    menu.addEventListener("click", async (e) => {
         const item = e.target.closest(".menu-item");
         if (!item) return;
         const alvo = item.dataset.alvo ? document.getElementById(item.dataset.alvo) : null;
@@ -3158,8 +3158,11 @@ if (btnAbrirBarra) btnAbrirBarra.addEventListener("click", () => aplicarBarraRec
             fecharGaveta();
             if (!usuarioAtual) { mostrarEntradaVisitante(); return; }
             if (!questoes.length) { showToast("O caderno abre quando as questões carregarem. Isso precisa de internet.", "info", 5000); return; }
+            let cartoesAssuntoCache = new Map();
+            try { cartoesAssuntoCache = new Map((await assuntosComCartoes()).map(a => [`${a.materia}|${a.assunto}`, a.cartoes])); } catch (e) { /* sem cartões: fica sem a linha de conceito */ }
             abrirCaderno({
                 questoes, historico, naFila,
+                cartoesDoAssunto: (mat, ass) => cartoesAssuntoCache.get(`${mat}|${ass}`) || [],
                 pedirIA: pedirExplicacaoIA,
                 // Ver a resposta certa e o comentário antes de refazer; funciona sem internet se o pacote offline estiver baixado
                 pedirGabarito: async (q, letra) => {

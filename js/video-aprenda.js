@@ -136,9 +136,9 @@ export async function abrirVideo(v, { aoPraticar, nivelPraticar = '', aoFechar, 
         const baixado = await videoBaixado(v);
         if (fechada) return;
         area.innerHTML = baixado
-            ? `<p class="video-estado ok">✓ Baixado: toca sem internet (${formatarTamanho(v.bytes)} neste aparelho)</p>
+            ? `<p class="video-estado ok">✓ Baixado (${formatarTamanho(v.bytes)})</p>
                <button type="button" class="video-link" data-acao="remover">Remover do aparelho</button>`
-            : `<button type="button" class="video-baixar" data-acao="baixar">⬇ Baixar para ver sem internet (${formatarTamanho(v.bytes)})</button>`;
+            : `<button type="button" class="video-baixar" data-acao="baixar" aria-label="Baixar o vídeo (${formatarTamanho(v.bytes)}) para ver sem internet" title="Baixar o vídeo">⬇</button>`;
         if (aviso) msg.textContent = aviso;
     }
 
@@ -161,7 +161,7 @@ export async function abrirVideo(v, { aoPraticar, nivelPraticar = '', aoFechar, 
         if (acao === 'praticar') { fechar(); if (typeof aoPraticar === 'function') aoPraticar(); return; }
         if (acao === 'baixar') {
             botao.disabled = true;
-            botao.textContent = 'Baixando…';
+            botao.textContent = '…';
             try {
                 const r = await baixarVideo(v);
                 await desenharOffline(r.persistente === false ? 'Baixado. Aviso: o navegador não garantiu o espaço; se faltar memória no aparelho, ele pode apagar o vídeo.' : 'Baixado. Agora toca sem internet.');

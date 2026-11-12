@@ -12,6 +12,7 @@ import { formatarDiaCurto } from './revisao.js';
 const CHAVE_EXPLICACOES = 'appEstudos_ExplicacoesIA';
 const CHAVE_USO_IA = 'appEstudos_UsoIA';
 const PAGINA = 10;
+const CHAVE_NOTAS = 'appEstudos_AnotacoesAssunto';
 
 // Nomes decididos em 11/11/2026: "Para refazer" e "Superadas"
 export const ESTADOS = [['abertas', 'Para refazer'], ['superadas', 'Superadas']];
@@ -26,6 +27,22 @@ export function textoDaAlternativa(q, letra) {
     if ((L === 'C' || L === 'E') && alts.length === 2) return alts[L === 'C' ? 0 : 1];
     const i = 'ABCDE'.indexOf(L);
     return i >= 0 && alts[i] ? alts[i].replace(/^\s*[A-E]\s*[).:-]\s*/, '').trim() : '';
+}
+
+// ---------- Anotações por assunto (aba Superadas) ----------
+export const chaveNota = (materia, assunto) => `${materia || 'Geral'}|${assunto || 'Geral'}`;
+export function lerNotas() { const v = ler(CHAVE_NOTAS, {}); return v && typeof v === 'object' && !Array.isArray(v) ? v : {}; }
+export function gravarNota(chave, texto) {
+    const todas = lerNotas();
+    if (String(texto || '').trim()) todas[chave] = String(texto); else delete todas[chave];
+    gravar(CHAVE_NOTAS, todas);
+}
+// Uma linha só: "Conceito: primeira frase do resumo", do primeiro cartão do assunto. '' se não houver cartão.
+export function linhaConceito(cartoes) {
+    const c = Array.isArray(cartoes) ? cartoes.find((x) => x && x.conceito) : null;
+    if (!c) return '';
+    const frase = String(c.resumo || '').split(/(?<=[.!?])\s/)[0].trim();
+    return frase ? `${c.conceito}: ${frase}` : String(c.conceito);
 }
 
 // Questões com pelo menos um erro, da mais recente para a mais antiga
@@ -77,8 +94,9 @@ export function usoDeHoje() {
 // opcoes.aoRefazer(q): fecha o caderno e põe a questão para refazer
 // opcoes.pedirIA(questaoId, letra): Promise<{ ok, explicacao?, usoHoje?, limiteDia?, message? }>
 // opcoes.pedirGabarito(q, letra): Promise<{ ok, gabarito?, message? }> (funciona offline com o pacote baixado)
+// opcoes.cartoesDoAssunto(materia, assunto): cartões do assunto (para a linha de conceito)
 // opcoes.naFila(id): a questão está na fila de hoje?
-export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGabarito, naFila = () => false } = {}) {
+export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGabarito, cartoesDoAssunto = () => [], naFila = () => false } = {}) {
     if (document.querySelector('.ce-tela')) return;
     const itens = listarErros(questoes || [], historico || {});
     const focoAntes = document.activeElement;
@@ -147,6 +165,28 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
             </article>`;
     }
 
+    function blocoNota(materiaNome, assuntoNome) {
+        const chave = chaveNota(materiaNome, assuntoNome);
+        const conceito = linhaConceito(cartoesDoAssunto(materiaNome, assuntoNome));
+        return `
+            <section class="ce-nota-bloco">
+                <h3 class="ce-nota-titulo">${esc(materiaNome || 'Geral')} · ${esc(assuntoNome || 'Geral')}</h3>
+                ${conceito ? `<p class="ce-nota-conceito">${esc(conceito)}</p>` : ''}
+                <textarea class="ce-nota" data-chave="${esc(chave)}" rows="3" placeholder="Suas anotações sobre este assunto" aria-label="Suas anotações sobre ${esc(assuntoNome || 'este assunto')}">${esc(lerNotas()[chave] || '')}</textarea>
+            </section>`;
+    }
+
+    // Na aba Superadas, cada assunto ganha seu bloco de anotação antes das questões dele
+    function listaComNotas(pagina) {
+        let html = '', atual = null;
+        pagina.forEach((i) => {
+            const k = chaveNota(i.q.materia, i.q.assunto);
+            if (k !== atual) { atual = k; html += blocoNota(i.q.materia, i.q.assunto); }
+            html += cartao(i);
+        });
+        return html;
+    }
+
     function desenhar() {
         const todosDoEstado = itens.filter((i) => i.estado === estado);
         const por = contar(itens);
@@ -165,13 +205,16 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
             elLista.innerHTML = '<p class="ce-vazio">Nada por aqui com esse filtro.</p>';
         } else {
             elLista.innerHTML = (estado === 'abertas' ? `<button type="button" class="ce-btn ce-todas principal" data-ce="refazer-todas">▶ Refazer ${materia ? 'esta matéria' : 'todas'} no Foco (${lista.length})</button>` : '') +
-                lista.slice(0, mostrando).map(cartao).join('') +
+                (estado === 'superadas'
+                    ? listaComNotas([...lista.slice(0, mostrando)].sort((a, b) => chaveNota(a.q.materia, a.q.assunto).localeCompare(chaveNota(b.q.materia, b.q.assunto), 'pt-BR')))
+                    : lista.slice(0, mostrando).map(cartao).join('')) +
                 (lista.length > mostrando ? `<button type="button" class="ce-mais" data-ce="mais">Mostrar mais (${lista.length - mostrando})</button>` : '');
         }
         textoUso();
     }
 
     el.addEventListener('input', (e) => {
+        if (e.target.classList.contains('ce-nota')) { gravarNota(e.target.dataset.chave, e.target.value); return; }
         if (e.target.classList.contains('ce-busca')) { busca = e.target.value; mostrando = PAGINA; desenhar(); }
     });
 
