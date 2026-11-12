@@ -2247,3 +2247,98 @@ body.modo-foco.foco-simulado #display-cronometro { display: block !important; wi
     .ce-mat, .ce-mat.todas { flex: none; min-height: 2.5rem; white-space: nowrap; }
     .ce-mat-nome { overflow-wrap: normal; }
 }
+
+/* ============================================================
+   v152 · ícones de traço (js/icones.js) e botões em pílula (decidido em 12/11/2026)
+   ============================================================ */
+.ic { width: 1.1em; height: 1.1em; flex: none; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -0.18em; }
+.ic-wrap { display: inline-flex; align-items: center; }
+.ic-azul, [data-cor="azul"] { color: #60a5fa; }
+.ic-laranja, [data-cor="laranja"] { color: #fb923c; }
+.ic-verde, [data-cor="verde"] { color: #34d399; }
+.ic-amarelo, [data-cor="amarelo"] { color: #fbbf24; }
+.ic-indigo, [data-cor="indigo"] { color: #a5b4fc; }
+.ic-vermelho, [data-cor="vermelho"] { color: #f87171; }
+
+/* Menu lateral e títulos */
+.menu-icone { display: inline-flex; align-items: center; justify-content: center; color: #a5b4fc; }
+.menu-icone .ic { width: 1.15rem; height: 1.15rem; }
+.dashboard-titulo { display: flex; align-items: center; gap: 0.45rem; }
+.at-titulo, .ce-titulo { display: flex; align-items: center; gap: 0.5rem; }
+.at-titulo .ic, .ce-titulo .ic { width: 1.25em; height: 1.25em; }
+.at-sair .ic, .ce-sair .ic { width: 1.2rem; height: 1.2rem; }
+.at-sair, .ce-sair { border: 1px solid #312e81; }
+.ce-sair { border-color: #1e293b; }
+
+/* Linha do celular: menu e placar em pílulas */
+.btn-menu { display: inline-flex; align-items: center; justify-content: center; border-radius: 999px !important; }
+.btn-menu .ic { width: 1.35rem; height: 1.35rem; }
+.placar-mini > span { border-radius: 999px; }
+.placar-mini-sequencia::before, .placar-mini-meta::before, .placar-mini-acertos::before, .placar-mini-erros::before {
+    content: ""; display: inline-block; width: 0.95em; height: 0.95em; margin-right: 0.3em; vertical-align: -0.12em; background: no-repeat center / contain; }
+.placar-mini-sequencia::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fb923c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.4-.5-2-1-3-1.1-2.1-.2-4 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.2.4-2.3 1-3a2.5 2.5 0 0 0 2.5 2.5z'/%3E%3C/svg%3E"); }
+.placar-mini-meta::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2360a5fa' stroke-width='2'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Ccircle cx='12' cy='12' r='5'/%3E%3Ccircle cx='12' cy='12' r='1.5'/%3E%3C/svg%3E"); }
+.placar-mini-acertos::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2360a5fa' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12 5 5 9-10'/%3E%3C/svg%3E"); }
+.placar-mini-erros::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fb923c' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M18 6 6 18M6 6l12 12'/%3E%3C/svg%3E"); }
+
+/* Placar do dia: meta numa linha só; revisar, dias, feitas e reforçar como pílulas iguais */
+.meta-hoje-rotulo-linha { display: inline-flex; align-items: center; gap: 0.4rem; }
+.placar-dia .placar-item, .placar-dia .resumo-card { display: inline-flex; align-items: center; gap: 0.4rem; min-height: 2rem; padding: 0.2rem 0.75rem; border: 1px solid #1e293b; border-radius: 999px; background: #0f172a; }
+.placar-dia .resumo-card .resumo-titulo { display: inline-flex; align-items: center; gap: 0.35rem; }
+.resumo-titulo .ic-wrap, .placar-item .ic-wrap { margin-right: 0.05rem; }
+
+/* Botões da barra, busca, filtros e chips */
+.btn-painel { border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem; }
+.search-box input { border-radius: 999px; }
+.search-icon { opacity: 0.7; display: inline-flex; }
+.search-icon .ic { width: 1rem; height: 1rem; }
+.chip-filtro { border-radius: 999px; display: inline-flex; align-items: center; gap: 0.4rem; }
+.chips-barra.segmentado .chip-filtro { border-radius: 999px; }
+.ciclo-seta { display: inline-flex; margin-left: auto; }
+.ciclo-seta .ic { width: 0.95rem; height: 0.95rem; }
+.chip-favoritas .ic { width: 1.1rem; height: 1.1rem; }
+.chip-favoritas[aria-pressed="true"] .ic { fill: #fbbf24; }
+.totais-linha .text-blue, .totais-linha .text-orange { display: inline-flex; align-items: center; gap: 0.3rem; }
+
+/* Cartão Hoje em passos (opção C) */
+.cartao-hoje .hoje-titulo { margin: 0.15rem 0 0.65rem; }
+.hoje-passos { display: flex; align-items: center; gap: 0.45rem; }
+.hoje-passo { display: inline-flex; align-items: center; gap: 0.4rem; min-height: 2rem; padding: 0.15rem 0.8rem 0.15rem 0.35rem; border: 1px solid #1e293b; border-radius: 999px; color: #94a3b8; font-size: 0.86rem; white-space: nowrap; }
+.hoje-passo b { width: 1.3rem; height: 1.3rem; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: #1e293b; color: #94a3b8; font-size: 0.72rem; }
+.hoje-passo.ativo { border-color: #2563eb; background: #172554; color: #dbeafe; }
+.hoje-passo.ativo b { background: #2563eb; color: #fff; }
+.hoje-passo.feito { color: #34d399; border-color: #14532d; }
+.hoje-passo.feito b { background: #14532d; color: #bbf7d0; }
+.hoje-passo-linha { flex: 1; min-width: 0.8rem; height: 2px; background: #1e293b; }
+.hoje-barra { height: 6px; margin: 0.8rem 0 0.35rem; border-radius: 99px; background: #1e293b; overflow: hidden; }
+.hoje-barra i { display: block; height: 100%; border-radius: 99px; background: #60a5fa; }
+.cartao-hoje .hoje-texto { font-size: 0.8rem; }
+.cartao-hoje .hoje-continuar { width: 100%; margin-top: 0.8rem; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; }
+.hoje-continuar .ic { width: 1rem; height: 1rem; }
+.hoje-semana { margin-top: 0.85rem; align-items: center; }
+.hoje-semana-fechar { border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; }
+.hoje-semana-fechar .ic { width: 1rem; height: 1rem; }
+
+/* Aprender */
+.at-continuar { position: relative; padding-right: 4.2rem; }
+.at-continuar-play { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); width: 2.6rem; height: 2.6rem; border-radius: 50%; background: #fff; color: #4f46e5; display: inline-flex; align-items: center; justify-content: center; }
+.at-continuar-play .ic { width: 1.05rem; height: 1.05rem; margin-left: 0.12rem; }
+.at-plano-titulo { display: flex; align-items: center; gap: 0.45rem; }
+.at-plano-q { display: flex; align-items: center; flex-wrap: wrap; gap: 0.35rem; }
+.at-plano-assunto { border-radius: 999px; padding: 0.55rem 1rem; }
+.at-plano-rodape { justify-content: flex-start; gap: 0.5rem; margin-top: 0.4rem; }
+.at-plano-rodape .at-plano-semana summary, .at-plano-rodape .at-plano-link { display: inline-flex; align-items: center; min-height: 2rem; padding: 0.15rem 0.85rem; border: 1px solid #3730a3; border-radius: 999px; background: #27246b; color: #c7d2fe; text-decoration: none; list-style: none; }
+.at-plano-rodape .at-plano-semana summary::-webkit-details-marker { display: none; }
+.at-plano-rodape .at-plano-semana[open] summary { margin-bottom: 0.3rem; }
+.at-chip { border-radius: 999px; }
+.at-selo-video { display: inline-flex; align-items: center; gap: 0.25rem; vertical-align: 0; }
+.at-selo-video .ic { width: 0.7rem; height: 0.7rem; }
+
+/* Caderno: três botões em pílula, menores, com ícones de traço */
+.ce-acoes.ce-icones { display: flex; gap: 0.5rem; max-width: none; }
+.ce-icones .ce-btn { width: 3.5rem; min-height: 2.25rem; height: 2.25rem; padding: 0; border-radius: 999px; justify-content: center; font-size: 1rem; }
+.ce-icones .ce-btn .ic { width: 1.15rem; height: 1.15rem; }
+.ce-legenda { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem; }
+.ce-legenda .ic { width: 0.95rem; height: 0.95rem; }
+.ce-chip, .ce-mat, .ce-busca, .ce-todas, .ce-mais { border-radius: 999px; }
+.ce-todas { display: inline-flex; align-items: center; justify-content: center; }

@@ -25,6 +25,8 @@ import { abrirAprender } from './aprender-tela.js';
 import { montarBackupAprendidos, mesclarBackupAprendidos, assuntosComCartoes } from './leitura.js';
 import { abrirFiltros } from './filtros-tela.js';
 import { abrirCaderno } from './caderno-erros.js';
+import { icone, aplicarIcones } from './icones.js';
+aplicarIcones();
 import { prioridadesDeRecuperacao } from './prioridade.js';
 import { salvarPacote, lerPacote, infoPacote, descreverPacote } from './offline-pacote.js';
 import { modeloDoConcurso, quotasDoModelo, sortearPeloModelo } from './modelo-prova.js';
@@ -583,8 +585,8 @@ function sincronizarFiltrosRapidos() {
         const atual = niveis.find(o => o.value === selectNivel.value);
         b.className = `chip-filtro chip-ciclo${atual ? ` nv-chip-btn nv-${atual.value}` : ""}`;
         b.innerHTML = atual
-            ? `<b class="nv-letra nv-${atual.value}">${LETRA_NIVEL_BARRA[atual.value] || atual.value}</b>${esc(textoLimpo(atual))}<i class="ciclo-seta" aria-hidden="true">⟳</i>`
-            : `📶 Todos os níveis<i class="ciclo-seta" aria-hidden="true">⟳</i>`;
+            ? `<b class="nv-letra nv-${atual.value}">${LETRA_NIVEL_BARRA[atual.value] || atual.value}</b>${esc(textoLimpo(atual))}<i class="ciclo-seta" aria-hidden="true">${icone("ciclo")}</i>`
+            : `${icone("niveis")}Todos os níveis<i class="ciclo-seta" aria-hidden="true">${icone("ciclo")}</i>`;
         b.setAttribute("aria-pressed", String(Boolean(atual)));
         b.setAttribute("aria-label", `Nível: ${atual ? textoLimpo(atual) : "todos"}. Toque para trocar.`);
     }
@@ -593,12 +595,12 @@ function sincronizarFiltrosRapidos() {
         if (!chipsStatus.children.length) {
             chipsStatus.replaceChildren(
                 criarChip("chip-status chip-ciclo", "", false, { ciclo: "status" }),
-                criarChip("chip-status chip-favoritas", "⭐", false, { favoritas: "1" })
+                criarChip("chip-status chip-favoritas", icone("estrela", "ic-amarelo"), false, { favoritas: "1" })
             );
         }
         const b = chipsStatus.querySelector("[data-ciclo]");
         const st = STATUS_RAPIDOS.find(x => x.valor === selectStatus.value) || STATUS_RAPIDOS[0];
-        b.innerHTML = `${esc(st.valor ? st.texto : "Todas")}<i class="ciclo-seta" aria-hidden="true">⟳</i>`;
+        b.innerHTML = `${esc(st.valor ? st.texto : "Todas")}<i class="ciclo-seta" aria-hidden="true">${icone("ciclo")}</i>`;
         b.setAttribute("aria-pressed", String(Boolean(st.valor)));
         b.setAttribute("aria-label", `Situação: ${st.texto}. Toque para trocar.`);
         const fav = chipsStatus.querySelector("[data-favoritas]");
@@ -2851,38 +2853,49 @@ function colocarCartaoHoje() {
         return;
     }
     const revisar = questoesParaRevisarHoje();
-    atualizarMetaNaTela(historico);
+    const fila = filaDeHoje();
+    const meta = atualizarMetaNaTela(historico);
     const semana = resumoSemanaPassada();
 
-    let titulo, texto;
-    if (revisar.length) {
-        titulo = revisar.length === 1 ? "Comece pela revisão: 1 questão" : `Comece pela revisão: ${revisar.length} questões`;
-        texto = "São as que você errou ou acertou na dúvida. Depois vêm as questões novas.";
+    // Cartão em passos (opção C, 12/11/2026): 1 Revisão → 2 Novas, com a barra do passo atual.
+    const totalRev = Math.max(fila.total || 0, revisar.length);
+    const feitasRev = Math.max(0, totalRev - revisar.length);
+    const naRevisao = revisar.length > 0;
+    const textoNovas = meta && meta.meta ? `Novas · até ${meta.meta}` : "Novas";
+    const passo1 = totalRev
+        ? (naRevisao ? `Revisão · ${totalRev}` : `Revisão ${icone("certo")}`)
+        : "Revisão · nada hoje";
+    let barra, textoBarra, botao;
+    if (naRevisao) {
+        barra = Math.round(feitasRev * 100 / totalRev);
+        textoBarra = `${feitasRev} de ${totalRev} ${totalRev === 1 ? "revisada" : "revisadas"}`;
+        botao = feitasRev ? "Continuar a revisão" : "Começar a revisão";
     } else {
-        titulo = "Pronto para estudar?";
-        texto = "Nada para revisar hoje. Siga com as questões novas, uma por vez.";
+        barra = meta && meta.meta ? Math.min(100, Math.round(meta.feitas * 100 / meta.meta)) : 0;
+        textoBarra = meta && meta.meta ? `${Math.min(meta.feitas, meta.meta)} de ${meta.meta} hoje` : (totalRev ? "Revisão feita. Agora, as questões novas." : "Nada para revisar hoje. Siga com as questões novas.");
+        botao = "Questões novas";
     }
 
     const textoSemana = semana ? `
         <div class="hoje-semana">
             <p><strong>Semana passada:</strong> você estudou ${semana.diasEstudados} de 7 dias e trabalhou ${semana.trabalhadas} ${semana.trabalhadas === 1 ? "questão" : "questões"}${semana.trabalhadas ? ` (${semana.pct}% certas na última tentativa)` : ""}.${semana.dominadas ? ` ${semana.dominadas} ${semana.dominadas === 1 ? "virou Dominada" : "viraram Dominadas"}.` : ""}</p>
-            <button type="button" class="btn-fechar-aviso hoje-semana-fechar" data-chave="${esc(semana.chave)}" aria-label="Dispensar o resumo da semana">✕</button>
+            <button type="button" class="btn-fechar-aviso hoje-semana-fechar" data-chave="${esc(semana.chave)}" aria-label="Dispensar o resumo da semana">${icone("fechar")}</button>
         </div>` : "";
 
     const caixa = document.createElement("section");
     caixa.className = "cartao-hoje";
     caixa.setAttribute("aria-label", "Hoje");
     caixa.innerHTML = `
-        <div class="hoje-topo">
-            <div>
-                <p class="hoje-rotulo">Hoje</p>
-                <h2 class="hoje-titulo">${esc(titulo)}</h2>
-                <p class="hoje-texto">${esc(texto)}</p>
-            </div>
-            <div class="hoje-botoes">
-                <button type="button" class="btn-primary hoje-continuar">▶ Continuar</button>
-            </div>
+        <p class="hoje-rotulo">Hoje</p>
+        <h2 class="hoje-titulo">Seu treino de hoje</h2>
+        <div class="hoje-passos">
+            <span class="hoje-passo${naRevisao ? " ativo" : " feito"}"><b>1</b>${passo1}</span>
+            <span class="hoje-passo-linha" aria-hidden="true"></span>
+            <span class="hoje-passo${naRevisao ? "" : " ativo"}"><b>2</b>${esc(textoNovas)}</span>
         </div>
+        <div class="hoje-barra" aria-hidden="true"><i style="width:${barra}%"></i></div>
+        <p class="hoje-texto">${esc(textoBarra)}</p>
+        <button type="button" class="btn-primary hoje-continuar">${icone("play")}${esc(botao)}</button>
         ${textoSemana}`;
     if (antigo) antigo.replaceWith(caixa);
     else container.prepend(caixa);

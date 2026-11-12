@@ -10,6 +10,7 @@
 // O "Aprendi" (uma marca por assunto) é guardado no aparelho por js/leitura.js; esta tela só lê esse estado.
 
 import { esc } from './ui.js';
+import { icone } from './icones.js';
 import { montarPlano, TIPOS_DIA } from './plano.js';
 import { ordenarAssuntos } from './ordem-assuntos.js';
 import { carregarVideos, videosDoAssunto, abrirVideo, videoVisto } from './video-aprenda.js';
@@ -131,10 +132,10 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
     el.innerHTML = `
         <header class="at-topo">
             <div>
-                <h2 id="at-titulo" class="at-titulo">📖 Aprender</h2>
+                <h2 id="at-titulo" class="at-titulo">${icone("livro", "ic-indigo")}Aprender</h2>
                 <p class="at-sub"></p>
             </div>
-            <button type="button" class="at-sair" data-acao="fechar" aria-label="Fechar o Aprender">✕</button>
+            <button type="button" class="at-sair" data-acao="fechar" aria-label="Fechar o Aprender">${icone("fechar")}</button>
         </header>
         <div class="at-corpo">
             <div class="at-continuar-area"></div>
@@ -180,6 +181,7 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
                 <span class="at-continuar-rotulo">${rotulo}</span>
                 <span class="at-continuar-nome">${esc(c.assunto)}</span>
                 <span class="at-continuar-det">${esc(c.materia)} · ${cartoesTxt(a.cartoes.length)}</span>
+                <span class="at-continuar-play" aria-hidden="true">${icone("play")}</span>
             </button>`;
     }
 
@@ -187,7 +189,7 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
         const area = q('.at-plano-area');
         const plano = montarPlano({ perfil, grupos, aprendidos });
         if (!plano) {
-            area.innerHTML = `<div class="at-plano"><p class="at-plano-titulo">📅 Meu plano</p>
+            area.innerHTML = `<div class="at-plano"><p class="at-plano-titulo">${icone("calendario", "ic-indigo")}Meu plano</p>
                 <p class="at-plano-texto">Diga quais dias você estuda e quanto tempo tem. O app monta a semana para você.</p>
                 <button type="button" class="at-plano-btn" data-acao="configurar-plano">Montar meu plano</button></div>`;
             return;
@@ -205,20 +207,20 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
                 ? `<p class="at-plano-texto">Onde focar (mais erros, e os feitos com certeza pesam mais):</p>
                    ${prio.map(p => `<p class="at-plano-dia-linha"><b>${esc(p.assunto)}</b> <span>${esc(p.materia)} · ${p.erradas} de ${p.respondidas} erradas (${p.taxa}%)${p.comCerteza ? ` · ${p.comCerteza} com certeza` : ''}</span></p>`).join('')}`
                 : '<p class="at-plano-texto">Ainda não há erros suficientes para apontar um assunto. Siga pela revisão do dia.</p>';
-            topo = `<p class="at-plano-titulo">📅 Hoje é dia de recuperação · ${esc(hoje.nome.toLowerCase())}</p>
+            topo = `<p class="at-plano-titulo">${icone("calendario", "ic-indigo")}Hoje é dia de recuperação · ${esc(hoje.nome.toLowerCase())}</p>
                 <p class="at-plano-texto">Sem assunto novo. Primeiro a revisão do dia, depois os erros da semana.</p>${lista}
                 <div class="at-plano-acoes"><button type="button" class="at-plano-btn" data-acao="ir-revisao">Revisar hoje</button>
                 <button type="button" class="at-plano-btn" data-acao="ir-caderno">Caderno de erros</button></div>`;
         } else if (hoje && hoje.tipo === 'comprovacao') {
-            topo = `<p class="at-plano-titulo">📅 Hoje é dia de comprovação · ${esc(hoje.nome.toLowerCase())}</p>
+            topo = `<p class="at-plano-titulo">${icone("calendario", "ic-indigo")}Hoje é dia de comprovação · ${esc(hoje.nome.toLowerCase())}</p>
                 <p class="at-plano-texto">Faça um simulado e veja o resultado por matéria. Os erros vão para o Caderno e orientam a próxima semana.</p>
                 <div class="at-plano-acoes"><button type="button" class="at-plano-btn" data-acao="ir-simulado">Fazer simulado</button></div>`;
         } else if (hoje) {
-            topo = `<p class="at-plano-titulo">📅 Estudar pelo plano · hoje${tag(hoje)}, ${esc(hoje.nome.toLowerCase())}</p>${blocosHtml(hoje)}
-                <p class="at-plano-q">🎯 <b>${hoje.questoes} questões</b> <span>(a revisão do dia entra nessa conta)</span></p>`;
+            topo = `<p class="at-plano-titulo">${icone("calendario", "ic-indigo")}Estudar pelo plano · hoje${tag(hoje)}, ${esc(hoje.nome.toLowerCase())}</p>${blocosHtml(hoje)}
+                <p class="at-plano-q">${icone("alvo", "ic-azul")}<b>${hoje.questoes} questões</b> <span>(a revisão do dia entra nessa conta)</span></p>`;
         } else {
             const prox = plano.proximo || plano.dias[0];
-            topo = `<p class="at-plano-titulo">📅 Hoje é dia de descanso</p>
+            topo = `<p class="at-plano-titulo">${icone("calendario", "ic-indigo")}Hoje é dia de descanso</p>
                 <p class="at-plano-texto">Seu próximo dia de estudo: <b>${esc(prox.nome.toLowerCase())}</b>${plano.proximo ? '' : ' (semana que vem)'}.</p>`;
         }
         const semana = plano.dias.map(d => `
@@ -226,7 +228,7 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
             ${d.tipo === 'recuperacao' ? '<p class="at-plano-dia-linha">Revisar hoje e Caderno de erros</p>' : d.tipo === 'comprovacao' ? '<p class="at-plano-dia-linha">Simulado e resultado por matéria</p>' : d.blocos.map(b => `<p class="at-plano-dia-linha"><b>${esc(b.materia)}</b>: ${b.assuntos.map(a => (a.feito ? '✓ ' : '') + esc(a.assunto)).join(', ')}</p>`).join('') || '<p class="at-plano-dia-linha">Questões e revisão</p>'}</div>`).join('');
         area.innerHTML = `<div class="at-plano">${topo}
             <div class="at-plano-rodape"><details class="at-plano-semana"><summary>Ver a semana (${plano.dias.length} ${plano.dias.length === 1 ? 'dia' : 'dias'} · ${plano.horas} h)</summary>${plano.ciclos ? '' : '<p class="at-plano-texto">Com 3 dias ou mais, o plano ganha um dia de recuperação e um de comprovação.</p>'}${semana}</details>
-            <button type="button" class="at-plano-link" data-acao="configurar-plano">Ajustar dias e horas</button></div></div>`;
+            <button type="button" class="at-plano-link" data-acao="configurar-plano" aria-label="Ajustar dias e horas">Ajustar</button></div></div>`;
     }
 
     function desenharMaterias(aprendidos) {
@@ -254,7 +256,7 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
         q('.at-lista').innerHTML = visiveis.length ? visiveis.map(a => {
             const estado = estadoDe(a, aprendidos);
             const marca = aprendidos[`${a.materia}|${a.assunto}`];
-            const comVideo = videosDoAssunto(videos, a.materia, a.assunto).length ? ' <span class="at-selo-video">▶ Vídeo</span>' : '';
+            const comVideo = videosDoAssunto(videos, a.materia, a.assunto).length ? ` <span class="at-selo-video">${icone('play')}Vídeo</span>` : '';
             const detalhe = (estado === 'feitos' ? `Aprendido${dataCurta(marca && marca.data) ? ' em ' + dataCurta(marca.data) : ''} · ${cartoesTxt(a.cartoes.length)}` : cartoesTxt(a.cartoes.length)) + comVideo;
             return `<li><button type="button" class="at-assunto ${estado}" data-acao="assunto" data-materia="${esc(a.materia)}" data-assunto="${esc(a.assunto)}">
                 <span class="at-assunto-icone" aria-hidden="true">${estado === 'feitos' ? '✓' : '○'}</span>

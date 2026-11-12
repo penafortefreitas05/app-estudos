@@ -104,7 +104,7 @@ export function atualizarMetaNaTela(historico) {
         const valor = document.getElementById('meta-hoje-valor');
         const fill = document.getElementById('meta-hoje-fill');
         const rotulo = document.getElementById('meta-hoje-rotulo');
-        if (rotulo) rotulo.textContent = batida ? '🎯 Meta batida' : '🎯 Meta diária';
+        if (rotulo) rotulo.textContent = batida ? 'Meta batida' : 'Meta diária';
         if (valor) valor.textContent = batida ? `${feitas} de ${meta} hoje ✓` : `${feitas} de ${meta} hoje`;
         if (fill) fill.style.width = `${pct}%`;
     }

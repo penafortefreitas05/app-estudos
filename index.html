@@ -42,13 +42,13 @@
             </div>
             <!-- Menu: cada item aciona o botão que já existe (ids em data-alvo). No computador os botões da barra de cima somem. -->
             <nav class="menu-lateral" id="menu-lateral" aria-label="Menu principal">
-                <button type="button" class="menu-item ativo" data-acao="questoes"><span class="menu-icone" aria-hidden="true">▦</span>Questões</button>
-                <button type="button" class="menu-item" data-alvo="btn-meu-dia"><span class="menu-icone" aria-hidden="true">📊</span>Meu dia</button>
-                <button type="button" class="menu-item" data-acao="caderno"><span class="menu-icone" aria-hidden="true">📕</span>Caderno de erros</button>
-                <button type="button" class="menu-item" data-alvo="btn-painel-simulado"><span class="menu-icone" aria-hidden="true">⏱️</span>Simulados</button>
-                <button type="button" class="menu-item" data-alvo="btn-aprender-barra"><span class="menu-icone" aria-hidden="true">📖</span>Aprender</button>
-                <button type="button" class="menu-item" data-alvo="btn-modo-foco" id="menu-foco"><span class="menu-icone" aria-hidden="true">🎯</span>Foco</button>
-                <button type="button" class="menu-item" data-acao="pacote-offline"><span class="menu-icone" aria-hidden="true">📥</span><span class="menu-texto">Baixar para estudar offline<small id="pacote-status" class="menu-sub"></small></span></button>
+                <button type="button" class="menu-item ativo" data-acao="questoes"><span class="menu-icone" aria-hidden="true"><span class="ic-wrap" data-icone="grade"></span></span>Questões</button>
+                <button type="button" class="menu-item" data-alvo="btn-meu-dia"><span class="menu-icone" aria-hidden="true"><span class="ic-wrap" data-icone="grafico"></span></span>Meu dia</button>
+                <button type="button" class="menu-item" data-acao="caderno"><span class="menu-icone" aria-hidden="true"><span class="ic-wrap" data-icone="caderno"></span></span>Caderno de erros</button>
+                <button type="button" class="menu-item" data-alvo="btn-painel-simulado"><span class="menu-icone" aria-hidden="true"><span class="ic-wrap" data-icone="relogio"></span></span>Simulados</button>
+                <button type="button" class="menu-item" data-alvo="btn-aprender-barra"><span class="menu-icone" aria-hidden="true"><span class="ic-wrap" data-icone="livro"></span></span>Aprender</button>
+                <button type="button" class="menu-item" data-alvo="btn-modo-foco" id="menu-foco"><span class="menu-icone" aria-hidden="true"><span class="ic-wrap" data-icone="alvo"></span></span>Foco</button>
+                <button type="button" class="menu-item" data-acao="pacote-offline"><span class="menu-icone" aria-hidden="true"><span class="ic-wrap" data-icone="baixar"></span></span><span class="menu-texto">Baixar para estudar offline<small id="pacote-status" class="menu-sub"></small></span></button>
             </nav>
 
             <!-- Nível da conta: pontos por domínio (js/conta.js). Toque para ver a regra. -->
@@ -62,7 +62,7 @@
 
 
             <!-- Por matéria: sempre à mostra, as 9 matérias fixas. Tocar treina a matéria. -->
-            <h3 class="dashboard-titulo">📚 Por matéria</h3>
+            <h3 class="dashboard-titulo"><span class="ic-wrap" data-icone="pilha" data-cor="indigo"></span> Por matéria</h3>
             <div class="dashboard-container" id="dashboard-materias">
                 <!-- Renderizado via js/ui.js -->
             </div>
@@ -115,7 +115,7 @@
             
             <!-- Linha do celular: menu, marca e placar rápido (fica fixa no topo ao rolar) -->
             <div class="top-bar-mobile">
-                <label for="menu-toggle" class="btn-menu" aria-label="Abrir menu">☰</label>
+                <label for="menu-toggle" class="btn-menu" aria-label="Abrir menu"><span class="ic-wrap" data-icone="menu"></span></label>
                 <span class="top-bar-brand" role="link" tabindex="0" title="Recarregar">
                     <svg width="26" height="26" viewBox="0 0 42 42" aria-hidden="true" focusable="false">
                         <defs><linearGradient id="marca-grad-m" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#7C6CFF"/><stop offset="1" stop-color="#4D8DFF"/></linearGradient></defs>
@@ -146,25 +146,25 @@
                     <div class="placar-dia">
                         <div class="meta-hoje" id="meta-hoje" hidden title="Meta diária: questões diferentes que você respondeu hoje. Para mudar a meta, abra Minha conta e toque em Meta diária e perfil.">
                             <div class="meta-hoje-topo">
-                                <span id="meta-hoje-rotulo">🎯 Meta diária</span>
+                                <span class="meta-hoje-rotulo-linha"><span class="ic-wrap" data-icone="alvo" data-cor="azul"></span><span id="meta-hoje-rotulo">Meta diária</span></span>
                                 <span id="meta-hoje-valor">0 de 10</span>
                             </div>
                             <div class="meta-hoje-barra"><span id="meta-hoje-fill"></span></div>
                         </div>
                         <button type="button" id="btn-modo-revisao" class="placar-item placar-revisar" title="Questões que você errou ou acertou na dúvida voltam em 1, 3, 7 e 21 dias. Toque para revisar a fila de hoje (até 15 questões, uma amostra de cada assunto).">
-                            🔁 <strong id="contador-revisao">0</strong> para revisar
+                            <span class="ic-wrap" data-icone="repetir" data-cor="azul"></span><strong id="contador-revisao">0</strong> para revisar
                         </button>
                         <span class="placar-item" title="Dias seguidos com pelo menos 1 questão respondida. Um dia sem estudo por semana não zera a sequência; dois seguidos zeram.">
-                            🔥 <strong id="stat-sequencia">0</strong> <span id="rotulo-sequencia">dias</span> <span class="placar-detalhe" id="stat-sequencia-detalhe" hidden></span>
+                            <span class="ic-wrap" data-icone="fogo" data-cor="laranja"></span><strong id="stat-sequencia">0</strong> <span id="rotulo-sequencia">dias</span> <span class="placar-detalhe" id="stat-sequencia-detalhe" hidden></span>
                         </span>
                         <div class="resumo-row placar-resumos">
-            <div class="resumo-card" role="button" tabindex="0" aria-expanded="false" data-explicacao="🗺️ Feitas: quanto do banco de questões você já respondeu pelo menos uma vez.">
-                <span class="resumo-titulo">🗺️ Feitas</span>
+            <div class="resumo-card" role="button" tabindex="0" aria-expanded="false" data-explicacao="Feitas: quanto do banco de questões você já respondeu pelo menos uma vez.">
+                <span class="resumo-titulo"><span class="ic-wrap" data-icone="feito" data-cor="verde"></span>Feitas</span>
                 <span class="resumo-valor" id="stat-cobertura">—</span>
                 <span class="resumo-detalhe" id="stat-cobertura-detalhe">0 de 0 feitas</span>
             </div>
-            <div class="resumo-card" id="card-criticas" role="button" tabindex="0" aria-expanded="false" data-explicacao="⚠️ Reforçar: matérias com menos de 60% de acerto, contando só as que já têm 5 respostas ou mais. Elas aparecem com ⚠️ em Por matéria; toque nelas para treinar.">
-                <span class="resumo-titulo">⚠️ Reforçar</span>
+            <div class="resumo-card" id="card-criticas" role="button" tabindex="0" aria-expanded="false" data-explicacao="Reforçar: matérias com menos de 60% de acerto, contando só as que já têm 5 respostas ou mais. Elas aparecem com o alerta em Por matéria; toque nelas para treinar.">
+                <span class="resumo-titulo"><span class="ic-wrap" data-icone="alerta" data-cor="amarelo"></span>Reforçar</span>
                 <span class="resumo-valor" id="stat-criticas">0</span>
                 <span class="resumo-detalhe" id="stat-criticas-detalhe">nenhuma</span>
             </div>
@@ -173,17 +173,17 @@
 
                     <div class="barra-botoes">
                         <button type="button" id="btn-aprender-barra" class="btn-painel" title="Um assunto por vez: entenda, veja um exemplo resolvido e prove que aprendeu">
-                            📖 Aprender
+                            <span class="ic-wrap" data-icone="livro" data-cor="indigo"></span>Aprender
                         </button>
                         <!-- Modo Foco (U1): uma questão por vez, com atalhos de teclado -->
                         <button type="button" id="btn-meu-dia" class="btn-painel" title="Quanto você acertou hoje: revisão, questões novas e os últimos 7 dias">
-                            📊 Meu dia
+                            <span class="ic-wrap" data-icone="grafico" data-cor="azul"></span>Meu dia
                         </button>
                         <button type="button" id="btn-modo-foco" class="btn-painel btn-foco" aria-pressed="false" title="Uma questão por vez. Teclas A–E, Enter responde, → próxima, Esc sai">
-                            🎯 Foco
+                            <span class="ic-wrap" data-icone="alvo" data-cor="azul"></span>Foco
                         </button>
                         <button type="button" id="btn-painel-simulado" class="btn-painel" aria-expanded="false" aria-controls="painel-simulado">
-                            ⏱️ Simulado
+                            <span class="ic-wrap" data-icone="relogio" data-cor="azul"></span>Simulado
                         </button>
                     </div>
                 </div>
@@ -191,8 +191,8 @@
                 <!-- Números de acompanhamento (antes na gaveta "Meu desempenho" da barra lateral) -->
                 <div class="barra-numeros" id="barra-numeros">
                     <p class="totais-linha">
-                        <span class="text-blue">✓ <strong id="stat-acertos">0</strong> <span id="rotulo-acertos">acertos</span></span>
-                        <span class="text-orange">✗ <strong id="stat-erros">0</strong> <span id="rotulo-erros">erros</span></span>
+                        <span class="text-blue"><span class="ic-wrap" data-icone="certo"></span><strong id="stat-acertos">0</strong> <span id="rotulo-acertos">acertos</span></span>
+                        <span class="text-orange"><span class="ic-wrap" data-icone="fechar"></span><strong id="stat-erros">0</strong> <span id="rotulo-erros">erros</span></span>
                         <span class="totais-nota" title="Acertos e erros contam todas as tentativas, inclusive quando você refaz a mesma questão. 'Respondidas' conta questões diferentes.">tentativas</span>
                     </p>
                     <p class="explicacao-desempenho dica-toque" id="explicacao-desempenho" aria-live="polite">ⓘ Toque num número para entender o que ele mostra.</p>
@@ -205,13 +205,13 @@
                 <!-- Linha 2: busca e filtros rápidos (nível e status viram botões) -->
                 <div class="barra-linha2">
                     <div class="search-box">
-                        <span class="search-icon" aria-hidden="true">🔍</span>
+                        <span class="search-icon" aria-hidden="true"><span class="ic-wrap" data-icone="busca"></span></span>
                         <input type="search" id="filtro-busca" class="input-dark" placeholder="Buscar... (/)" aria-label="Buscar palavra" autocomplete="off" enterkeyhint="search">
                     </div>
                     <div class="chips-barra" id="chips-nivel" role="group" aria-label="Filtrar por nível" hidden></div>
                     <div class="chips-barra segmentado" id="chips-status" role="group" aria-label="Filtrar por situação"></div>
                     <button type="button" id="btn-painel-filtros" class="btn-painel" aria-expanded="false" aria-controls="painel-filtros">
-                        🎛️ Filtros <span class="badge-filtros" id="badge-filtros" hidden>0</span>
+                        <span class="ic-wrap" data-icone="filtros"></span>Filtros <span class="badge-filtros" id="badge-filtros" hidden>0</span>
                     </button>
                 </div>
 

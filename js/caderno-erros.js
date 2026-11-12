@@ -7,6 +7,7 @@
 // explicação já guardada abre de graça). A tela lê o histórico; não muda a agenda de revisão.
 
 import { esc } from './ui.js';
+import { icone } from './icones.js';
 import { formatarDiaCurto } from './revisao.js';
 
 const CHAVE_EXPLICACOES = 'appEstudos_ExplicacoesIA';
@@ -111,10 +112,10 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
     el.innerHTML = `
         <header class="ce-topo">
             <div>
-                <h2 id="ce-titulo" class="ce-titulo">📕 Caderno de erros</h2>
+                <h2 id="ce-titulo" class="ce-titulo">${icone("caderno", "ic-vermelho")}Caderno de erros</h2>
                 <p class="ce-sub" aria-live="polite"></p>
             </div>
-            <button type="button" class="ce-sair" data-ce="fechar" aria-label="Fechar o caderno de erros">✕</button>
+            <button type="button" class="ce-sair" data-ce="fechar" aria-label="Fechar o caderno de erros">${icone("fechar")}</button>
         </header>
         <div class="ce-corpo">
             <div class="ce-estados"></div>
@@ -168,12 +169,12 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
             <article class="ce-item" data-id="${esc(String(q.id))}">
                 <p class="ce-meta">${esc(q.materia || 'Geral')} · ${esc(q.assunto || 'Geral')}</p>
                 <p class="ce-pergunta">${esc(q.pergunta || '')}</p>
-                <p class="ce-info${naFila(q.id) ? ' urgente' : ''}"><span class="ce-info-n">${h.erros} ${h.erros === 1 ? 'erro' : 'erros'}</span><span class="ce-info-volta">${naFila(q.id) ? '⏰ ' : ''}${esc(volta)}</span></p>
+                <p class="ce-info${naFila(q.id) ? ' urgente' : ''}"><span class="ce-info-n">${h.erros} ${h.erros === 1 ? 'erro' : 'erros'}</span><span class="ce-info-volta">${esc(volta)}</span></p>
                 <div class="ce-resp" hidden></div>
                 <div class="ce-acoes ce-icones">
-                    <button type="button" class="ce-btn principal" data-ce="refazer" aria-label="Refazer a questão" title="Refazer">↻</button>
-                    ${pedirGabarito ? '<button type="button" class="ce-btn" data-ce="resposta" aria-label="Ver resposta e explicação" title="Resposta e explicação">👁</button>' : ''}
-                    ${letra ? `<button type="button" class="ce-btn ia" data-ce="ia" aria-label="${guardada ? 'Ver a explicação da IA' : 'Entender meu erro com IA'}" title="${guardada ? 'Explicação da IA' : 'Entender meu erro com IA'}">✨</button>` : ''}
+                    <button type="button" class="ce-btn principal" data-ce="refazer" aria-label="Refazer a questão" title="Refazer">${icone("refazer")}</button>
+                    ${pedirGabarito ? '<button type="button" class="ce-btn" data-ce="resposta" aria-label="Ver resposta e explicação" title="Resposta e explicação">' + icone('olho') + '</button>' : ''}
+                    ${letra ? `<button type="button" class="ce-btn ia" data-ce="ia" aria-label="${guardada ? 'Ver a explicação da IA' : 'Entender meu erro com IA'}" title="${guardada ? 'Explicação da IA' : 'Entender meu erro com IA'}">${icone('ia')}</button>` : ''}
                 </div>
                 <div class="ce-ia" ${guardada ? '' : 'hidden'}>${esc(guardada)}</div>
             </article>`;
@@ -218,7 +219,7 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
         } else if (!lista.length) {
             elLista.innerHTML = '<p class="ce-vazio">Nada por aqui com esse filtro.</p>';
         } else {
-            elLista.innerHTML = (estado === 'abertas' ? `<button type="button" class="ce-btn ce-todas principal" data-ce="refazer-todas">▶ Refazer ${materia ? 'esta matéria' : 'todas'} no Foco (${lista.length})</button><p class="ce-legenda">↻ refazer · 👁 resposta e explicação · ✨ entender o erro com IA</p>` : '') +
+            elLista.innerHTML = (estado === 'abertas' ? `<button type="button" class="ce-btn ce-todas principal" data-ce="refazer-todas">▶ Refazer ${materia ? 'esta matéria' : 'todas'} no Foco (${lista.length})</button><p class="ce-legenda">${icone("refazer")} refazer · ${icone("olho")} resposta · ${icone("ia")} entender o erro com IA</p>` : '') +
                 (estado === 'superadas'
                     ? '<p class="ce-criterio">Superada: você acertou esta questão na última vez que respondeu. Releia de vez em quando para não esquecer.</p>' + listaComNotas([...lista].sort((a, b) => chaveNota(a.q.materia, a.q.assunto).localeCompare(chaveNota(b.q.materia, b.q.assunto), 'pt-BR') || (a.h.ultimaData || 0) - (b.h.ultimaData || 0)).slice(0, mostrando))
                     : lista.slice(0, mostrando).map(cartao).join('')) +
@@ -293,11 +294,11 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
                 if (Number.isFinite(r.usoHoje) && Number.isFinite(r.limiteDia)) gravar(CHAVE_USO_IA, { dia: hojeLocal(), uso: r.usoHoje, limite: r.limiteDia });
                 caixa.textContent = r.explicacao;
                 caixa.hidden = false;
-                alvo.textContent = '✨';
+                alvo.innerHTML = icone('ia');
                 alvo.setAttribute('aria-label', 'Ver a explicação da IA');
                 textoUso();
             } else {
-                alvo.textContent = '✨';
+                alvo.innerHTML = icone('ia');
                 caixa.textContent = (r && r.message) || 'A explicação não veio agora. Tente de novo mais tarde.';
                 caixa.hidden = false;
             }
