@@ -25,5 +25,14 @@
     "arquivo": "videos/nat.mp4",
     "duracao": 92,
     "bytes": 3320861
+  },
+  {
+    "id": "tcpudp",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
+    "titulo": "TCP × UDP e porta",
+    "arquivo": "videos/tcpudp.mp4",
+    "duracao": 105,
+    "bytes": 3210675
   }
 ]
