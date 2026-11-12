@@ -86,6 +86,12 @@ function guardarExplicacao(q, letra, texto) {
     todas[chaveExplicacao(q, letra)] = texto;
     gravar(CHAVE_EXPLICACOES, todas);
 }
+// Cartão de questão (v153): a IA explicada no feed fica guardada igual à do Caderno, e conta no mesmo limite
+export function registrarExplicacaoIA(q, letra, r) {
+    if (!r || !r.ok || !r.explicacao) return;
+    guardarExplicacao(q, letra, r.explicacao);
+    if (Number.isFinite(r.usoHoje) && Number.isFinite(r.limiteDia)) gravar(CHAVE_USO_IA, { dia: hojeLocal(), uso: r.usoHoje, limite: r.limiteDia });
+}
 export function usoDeHoje() {
     const u = ler(CHAVE_USO_IA, null);
     return u && u.dia === hojeLocal() ? u : null;

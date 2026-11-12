@@ -2342,3 +2342,111 @@ body.modo-foco.foco-simulado #display-cronometro { display: block !important; wi
 .ce-legenda .ic { width: 0.95rem; height: 0.95rem; }
 .ce-chip, .ce-mat, .ce-busca, .ce-todas, .ce-mais { border-radius: 999px; }
 .ce-todas { display: inline-flex; align-items: center; justify-content: center; }
+
+/* ============================================================
+   v153 · cartão de questão: "estilo prova" + identidade (decidido em 12/11/2026)
+   Alternativas em linhas finas, ícone da matéria, faixa à esquerda que muda com o resultado
+   (azul respondendo, verde acertou, vermelho errou), bloco de resultado e rodapé só com ícones.
+   ============================================================ */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.card-questao.cq { position: relative; border-radius: 18px; background: #0b1224; padding: 1.1rem 1.1rem 0.85rem 1.35rem; box-shadow: inset 4px 0 0 #3b82f6, 0 4px 6px -1px rgba(0, 0, 0, 0.3); }
+.card-questao.cq:hover { border-color: #1e293b; }
+.card-questao.cq.resp-certa { box-shadow: inset 4px 0 0 #10b981, 0 4px 6px -1px rgba(0, 0, 0, 0.3); }
+.card-questao.cq.resp-errada { box-shadow: inset 4px 0 0 #f87171, 0 4px 6px -1px rgba(0, 0, 0, 0.3); }
+.card-foco.card-exemplo.cq { box-shadow: inset 4px 0 0 #818cf8; }
+.card-foco.card-exemplo::before { content: "EXEMPLO RESOLVIDO"; margin: -1.1rem -1.1rem 1rem -1.35rem; }
+.card-foco.card-resumo::before { content: "ENTENDA EM 1 MINUTO"; }
+
+.cq-topo { flex-wrap: nowrap; align-items: flex-start; gap: 0.7rem; margin-bottom: 0.9rem; }
+.cq-ico { flex: none; width: 2.2rem; height: 2.2rem; border-radius: 11px; background: #1e3a8a; color: #bfdbfe; display: inline-flex; align-items: center; justify-content: center; }
+.cq-ico .ic { width: 1.15rem; height: 1.15rem; }
+.cq-info { flex-direction: column; align-items: flex-start; gap: 0.2rem; min-width: 0; flex: 1; }
+.cq .cq-materia { background: none; padding: 0; color: #e2e8f0; font-size: 0.86rem; font-weight: 700; letter-spacing: 0; text-transform: none; }
+.cq-sub { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; }
+.cq-sub .badge-nivel, .cq-sub .badge { background: none !important; border: 0 !important; padding: 0 !important; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+.cq-sub .badge-nivel + .badge::before { content: "•"; margin-right: 0.4rem; color: #334155; }
+.cq-sub .badge.badge-neutro { color: #64748b; }
+.cq-sub .badge.badge-alerta { color: #fcd34d; }
+.cq-sub .badge.badge-sucesso { color: #34d399; }
+.cq .cq-origem { font-size: 0.72rem; color: #64748b; }
+.cq .header-acoes { margin-left: auto; }
+.cq .btn-favoritar { width: 2.2rem; height: 2.2rem; padding: 0; border: 1px solid #1e293b; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #94a3b8; background: transparent; font-size: 1rem; }
+.cq .btn-favoritar .ic { width: 1.1rem; height: 1.1rem; }
+.cq .btn-favoritar.ativo { color: #fbbf24; border-color: #92400e; }
+.cq .btn-favoritar.ativo .ic { fill: #fbbf24; }
+
+.cq .enunciado { font-size: 1.1rem; line-height: 1.55; font-weight: 500; color: #f8fafc; margin: 0 0 0.6rem; }
+.card-foco.cq .enunciado { font-size: 1.15rem; }
+.cq .opcoes-container { gap: 0; margin-bottom: 0.6rem; }
+.cq .opcao-item { border: 0; border-top: 1px solid #1e293b; border-radius: 10px; background: transparent; padding: 0.8rem 0.4rem; gap: 0.75rem; }
+.cq .opcao-item:hover { background: rgba(148, 163, 184, 0.05); border-color: #1e293b; }
+.cq .letra-badge { background: #1e293b; border: 0; color: #cbd5e1; }
+.cq .opcao-item:has(.radio-opcao:checked) { background: linear-gradient(90deg, rgba(59, 130, 246, 0.2), transparent); border-color: #1e293b; }
+.cq .opcao-item:has(.radio-opcao:checked) .letra-badge { background: #3b82f6; color: #fff; }
+.cq .opcao-item.desabilitada { opacity: 1; color: #64748b; }
+.cq .opcao-item.desabilitada .opcao-texto { color: #64748b; }
+.cq .opcao-item.correta { background: linear-gradient(90deg, rgba(16, 185, 129, 0.18), transparent); border-color: #1e293b; }
+.cq .opcao-item.correta .opcao-texto { color: #e2e8f0; }
+.cq .opcao-item.correta .letra-badge { background: #10b981; color: #fff; }
+.cq .opcao-item.incorreta { background: linear-gradient(90deg, rgba(248, 113, 113, 0.18), transparent); border-color: #1e293b; }
+.cq .opcao-item.incorreta .opcao-texto { color: #fecaca; }
+.cq .opcao-item.incorreta .letra-badge { background: #ef4444; color: #fff; }
+.opcao-marca { margin-left: auto; padding-left: 0.5rem; flex: none; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; }
+.opcao-marca:empty { display: none; }
+.opcao-item.correta .opcao-marca { color: #34d399; }
+.opcao-item.incorreta .opcao-marca { color: #f87171; }
+
+.cq .card-actions-row { display: block; }
+.cq .botoes-resposta { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; width: 100%; }
+.cq .btn-responder { border-radius: 999px; min-height: 2.75rem; display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem; font-weight: 600; }
+.cq .btn-responder .ic { width: 1.05rem; height: 1.05rem; }
+.cq .btn-responder.btn-certeza { background: #2563eb; border-color: #2563eb; color: #fff; }
+.cq .btn-responder.btn-certeza:hover { background: #1d4ed8; }
+.cq .btn-responder.btn-certeza:disabled { background: #1e293b; border-color: #334155; color: #94a3b8; }
+.cq .btn-responder.btn-duvida { background: transparent; border-color: #a16207; color: #fcd34d; }
+
+.cq .feedback-container { margin-top: 0.75rem; border-radius: 14px; padding: 0.8rem 0.9rem; font-size: 0.88rem; line-height: 1.5; }
+.cq .feedback-container.correto { background: rgba(16, 185, 129, 0.1); border: 1px solid #14532d; color: #d1fae5; }
+.cq .feedback-container.incorreto { background: rgba(248, 113, 113, 0.08); border: 1px solid #7f1d1d; color: #fee2e2; }
+.cq .feedback-container.neutro { background: rgba(99, 102, 241, 0.08); border: 1px solid #3730a3; color: #e0e7ff; }
+.cq-res-titulo { display: flex; align-items: center; gap: 0.4rem; margin: 0 0 0.2rem; font-size: 0.95rem; font-weight: 700; }
+.cq-res-titulo .ic { width: 1.05rem; height: 1.05rem; }
+.feedback-container.correto .cq-res-titulo { color: #34d399; }
+.feedback-container.incorreto .cq-res-titulo { color: #f87171; }
+.feedback-container.neutro .cq-res-titulo { color: #a5b4fc; }
+.cq-res-gab { margin: 0; }
+.cq .aviso-confianca { display: flex; gap: 0.45rem; align-items: flex-start; margin: 0.55rem 0 0; }
+.cq .aviso-confianca .ic { margin-top: 0.15rem; }
+.cq-comentario { margin-top: 0.6rem; padding-top: 0.6rem; border-top: 1px solid rgba(148, 163, 184, 0.2); }
+.cq-comentario.vazio { font-size: 0.82rem; opacity: 0.8; }
+.cq-btn-ia { all: unset; box-sizing: border-box; display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 0.7rem; min-height: 2.1rem; padding: 0 0.9rem; border: 1px solid #334155; border-radius: 999px; color: #cbd5e1; font-size: 0.82rem; font-weight: 600; cursor: pointer; }
+.cq-btn-ia:hover { border-color: #64748b; }
+.cq-btn-ia:disabled { opacity: 0.6; cursor: wait; }
+.cq-btn-ia:focus-visible { outline: 2px solid #93c5fd; outline-offset: 2px; }
+.cq-ia-texto { margin-top: 0.6rem; padding: 0.6rem 0.7rem; border-radius: 10px; background: rgba(15, 23, 42, 0.6); white-space: pre-wrap; }
+.cq .btn-lab-sql, .cq .btn-irma { border-radius: 999px; display: inline-flex; align-items: center; gap: 0.4rem; }
+.cq .btn-lab-sql .ic, .cq .btn-irma .ic { width: 1rem; height: 1rem; }
+
+.cq-rodape { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.75rem; }
+.cq-rodape .tentativas { font-size: 0.75rem; color: #64748b; }
+.cq-espaco { flex: 1; }
+.cq-ic { all: unset; box-sizing: border-box; position: relative; width: 2.2rem; height: 2.2rem; border: 1px solid #1e293b; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #94a3b8; cursor: pointer; }
+.cq-ic[hidden] { display: none; }
+.cq-ic:hover { border-color: #334155; color: #e2e8f0; }
+.cq-ic:focus-visible { outline: 2px solid #93c5fd; outline-offset: 2px; }
+.cq-ic .ic { width: 1.05rem; height: 1.05rem; }
+.btn-anotacao-toggle.cq-ic.tem { color: #a5b4fc; border-color: #3730a3; }
+.btn-anotacao-toggle.cq-ic.tem::after { content: ""; position: absolute; top: 0.25rem; right: 0.25rem; width: 0.45rem; height: 0.45rem; border-radius: 50%; background: #818cf8; }
+.cq .area-anotacao { margin-top: 0.5rem; }
+.cq .btn-salvar-anotacao { border-radius: 999px; }
+.cq .exemplo-faixa { display: flex; align-items: center; gap: 0.4rem; }
+/* v153: ajustes do cartão (as regras antigas de correta/incorreta usam !important) */
+.cq .opcao-item.correta, .cq .opcao-item.incorreta { border: 0 !important; border-top: 1px solid #1e293b !important; }
+.cq .opcao-item.correta { background: linear-gradient(90deg, rgba(16, 185, 129, 0.18), transparent) !important; }
+.cq .opcao-item.incorreta { background: linear-gradient(90deg, rgba(248, 113, 113, 0.18), transparent) !important; }
+.cq .opcao-item.correta .letra-badge { color: #fff !important; }
+.cq.resp-certa .card-actions-row, .cq.resp-errada .card-actions-row, .cq.card-exemplo .card-actions-row { display: none; }
+.cq .btn-responder { padding: 0 0.6rem; white-space: nowrap; font-size: 0.92rem; }
+.cq .area-anotacao { padding-top: 0; border-top: 0; margin-top: 0; }
+.cq .area-anotacao:has(.box-anotacao:not([hidden])) { margin-top: 0.6rem; }
+.cq .feedback-container .acoes-irma { margin-top: 0.5rem; }

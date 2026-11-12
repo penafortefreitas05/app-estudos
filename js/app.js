@@ -24,7 +24,7 @@ import {
 import { abrirAprender } from './aprender-tela.js';
 import { montarBackupAprendidos, mesclarBackupAprendidos, assuntosComCartoes } from './leitura.js';
 import { abrirFiltros } from './filtros-tela.js';
-import { abrirCaderno } from './caderno-erros.js';
+import { abrirCaderno, explicacaoGuardada, registrarExplicacaoIA } from './caderno-erros.js';
 import { icone, aplicarIcones } from './icones.js';
 aplicarIcones();
 import { prioridadesDeRecuperacao } from './prioridade.js';
@@ -914,7 +914,7 @@ async function responder(card, botao) {
     registrarDiaDeEstudo();
 
     // 4. REVELAR O GABARITO NA TELA E ATUALIZAR PLACAR
-    revelar(card, q, letraEscolhida, { confianca });
+    revelar(card, q, letraEscolhida, { confianca, temIA: () => Boolean(usuarioAtual) });
     if (!acertou) oferecerQuestaoIrma(card, q);
 
     const status = classificarStatus(idChave, historico);
@@ -983,7 +983,7 @@ function oferecerQuestaoIrma(card, q) {
     const fb = card.querySelector(".feedback-container");
     if (!fb || fb.querySelector(".acoes-irma")) return;
     fb.insertAdjacentHTML("beforeend",
-        `<div class="acoes-irma"><button type="button" class="btn-irma">↻ Outra do mesmo assunto</button></div>`);
+        `<div class="acoes-irma"><button type="button" class="btn-irma">${icone("refazer")}Outra do mesmo assunto</button></div>`);
 }
 
 function mostrarQuestaoIrma(card) {
@@ -1048,8 +1048,10 @@ function destravarCardParaRefazer(card) {
     card.querySelectorAll(".btn-responder").forEach(btn => {
         btn.disabled = false;
         btn.hidden = false;
-        btn.innerText = btn.dataset.confianca === 'duvida' ? "🤔 Na dúvida" : "✔ Tenho certeza";
+        btn.innerHTML = btn.dataset.confianca === 'duvida' ? `${icone("duvida")}Na dúvida` : `${icone("certo")}Tenho certeza`;
     });
+    card.classList.remove("resp-certa", "resp-errada");
+    card.querySelectorAll(".opcao-marca").forEach(m => { m.textContent = ""; });
     const irma = card.querySelector(".acoes-irma");
     if (irma) irma.remove();
 
@@ -1134,7 +1136,9 @@ if (container) {
             salvarFavoritoNaNuvem(qId, novoFavorito, agoraFavorito); // em segundo plano (U3)
 
             btnFavoritar.classList.toggle("ativo", historico[qId].favorito);
-            btnFavoritar.textContent = historico[qId].favorito ? "★" : "☆";
+            const rotuloFav = historico[qId].favorito ? "Remover dos favoritos" : "Adicionar aos favoritos";
+            btnFavoritar.title = rotuloFav;
+            btnFavoritar.setAttribute("aria-label", rotuloFav);
             showToast(historico[qId].favorito ? "Questão adicionada aos favoritos." : "Questão removida dos favoritos.", "info", 1500);
                        return;
         }
@@ -1150,6 +1154,31 @@ if (container) {
         if (btnRefazer) {
             const card = btnRefazer.closest(".card-questao");
             if (card) destravarCardParaRefazer(card);
+            return;
+        }
+
+        // Cartão v153: "Entender meu erro com IA" dentro do bloco do resultado (mesmo limite e cache do Caderno)
+        const btnIA = e.target.closest(".cq-btn-ia");
+        if (btnIA && !btnIA.disabled) {
+            const q = questoes.find(x => String(x.id) === String(btnIA.dataset.id));
+            const caixa = btnIA.nextElementSibling;
+            const letra = btnIA.dataset.letra;
+            if (!q || !caixa) return;
+            const guardada = explicacaoGuardada(q, letra);
+            if (guardada) { caixa.textContent = guardada; caixa.hidden = !caixa.hidden; return; }
+            btnIA.disabled = true;
+            btnIA.innerHTML = `${icone("ia")}Pensando…`;
+            pedirExplicacaoIA(String(q.id), letra).catch(() => ({ ok: false, message: "Sem conexão com a IA agora." })).then((r) => {
+                btnIA.disabled = false;
+                btnIA.innerHTML = `${icone("ia")}Entender meu erro com IA`;
+                if (r && r.ok && r.explicacao) {
+                    registrarExplicacaoIA(q, letra, r);
+                    caixa.textContent = r.explicacao;
+                } else {
+                    caixa.textContent = (r && r.message) || "A explicação não veio agora. Tente de novo mais tarde.";
+                }
+                caixa.hidden = false;
+            });
             return;
         }
 
@@ -1219,6 +1248,8 @@ if (container) {
             if (spanBtn) {
                 spanBtn.innerText = texto ? "Editar Anotação Pessoal" : "Adicionar Anotação Pessoal";
             }
+            const toggle = card.querySelector(".btn-anotacao-toggle");
+            if (toggle) toggle.classList.toggle("tem", Boolean(texto));
         }
     });
 }
@@ -3021,7 +3052,7 @@ function cardExemplo(q) {
     const tentativas = card.querySelector(".tentativas");
     if (tentativas) tentativas.hidden = true;
     card.insertAdjacentHTML("afterbegin",
-        `<p class="exemplo-faixa">📖 Exemplo resolvido · leia com calma. Depois é a sua vez.</p>`);
+        `<p class="exemplo-faixa">${icone("livro")}Exemplo resolvido · leia com calma. Depois é a sua vez.</p>`);
 
     const fb = card.querySelector(".feedback-container");
     const gabaritoDiv = fb && fb.querySelector(".gabarito-resposta");
@@ -3037,7 +3068,9 @@ function cardExemplo(q) {
         q.gabarito = gabarito;
         revelar(card, q, gabarito);
         const div = card.querySelector(".gabarito-resposta");
-        if (div) div.innerHTML = `📖 <strong>Resposta certa:</strong> ${esc(textoGabaritoDe(q))}`;
+        if (div) div.innerHTML = `<p class="cq-res-titulo">${icone("livro")}Resposta certa</p><p class="cq-res-gab"><strong>${esc(textoGabaritoDe(q))}</strong></p>`;
+        card.classList.remove("resp-certa", "resp-errada");
+        card.querySelectorAll(".opcao-marca").forEach(m => { m.textContent = m.closest(".correta") ? "Certa" : ""; });
         const refazer = card.querySelector(".btn-refazer");
         if (refazer) refazer.hidden = true;
     }).catch(() => {
@@ -3045,7 +3078,7 @@ function cardExemplo(q) {
         const div = card.querySelector(".gabarito-resposta");
         if (div) div.textContent = "Não foi possível carregar a resposta agora. Leia o comentário:";
         const explicacao = card.querySelector(".explicacao-texto");
-        if (explicacao) explicacao.innerHTML = `<div style="margin-top: 8px;"><strong>📘 Comentário:</strong> ${esc(q.explicacao || "")}</div>`;
+        if (explicacao) explicacao.innerHTML = `<div class="cq-comentario"><strong>Comentário:</strong> ${esc(q.explicacao || "")}</div>`;
     });
     return card;
 }

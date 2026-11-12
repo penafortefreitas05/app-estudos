@@ -7,6 +7,7 @@ import { atualizarNivelConta } from './conta.js';
 import { venceHoje, somarDias, atualizarFilaDoDia, naFila, filaDeHoje, TETO_DIARIO } from './revisao.js';
 import { NIVEIS, ORDEM_MACROS } from './api.js';
 import { atualizarMetaNaTela } from './primeiros-passos.js';
+import { icone, iconeDaMateria } from './icones.js';
 
 // Matéria "a reforçar": abaixo deste % de acerto, com pelo menos esta quantidade de respostas
 // (sem o mínimo, 1 erro em 1 questão já marcaria a matéria como crítica)
@@ -276,16 +277,16 @@ export function renderizarCoberturaEdital(container, ordemMacros, listaQuestoes)
 
 export function classificarStatus(qId, historico) {
     const h = historico[String(qId)] || historico[qId];
-    if (!h || !h.tentativas) return { texto: "Não Respondida", classe: "badge-neutro" };
+    if (!h || !h.tentativas) return { texto: "Não respondida", classe: "badge-neutro" };
 
-    if (venceHoje(h) && naFila(qId)) return { texto: "Revisar hoje 🔁", classe: "badge-alerta" };
-    if (venceHoje(h)) return { texto: "Na revisão 🔁", classe: "badge-alerta" };
+    if (venceHoje(h) && naFila(qId)) return { texto: "Revisar hoje", classe: "badge-alerta" };
+    if (venceHoje(h)) return { texto: "Na revisão", classe: "badge-alerta" };
     // Errou: diz o que vai acontecer, sem julgar (antes: "Caderno de Erros ❌" em vermelho)
-    if (h.status === 'erro') return { texto: h.revisaoEm === somarDias(diaLocal(), 1) ? "Volta amanhã 🔁" : "Na revisão 🔁", classe: "badge-alerta" };
-    if (h.status === 'dominada') return { texto: "Dominada 🎯", classe: "badge-sucesso" };
-    if (h.status === 'superado') return { texto: "Superada ⚡", classe: "badge-sucesso" };
-    if (h.status === 'duvida') return { texto: "Acertou na dúvida 🤔", classe: "badge-alerta" };
-    return { texto: "Em Aprendizado 📘", classe: "badge-alerta" };
+    if (h.status === 'erro') return { texto: h.revisaoEm === somarDias(diaLocal(), 1) ? "Volta amanhã" : "Na revisão", classe: "badge-alerta" };
+    if (h.status === 'dominada') return { texto: "Dominada", classe: "badge-sucesso" };
+    if (h.status === 'superado') return { texto: "Superada", classe: "badge-sucesso" };
+    if (h.status === 'duvida') return { texto: "Acertou na dúvida", classe: "badge-alerta" };
+    return { texto: "Em aprendizado", classe: "badge-alerta" };
 }
 
 // ---------- 4. ATUALIZAÇÃO DO PLACAR E DASHBOARD ----------
@@ -696,6 +697,7 @@ function desenharCards(container, lista, historico, restaurarRespostas) {
                 <input type="radio" name="questao_${esc(idStr)}" value="${esc(letra)}" class="radio-opcao">
                 <span class="letra-badge">${esc(letra)}</span>
                 <span class="opcao-texto">${esc(texto)}</span>
+                <span class="opcao-marca" aria-hidden="true"></span>
             </label>
         `).join('');
 
@@ -710,17 +712,22 @@ function desenharCards(container, lista, historico, restaurarRespostas) {
                 q.orgao ? esc(q.orgao) : ''
             ]).filter(Boolean).join(' • ');
 
+        // Cartão v153 (12/11/2026): mistura "estilo prova" (alternativas em linhas) com identidade (ícone da matéria,
+        // faixa que muda de cor com o resultado) e rodapé só com ícones.
         const cardHTML = `
-            <article class="card-questao" data-id="${esc(idStr)}">
-               <div class="card-header">
-                    <div class="header-info">
-                        <span class="badge-materia">${esc(q.materia || 'Geral')}</span>
-                        ${NIVEIS[q.nivel] ? `<span class="badge-nivel nivel-${q.nivel}" title="Nível da questão">${esc(NIVEIS[q.nivel])}</span>` : ''}
-                        <span class="badge-info">${infoExtra}</span>
+            <article class="card-questao cq" data-id="${esc(idStr)}">
+               <div class="card-header cq-topo">
+                    <span class="cq-ico" aria-hidden="true">${icone(iconeDaMateria(q.materia))}</span>
+                    <div class="header-info cq-info">
+                        <span class="badge-materia cq-materia">${esc(q.materia || 'Geral')}</span>
+                        <span class="cq-sub">
+                            ${NIVEIS[q.nivel] ? `<span class="badge-nivel nivel-${q.nivel}" title="Nível da questão">${esc(NIVEIS[q.nivel])}</span>` : ''}
+                            <span class="badge ${status.classe}">${status.texto}</span>
+                        </span>
+                        ${infoExtra ? `<span class="badge-info cq-origem">${infoExtra}</span>` : ''}
                     </div>
                     <div class="header-acoes">
-                        <button type="button" class="btn-favoritar ${favorito ? 'ativo' : ''}" data-id="${esc(idStr)}" title="${favorito ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}">${favorito ? '★' : '☆'}</button>
-                        <span class="badge ${status.classe}">${status.texto}</span>
+                        <button type="button" class="btn-favoritar ${favorito ? 'ativo' : ''}" data-id="${esc(idStr)}" title="${favorito ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}" aria-label="${favorito ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}">${icone('estrela')}</button>
                     </div>
                 </div>
 
@@ -733,11 +740,9 @@ function desenharCards(container, lista, historico, restaurarRespostas) {
                 <div class="card-footer">
                     <div class="card-actions-row">
                         <div class="botoes-resposta">
-                            <button type="button" class="btn-responder btn-certeza" data-confianca="certeza" data-id="${esc(idStr)}">✔ Tenho certeza</button>
-                            <button type="button" class="btn-responder btn-duvida" data-confianca="duvida" data-id="${esc(idStr)}">🤔 Na dúvida</button>
+                            <button type="button" class="btn-responder btn-certeza" data-confianca="certeza" data-id="${esc(idStr)}">${icone('certo')}Tenho certeza</button>
+                            <button type="button" class="btn-responder btn-duvida" data-confianca="duvida" data-id="${esc(idStr)}">${icone('duvida')}Na dúvida</button>
                         </div>
-                        <button type="button" class="btn-sidebar btn-refazer" data-id="${esc(idStr)}" hidden style="margin-left: 8px;">🔄 Resolver Novamente</button>
-                        <small class="tentativas" ${tentativas ? '' : 'hidden'}>Tentativas: ${tentativas}</small>
                     </div>
 
                     <div class="feedback-container oculta" id="feedback_${esc(idStr)}">
@@ -745,21 +750,20 @@ function desenharCards(container, lista, historico, restaurarRespostas) {
                         <div class="explicacao-texto"></div>
                     </div>
 
-                    <div class="rodape-discreto">
+                    <div class="cq-rodape">
+                        <small class="tentativas" ${tentativas ? '' : 'hidden'}>Tentativas: ${tentativas}</small>
+                        <span class="cq-espaco"></span>
+                        <button type="button" class="btn-refazer cq-ic" data-id="${esc(idStr)}" hidden title="Resolver novamente" aria-label="Resolver novamente">${icone('refazer')}</button>
+                        <button type="button" class="btn-anotacao-toggle cq-ic${anotacao ? ' tem' : ''}" title="Anotação pessoal">${icone('lapis')}<span class="sr-only">${anotacao ? 'Editar Anotação Pessoal' : 'Adicionar Anotação Pessoal'}</span></button>
+                        <button type="button" class="btn-reportar cq-ic" data-id="${esc(idStr)}" title="Reportar problema: gabarito errado, enunciado confuso, questão desatualizada..." aria-label="Reportar problema">${icone('alerta')}</button>
+                    </div>
                     <div class="area-anotacao">
-                        <button type="button" class="btn-anotacao-toggle">
-                            📝 <span>${anotacao ? 'Editar Anotação Pessoal' : 'Adicionar Anotação Pessoal'}</span>
-                        </button>
                         <div class="box-anotacao" ${anotacao ? '' : 'hidden'}>
                             <textarea class="input-anotacao" placeholder="Anote a pegadinha da banca, o motivo do erro ou a regra teórica...">${esc(anotacao)}</textarea>
                             <div class="acoes-anotacao">
-                                <button type="button" class="btn-sidebar btn-salvar-anotacao">💾 Salvar Anotação</button>
+                                <button type="button" class="btn-sidebar btn-salvar-anotacao">Salvar anotação</button>
                             </div>
                         </div>
-                    </div>
-                    <div class="area-reporte">
-                        <button type="button" class="btn-reportar" data-id="${esc(idStr)}" title="Gabarito errado, enunciado confuso, questão desatualizada...">🚩 Reportar problema</button>
-                    </div>
                     </div>
 
                     ${htmlTags ? `<div class="tags-container">${htmlTags}</div>` : ''}
@@ -830,19 +834,24 @@ export function revelar(card, q, letraEscolhida, info = {}) {
 
         label.classList.remove("selecionada", "correta", "incorreta");
         label.classList.add("desabilitada");
+        const marca = label.querySelector(".opcao-marca");
 
         if (opLetra === gabaritoLetra) {
             label.classList.add("correta");
+            if (marca) marca.textContent = acertou ? "Sua · certa" : "Certa";
         } else if (opLetra === letraEscolhida && !acertou) {
             label.classList.add("incorreta");
-        }
+            if (marca) marca.textContent = "Sua";
+        } else if (marca) marca.textContent = "";
     });
+    card.classList.remove("resp-certa", "resp-errada");
+    card.classList.add(acertou ? "resp-certa" : "resp-errada");
 
     // 2. Desabilita o botão Responder e exibe o botão Resolver Novamente
+    // O resultado fica no bloco abaixo das alternativas; os botões de resposta saem de cena
     card.querySelectorAll(".btn-responder").forEach(btn => {
         btn.disabled = true;
-        if (btn.dataset.confianca === 'duvida') btn.hidden = true;
-        else btn.innerText = acertou ? "✔ Respondida (Acerto)" : "✖ Respondida (Erro)";
+        btn.hidden = true;
     });
 
     const btnRefazer = card.querySelector(".btn-refazer");
@@ -863,20 +872,21 @@ export function revelar(card, q, letraEscolhida, info = {}) {
 
     if (gabaritoDiv) {
         if (letraEscolhida === null || letraEscolhida === undefined || letraEscolhida === "") {
-            gabaritoDiv.innerHTML = `⚠️ <strong>Questão em branco.</strong> ${nomeGabarito}: <strong>${esc(textoCorreto)}</strong>`;
+            gabaritoDiv.innerHTML = `<p class="cq-res-titulo">${icone('alerta')}Questão em branco</p><p class="cq-res-gab">${nomeGabarito}: <strong>${esc(textoCorreto)}</strong></p>`;
         } else if (acertou) {
-            gabaritoDiv.innerHTML = `✔ <strong>Resposta Correta!</strong> ${nomeGabarito}: <strong>${esc(textoCorreto)}</strong>`;
+            const titulo = info.confianca === 'certeza' ? 'Certo, com certeza' : info.confianca === 'duvida' ? 'Certo, na dúvida' : 'Resposta correta';
+            gabaritoDiv.innerHTML = `<p class="cq-res-titulo">${icone('certo')}${titulo}</p><p class="cq-res-gab">${nomeGabarito}: <strong>${esc(textoCorreto)}</strong></p>`;
         } else {
-            gabaritoDiv.innerHTML = `✖ <strong>Resposta Incorreta.</strong> Você marcou <strong>(${esc(letraEscolhida)})</strong>. ${nomeGabarito}: <strong>${esc(textoCorreto)}</strong>`;
+            gabaritoDiv.innerHTML = `<p class="cq-res-titulo">${icone('fechar')}Resposta incorreta</p><p class="cq-res-gab">Você marcou <strong>(${esc(letraEscolhida)})</strong>. ${nomeGabarito}: <strong>${esc(textoCorreto)}</strong></p>`;
         }
 
         // Metacognição: o que a confiança diz sobre essa resposta
         if (letraEscolhida && info.confianca === 'certeza' && !acertou) {
-            gabaritoDiv.innerHTML += `<p class="aviso-confianca forte">💡 <strong>Você tinha certeza.</strong> Esses são os erros que mais se corrigem depois de ler a explicação com calma. Ela volta amanhã na revisão.</p>`;
+            gabaritoDiv.innerHTML += `<p class="aviso-confianca forte">${icone('lampada')}<span><strong>Você tinha certeza.</strong> Esses são os erros que mais se corrigem depois de ler a explicação com calma. Ela volta amanhã na revisão.</span></p>`;
         } else if (letraEscolhida && info.confianca === 'duvida' && acertou) {
-            gabaritoDiv.innerHTML += `<p class="aviso-confianca">🤔 <strong>Acertou na dúvida.</strong> Ainda não conta como sabida: ela volta amanhã para confirmar.</p>`;
+            gabaritoDiv.innerHTML += `<p class="aviso-confianca">${icone('duvida')}<span><strong>Acertou na dúvida.</strong> Ainda não conta como sabida: ela volta amanhã para confirmar.</span></p>`;
         } else if (letraEscolhida && !acertou && info.confianca === 'duvida') {
-            gabaritoDiv.innerHTML += `<p class="aviso-confianca">🔁 Ela volta amanhã na revisão.</p>`;
+            gabaritoDiv.innerHTML += `<p class="aviso-confianca">${icone('repetir')}<span>Ela volta amanhã na revisão.</span></p>`;
         }
     }
 
@@ -885,16 +895,20 @@ export function revelar(card, q, letraEscolhida, info = {}) {
         // Questão de SQL: depois de responder, dá para testar o código de verdade (js/laboratorio-sql.js)
         const htmlLab = ehQuestaoSQL(q) ? `
             <div class="lab-sql-acao">
-                <button type="button" class="btn-sidebar btn-lab-sql" data-id="${esc(q.id)}">🧪 Testar no laboratório SQL</button>
+                <button type="button" class="btn-sidebar btn-lab-sql" data-id="${esc(q.id)}">${icone('banco')}Testar no laboratório SQL</button>
             </div>
             <div class="lab-sql-container"></div>` : "";
+        // Errou: "Entender meu erro com IA" dentro do bloco do resultado (só aqui, para não competir com a prática)
+        const htmlIA = (letraEscolhida && !acertou && typeof info.temIA === 'function' && info.temIA()) ? `
+            <button type="button" class="cq-btn-ia" data-id="${esc(q.id)}" data-letra="${esc(letraEscolhida)}">${icone('ia')}Entender meu erro com IA</button>
+            <div class="cq-ia-texto" hidden></div>` : "";
         if (String(textoExplicacao).trim() !== "") {
             // Escapa o comentário: o texto vem do banco e NUNCA pode virar HTML/código na tela
             const textoSeguro = esc(String(textoExplicacao)).replace(/\n/g, "<br>");
-            explicacaoDiv.innerHTML = `<div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(148, 163, 184, 0.25);"><strong>📘 Comentário:</strong> ${textoSeguro}</div>${htmlLab}`;
+            explicacaoDiv.innerHTML = `<div class="cq-comentario"><strong>Comentário:</strong> ${textoSeguro}</div>${htmlIA}${htmlLab}`;
             explicacaoDiv.style.display = "block";
         } else {
-            explicacaoDiv.innerHTML = `<div style="margin-top: 6px; font-size: 0.85em; opacity: 0.85;">💡 <em>Use "Adicionar Anotação Pessoal" abaixo para registrar seu resumo sobre esta questão.</em></div>${htmlLab}`;
+            explicacaoDiv.innerHTML = `<div class="cq-comentario vazio">Sem comentário cadastrado. Use o lápis abaixo para anotar o seu resumo desta questão.</div>${htmlIA}${htmlLab}`;
             explicacaoDiv.style.display = "block";
         }
     }

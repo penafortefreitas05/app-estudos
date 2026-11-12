@@ -30,6 +30,17 @@ const D = {
     caderno: '<path d="M5 3h12a2 2 0 0 1 2 2v16H7a2 2 0 0 1-2-2z"/><path d="M5 17a2 2 0 0 1 2-2h12M9 7h6"/>',
     relogio: '<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/>',
     baixar: '<path d="M12 3v12M7 10l5 5 5-5M4 21h16"/>',
+    banco: '<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>',
+    rede: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
+    codigo: '<path d="m8 7-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/>',
+    nuvem: '<path d="M7 18h10a4 4 0 0 0 .5-8A6 6 0 0 0 6 9.5 4.3 4.3 0 0 0 7 18z"/>',
+    balanca: '<path d="M12 3v18M7 21h10M5 7h14M5 7l-3 7a3 3 0 0 0 6 0zM19 7l-3 7a3 3 0 0 0 6 0z"/>',
+    calculo: '<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01"/>',
+    maleta: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/>',
+    escudo: '<path d="M12 3 4 6v6c0 5 3.4 8 8 9 4.6-1 8-4 8-9V6z"/>',
+    lapis: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+    duvida: '<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14M12 17h.01"/>',
+    lampada: '<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z"/>',
     pilha: '<path d="M4 19V6a2 2 0 0 1 2-2h12v15"/><path d="M4 19a2 2 0 0 0 2 2h12v-4H6a2 2 0 0 0-2 2z"/>'
 };
 
@@ -45,4 +56,15 @@ export function aplicarIcones(raiz = document) {
         if (el.firstElementChild) return;
         el.innerHTML = icone(el.dataset.icone, el.dataset.cor ? 'ic-' + el.dataset.cor : '');
     });
+}
+
+// Ícone de cada matéria no cartão de questão (todos na mesma cor: com 9 matérias, cores diferentes ficariam parecidas)
+const ICONE_MATERIA = [
+    [/portugu/i, 'livro'], [/banco de dados|dados/i, 'banco'], [/redes|seguran/i, 'rede'], [/engenharia|software|agil/i, 'codigo'],
+    [/arquitetura|nuvem/i, 'nuvem'], [/direito/i, 'balanca'], [/racioc|matem|l[oó]gic/i, 'calculo'], [/governan|gest|projet/i, 'maleta'],
+    [/econom|finan/i, 'grafico']
+];
+export function iconeDaMateria(materia) {
+    const m = ICONE_MATERIA.find(([re]) => re.test(String(materia || '')));
+    return m ? m[1] : 'livro';
 }
