@@ -14,8 +14,8 @@ const CHAVE_USO_IA = 'appEstudos_UsoIA';
 const PAGINA = 10;
 const CHAVE_NOTAS = 'appEstudos_AnotacoesAssunto';
 
-// Nomes decididos em 11/11/2026: "Para refazer" e "Superadas"
-export const ESTADOS = [['abertas', 'Para refazer'], ['superadas', 'Superadas']];
+// Nomes decididos em 11 e 12/11/2026: aba "Erros" (refazer, IA) e aba "Superadas" (ficha de releitura, sem refazer nem IA)
+export const ESTADOS = [['abertas', 'Erros'], ['superadas', 'Superadas']];
 
 // Texto da alternativa de uma letra ("A) ...", ou Certo/Errado nas questões C/E). '' se não achar.
 export function textoDaAlternativa(q, letra) {
@@ -146,6 +146,20 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
         elUso.textContent = u ? `Explicações com IA hoje: ${u.uso} de ${u.limite}. As já geradas abrem de graça.` : 'Explicações com IA: há um limite por dia. As já geradas abrem de graça.';
     }
 
+    // Superadas: ficha de releitura. Mostra o que você errou; o certo fica coberto até tocar (tentar lembrar antes)
+    function ficha({ q, h }) {
+        const letra = h.letraErrada || '';
+        const txt = letra ? textoDaAlternativa(q, letra) : '';
+        return `
+            <article class="ce-item ce-ficha" data-id="${esc(String(q.id))}">
+                <p class="ce-meta">${esc(q.materia || 'Geral')} · ${esc(q.assunto || 'Geral')}</p>
+                <p class="ce-pergunta">${esc(q.pergunta || '')}</p>
+                ${letra ? `<p class="ce-errou">Você errou: ${esc(letra)}${txt ? ' (' + esc(txt) + ')' : ''}</p>` : ''}
+                <div class="ce-resp" hidden></div>
+                ${pedirGabarito ? '<div class="ce-acoes"><button type="button" class="ce-btn principal" data-ce="resposta">Mostrar o certo</button></div>' : ''}
+            </article>`;
+    }
+
     function cartao({ q, h }) {
         const letra = h.letraErrada || '';
         const guardada = letra ? explicacaoGuardada(q, letra) : '';
@@ -182,7 +196,7 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
         pagina.forEach((i) => {
             const k = chaveNota(i.q.materia, i.q.assunto);
             if (k !== atual) { atual = k; html += blocoNota(i.q.materia, i.q.assunto); }
-            html += cartao(i);
+            html += ficha(i);
         });
         return html;
     }
@@ -190,7 +204,7 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
     function desenhar() {
         const todosDoEstado = itens.filter((i) => i.estado === estado);
         const por = contar(itens);
-        sub.textContent = itens.length ? `${por.abertas} para refazer · ${por.superadas} ${por.superadas === 1 ? 'superada' : 'superadas'}` : '';
+        sub.textContent = itens.length ? `${por.abertas} ${por.abertas === 1 ? 'erro' : 'erros'} · ${por.superadas} ${por.superadas === 1 ? 'superada' : 'superadas'}` : '';
         elEstados.innerHTML = ESTADOS.map(([id, nome]) =>
             `<button type="button" class="ce-chip ${estado === id ? 'ativo' : ''}" data-ce="estado" data-v="${id}">${nome} <span>${por[id]}</span></button>`).join('');
         const mats = materiasDe(todosDoEstado);
@@ -206,7 +220,7 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
         } else {
             elLista.innerHTML = (estado === 'abertas' ? `<button type="button" class="ce-btn ce-todas principal" data-ce="refazer-todas">▶ Refazer ${materia ? 'esta matéria' : 'todas'} no Foco (${lista.length})</button>` : '') +
                 (estado === 'superadas'
-                    ? listaComNotas([...lista.slice(0, mostrando)].sort((a, b) => chaveNota(a.q.materia, a.q.assunto).localeCompare(chaveNota(b.q.materia, b.q.assunto), 'pt-BR')))
+                    ? listaComNotas([...lista].sort((a, b) => chaveNota(a.q.materia, a.q.assunto).localeCompare(chaveNota(b.q.materia, b.q.assunto), 'pt-BR') || (a.h.ultimaData || 0) - (b.h.ultimaData || 0)).slice(0, mostrando))
                     : lista.slice(0, mostrando).map(cartao).join('')) +
                 (lista.length > mostrando ? `<button type="button" class="ce-mais" data-ce="mais">Mostrar mais (${lista.length - mostrando})</button>` : '');
         }
@@ -236,8 +250,9 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
         if (acao === 'refazer') { fechar(); if (aoRefazer) aoRefazer(item.q); return; }
         if (acao === 'resposta') {
             const caixa = art.querySelector('.ce-resp');
-            if (!caixa.hidden) { caixa.hidden = true; return; }
-            if (caixa.dataset.pronta) { caixa.hidden = false; return; }
+            const ehFicha = art.classList.contains('ce-ficha');
+            if (!caixa.hidden) { caixa.hidden = true; if (ehFicha) alvo.textContent = 'Mostrar o certo'; return; }
+            if (caixa.dataset.pronta) { caixa.hidden = false; if (ehFicha) alvo.textContent = 'Esconder'; return; }
             if (emUso.has('r' + art.dataset.id) || !pedirGabarito) return;
             emUso.add('r' + art.dataset.id);
             alvo.disabled = true;
@@ -247,7 +262,7 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
             alvo.disabled = false;
             if (r && r.ok && r.gabarito) {
                 const certa = String(r.gabarito).toUpperCase();
-                const marcou = item.h.letraErrada ? `Você marcou: ${esc(item.h.letraErrada)}${textoDaAlternativa(item.q, item.h.letraErrada) ? ' (' + esc(textoDaAlternativa(item.q, item.h.letraErrada)) + ')' : ''}<br>` : '';
+                const marcou = estado === 'abertas' && item.h.letraErrada ? `Você marcou: ${esc(item.h.letraErrada)}${textoDaAlternativa(item.q, item.h.letraErrada) ? ' (' + esc(textoDaAlternativa(item.q, item.h.letraErrada)) + ')' : ''}<br>` : '';
                 const txtCerta = textoDaAlternativa(item.q, certa);
                 const expl = item.q.explicacao || item.q.comentario || item.q.justificativa || '';
                 caixa.innerHTML = `${marcou}<strong>Resposta certa: ${esc(certa)}${txtCerta ? ' (' + esc(txtCerta) + ')' : ''}</strong>` +
@@ -257,6 +272,7 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
                 caixa.textContent = (r && r.message) || 'Não consegui buscar a resposta agora. Ela precisa de internet ou do pacote offline baixado.';
             }
             caixa.hidden = false;
+            if (art.classList.contains('ce-ficha') && caixa.dataset.pronta) alvo.textContent = 'Esconder';
             return;
         }
         if (acao === 'ia') {
