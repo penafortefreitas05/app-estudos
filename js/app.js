@@ -3161,6 +3161,15 @@ if (btnAbrirBarra) btnAbrirBarra.addEventListener("click", () => aplicarBarraRec
             abrirCaderno({
                 questoes, historico, naFila,
                 pedirIA: pedirExplicacaoIA,
+                // Ver a resposta certa e o comentário antes de refazer; funciona sem internet se o pacote offline estiver baixado
+                pedirGabarito: async (q, letra) => {
+                    try {
+                        const r = await corrigirResposta(q, letra || 'A'); // só para ler o gabarito: não grava nada
+                        return { ok: true, gabarito: r.gabarito };
+                    } catch (e) {
+                        return { ok: false, message: e && e.semGabarito ? 'Esta questão está sem gabarito cadastrado.' : 'Não consegui buscar a resposta agora. Ela precisa de internet ou do pacote offline baixado.' };
+                    }
+                },
                 aoRefazer: (qOuLista) => {
                     const lista = Array.isArray(qOuLista) ? qOuLista : [qOuLista];
                     simulado = null;

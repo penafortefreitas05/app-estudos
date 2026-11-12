@@ -12,7 +12,7 @@
 import { esc } from './ui.js';
 import { montarPlano, TIPOS_DIA } from './plano.js';
 import { ordenarAssuntos } from './ordem-assuntos.js';
-import { carregarVideos, videosDoAssunto } from './video-aprenda.js';
+import { carregarVideos, videosDoAssunto, abrirVideo, videoVisto } from './video-aprenda.js';
 import { assuntosComCartoes, abrirLeitura, lerAprendidos, assuntoAprendido, migrarEntendidos } from './leitura.js';
 
 const CHAVE_ULTIMO = 'appEstudos_AprenderUltimo';
@@ -279,7 +279,7 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
         guardarUltimo(mat, nome);
         materia = mat;
         const podePraticar = temQuestoes(mat, nome) && typeof aoPraticar === 'function';
-        abrirLeitura(a.cartoes, {
+        const abrirCartoes = () => abrirLeitura(a.cartoes, {
             titulo: a.assunto,
             aoFechar: () => { if (!fechada) desenhar(); },
             aoPraticar: podePraticar ? () => { fechar(); aoPraticar(mat, nome); } : undefined,
@@ -288,6 +288,11 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
             avisoSemQuestoes: podePraticar ? '' : avisoSemQuestoes(mat, nome),
             videos: videosDoAssunto(videos, mat, nome)
         });
+        // Sequência vídeo → cartões → questões: se o assunto tem vídeo que ainda não foi visto neste aparelho, ele abre primeiro.
+        // Depois de visto (ou depois de tocar em "Ver os cartões"), o assunto abre direto nos cartões; o vídeo segue no topo da leitura.
+        const novoVideo = videosDoAssunto(videos, mat, nome).find(v => !videoVisto(v));
+        if (novoVideo) abrirVideo(novoVideo, { aoContinuar: abrirCartoes, aoFechar: () => { if (!fechada) desenhar(); } });
+        else abrirCartoes();
     }
 
     function agir(botao) {

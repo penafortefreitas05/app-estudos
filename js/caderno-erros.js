@@ -13,7 +13,20 @@ const CHAVE_EXPLICACOES = 'appEstudos_ExplicacoesIA';
 const CHAVE_USO_IA = 'appEstudos_UsoIA';
 const PAGINA = 10;
 
-export const ESTADOS = [['abertas', 'Para refazer'], ['superadas', 'Já acertei depois']];
+// Nomes decididos em 11/11/2026: "Para refazer" e "Superadas"
+export const ESTADOS = [['abertas', 'Para refazer'], ['superadas', 'Superadas']];
+
+// Texto da alternativa de uma letra ("A) ...", ou Certo/Errado nas questões C/E). '' se não achar.
+export function textoDaAlternativa(q, letra) {
+    const alts = Array.isArray(q && q.alternativas) ? q.alternativas.map(String) : [];
+    const L = String(letra || '').trim().toUpperCase();
+    if (!L || !alts.length) return '';
+    const achada = alts.find((a) => new RegExp(`^\\s*${L}\\s*[).:-]`).test(a));
+    if (achada) return achada.replace(new RegExp(`^\\s*${L}\\s*[).:-]\\s*`), '').trim();
+    if ((L === 'C' || L === 'E') && alts.length === 2) return alts[L === 'C' ? 0 : 1];
+    const i = 'ABCDE'.indexOf(L);
+    return i >= 0 && alts[i] ? alts[i].replace(/^\s*[A-E]\s*[).:-]\s*/, '').trim() : '';
+}
 
 // Questões com pelo menos um erro, da mais recente para a mais antiga
 export function listarErros(questoes, historico) {
@@ -63,8 +76,9 @@ export function usoDeHoje() {
 // opcoes.questoes, opcoes.historico: dados atuais
 // opcoes.aoRefazer(q): fecha o caderno e põe a questão para refazer
 // opcoes.pedirIA(questaoId, letra): Promise<{ ok, explicacao?, usoHoje?, limiteDia?, message? }>
+// opcoes.pedirGabarito(q, letra): Promise<{ ok, gabarito?, message? }> (funciona offline com o pacote baixado)
 // opcoes.naFila(id): a questão está na fila de hoje?
-export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, naFila = () => false } = {}) {
+export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGabarito, naFila = () => false } = {}) {
     if (document.querySelector('.ce-tela')) return;
     const itens = listarErros(questoes || [], historico || {});
     const focoAntes = document.activeElement;
@@ -123,7 +137,9 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, naFila =
                 <p class="ce-meta">${esc(q.materia || 'Geral')} · ${esc(q.assunto || 'Geral')}</p>
                 <p class="ce-pergunta">${esc(q.pergunta || '')}</p>
                 <p class="ce-info${naFila(q.id) ? ' urgente' : ''}">${naFila(q.id) ? '⏰ ' : ''}${h.erros} ${h.erros === 1 ? 'erro' : 'erros'} · ${esc(volta)}</p>
+                <div class="ce-resp" hidden></div>
                 <div class="ce-acoes">
+                    ${pedirGabarito ? '<button type="button" class="ce-btn" data-ce="resposta">Ver resposta e explicação</button>' : ''}
                     <button type="button" class="ce-btn principal" data-ce="refazer">▶ Refazer</button>
                     ${letra ? `<button type="button" class="ce-btn ia" data-ce="ia">${guardada ? 'Ver explicação' : 'Entender meu erro com IA'}</button>` : ''}
                 </div>
@@ -134,7 +150,7 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, naFila =
     function desenhar() {
         const todosDoEstado = itens.filter((i) => i.estado === estado);
         const por = contar(itens);
-        sub.textContent = itens.length ? `${por.abertas} para refazer · ${por.superadas} já acertadas depois` : '';
+        sub.textContent = itens.length ? `${por.abertas} para refazer · ${por.superadas} ${por.superadas === 1 ? 'superada' : 'superadas'}` : '';
         elEstados.innerHTML = ESTADOS.map(([id, nome]) =>
             `<button type="button" class="ce-chip ${estado === id ? 'ativo' : ''}" data-ce="estado" data-v="${id}">${nome} <span>${por[id]}</span></button>`).join('');
         const mats = materiasDe(todosDoEstado);
@@ -175,6 +191,31 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, naFila =
         const item = art && itens.find((i) => String(i.q.id) === art.dataset.id);
         if (!item) return;
         if (acao === 'refazer') { fechar(); if (aoRefazer) aoRefazer(item.q); return; }
+        if (acao === 'resposta') {
+            const caixa = art.querySelector('.ce-resp');
+            if (!caixa.hidden) { caixa.hidden = true; return; }
+            if (caixa.dataset.pronta) { caixa.hidden = false; return; }
+            if (emUso.has('r' + art.dataset.id) || !pedirGabarito) return;
+            emUso.add('r' + art.dataset.id);
+            alvo.disabled = true;
+            let r;
+            try { r = await pedirGabarito(item.q, item.h.letraErrada || ''); } catch (err) { r = { ok: false }; }
+            emUso.delete('r' + art.dataset.id);
+            alvo.disabled = false;
+            if (r && r.ok && r.gabarito) {
+                const certa = String(r.gabarito).toUpperCase();
+                const marcou = item.h.letraErrada ? `Você marcou: ${esc(item.h.letraErrada)}${textoDaAlternativa(item.q, item.h.letraErrada) ? ' (' + esc(textoDaAlternativa(item.q, item.h.letraErrada)) + ')' : ''}<br>` : '';
+                const txtCerta = textoDaAlternativa(item.q, certa);
+                const expl = item.q.explicacao || item.q.comentario || item.q.justificativa || '';
+                caixa.innerHTML = `${marcou}<strong>Resposta certa: ${esc(certa)}${txtCerta ? ' (' + esc(txtCerta) + ')' : ''}</strong>` +
+                    (expl ? `<br><br>${esc(expl)}` : '<br><br><em>Esta questão não tem comentário.</em>');
+                caixa.dataset.pronta = '1';
+            } else {
+                caixa.textContent = (r && r.message) || 'Não consegui buscar a resposta agora. Ela precisa de internet ou do pacote offline baixado.';
+            }
+            caixa.hidden = false;
+            return;
+        }
         if (acao === 'ia') {
             const caixa = art.querySelector('.ce-ia');
             const letra = item.h.letraErrada;

@@ -2212,3 +2212,5 @@ body.modo-foco.foco-simulado #display-cronometro { display: block !important; wi
 .video-link { background: none; border: 0; color: #94a3b8; font-size: 0.85rem; text-decoration: underline; cursor: pointer; min-height: 2.25rem; }
 .video-acoes { width: 100%; max-width: 40rem; display: flex; gap: 0.6rem; padding: 0.5rem 1rem max(1rem, env(safe-area-inset-bottom)); }
 .video-baixar:focus-visible, .video-sair:focus-visible, .video-link:focus-visible { outline: 2px solid #c7d2fe; outline-offset: 2px; }
+
+.ce-resp { margin-top: 0.7rem; padding: 0.7rem 0.8rem; border-left: 3px solid #34d399; background: #0f1f1a; border-radius: 0 8px 8px 0; font-size: 0.9rem; line-height: 1.45; }

@@ -29,6 +29,21 @@ export function formatarTamanho(bytes) {
     return mb >= 0.95 ? `${mb.toFixed(1).replace('.', ',')} MB` : `${Math.max(1, Math.round(mb * 1024))} KB`;
 }
 
+// ---------- Vídeo já visto (neste aparelho) ----------
+// Na sequência do Aprender (vídeo → cartões → questões) o vídeo abre sozinho na primeira vez que o assunto é aberto.
+const CHAVE_VISTOS = 'appEstudos_VideosVistos';
+function lerVistos() {
+    try { const v = JSON.parse(localStorage.getItem(CHAVE_VISTOS)); return v && typeof v === 'object' ? v : {}; } catch (e) { return {}; }
+}
+export const videoVisto = (v) => Boolean(v && lerVistos()[v.id]);
+export function marcarVideoVisto(v) {
+    if (!v || !v.id) return;
+    const todos = lerVistos();
+    if (todos[v.id]) return;
+    todos[v.id] = new Date().toISOString().slice(0, 10);
+    try { localStorage.setItem(CHAVE_VISTOS, JSON.stringify(todos)); } catch (e) { /* segue sem guardar */ }
+}
+
 // ---------- Lista de vídeos e cache ----------
 
 let listaEmMemoria = null;
@@ -82,7 +97,9 @@ export async function removerVideo(v) {
 
 // v: item de data/videos.json. opcoes.aoPraticar (opcional): botão "Praticar →" (o chamador decide se há questões).
 // opcoes.nivelPraticar: nome do nível que o Praticar abre. opcoes.aoFechar: chamado ao fechar.
-export async function abrirVideo(v, { aoPraticar, nivelPraticar = '', aoFechar } = {}) {
+// opcoes.aoContinuar (opcional): modo "sequência" (passo 1 de 3). O botão principal vira "Ver os cartões →", que marca o vídeo como visto
+// e chama aoContinuar; o ✕ só fecha (volta ao Aprender). Sem aoContinuar (rever o vídeo), valem "Praticar →" e "Voltar ao assunto".
+export async function abrirVideo(v, { aoPraticar, nivelPraticar = '', aoFechar, aoContinuar } = {}) {
     if (!v || document.querySelector('.video-tela')) return;
     const focoAntes = document.activeElement;
     const el = document.createElement('div');
@@ -93,7 +110,7 @@ export async function abrirVideo(v, { aoPraticar, nivelPraticar = '', aoFechar }
     el.innerHTML = `
         <header class="video-topo">
             <div>
-                <p class="video-faixa">▶ Aprenda em 1 min · ${formatarDuracao(v.duracao)}</p>
+                <p class="video-faixa">${typeof aoContinuar === 'function' ? 'Passo 1 de 3 · vídeo, cartões, questões' : `▶ Aprenda em 1 min · ${formatarDuracao(v.duracao)}`}</p>
                 <h2 id="video-titulo" class="video-titulo">${esc(v.titulo)}</h2>
             </div>
             <button type="button" class="video-sair" data-acao="fechar" aria-label="Fechar o vídeo">✕</button>
@@ -104,8 +121,10 @@ export async function abrirVideo(v, { aoPraticar, nivelPraticar = '', aoFechar }
         <p class="video-msg" role="status" aria-live="polite"></p>
         <div class="video-offline"></div>
         <div class="video-acoes">
-            ${typeof aoPraticar === 'function' ? `<button type="button" class="leitura-btn entendi" data-acao="praticar">Praticar →</button>` : ''}
-            <button type="button" class="leitura-btn ainda" data-acao="fechar">Voltar ao assunto</button>
+            ${typeof aoContinuar === 'function'
+                ? `<button type="button" class="leitura-btn entendi" data-acao="continuar">Ver os cartões →</button>`
+                : `${typeof aoPraticar === 'function' ? `<button type="button" class="leitura-btn entendi" data-acao="praticar">Praticar →</button>` : ''}
+            <button type="button" class="leitura-btn ainda" data-acao="fechar">Voltar ao assunto</button>`}
         </div>`;
     const q = sel => el.querySelector(sel);
     const player = q('.video-player');
@@ -129,9 +148,16 @@ export async function abrirVideo(v, { aoPraticar, nivelPraticar = '', aoFechar }
             : 'Não foi possível carregar o vídeo agora. Tente de novo em instantes.';
     });
     player.addEventListener('playing', () => { msg.textContent = ''; });
+    player.addEventListener('ended', () => marcarVideoVisto(v));
 
     async function agir(acao, botao) {
         if (acao === 'fechar') return fechar();
+        if (acao === 'continuar') {
+            marcarVideoVisto(v);
+            fechar();
+            if (typeof aoContinuar === 'function') setTimeout(aoContinuar, 0);
+            return;
+        }
         if (acao === 'praticar') { fechar(); if (typeof aoPraticar === 'function') aoPraticar(); return; }
         if (acao === 'baixar') {
             botao.disabled = true;
