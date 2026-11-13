@@ -5146,8 +5146,8 @@
     "resumo": "Divide a comunicação em sete camadas, da física à aplicação: física, enlace, rede, transporte, sessão, apresentação, aplicação. Cada camada cuida de uma função.",
     "nao_confundir": [
       {
-        "conceito": "Modelo TCP/IP",
-        "diferenca": "TCP/IP agrupa funções do OSI e aparece com quatro ou cinco camadas, conforme o autor."
+        "conceito": "Modelo TCP/IP (protocolos da internet)",
+        "diferenca": "TCP/IP é o modelo prático da internet, com quatro ou cinco camadas conforme o autor."
       }
     ],
     "atencao": "No modelo OSI, a camada de rede é a terceira e a de transporte é a quarta.",
@@ -5166,7 +5166,7 @@
     "conceito": "Endereço IP",
     "termo_ingles": "Internet Protocol address",
     "traducao": "Endereço IP: identifica uma interface de rede para comunicação entre redes.",
-    "resumo": "Identificador lógico de uma interface. O IPv4 utiliza 32 bits; o IPv6 utiliza 128 bits. O prefixo identifica a parte da rede.",
+    "resumo": "É um identificador lógico da interface. IPv4 usa 32 bits e IPv6 usa 128. Prefixo é a parte inicial que identifica a rede.",
     "nao_confundir": [
       {
         "conceito": "Nome de domínio",
@@ -5187,15 +5187,15 @@
     "nivel": 1,
     "conceito": "Protocolo de resolução de endereços",
     "termo_ingles": "Address Resolution Protocol (ARP)",
-    "traducao": "ARP: descobre o endereço MAC associado a um endereço IPv4 na rede local.",
+    "traducao": "ARP: descobre o endereço físico (MAC) de um endereço IPv4 na rede local.",
     "resumo": "Na rede local, os dados são entregues ao endereço MAC, identificador físico da interface de rede. O ARP descobre o MAC que corresponde a um endereço IPv4 conhecido.",
     "nao_confundir": [
       {
-        "conceito": "Endereço IP",
-        "diferenca": "IP identifica a interface logicamente entre redes; MAC identifica fisicamente na rede local."
+        "conceito": "DNS",
+        "diferenca": "DNS descobre o IP de um nome; ARP descobre o MAC de um IPv4."
       }
     ],
-    "atencao": "O ARP serve ao IPv4; no IPv6, a descoberta do endereço MAC é feita pelo Neighbor Discovery.",
+    "atencao": "O ARP serve ao IPv4; no IPv6, quem descobre o MAC do vizinho é o Neighbor Discovery.",
     "fonte": "RFC 826, An Ethernet Address Resolution Protocol, 1982; RFC 4861, Neighbor Discovery for IP version 6 (IPv6), 2007.",
     "tags": [
       "equipamentos-de-rede",
@@ -5370,14 +5370,14 @@
     "resumo": "Registra destinos de rede e como alcançá-los: próximo salto (próximo roteador no caminho) e interface de saída. O roteador a consulta ao encaminhar pacotes.",
     "nao_confundir": [
       {
-        "conceito": "Tabela MAC",
-        "diferenca": "Tabela de roteamento relaciona destinos IP a rotas; tabela MAC relaciona endereços MAC a portas."
+        "conceito": "Tabela MAC (do switch)",
+        "diferenca": "Tabela de roteamento liga destinos IP a rotas; tabela MAC liga MAC a portas físicas."
       }
     ],
     "atencao": "Prevalece a rota mais específica, a de prefixo mais longo, sobre uma rota menos específica.",
     "fonte": "RFC 1812, Requirements for IP Version 4 Routers, 1995.",
     "tags": [
-      "ospf"
+      "tabela-de-roteamento"
     ]
   },
   {
@@ -5388,7 +5388,7 @@
     "conceito": "Protocolo de roteamento OSPF",
     "termo_ingles": "Open Shortest Path First (OSPF)",
     "traducao": "OSPF: calcula rotas usando informações sobre o estado dos enlaces da rede.",
-    "resumo": "Protocolo usado dentro de uma rede sob uma só administração. Cada roteador informa o estado de suas ligações e calcula caminhos com o algoritmo de Dijkstra.",
+    "resumo": "Usado dentro de uma rede sob uma só administração. Cada roteador informa o estado de suas ligações (estado de enlace) e calcula caminhos com o algoritmo de Dijkstra.",
     "nao_confundir": [
       {
         "conceito": "RIP (Routing Information Protocol)",
@@ -5456,8 +5456,8 @@
     "resumo": "Sistema distribuído que consulta registros associados a nomes de domínio. Por exemplo, permite localizar o endereço IP associado a um nome de site.",
     "nao_confundir": [
       {
-        "conceito": "DHCP",
-        "diferenca": "DNS consulta informações de nomes; DHCP entrega endereço IP e outras configurações aos dispositivos."
+        "conceito": "DHCP (configuração dinâmica de hosts)",
+        "diferenca": "DNS traduz nomes em endereços IP; DHCP entrega endereço IP e outras configurações de rede."
       }
     ],
     "atencao": "Consultas DNS usam normalmente UDP na porta 53; TCP também é utilizado, inclusive em transferências de zona.",
@@ -5478,11 +5478,11 @@
     "nao_confundir": [
       {
         "conceito": "HTTPS",
-        "diferenca": "HTTP trafega sem criptografia; HTTPS é HTTP sobre TLS, que protege a conexão."
+        "diferenca": "HTTP sozinho não criptografa; HTTPS é HTTP sobre TLS (Segurança da Camada de Transporte)."
       }
     ],
     "atencao": "HTTP/1.1 e HTTP/2 usam TCP; HTTP/3 usa QUIC, protocolo de transporte sobre UDP.",
-    "fonte": "RFC 9110, HTTP Semantics, 2022; RFC 9112, HTTP/1.1, 2022; IANA, Service Name and Port Number Registry.; RFC 9114, HTTP/3, 2022.",
+    "fonte": "RFC 9110, HTTP Semantics, 2022; RFC 9112, HTTP/1.1, 2022; IANA, Service Name and Port Number Registry; RFC 9114, HTTP/3, 2022.",
     "tags": [
       "http",
       "https",
@@ -5525,7 +5525,7 @@
         "diferenca": "IMAP mantém e gerencia as mensagens no servidor; POP3 é voltado a baixá-las."
       }
     ],
-    "atencao": "O IMAP mantém as mensagens no servidor, por isso vários dispositivos veem a mesma caixa postal.",
+    "atencao": "O IMAP permite acessar a mesma caixa postal armazenada no servidor a partir de diferentes dispositivos.",
     "fonte": "RFC 3501, Internet Message Access Protocol – Version 4rev1, 2003; RFC 8314, Cleartext Considered Obsolete, 2018; IANA, Service Name and Port Number Registry.",
     "tags": [
       "imap"
@@ -5543,10 +5543,10 @@
     "nao_confundir": [
       {
         "conceito": "IMAP",
-        "diferenca": "POP3 recupera mensagens; IMAP permite sincronizar e gerenciar mensagens no servidor."
+        "diferenca": "POP3 baixa as mensagens para o aparelho; IMAP as mantém e sincroniza no servidor."
       }
     ],
-    "atencao": "No POP3, a mensagem baixada pode ser removida do servidor; no IMAP, ela permanece lá.",
+    "atencao": "No POP3, o servidor só apaga a mensagem que o cliente marcou para exclusão; no IMAP, ela fica no servidor.",
     "fonte": "RFC 1939, Post Office Protocol – Version 3, 1996; RFC 8314, Cleartext Considered Obsolete, 2018; IANA, Service Name and Port Number Registry.",
     "tags": [
       "pop3"
@@ -5603,16 +5603,16 @@
     "nivel": 1,
     "conceito": "Base de informações de gerenciamento",
     "termo_ingles": "Management Information Base (MIB)",
-    "traducao": "MIB: organiza os objetos e informações que podem ser consultados ou gerenciados por SNMP.",
+    "traducao": "MIB: descreve as informações de um equipamento que o protocolo de gerenciamento SNMP pode consultar.",
     "resumo": "Estrutura que descreve objetos gerenciáveis de um equipamento, como contadores de tráfego, estado de interfaces e informações operacionais.",
     "nao_confundir": [
       {
-        "conceito": "SNMP",
-        "diferenca": "MIB descreve os objetos gerenciáveis; SNMP transporta operações de gerenciamento e consulta."
+        "conceito": "SNMP (Protocolo Simples de Gerenciamento de Rede)",
+        "diferenca": "MIB descreve os objetos; SNMP transporta as consultas e comandos."
       }
     ],
-    "atencao": "Cada objeto da MIB é identificado por um OID, número em árvore hierárquica.",
-    "fonte": "RFC 3418, Management Information Base (MIB) for the Simple Network Management Protocol (SNMP), 2002.; RFC 2578, Structure of Management Information Version 2 (SMIv2), 1999.",
+    "atencao": "Cada objeto da MIB é identificado por um identificador de objeto (OID), número organizado em árvore hierárquica.",
+    "fonte": "RFC 3418, Management Information Base (MIB) for the Simple Network Management Protocol (SNMP), 2002; RFC 2578, Structure of Management Information Version 2 (SMIv2), 1999.",
     "tags": [
       "mib",
       "snmp",
@@ -9338,7 +9338,7 @@
     "conceito": "Continuidade de negócios",
     "termo_ingles": "Business Continuity",
     "traducao": "Continuidade de negócios: capacidade de manter ou recuperar atividades prioritárias durante uma interrupção.",
-    "resumo": "A continuidade de negócios prepara a organização para manter atividades prioritárias durante interrupções e recuperar sua operação.",
+    "resumo": "Organiza ações para manter serviços essenciais durante interrupções (falha, ataque, desastre) e restabelecer as atividades suspensas.",
     "nao_confundir": [
       {
         "conceito": "Recuperação de desastre",
@@ -9360,7 +9360,7 @@
     "conceito": "Análise de impacto nos negócios",
     "termo_ingles": "Business Impact Analysis (BIA)",
     "traducao": "Análise de Impacto nos Negócios: identifica consequências de interrupções e prioridades de recuperação.",
-    "resumo": "A análise avalia impactos de interrupções nos processos e recursos, apoiando prioridades e requisitos de recuperação.",
+    "resumo": "A análise identifica impactos da interrupção de atividades e ajuda a decidir quais processos e sistemas recuperar primeiro.",
     "nao_confundir": [
       {
         "conceito": "Avaliação de riscos",
@@ -9406,11 +9406,11 @@
     "resumo": "O RPO expressa a perda de dados tolerada, medida pelo intervalo de tempo entre a interrupção e o ponto recuperável.",
     "nao_confundir": [
       {
-        "conceito": "Objetivo de tempo de recuperação",
+        "conceito": "Objetivo de tempo de recuperação (RTO)",
         "diferenca": "RPO limita a perda de dados; RTO limita o tempo de indisponibilidade."
       }
     ],
-    "atencao": "O RPO depende da cópia de backup mais recente e mede quanta perda de dados se tolera.",
+    "atencao": "O RPO aponta um momento antes da falha (quantos dados perder); o RTO, um prazo depois dela (quanto tempo parado).",
     "fonte": "NIST SP 800-34 Rev. 1, seção 3.2 (RPO) — https://nvlpubs.nist.gov/nistpubs/legacy/sp/nistspecialpublication800-34r1.pdf",
     "tags": [
       "continuidade",
@@ -12603,16 +12603,16 @@
     "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
     "nivel": 1,
     "conceito": "Máscara de sub-rede",
-    "termo_ingles": "",
-    "traducao": "",
+    "termo_ingles": "Subnet mask",
+    "traducao": "Máscara de sub-rede: separa, num endereço IPv4, a parte da rede da parte do host (o restante).",
     "resumo": "A máscara no Protocolo de Internet versão 4 (IPv4) indica quais bits do endereço IP pertencem à rede; os demais identificam o dispositivo. Exemplo: 255.255.255.0.",
     "nao_confundir": [
       {
         "conceito": "Endereço IP",
-        "diferenca": "Endereço IP identifica um dispositivo; máscara separa a parte de rede da do dispositivo."
+        "diferenca": "Endereço IP identifica uma interface; máscara indica quais bits pertencem à rede."
       }
     ],
-    "atencao": "Os bits 1 da máscara marcam a rede e a sub-rede juntas, não só a sub-rede.",
+    "atencao": "255.255.255.0 equivale a /24: 24 bits 1 marcam a rede, 8 bits 0 marcam o host.",
     "fonte": "[RFC 950 — Internet Standard Subnetting Procedure](https://www.rfc-editor.org/rfc/rfc950.html)",
     "tags": [
       "camada-de-rede"
@@ -12666,14 +12666,14 @@
     "materia": "Redes & Segurança da Informação",
     "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
     "nivel": 1,
-    "conceito": "DHCP",
+    "conceito": "Configuração dinâmica de hosts (DHCP)",
     "termo_ingles": "Dynamic Host Configuration Protocol",
     "traducao": "Protocolo de Configuração Dinâmica de Hosts: distribui endereço IP e opções de configuração.",
-    "resumo": "O Protocolo de Configuração Dinâmica de Hosts (DHCP) permite que um servidor atribua endereços IP e envie opções de configuração aos clientes.",
+    "resumo": "Um servidor DHCP entrega ao cliente endereço IP e outras configurações de rede; na alocação dinâmica, o endereço é emprestado por tempo limitado.",
     "nao_confundir": [
       {
-        "conceito": "Endereço MAC",
-        "diferenca": "DHCP atribui endereço IP; endereço MAC vem gravado na placa de rede."
+        "conceito": "DNS",
+        "diferenca": "DHCP entrega IP e configurações ao aparelho; DNS traduz nomes em IP."
       }
     ],
     "atencao": "O servidor DHCP recebe pedidos na porta UDP 67; o cliente recebe respostas na porta UDP 68.",
@@ -12765,6 +12765,7 @@
     "atencao": "O BGP também liga roteadores do mesmo sistema autônomo (BGP interno), não só de sistemas diferentes.",
     "fonte": "[RFC 4271 — A Border Gateway Protocol 4 (BGP-4)](https://www.rfc-editor.org/rfc/rfc4271.html)",
     "tags": [
+      "bgp",
       "ospf"
     ]
   },
@@ -12773,20 +12774,20 @@
     "materia": "Redes & Segurança da Informação",
     "assunto": "Roteamento, switching e SDN",
     "nivel": 1,
-    "conceito": "Rota padrão e gateway padrão",
-    "termo_ingles": "Default route / default gateway",
-    "traducao": "Rota padrão: rota de último recurso; gateway padrão: roteador usado para encaminhá-la.",
-    "resumo": "A rota padrão é usada quando nenhuma rota específica atende o destino; o gateway padrão é o roteador da rede local que recebe esse tráfego.",
+    "conceito": "Rota padrão",
+    "termo_ingles": "Default route",
+    "traducao": "Rota padrão: encaminha tráfego para destinos sem uma rota mais específica.",
+    "resumo": "A rota padrão é usada quando nenhuma entrada mais específica da tabela corresponde ao endereço de destino.",
     "nao_confundir": [
       {
-        "conceito": "Rota específica",
-        "diferenca": "Rota específica corresponde a uma rede indicada; rota padrão atende destinos sem rota específica."
+        "conceito": "Gateway padrão",
+        "diferenca": "Rota padrão é a regra; gateway padrão é o roteador usado para encaminhar o tráfego."
       }
     ],
-    "atencao": "A rota padrão tem prefixo de tamanho zero (0.0.0.0/0 em IPv4), não é o endereço do gateway.",
+    "atencao": "Em IPv4, a rota padrão é representada por 0.0.0.0/0, não pelo endereço do roteador.",
     "fonte": "[RFC 1812 — Requirements for IP Version 4 Routers](https://www.rfc-editor.org/rfc/rfc1812.html); [RFC 1058 — Routing Information Protocol](https://www.rfc-editor.org/rfc/rfc1058.html)",
     "tags": [
-      "ospf"
+      "rota-padrao"
     ]
   },
   {
@@ -12860,15 +12861,15 @@
     "nivel": 1,
     "conceito": "Portas conhecidas",
     "termo_ingles": "Well-known ports",
-    "traducao": "Portas conhecidas: números registrados para serviços e protocolos de transporte.",
-    "resumo": "Portas de 0 a 1023 reservadas a serviços padrão: HTTP 80, HTTPS 443, SMTP 25, SSH 22, FTP 21, DNS 53, POP3 110, IMAP 143, LDAP 389, SNMP 161.",
+    "traducao": "Portas conhecidas: números de 0 a 1023 reservados a serviços padronizados.",
+    "resumo": "Portas do sistema (0 a 1023), atribuídas pela IANA. Exemplos: HTTP 80, HTTPS 443, SMTP 25, SSH 22, FTP 21, DNS 53, POP3 110, IMAP 143, LDAP 389, SNMP 161.",
     "nao_confundir": [
       {
         "conceito": "Porta registrada",
         "diferenca": "Porta conhecida vai de 0 a 1023; porta registrada vai de 1024 a 49151."
       }
     ],
-    "atencao": "HTTPS (HTTP com TLS) usa 443; HTTP sem proteção usa 80.",
+    "atencao": "FTP: porta 21 para controle e 20 como porta padrão de dados.",
     "fonte": "[RFC 6335 — IANA Procedures for Service Name and Port Number](https://www.rfc-editor.org/rfc/rfc6335.html); [IANA — Service Name and Transport Protocol Port Number Registry](https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml)",
     "tags": [
       "http",
@@ -12878,7 +12879,8 @@
       "imap",
       "pop3",
       "ldap",
-      "snmp"
+      "snmp",
+      "portas-conhecidas"
     ]
   },
   {
