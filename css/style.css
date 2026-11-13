@@ -2517,3 +2517,11 @@ body.modo-foco.foco-simulado #display-cronometro { display: block !important; wi
 .ft-busca, .sa-busca { border-radius: 999px; }
 .ft-limpar, .ft-ver, .ft-ativo, .ft-mais, .sa-mais { border-radius: 999px; }
 .modal .btn-secondary, .modal .btn-primary, .modal-botoes button, .modal-overlay .btn-secondary, .modal-overlay .btn-primary { border-radius: 999px; }
+
+/* v156 · celular: o fim da rolagem não fica embaixo da barra de gestos do Android.
+   Com viewport-fit=cover o app desenha até a borda; sem esta folga, o botão "Próxima questão" do Foco
+   (e o último cartão do feed) ficava cortado no fim da rolagem. */
+@media (max-width: 768px) {
+    .main-content { padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px)); scroll-padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px)); }
+    body.modo-foco .foco-rodape { padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px)); }
+}
