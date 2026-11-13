@@ -11,7 +11,7 @@ const CHAVE_DIAS_ESTUDO = 'appEstudos_DiasEstudo';
 // Resumo do histórico da nuvem já lido (uma entrada por questão) + até onde já foi lido.
 // Ao abrir, o app só baixa as respostas novas desde então (antes baixava a vida inteira).
 const CHAVE_CACHE_NUVEM = 'appEstudos_ResumoNuvem';
-const VERSAO_CACHE_NUVEM = 2;
+const VERSAO_CACHE_NUVEM = 3; // 3: regra da fila de 13/11 (refaz o resumo com a regra nova)
 
 function lerCacheNuvem() {
     try {

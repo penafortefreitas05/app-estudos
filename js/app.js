@@ -84,7 +84,7 @@ import {
 // ---------- 1.45 Revisão espaçada ----------
 import { resumirPorDia, renderizarMeuDia } from './meu-dia.js';
 import { renderizarDetalhesDaConta } from './conta.js';
-import { aplicarResposta, novoRegistro, venceHoje, formatarDiaCurto, somarDias, atualizarFilaDoDia, filaDeHoje, naFila, TETO_DIARIO, filaGuardadaHoje, guardarFilaDoDia } from './revisao.js';
+import { aplicarResposta, novoRegistro, venceHoje, descansa, formatarDiaCurto, somarDias, atualizarFilaDoDia, filaDeHoje, naFila, TETO_DIARIO, filaGuardadaHoje, guardarFilaDoDia } from './revisao.js';
 
 // ---------- 1.5 Simulado (cronômetro e finalização) ----------
 import {
@@ -480,7 +480,7 @@ function ordenarParaEstudo(lista) {
         const h = historico[String(q.id)];
         if (venceHoje(h, hoje) && naFila(q.id)) return 0;
         if (!h || !h.tentativas) return 1;
-        return 2;
+        return descansa(h, hoje) ? 3 : 2; // Dominadas e acertos recentes com certeza vão para o fim
     };
     // Entre as ainda não feitas, o nível mais básico vem antes: Iniciante → Intermediário →
     // prova. Um iniciante não cai mais numa questão do BACEN na 1ª tela; quem quer prova
@@ -2083,7 +2083,7 @@ if (btnMeuDia && modalMeuDia) {
                 : '<p class="modal-mensagem">Entre na sua conta (e confira a internet) para ver o seu dia. Os números vêm do histórico guardado na nuvem.</p>';
             return;
         }
-        renderizarMeuDia(conteudoMeuDia, resumirPorDia(dados.linhas, dados.jaVistas, 7));
+        renderizarMeuDia(conteudoMeuDia, resumirPorDia(dados.linhas, dados.jaVistas, 7), { vencidas: questoes.filter(q => venceHoje(historico[String(q.id)])).length });
     });
     document.getElementById('btn-fechar-meu-dia')?.addEventListener('click', () => modalMeuDia.classList.remove('visible'));
     modalMeuDia.addEventListener('click', (e) => { if (e.target === modalMeuDia) modalMeuDia.classList.remove('visible'); });
@@ -3130,9 +3130,21 @@ function praticarAssunto(materia, assunto) {
     tagSelecionada = "";
     atualizarSelectAssunto();
     definirTag(assunto); // também chama aplicarFiltros (a lista fica pronta para quando sair do Foco)
+    // Regra da fila (13/11): novas → vencidas hoje → erradas e dúvidas; Dominadas e acertos com
+    // certeza dos últimos 7 dias ficam de fora (voltam pela checagem ou pelo filtro Situação).
+    const hoje = diaLocal();
     const naoFeita = q => { const h = historico[String(q.id)]; return !h || !h.tentativas; };
     const lista = doAssunto.filter(q => Number(q.nivel) === nivel);
-    const ordenada = [...lista.filter(naoFeita), ...lista.filter(q => !naoFeita(q))];
+    const vence = q => venceHoje(historico[String(q.id)], hoje);
+    const ordenada = [
+        ...lista.filter(naoFeita),
+        ...lista.filter(q => !naoFeita(q) && vence(q)),
+        ...lista.filter(q => !naoFeita(q) && !vence(q) && !descansa(historico[String(q.id)], hoje))
+    ];
+    if (!ordenada.length) {
+        showToast(`Você já domina ou acertou há pouco todas as questões deste nível em ${assunto}. Elas voltam na checagem; siga para o próximo assunto.`, "info", 5000);
+        return;
+    }
     const nome = NOMES_NIVEL_PRATICAR[nivel];
     entrarFoco(ordenada, { silencioso: true, titulo: `Praticando: ${assunto} (${nome})`, praticar: { materia, assunto, nivel } });
     showToast(`Praticando ${assunto}, nível ${nome}: ${ordenada.length} ${ordenada.length === 1 ? "questão" : "questões"}. Esc para sair.`, "info", 3500);

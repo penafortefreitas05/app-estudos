@@ -12,11 +12,28 @@
 //   - Acertou de novo no MESMO dia do erro: não conta. Lembrar 1 minuto depois de ver o
 //     gabarito é memória de curto prazo, não aprendizado (antes isso já virava "Superada").
 //   - Fora da revisão: Dominada quando acerta com certeza em 2 dias diferentes.
+//   - Regra da fila (13/11/2026, decidida pelo Nathan):
+//     · Dominada mais cedo: 2 acertos com certeza em revisões seguidas (nível 2) bastam, desde que a
+//       questão NUNCA tenha sido errada com certeza. Quem já errou com certeza faz a cadeia completa.
+//     · Dominada não some para sempre: volta numa checagem aos 45 dias e outra aos 90. Errou a
+//       checagem: volta ao nível 0. Acertou na dúvida: recomeça a revisão.
+//     · Acerto na dúvida volta em 2 dias (antes, 1).
 
 import { diaLocal } from './storage.js';
 
 // Dias até a próxima revisão, por nível
 export const INTERVALOS = [1, 3, 7, 21];
+// Regra da fila (13/11/2026)
+export const NIVEL_DOMINA_CEDO = 2;      // 2 acertos com certeza em revisões seguidas
+export const CHECAGENS = [45, 90];       // dias até cada checagem de uma Dominada
+export const INTERVALO_DUVIDA = 2;       // acerto na dúvida volta em 2 dias
+
+// Marca a questão como Dominada e agenda a 1ª checagem
+function dominar(h, hoje) {
+    h.status = 'dominada';
+    h.checagem = 1;
+    h.revisaoEm = somarDias(hoje, CHECAGENS[0]);
+}
 
 // Soma dias a uma data "AAAA-MM-DD" no calendário local
 export function somarDias(dia, n) {
@@ -67,16 +84,20 @@ export function aplicarResposta(h, { acertou, confianca, momento = Date.now(), l
         h.revisaoEm = somarDias(hoje, INTERVALOS[0]);
         h.status = 'erro';
         h.erroComCerteza = comCerteza;
+        if (comCerteza) h.jaErrouComCerteza = true;
+        h.checagem = 0;
         return h;
     }
 
     if (!comCerteza) {
         // Acerto no chute: revisa amanhã, sem subir de nível
-        if (!emRevisao) {
+        if (!emRevisao || h.status === 'dominada') {
+            // Dúvida na checagem de uma Dominada: não sabe mais, recomeça a revisão
             h.nivel = 0;
             h.status = 'duvida';
+            h.checagem = 0;
         }
-        h.revisaoEm = somarDias(hoje, INTERVALOS[0]);
+        h.revisaoEm = somarDias(hoje, INTERVALO_DUVIDA);
         return h;
     }
 
@@ -87,12 +108,18 @@ export function aplicarResposta(h, { acertou, confianca, momento = Date.now(), l
     }
 
     if (emRevisao) {
+        if (hoje >= h.revisaoEm && h.status === 'dominada') {
+            // Checagem de Dominada (45 e depois 90 dias): acertou, passa para a próxima ou encerra
+            const prox = h.checagem || 1;
+            if (prox < CHECAGENS.length) { h.checagem = prox + 1; h.revisaoEm = somarDias(hoje, CHECAGENS[prox]); }
+            else { h.checagem = CHECAGENS.length + 1; h.revisaoEm = null; }
+            return h;
+        }
         if (hoje >= h.revisaoEm) {
             h.nivel = (h.nivel || 0) + 1;
             h.erroComCerteza = false;
-            if (h.nivel >= INTERVALOS.length) {
-                h.revisaoEm = null;
-                h.status = 'dominada';
+            if (h.nivel >= INTERVALOS.length || (h.nivel >= NIVEL_DOMINA_CEDO && !h.jaErrouComCerteza)) {
+                dominar(h, hoje);
             } else {
                 h.revisaoEm = somarDias(hoje, INTERVALOS[h.nivel]);
                 h.status = 'superado';
@@ -102,8 +129,21 @@ export function aplicarResposta(h, { acertou, confianca, momento = Date.now(), l
         return h;
     }
 
-    h.status = (h.diasComAcerto || 0) >= 2 ? 'dominada' : 'acerto';
+    if ((h.diasComAcerto || 0) >= 2) dominar(h, hoje);
+    else h.status = 'acerto';
     return h;
+}
+
+// Regra da fila (R3): a questão "descansa" fora do Praticar quando já está Dominada (até a checagem)
+// ou foi acertada com certeza nos últimos 7 dias. Se vence hoje, não descansa.
+export const DIAS_DESCANSO = 7;
+export function descansa(h, hoje = diaLocal()) {
+    if (!h || !h.tentativas || venceHoje(h, hoje)) return false;
+    if (h.status === 'dominada') return true;
+    if (h.ultimaResposta === 'certo' && h.ultimaConfianca === 'certeza' && h.ultimaData) {
+        return somarDias(diaLocal(h.ultimaData), DIAS_DESCANSO) > hoje;
+    }
+    return false;
 }
 
 // A questão vence hoje (ou já venceu)?
@@ -117,7 +157,13 @@ export function venceHoje(h, hoje = diaLocal()) {
  * a partir da última resposta. Não mexe em quem já tem agenda.
  */
 export function normalizarRegistroAntigo(h) {
-    if (!h || typeof h !== 'object' || h.nivel !== undefined) return h;
+    if (!h || typeof h !== 'object') return h;
+    // Dominada da regra antiga (sumia para sempre): ganha a checagem de 45 dias contada da última resposta
+    if (h.status === 'dominada' && !h.revisaoEm && h.checagem === undefined) {
+        h.checagem = 1;
+        h.revisaoEm = somarDias(h.ultimaData ? diaLocal(h.ultimaData) : diaLocal(), CHECAGENS[0]);
+    }
+    if (h.nivel !== undefined) return h;
     const hoje = diaLocal();
     const diaUltima = h.ultimaData ? diaLocal(h.ultimaData) : hoje;
     if (h.status === 'erro' || (h.ultimaResposta === 'errado' && h.status !== 'superado')) {
