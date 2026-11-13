@@ -1578,6 +1578,7 @@ body.modo-foco .cartao-hoje { display: none; }
 .dia-total .dia-linha { background: #020617; border-color: #334155; font-weight: 700; }
 .dia-rotulo { color: #e2e8f0; font-weight: 600; }
 .dia-detalhe { color: #cbd5e1; }
+.dia-meta { margin: .6rem 0 0; font-size: .9rem; color: #cbd5e1; }
 .dia-pct { font-weight: 800; min-width: 3rem; text-align: right; color: #94a3b8; }
 .dia-pct.alta, .dia-barra.alta { color: #34d399; }
 .dia-pct.media, .dia-barra.media { color: #fbbf24; }

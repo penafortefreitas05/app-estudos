@@ -52,14 +52,25 @@ function linhaGrupo(rotulo, b) {
     </div>`;
 }
 
-export function renderizarMeuDia(raiz, dias) {
+// Regra da fila (13/11/2026): meta diária de questões novas. Com a fila vencida acima de 30,
+// a meta cai para 10 até a fila baixar (evita bola de neve de revisão).
+export const META_NOVAS = 15;
+export const META_NOVAS_FILA_CHEIA = 10;
+export const LIMITE_FILA_CHEIA = 30;
+export function metaDeNovas(vencidas = 0) { return vencidas > LIMITE_FILA_CHEIA ? META_NOVAS_FILA_CHEIA : META_NOVAS; }
+
+export function renderizarMeuDia(raiz, dias, { vencidas = 0 } = {}) {
     const hoje = dias[dias.length - 1];
+    const meta = metaDeNovas(vencidas);
+    const feitas = hoje.nova.n;
+    const linhaMeta = `<p class="dia-meta">Meta de questões novas hoje: <strong>${Math.min(feitas, meta)} de ${meta}</strong>${feitas >= meta ? ' · meta cumprida' : ''}${meta < META_NOVAS ? ` (fila de revisão acima de ${LIMITE_FILA_CHEIA}: meta menor até ela baixar)` : ''}</p>`;
     const total = { n: hoje.nova.n + hoje.revisao.n, ac: hoje.nova.ac + hoje.revisao.ac };
     let html = `<div class="dia-hoje">
         ${linhaGrupo(`${icone('repetir', 'ic-azul')}Revisão`, hoje.revisao)}
         ${linhaGrupo(`${icone('estrela', 'ic-amarelo')}Questões novas`, hoje.nova)}
         <div class="dia-total">${linhaGrupo('Total de hoje', total)}</div>
     </div>
+    ${linhaMeta}
     <h4 class="dia-subtitulo">Últimos 7 dias</h4>
     <div class="dia-semana">`;
     dias.forEach((d, i) => {
