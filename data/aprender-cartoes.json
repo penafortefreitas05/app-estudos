@@ -12850,12 +12850,7 @@
     "termo_ingles": "",
     "traducao": "",
     "resumo": "O SFTP transfere arquivos dentro do SSH. O FTPS é o FTP com a Segurança da Camada de Transporte (TLS). Exemplo: enviar um backup ao servidor com proteção.",
-    "nao_confundir": [
-      {
-        "conceito": "FTP",
-        "diferenca": "FTP transfere sem proteção própria; FTPS acrescenta TLS ao mesmo FTP."
-      }
-    ],
+    "nao_confundir": [],
     "atencao": "O SFTP não é FTP com proteção: é outro protocolo, que roda no SSH; FTP com TLS é o FTPS.",
     "fonte": "[OpenBSD — sftp(1)](https://man.openbsd.org/sftp); [draft-ietf-secsh-filexfer-02 — SSH File Transfer Protocol](https://datatracker.ietf.org/doc/html/draft-ietf-secsh-filexfer-02); [RFC 4217 — Securing FTP with TLS](https://www.rfc-editor.org/rfc/rfc4217.html)",
     "tags": [
