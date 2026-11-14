@@ -794,7 +794,7 @@ document.addEventListener("focopro:simulado-finalizado", (e) => {
     if (!d || !d.total) return;
     const anteriores = lerSimuladosLocais();
     const reg = { id: novoId(), em: new Date().toISOString(), total: d.total, acertos: d.acertos, brancos: d.brancos,
-        segundos: d.segundos, porTempo: d.porTempo, concurso: trilhaAtual(), porMateria: d.porMateria };
+        segundos: d.segundos, porTempo: d.porTempo, concurso: trilhaAtual(), porMateria: d.porMateria, certoErrado: d.certoErrado };
     guardarSimuladoLocal(reg);
     if (usuarioAtual) salvarSimuladoNuvem(reg);
     abrirResultado(d, anteriores, {

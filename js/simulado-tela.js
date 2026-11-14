@@ -86,36 +86,70 @@ export function linhasPorAssunto(v) {
         .sort((x, y) => (y.m.ec || 0) - (x.m.ec || 0) || x.pct - y.pct || y.total - x.total);
 }
 
-const chipsMarca = (m, so = null) => MARCAS.filter(([k]) => (m[k] || 0) > 0 && (!so || so.includes(k)))
-    .map(([k, nome, cls]) => `<span class="sm-mc ${cls}" title="${nome}">${m[k]} ${plural(nome.toLowerCase(), m[k])}</span>`).join('');
-const plural = (nome, n) => (n === 1 ? nome : nome.replace(/^(erro|acerto)\b/, '$1s').replace(/^em branco$/, 'em branco'));
+// Quatro grupos (v163). "Sem marcação" entra na dúvida, como na fila de revisão.
+export function grupos(m) {
+    const x = m || {};
+    return { ac: x.ac || 0, ad: (x.ad || 0) + (x.as || 0), ed: (x.ed || 0) + (x.es || 0), ec: x.ec || 0,
+        sem: (x.as || 0) + (x.es || 0), b: x.b || 0 };
+}
+const n = (q, um, varios) => `${q} ${q === 1 ? um : varios}`;
 
-// Bloco "Por matéria" com assuntos e marcas. Simulados antigos (sem m/s) mostram só a barra, como antes.
+// Uma linha de texto com o que pesa: erros com certeza (em vermelho), erros na dúvida e, se pedir, acertos na dúvida
+export function resumoProblema(m, { comFragil = false } = {}) {
+    const g = grupos(m);
+    const partes = [];
+    if (g.ec) partes.push(`<b class="sm-t-ec">${n(g.ec, 'erro com certeza', 'erros com certeza')}</b>`);
+    if (g.ed) partes.push(n(g.ed, 'erro na dúvida', 'erros na dúvida'));
+    if (comFragil && g.ad) partes.push(n(g.ad, 'acerto na dúvida', 'acertos na dúvida'));
+    return partes.join(' · ');
+}
+
+// "Onde você foi pior": cada matéria com nota e uma linha de problema; os assuntos ficam recolhidos.
+// Simulados antigos (sem m/s) mostram só nome e nota.
 export function htmlPorMateria(porMateria) {
     return linhasPorMateria(porMateria).map(l => {
         const v = porMateria[l.materia] || {};
         const assuntos = linhasPorAssunto(v);
-        const cab = `<div class="sm-linha"><span class="sm-linha-nome">${esc(l.materia)}${l.pct < 60 && l.total >= 2 ? icone('alerta', 'ic-amarelo') : ''}</span><span class="sm-linha-barra"><i style="width:${l.pct}%"></i></span><span class="sm-linha-n">${l.acertos}/${l.total}</span></div>`;
-        if (!assuntos.length) return cab;
-        return `<div class="sm-mat">${cab}
-            ${v.m ? `<div class="sm-mcs">${chipsMarca(v.m)}</div>` : ''}
-            <ul class="sm-assuntos">${assuntos.map(a => `<li class="sm-ass">
-                <span class="sm-ass-nome">${esc(a.assunto)}</span><span class="sm-ass-n">${a.acertos}/${a.total}</span>
-                <span class="sm-ass-mcs">${chipsMarca(a.m, ['ec', 'ed', 'es', 'ad', 'as'])}</span></li>`).join('')}</ul></div>`;
+        const prob = v.m ? resumoProblema(v.m) : '';
+        const cab = `<div class="sm-mat-cab"><span class="sm-mat-nome">${esc(l.materia)}</span><span class="sm-mat-n">${l.acertos}/${l.total}</span></div>
+            ${prob ? `<p class="sm-mat-prob">${prob}</p>` : ''}`;
+        if (!assuntos.length) return `<div class="sm-mat">${cab}</div>`;
+        return `<details class="sm-mat">
+            <summary>${cab}<span class="sm-mat-ver">Ver assuntos (${assuntos.length})</span></summary>
+            <ul class="sm-assuntos">${assuntos.map(a => {
+                const pa = resumoProblema(a.m, { comFragil: true });
+                return `<li class="sm-ass"><span class="sm-ass-nome">${esc(a.assunto)}</span><span class="sm-ass-n">${a.acertos}/${a.total}</span>
+                ${pa ? `<span class="sm-ass-prob">${pa}</span>` : ''}</li>`;
+            }).join('')}</ul></details>`;
     }).join('');
 }
 
-// Resumo da confiança no simulado inteiro (ordem fixa, zeros aparecem)
+// Os 4 números do coração da tela, na ordem dominado → frágil → lacuna → conceito errado
 export function htmlResumoMarcas(porMateria) {
     const t = somarMarcas(porMateria);
     if (!Object.keys(t).length) return '';
-    const cel = (k, nome, cls) => `<div class="sm-rm ${cls}"><b>${t[k] || 0}</b><span>${nome}</span></div>`;
-    const sem = (t.as || 0) + (t.es || 0);
+    const g = grupos(t);
+    const cel = (q, nome, sub, cls) => `<div class="sm-rm ${cls}"><b>${q}</b><span>${nome}</span><small>${sub}</small></div>`;
     return `<div class="sm-rmarcas">
-        ${cel('ac', 'acerto com certeza', 'mc-ac')}${cel('ad', 'acerto na dúvida', 'mc-ad')}
-        ${cel('ec', 'erro com certeza', 'mc-ec')}${cel('ed', 'erro na dúvida', 'mc-ed')}
-        <div class="sm-rm mc-sem"><b>${sem}</b><span>sem marcação</span></div></div>
-        ${sem ? `<p class="sm-dica-sem">${icone('lampada')}Sem marcação conta como dúvida na revisão. Toque em "Tenho certeza" ou "Na dúvida" ao responder.</p>` : ''}`;
+        ${cel(g.ac, 'acerto com certeza', 'dominado', 'mc-ac')}${cel(g.ad, 'acerto na dúvida', 'frágil', 'mc-ad')}
+        ${cel(g.ed, 'erro na dúvida', 'lacuna', 'mc-ed')}${cel(g.ec, 'erro com certeza', 'conceito errado', 'mc-ec')}</div>
+        ${g.sem ? `<p class="sm-dica-sem">${n(g.sem, 'resposta sem marcação contada', 'respostas sem marcação contadas')} como dúvida.</p>` : ''}`;
+}
+
+// Comparação só com 3 simulados ou mais antes deste, em pontos percentuais
+export function textoComparacao(p, anteriores) {
+    const antes = resumirSimulados(anteriores);
+    if (antes.feitos < 3) return '';
+    const d = p - antes.media;
+    if (d === 0) return `Igual à sua média de ${antes.feitos} simulados (${antes.media}%).`;
+    return `${Math.abs(d)} ${Math.abs(d) === 1 ? 'ponto percentual' : 'pontos percentuais'} ${d > 0 ? 'acima' : 'abaixo'} da sua média de ${antes.feitos} simulados (${antes.media}%).`;
+}
+
+// Nota líquida das Certo/Errado: cada erro anula um acerto; branco não desconta
+export function textoNotaLiquida(ce) {
+    if (!ce || !ce.t) return '';
+    const liq = (ce.a || 0) - (ce.e || 0);
+    return `Nota líquida (Certo/Errado): <b>${liq}</b> de ${ce.t} <span class="sm-liq-conta">(${ce.a || 0} − ${ce.e || 0})</span>`;
 }
 
 // Linhas por matéria, da que precisa de mais reforço para a melhor
@@ -282,9 +316,8 @@ export function abrirSimulado({ disponiveis = () => 0, aoComecar, aoFiltros, car
 export function abrirResultado(resultado, anteriores = [], { aoRefazer, aoCaderno, aoNovo } = {}) {
     if (document.querySelector('.sm-tela')) document.querySelector('.sm-tela').remove();
     const p = percentual(resultado);
-    const antes = resumirSimulados(anteriores);
-    const comparacao = antes.feitos
-        ? (p === antes.media ? `Igual à sua média (${antes.media}%).` : `${p > antes.media ? '+' : ''}${p - antes.media} ${Math.abs(p - antes.media) === 1 ? 'ponto' : 'pontos'} em relação à sua média (${antes.media}%).`) : 'Seu primeiro simulado registrado.';
+    const comparacao = textoComparacao(p, anteriores);
+    const liquida = textoNotaLiquida(resultado.certoErrado);
     const refazer = resultado.erradas || [];
     const focoAntes = document.activeElement;
 
@@ -301,8 +334,9 @@ export function abrirResultado(resultado, anteriores = [], { aoRefazer, aoCadern
         <div class="sm-corpo">
             <section class="sm-sec">
                 <div class="sm-nota"><b>${resultado.acertos}/${resultado.total}</b><span>${p}%</span></div>
-                <p class="sm-comp">${esc(comparacao)}</p>
-                <div class="sm-stats"><div><b>${formatarDuracao(resultado.segundos)}</b><span>tempo</span></div><div><b>${resultado.total - resultado.acertos - (resultado.brancos || 0)}</b><span>erros</span></div><div><b>${resultado.brancos || 0}</b><span>em branco</span></div></div>
+                <p class="sm-linha-info">${formatarDuracao(resultado.segundos)} · ${n(resultado.total - resultado.acertos - (resultado.brancos || 0), 'erro', 'erros')} · ${resultado.brancos || 0} em branco</p>
+                ${liquida ? `<p class="sm-liquida">${liquida}</p>` : ''}
+                ${comparacao ? `<p class="sm-comp">${esc(comparacao)}</p>` : ''}
                 ${resultado.semGabarito ? `<p class="sm-aviso">${resultado.semGabarito} questão(ões) sem gabarito ficaram fora da correção.</p>` : ''}
             </section>
             ${htmlResumoMarcas(resultado.porMateria) ? `<section class="sm-sec">
@@ -310,7 +344,7 @@ export function abrirResultado(resultado, anteriores = [], { aoRefazer, aoCadern
                 ${htmlResumoMarcas(resultado.porMateria)}
             </section>` : ''}
             <section class="sm-sec">
-                <h3 class="sm-sec-titulo">Por matéria e assunto <span class="sm-dica">os mais fracos primeiro</span></h3>
+                <h3 class="sm-sec-titulo">Onde você foi pior</h3>
                 ${htmlPorMateria(resultado.porMateria)}
             </section>
             <section class="sm-sec sm-acoes">

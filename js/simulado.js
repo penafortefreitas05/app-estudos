@@ -127,6 +127,7 @@ export async function finalizarSimulado(simulado, container, porId, historico, q
     const porMateriaSim = {};
     const erradasSim = [];
     let brancosSim = 0; // só questões sem gabarito cadastrado (problema do dado)
+    const certoErrado = { t: 0, a: 0, e: 0 }; // para a nota líquida (v163)
     const respostasParaNuvem = [];
 
     itens.forEach((it, i) => {
@@ -144,6 +145,10 @@ export async function finalizarSimulado(simulado, container, porId, historico, q
         registrarMarca(porMateriaSim, { materia: q.materia || 'Geral', assunto: q.assunto || 'Sem assunto', temResposta, acertou: resultado.acertou, marca });
         if (!temResposta) brancosSim++;
         else if (!resultado.acertou) erradasSim.push(idStr);
+        if (q.tipo === 'certo_errado') {
+            certoErrado.t++;
+            if (temResposta) certoErrado[resultado.acertou ? 'a' : 'e']++;
+        }
 
         if (card && temResposta) {
             const acertou = resultado.acertou;
@@ -200,6 +205,7 @@ export async function finalizarSimulado(simulado, container, porId, historico, q
             segundos: Math.max(0, Math.round((Date.now() - (simulado.inicio || Date.now())) / 1000)),
             porTempo,
             porMateria: porMateriaSim,
+            certoErrado,
             erradas: erradasSim,
             semGabarito: falhasDeCorrecao
         }
