@@ -52,5 +52,32 @@
     "arquivo": "videos/mascara.mp4",
     "duracao": 91,
     "bytes": 3462506
+  },
+  {
+    "id": "processos",
+    "materia": "Engenharia de Software & Agilidade",
+    "assunto": "Processos, ciclos de vida e manutenção de software",
+    "titulo": "Processos de software",
+    "arquivo": "videos/processos.mp4",
+    "duracao": 89,
+    "bytes": 3835443
+  },
+  {
+    "id": "dns",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Protocolos de aplicação (DNS, HTTP, SMTP, LDAP)",
+    "titulo": "DNS: do nome ao número",
+    "arquivo": "videos/dns.mp4",
+    "duracao": 91,
+    "bytes": 3406253
+  },
+  {
+    "id": "chaves",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Modelagem de dados (MER e relacional)",
+    "titulo": "Chaves: quem identifica a linha",
+    "arquivo": "videos/chaves.mp4",
+    "duracao": 89,
+    "bytes": 3831855
   }
 ]
