@@ -139,20 +139,85 @@ function dividirExemplo(texto) {
     return m ? [t.slice(0, m.index), t.slice(m.index + 1)] : [t, ''];
 }
 
+// Modelo "direto ao ponto" v2 (13/11/2026): cor por papel, não por assunto.
+// azul = o conceito do cartão; laranja = o vizinho que se confunde; âmbar = "Na prova"; lilás = exemplo.
+// A cor nunca é a única pista: a sigla vem em negrito e cada bloco tem rótulo.
+// Tudo sai dos campos que já existem (sem campo novo): a sigla vem do "(SIGLA)" do termo em inglês.
+function separarSigla(texto) {
+    const t = String(texto || '').trim();
+    const m = t.match(/^(.*?)\s*\(([^()]+)\)\s*$/);
+    return m ? { nome: m[1].trim(), parenteses: m[2].trim() } : { nome: t, parenteses: '' };
+}
+const ehSigla = s => /^[A-Z0-9][A-Za-z0-9./-]{1,11}$/.test(s) && /[A-Z]{2}/.test(s);
+
+function palavras(t) { return new Set((String(t || '').toLowerCase().match(/[a-zà-ú0-9]{4,}/g) || [])); }
+function repete(a, b) {
+    const A = palavras(a), B = palavras(b);
+    if (!A.size) return true;
+    let comum = 0; A.forEach(w => { if (B.has(w)) comum++; });
+    return comum / A.size >= 0.5;
+}
+// Destaca a sigla do conceito (azul) na frase, só a primeira vez
+function marcarSigla(textoEsc, sigla, classe) {
+    if (!sigla) return textoEsc;
+    const re = new RegExp(`(^|[^A-Za-z0-9])(${sigla.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})(?![A-Za-z0-9])`);
+    return textoEsc.replace(re, `$1<b class="${classe}">$2</b>`);
+}
+// "DHCP entrega…" depois do rótulo DHCP: tira a sigla repetida do começo da frase
+function semSiglaInicial(texto, conceito) {
+    const { nome, parenteses } = separarSigla(conceito);
+    const sig = ehSigla(nome) ? nome : (ehSigla(parenteses) ? parenteses : '');
+    if (!sig) return texto;
+    const t = String(texto).replace(new RegExp(`^(o |a )?${sig}\\s+`, 'i'), '');
+    return t.charAt(0).toUpperCase() + t.slice(1);
+}
+function rotuloVizinho(conceito) {
+    const { nome, parenteses } = separarSigla(conceito);
+    if (parenteses && ehSigla(nome)) return `<b class="lv-viz">${esc(nome)}</b> <small class="lv-extenso">${esc(parenteses)}</small>`;
+    if (parenteses && ehSigla(parenteses)) return `<b class="lv-viz">${esc(parenteses)}</b> <small class="lv-extenso">${esc(nome)}</small>`;
+    return `<b class="lv-viz">${esc(nome)}</b>`;
+}
+
 function cartaoHTML(c) {
     const [central, exemplo] = dividirExemplo(c.resumo);
     const pares = Array.isArray(c.nao_confundir) ? c.nao_confundir.filter(p => p && p.conceito) : [];
-    const termo = String(c.termo_ingles || '').trim();
+    const ingles = separarSigla(c.termo_ingles);
+    const doConceito = separarSigla(c.conceito);
+    const sigla = ehSigla(ingles.parenteses) ? ingles.parenteses : (ehSigla(doConceito.parenteses) ? doConceito.parenteses : '');
+    const nomeConceito = (!ehSigla(ingles.parenteses) && sigla) ? doConceito.nome : c.conceito;
+    const comparacao = /\s×\s/.test(c.conceito || '');
+    let titulo;
+    if (comparacao) {
+        const [a, b] = String(c.conceito).split(/\s×\s/);
+        titulo = `<span class="lv-conc">${esc(a)}</span> <span class="lv-x">×</span> <span class="lv-viz">${esc(b)}</span>`;
+    } else if (sigla) {
+        titulo = `<span class="lv-conc">${esc(sigla)}</span> <small class="lv-extenso">${esc(nomeConceito)}</small>`;
+    } else {
+        titulo = esc(c.conceito);
+    }
+    const nomeEn = sigla ? ingles.nome : String(c.termo_ingles || '').trim();
+    const traducao = String(c.traducao || '').trim();
+    const mostrarTraducao = traducao && !repete(traducao, c.resumo);
+    const linhaNC = p => {
+        const dif = String(p.diferenca || '');
+        const partes = dif.split(/;\s*/);
+        if (partes.length === 2 && sigla && new RegExp(`\\b${sigla}\\b`).test(partes[0]) && !new RegExp(`\\b${sigla}\\b`).test(partes[1])) {
+            return `<li class="lv-par lv-par-conc">${marcarSigla(esc(partes[0].replace(/\.$/, '')), sigla, 'lv-conc')}.</li>
+                    <li class="lv-par lv-par-viz">${rotuloVizinho(p.conceito)}<span>${esc(semSiglaInicial(partes[1], p.conceito))}</span></li>`;
+        }
+        return `<li class="lv-par lv-par-viz">${rotuloVizinho(p.conceito)}<span>${esc(dif)}</span></li>`;
+    };
     return `
-        <article class="leitura-cartao">
+        <article class="leitura-cartao v2">
             <p class="leitura-meta">${esc(c.materia)} · ${esc(NOMES_NIVEL[c.nivel] || 'Iniciante')}</p>
-            <h3 class="leitura-conceito" tabindex="-1">${esc(c.conceito)}</h3>
-            ${termo ? `<p class="leitura-termo"><span class="leitura-en">EN</span><strong lang="en">${esc(termo)}</strong><span class="leitura-traducao">→ ${esc(c.traducao || '')}</span></p>` : ''}
-            <p class="leitura-resumo">${esc(central)}</p>
+            <h3 class="leitura-conceito" tabindex="-1">${titulo}</h3>
+            ${nomeEn ? `<p class="leitura-termo"><span class="leitura-en">EN</span><span lang="en">${esc(nomeEn)}</span>${mostrarTraducao ? `<span class="leitura-traducao">→ ${esc(traducao)}</span>` : ''}</p>` : (mostrarTraducao ? `<p class="leitura-termo"><span class="leitura-traducao">${esc(traducao)}</span></p>` : '')}
+            <p class="leitura-resumo">${comparacao
+                ? marcarSigla(marcarSigla(esc(central), String(c.conceito).split(/\s×\s/)[0].trim(), 'lv-conc'), String(c.conceito).split(/\s×\s/)[1].trim(), 'lv-viz')
+                : marcarSigla(esc(central), sigla, 'lv-conc')}</p>
             ${exemplo ? `<p class="leitura-exemplo">${esc(exemplo)}</p>` : ''}
-            ${pares.length ? `<section class="leitura-bloco"><h4>${icone("ciclo")}Não confundir</h4><ul>${pares.map(p =>
-                `<li><strong>${esc(p.conceito)}</strong>: ${esc(p.diferenca || '')}</li>`).join('')}</ul></section>` : ''}
-            ${c.atencao ? `<section class="leitura-bloco atencao"><h4>${icone("alerta")}Atenção</h4><p>${esc(c.atencao)}</p></section>` : ''}
+            ${pares.length ? `<section class="leitura-bloco"><h4>${icone("ciclo")}Não confundir</h4><ul class="lv-pares">${pares.map(linhaNC).join('')}</ul></section>` : ''}
+            ${c.atencao ? `<section class="leitura-bloco atencao"><h4>${icone("alvo")}Na prova</h4><p>${esc(c.atencao)}</p></section>` : ''}
             ${fonteHTML(c.fonte)}
         </article>`;
 }

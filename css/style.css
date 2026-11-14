@@ -1736,6 +1736,19 @@ body.modo-aprender .sidebar { background-color: #11102e; border-right-color: #2a
 .leitura-bloco p, .leitura-bloco ul { margin: 0; font-size: 1rem; line-height: 1.55; color: #e2e8f0; }
 .leitura-bloco ul { padding-left: 1.1rem; }
 .leitura-bloco li + li { margin-top: 0.3rem; }
+.leitura-cartao.v2 .leitura-conceito { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 0.6rem; }
+.lv-conc { color: #7cb8ff; font-weight: 800; }
+.lv-viz { color: #ffa65c; font-weight: 800; }
+.lv-x { color: #a5b4fc; font-weight: 400; }
+.lv-extenso { font-size: 0.8rem; font-weight: 400; color: #9d9bd6; }
+.leitura-cartao.v2 .leitura-conceito .lv-extenso { font-size: 0.85rem; }
+.leitura-cartao.v2 .leitura-exemplo { border-left-color: #a78bfa; background: rgba(167, 139, 250, 0.10); color: #ddd6fe; }
+.lv-pares { list-style: none; padding-left: 0 !important; display: grid; gap: 0.4rem; }
+.lv-par { padding: 0.45rem 0.7rem; border-radius: 8px; border: 1px solid; margin: 0 !important; }
+.lv-par-conc { border-color: #2f5f9e; background: rgba(55, 138, 221, 0.12); color: #d6e6ff; }
+.lv-par-viz { border-color: #9a5a1e; background: rgba(216, 120, 48, 0.12); color: #ffe1c4; }
+.lv-par-viz > span { display: block; }
+.leitura-cartao.v2 .leitura-bloco.atencao p { color: #fbe7b0; }
 .leitura-fonte { margin: 1.2rem 0 0; font-size: 0.75rem; line-height: 1.4; color: #818cf8; }
 .leitura-volta { max-width: 40rem; margin: 0 auto 0.6rem; text-align: center; font-size: 0.85rem; color: #fde68a; }
 .leitura-acoes { display: flex; gap: 0.75rem; width: 100%; max-width: 40rem; margin: 0 auto; padding: 0.8rem 1rem 0.4rem; }
