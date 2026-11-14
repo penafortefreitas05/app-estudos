@@ -860,7 +860,6 @@ async function responder(card, botao) {
         if (!simulado.confiancas) simulado.confiancas = {};
         // Trocar só a alternativa mantém a confiança já escolhida
         if (botao) simulado.confiancas[idChave] = confianca;
-        const confiancaAtual = simulado.confiancas[idChave] || 'certeza';
 
         card.querySelectorAll(".opcao-item").forEach(op => op.classList.remove("selecionada"));
         const labelPai = radioSelecionado.closest(".opcao-item");
@@ -873,7 +872,8 @@ async function responder(card, botao) {
             fbContainer.style.display = "block";
             const gabaritoDiv = fbContainer.querySelector(".gabarito-resposta");
             if (gabaritoDiv) {
-                gabaritoDiv.innerHTML = `<p class="cq-res-titulo">${icone("certo")}Alternativa (${esc(letraEscolhida)}) registrada${confiancaAtual === 'duvida' ? ' na dúvida' : ''}</p><p class="cq-res-gab">Você pode alterar antes de finalizar.</p>`;
+                const marcaTxt = simulado.confiancas[idChave] === 'duvida' ? ' na dúvida' : simulado.confiancas[idChave] === 'certeza' ? ' com certeza' : ' sem marcação';
+                gabaritoDiv.innerHTML = `<p class="cq-res-titulo">${icone("certo")}Alternativa (${esc(letraEscolhida)}) registrada${marcaTxt}</p><p class="cq-res-gab">${simulado.confiancas[idChave] ? 'Você pode alterar antes de finalizar.' : 'Toque em "Tenho certeza" ou "Na dúvida" para marcar. Sem marcação conta como dúvida.'}</p>`;
             }
         }
         if (!(foco && foco.simulado)) showToast(`Questão registrada: alternativa ${letraEscolhida}`, "info", 1800);
