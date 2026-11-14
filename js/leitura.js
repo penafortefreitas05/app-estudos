@@ -245,6 +245,19 @@ export function fonteHTML(fonte) {
 // aoAprender (opcional): chamado depois de marcar "Aprendi".
 // nivelPraticar (opcional): nome do nível que o Praticar abre, para o texto não prometer o nível errado.
 // avisoSemQuestoes (opcional): sem aoPraticar, frase que explica por que não há o que praticar.
+// Faixa de vídeos da leitura. Um vídeo: um botão de uma linha. Dois ou mais: um botão só ("▶ 4 vídeos · 6:41")
+// que abre a lista por cima do cartão; o cartão fica com a tela inteira (pedido do Nathan, 14/11).
+function faixaVideos(videos) {
+    if (!videos.length) return '';
+    const botao = (v, i) => `<button type="button" class="leitura-video" data-acao="video" data-i="${i}">${icone("play")}${esc(v.titulo)} <span>${formatarDuracao(v.duracao)}</span></button>`;
+    if (videos.length === 1) return `<div class="leitura-videos">${botao(videos[0], 0)}</div>`;
+    const total = videos.reduce((s, v) => s + (Number(v.duracao) || 0), 0);
+    return `<div class="leitura-videos multi">
+            <button type="button" class="leitura-video leitura-videos-abrir" data-acao="videos" aria-expanded="false" aria-controls="leitura-videos-lista">${icone("play")}${videos.length} vídeos do assunto <span>${formatarDuracao(total)}</span><b class="seta" aria-hidden="true">▾</b></button>
+            <div class="leitura-videos-lista" id="leitura-videos-lista" hidden>${videos.map(botao).join('')}</div>
+        </div>`;
+}
+
 // videos (opcional): vídeos "Aprenda em 1 min" do assunto (data/videos.json); cada um ganha um botão no topo da leitura.
 export function abrirLeitura(cartoes, { titulo, aoFechar, aoPraticar, aoAprender, nivelPraticar, avisoSemQuestoes, videos = [] } = {}) {
     if (!Array.isArray(cartoes) || !cartoes.length || document.querySelector('.leitura')) return;
@@ -267,7 +280,7 @@ export function abrirLeitura(cartoes, { titulo, aoFechar, aoPraticar, aoAprender
             </div>
             <button type="button" class="leitura-sair" data-acao="fechar" aria-label="Sair da leitura">${icone("fechar")}</button>
         </header>
-        ${videos.length ? `<div class="leitura-videos">${videos.map((v, i) => `<button type="button" class="leitura-video" data-acao="video" data-i="${i}">${icone("play")}${esc(v.titulo)} <span>${formatarDuracao(v.duracao)}</span></button>`).join('')}</div>` : ''}
+        ${faixaVideos(videos)}
         <div class="leitura-bolas" aria-hidden="true"></div>
         <p class="leitura-contagem" aria-live="polite"></p>
         <div class="leitura-corpo"></div>
@@ -310,9 +323,19 @@ export function abrirLeitura(cartoes, { titulo, aoFechar, aoPraticar, aoAprender
         if (tituloCartao) tituloCartao.focus({ preventScroll: true });
     }
 
+    function mostrarListaVideos(abrir) {
+        const lista = el.querySelector('.leitura-videos-lista');
+        const abre = el.querySelector('.leitura-videos-abrir');
+        if (!lista || !abre) return;
+        lista.hidden = !abrir;
+        abre.setAttribute('aria-expanded', abrir ? 'true' : 'false');
+    }
+
     function agir(acao, botao) {
         if (acao === 'fechar') return fechar();
+        if (acao === 'videos') return mostrarListaVideos(botao.getAttribute('aria-expanded') !== 'true');
         if (acao === 'video') {
+            mostrarListaVideos(false);
             const v = videos[Number(botao && botao.dataset.i)];
             // "Praticar" do vídeo faz o mesmo que o da leitura (sem marcar "Aprendi"): fecha a leitura e abre as questões
             return abrirVideo(v, { aoPraticar: typeof aoPraticar === 'function' ? () => { fechar(); aoPraticar(); } : undefined, nivelPraticar });
@@ -354,7 +377,12 @@ export function abrirLeitura(cartoes, { titulo, aoFechar, aoPraticar, aoAprender
             return;
         }
         e.stopPropagation();
-        if (e.key === 'Escape') { e.preventDefault(); agir('fechar'); }
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            const lista = el.querySelector('.leitura-videos-lista');
+            if (lista && !lista.hidden) return mostrarListaVideos(false); // Esc fecha a lista antes de fechar a leitura
+            agir('fechar');
+        }
         else if (e.key === 'ArrowRight' && !naFinal()) { e.preventDefault(); agir('proximo'); }
         else if (e.key === 'ArrowLeft' && sessao.indice > 0) { e.preventDefault(); agir('anterior'); }
     }
@@ -372,6 +400,7 @@ export function abrirLeitura(cartoes, { titulo, aoFechar, aoPraticar, aoAprender
     }
 
     el.addEventListener('click', (e) => {
+        if (!e.target.closest('.leitura-videos')) mostrarListaVideos(false); // toque fora fecha a lista de vídeos
         const botao = e.target.closest('[data-acao]');
         if (botao && !botao.disabled) agir(botao.dataset.acao, botao);
     });
