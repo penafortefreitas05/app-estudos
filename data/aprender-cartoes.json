@@ -5218,7 +5218,7 @@
       }
     ],
     "atencao": "Hub opera na camada física (1); switch, na de enlace (2); roteador, na de rede (3).",
-    "fonte": "[Cisco — Troubleshoot LAN Switching Environments (Document ID 12006)](https://www.cisco.com/c/en/us/support/docs/lan-switching/ethernet/12006-chapter22.html); [RFC 1812 — Requirements for IP Version 4 Routers, seção 1](https://www.rfc-editor.org/rfc/rfc1812.html); [RFC 3031 — Multiprotocol Label Switching Architecture, seção 2.2](https://www.rfc-editor.org/rfc/rfc3031.html)",
+    "fonte": "[Cisco Press — Switching Introduction (hub na camada 1, switch na camada 2)](https://www.ciscopress.com/articles/article.asp?p=2348264); [Cisco Press — Network Devices (roteador na camada 3)](https://ciscopress.com/articles/article.asp?p=2434666); [RFC 1812 — Requirements for IP Version 4 Routers, seção 1](https://www.rfc-editor.org/rfc/rfc1812.html)",
     "tags": [
       "equipamentos-de-rede",
       "modelo-osi",
@@ -5264,7 +5264,7 @@
       }
     ],
     "atencao": "HTTP usa TCP 80; HTTPS, TCP 443 (HTTP/3 usa UDP). A mesma porta pode existir em TCP e UDP.",
-    "fonte": "[RFC 6335 — IANA Procedures for the Management of the Service Name and Transport Protocol Port Number Registry, seções 3, 6 e 7.2](https://www.rfc-editor.org/rfc/rfc6335.html); [RFC 9110 — HTTP Semantics, seções 4.2.1 e 4.2.2](https://www.rfc-editor.org/rfc/rfc9110.html)",
+    "fonte": "[RFC 6335 — IANA Procedures for the Management of the Service Name and Transport Protocol Port Number Registry, seções 3, 6 e 7.2](https://www.rfc-editor.org/rfc/rfc6335.html); [RFC 9110 — HTTP Semantics, seções 4.2.1 e 4.2.2](https://www.rfc-editor.org/rfc/rfc9110.html); [RFC 9114 — HTTP/3 (sobre QUIC, que usa UDP)](https://www.rfc-editor.org/rfc/rfc9114.html)",
     "tags": [
       "portas",
       "tcp",
@@ -5287,7 +5287,7 @@
         "diferenca": "MAN cobre uma cidade: maior que a LAN, menor que a WAN."
       }
     ],
-    "atencao": "Uma WAN pode interligar várias LANs, inclusive por meio de redes de operadoras.",
+    "atencao": "A WAN cobre área geográfica maior e atende mais usuários que a LAN.",
     "fonte": "[NIST CSRC Glossary — local area network (definição da NIST SP 800-82r3)](https://csrc.nist.gov/glossary/term/local_area_network); [NIST CSRC Glossary — wide area network (definição da NIST SP 800-82r3)](https://csrc.nist.gov/glossary/term/wide_area_network)",
     "tags": [
       "lan",
@@ -12660,7 +12660,7 @@
       }
     ],
     "atencao": "O IPv6 é da camada de rede (3), tem endereços de 128 bits e usa multicast, não broadcast.",
-    "fonte": "[RFC 8200 — Internet Protocol, Version 6 (IPv6) Specification, seções 1 e 2](https://www.rfc-editor.org/rfc/rfc8200.html); [RFC 4291 — IP Version 6 Addressing Architecture, seções 2 e 2.2](https://www.rfc-editor.org/rfc/rfc4291.html); [RFC 3031 — Multiprotocol Label Switching Architecture, seção 2.2](https://www.rfc-editor.org/rfc/rfc3031.html); [RFC 4861 — Neighbor Discovery for IP version 6 (IPv6), seção 3.1](https://www.rfc-editor.org/rfc/rfc4861.html)",
+    "fonte": "[RFC 8200 — Internet Protocol, Version 6 (IPv6) Specification, seções 1 e 2](https://www.rfc-editor.org/rfc/rfc8200.html); [RFC 4291 — IP Version 6 Addressing Architecture, seções 2 e 2.2](https://www.rfc-editor.org/rfc/rfc4291.html); [RFC 4861 — Neighbor Discovery for IP version 6 (IPv6), seção 3.1](https://www.rfc-editor.org/rfc/rfc4861.html)",
     "tags": [
       "ipv6",
       "camada-de-rede",
