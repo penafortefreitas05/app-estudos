@@ -176,6 +176,7 @@ function rotuloVizinho(conceito) {
     const { nome, parenteses } = separarSigla(conceito);
     if (parenteses && ehSigla(nome)) return `<b class="lv-viz">${esc(nome)}</b> <small class="lv-extenso">${esc(parenteses)}</small>`;
     if (parenteses && ehSigla(parenteses)) return `<b class="lv-viz">${esc(parenteses)}</b> <small class="lv-extenso">${esc(nome)}</small>`;
+    if (/^erro comum$/i.test(nome)) return '';
     return `<b class="lv-viz">${esc(nome)}</b>`;
 }
 
@@ -203,9 +204,9 @@ function cartaoHTML(c) {
     const linhaNC = p => {
         const dif = String(p.diferenca || '');
         const partes = dif.split(/;\s*/);
+        // Sala Design (13/11): o lado do próprio conceito já está no resumo; mostra só o vizinho
         if (partes.length === 2 && sigla && new RegExp(`\\b${sigla}\\b`).test(partes[0]) && !new RegExp(`\\b${sigla}\\b`).test(partes[1])) {
-            return `<li class="lv-par lv-par-conc">${marcarSigla(esc(partes[0].replace(/\.$/, '')), sigla, 'lv-conc')}.</li>
-                    <li class="lv-par lv-par-viz">${rotuloVizinho(p.conceito)}<span>${esc(semSiglaInicial(partes[1], p.conceito))}</span></li>`;
+            return `<li class="lv-par lv-par-viz">${rotuloVizinho(p.conceito)}<span>${esc(semSiglaInicial(partes[1], p.conceito))}</span></li>`;
         }
         return `<li class="lv-par lv-par-viz">${rotuloVizinho(p.conceito)}<span>${esc(dif)}</span></li>`;
     };
@@ -218,7 +219,7 @@ function cartaoHTML(c) {
                 ? marcarSigla(marcarSigla(esc(central), String(c.conceito).split(/\s×\s/)[0].trim(), 'lv-conc'), String(c.conceito).split(/\s×\s/)[1].trim(), 'lv-viz')
                 : marcarSigla(esc(central), sigla, 'lv-conc')}</p>
             ${exemplo ? `<p class="leitura-exemplo">${esc(exemplo)}</p>` : ''}
-            ${pares.length ? `<section class="leitura-bloco"><h4>${icone("ciclo")}Não confundir</h4><ul class="lv-pares">${pares.map(linhaNC).join('')}</ul></section>` : ''}
+            ${pares.length ? `<section class="leitura-bloco"><h4>${icone("ciclo")}${pares.every(p => /^erro comum$/i.test(String(p.conceito).trim())) ? 'Erro comum' : 'Não confundir'}</h4><ul class="lv-pares">${pares.map(linhaNC).join('')}</ul></section>` : ''}
             ${c.atencao ? `<section class="leitura-bloco atencao"><h4>${icone("alvo")}Na prova</h4><p>${esc(c.atencao)}</p></section>` : ''}
             ${fonteHTML(c.fonte)}
         </article>`;

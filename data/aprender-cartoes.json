@@ -5240,7 +5240,7 @@
         "diferenca": "IP entrega pacotes sem garantia; a confiabilidade vem do TCP."
       }
     ],
-    "atencao": "TCP garante entrega confiável e em ordem; no UDP, retransmissão e ordem ficam por conta da aplicação.",
+    "atencao": "TCP fornece entrega confiável e ordenada; no UDP, retransmissão e ordem ficam por conta da aplicação.",
     "fonte": "[RFC 9293 — Transmission Control Protocol (TCP), seção 2.2](https://www.rfc-editor.org/rfc/rfc9293.html); [RFC 768 — User Datagram Protocol](https://www.rfc-editor.org/rfc/rfc768.html); [RFC 8085 — UDP Usage Guidelines, seção 3.3](https://www.rfc-editor.org/rfc/rfc8085.html)",
     "tags": [
       "tcp",
@@ -5263,7 +5263,7 @@
         "diferenca": "IP identifica a interface; porta identifica o serviço."
       }
     ],
-    "atencao": "TCP e UDP têm registros de portas separados, de 16 bits; HTTP usa TCP 80; HTTPS, TCP 443.",
+    "atencao": "HTTP usa TCP 80; HTTPS, TCP 443 (HTTP/3 usa UDP). A mesma porta pode existir em TCP e UDP.",
     "fonte": "[RFC 6335 — IANA Procedures for the Management of the Service Name and Transport Protocol Port Number Registry, seções 3, 6 e 7.2](https://www.rfc-editor.org/rfc/rfc6335.html); [RFC 9110 — HTTP Semantics, seções 4.2.1 e 4.2.2](https://www.rfc-editor.org/rfc/rfc9110.html)",
     "tags": [
       "portas",
@@ -5287,7 +5287,7 @@
         "diferenca": "MAN cobre uma cidade: maior que a LAN, menor que a WAN."
       }
     ],
-    "atencao": "A LAN cobre área limitada; a WAN, área geográfica maior que a da LAN.",
+    "atencao": "Uma WAN pode interligar várias LANs, inclusive por meio de redes de operadoras.",
     "fonte": "[NIST CSRC Glossary — local area network (definição da NIST SP 800-82r3)](https://csrc.nist.gov/glossary/term/local_area_network); [NIST CSRC Glossary — wide area network (definição da NIST SP 800-82r3)](https://csrc.nist.gov/glossary/term/wide_area_network)",
     "tags": [
       "lan",
@@ -5390,7 +5390,7 @@
     "conceito": "OSPF: roteamento por estado de enlace",
     "termo_ingles": "Open Shortest Path First (OSPF)",
     "traducao": "",
-    "resumo": "OSPF serve para calcular rotas dentro de um sistema autônomo: cada roteador divulga o estado de seus enlaces e aplica Dijkstra. Exemplo: entre dois caminhos, escolhe o de menor custo.",
+    "resumo": "OSPF serve para calcular rotas num sistema autônomo (rede de uma só administração): cada roteador divulga o estado dos enlaces e usa Dijkstra. Exemplo: escolhe o caminho de menor custo.",
     "nao_confundir": [
       {
         "conceito": "RIP (Routing Information Protocol)",
@@ -5462,7 +5462,7 @@
         "diferenca": "DNS traduz nomes em endereços IP; DHCP entrega endereço IP e outras configurações de rede."
       }
     ],
-    "atencao": "Consultas DNS usam normalmente UDP na porta 53; TCP também é utilizado, inclusive em transferências de zona.",
+    "atencao": "Consultas DNS usam normalmente UDP na porta 53; TCP também é utilizado.",
     "fonte": "RFC 1034, Domain Names – Concepts and Facilities, 1987; RFC 1035, Domain Names – Implementation and Specification, 1987; IANA, Service Name and Port Number Registry.",
     "tags": [
       "dns"
@@ -12725,7 +12725,7 @@
         "diferenca": "SYN (synchronize) abre a conexão; ACK (acknowledgment) confirma; FIN encerra."
       }
     ],
-    "atencao": "A conexão TCP abre com três segmentos, nesta ordem: SYN, SYN-ACK e ACK.",
+    "atencao": "São três segmentos; só os dois primeiros (SYN e SYN-ACK) levam o bit SYN.",
     "fonte": "[RFC 9293 — Transmission Control Protocol (TCP), seções 3.1 e 3.5](https://www.rfc-editor.org/rfc/rfc9293.html)",
     "tags": [
       "handshake-tcp",
