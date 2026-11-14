@@ -5140,18 +5140,18 @@
     "materia": "Redes & Segurança da Informação",
     "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
     "nivel": 1,
-    "conceito": "Modelo OSI",
-    "termo_ingles": "Open Systems Interconnection (OSI) model",
-    "traducao": "Modelo OSI: organiza a comunicação em sete camadas com funções distintas.",
-    "resumo": "Divide a comunicação em sete camadas, da física à aplicação: física, enlace, rede, transporte, sessão, apresentação, aplicação. Cada camada cuida de uma função.",
+    "conceito": "Modelo OSI: as sete camadas",
+    "termo_ingles": "Open Systems Interconnection (OSI)",
+    "traducao": "Interconexão de Sistemas Abertos: modelo de referência em que cada camada cuida de uma função.",
+    "resumo": "Camadas do OSI, de 1 a 7, gancho FERTSAA: Física, Enlace, Rede, Transporte, Sessão, Apresentação, Aplicação. Exemplo: o roteador trabalha na camada 3 (rede); o switch, na 2 (enlace).",
     "nao_confundir": [
       {
-        "conceito": "Modelo TCP/IP (protocolos da internet)",
-        "diferenca": "TCP/IP é o modelo prático da internet, com quatro ou cinco camadas conforme o autor."
+        "conceito": "TCP/IP (Transmission Control Protocol/Internet Protocol)",
+        "diferenca": "OSI tem sete camadas; TCP/IP, quatro ou cinco, conforme o autor."
       }
     ],
-    "atencao": "No modelo OSI, a camada de rede é a terceira e a de transporte é a quarta.",
-    "fonte": "ITU-T Recommendation X.200, Open Systems Interconnection – Basic Reference Model, 1994; RFC 1122, Requirements for Internet Hosts, 1989.",
+    "atencao": "No OSI, a camada de rede é a 3; a de transporte, a 4.",
+    "fonte": "[ITU-T Recommendation X.200 (07/1994) — Open Systems Interconnection, Basic Reference Model: The basic model, cláusula 6.1.2](https://www.itu.int/rec/T-REC-X.200-199407-I/en)",
     "tags": [
       "modelo-osi",
       "camada-de-rede",
@@ -5164,17 +5164,17 @@
     "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
     "nivel": 1,
     "conceito": "Endereço IP",
-    "termo_ingles": "Internet Protocol address",
-    "traducao": "Endereço IP: identifica uma interface de rede para comunicação entre redes.",
-    "resumo": "É um identificador lógico da interface. IPv4 usa 32 bits e IPv6 usa 128. Prefixo é a parte inicial que identifica a rede.",
+    "termo_ingles": "Internet Protocol address (IP address)",
+    "traducao": "Endereço do Protocolo de Internet: IPv4 é a versão 4 do protocolo; IPv6, a versão 6.",
+    "resumo": "Endereço IP serve para identificar logicamente uma interface de rede. IPv4 usa 32 bits; IPv6, 128; o prefixo inicial identifica a rede. Exemplo: em 192.0.2.10/24, a rede é 192.0.2.0.",
     "nao_confundir": [
       {
         "conceito": "Nome de domínio",
-        "diferenca": "IP é número da interface; nome de domínio é texto que pessoas digitam."
+        "diferenca": "IP é número da interface; nome de domínio é texto para pessoas."
       }
     ],
     "atencao": "O IP identifica a interface, não o equipamento; uma interface pode ter mais de um endereço.",
-    "fonte": "RFC 791, Internet Protocol, 1981; RFC 8200, Internet Protocol, Version 6 (IPv6) Specification, 2017; RFC 1122, Requirements for Internet Hosts, 1989.",
+    "fonte": "[RFC 4291 — IP Version 6 Addressing Architecture, seção 2.1](https://www.rfc-editor.org/rfc/rfc4291.html); [RFC 8200 — Internet Protocol, Version 6 (IPv6) Specification, seção 1](https://www.rfc-editor.org/rfc/rfc8200.html)",
     "tags": [
       "ipv6",
       "camada-de-rede"
@@ -5185,21 +5185,21 @@
     "materia": "Redes & Segurança da Informação",
     "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
     "nivel": 1,
-    "conceito": "Protocolo de resolução de endereços",
+    "conceito": "ARP: resolução de endereços",
     "termo_ingles": "Address Resolution Protocol (ARP)",
-    "traducao": "ARP: descobre o endereço físico (MAC) de um endereço IPv4 na rede local.",
-    "resumo": "Na rede local, os dados são entregues ao endereço MAC, identificador físico da interface de rede. O ARP descobre o MAC que corresponde a um endereço IPv4 conhecido.",
+    "traducao": "",
+    "resumo": "ARP serve para descobrir, na rede local, o endereço físico (MAC) de um IPv4 conhecido. Exemplo: quem tem 192.0.2.1 responde informando seu MAC.",
     "nao_confundir": [
       {
-        "conceito": "DNS",
+        "conceito": "DNS (Sistema de Nomes de Domínio)",
         "diferenca": "DNS descobre o IP de um nome; ARP descobre o MAC de um IPv4."
       }
     ],
     "atencao": "O ARP serve ao IPv4; no IPv6, quem descobre o MAC do vizinho é o Neighbor Discovery.",
-    "fonte": "RFC 826, An Ethernet Address Resolution Protocol, 1982; RFC 4861, Neighbor Discovery for IP version 6 (IPv6), 2007.",
+    "fonte": "[RFC 826 — An Ethernet Address Resolution Protocol](https://www.rfc-editor.org/rfc/rfc826.html); [RFC 4861 — Neighbor Discovery for IP version 6 (IPv6), resumo e seção 3.1](https://www.rfc-editor.org/rfc/rfc4861.html)",
     "tags": [
-      "equipamentos-de-rede",
-      "camada-de-rede"
+      "camada-de-rede",
+      "ipv6"
     ]
   },
   {
@@ -5209,18 +5209,19 @@
     "nivel": 1,
     "conceito": "Roteador",
     "termo_ingles": "Router",
-    "traducao": "Roteador: encaminha pacotes entre redes com base em endereços IP e rotas.",
-    "resumo": "Equipamento que interliga redes e escolhe para onde encaminhar pacotes IP, blocos de dados enviados pela rede, consultando informações de roteamento.",
+    "traducao": "",
+    "resumo": "Roteador serve para interligar redes e escolher, pela tabela de rotas, para onde encaminhar pacotes IP (Internet Protocol). Exemplo: o roteador de casa liga a rede doméstica à internet.",
     "nao_confundir": [
       {
         "conceito": "Switch",
-        "diferenca": "Roteador liga redes distintas usando IP; switch (liga dispositivos de uma mesma rede) usa MAC."
+        "diferenca": "Roteador encaminha pelo endereço IP; switch, pelo MAC (Media Access Control), o endereço físico."
       }
     ],
-    "atencao": "O roteador opera tipicamente na camada de rede do modelo OSI.",
-    "fonte": "RFC 1812, Requirements for IP Version 4 Routers, 1995; ITU-T Recommendation X.200, 1994.",
+    "atencao": "Hub opera na camada física (1); switch, na de enlace (2); roteador, na de rede (3).",
+    "fonte": "[Cisco — Troubleshoot LAN Switching Environments (Document ID 12006)](https://www.cisco.com/c/en/us/support/docs/lan-switching/ethernet/12006-chapter22.html); [RFC 1812 — Requirements for IP Version 4 Routers, seção 1](https://www.rfc-editor.org/rfc/rfc1812.html); [RFC 3031 — Multiprotocol Label Switching Architecture, seção 2.2](https://www.rfc-editor.org/rfc/rfc3031.html)",
     "tags": [
       "equipamentos-de-rede",
+      "modelo-osi",
       "camada-de-rede"
     ]
   },
@@ -5229,18 +5230,18 @@
     "materia": "Redes & Segurança da Informação",
     "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
     "nivel": 1,
-    "conceito": "Protocolos de transporte TCP e UDP",
-    "termo_ingles": "Transmission Control Protocol and User Datagram Protocol",
-    "traducao": "TCP: oferece transporte confiável e ordenado; UDP: envia blocos de dados sem garantir entrega ou ordem.",
-    "resumo": "TCP estabelece conexão e controla recebimento e ordem dos dados. UDP envia datagramas, blocos de dados independentes, sem confirmação de entrega ou garantia de ordenação.",
+    "conceito": "TCP × UDP",
+    "termo_ingles": "Transmission Control Protocol (TCP) × User Datagram Protocol (UDP)",
+    "traducao": "",
+    "resumo": "TCP serve para entregar dados com conexão, confirmação e ordem. UDP envia datagramas independentes, sem conexão nem confirmação. Exemplo: baixar arquivo usa TCP; chamada de voz costuma usar UDP.",
     "nao_confundir": [
       {
-        "conceito": "IP",
-        "diferenca": "IP entrega pacotes sem garantia; TCP acrescenta confiabilidade e ordem sobre o IP."
+        "conceito": "IP (Internet Protocol)",
+        "diferenca": "IP entrega pacotes sem garantia; a confiabilidade vem do TCP."
       }
     ],
-    "atencao": "Com UDP, se a aplicação precisar de retransmissão ou de ordem, ela mesma precisa implementá-las.",
-    "fonte": "RFC 9293, Transmission Control Protocol (TCP), 2022; RFC 768, User Datagram Protocol, 1980.",
+    "atencao": "TCP garante entrega confiável e em ordem; no UDP, retransmissão e ordem ficam por conta da aplicação.",
+    "fonte": "[RFC 9293 — Transmission Control Protocol (TCP), seção 2.2](https://www.rfc-editor.org/rfc/rfc9293.html); [RFC 768 — User Datagram Protocol](https://www.rfc-editor.org/rfc/rfc768.html); [RFC 8085 — UDP Usage Guidelines, seção 3.3](https://www.rfc-editor.org/rfc/rfc8085.html)",
     "tags": [
       "tcp",
       "udp",
@@ -5254,16 +5255,16 @@
     "nivel": 1,
     "conceito": "Porta de transporte",
     "termo_ingles": "Transport-layer port",
-    "traducao": "Porta de transporte: identifica um serviço ou processo de comunicação associado a TCP ou UDP.",
-    "resumo": "Número usado para direcionar dados ao serviço correspondente no dispositivo. Exemplos (HTTP/1.1 e HTTP/2): HTTP usa TCP 80; HTTPS, TCP 443.",
+    "traducao": "Porta de transporte: número do TCP ou do UDP.",
+    "resumo": "Porta de transporte serve para direcionar os dados ao serviço certo dentro do dispositivo. Exemplo: no mesmo computador, a porta 80 leva ao servidor web; a 25, ao de e-mail.",
     "nao_confundir": [
       {
         "conceito": "Endereço IP",
-        "diferenca": "IP identifica a interface de rede; porta identifica o serviço de transporte."
+        "diferenca": "IP identifica a interface; porta identifica o serviço."
       }
     ],
-    "atencao": "Uma mesma numeração de porta pode existir separadamente em TCP e UDP.",
-    "fonte": "RFC 9293, Transmission Control Protocol (TCP), 2022; RFC 768, User Datagram Protocol, 1980; IANA, Service Name and Transport Protocol Port Number Registry.",
+    "atencao": "TCP e UDP têm registros de portas separados, de 16 bits; HTTP usa TCP 80; HTTPS, TCP 443.",
+    "fonte": "[RFC 6335 — IANA Procedures for the Management of the Service Name and Transport Protocol Port Number Registry, seções 3, 6 e 7.2](https://www.rfc-editor.org/rfc/rfc6335.html); [RFC 9110 — HTTP Semantics, seções 4.2.1 e 4.2.2](https://www.rfc-editor.org/rfc/rfc9110.html)",
     "tags": [
       "portas",
       "tcp",
@@ -5276,18 +5277,18 @@
     "materia": "Redes & Segurança da Informação",
     "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
     "nivel": 1,
-    "conceito": "Rede local e rede de longa distância",
-    "termo_ingles": "Local Area Network and Wide Area Network",
-    "traducao": "LAN: conecta dispositivos em área limitada; WAN: interliga redes em grandes distâncias.",
-    "resumo": "LAN atende áreas como residências, escritórios e prédios. WAN conecta redes geograficamente distantes, como filiais em cidades diferentes.",
+    "conceito": "LAN × WAN",
+    "termo_ingles": "Local Area Network (LAN) × Wide Area Network (WAN)",
+    "traducao": "Rede local × rede de longa distância: tipos de rede classificados pelo alcance geográfico.",
+    "resumo": "LAN serve para ligar aparelhos de um mesmo local, como casa ou prédio. WAN serve para interligar redes distantes. Exemplo: a WAN da empresa liga as LANs das filiais.",
     "nao_confundir": [
       {
-        "conceito": "Rede metropolitana (MAN)",
-        "diferenca": "MAN cobre cidade ou região; é maior que a LAN e menor que a WAN."
+        "conceito": "MAN (Metropolitan Area Network)",
+        "diferenca": "MAN cobre uma cidade: maior que a LAN, menor que a WAN."
       }
     ],
-    "atencao": "Uma WAN pode interligar várias LANs, inclusive por meio de redes de operadoras.",
-    "fonte": "NIST CSRC Glossary, entradas Local Area Network e Wide Area Network.",
+    "atencao": "A LAN cobre área limitada; a WAN, área geográfica maior que a da LAN.",
+    "fonte": "[NIST CSRC Glossary — local area network (definição da NIST SP 800-82r3)](https://csrc.nist.gov/glossary/term/local_area_network); [NIST CSRC Glossary — wide area network (definição da NIST SP 800-82r3)](https://csrc.nist.gov/glossary/term/wide_area_network)",
     "tags": [
       "lan",
       "wan"
@@ -5298,21 +5299,22 @@
     "materia": "Redes & Segurança da Informação",
     "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
     "nivel": 1,
-    "conceito": "Tradução de endereços de rede",
+    "conceito": "NAT: tradução de endereços de rede",
     "termo_ingles": "Network Address Translation (NAT)",
-    "traducao": "NAT: traduz endereços IP durante o encaminhamento de pacotes entre redes.",
-    "resumo": "Substitui endereços IP de origem ou destino dos pacotes em trânsito. Permite que dispositivos de uma rede privada (com endereços de uso interno) acessem a internet.",
+    "traducao": "Tradução de Endereços de Rede: age sobre o IP; com portas, vira NAPT, também chamada PAT.",
+    "resumo": "NAT serve para trocar o endereço IP dos pacotes em trânsito entre a rede privada e a internet. Exemplo: 192.168.0.10 sai como 203.0.113.5.",
     "nao_confundir": [
       {
-        "conceito": "NAPT (PAT)",
-        "diferenca": "NAT traduz endereços IP; NAPT (PAT) também traduz portas, permitindo vários dispositivos num só endereço."
+        "conceito": "DHCP (Dynamic Host Configuration Protocol)",
+        "diferenca": "DHCP entrega o IP ao aparelho; NAT troca o IP dos pacotes."
       }
     ],
-    "atencao": "O NAT troca endereços de pacotes em trânsito; não entrega endereços IP aos dispositivos da rede.",
-    "fonte": "RFC 3022, Traditional IP Network Address Translator (Traditional NAT), 2001.",
+    "atencao": "NAT básico traduz só endereços IP; NAPT (PAT) traduz também portas, e vários aparelhos compartilham um IP público.",
+    "fonte": "[RFC 3022 — Traditional IP Network Address Translator (Traditional NAT), resumo e seções 1 e 2](https://www.rfc-editor.org/rfc/rfc3022.html)",
     "tags": [
       "nat",
-      "pat"
+      "pat",
+      "dhcp"
     ]
   },
   {
@@ -5320,18 +5322,18 @@
     "materia": "Redes & Segurança da Informação",
     "assunto": "Roteamento, switching e SDN",
     "nivel": 1,
-    "conceito": "Switching por endereço MAC",
+    "conceito": "Switch: encaminhamento por endereço MAC",
     "termo_ingles": "Ethernet switching",
-    "traducao": "Switching: encaminha quadros na rede local usando endereços MAC.",
-    "resumo": "O switch aprende os endereços MAC associados a cada uma de suas portas (conectores físicos) e encaminha quadros, unidades de dados da rede local, à porta correspondente.",
+    "traducao": "Comutação Ethernet: usa o MAC, endereço físico da placa.",
+    "resumo": "Switching serve para entregar quadros na rede local pelo endereço MAC de destino. Exemplo: o switch aprende que certo MAC está na porta 3 e envia só para ela.",
     "nao_confundir": [
       {
         "conceito": "Roteamento",
-        "diferenca": "Switching encaminha quadros por MAC; roteamento encaminha pacotes IP entre redes."
+        "diferenca": "Switching encaminha quadros pelo MAC; roteamento encaminha pacotes entre redes."
       }
     ],
-    "atencao": "O switch tradicional opera na camada de enlace (2); o roteador, na de rede (3).",
-    "fonte": "Juniper Networks. Layer 2 Forwarding Tables (documentação Junos); ITU-T Recommendation X.200, 1994.",
+    "atencao": "O switch é da camada de enlace (2) e escolhe a porta de saída pelo MAC de destino.",
+    "fonte": "[Cisco — Troubleshoot LAN Switching Environments (Document ID 12006)](https://www.cisco.com/c/en/us/support/docs/lan-switching/ethernet/12006-chapter22.html)",
     "tags": [
       "switch",
       "mac"
@@ -5342,18 +5344,18 @@
     "materia": "Redes & Segurança da Informação",
     "assunto": "Roteamento, switching e SDN",
     "nivel": 1,
-    "conceito": "Rede local virtual",
+    "conceito": "VLAN: rede local virtual",
     "termo_ingles": "Virtual Local Area Network (VLAN)",
-    "traducao": "VLAN: divide uma rede local física em redes lógicas separadas.",
-    "resumo": "Permite separar grupos de dispositivos em redes lógicas distintas, mesmo conectados ao mesmo switch físico.",
+    "traducao": "",
+    "resumo": "VLAN serve para dividir uma rede local física em redes lógicas separadas. Exemplo: no mesmo switch, portas 1 a 8 na VLAN 10 e as demais na VLAN 20.",
     "nao_confundir": [
       {
         "conceito": "Sub-rede",
-        "diferenca": "VLAN separa a rede no enlace; sub-rede separa por faixa de endereços IP."
+        "diferenca": "VLAN separa na camada de enlace; sub-rede separa por faixa de endereços IP (Internet Protocol)."
       }
     ],
-    "atencao": "A comunicação entre VLANs diferentes exige roteamento entre elas.",
-    "fonte": "Cisco. Configure Inter-VLAN Routing with Catalyst Switches (Document ID 218429).",
+    "atencao": "A comunicação entre aparelhos de VLANs diferentes exige um dispositivo de roteamento.",
+    "fonte": "[Cisco — Configure Inter-VLAN Routing with Catalyst Switches (atualizado em 23/01/2024)](https://www.cisco.com/c/en/us/support/docs/lan-switching/inter-vlan-routing/41260-189.html)",
     "tags": [
       "vlan",
       "switch"
@@ -5366,16 +5368,16 @@
     "nivel": 1,
     "conceito": "Tabela de roteamento",
     "termo_ingles": "Routing table",
-    "traducao": "Tabela de roteamento: armazena informações usadas para escolher o próximo caminho dos pacotes.",
-    "resumo": "Registra destinos de rede e como alcançá-los: próximo salto (próximo roteador no caminho) e interface de saída. O roteador a consulta ao encaminhar pacotes.",
+    "traducao": "",
+    "resumo": "A tabela de roteamento serve para indicar, para cada rede de destino, o próximo salto e a interface de saída. Exemplo: para 10.1.0.0/16, enviar ao roteador 192.0.2.1.",
     "nao_confundir": [
       {
-        "conceito": "Tabela MAC (do switch)",
-        "diferenca": "Tabela de roteamento liga destinos IP a rotas; tabela MAC liga MAC a portas físicas."
+        "conceito": "Tabela MAC (Media Access Control)",
+        "diferenca": "Tabela de roteamento liga redes a rotas; tabela MAC liga endereços físicos a portas."
       }
     ],
-    "atencao": "Prevalece a rota mais específica, a de prefixo mais longo, sobre uma rota menos específica.",
-    "fonte": "RFC 1812, Requirements for IP Version 4 Routers, 1995.",
+    "atencao": "Prevalece a rota mais específica, de prefixo mais longo que casa com o destino.",
+    "fonte": "[RFC 1812 — Requirements for IP Version 4 Routers, seções 2.2.3, 2.2.5.2 e 5.2.4.3](https://www.rfc-editor.org/rfc/rfc1812.html)",
     "tags": [
       "tabela-de-roteamento"
     ]
@@ -5385,18 +5387,18 @@
     "materia": "Redes & Segurança da Informação",
     "assunto": "Roteamento, switching e SDN",
     "nivel": 1,
-    "conceito": "Protocolo de roteamento OSPF",
+    "conceito": "OSPF: roteamento por estado de enlace",
     "termo_ingles": "Open Shortest Path First (OSPF)",
-    "traducao": "OSPF: calcula rotas usando informações sobre o estado dos enlaces da rede.",
-    "resumo": "Usado dentro de uma rede sob uma só administração. Cada roteador informa o estado de suas ligações (estado de enlace) e calcula caminhos com o algoritmo de Dijkstra.",
+    "traducao": "",
+    "resumo": "OSPF serve para calcular rotas dentro de um sistema autônomo: cada roteador divulga o estado de seus enlaces e aplica Dijkstra. Exemplo: entre dois caminhos, escolhe o de menor custo.",
     "nao_confundir": [
       {
         "conceito": "RIP (Routing Information Protocol)",
-        "diferenca": "OSPF escolhe rotas por custo de enlace; RIP usa contagem de saltos."
+        "diferenca": "OSPF usa custo do enlace; RIP (vetor de distância) conta saltos."
       }
     ],
-    "atencao": "O OSPFv2 atende redes IPv4; o OSPFv3 foi desenvolvido para IPv6.",
-    "fonte": "RFC 2328, OSPF Version 2, 1998; RFC 5340, OSPF for IPv6, 2008.",
+    "atencao": "OSPF é de estado de enlace e usa Dijkstra; OSPFv2 atende IPv4; OSPFv3, IPv6.",
+    "fonte": "[RFC 2328 — OSPF Version 2, resumo e seção 16.1](https://www.rfc-editor.org/rfc/rfc2328.html); [RFC 5340 — OSPF for IPv6, resumo e seção 1](https://www.rfc-editor.org/rfc/rfc5340.html)",
     "tags": [
       "ospf",
       "estado-de-enlace",
@@ -5408,18 +5410,18 @@
     "materia": "Redes & Segurança da Informação",
     "assunto": "Roteamento, switching e SDN",
     "nivel": 1,
-    "conceito": "Rede definida por software",
+    "conceito": "SDN: rede definida por software",
     "termo_ingles": "Software-Defined Networking (SDN)",
-    "traducao": "SDN: separa logicamente o controle da rede do encaminhamento dos dados.",
-    "resumo": "Abordagem que permite programar o comportamento da rede por software, separando as decisões de controle das funções de encaminhamento.",
+    "traducao": "",
+    "resumo": "SDN serve para programar a rede por software, com o controle separado do encaminhamento, o que dá flexibilidade. Exemplo: um controlador central define as rotas; os switches só encaminham.",
     "nao_confundir": [
       {
         "conceito": "Plano de dados",
-        "diferenca": "Plano de controle decide os caminhos; plano de dados encaminha os pacotes conforme essas decisões."
+        "diferenca": "Plano de controle decide; plano de dados, nos roteadores e switches, encaminha os pacotes."
       }
     ],
-    "atencao": "A separação lógica entre controle e encaminhamento não exige eliminar roteadores e switches físicos.",
-    "fonte": "RFC 7426, Software-Defined Networking (SDN): Layers and Architecture Terminology, 2015; Open Networking Foundation, SDN Architecture.",
+    "atencao": "SDN separa o plano de controle do plano de encaminhamento (dados) via interfaces padronizadas.",
+    "fonte": "[RFC 7426 — Software-Defined Networking (SDN): Layers and Architecture Terminology, resumo e seções 2 e 3.2](https://www.rfc-editor.org/rfc/rfc7426.html)",
     "tags": [
       "sdn"
     ]
@@ -5429,18 +5431,18 @@
     "materia": "Redes & Segurança da Informação",
     "assunto": "Roteamento, switching e SDN",
     "nivel": 1,
-    "conceito": "Comutação por rótulos",
+    "conceito": "MPLS: comutação por rótulos",
     "termo_ingles": "Multiprotocol Label Switching (MPLS)",
-    "traducao": "MPLS: encaminha pacotes usando rótulos associados a caminhos na rede.",
-    "resumo": "Técnica de encaminhamento que utiliza rótulos para direcionar pacotes, permitindo definir caminhos de tráfego sem depender apenas da consulta tradicional ao destino IP.",
+    "traducao": "",
+    "resumo": "MPLS serve para encaminhar pacotes por rótulos, em caminhos predefinidos, sem consultar o destino IP a cada salto. Exemplo: operadora liga matriz e filial por caminho MPLS.",
     "nao_confundir": [
       {
         "conceito": "Roteamento IP tradicional",
-        "diferenca": "MPLS encaminha por rótulos; roteamento IP consulta endereços e prefixos de destino."
+        "diferenca": "MPLS segue rótulos; roteamento IP consulta o destino em cada roteador."
       }
     ],
-    "atencao": "MPLS não é um protocolo de criptografia e não garante confidencialidade por si só.",
-    "fonte": "RFC 3031, Multiprotocol Label Switching Architecture, 2001.",
+    "atencao": "No MPLS, o pacote é classificado uma vez, na entrada da rede; depois, o encaminhamento segue os rótulos.",
+    "fonte": "[RFC 3031 — Multiprotocol Label Switching Architecture, seção 2.1](https://www.rfc-editor.org/rfc/rfc3031.html)",
     "tags": [
       "mpls"
     ]
@@ -12604,8 +12606,8 @@
     "nivel": 1,
     "conceito": "Máscara de sub-rede",
     "termo_ingles": "Subnet mask",
-    "traducao": "Máscara de sub-rede: separa, num endereço IPv4, a parte da rede da parte do host (o restante).",
-    "resumo": "A máscara no Protocolo de Internet versão 4 (IPv4) indica quais bits do endereço IP pertencem à rede; os demais identificam o dispositivo. Exemplo: 255.255.255.0.",
+    "traducao": "Máscara de sub-rede: usada no IPv4; a parte do endereço que não é rede chama-se host.",
+    "resumo": "Máscara de sub-rede serve para indicar quais bits do endereço IPv4 são da rede; os demais identificam o dispositivo. Exemplo: 255.255.255.0 marca 24 bits, os três primeiros números, como rede.",
     "nao_confundir": [
       {
         "conceito": "Endereço IP",
@@ -12613,8 +12615,9 @@
       }
     ],
     "atencao": "255.255.255.0 equivale a /24: 24 bits 1 marcam a rede, 8 bits 0 marcam o host.",
-    "fonte": "[RFC 950 — Internet Standard Subnetting Procedure](https://www.rfc-editor.org/rfc/rfc950.html)",
+    "fonte": "[RFC 950 — Internet Standard Subnetting Procedure, seção 2.2](https://www.rfc-editor.org/rfc/rfc950.html); [RFC 1878 — Variable Length Subnet Table For IPv4](https://www.rfc-editor.org/rfc/rfc1878.html); [RFC 4632 — Classless Inter-domain Routing (CIDR), seção 3.1](https://www.rfc-editor.org/rfc/rfc4632.html)",
     "tags": [
+      "mascara-de-sub-rede",
       "camada-de-rede"
     ]
   },
@@ -12624,18 +12627,20 @@
     "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
     "nivel": 1,
     "conceito": "CIDR e prefixo /24",
-    "termo_ingles": "Classless Inter-Domain Routing",
-    "traducao": "Roteamento interdomínios sem classes: representa redes pelo tamanho do prefixo.",
-    "resumo": "O Roteamento Interdomínios sem Classes (CIDR) indica o tamanho do prefixo; em 192.0.2.0/24, os 24 bits iniciais identificam a rede (máscara 255.255.255.0).",
+    "termo_ingles": "Classless Inter-Domain Routing (CIDR)",
+    "traducao": "Roteamento Interdomínios sem Classes: escreve a rede como endereço, barra e tamanho do prefixo.",
+    "resumo": "CIDR serve para indicar, depois da barra, quantos bits iniciais do endereço identificam a rede. Exemplo: em 192.0.2.0/24, os 24 primeiros bits (192.0.2) são a rede.",
     "nao_confundir": [
       {
         "conceito": "Máscara de sub-rede",
-        "diferenca": "Máscara marca bits de rede e dispositivo; prefixo CIDR conta os bits iniciais da rede."
+        "diferenca": "Máscara marca os bits de rede; o prefixo CIDR conta quantos são."
       }
     ],
-    "atencao": "/24 significa 24 bits de prefixo, não 24 dispositivos.",
-    "fonte": "[RFC 4632 — Classless Inter-domain Routing](https://www.rfc-editor.org/rfc/rfc4632.html)",
+    "atencao": "/24 significa 24 bits de prefixo, máscara 255.255.255.0: sobram 8 bits, ou 256 endereços.",
+    "fonte": "[RFC 4632 — Classless Inter-domain Routing (CIDR), seção 3.1](https://www.rfc-editor.org/rfc/rfc4632.html); [RFC 1878 — Variable Length Subnet Table For IPv4](https://www.rfc-editor.org/rfc/rfc1878.html)",
     "tags": [
+      "cidr",
+      "mascara-de-sub-rede",
       "camada-de-rede"
     ]
   },
@@ -12645,20 +12650,21 @@
     "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
     "nivel": 1,
     "conceito": "IPv6",
-    "termo_ingles": "Internet Protocol version 6",
-    "traducao": "Protocolo de Internet versão 6: sucessor do IPv4, com endereços muito maiores.",
-    "resumo": "O Protocolo de Internet versão 6 (IPv6) usa endereços de 128 bits, escritos em hexadecimal com dois-pontos; o IPv4 usa 32 bits em decimal com pontos.",
+    "termo_ingles": "Internet Protocol version 6 (IPv6)",
+    "traducao": "Protocolo de Internet versão 6: sucessor do IPv4 (versão 4).",
+    "resumo": "IPv6 serve para endereçar interfaces com 128 bits, escritos em hexadecimal com dois-pontos; o IPv4 usa 32 bits, em decimal com pontos. Exemplo: 2001:db8::1.",
     "nao_confundir": [
       {
-        "conceito": "ARP",
-        "diferenca": "No IPv4, o ARP descobre o MAC; no IPv6, a descoberta de vizinhos faz isso."
+        "conceito": "ARP (Address Resolution Protocol)",
+        "diferenca": "No IPv4, o ARP descobre o endereço físico; no IPv6, o Neighbor Discovery."
       }
     ],
-    "atencao": "O IPv6 não tem broadcast (envio a todos da rede); usa multicast, envio a um grupo de interessados.",
-    "fonte": "[RFC 8200 — IPv6 Specification](https://www.rfc-editor.org/rfc/rfc8200.html); [RFC 4291 — IP Version 6 Addressing Architecture](https://www.rfc-editor.org/rfc/rfc4291.html); [RFC 4861 — Neighbor Discovery for IPv6](https://www.rfc-editor.org/rfc/rfc4861.html)",
+    "atencao": "O IPv6 é da camada de rede (3), tem endereços de 128 bits e usa multicast, não broadcast.",
+    "fonte": "[RFC 8200 — Internet Protocol, Version 6 (IPv6) Specification, seções 1 e 2](https://www.rfc-editor.org/rfc/rfc8200.html); [RFC 4291 — IP Version 6 Addressing Architecture, seções 2 e 2.2](https://www.rfc-editor.org/rfc/rfc4291.html); [RFC 3031 — Multiprotocol Label Switching Architecture, seção 2.2](https://www.rfc-editor.org/rfc/rfc3031.html); [RFC 4861 — Neighbor Discovery for IP version 6 (IPv6), seção 3.1](https://www.rfc-editor.org/rfc/rfc4861.html)",
     "tags": [
       "ipv6",
-      "camada-de-rede"
+      "camada-de-rede",
+      "modelo-osi"
     ]
   },
   {
@@ -12666,18 +12672,18 @@
     "materia": "Redes & Segurança da Informação",
     "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
     "nivel": 1,
-    "conceito": "Configuração dinâmica de hosts (DHCP)",
-    "termo_ingles": "Dynamic Host Configuration Protocol",
-    "traducao": "Protocolo de Configuração Dinâmica de Hosts: distribui endereço IP e opções de configuração.",
-    "resumo": "Um servidor DHCP entrega ao cliente endereço IP e outras configurações de rede; na alocação dinâmica, o endereço é emprestado por tempo limitado.",
+    "conceito": "DHCP: configuração dinâmica de hosts",
+    "termo_ingles": "Dynamic Host Configuration Protocol (DHCP)",
+    "traducao": "Protocolo de Configuração Dinâmica de Hosts: usa UDP para distribuir endereço IP e opções de configuração.",
+    "resumo": "DHCP serve para entregar ao aparelho endereço IP e outras configurações; na alocação dinâmica, o endereço é emprestado por tempo limitado. Exemplo: o notebook recebe 192.168.0.25.",
     "nao_confundir": [
       {
-        "conceito": "DNS",
+        "conceito": "DNS (Domain Name System)",
         "diferenca": "DHCP entrega IP e configurações ao aparelho; DNS traduz nomes em IP."
       }
     ],
     "atencao": "O servidor DHCP recebe pedidos na porta UDP 67; o cliente recebe respostas na porta UDP 68.",
-    "fonte": "[RFC 2131 — Dynamic Host Configuration Protocol](https://www.rfc-editor.org/rfc/rfc2131.html)",
+    "fonte": "[RFC 2131 — Dynamic Host Configuration Protocol, seções 1 e 4.1](https://www.rfc-editor.org/rfc/rfc2131.html)",
     "tags": [
       "dhcp"
     ]
@@ -12688,18 +12694,19 @@
     "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
     "nivel": 1,
     "conceito": "ICMP, ping e traceroute",
-    "termo_ingles": "Internet Control Message Protocol",
-    "traducao": "Protocolo de Mensagens de Controle da Internet: transporta mensagens de controle e erro do IP.",
-    "resumo": "O Protocolo de Mensagens de Controle da Internet (ICMP) inclui Pedido e Resposta de Eco, usados pelo ping, e Tempo Excedido, usada pelo traceroute para listar roteadores do caminho.",
+    "termo_ingles": "Internet Control Message Protocol (ICMP)",
+    "traducao": "",
+    "resumo": "ICMP serve para levar mensagens de controle e erro do IP. Exemplo: ping usa Pedido e Resposta de Eco; traceroute usa Tempo Excedido para listar roteadores do caminho.",
     "nao_confundir": [
       {
-        "conceito": "TCP e UDP",
+        "conceito": "TCP e UDP (transporte)",
         "diferenca": "ICMP informa condições da rede; TCP e UDP transportam dados de aplicações."
       }
     ],
-    "atencao": "O ICMP é parte integrante do IP e deve ser implementado por todo módulo IP.",
-    "fonte": "[RFC 792 — Internet Control Message Protocol](https://www.rfc-editor.org/rfc/rfc792.html); [Microsoft Learn — tracert (Windows Server)](https://learn.microsoft.com/windows-server/administration/windows-commands/tracert)",
+    "atencao": "Mensagens ICMP são transportadas diretamente pelo IP, não em portas TCP ou UDP.",
+    "fonte": "[RFC 792 — Internet Control Message Protocol](https://www.rfc-editor.org/rfc/rfc792.html); [Microsoft Learn — tracert (Windows Server)](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/tracert)",
     "tags": [
+      "icmp",
       "camada-de-rede"
     ]
   },
@@ -12709,18 +12716,19 @@
     "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
     "nivel": 1,
     "conceito": "Abertura TCP de três vias",
-    "termo_ingles": "Three-way handshake",
-    "traducao": "Abertura de três vias: troca inicial que estabelece uma conexão TCP.",
-    "resumo": "A abertura TCP troca Pedido de Sincronização (SYN), Resposta de Sincronização e Confirmação (SYN-ACK), e Confirmação (ACK), antes dos dados.",
+    "termo_ingles": "Three-way handshake (3WHS)",
+    "traducao": "Abertura de três vias: troca inicial que estabelece uma conexão do TCP.",
+    "resumo": "A abertura de três vias serve para estabelecer a conexão TCP antes do envio de dados. Exemplo: cliente envia SYN; servidor responde SYN-ACK; cliente confirma com ACK.",
     "nao_confundir": [
       {
-        "conceito": "Confirmação (ACK)",
-        "diferenca": "ACK confirma recebimento; a abertura TCP usa três mensagens para estabelecer a conexão."
+        "conceito": "FIN (Finish, encerramento)",
+        "diferenca": "SYN (synchronize) abre a conexão; ACK (acknowledgment) confirma; FIN encerra."
       }
     ],
-    "atencao": "O estabelecimento padrão da conexão usa três segmentos: SYN, SYN-ACK e ACK.",
-    "fonte": "[RFC 9293 — Transmission Control Protocol](https://www.rfc-editor.org/rfc/rfc9293.html)",
+    "atencao": "A conexão TCP abre com três segmentos, nesta ordem: SYN, SYN-ACK e ACK.",
+    "fonte": "[RFC 9293 — Transmission Control Protocol (TCP), seções 3.1 e 3.5](https://www.rfc-editor.org/rfc/rfc9293.html)",
     "tags": [
+      "handshake-tcp",
       "tcp",
       "camada-de-transporte"
     ]
@@ -12730,21 +12738,21 @@
     "materia": "Redes & Segurança da Informação",
     "assunto": "Roteamento, switching e SDN",
     "nivel": 1,
-    "conceito": "STP",
-    "termo_ingles": "Spanning Tree Protocol",
-    "traducao": "Protocolo de Árvore de Abrangência: evita laços em redes comutadas, bloqueando caminhos redundantes.",
-    "resumo": "O Protocolo de Árvore de Abrangência (STP) evita laços de camada 2, quadros circulando sem fim, entre switches ligados por mais de um caminho.",
+    "conceito": "STP: árvore de abrangência",
+    "termo_ingles": "Spanning Tree Protocol (STP)",
+    "traducao": "Protocolo de Árvore de Abrangência: evita laços, isto é, quadros circulando sem fim entre switches.",
+    "resumo": "STP serve para evitar laços de camada 2 entre switches ligados por mais de um caminho. Exemplo: com três switches em triângulo, o STP bloqueia uma das ligações.",
     "nao_confundir": [
       {
         "conceito": "Roteamento",
-        "diferenca": "STP controla caminhos redundantes entre switches; roteador encaminha pacotes entre redes."
+        "diferenca": "STP bloqueia caminhos redundantes entre switches; roteador encaminha pacotes entre redes."
       }
     ],
-    "atencao": "O STP não remove os caminhos redundantes: coloca-os em estado de bloqueio.",
-    "fonte": "[Cisco — Understand Spanning Tree PortFast and BPDU Guard Features](https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/10586-65.html)",
+    "atencao": "O STP coloca os caminhos redundantes em estado de bloqueio (espera) e os reativa se o caminho principal falhar.",
+    "fonte": "[Cisco — Layer 2 Configuration Guide, Cisco IOS XE 17.16.x (Catalyst 9400 Switches), capítulo Configuring Spanning Tree Protocol](https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9400/software/release/17-16/configuration_guide/lyr2/b_1716_lyr2_9400_cg/configuring_spanning_tree_protocol.html)",
     "tags": [
-      "switch",
-      "mac"
+      "stp",
+      "switch"
     ]
   },
   {
@@ -12753,17 +12761,17 @@
     "assunto": "Roteamento, switching e SDN",
     "nivel": 1,
     "conceito": "BGP e sistema autônomo",
-    "termo_ingles": "Border Gateway Protocol",
-    "traducao": "Protocolo de Gateway de Borda: troca informações de roteamento entre sistemas autônomos.",
-    "resumo": "O Protocolo de Gateway de Borda (BGP) troca rotas entre sistemas autônomos (AS), conjuntos de roteadores sob administração técnica comum.",
+    "termo_ingles": "Border Gateway Protocol (BGP)",
+    "traducao": "Protocolo de Gateway de Borda: os roteadores vizinhos conversam por conexão TCP.",
+    "resumo": "BGP serve para trocar rotas entre sistemas autônomos, conjuntos de roteadores sob administração técnica comum. Exemplo: duas operadoras anunciam suas redes uma à outra por BGP.",
     "nao_confundir": [
       {
-        "conceito": "OSPF",
-        "diferenca": "OSPF distribui rotas dentro de um sistema autônomo; BGP troca rotas entre sistemas autônomos."
+        "conceito": "OSPF (Open Shortest Path First)",
+        "diferenca": "OSPF distribui rotas dentro de um sistema autônomo; BGP, entre sistemas autônomos."
       }
     ],
-    "atencao": "O BGP também liga roteadores do mesmo sistema autônomo (BGP interno), não só de sistemas diferentes.",
-    "fonte": "[RFC 4271 — A Border Gateway Protocol 4 (BGP-4)](https://www.rfc-editor.org/rfc/rfc4271.html)",
+    "atencao": "O BGP usa TCP na porta 179; entre roteadores do mesmo sistema autônomo, chama-se BGP interno (iBGP).",
+    "fonte": "[RFC 4271 — A Border Gateway Protocol 4 (BGP-4), seções 1, 1.1 e 3](https://www.rfc-editor.org/rfc/rfc4271.html)",
     "tags": [
       "bgp",
       "ospf"
@@ -12776,18 +12784,19 @@
     "nivel": 1,
     "conceito": "Rota padrão",
     "termo_ingles": "Default route",
-    "traducao": "Rota padrão: encaminha tráfego para destinos sem uma rota mais específica.",
-    "resumo": "A rota padrão é usada quando nenhuma entrada mais específica da tabela corresponde ao endereço de destino.",
+    "traducao": "Rota padrão: também chamada rota default; IPv4 é o Protocolo de Internet versão 4.",
+    "resumo": "A rota padrão serve para encaminhar pacotes cujo destino não tem rota mais específica na tabela. Exemplo: em casa, tudo que vai para a internet segue a rota padrão.",
     "nao_confundir": [
       {
         "conceito": "Gateway padrão",
-        "diferenca": "Rota padrão é a regra; gateway padrão é o roteador usado para encaminhar o tráfego."
+        "diferenca": "Rota padrão é a regra; gateway padrão, o roteador que recebe esse tráfego."
       }
     ],
-    "atencao": "Em IPv4, a rota padrão é representada por 0.0.0.0/0, não pelo endereço do roteador.",
-    "fonte": "[RFC 1812 — Requirements for IP Version 4 Routers](https://www.rfc-editor.org/rfc/rfc1812.html); [RFC 1058 — Routing Information Protocol](https://www.rfc-editor.org/rfc/rfc1058.html)",
+    "atencao": "Em IPv4, a rota padrão é 0.0.0.0/0, de prefixo zero: vale para redes sem rota explícita.",
+    "fonte": "[RFC 4632 — Classless Inter-domain Routing (CIDR), seção 5.1](https://www.rfc-editor.org/rfc/rfc4632.html); [RFC 1812 — Requirements for IP Version 4 Routers, seção 5.2.4.3](https://www.rfc-editor.org/rfc/rfc1812.html)",
     "tags": [
-      "rota-padrao"
+      "rota-padrao",
+      "tabela-de-roteamento"
     ]
   },
   {

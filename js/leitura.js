@@ -168,6 +168,7 @@ function semSiglaInicial(texto, conceito) {
     const { nome, parenteses } = separarSigla(conceito);
     const sig = ehSigla(nome) ? nome : (ehSigla(parenteses) ? parenteses : '');
     if (!sig) return texto;
+    if (new RegExp(`^(o |a )?${sig}\\s*\\(`, 'i').test(String(texto))) return texto;
     const t = String(texto).replace(new RegExp(`^(o |a )?${sig}\\s+`, 'i'), '');
     return t.charAt(0).toUpperCase() + t.slice(1);
 }
@@ -184,7 +185,8 @@ function cartaoHTML(c) {
     const ingles = separarSigla(c.termo_ingles);
     const doConceito = separarSigla(c.conceito);
     const sigla = ehSigla(ingles.parenteses) ? ingles.parenteses : (ehSigla(doConceito.parenteses) ? doConceito.parenteses : '');
-    const nomeConceito = (!ehSigla(ingles.parenteses) && sigla) ? doConceito.nome : c.conceito;
+    let nomeConceito = (!ehSigla(ingles.parenteses) && sigla) ? doConceito.nome : String(c.conceito);
+    if (sigla) nomeConceito = nomeConceito.replace(new RegExp(`^${sigla}\\s*[:–-]\\s*`), '');
     const comparacao = /\s×\s/.test(c.conceito || '');
     let titulo;
     if (comparacao) {
@@ -195,7 +197,7 @@ function cartaoHTML(c) {
     } else {
         titulo = esc(c.conceito);
     }
-    const nomeEn = sigla ? ingles.nome : String(c.termo_ingles || '').trim();
+    const nomeEn = (sigla && !comparacao) ? ingles.nome : String(c.termo_ingles || '').trim();
     const traducao = String(c.traducao || '').trim();
     const mostrarTraducao = traducao && !repete(traducao, c.resumo);
     const linhaNC = p => {
