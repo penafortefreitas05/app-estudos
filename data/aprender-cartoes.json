@@ -5453,7 +5453,7 @@
     "conceito": "Sistema de nomes de domínio",
     "termo_ingles": "Domain Name System (DNS)",
     "traducao": "DNS: associa nomes de domínio a informações como endereços IP.",
-    "resumo": "Sistema distribuído que consulta registros associados a nomes de domínio. Por exemplo, permite localizar o endereço IP associado a um nome de site.",
+    "resumo": "O DNS serve para traduzir nomes de domínio em endereços IP. Exemplo: www.gov.br vira o endereço IP do servidor do site.",
     "nao_confundir": [
       {
         "conceito": "DHCP (configuração dinâmica de hosts)",
@@ -5474,7 +5474,7 @@
     "conceito": "Protocolo de transferência de hipertexto",
     "termo_ingles": "Hypertext Transfer Protocol (HTTP)",
     "traducao": "HTTP: permite a troca de requisições e respostas entre clientes e servidores.",
-    "resumo": "Protocolo de aplicação usado na comunicação entre clientes e servidores web. Utiliza mensagens de requisição e resposta para acessar recursos.",
+    "resumo": "O HTTP serve para o navegador pedir e o servidor responder páginas e outros recursos, por mensagens de requisição e resposta. Exemplo: abrir um site digitando o endereço.",
     "nao_confundir": [
       {
         "conceito": "HTTPS",
@@ -5497,7 +5497,7 @@
     "conceito": "Protocolo de transferência de correio",
     "termo_ingles": "Simple Mail Transfer Protocol (SMTP)",
     "traducao": "SMTP: transmite mensagens de correio eletrônico entre clientes e servidores ou entre servidores.",
-    "resumo": "Protocolo usado para envio e retransmissão de mensagens de e-mail. A porta TCP 25 é usada na transferência entre servidores; a 587 é usada para submissão de mensagens.",
+    "resumo": "O SMTP serve para enviar e retransmitir e-mails: porta 25 entre servidores e 587 para o cliente enviar. Exemplo: clicar em Enviar no aplicativo de e-mail.",
     "nao_confundir": [
       {
         "conceito": "IMAP",
@@ -5518,7 +5518,7 @@
     "conceito": "Acesso a mensagens por IMAP",
     "termo_ingles": "Internet Message Access Protocol (IMAP)",
     "traducao": "IMAP: permite acessar e gerenciar mensagens mantidas em um servidor de correio.",
-    "resumo": "Protocolo usado pelo cliente de e-mail para consultar e organizar mensagens armazenadas no servidor. Porta padrão TCP 143; com TLS desde o início da conexão, TCP 993.",
+    "resumo": "O IMAP serve para ler e organizar o e-mail guardado no servidor. Porta 143; com TLS desde o início, 993. Exemplo: celular e computador veem a mesma caixa.",
     "nao_confundir": [
       {
         "conceito": "POP3",
@@ -5539,7 +5539,7 @@
     "conceito": "Protocolo de acesso a mensagens POP3",
     "termo_ingles": "Post Office Protocol Version 3 (POP3)",
     "traducao": "POP3: recupera mensagens de uma caixa postal mantida em um servidor.",
-    "resumo": "Protocolo usado por clientes de e-mail para obter mensagens armazenadas no servidor. Utiliza TCP 110; com TLS desde o início da conexão, TCP 995.",
+    "resumo": "O POP3 serve para baixar as mensagens do servidor para o aparelho. Porta 110; com TLS desde o início, 995. Exemplo: e-mail só no computador.",
     "nao_confundir": [
       {
         "conceito": "IMAP",
@@ -5560,7 +5560,7 @@
     "conceito": "Protocolo de acesso a diretórios",
     "termo_ingles": "Lightweight Directory Access Protocol (LDAP)",
     "traducao": "LDAP: consulta e modifica informações armazenadas em serviços de diretório.",
-    "resumo": "Protocolo que permite pesquisar e administrar informações organizadas em diretórios, como usuários, grupos e atributos de uma organização.",
+    "resumo": "O LDAP serve para consultar e administrar diretórios, como cadastros de usuários, grupos e seus atributos. Exemplo: buscar o setor e o e-mail de um funcionário no diretório.",
     "nao_confundir": [
       {
         "conceito": "Active Directory",
@@ -5582,7 +5582,7 @@
     "conceito": "Protocolo simples de gerenciamento de rede",
     "termo_ingles": "Simple Network Management Protocol (SNMP)",
     "traducao": "SNMP: permite monitorar e gerenciar equipamentos e serviços de rede.",
-    "resumo": "Protocolo usado para consultar e gerenciar equipamentos, como roteadores e switches. Usa UDP 161 para consultas e UDP 162 para notificações.",
+    "resumo": "O SNMP serve para monitorar e gerenciar equipamentos de rede: UDP 161 para consultas e 162 para notificações. Exemplo: um painel mostra o tráfego de cada roteador.",
     "nao_confundir": [
       {
         "conceito": "Syslog",
@@ -5604,7 +5604,7 @@
     "conceito": "Base de informações de gerenciamento",
     "termo_ingles": "Management Information Base (MIB)",
     "traducao": "MIB: descreve as informações de um equipamento que o protocolo de gerenciamento SNMP pode consultar.",
-    "resumo": "Estrutura que descreve objetos gerenciáveis de um equipamento, como contadores de tráfego, estado de interfaces e informações operacionais.",
+    "resumo": "A MIB serve para descrever o que dá para consultar num equipamento, como contadores de tráfego. Exemplo: pacotes recebidos numa interface do roteador.",
     "nao_confundir": [
       {
         "conceito": "SNMP (Protocolo Simples de Gerenciamento de Rede)",
@@ -12798,7 +12798,7 @@
     "conceito": "FTP",
     "termo_ingles": "File Transfer Protocol",
     "traducao": "Protocolo de Transferência de Arquivos: transfere arquivos entre cliente e servidor.",
-    "resumo": "O Protocolo de Transferência de Arquivos (FTP) usa uma conexão de controle para comandos, na porta 21, e outra conexão de dados para os arquivos.",
+    "resumo": "O FTP serve para transferir arquivos: uma conexão de controle (porta 21) leva os comandos e outra, de dados, leva os arquivos. Exemplo: enviar os arquivos de um site.",
     "nao_confundir": [
       {
         "conceito": "Conexão de controle",
@@ -12819,7 +12819,7 @@
     "conceito": "SSH",
     "termo_ingles": "Secure Shell",
     "traducao": "Shell Seguro: permite login remoto e outros serviços seguros em redes inseguras.",
-    "resumo": "O Shell Seguro (SSH) dá acesso remoto a outro computador por canal criptografado. Substitui o Telnet, protocolo de terminal remoto mais antigo.",
+    "resumo": "O SSH serve para acessar outro computador à distância por um canal criptografado; substitui o Telnet, que não tem proteção. Exemplo: o administrador entra no servidor para configurá-lo.",
     "nao_confundir": [
       {
         "conceito": "Telnet",
@@ -12837,17 +12837,17 @@
     "materia": "Redes & Segurança da Informação",
     "assunto": "Protocolos de aplicação (DNS, HTTP, SMTP, LDAP)",
     "nivel": 1,
-    "conceito": "SFTP e FTPS",
+    "conceito": "SFTP × FTPS",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "O Protocolo de Transferência de Arquivos do SSH (SFTP) roda dentro do SSH. O FTP sobre TLS (FTPS) usa a Segurança da Camada de Transporte (TLS), que criptografa a conexão.",
+    "resumo": "O SFTP transfere arquivos dentro do SSH. O FTPS é o FTP com a Segurança da Camada de Transporte (TLS). Exemplo: enviar um backup ao servidor com proteção.",
     "nao_confundir": [
       {
         "conceito": "FTP",
         "diferenca": "FTP transfere sem proteção própria; FTPS acrescenta TLS ao mesmo FTP."
       }
     ],
-    "atencao": "O SFTP opera sobre o transporte criptografado do SSH; quem usa FTP com TLS é o FTPS.",
+    "atencao": "O SFTP não é FTP com proteção: é outro protocolo, que roda no SSH; FTP com TLS é o FTPS.",
     "fonte": "[OpenBSD — sftp(1)](https://man.openbsd.org/sftp); [draft-ietf-secsh-filexfer-02 — SSH File Transfer Protocol](https://datatracker.ietf.org/doc/html/draft-ietf-secsh-filexfer-02); [RFC 4217 — Securing FTP with TLS](https://www.rfc-editor.org/rfc/rfc4217.html)",
     "tags": [
       "tls",
