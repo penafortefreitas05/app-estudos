@@ -43,5 +43,14 @@
     "arquivo": "videos/osi.mp4",
     "duracao": 113,
     "bytes": 3852352
+  },
+  {
+    "id": "mascara",
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
+    "titulo": "Máscara: onde termina a rede",
+    "arquivo": "videos/mascara.mp4",
+    "duracao": 91,
+    "bytes": 3462506
   }
 ]
