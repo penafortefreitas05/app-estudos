@@ -38,6 +38,86 @@ export function resumirSimulados(lista) {
     };
 }
 
+// ---------- Marcas de confiança (v162) ----------
+// Chaves curtas, para caber no jsonb "por_materia" da nuvem sem coluna nova:
+// ac acerto com certeza · ad acerto na dúvida · as acerto sem marcação
+// ec erro com certeza · ed erro na dúvida · es erro sem marcação · b em branco
+export const MARCAS = [
+    ['ec', 'Erro com certeza', 'mc-ec'],
+    ['ed', 'Erro na dúvida', 'mc-ed'],
+    ['es', 'Erro sem marcação', 'mc-sem'],
+    ['ad', 'Acerto na dúvida', 'mc-ad'],
+    ['as', 'Acerto sem marcação', 'mc-sem'],
+    ['ac', 'Acerto com certeza', 'mc-ac'],
+    ['b', 'Em branco', 'mc-sem']
+];
+
+export function chaveMarca({ temResposta, acertou, marca }) {
+    if (!temResposta) return 'b';
+    const m = marca === 'certeza' ? 'c' : marca === 'duvida' ? 'd' : 's';
+    return (acertou ? 'a' : 'e') + m;
+}
+
+// porMateria[materia] = { t, a, m: {chave: n}, s: { [assunto]: { t, a, m } } }  (t e a como antes)
+export function registrarMarca(porMateria, { materia, assunto, temResposta, acertou, marca }) {
+    const k = chaveMarca({ temResposta, acertou, marca });
+    const pm = porMateria[materia] || (porMateria[materia] = { t: 0, a: 0, m: {}, s: {} });
+    if (!pm.m) pm.m = {};
+    if (!pm.s) pm.s = {};
+    const pa = pm.s[assunto] || (pm.s[assunto] = { t: 0, a: 0, m: {} });
+    for (const alvo of [pm, pa]) {
+        alvo.t++;
+        if (temResposta && acertou) alvo.a++;
+        alvo.m[k] = (alvo.m[k] || 0) + 1;
+    }
+    return k;
+}
+
+export function somarMarcas(porMateria) {
+    const tot = {};
+    Object.values(porMateria || {}).forEach(v => Object.entries((v && v.m) || {}).forEach(([k, n]) => { tot[k] = (tot[k] || 0) + n; }));
+    return tot;
+}
+
+// Assuntos de uma matéria, do mais fraco (mais erros com certeza, menor acerto) ao melhor
+export function linhasPorAssunto(v) {
+    return Object.entries((v && v.s) || {})
+        .map(([assunto, x]) => ({ assunto, total: x.t, acertos: x.a, m: x.m || {}, pct: x.t ? Math.round((x.a * 100) / x.t) : 0 }))
+        .sort((x, y) => (y.m.ec || 0) - (x.m.ec || 0) || x.pct - y.pct || y.total - x.total);
+}
+
+const chipsMarca = (m, so = null) => MARCAS.filter(([k]) => (m[k] || 0) > 0 && (!so || so.includes(k)))
+    .map(([k, nome, cls]) => `<span class="sm-mc ${cls}" title="${nome}">${m[k]} ${plural(nome.toLowerCase(), m[k])}</span>`).join('');
+const plural = (nome, n) => (n === 1 ? nome : nome.replace(/^(erro|acerto)\b/, '$1s').replace(/^em branco$/, 'em branco'));
+
+// Bloco "Por matéria" com assuntos e marcas. Simulados antigos (sem m/s) mostram só a barra, como antes.
+export function htmlPorMateria(porMateria) {
+    return linhasPorMateria(porMateria).map(l => {
+        const v = porMateria[l.materia] || {};
+        const assuntos = linhasPorAssunto(v);
+        const cab = `<div class="sm-linha"><span class="sm-linha-nome">${esc(l.materia)}${l.pct < 60 && l.total >= 2 ? icone('alerta', 'ic-amarelo') : ''}</span><span class="sm-linha-barra"><i style="width:${l.pct}%"></i></span><span class="sm-linha-n">${l.acertos}/${l.total}</span></div>`;
+        if (!assuntos.length) return cab;
+        return `<div class="sm-mat">${cab}
+            ${v.m ? `<div class="sm-mcs">${chipsMarca(v.m)}</div>` : ''}
+            <ul class="sm-assuntos">${assuntos.map(a => `<li class="sm-ass">
+                <span class="sm-ass-nome">${esc(a.assunto)}</span><span class="sm-ass-n">${a.acertos}/${a.total}</span>
+                <span class="sm-ass-mcs">${chipsMarca(a.m, ['ec', 'ed', 'es', 'ad', 'as'])}</span></li>`).join('')}</ul></div>`;
+    }).join('');
+}
+
+// Resumo da confiança no simulado inteiro (ordem fixa, zeros aparecem)
+export function htmlResumoMarcas(porMateria) {
+    const t = somarMarcas(porMateria);
+    if (!Object.keys(t).length) return '';
+    const cel = (k, nome, cls) => `<div class="sm-rm ${cls}"><b>${t[k] || 0}</b><span>${nome}</span></div>`;
+    const sem = (t.as || 0) + (t.es || 0);
+    return `<div class="sm-rmarcas">
+        ${cel('ac', 'acerto com certeza', 'mc-ac')}${cel('ad', 'acerto na dúvida', 'mc-ad')}
+        ${cel('ec', 'erro com certeza', 'mc-ec')}${cel('ed', 'erro na dúvida', 'mc-ed')}
+        <div class="sm-rm mc-sem"><b>${sem}</b><span>sem marcação</span></div></div>
+        ${sem ? `<p class="sm-dica-sem">${icone('lampada')}Sem marcação conta como dúvida na revisão. Toque em "Tenho certeza" ou "Na dúvida" ao responder.</p>` : ''}`;
+}
+
 // Linhas por matéria, da que precisa de mais reforço para a melhor
 export function linhasPorMateria(porMateria) {
     return Object.entries(porMateria || {})
@@ -164,7 +244,7 @@ export function abrirSimulado({ disponiveis = () => 0, aoComecar, aoFiltros, car
                 <span class="sm-item-nota"><b>${r.acertos}/${r.total}</b> · ${p}%</span>
                 <span class="sm-item-tempo">${formatarDuracao(r.segundos)}${r.porTempo ? ' ⏰' : ''}</span>
             </button>
-            ${aberta ? `<div class="sm-item-det">${linhasPorMateria(r.porMateria).map(l => `<div class="sm-linha"><span class="sm-linha-nome">${esc(l.materia)}</span><span class="sm-linha-barra"><i style="width:${l.pct}%"></i></span><span class="sm-linha-n">${l.acertos}/${l.total}</span></div>`).join('') || '<p class="sm-vazio">Sem detalhe por matéria.</p>'}</div>` : ''}
+            ${aberta ? `<div class="sm-item-det">${htmlResumoMarcas(r.porMateria)}${htmlPorMateria(r.porMateria) || '<p class="sm-vazio">Sem detalhe por matéria.</p>'}</div>` : ''}
         </article>`;
     }
 
@@ -205,7 +285,6 @@ export function abrirResultado(resultado, anteriores = [], { aoRefazer, aoCadern
     const antes = resumirSimulados(anteriores);
     const comparacao = antes.feitos
         ? (p === antes.media ? `Igual à sua média (${antes.media}%).` : `${p > antes.media ? '+' : ''}${p - antes.media} ${Math.abs(p - antes.media) === 1 ? 'ponto' : 'pontos'} em relação à sua média (${antes.media}%).`) : 'Seu primeiro simulado registrado.';
-    const linhas = linhasPorMateria(resultado.porMateria);
     const refazer = resultado.erradas || [];
     const focoAntes = document.activeElement;
 
@@ -226,9 +305,13 @@ export function abrirResultado(resultado, anteriores = [], { aoRefazer, aoCadern
                 <div class="sm-stats"><div><b>${formatarDuracao(resultado.segundos)}</b><span>tempo</span></div><div><b>${resultado.total - resultado.acertos - (resultado.brancos || 0)}</b><span>erros</span></div><div><b>${resultado.brancos || 0}</b><span>em branco</span></div></div>
                 ${resultado.semGabarito ? `<p class="sm-aviso">${resultado.semGabarito} questão(ões) sem gabarito ficaram fora da correção.</p>` : ''}
             </section>
+            ${htmlResumoMarcas(resultado.porMateria) ? `<section class="sm-sec">
+                <h3 class="sm-sec-titulo">Sua confiança</h3>
+                ${htmlResumoMarcas(resultado.porMateria)}
+            </section>` : ''}
             <section class="sm-sec">
-                <h3 class="sm-sec-titulo">Por matéria <span class="sm-dica">as mais fracas primeiro</span></h3>
-                ${linhas.map(l => `<div class="sm-linha"><span class="sm-linha-nome">${esc(l.materia)}${l.pct < 60 && l.total >= 2 ? icone('alerta', 'ic-amarelo') : ''}</span><span class="sm-linha-barra"><i style="width:${l.pct}%"></i></span><span class="sm-linha-n">${l.acertos}/${l.total}</span></div>`).join('')}
+                <h3 class="sm-sec-titulo">Por matéria e assunto <span class="sm-dica">os mais fracos primeiro</span></h3>
+                ${htmlPorMateria(resultado.porMateria)}
             </section>
             <section class="sm-sec sm-acoes">
                 <button type="button" class="sm-comecar" data-sm="correcao">Ver a correção, questão a questão</button>
@@ -258,5 +341,6 @@ export function abrirResultado(resultado, anteriores = [], { aoRefazer, aoCadern
         if (a === 'novo' && aoNovo) aoNovo();
     });
     const sair = el.querySelector('.sm-comecar');
-    if (sair) sair.focus();
+    // Foco no botão sem rolar: a tela abre no topo, com a nota (v162: o resultado ficou mais longo)
+    if (sair) sair.focus({ preventScroll: true });
 }

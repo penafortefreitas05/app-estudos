@@ -8,6 +8,7 @@ import { salvarRespostasEmLote, corrigirResposta } from './supabase.js';
 import { aplicarResposta, novoRegistro } from './revisao.js';
 import { showToast } from './notifications.js';
 import { icone } from './icones.js';
+import { registrarMarca } from './simulado-tela.js';
 
 // ---------- 1. CONTROLE DO TEMPO E CRONÔMETRO ----------
 let timerInterval = null;
@@ -138,16 +139,16 @@ export async function finalizarSimulado(simulado, container, porId, historico, q
         }
 
         q.gabarito = resultado.gabarito; // fica em memória pra qualquer novo render usar
-        const mat = q.materia || 'Geral';
-        if (!porMateriaSim[mat]) porMateriaSim[mat] = { t: 0, a: 0 };
-        porMateriaSim[mat].t++;
+        // Marca escolhida no simulado: 'certeza', 'duvida' ou nenhuma ('sem': só tocou na alternativa)
+        const marca = (simulado.confiancas && simulado.confiancas[idStr]) || 'sem';
+        registrarMarca(porMateriaSim, { materia: q.materia || 'Geral', assunto: q.assunto || 'Sem assunto', temResposta, acertou: resultado.acertou, marca });
         if (!temResposta) brancosSim++;
-        else if (resultado.acertou) porMateriaSim[mat].a++;
-        else erradasSim.push(idStr);
+        else if (!resultado.acertou) erradasSim.push(idStr);
 
         if (card && temResposta) {
             const acertou = resultado.acertou;
-            const confianca = (simulado.confiancas && simulado.confiancas[idStr]) || 'certeza';
+            // Sem marcação conta como dúvida na fila: só "Tenho certeza" ajuda a dominar a questão
+            const confianca = marca === 'certeza' ? 'certeza' : 'duvida';
             if (acertou) acertosSimulado++;
 
             if (!historico[idStr]) historico[idStr] = novoRegistro();
