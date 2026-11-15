@@ -14,6 +14,7 @@ import { icone } from './icones.js';
 import { montarPlano, TIPOS_DIA } from './plano.js';
 import { ordenarAssuntos } from './ordem-assuntos.js';
 import { carregarVideos, videosDoAssunto, abrirVideo, videoVisto } from './video-aprenda.js';
+import { montarTrilha, resumoTrilha, indiceParaRetomar, abrirFeed } from './feed-videos.js';
 import { assuntosComCartoes, abrirLeitura, lerAprendidos, assuntoAprendido, migrarEntendidos } from './leitura.js';
 
 const CHAVE_ULTIMO = 'appEstudos_AprenderUltimo';
@@ -140,6 +141,7 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
         <div class="at-corpo">
             <div class="at-continuar-area"></div>
             <div class="at-plano-area"></div>
+            <div class="at-videos-area"></div>
             <div class="at-grade">
                 <nav class="at-materias" aria-label="Matérias"></nav>
                 <section class="at-assuntos" aria-label="Assuntos da matéria">
@@ -266,11 +268,35 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
         }).join('') : `<li class="at-vazio">${busca.trim() ? 'Nenhum assunto com esse texto.' : 'Nenhum assunto neste filtro.'}</li>`;
     }
 
+    // Vídeos em sequência (feed v1, 15/11): entrada secundária, abaixo da leitura e do plano
+    const trilha = montarTrilha(videos, grupos);
+    function desenharVideos() {
+        const area = q('.at-videos-area');
+        if (!trilha.length) { area.innerHTML = ''; return; }
+        const r = resumoTrilha(trilha);
+        const prox = r.proximo;
+        area.innerHTML = `
+            <button type="button" class="at-videos" data-acao="feed">
+                <span class="at-videos-rotulo">${icone('play', 'ic-indigo')}Vídeos de aprendizagem · ${r.total} vídeos${r.assistidos ? ` · ${r.assistidos} ${r.assistidos === 1 ? 'assistido' : 'assistidos'}` : ''}</span>
+                <span class="at-videos-nome">${r.comecou ? 'Continuar vídeos' : 'Assistir em sequência'}</span>
+                <span class="at-videos-det">${prox ? `${esc(prox.titulo)} · vídeo ${r.posicao} de ${r.total}` : ''}</span>
+            </button>`;
+    }
+    function abrirVideosEmSequencia() {
+        abrirFeed(trilha, {
+            inicio: indiceParaRetomar(trilha),
+            podePraticar: (mat, nome) => temQuestoes(mat, nome) && typeof aoPraticar === 'function',
+            aoPraticar: (mat, nome) => { guardarUltimo(mat, nome); fechar(); aoPraticar(mat, nome); },
+            aoFechar: () => { if (!fechada) desenhar(); }
+        });
+    }
+
     function desenhar() {
         const aprendidos = lerAprendidos();
         el.dataset.vista = vista;
         desenharTopo(aprendidos);
         desenharPlano(aprendidos);
+        desenharVideos();
         desenharMaterias(aprendidos);
         desenharLista(aprendidos);
     }
@@ -315,13 +341,14 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
             case 'ir-caderno': fechar(); if (typeof aoAbrirCaderno === 'function') aoAbrirCaderno(); return;
             case 'ir-simulado': fechar(); if (typeof aoAbrirSimulado === 'function') aoAbrirSimulado(); return;
             case 'filtro': filtro = d.filtro; return desenharLista(lerAprendidos());
+            case 'feed': return abrirVideosEmSequencia();
             case 'continuar':
             case 'assunto': return abrirAssunto(d.materia, d.assunto);
         }
     }
 
     function aoTeclar(e) {
-        if (e.key !== 'Escape' || document.querySelector('.leitura') || document.querySelector('.video-tela')) return;
+        if (e.key !== 'Escape' || document.querySelector('.leitura') || document.querySelector('.video-tela') || document.querySelector('.feed-tela')) return;
         e.preventDefault();
         if (vista === 'assuntos' && window.matchMedia('(max-width: 899px)').matches) { vista = 'materias'; desenhar(); }
         else fechar();

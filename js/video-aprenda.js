@@ -150,6 +150,8 @@ export async function abrirVideo(v, { aoPraticar, nivelPraticar = '', aoFechar, 
     });
     player.addEventListener('playing', () => { msg.textContent = ''; });
     player.addEventListener('ended', () => marcarVideoVisto(v));
+    // "Assistido" = chegou a 90% do vídeo (mesmo critério da trilha de vídeos)
+    player.addEventListener('timeupdate', () => { if (player.duration && player.currentTime / player.duration >= 0.9 && !videoVisto(v)) marcarVideoVisto(v); });
 
     async function agir(acao, botao) {
         if (acao === 'fechar') return fechar();
