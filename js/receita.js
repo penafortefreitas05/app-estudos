@@ -9,6 +9,7 @@
 //   SIMULADO: <nome curto>
 //   <matéria> / <assunto> [/ tema: <tag>, <tag>] → <quantidade>
 //   <matéria> → <quantidade>                 (qualquer assunto da matéria)
+//   <matéria> / <assunto> + <assunto> → <quantidade>   (sorteia entre os assuntos; v172)
 //   status: <% novas>, <% Caderno de erros> · nível: 1 | 2 | 3 · tipo: todas | C/E | múltipla
 //   tempo: sem | sugerido | <minutos>
 
@@ -94,7 +95,8 @@ export function lerReceita(texto) {
         }
         const [materia, ...resto] = partes;
         if (!materia) { r.erros.push({ n, texto: linha, motivo: 'Falta a matéria.' }); return; }
-        r.linhas.push({ n, materia, assunto: resto.join(' / '), temas, qtd: Math.min(qtd, 200), texto: linha });
+        const assuntos = resto.join(' / ').split(/\s+\+\s+/).map((a) => a.trim()).filter(Boolean);
+        r.linhas.push({ n, materia, assunto: assuntos.length === 1 ? assuntos[0] : '', assuntos: assuntos.length > 1 ? assuntos : [], temas, qtd: Math.min(qtd, 200), texto: linha });
     });
     if (!r.linhas.length && !r.erros.length) r.erros.push({ n: 0, texto: '', motivo: 'Nenhuma linha com matéria e quantidade (ex.: "Redes & Segurança da Informação / Scrum → 10").' });
     return r;
@@ -141,6 +143,12 @@ export function casarReceita(receita, catalogo) {
     const linhas = receita.linhas.map((l) => {
         const m = casarNome(l.materia, catalogo.keys());
         if (!m.nome) return { ...l, problema: `Matéria não encontrada: "${l.materia}".`, sugestao: m.sugestao || null };
+        if (l.assuntos && l.assuntos.length) {
+            const casados = l.assuntos.map((a) => ({ a, c: casarNome(a, catalogo.get(m.nome) || []) }));
+            const ruim = casados.find((x) => !x.c.nome);
+            if (ruim) return { ...l, materia: m.nome, problema: `Assunto não encontrado em ${m.nome}: "${ruim.a}".`, sugestao: ruim.c.sugestao || null };
+            return { ...l, materia: m.nome, assuntos: [...new Set(casados.map((x) => x.c.nome))] };
+        }
         if (!l.assunto) return { ...l, materia: m.nome };
         const a = casarNome(l.assunto, catalogo.get(m.nome) || []);
         if (!a.nome) return { ...l, materia: m.nome, problema: `Assunto não encontrado em ${m.nome}: "${l.assunto}".`, sugestao: a.sugestao || null };
@@ -160,6 +168,7 @@ export function situacao(h) {
 function serveParaLinha(q, l, receita) {
     if ((q.materia || 'Geral') !== l.materia) return false;
     if (l.assunto && q.assunto !== l.assunto) return false;
+    if (l.assuntos && l.assuntos.length && !l.assuntos.includes(q.assunto)) return false;
     if (receita.niveis.length && !receita.niveis.includes(Number(q.nivel))) return false;
     if (receita.tipo !== 'todas' && (q.tipo || 'multipla_escolha') !== receita.tipo) return false;
     if (l.temas && l.temas.length) {
@@ -186,7 +195,7 @@ export function montarPelaReceita(questoes, receita, historico = {}, { aleatorio
     const usadas = new Set();
     const escolhidas = [];
     const porLinha = receita.linhas.map((l) => {
-        if (l.problema) return { ...l, disponiveis: 0, entraram: 0, caderno: 0, novas: 0, vistas: 0 };
+        if (l.problema) return { ...l, disponiveis: 0, entraram: 0, querCaderno: 0, caderno: 0, novas: 0, vistas: 0 };
         const grupos = { caderno: [], nova: [], vista: [] };
         questoes.forEach((q) => {
             if (usadas.has(String(q.id)) || !serveParaLinha(q, l, receita)) return;
@@ -204,7 +213,7 @@ export function montarPelaReceita(questoes, receita, historico = {}, { aleatorio
         const daLinha = embaralhar([...doCaderno, ...maisCaderno, ...novas, ...vistas], aleatorio);
         daLinha.forEach((q) => usadas.add(String(q.id)));
         escolhidas.push(...daLinha);
-        return { ...l, disponiveis, entraram: daLinha.length, caderno: doCaderno.length + maisCaderno.length, novas: novas.length, vistas: vistas.length };
+        return { ...l, disponiveis, entraram: daLinha.length, querCaderno, caderno: doCaderno.length + maisCaderno.length, novas: novas.length, vistas: vistas.length };
     });
     return { questoes: escolhidas, porLinha, total: escolhidas.length };
 }
@@ -216,8 +225,62 @@ export function receitaComoTexto(r) {
     const tempo = r.tempo.modo === 'minutos' ? `${r.tempo.minutos}` : r.tempo.modo === 'sugerido' ? 'sugerido' : 'sem';
     return [
         `SIMULADO: ${r.nome || 'Sem nome'}`,
-        ...r.linhas.map((l) => `${l.materia}${l.assunto ? ` / ${l.assunto}` : ''}${l.temas && l.temas.length ? ` / tema: ${l.temas.join(', ')}` : ''} → ${l.qtd}`),
+        ...r.linhas.map((l) => `${l.materia}${l.assuntos && l.assuntos.length ? ` / ${l.assuntos.join(' + ')}` : l.assunto ? ` / ${l.assunto}` : ''}${l.temas && l.temas.length ? ` / tema: ${l.temas.join(', ')}` : ''} → ${l.qtd}`),
         `status: ${r.status.novas}% novas, ${r.status.caderno}% Caderno de erros · nível: ${nivel} · tipo: ${tipo}`,
         `tempo: ${tempo}`
     ].join('\n');
+}
+
+// ---------- Montador visual (v172) ----------
+// A tela guarda uma configuração estruturada (cfg); a receita em texto é gerada dela.
+// cfg: { nome, blocos: [{ materia, assuntos: [] (vazio = todos), qtd, porAssunto, qtdPorAssunto: {assunto: n}, temas: [] }],
+//        status: { novas, caderno }, niveis: [], tipo, tempo: { modo, minutos } }
+export function cfgVazia() {
+    return { nome: '', blocos: [], status: { novas: 70, caderno: 30 }, niveis: [1], tipo: 'todas', tempo: { modo: 'sugerido' } };
+}
+
+// Linhas da receita a partir da cfg: bloco "por assunto" vira uma linha por assunto
+export function cfgParaReceita(cfg) {
+    const linhas = [];
+    (cfg.blocos || []).forEach((b, i) => {
+        const temas = b.temas || [];
+        if (b.porAssunto && b.assuntos.length) {
+            b.assuntos.forEach((a) => { const n = Number((b.qtdPorAssunto || {})[a]) || 0; if (n > 0) linhas.push({ n: i + 1, bloco: i, materia: b.materia, assunto: a, assuntos: [], temas, qtd: n }); });
+        } else if (Number(b.qtd) > 0) {
+            linhas.push({ n: i + 1, bloco: i, materia: b.materia, assunto: b.assuntos.length === 1 ? b.assuntos[0] : '', assuntos: b.assuntos.length > 1 ? [...b.assuntos] : [], temas, qtd: Number(b.qtd) });
+        }
+    });
+    return { nome: cfg.nome || '', linhas, status: { ...cfg.status }, niveis: [...(cfg.niveis || [])], tipo: cfg.tipo || 'todas', tempo: { ...cfg.tempo }, erros: [] };
+}
+
+// Receita lida (texto já casado com o banco) → cfg. Linhas seguidas da mesma matéria com um assunto
+// cada viram um bloco "por assunto"; o resto, um bloco por linha.
+export function receitaParaCfg(r) {
+    const blocos = [];
+    r.linhas.filter((l) => !l.problema).forEach((l) => {
+        const ult = blocos[blocos.length - 1];
+        if (l.assunto && ult && ult.materia === l.materia && (ult.porAssunto || ult.assuntos.length === 1) && !ult.assuntos.includes(l.assunto) && JSON.stringify(ult.temas) === JSON.stringify(l.temas || [])) {
+            if (!ult.porAssunto) { ult.porAssunto = true; ult.qtdPorAssunto = { [ult.assuntos[0]]: ult.qtd }; }
+            ult.assuntos.push(l.assunto);
+            ult.qtdPorAssunto[l.assunto] = l.qtd;
+            ult.qtd += l.qtd;
+            return;
+        }
+        blocos.push({ materia: l.materia, assuntos: l.assuntos && l.assuntos.length ? [...l.assuntos] : l.assunto ? [l.assunto] : [], qtd: l.qtd, porAssunto: false, qtdPorAssunto: {}, temas: l.temas || [] });
+    });
+    return { nome: r.nome || '', blocos, status: { ...r.status }, niveis: [...r.niveis], tipo: r.tipo, tempo: { ...r.tempo } };
+}
+
+// Quantas questões cada assunto tem com o nível e o tipo escolhidos: Map(materia -> Map(assunto -> n))
+export function contarPorAssunto(questoes, { niveis = [], tipo = 'todas' } = {}) {
+    const m = new Map();
+    (questoes || []).forEach((q) => {
+        if (niveis.length && !niveis.includes(Number(q.nivel))) return;
+        if (tipo !== 'todas' && (q.tipo || 'multipla_escolha') !== tipo) return;
+        const mat = q.materia || 'Geral';
+        if (!m.has(mat)) m.set(mat, new Map());
+        const a = q.assunto || 'Sem assunto';
+        m.get(mat).set(a, (m.get(mat).get(a) || 0) + 1);
+    });
+    return m;
 }

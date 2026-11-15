@@ -772,6 +772,7 @@ function abrirTelaSimulado() {
             if (b) b.click();
         },
         // Receita da sala de aula (Fase 2, v171): a prévia sorteia de verdade; o começo sorteia de novo
+        dados: () => ({ questoes, historico }),
         prepararReceita: (texto) => {
             const receita = casarReceita(lerReceita(texto), catalogoDe(questoes));
             return { receita, montagem: montarPelaReceita(questoes, receita, historico) };
