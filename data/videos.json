@@ -83,5 +83,34 @@
     "arquivo": "videos/chaves.mp4",
     "duracao": 89,
     "bytes": 3831855
+  },
+  {
+    "id": "arp",
+    "ordem": 5,
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
+    "titulo": "ARP × DNS: nome, IP e MAC",
+    "arquivo": "videos/arp.mp4",
+    "duracao": 81,
+    "bytes": 3138003
+  },
+  {
+    "id": "icmp",
+    "ordem": 6,
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
+    "titulo": "ICMP: avisos e testes da rede",
+    "arquivo": "videos/icmp.mp4",
+    "duracao": 80,
+    "bytes": 3044556
+  },
+  {
+    "id": "join",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "SQL — Consultas, JOIN e subconsultas",
+    "titulo": "JOIN: juntar duas tabelas",
+    "arquivo": "videos/join.mp4",
+    "duracao": 86,
+    "bytes": 3621086
   }
 ]
