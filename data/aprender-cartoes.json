@@ -5165,7 +5165,7 @@
     "nivel": 1,
     "conceito": "Endereço IP",
     "termo_ingles": "Internet Protocol address (IP address)",
-    "traducao": "Endereço do Protocolo de Internet: IPv4 é a versão 4 do protocolo; IPv6, a versão 6.",
+    "traducao": "Endereço do Protocolo de Internet: identifica uma interface para a comunicação entre redes.",
     "resumo": "Endereço IP serve para identificar logicamente uma interface de rede. IPv4 usa 32 bits; IPv6, 128; o prefixo inicial identifica a rede. Exemplo: em 192.0.2.10/24, a rede é 192.0.2.0.",
     "nao_confundir": [
       {
@@ -5301,7 +5301,7 @@
     "nivel": 1,
     "conceito": "NAT: tradução de endereços de rede",
     "termo_ingles": "Network Address Translation (NAT)",
-    "traducao": "Tradução de Endereços de Rede: age sobre o IP; com portas, vira NAPT, também chamada PAT.",
+    "traducao": "Tradução de Endereços de Rede: troca o IP dos pacotes na passagem entre a rede privada e a internet.",
     "resumo": "NAT serve para trocar o endereço IP dos pacotes em trânsito entre a rede privada e a internet. Exemplo: 192.168.0.10 sai como 203.0.113.5.",
     "nao_confundir": [
       {
@@ -5332,8 +5332,8 @@
         "diferenca": "Switching encaminha quadros pelo MAC; roteamento encaminha pacotes entre redes."
       }
     ],
-    "atencao": "O switch é da camada de enlace (2) e escolhe a porta de saída pelo MAC de destino.",
-    "fonte": "[Cisco — Troubleshoot LAN Switching Environments (Document ID 12006)](https://www.cisco.com/c/en/us/support/docs/lan-switching/ethernet/12006-chapter22.html)",
+    "atencao": "Quadro para um MAC ainda desconhecido vai para todas as portas, menos a de origem.",
+    "fonte": "[Cisco — Troubleshoot LAN Switching Environments (Document ID 12006)](https://www.cisco.com/c/en/us/support/docs/lan-switching/ethernet/12006-chapter22.html); [Cisco Community — Network Switching Operation (unicast flooding)](https://community.cisco.com/t5/networking-knowledge-base/network-switching-operation/ta-p/4193160)",
     "tags": [
       "switch",
       "mac"
@@ -5397,7 +5397,7 @@
         "diferenca": "OSPF usa custo do enlace; RIP (vetor de distância) conta saltos."
       }
     ],
-    "atencao": "OSPF é de estado de enlace e usa Dijkstra; OSPFv2 atende IPv4; OSPFv3, IPv6.",
+    "atencao": "OSPFv2 atende IPv4; OSPFv3, IPv6.",
     "fonte": "[RFC 2328 — OSPF Version 2, resumo e seção 16.1](https://www.rfc-editor.org/rfc/rfc2328.html); [RFC 5340 — OSPF for IPv6, resumo e seção 1](https://www.rfc-editor.org/rfc/rfc5340.html)",
     "tags": [
       "ospf",
@@ -5416,12 +5416,12 @@
     "resumo": "SDN serve para programar a rede por software, com o controle separado do encaminhamento, o que dá flexibilidade. Exemplo: um controlador central define as rotas; os switches só encaminham.",
     "nao_confundir": [
       {
-        "conceito": "Plano de dados",
-        "diferenca": "Plano de controle decide; plano de dados, nos roteadores e switches, encaminha os pacotes."
+        "conceito": "Rede tradicional",
+        "diferenca": "Na SDN, o controle fica num controlador central; na tradicional, em cada equipamento."
       }
     ],
-    "atencao": "SDN separa o plano de controle do plano de encaminhamento (dados) via interfaces padronizadas.",
-    "fonte": "[RFC 7426 — Software-Defined Networking (SDN): Layers and Architecture Terminology, resumo e seções 2 e 3.2](https://www.rfc-editor.org/rfc/rfc7426.html)",
+    "atencao": "O OpenFlow é a interface mais usada entre o controlador SDN e os switches.",
+    "fonte": "[RFC 7426 — Software-Defined Networking (SDN): Layers and Architecture Terminology, resumo e seções 2 e 3.2](https://www.rfc-editor.org/rfc/rfc7426.html); [Braun e Menth — Software-Defined Networking Using OpenFlow, Future Internet 6(2), 2014, seção 2.2](https://mdpi.com/1999-5903/6/2/302)",
     "tags": [
       "sdn"
     ]
@@ -5527,7 +5527,7 @@
         "diferenca": "IMAP mantém e gerencia as mensagens no servidor; POP3 é voltado a baixá-las."
       }
     ],
-    "atencao": "O IMAP permite acessar a mesma caixa postal armazenada no servidor a partir de diferentes dispositivos.",
+    "atencao": "Pastas e mensagens lidas num aparelho aparecem nos outros, porque o estado fica no servidor.",
     "fonte": "RFC 3501, Internet Message Access Protocol – Version 4rev1, 2003; RFC 8314, Cleartext Considered Obsolete, 2018; IANA, Service Name and Port Number Registry.",
     "tags": [
       "imap"
@@ -5591,8 +5591,8 @@
         "diferenca": "SNMP consulta equipamentos; syslog recebe mensagens de log enviadas por eles."
       }
     ],
-    "atencao": "Só o SNMPv3 oferece autenticação e criptografia; v1 e v2c não.",
-    "fonte": "RFC 3411, An Architecture for Describing Simple Network Management Protocol (SNMP) Management Frameworks, 2002; RFC 3417, Transport Mappings for the Simple Network Management Protocol (SNMP), 2002; IANA, Service Name and Port Number Registry.; RFC 3414, User-based Security Model (USM) for SNMPv3, 2002.",
+    "atencao": "Só o SNMPv3 traz autenticação forte e criptografia; v1 e v2c usam a comunidade, senha em texto claro.",
+    "fonte": "RFC 3411, An Architecture for Describing Simple Network Management Protocol (SNMP) Management Frameworks, 2002; RFC 3417, Transport Mappings for the Simple Network Management Protocol (SNMP), 2002; IANA, Service Name and Port Number Registry.; RFC 3414, User-based Security Model (USM) for SNMPv3, 2002.; RFC 3410, Introduction and Applicability Statements for Internet-Standard Management Framework, 2002.",
     "tags": [
       "snmp",
       "mib"
@@ -12606,7 +12606,7 @@
     "nivel": 1,
     "conceito": "Máscara de sub-rede",
     "termo_ingles": "Subnet mask",
-    "traducao": "Máscara de sub-rede: usada no IPv4; a parte do endereço que não é rede chama-se host.",
+    "traducao": "Máscara de sub-rede: separa, no IPv4, os bits da rede dos bits do host.",
     "resumo": "Máscara de sub-rede serve para indicar quais bits do endereço IPv4 são da rede; os demais identificam o dispositivo. Exemplo: 255.255.255.0 marca 24 bits, os três primeiros números, como rede.",
     "nao_confundir": [
       {
@@ -12636,8 +12636,8 @@
         "diferenca": "Máscara marca os bits de rede; o prefixo CIDR conta quantos são."
       }
     ],
-    "atencao": "/24 significa 24 bits de prefixo, máscara 255.255.255.0: sobram 8 bits, ou 256 endereços.",
-    "fonte": "[RFC 4632 — Classless Inter-domain Routing (CIDR), seção 3.1](https://www.rfc-editor.org/rfc/rfc4632.html); [RFC 1878 — Variable Length Subnet Table For IPv4](https://www.rfc-editor.org/rfc/rfc1878.html)",
+    "atencao": "/24 é a máscara 255.255.255.0: sobram 8 bits, 256 endereços e 254 para aparelhos (rede e difusão reservadas).",
+    "fonte": "[RFC 4632 — Classless Inter-domain Routing (CIDR), seção 3.1](https://www.rfc-editor.org/rfc/rfc4632.html); [RFC 1878 — Variable Length Subnet Table For IPv4](https://www.rfc-editor.org/rfc/rfc1878.html); [RFC 1122 — Requirements for Internet Hosts, seção 3.2.1.3 (endereço de rede e de difusão)](https://www.rfc-editor.org/rfc/rfc1122.html#section-3.2.1.3)",
     "tags": [
       "cidr",
       "mascara-de-sub-rede",
@@ -12655,12 +12655,12 @@
     "resumo": "IPv6 serve para endereçar interfaces com 128 bits, escritos em hexadecimal com dois-pontos; o IPv4 usa 32 bits, em decimal com pontos. Exemplo: 2001:db8::1.",
     "nao_confundir": [
       {
-        "conceito": "ARP (Address Resolution Protocol)",
-        "diferenca": "No IPv4, o ARP descobre o endereço físico; no IPv6, o Neighbor Discovery."
+        "conceito": "Endereço MAC",
+        "diferenca": "IPv6 é lógico, de 128 bits; MAC é físico, de 48; ambos em hexadecimal."
       }
     ],
     "atencao": "O IPv6 é da camada de rede (3), tem endereços de 128 bits e usa multicast, não broadcast.",
-    "fonte": "[RFC 8200 — Internet Protocol, Version 6 (IPv6) Specification, seções 1 e 2](https://www.rfc-editor.org/rfc/rfc8200.html); [RFC 4291 — IP Version 6 Addressing Architecture, seções 2 e 2.2](https://www.rfc-editor.org/rfc/rfc4291.html); [RFC 4861 — Neighbor Discovery for IP version 6 (IPv6), seção 3.1](https://www.rfc-editor.org/rfc/rfc4861.html)",
+    "fonte": "[RFC 8200 — Internet Protocol, Version 6 (IPv6) Specification, seções 1 e 2](https://www.rfc-editor.org/rfc/rfc8200.html); [RFC 4291 — IP Version 6 Addressing Architecture, seções 2 e 2.2](https://www.rfc-editor.org/rfc/rfc4291.html); [RFC 4861 — Neighbor Discovery for IP version 6 (IPv6), seção 3.1](https://www.rfc-editor.org/rfc/rfc4861.html); [RFC 7042 — IANA Considerations and IETF Protocol and Documentation Usage for IEEE 802 Parameters, seção 2.1 (MAC de 48 bits)](https://www.rfc-editor.org/rfc/rfc7042.html)",
     "tags": [
       "ipv6",
       "camada-de-rede",
@@ -12762,7 +12762,7 @@
     "nivel": 1,
     "conceito": "BGP e sistema autônomo",
     "termo_ingles": "Border Gateway Protocol (BGP)",
-    "traducao": "Protocolo de Gateway de Borda: os roteadores vizinhos conversam por conexão TCP.",
+    "traducao": "Protocolo de Gateway de Borda: troca rotas na fronteira entre sistemas autônomos.",
     "resumo": "BGP serve para trocar rotas entre sistemas autônomos, conjuntos de roteadores sob administração técnica comum. Exemplo: duas operadoras anunciam suas redes uma à outra por BGP.",
     "nao_confundir": [
       {
@@ -12784,7 +12784,7 @@
     "nivel": 1,
     "conceito": "Rota padrão",
     "termo_ingles": "Default route",
-    "traducao": "Rota padrão: também chamada rota default; IPv4 é o Protocolo de Internet versão 4.",
+    "traducao": "Rota padrão: também chamada rota default.",
     "resumo": "A rota padrão serve para encaminhar pacotes cujo destino não tem rota mais específica na tabela. Exemplo: em casa, tudo que vai para a internet segue a rota padrão.",
     "nao_confundir": [
       {
@@ -12810,12 +12810,12 @@
     "resumo": "O FTP serve para transferir arquivos: uma conexão de controle (porta 21) leva os comandos e outra, de dados, leva os arquivos. Exemplo: enviar os arquivos de um site.",
     "nao_confundir": [
       {
-        "conceito": "Conexão de controle",
-        "diferenca": "A conexão de controle leva comandos; a conexão de dados transfere arquivos."
+        "conceito": "TFTP (FTP trivial)",
+        "diferenca": "FTP usa TCP e pede login; TFTP usa UDP 69, sem autenticação."
       }
     ],
     "atencao": "O FTP original não oferece confidencialidade; ela só existe quando se acrescentam extensões de segurança.",
-    "fonte": "[RFC 959 — File Transfer Protocol](https://www.rfc-editor.org/rfc/rfc959.html); [RFC 4217 — Securing FTP with TLS](https://www.rfc-editor.org/rfc/rfc4217.html)",
+    "fonte": "[RFC 959 — File Transfer Protocol](https://www.rfc-editor.org/rfc/rfc959.html); [RFC 4217 — Securing FTP with TLS](https://www.rfc-editor.org/rfc/rfc4217.html); [RFC 1350 — The TFTP Protocol (Revision 2)](https://www.rfc-editor.org/rfc/rfc1350.html)",
     "tags": [
       "cliente-servidor"
     ]
@@ -12835,8 +12835,8 @@
         "diferenca": "Telnet oferece terminal remoto sem segurança própria; SSH oferece login remoto seguro sobre rede insegura."
       }
     ],
-    "atencao": "O SSH não serve só para terminal remoto: também protege outros serviços de rede.",
-    "fonte": "[RFC 4251 — The Secure Shell (SSH) Protocol Architecture](https://www.rfc-editor.org/rfc/rfc4251.html); [RFC 854 — Telnet Protocol Specification](https://www.rfc-editor.org/rfc/rfc854.html)",
+    "atencao": "Porta TCP 22; o SSH também cria túneis (encaminhamento de portas) e transfere arquivos (SFTP).",
+    "fonte": "[RFC 4251 — The Secure Shell (SSH) Protocol Architecture](https://www.rfc-editor.org/rfc/rfc4251.html); [RFC 854 — Telnet Protocol Specification](https://www.rfc-editor.org/rfc/rfc854.html); [RFC 4253 — SSH Transport Layer Protocol, seção 4.1 (porta 22)](https://www.rfc-editor.org/rfc/rfc4253.html); [RFC 4254 — SSH Connection Protocol, seção 7 (encaminhamento de portas)](https://www.rfc-editor.org/rfc/rfc4254.html)",
     "tags": [
       "cliente-servidor"
     ]
@@ -12866,7 +12866,7 @@
     "conceito": "Portas conhecidas",
     "termo_ingles": "Well-known ports",
     "traducao": "Portas conhecidas: números de 0 a 1023 reservados a serviços padronizados.",
-    "resumo": "Portas do sistema (0 a 1023), atribuídas pela IANA. Exemplos: HTTP 80, HTTPS 443, SMTP 25, SSH 22, FTP 21, DNS 53, POP3 110, IMAP 143, LDAP 389, SNMP 161.",
+    "resumo": "Portas conhecidas, ou do sistema (0 a 1023), atribuídas pela IANA. Exemplos: HTTP 80, HTTPS 443, SMTP 25, SSH 22, FTP 21, DNS 53, POP3 110, IMAP 143, LDAP 389.",
     "nao_confundir": [
       {
         "conceito": "Porta registrada",
