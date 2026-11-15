@@ -62,11 +62,12 @@ const assuntoCurto = (a) => String(a || '').replace(/\s*\(.*$/, '');
 // ---------- Tela ----------
 // opcoes.inicio: índice do vídeo inicial. opcoes.aoPraticar(materia, assunto): fecha o feed e abre o Praticar.
 // opcoes.podePraticar(materia, assunto): false esconde o botão. opcoes.aoFechar(): ao fechar.
-export function abrirFeed(trilha, { inicio = 0, aoPraticar, podePraticar = () => true, aoFechar } = {}) {
+export function abrirFeed(trilha, { inicio = 0, aoPraticar, podePraticar = () => true, aoFechar, comecarPelaLista = false } = {}) {
     if (!trilha || !trilha.length || document.querySelector('.feed-tela')) return;
     let indice = Math.max(0, Math.min(inicio, trilha.length - 1));
     let concluido = false;      // tela "Vídeo concluído" aberta
     let listaAberta = false;
+    let semEscolha = comecarPelaLista; // abriu pela trilha: nenhum vídeo toca até o aluno escolher
     let fechada = false;
     const focoAntes = document.activeElement;
 
@@ -204,7 +205,7 @@ export function abrirFeed(trilha, { inicio = 0, aoPraticar, podePraticar = () =>
         const faltamBytes = trilha.reduce((s, v, i) => s + (baixados[i] ? 0 : (v.bytes || 0)), 0);
         let materiaAnt = '';
         caixa.innerHTML = `
-            <div class="feed-lista-topo"><button type="button" class="sm-link" data-acao="lista-fechar">← Voltar ao vídeo</button><h3>Trilha de vídeos</h3>
+            <div class="feed-lista-topo"><button type="button" class="sm-link" data-acao="lista-fechar">${semEscolha ? '← Voltar ao Aprender' : '← Voltar ao vídeo'}</button><h3>Trilha de vídeos</h3>
                 <p>${trilha.filter((v) => videoVisto(v)).length} de ${trilha.length} assistidos · ${nBaixados} de ${trilha.length} no aparelho</p></div>
             <div class="feed-lista-itens">${trilha.map((v, i) => {
                 const cab = v.materia !== materiaAnt ? `<p class="feed-lista-materia">${esc(v.materia)}</p>` : '';
@@ -230,7 +231,10 @@ export function abrirFeed(trilha, { inicio = 0, aoPraticar, podePraticar = () =>
         q('.feed-lista').hidden = false;
         desenharLista();
     }
-    function fecharLista() { listaAberta = false; q('.feed-lista').hidden = true; }
+    function fecharLista() {
+        if (semEscolha) return fechar();
+        listaAberta = false; q('.feed-lista').hidden = true;
+    }
 
     async function agir(acao, botao) {
         const v = atual();
@@ -254,6 +258,7 @@ export function abrirFeed(trilha, { inicio = 0, aoPraticar, podePraticar = () =>
         if (acao === 'lista') return abrirLista();
         if (acao === 'lista-fechar') return fecharLista();
         if (acao === 'ir') {
+            semEscolha = false;
             fecharLista();
             const n = Number(botao.dataset.i);
             if (n === indice) return carregar();
@@ -345,8 +350,12 @@ export function abrirFeed(trilha, { inicio = 0, aoPraticar, podePraticar = () =>
     document.body.appendChild(el);
     iconeSom();
     try { if (!localStorage.getItem(CHAVE_DICA)) q('.feed-dica').textContent = 'Deslize para cima para o próximo'; } catch (e) { /* segue */ }
-    carregar();
+    if (comecarPelaLista) {
+        listaAberta = true;
+        q('.feed-lista').hidden = false;
+        desenharLista();
+    } else carregar();
     requestAnimationFrame(() => el.classList.add('visivel'));
-    const p = q('.feed-play');
+    const p = comecarPelaLista ? q('.feed-lista [data-acao="lista-fechar"]') : q('.feed-play');
     if (p) p.focus({ preventScroll: true });
 }

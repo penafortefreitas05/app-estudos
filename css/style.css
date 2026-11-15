@@ -2694,10 +2694,11 @@ body.prova-ativa .card-foco .tentativas { display: none !important; }
 .mt-legenda { margin: 0.4rem 0 0; color: #94a3b8; font-size: 0.82rem; }
 
 /* ---------- Vídeos em sequência (feed v1, 15/11) ---------- */
-.at-videos { all: unset; box-sizing: border-box; cursor: pointer; display: flex; flex-direction: column; gap: 0.2rem; width: 100%; padding: 0.85rem 1rem; margin-bottom: 1rem; border: 1px solid #3730a3; border-radius: 14px; background: rgba(79, 70, 229, 0.10); color: #e0e7ff; }
+.at-videos { all: unset; box-sizing: border-box; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 100%; min-height: 48px; padding: 0.6rem 1rem; margin-bottom: 1rem; border: 1px solid #3730a3; border-radius: 14px; background: rgba(79, 70, 229, 0.10); color: #e0e7ff; }
 .at-videos:focus-visible { outline: 2px solid #a5b4fc; outline-offset: 2px; }
 .at-videos-rotulo { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #a5b4fc; }
 .at-videos-rotulo .ic { width: 0.9rem; height: 0.9rem; }
+.at-videos .ic { width: 1.6rem; height: 1.6rem; }
 .at-videos-nome { font-size: 1.05rem; font-weight: 700; color: #f8fafc; }
 .at-videos-det { font-size: 0.86rem; color: #c7d2fe; }
 .feed-tela { position: fixed; inset: 0; z-index: 960; display: flex; flex-direction: column; height: 100dvh; background: #020617; color: #e2e8f0; opacity: 0; transition: opacity 0.18s ease; }

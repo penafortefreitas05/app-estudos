@@ -274,17 +274,13 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
         const area = q('.at-videos-area');
         if (!trilha.length) { area.innerHTML = ''; return; }
         const r = resumoTrilha(trilha);
-        const prox = r.proximo;
         area.innerHTML = `
-            <button type="button" class="at-videos" data-acao="feed">
-                <span class="at-videos-rotulo">${icone('play', 'ic-indigo')}Vídeos de aprendizagem · ${r.total} vídeos${r.assistidos ? ` · ${r.assistidos} ${r.assistidos === 1 ? 'assistido' : 'assistidos'}` : ''}</span>
-                <span class="at-videos-nome">${r.comecou ? 'Continuar vídeos' : 'Assistir em sequência'}</span>
-                <span class="at-videos-det">${prox ? `${esc(prox.titulo)} · vídeo ${r.posicao} de ${r.total}` : ''}</span>
-            </button>`;
+            <button type="button" class="at-videos" data-acao="feed" aria-label="Assistir vídeos de aprendizagem (${r.total} vídeos${r.assistidos ? `, ${r.assistidos} ${r.assistidos === 1 ? 'assistido' : 'assistidos'}` : ''})" title="Vídeos de aprendizagem">${icone('play', 'ic-indigo')}</button>`;
     }
     function abrirVideosEmSequencia() {
         abrirFeed(trilha, {
             inicio: indiceParaRetomar(trilha),
+            comecarPelaLista: true,
             podePraticar: (mat, nome) => temQuestoes(mat, nome) && typeof aoPraticar === 'function',
             aoPraticar: (mat, nome) => { guardarUltimo(mat, nome); fechar(); aoPraticar(mat, nome); },
             aoFechar: () => { if (!fechada) desenhar(); }
