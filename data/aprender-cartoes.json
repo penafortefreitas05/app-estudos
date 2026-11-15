@@ -5333,7 +5333,7 @@
       }
     ],
     "atencao": "Quadro para um MAC ainda desconhecido vai para todas as portas, menos a de origem.",
-    "fonte": "[Cisco — Troubleshoot LAN Switching Environments (Document ID 12006)](https://www.cisco.com/c/en/us/support/docs/lan-switching/ethernet/12006-chapter22.html); [Cisco Community — Network Switching Operation (unicast flooding)](https://community.cisco.com/t5/networking-knowledge-base/network-switching-operation/ta-p/4193160)",
+    "fonte": "[Cisco — Troubleshoot LAN Switching Environments (Document ID 12006)](https://www.cisco.com/c/en/us/support/docs/lan-switching/ethernet/12006-chapter22.html)",
     "tags": [
       "switch",
       "mac"
@@ -5417,10 +5417,10 @@
     "nao_confundir": [
       {
         "conceito": "Rede tradicional",
-        "diferenca": "Na SDN, o controle fica num controlador central; na tradicional, em cada equipamento."
+        "diferenca": "Na SDN, o controle fica num controlador logicamente centralizado; na tradicional, em cada equipamento."
       }
     ],
-    "atencao": "O OpenFlow é a interface mais usada entre o controlador SDN e os switches.",
+    "atencao": "O OpenFlow é a interface mais conhecida entre o controlador SDN e os switches.",
     "fonte": "[RFC 7426 — Software-Defined Networking (SDN): Layers and Architecture Terminology, resumo e seções 2 e 3.2](https://www.rfc-editor.org/rfc/rfc7426.html); [Braun e Menth — Software-Defined Networking Using OpenFlow, Future Internet 6(2), 2014, seção 2.2](https://mdpi.com/1999-5903/6/2/302)",
     "tags": [
       "sdn"
@@ -5527,7 +5527,7 @@
         "diferenca": "IMAP mantém e gerencia as mensagens no servidor; POP3 é voltado a baixá-las."
       }
     ],
-    "atencao": "Pastas e mensagens lidas num aparelho aparecem nos outros, porque o estado fica no servidor.",
+    "atencao": "Pastas e mensagens marcadas como lidas num aparelho aparecem assim nos outros, porque o estado fica no servidor.",
     "fonte": "RFC 3501, Internet Message Access Protocol – Version 4rev1, 2003; RFC 8314, Cleartext Considered Obsolete, 2018; IANA, Service Name and Port Number Registry.",
     "tags": [
       "imap"
@@ -5592,7 +5592,7 @@
       }
     ],
     "atencao": "Só o SNMPv3 traz autenticação forte e criptografia; v1 e v2c usam a comunidade, senha em texto claro.",
-    "fonte": "RFC 3411, An Architecture for Describing Simple Network Management Protocol (SNMP) Management Frameworks, 2002; RFC 3417, Transport Mappings for the Simple Network Management Protocol (SNMP), 2002; IANA, Service Name and Port Number Registry.; RFC 3414, User-based Security Model (USM) for SNMPv3, 2002.; RFC 3410, Introduction and Applicability Statements for Internet-Standard Management Framework, 2002.",
+    "fonte": "RFC 3411, An Architecture for Describing Simple Network Management Protocol (SNMP) Management Frameworks, 2002; RFC 3417, Transport Mappings for the Simple Network Management Protocol (SNMP), 2002; IANA, Service Name and Port Number Registry; RFC 3414, User-based Security Model (USM) for SNMPv3, 2002; RFC 3410, Introduction and Applicability Statements for Internet-Standard Management Framework, 2002.",
     "tags": [
       "snmp",
       "mib"
@@ -12636,7 +12636,7 @@
         "diferenca": "Máscara marca os bits de rede; o prefixo CIDR conta quantos são."
       }
     ],
-    "atencao": "/24 é a máscara 255.255.255.0: sobram 8 bits, 256 endereços e 254 para aparelhos (rede e difusão reservadas).",
+    "atencao": "/24 equivale à máscara 255.255.255.0: sobram 8 bits, 256 endereços e 254 para aparelhos (rede e difusão reservadas).",
     "fonte": "[RFC 4632 — Classless Inter-domain Routing (CIDR), seção 3.1](https://www.rfc-editor.org/rfc/rfc4632.html); [RFC 1878 — Variable Length Subnet Table For IPv4](https://www.rfc-editor.org/rfc/rfc1878.html); [RFC 1122 — Requirements for Internet Hosts, seção 3.2.1.3 (endereço de rede e de difusão)](https://www.rfc-editor.org/rfc/rfc1122.html#section-3.2.1.3)",
     "tags": [
       "cidr",
@@ -12660,7 +12660,7 @@
       }
     ],
     "atencao": "O IPv6 é da camada de rede (3), tem endereços de 128 bits e usa multicast, não broadcast.",
-    "fonte": "[RFC 8200 — Internet Protocol, Version 6 (IPv6) Specification, seções 1 e 2](https://www.rfc-editor.org/rfc/rfc8200.html); [RFC 4291 — IP Version 6 Addressing Architecture, seções 2 e 2.2](https://www.rfc-editor.org/rfc/rfc4291.html); [RFC 4861 — Neighbor Discovery for IP version 6 (IPv6), seção 3.1](https://www.rfc-editor.org/rfc/rfc4861.html); [RFC 7042 — IANA Considerations and IETF Protocol and Documentation Usage for IEEE 802 Parameters, seção 2.1 (MAC de 48 bits)](https://www.rfc-editor.org/rfc/rfc7042.html)",
+    "fonte": "[RFC 8200 — Internet Protocol, Version 6 (IPv6) Specification, seções 1 e 2](https://www.rfc-editor.org/rfc/rfc8200.html); [RFC 4291 — IP Version 6 Addressing Architecture, seções 2 e 2.2](https://www.rfc-editor.org/rfc/rfc4291.html); [RFC 4861 — Neighbor Discovery for IP version 6 (IPv6), seção 3.1](https://www.rfc-editor.org/rfc/rfc4861.html); [RFC 9542 — IANA Considerations and IETF Protocol and Documentation Usage for IEEE 802 Parameters, seção 2.1 (MAC de 48 bits)](https://www.rfc-editor.org/rfc/rfc9542.html)",
     "tags": [
       "ipv6",
       "camada-de-rede",
@@ -12784,7 +12784,7 @@
     "nivel": 1,
     "conceito": "Rota padrão",
     "termo_ingles": "Default route",
-    "traducao": "Rota padrão: também chamada rota default.",
+    "traducao": "Rota padrão: a usada quando nenhuma outra rota casa com o destino.",
     "resumo": "A rota padrão serve para encaminhar pacotes cujo destino não tem rota mais específica na tabela. Exemplo: em casa, tudo que vai para a internet segue a rota padrão.",
     "nao_confundir": [
       {
