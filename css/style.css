@@ -2692,3 +2692,78 @@ body.prova-ativa .card-foco .tentativas { display: none !important; }
 .mt-folha-resumo b { color: #f8fafc; font-size: 0.95rem; }
 .mt-folha-resumo span { color: #94a3b8; font-size: 0.82rem; }
 .mt-legenda { margin: 0.4rem 0 0; color: #94a3b8; font-size: 0.82rem; }
+
+/* ---------- Vídeos em sequência (feed v1, 15/11) ---------- */
+.at-videos { all: unset; box-sizing: border-box; cursor: pointer; display: flex; flex-direction: column; gap: 0.2rem; width: 100%; padding: 0.85rem 1rem; margin-bottom: 1rem; border: 1px solid #3730a3; border-radius: 14px; background: rgba(79, 70, 229, 0.10); color: #e0e7ff; }
+.at-videos:focus-visible { outline: 2px solid #a5b4fc; outline-offset: 2px; }
+.at-videos-rotulo { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #a5b4fc; }
+.at-videos-rotulo .ic { width: 0.9rem; height: 0.9rem; }
+.at-videos-nome { font-size: 1.05rem; font-weight: 700; color: #f8fafc; }
+.at-videos-det { font-size: 0.86rem; color: #c7d2fe; }
+.feed-tela { position: fixed; inset: 0; z-index: 960; display: flex; flex-direction: column; height: 100dvh; background: #020617; color: #e2e8f0; opacity: 0; transition: opacity 0.18s ease; }
+.feed-tela.visivel { opacity: 1; }
+.feed-tela > * { width: 100%; max-width: 30rem; margin-left: auto; margin-right: auto; box-sizing: border-box; }
+.feed-topo { display: flex; align-items: center; gap: 0.6rem; padding: max(0.6rem, env(safe-area-inset-top)) 0.8rem 0.4rem; }
+.feed-topo-texto { flex: 1; text-align: center; min-width: 0; }
+.feed-faixa { margin: 0; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #a5b4fc; }
+.feed-pos { margin: 0.1rem 0 0; font-size: 0.86rem; color: #cbd5e1; }
+.feed-btn-ic { all: unset; box-sizing: border-box; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; width: 2.6rem; height: 2.6rem; border-radius: 999px; color: #e2e8f0; flex: none; }
+.feed-btn-ic .ic { width: 1.15rem; height: 1.15rem; }
+.feed-btn-ic:focus-visible, .feed-play:focus-visible { outline: 2px solid #a5b4fc; outline-offset: 2px; }
+.feed-palco { position: relative; flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; padding: 0 0.6rem; touch-action: pan-x; }
+.feed-video { display: block; max-width: 100%; max-height: 100%; aspect-ratio: 9 / 16; height: 100%; border-radius: 14px; background: #0b1220; object-fit: contain; }
+.feed-play { all: unset; box-sizing: border-box; cursor: pointer; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: transparent; }
+.feed-play .ic { width: 3.6rem; height: 3.6rem; padding: 1rem; border-radius: 999px; background: rgba(2, 6, 23, 0.55); opacity: 0; transition: opacity 0.15s; }
+.feed-play.pausado { color: #fff; }
+.feed-play.pausado .ic { opacity: 1; }
+.feed-aviso, .feed-fim { position: absolute; inset: 0.4rem 0.6rem; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.7rem; padding: 1.2rem; border-radius: 14px; background: rgba(2, 6, 23, 0.92); text-align: center; }
+.feed-aviso[hidden], .feed-fim[hidden], .feed-lista[hidden] { display: none; }
+.feed-aviso p { display: flex; gap: 0.5rem; align-items: flex-start; margin: 0; color: #fcd34d; font-size: 0.95rem; line-height: 1.4; text-align: left; }
+.feed-aviso .ic { width: 1.1rem; height: 1.1rem; flex: none; margin-top: 0.15rem; }
+.feed-fim-titulo { display: inline-flex; align-items: center; gap: 0.45rem; margin: 0; font-size: 1.15rem; font-weight: 800; color: #f8fafc; }
+.feed-fim-titulo .ic { width: 1.2rem; height: 1.2rem; color: #a5b4fc; }
+.feed-fim-texto { margin: 0; color: #cbd5e1; font-size: 0.95rem; }
+.feed-fim-rotulo { margin: 0.4rem 0 0; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #94a3b8; }
+.feed-fim-prox { margin: 0; color: #f8fafc; font-weight: 700; font-size: 1rem; display: flex; flex-direction: column; gap: 0.15rem; }
+.feed-fim-prox span { color: #94a3b8; font-weight: 400; font-size: 0.84rem; }
+.feed-fim-sugestao { margin: 0; padding: 0.55rem 0.8rem; border: 1px solid #3730a3; border-radius: 10px; color: #c7d2fe; font-size: 0.88rem; }
+.feed-fim-acoes { display: flex; flex-direction: column; gap: 0.5rem; width: 100%; max-width: 18rem; margin-top: 0.3rem; }
+.feed-fim-nota { margin: 0.2rem 0 0; color: #64748b; font-size: 0.8rem; }
+.feed-info { padding: 0.5rem 1rem calc(0.7rem + env(safe-area-inset-bottom)); }
+.feed-titulo { margin: 0; font-size: 1.05rem; color: #f8fafc; }
+.feed-assunto { margin: 0.1rem 0 0.45rem; color: #94a3b8; font-size: 0.86rem; }
+.feed-progresso { height: 4px; border-radius: 999px; background: #1e293b; overflow: hidden; }
+.feed-progresso i { display: block; height: 100%; width: 0; background: #818cf8; }
+.feed-linha { display: flex; align-items: center; justify-content: space-between; margin: 0.15rem 0 0.35rem; }
+.feed-tempo { color: #94a3b8; font-size: 0.82rem; font-variant-numeric: tabular-nums; }
+.feed-acoes { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+.feed-acoes [hidden] { display: none; }
+.feed-acoes:has([data-acao="praticar"][hidden]) { grid-template-columns: 1fr; }
+.feed-dica { margin: 0.45rem 0 0; text-align: center; color: #64748b; font-size: 0.78rem; }
+.feed-lista { position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column; max-width: none; padding: max(0.8rem, env(safe-area-inset-top)) 1rem calc(0.8rem + env(safe-area-inset-bottom)); background: #0b1220; overflow-y: auto; }
+.feed-lista > * { width: 100%; max-width: 30rem; margin-left: auto; margin-right: auto; }
+.feed-lista-topo h3 { margin: 0.4rem 0 0.1rem; color: #f8fafc; font-size: 1.15rem; }
+.feed-lista-topo p { margin: 0 0 0.6rem; color: #94a3b8; font-size: 0.86rem; }
+.feed-lista-topo .sm-link { margin: 0; text-decoration: none; }
+.feed-lista-materia { margin: 0.8rem 0 0.35rem; font-size: 0.76rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #a5b4fc; }
+.feed-lista-item { display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.4rem; border: 1px solid #1e293b; border-radius: 14px; background: #0f172a; }
+.feed-lista-item.atual { border-color: #6366f1; }
+.feed-lista-ir { all: unset; box-sizing: border-box; cursor: pointer; flex: 1; display: flex; align-items: center; gap: 0.7rem; padding: 0.6rem 0.4rem 0.6rem 0.8rem; min-width: 0; }
+.feed-lista-num { display: inline-flex; align-items: center; justify-content: center; width: 1.8rem; height: 1.8rem; border-radius: 999px; background: #1e293b; color: #cbd5e1; font-size: 0.82rem; font-weight: 700; flex: none; }
+.feed-lista-nome { display: flex; flex-direction: column; gap: 0.1rem; min-width: 0; }
+.feed-lista-nome b { color: #f8fafc; font-size: 0.93rem; }
+.feed-lista-nome span { color: #94a3b8; font-size: 0.8rem; }
+.feed-lista-dl { all: unset; box-sizing: border-box; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; width: 2.6rem; height: 2.6rem; margin-right: 0.3rem; border-radius: 999px; border: 1px solid #334155; color: #cbd5e1; flex: none; }
+.feed-lista-dl.ok { color: #a5b4fc; border-color: #3730a3; }
+.feed-lista-dl .ic { width: 1rem; height: 1rem; }
+.feed-lista-ir:focus-visible, .feed-lista-dl:focus-visible { outline: 2px solid #a5b4fc; outline-offset: 2px; }
+.feed-baixar-todos { margin-top: 0.6rem; }
+.feed-lista-ok, .feed-lista-msg { margin: 0.6rem 0 0; color: #94a3b8; font-size: 0.86rem; text-align: center; }
+.feed-tela.feed-sobe .feed-video { animation: feedSobe 0.22s ease; }
+.feed-tela.feed-desce .feed-video { animation: feedDesce 0.22s ease; }
+@keyframes feedSobe { from { transform: translateY(14%); opacity: 0.3; } to { transform: none; opacity: 1; } }
+@keyframes feedDesce { from { transform: translateY(-14%); opacity: 0.3; } to { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .feed-tela, .feed-tela .feed-video { transition: none; animation: none !important; } }
+.feed-aviso .leitura-btn, .feed-fim .leitura-btn, .feed-acoes .leitura-btn { flex: none; width: 100%; height: auto; min-height: 2.9rem; margin: 0; }
+.feed-aviso .leitura-btn { max-width: 18rem; }
+.feed-concluido .feed-acoes, .feed-concluido .feed-dica { visibility: hidden; }

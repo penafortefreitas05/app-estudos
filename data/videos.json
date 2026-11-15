@@ -19,6 +19,7 @@
   },
   {
     "id": "nat",
+    "ordem": 4,
     "materia": "Redes & Segurança da Informação",
     "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
     "titulo": "NAT: a troca no caminho",
@@ -28,6 +29,7 @@
   },
   {
     "id": "tcpudp",
+    "ordem": 2,
     "materia": "Redes & Segurança da Informação",
     "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
     "titulo": "TCP × UDP e porta",
@@ -37,6 +39,7 @@
   },
   {
     "id": "osi",
+    "ordem": 1,
     "materia": "Redes & Segurança da Informação",
     "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
     "titulo": "Modelo OSI: as 7 camadas",
@@ -46,6 +49,7 @@
   },
   {
     "id": "mascara",
+    "ordem": 3,
     "materia": "Redes & Segurança da Informação",
     "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
     "titulo": "Máscara: onde termina a rede",
