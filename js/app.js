@@ -31,6 +31,7 @@ import { prioridadesDeRecuperacao } from './prioridade.js';
 import { salvarPacote, lerPacote, infoPacote, descreverPacote } from './offline-pacote.js';
 import { modeloDoConcurso, quotasDoModelo, sortearPeloModelo } from './modelo-prova.js';
 import { abrirSimulado, abrirResultado, lerSimuladosLocais, guardarSimuladoLocal, mesclarSimulados, novoId } from './simulado-tela.js';
+import { lerReceita, casarReceita, catalogoDe, montarPelaReceita } from './receita.js';
 // ==================== FIM ====================
 
 // ---------- 1.2 Supabase (banco e cliente) ----------
@@ -770,6 +771,15 @@ function abrirTelaSimulado() {
             const b = document.getElementById("btn-simulado");
             if (b) b.click();
         },
+        // Receita da sala de aula (Fase 2, v171): a prévia sorteia de verdade; o começo sorteia de novo
+        prepararReceita: (texto) => {
+            const receita = casarReceita(lerReceita(texto), catalogoDe(questoes));
+            return { receita, montagem: montarPelaReceita(questoes, receita, historico) };
+        },
+        aoComecarReceita: (receita, minutos) => {
+            const { questoes: lista } = montarPelaReceita(questoes, receita, historico);
+            iniciarSimuladoCom(lista, minutos, receita.nome ? `Simulado · ${receita.nome}` : "Simulado");
+        },
         carregarHistorico: async () => {
             const locais = lerSimuladosLocais();
             const nuvem = usuarioAtual ? await listarSimuladosNuvem() : null;
@@ -1328,19 +1338,24 @@ if (btnSimulado) {
             return;
         }
 
-        // O simulado roda no Modo Foco: uma questão por vez, sem gabarito até finalizar
-        simulado = { ids: sorteadas.map(q => q.id), respostas: {}, inicio: Date.now(), finalizado: false };
-        entrarFoco(sorteadas, { titulo: "Simulado", simulado: true, silencioso: true });
-
-        fecharPaineis();
-        showToast(`Simulado iniciado com ${sorteadas.length} questões!`, "info");
-
-        if (tempo > 0) {
-            iniciarCronometro(tempo, displayCronometro, () => {
-                finalizarSimuladoAtual(true);
-            });
-        }
+        iniciarSimuladoCom(sorteadas, tempo, "Simulado");
     });
+}
+
+// O simulado roda no Modo Foco em modo Prova: uma questão por vez, sem gabarito até finalizar
+function iniciarSimuladoCom(sorteadas, tempo, titulo) {
+    if (!sorteadas.length) { showToast("Nenhuma questão para o simulado.", "alerta"); return; }
+    pararCronometro(displayCronometro);
+    if (foco) sairFoco({ silencioso: true });
+    simulado = { ids: sorteadas.map(q => q.id), respostas: {}, revisar: new Set(), inicio: Date.now(), finalizado: false };
+    entrarFoco(sorteadas, { titulo, simulado: true, silencioso: true });
+    fecharPaineis();
+    showToast(`Simulado iniciado com ${sorteadas.length} questões!`, "info");
+    if (tempo > 0) {
+        iniciarCronometro(tempo, displayCronometro, () => {
+            finalizarSimuladoAtual(true);
+        });
+    }
 }
 // ==================== FIM ====================
 
@@ -1496,7 +1511,7 @@ function sairFoco(opcoes = {}) {
     if (!foco) return;
     const idAtual = foco.lista[foco.indice] ? String(foco.lista[foco.indice].id) : "";
     foco = null;
-    document.body.classList.remove("modo-foco", "modo-aprender", "foco-simulado");
+    document.body.classList.remove("modo-foco", "modo-aprender", "foco-simulado", "prova-ativa");
     if (btnModoFoco) btnModoFoco.setAttribute("aria-pressed", "false");
     if (opcoes.silencioso) return; // quem chamou vai desenhar outra coisa no lugar
     aplicarFiltros();
@@ -1562,7 +1577,7 @@ function desenharFoco() {
     barra.className = "foco-barra";
     barra.innerHTML = `
         <button type="button" class="btn-painel foco-anterior" ${foco.indice === 0 ? "disabled" : ""} aria-label="Questão anterior">←</button>
-        <span class="foco-posicao" aria-live="polite">${foco.titulo ? `<span class="foco-titulo">${esc(foco.titulo)}</span>` : ""}${fim ? "Fim da lista" : rotuloPosicaoFoco()}${foco.simulado ? ` <span class="foco-marcadas">· ${marcadasNoSimulado()} marcadas</span>` : ""}</span>
+        <span class="foco-posicao" aria-live="polite">${foco.titulo ? `<span class="foco-titulo">${esc(foco.titulo)}</span>` : ""}${fim ? "Fim da lista" : rotuloPosicaoFoco()}${foco.simulado ? ` <span class="foco-marcadas">· ${marcadasNoSimulado()} respondidas</span>` : ""}</span>
         <button type="button" class="btn-painel foco-proxima" ${fim ? "disabled" : ""} aria-label="Próxima questão">→</button>
         <button type="button" class="btn-painel foco-sair">${icone("fechar")}${foco.simulado ? "Sair" : "Sair do foco"}</button>`;
 
@@ -1573,6 +1588,9 @@ function desenharFoco() {
     avanco.innerHTML = `<span style="width:${total ? Math.round((fim ? total : foco.indice) * 100 / total) : 0}%"></span>`;
 
     const partes = [barra, avanco];
+    // Modo Prova (v171): durante o simulado só a questão; faixa de números para pular entre elas
+    document.body.classList.toggle("prova-ativa", Boolean(foco.simulado && simulado && !simulado.finalizado));
+    if (foco.simulado && simulado) partes.splice(1, 1, faixaDaProva());
     if (fim) {
         partes.push(foco.simulado ? resumoSimulado() : resumoFoco());
     } else if (foco.simulado) {
@@ -1582,6 +1600,7 @@ function desenharFoco() {
         rodape.innerHTML = simulado && simulado.finalizado
             ? `<button type="button" class="btn-primary btn-largo foco-proxima">Próxima questão →</button>`
             : `<button type="button" class="btn-primary btn-largo foco-proxima">Próxima questão →</button>
+               <button type="button" class="btn-painel prova-revisar${paraRevisar(foco.lista[foco.indice]) ? " ativo" : ""}" aria-pressed="${paraRevisar(foco.lista[foco.indice])}">${icone("alerta")}${paraRevisar(foco.lista[foco.indice]) ? "Vou revisar depois ✓" : "Revisar depois"}</button>
                <button type="button" class="btn-link foco-finalizar">${icone("feito")}Finalizar simulado</button>
                <p class="foco-atalhos">Marque a alternativa e avance. A correção vem só no fim. Teclado: <kbd>A</kbd>–<kbd>E</kbd> escolhe · <kbd>Enter</kbd> registra e avança · <kbd>←</kbd> <kbd>→</kbd> navegam</p>`;
         partes.push(rodape);
@@ -1636,6 +1655,36 @@ function resumoFoco() {
     return caixa;
 }
 
+function paraRevisar(q) {
+    return Boolean(q && simulado && simulado.revisar && simulado.revisar.has(String(q.id)));
+}
+
+// Faixa com o número de cada questão. Durante a prova: atual, respondida, em branco e "revisar".
+// Depois de finalizar: certa, errada e em branco, para rever a correção pulando direto.
+function faixaDaProva() {
+    const faixa = document.createElement("nav");
+    faixa.className = "prova-faixa";
+    faixa.setAttribute("aria-label", "Questões do simulado");
+    const corrigido = simulado && simulado.finalizado;
+    faixa.innerHTML = foco.lista.map((q, i) => {
+        const id = String(q.id);
+        const respondida = Boolean(simulado.respostas[id]);
+        let estado = respondida ? "respondida" : "branco";
+        if (corrigido) {
+            const card = foco.cards.get(id);
+            estado = !respondida ? "branco" : (card && card.classList.contains("resp-certa") ? "certa" : "errada");
+        }
+        const revisar = !corrigido && paraRevisar(q);
+        const nomeEstado = { respondida: "respondida", branco: "em branco", certa: "certa", errada: "errada" }[estado];
+        return `<button type="button" class="prova-num ${estado}${revisar ? " revisar" : ""}${i === foco.indice ? " atual" : ""}" data-i="${i}" aria-label="Questão ${i + 1}, ${nomeEstado}${revisar ? ", para revisar depois" : ""}"${i === foco.indice ? ' aria-current="true"' : ""}>${i + 1}</button>`;
+    }).join("");
+    requestAnimationFrame(() => {
+        const atual = faixa.querySelector(".prova-num.atual");
+        if (atual && faixa.scrollTo) faixa.scrollTo({ left: atual.offsetLeft - faixa.clientWidth / 2 + atual.offsetWidth / 2 });
+    });
+    return faixa;
+}
+
 function marcadasNoSimulado() {
     if (!foco || !simulado) return 0;
     return foco.lista.filter(q => simulado.respostas[String(q.id)]).length;
@@ -1655,7 +1704,8 @@ function resumoSimulado() {
                <button type="button" class="btn-primary foco-sair">Sair do simulado</button>
            </div>`
         : `<p class="foco-resumo-titulo">${icone("feito")}Fim do simulado</p>
-           <p>Você marcou <strong>${marcadas}</strong> de <strong>${total}</strong>${total - marcadas ? `; <strong>${total - marcadas}</strong> ficam em branco` : ""}.</p>
+           <p>Você respondeu <strong>${marcadas}</strong> de <strong>${total}</strong>${total - marcadas ? `; <strong>${total - marcadas}</strong> ficam em branco` : ""}.</p>
+           ${simulado && simulado.revisar && simulado.revisar.size ? `<p><strong>${simulado.revisar.size}</strong> ${simulado.revisar.size === 1 ? "ficou" : "ficaram"} para revisar depois (bolinha amarela na faixa). Toque no número para ir até ela.</p>` : ""}
            <div class="foco-resumo-acoes">
                <button type="button" class="btn-painel foco-anterior">← Revisar respostas</button>
                <button type="button" class="btn-primary foco-finalizar">${icone("feito")}Finalizar simulado</button>
@@ -1749,9 +1799,22 @@ if (container) {
         if (e.target.closest(".foco-proxima")) irPara(foco.indice + 1);
         else if (e.target.closest(".foco-anterior")) irPara(foco.indice - 1);
         else if (e.target.closest(".foco-finalizar")) pedirFinalizarSimulado();
+        else if (e.target.closest(".prova-num")) irPara(Number(e.target.closest(".prova-num").dataset.i));
+        else if (e.target.closest(".prova-revisar")) {
+            const q = foco.lista[foco.indice];
+            if (!q || !simulado || simulado.finalizado) return;
+            const id = String(q.id);
+            if (simulado.revisar.has(id)) simulado.revisar.delete(id); else simulado.revisar.add(id);
+            irPara(foco.indice); // redesenha a faixa e o botão, guardando a alternativa marcada
+        }
         else if (e.target.closest(".foco-sair")) pedirSaidaFoco();
     });
 }
+
+// Modo Prova: fechar a aba ou recarregar no meio do simulado pede confirmação ao navegador
+window.addEventListener("beforeunload", (e) => {
+    if (simulado && !simulado.finalizado && foco && foco.simulado) { e.preventDefault(); e.returnValue = ""; }
+});
 
 function cardAtualDoFoco() {
     return foco ? container.querySelector(".card-questao.card-foco") : null;
