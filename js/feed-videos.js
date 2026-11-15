@@ -15,7 +15,7 @@ import { icone } from './icones.js';
 import { formatarDuracao, formatarTamanho, videoVisto, marcarVideoVisto, videoBaixado, baixarVideo, removerVideo } from './video-aprenda.js';
 
 const CHAVE_POSICAO = 'appEstudos_FeedVideosPosicao';
-const SEGUIDOS_PARA_SUGERIR = 3;
+const CHAVE_DICA = 'appEstudos_FeedDicaVista';
 
 const urlAbsoluta = (arquivo) => new URL(arquivo, document.baseURI).href;
 function ler(chave, padrao) { try { const v = JSON.parse(localStorage.getItem(chave)); return v ?? padrao; } catch (e) { return padrao; } }
@@ -65,7 +65,6 @@ const assuntoCurto = (a) => String(a || '').replace(/\s*\(.*$/, '');
 export function abrirFeed(trilha, { inicio = 0, aoPraticar, podePraticar = () => true, aoFechar } = {}) {
     if (!trilha || !trilha.length || document.querySelector('.feed-tela')) return;
     let indice = Math.max(0, Math.min(inicio, trilha.length - 1));
-    let seguidos = 0;           // vídeos concluídos em sequência nesta sessão
     let concluido = false;      // tela "Vídeo concluído" aberta
     let listaAberta = false;
     let fechada = false;
@@ -89,18 +88,15 @@ export function abrirFeed(trilha, { inicio = 0, aoPraticar, podePraticar = () =>
             <div class="feed-fim" hidden></div>
         </div>
         <div class="feed-info">
-            <h2 class="feed-titulo"></h2>
-            <p class="feed-assunto"></p>
             <div class="feed-progresso" aria-hidden="true"><i></i></div>
             <div class="feed-linha">
-                <span class="feed-tempo">0:00 / 0:00</span>
-                <button type="button" class="feed-btn-ic feed-som" data-acao="som" aria-label="Desligar o som">${icone('play')}</button>
+                <p class="feed-dica"></p>
+                <div class="feed-ferr">
+                    <button type="button" class="feed-btn-ic feed-som" data-acao="som" aria-label="Desligar o som">${icone('play')}</button>
+                    <button type="button" class="feed-btn-ic feed-mais" data-acao="menu" aria-label="Mais opções" aria-haspopup="true" aria-expanded="false">⋯</button>
+                </div>
             </div>
-            <div class="feed-acoes">
-                <button type="button" class="leitura-btn ainda" data-acao="praticar">Praticar este assunto</button>
-                <button type="button" class="leitura-btn entendi" data-acao="proximo">Próximo ↓</button>
-            </div>
-            <p class="feed-dica">Deslize para cima para o próximo · toque no vídeo para pausar</p>
+            <div class="feed-menu" hidden><button type="button" class="feed-menu-item" data-acao="praticar">Praticar este assunto</button></div>
         </div>
         <div class="feed-lista" hidden></div>`;
     const q = (s) => el.querySelector(s);
@@ -119,7 +115,6 @@ export function abrirFeed(trilha, { inicio = 0, aoPraticar, podePraticar = () =>
     function tempo() {
         const d = player.duration && isFinite(player.duration) ? player.duration : (atual().duracao || 0);
         const t = player.currentTime || 0;
-        q('.feed-tempo').textContent = `${formatarDuracao(Math.floor(t))} / ${formatarDuracao(Math.round(d))}`;
         q('.feed-progresso i').style.width = d ? `${Math.min(100, (t * 100) / d)}%` : '0%';
         // Assistido = 90% do vídeo
         if (d && t / d >= 0.9 && !videoVisto(atual())) marcarVideoVisto(atual());
@@ -141,11 +136,9 @@ export function abrirFeed(trilha, { inicio = 0, aoPraticar, podePraticar = () =>
         q('.feed-aviso').hidden = true;
         gravar(CHAVE_POSICAO, { id: v.id, em: Date.now() });
         q('.feed-pos').textContent = `${curto(v.materia)} · ${indice + 1} de ${trilha.length}${videoVisto(v) ? ' · Assistido' : ''}`;
-        q('.feed-titulo').textContent = v.titulo;
-        q('.feed-assunto').textContent = assuntoCurto(v.assunto);
-        const pratica = q('[data-acao="praticar"]');
-        pratica.hidden = !(typeof aoPraticar === 'function' && podePraticar(v.materia, v.assunto));
-        q('[data-acao="proximo"]').textContent = indice < trilha.length - 1 ? 'Próximo ↓' : 'Fim da trilha';
+        fecharMenu();
+        q('.feed-mais').hidden = !(typeof aoPraticar === 'function' && podePraticar(v.materia, v.assunto));
+        player.loop = true; // como no Instagram: o vídeo recomeça; quem troca é o aluno, deslizando
         player.src = urlAbsoluta(v.arquivo);
         tempo();
         // Sem internet e sem o arquivo no aparelho: avisa e não pula (a ordem da trilha importa)
@@ -174,43 +167,34 @@ export function abrirFeed(trilha, { inicio = 0, aoPraticar, podePraticar = () =>
         void el.offsetWidth;
         el.classList.add(novo > indice ? 'feed-sobe' : 'feed-desce');
         indice = novo;
+        try { localStorage.setItem(CHAVE_DICA, '1'); q('.feed-dica').textContent = ''; } catch (e) { /* segue */ }
         carregar();
     }
 
+    // Só aparece ao deslizar para cima no ÚLTIMO vídeo da trilha
     function telaFim() {
         const v = atual();
         concluido = true;
-        seguidos += 1;
+        fecharMenu();
         q('.feed-aviso').hidden = true;
         el.classList.add('feed-concluido');
-        marcarVideoVisto(v);
-        const prox = trilha[indice + 1];
-        const fim = q('.feed-fim');
         const pratica = typeof aoPraticar === 'function' && podePraticar(v.materia, v.assunto);
+        const fim = q('.feed-fim');
         fim.hidden = false;
-        fim.innerHTML = prox ? `
-            <p class="feed-fim-titulo">${icone('feito')}Vídeo concluído</p>
-            <p class="feed-fim-texto">Você terminou “${esc(v.titulo)}”.</p>
-            <p class="feed-fim-rotulo">Próximo na trilha</p>
-            <p class="feed-fim-prox">${esc(prox.titulo)} <span>${esc(curto(prox.materia))} · ${formatarDuracao(prox.duracao)}</span></p>
-            ${seguidos >= SEGUIDOS_PARA_SUGERIR ? `<p class="feed-fim-sugestao">Você assistiu a ${seguidos} vídeos seguidos. Que tal praticar algumas questões?</p>` : ''}
-            <div class="feed-fim-acoes">
-                ${pratica ? `<button type="button" class="leitura-btn entendi" data-acao="praticar">Praticar este assunto</button>` : ''}
-                <button type="button" class="leitura-btn ${pratica ? 'ainda' : 'entendi'}" data-acao="proximo">Próximo vídeo ↓</button>
-            </div>
-            <p class="feed-fim-nota">Assistir não marca o assunto como aprendido.</p>`
-            : `
+        fim.innerHTML = `
             <p class="feed-fim-titulo">${icone('feito')}Fim da trilha</p>
-            <p class="feed-fim-texto">Você terminou os vídeos disponíveis nesta trilha.</p>
+            <p class="feed-fim-texto">Você chegou ao último vídeo disponível.</p>
             <div class="feed-fim-acoes">
                 ${pratica ? `<button type="button" class="leitura-btn entendi" data-acao="praticar">Praticar este assunto</button>` : ''}
                 <button type="button" class="leitura-btn ainda" data-acao="fechar">Voltar ao Aprender</button>
             </div>
             <p class="feed-fim-nota">Assistir não marca o assunto como aprendido.</p>`;
-        q('.feed-pos').textContent = `${curto(v.materia)} · ${indice + 1} de ${trilha.length} · Assistido`;
         const b = fim.querySelector('button');
         if (b) b.focus({ preventScroll: true });
     }
+
+    function fecharMenu() { const m = q('.feed-menu'); if (m) m.hidden = true; const b = q('.feed-mais'); if (b) b.setAttribute('aria-expanded', 'false'); }
+    function alternarMenu() { const m = q('.feed-menu'); const abrir = m.hidden; m.hidden = !abrir; q('.feed-mais').setAttribute('aria-expanded', String(abrir)); }
 
     async function desenharLista() {
         const caixa = q('.feed-lista');
@@ -256,6 +240,7 @@ export function abrirFeed(trilha, { inicio = 0, aoPraticar, podePraticar = () =>
             if (player.paused) { try { await player.play(); } catch (e) { /* segue */ } } else player.pause();
             return estadoPlay();
         }
+        if (acao === 'menu') return alternarMenu();
         if (acao === 'som') { player.muted = !player.muted; return iconeSom(); }
         if (acao === 'proximo') {
             if (indice < trilha.length - 1) return ir(indice + 1);
@@ -269,7 +254,7 @@ export function abrirFeed(trilha, { inicio = 0, aoPraticar, podePraticar = () =>
         if (acao === 'lista') return abrirLista();
         if (acao === 'lista-fechar') return fecharLista();
         if (acao === 'ir') {
-            fecharLista(); seguidos = 0;
+            fecharLista();
             const n = Number(botao.dataset.i);
             if (n === indice) return carregar();
             return ir(n);
@@ -317,7 +302,6 @@ export function abrirFeed(trilha, { inicio = 0, aoPraticar, podePraticar = () =>
     player.addEventListener('loadedmetadata', tempo);
     player.addEventListener('play', estadoPlay);
     player.addEventListener('pause', estadoPlay);
-    player.addEventListener('ended', telaFim);
     player.addEventListener('error', () => {
         if (fechada) return;
         mostrarAviso(navigator.onLine === false ? 'Este vídeo não está no aparelho. Baixe quando tiver internet.' : 'Não foi possível carregar o vídeo agora. Tente de novo em instantes.');
@@ -325,7 +309,11 @@ export function abrirFeed(trilha, { inicio = 0, aoPraticar, podePraticar = () =>
 
     function aoTeclar(e) {
         if (e.ctrlKey || e.metaKey || e.altKey) return;
-        if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); return listaAberta ? fecharLista() : fechar(); }
+        if (e.key === 'Escape') {
+            e.preventDefault(); e.stopPropagation();
+            if (!q('.feed-menu').hidden) return fecharMenu();
+            return listaAberta ? fecharLista() : fechar();
+        }
         if (listaAberta) return;
         if (e.target && e.target.closest && e.target.closest('button') && (e.key === ' ' || e.key === 'Enter')) return;
         if (e.key === ' ' || e.key === 'k') { e.preventDefault(); e.stopPropagation(); agir('alternar'); }
@@ -349,12 +337,14 @@ export function abrirFeed(trilha, { inicio = 0, aoPraticar, podePraticar = () =>
     }
 
     el.addEventListener('click', (e) => {
+        if (!e.target.closest('.feed-menu, .feed-mais')) fecharMenu();
         const b = e.target.closest('[data-acao]');
         if (b && !b.disabled) agir(b.dataset.acao, b);
     });
     document.addEventListener('keydown', aoTeclar, true);
     document.body.appendChild(el);
     iconeSom();
+    try { if (!localStorage.getItem(CHAVE_DICA)) q('.feed-dica').textContent = 'Deslize para cima para o próximo'; } catch (e) { /* segue */ }
     carregar();
     requestAnimationFrame(() => el.classList.add('visivel'));
     const p = q('.feed-play');
