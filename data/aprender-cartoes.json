@@ -7494,10 +7494,14 @@
       {
         "conceito": "Risco residual",
         "diferenca": "Tratamento é escolher respostas ao risco; risco residual é o que permanece depois delas."
+      },
+      {
+        "conceito": "Evitar",
+        "diferenca": "Seguro transfere; evitar é deixar de fazer a atividade."
       }
     ],
     "atencao": "O risco residual muda com o tempo; o nível aceitável depende da tolerância a risco da organização.",
-    "fonte": "NIST SP 800-39, Managing Information Security Risk (2011), seção 2.1 e nota 8: https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-39.pdf",
+    "fonte": "NIST SP 800-39, Managing Information Security Risk (2011), seção 2.1 e nota 8: https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-39.pdf; NIST CSRC Glossary, risk response: https://csrc.nist.gov/glossary/term/risk_response; University of Waterloo, IST Project Management Office, Risk response strategies (seguro como transferência): https://uwaterloo.ca/ist-project-management-office/node/206",
     "tags": [
       "gestao-de-riscos",
       "tratamento-de-riscos",
@@ -15380,8 +15384,8 @@
       "diferenca": "Restrição mostra o que cabe no orçamento; preferência indica quais combinações a pessoa deseja."
     }
   ],
-  "atencao": "Com renda fixa, aumento do preço de um produto reduz a quantidade máxima comprável dele.",
-  "fonte": "OpenStax, Principles of Microeconomics 3e, 2.1 Budget Constraint: https://openstax.org/books/principles-microeconomics-3e/pages/2-1-how-individuals-make-choices-based-on-their-budget-constraint",
+  "atencao": "Renda desloca a reta paralelamente; só os preços mudam a inclinação.",
+  "fonte": "OpenStax, Principles of Microeconomics 3e, 2.1 Budget Constraint: https://openstax.org/books/principles-microeconomics-3e/pages/2-1-how-individuals-make-choices-based-on-their-budget-constraint; OpenStax, Principles of Microeconomics 3e, 6.2 How Changes in Income and Prices Affect Consumption Choices: https://openstax.org/books/principles-microeconomics-3e/pages/6-2-how-changes-in-income-and-prices-affect-consumption-choices",
   "tags": [
     "teoria-do-consumidor-teoria-da-firma"
   ]
