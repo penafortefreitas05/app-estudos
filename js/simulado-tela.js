@@ -12,6 +12,8 @@ import { icone } from './icones.js';
 
 const CHAVE_SIMULADOS = 'appEstudos_Simulados';
 const CHAVE_CONFIG = 'appEstudos_SimuladoConfig';
+const CHAVE_RECEITAS = 'appEstudos_Receitas';
+const MAX_RECEITAS = 12;
 const PAGINA = 8;
 
 export const OPCOES_QTD = [10, 20, 40, 60];
@@ -183,6 +185,29 @@ export function mesclarSimulados(locais, nuvem) {
     return [...mapa.values()].sort((a, b) => String(b.em).localeCompare(String(a.em)));
 }
 
+// ---------- Receitas guardadas (aparelho) ----------
+// [{ nome, texto, em }], a mais recente primeiro; mesmo nome substitui
+export function lerReceitas() { const l = ler(CHAVE_RECEITAS, []); return Array.isArray(l) ? l.filter(r => r && r.texto) : []; }
+export function guardarReceita(nome, texto, agora = Date.now()) {
+    const n = String(nome || 'Sem nome').trim().slice(0, 60) || 'Sem nome';
+    const lista = [{ nome: n, texto, em: agora }, ...lerReceitas().filter(r => r.nome !== n)].slice(0, MAX_RECEITAS);
+    gravar(CHAVE_RECEITAS, lista);
+    return lista;
+}
+export function apagarReceita(nome) { const l = lerReceitas().filter(r => r.nome !== nome); gravar(CHAVE_RECEITAS, l); return l; }
+
+// Linha da prévia: o que foi pedido × o que entra
+export function htmlLinhaPrevia(l) {
+    const nome = `${esc(l.materia.replace(/ &.*$/, '').replace(/,.*$/, ''))}${l.assunto ? ` / ${esc(l.assunto)}` : ' <span class="sm-rc-det">(qualquer assunto)</span>'}${l.temas && l.temas.length ? ` <span class="sm-rc-det">· tema: ${esc(l.temas.join(', '))}</span>` : ''}`;
+    if (l.problema) {
+        return `<li class="sm-rc-linha erro">${icone('fechar')}<div><b>${esc(l.problema)}</b>${l.sugestao ? `<span class="sm-rc-det">Você quis dizer “${esc(l.sugestao)}”?</span>` : ''}</div></li>`;
+    }
+    const falta = l.entraram < l.qtd;
+    const det = [l.caderno ? `${l.caderno} do Caderno` : '', l.vistas ? `${l.vistas} já vista${l.vistas > 1 ? 's' : ''}` : ''].filter(Boolean).join(' · ');
+    return `<li class="sm-rc-linha${falta ? ' falta' : ''}">${icone(falta ? 'alerta' : 'certo')}<div><span>${nome}</span>
+        <span class="sm-rc-num"><b>${l.entraram}</b> de ${l.qtd}${falta ? ` · só há ${l.disponiveis}` : ''}${det ? ` · ${det}` : ''}</span></div></li>`;
+}
+
 export function novoId() {
     try { if (crypto && crypto.randomUUID) return crypto.randomUUID(); } catch (e) { /* cai no fallback */ }
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16); });
@@ -194,7 +219,9 @@ export function novoId() {
 // opcoes.modelo: { nome, quotas(qtd) } do concurso escolhido (padrão da prova) ou null
 // opcoes.aoFiltros(): abre a tela de filtros (esta fecha e reabre quando os filtros fecharem)
 // opcoes.carregarHistorico(): Promise<lista> (aparelho + nuvem)
-export function abrirSimulado({ disponiveis = () => 0, aoComecar, aoFiltros, carregarHistorico, modelo = null } = {}) {
+// opcoes.prepararReceita(texto): { receita, montagem } (js/receita.js, com os nomes do banco) ou null
+// opcoes.aoComecarReceita(receita, minutos): começa o simulado pela receita
+export function abrirSimulado({ disponiveis = () => 0, aoComecar, aoFiltros, carregarHistorico, modelo = null, prepararReceita = null, aoComecarReceita = null } = {}) {
     if (document.querySelector('.sm-tela')) return;
     const cfg = { qtd: 20, tempo: 'sem', equilibrar: true, modelo: true, somenteNovas: false, priorizarErros: false, ...ler(CHAVE_CONFIG, {}) };
     if (![...OPCOES_QTD, 120].includes(cfg.qtd) || (cfg.qtd === 120 && !modelo)) cfg.qtd = 20;
@@ -202,6 +229,8 @@ export function abrirSimulado({ disponiveis = () => 0, aoComecar, aoFiltros, car
     let mostrando = PAGINA;
     let aberto = null;
     const focoAntes = document.activeElement;
+    // Receita: tela = 'inicio' | 'receita'; texto colado e a última leitura
+    const rc = { tela: 'inicio', texto: '', lida: null };
 
     const el = document.createElement('div');
     el.className = 'sm-tela';
@@ -239,9 +268,16 @@ export function abrirSimulado({ disponiveis = () => 0, aoComecar, aoFiltros, car
         const tendencia = r.tendencia.length > 1
             ? `<div class="sm-tendencia" aria-label="Evolução dos últimos simulados">${r.tendencia.map(p => `<i style="height:${Math.max(6, p)}%" title="${p}%"></i>`).join('')}</div>` : '';
         const lista = historico.slice(0, mostrando);
+        if (rc.tela === 'receita') return desenharReceita();
+        const guardadas = prepararReceita ? lerReceitas() : [];
         corpo.innerHTML = `
+            ${prepararReceita ? `<section class="sm-sec sm-rc">
+                <h3 class="sm-sec-titulo">Pela receita da sala de aula</h3>
+                ${guardadas.length ? `<div class="sm-rc-guardadas">${guardadas.map((g, i) => `<button type="button" class="sm-rc-guardada" data-sm="rc-abrir" data-v="${i}">${icone('caderno')}<span>${esc(g.nome)}</span></button>`).join('')}</div>` : ''}
+                <button type="button" class="sm-sec-btn" data-sm="rc-nova">${icone('lapis')}Colar receita</button>
+            </section>` : ''}
             <section class="sm-sec">
-                <h3 class="sm-sec-titulo">Quantas questões</h3>
+                <h3 class="sm-sec-titulo">${prepararReceita ? 'Ou monte pelos filtros · ' : ''}Quantas questões</h3>
                 <div class="sm-chips sm-g4">${OPCOES_QTD.map(n => chip('qtd', n, n, cfg.qtd === n)).join('')}${modelo ? chip('qtd', 120, '120 · prova completa', cfg.qtd === 120).replace('class="sm-chip', 'class="sm-chip sm-larga') : ''}</div>
                 <h3 class="sm-sec-titulo">Tempo</h3>
                 <div class="sm-chips sm-g2">
@@ -269,6 +305,50 @@ export function abrirSimulado({ disponiveis = () => 0, aoComecar, aoFiltros, car
             </section>`;
     }
 
+    function minutosReceita(r, total) {
+        if (!r || r.tempo.modo === 'sem') return 0;
+        return r.tempo.modo === 'sugerido' ? tempoSugerido(total) : r.tempo.minutos;
+    }
+
+    function desenharReceita() {
+        const lida = rc.lida;
+        const r = lida && lida.receita;
+        const m = lida && lida.montagem;
+        const total = m ? m.total : 0;
+        const min = minutosReceita(r, total);
+        const erros = r ? r.erros : [];
+        const linhasRuins = m ? m.porLinha.filter(l => l.problema).length : 0;
+        el.querySelector('.sm-sub').textContent = 'Simulado pela receita';
+        corpo.innerHTML = `
+            <section class="sm-sec">
+                <button type="button" class="sm-link sm-rc-voltar" data-sm="rc-voltar">← Voltar</button>
+                <h3 class="sm-sec-titulo">Cole a receita</h3>
+                <textarea class="sm-rc-texto" rows="8" spellcheck="false" aria-label="Texto da receita" placeholder="SIMULADO: Sábado&#10;Redes & Segurança da Informação / Scrum → 10&#10;status: 70% novas, 30% Caderno de erros · nível: 1 · tipo: todas&#10;tempo: sugerido">${esc(rc.texto)}</textarea>
+                <button type="button" class="sm-sec-btn" data-sm="rc-ler">${icone('olho')}Ler receita</button>
+            </section>
+            ${lida ? `<section class="sm-sec" aria-live="polite">
+                <h3 class="sm-sec-titulo">${esc(r.nome || 'Prévia')}</h3>
+                ${erros.length ? `<ul class="sm-rc-lista">${erros.map(e => `<li class="sm-rc-linha erro">${icone('fechar')}<div><b>${esc(e.motivo)}</b>${e.texto ? `<span class="sm-rc-det">Linha ${e.n}: ${esc(e.texto)}</span>` : ''}</div></li>`).join('')}</ul>` : ''}
+                <ul class="sm-rc-lista">${m.porLinha.map(htmlLinhaPrevia).join('')}</ul>
+                <p class="sm-rc-resumo">${[`${r.status.novas}% novas · ${r.status.caderno}% Caderno`, r.niveis.length ? `nível ${r.niveis.join(', ')}` : 'todos os níveis', { todas: 'todos os tipos', certo_errado: 'só Certo/Errado', multipla_escolha: 'só múltipla escolha' }[r.tipo], min ? `${min} min` : 'sem tempo'].join(' · ')}</p>
+                ${linhasRuins || erros.length ? `<p class="sm-ajuste" role="status">${icone('alerta')}${linhasRuins + erros.length === 1 ? 'Uma linha ficou' : `${linhasRuins + erros.length} linhas ficaram`} de fora. Corrija o texto e toque em “Ler receita” de novo, ou comece assim mesmo.</p>` : ''}
+                <button type="button" class="sm-comecar" data-sm="rc-comecar" ${total ? '' : 'disabled'}>${total ? `${icone('play')}Começar simulado (${total} ${total === 1 ? 'questão' : 'questões'}${min ? ` · ${min} min` : ''})` : 'Nenhuma questão com essa receita'}</button>
+                <p class="sm-aviso">A receita fica guardada neste aparelho com o nome do simulado.</p>
+                ${lerReceitas().some(g => g.nome === (r.nome || 'Sem nome')) ? `<button type="button" class="sm-link sm-rc-apagar" data-sm="rc-apagar">Apagar esta receita guardada</button>` : ''}
+            </section>` : ''}`;
+        const area = corpo.querySelector('.sm-rc-texto');
+        if (area) area.addEventListener('input', () => { rc.texto = area.value; });
+    }
+
+    function lerTexto() {
+        const area = corpo.querySelector('.sm-rc-texto');
+        if (area) rc.texto = area.value;
+        rc.lida = rc.texto.trim() ? prepararReceita(rc.texto) : null;
+        desenhar();
+        const prev = corpo.querySelector('.sm-rc-lista, .sm-comecar');
+        if (prev && prev.scrollIntoView) prev.scrollIntoView({ block: 'nearest' });
+    }
+
     function item(r) {
         const aberta = aberto === r.id;
         const p = percentual(r);
@@ -293,6 +373,20 @@ export function abrirSimulado({ disponiveis = () => 0, aoComecar, aoFiltros, car
         if (a === 'mais') { mostrando += PAGINA; return desenhar(); }
         if (a === 'item') { aberto = aberto === v ? null : v; return desenhar(); }
         if (a === 'filtros') { fechar(); if (aoFiltros) aoFiltros(); return; }
+        if (a === 'rc-nova') { rc.tela = 'receita'; rc.texto = ''; rc.lida = null; desenhar(); const t = corpo.querySelector('.sm-rc-texto'); if (t) t.focus(); return; }
+        if (a === 'rc-abrir') { const g = lerReceitas()[Number(v)]; if (!g) return; rc.tela = 'receita'; rc.texto = g.texto; lerTexto(); return; }
+        if (a === 'rc-voltar') { rc.tela = 'inicio'; rc.lida = null; return desenhar(); }
+        if (a === 'rc-ler') return lerTexto();
+        if (a === 'rc-apagar') { apagarReceita(rc.lida.receita.nome || 'Sem nome'); return desenhar(); }
+        if (a === 'rc-comecar') {
+            if (!rc.lida || !rc.lida.montagem.total) return;
+            const { receita, montagem } = rc.lida;
+            guardarReceita(receita.nome || 'Sem nome', rc.texto);
+            const minutos = minutosReceita(receita, montagem.total);
+            fechar();
+            if (aoComecarReceita) aoComecarReceita(receita, minutos);
+            return;
+        }
         if (a === 'comecar') {
             const dados = { qtd: cfg.qtd, tempo: minutos(), modelo: Boolean(modelo && cfg.modelo), equilibrar: modelo ? false : cfg.equilibrar, somenteNovas: cfg.somenteNovas, priorizarErros: cfg.priorizarErros };
             fechar();

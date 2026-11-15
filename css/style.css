@@ -2578,3 +2578,46 @@ body.modo-foco.foco-simulado #display-cronometro { display: block !important; wi
 .leitura-videos-lista[hidden] { display: none; }
 .leitura-videos-lista .leitura-video { justify-content: flex-start; }
 .leitura-titulo { display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* ---------- Simulado pela receita (v171) ---------- */
+.sm-rc-guardadas { display: flex; flex-direction: column; gap: 0.45rem; margin-bottom: 0.2rem; }
+.sm-rc-guardada { all: unset; box-sizing: border-box; cursor: pointer; display: flex; align-items: center; gap: 0.55rem; min-height: 2.9rem; padding: 0.55rem 0.9rem; border: 1px solid #1e3a8a; border-radius: 14px; background: rgba(37, 99, 235, 0.10); color: #e2e8f0; font-weight: 600; font-size: 0.95rem; }
+.sm-rc-guardada .ic { width: 1.05rem; height: 1.05rem; color: #93c5fd; flex: none; }
+.sm-rc-guardada:focus-visible, .sm-rc-voltar:focus-visible { outline: 2px solid #93c5fd; outline-offset: 2px; }
+.sm-rc-voltar { margin: 0 0 0.4rem; display: inline-block; text-decoration: none; }
+.sm-rc-texto { display: block; width: 100%; box-sizing: border-box; min-height: 9.5rem; padding: 0.7rem 0.8rem; border: 1px solid #334155; border-radius: 12px; background: #0b1220; color: #e2e8f0; font: 0.86rem/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; resize: vertical; }
+.sm-rc-texto:focus { outline: 2px solid #3b82f6; outline-offset: 1px; }
+.sm-rc-lista { list-style: none; margin: 0 0 0.6rem; padding: 0; display: flex; flex-direction: column; gap: 0.4rem; }
+.sm-rc-linha { display: grid; grid-template-columns: 1.1rem 1fr; gap: 0.55rem; align-items: start; padding: 0.55rem 0.75rem; border: 1px solid #1e293b; border-radius: 12px; background: #0f172a; color: #e2e8f0; font-size: 0.9rem; line-height: 1.35; }
+.sm-rc-linha > .ic { width: 1.05rem; height: 1.05rem; margin-top: 0.1rem; color: #4ade80; }
+.sm-rc-linha > div { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; overflow-wrap: anywhere; }
+.sm-rc-linha.falta { border-color: #b45309; }
+.sm-rc-linha.falta > .ic { color: #fbbf24; }
+.sm-rc-linha.erro { border-color: #7f1d1d; background: rgba(239, 68, 68, 0.07); }
+.sm-rc-linha.erro > .ic { color: #f87171; }
+.sm-rc-num { color: #94a3b8; font-size: 0.84rem; }
+.sm-rc-num b { color: #f8fafc; }
+.sm-rc-det { color: #94a3b8; font-size: 0.82rem; font-weight: 400; }
+.sm-rc-resumo { margin: 0.2rem 0 0.8rem; color: #cbd5e1; font-size: 0.86rem; }
+.sm-rc-apagar { display: block; margin: 0.6rem auto 0; color: #fca5a5; font-size: 0.84rem; }
+
+/* ---------- Modo Prova (v171): durante o simulado, só a questão ---------- */
+body.prova-ativa .card-foco .btn-favoritar,
+body.prova-ativa .card-foco .btn-anotacao-toggle,
+body.prova-ativa .card-foco .btn-reportar,
+body.prova-ativa .card-foco .btn-refazer,
+body.prova-ativa .card-foco .tags-container,
+body.prova-ativa .card-foco .badge,
+body.prova-ativa .card-foco .tentativas { display: none !important; }
+.prova-faixa { display: flex; gap: 0.35rem; overflow-x: auto; padding: 0.35rem 0.1rem 0.55rem; margin: 0 0 0.6rem; scrollbar-width: thin; -webkit-overflow-scrolling: touch; }
+.prova-num { all: unset; box-sizing: border-box; cursor: pointer; flex: none; position: relative; display: inline-flex; align-items: center; justify-content: center; min-width: 2.35rem; height: 2.35rem; padding: 0 0.35rem; border: 1px solid #334155; border-radius: 10px; background: #0f172a; color: #94a3b8; font-size: 0.86rem; font-weight: 700; }
+.prova-num.respondida { background: #1e3a8a; border-color: #3b82f6; color: #e0e7ff; }
+.prova-num.certa { background: rgba(34, 197, 94, 0.16); border-color: #22c55e; color: #bbf7d0; }
+.prova-num.errada { background: rgba(239, 68, 68, 0.16); border-color: #ef4444; color: #fecaca; }
+.prova-num.branco { border-style: dashed; }
+.prova-num.revisar::after { content: ""; position: absolute; top: -3px; right: -3px; width: 0.6rem; height: 0.6rem; border-radius: 50%; background: #f59e0b; border: 2px solid #020617; }
+.prova-num.atual { outline: 2px solid #fde68a; outline-offset: 1px; color: #fff; }
+.prova-num:focus-visible { outline: 2px solid #93c5fd; outline-offset: 2px; }
+.prova-revisar { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; width: 100%; min-height: 2.8rem; margin-top: 0.5rem; }
+.prova-revisar .ic { width: 1rem; height: 1rem; }
+.prova-revisar.ativo { border-color: #f59e0b; color: #fcd34d; background: rgba(245, 158, 11, 0.10); }
