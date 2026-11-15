@@ -136,6 +136,7 @@ export function abrirFeed(trilha, { inicio = 0, aoPraticar, podePraticar = () =>
     async function carregar({ tocar = true } = {}) {
         const v = atual();
         concluido = false;
+        el.classList.remove('feed-concluido');
         q('.feed-fim').hidden = true;
         q('.feed-aviso').hidden = true;
         gravar(CHAVE_POSICAO, { id: v.id, em: Date.now() });
@@ -181,6 +182,7 @@ export function abrirFeed(trilha, { inicio = 0, aoPraticar, podePraticar = () =>
         concluido = true;
         seguidos += 1;
         q('.feed-aviso').hidden = true;
+        el.classList.add('feed-concluido');
         marcarVideoVisto(v);
         const prox = trilha[indice + 1];
         const fim = q('.feed-fim');
