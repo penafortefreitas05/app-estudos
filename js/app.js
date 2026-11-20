@@ -505,8 +505,7 @@ function aplicarFiltros() {
     // Antes ele continuava "ativo" por trás (cronômetro correndo, respostas sumindo).
     if (simulado) {
         if (!simulado.finalizado) showToast("Simulado encerrado sem correção.", "alerta");
-        simulado = null;
-        pararCronometro(displayCronometro);
+        encerrarProva();
     }
     const filtradas = ordenarParaEstudo(filtrarQuestoes());
     // Modo Foco (U1) ativo: a lista nova vira a fila do foco, sem sair dele
@@ -684,8 +683,7 @@ function algumFiltroAtivo() {
 // Mesma regra do botão "para revisar" (só o que vence hoje, questão em branco), limitada à matéria.
 // As atrasadas vêm primeiro: a ordenação é pela data em que a revisão venceu.
 function revisarHojeDaMateria(materia) {
-    simulado = null;
-    pararCronometro(displayCronometro);
+    encerrarProva();
     const hoje = diaLocal();
     const paraHoje = questoes
         .filter(q => (q.materia || "Geral") === materia && naFila(q.id) && venceHoje(historico[String(q.id)], hoje))
@@ -717,8 +715,7 @@ if (dashboardMaterias) {
         const materia = item.dataset.materia;
         // Só filtra se a matéria existir no filtro (questões de outra lista não têm opção)
         if (![...selectMateria.options].some(opt => opt.value === materia)) return;
-        simulado = null;
-        pararCronometro(displayCronometro);
+        encerrarProva();
         // Tocar de novo na matéria já ativa volta para todas as matérias
         const jaAtiva = selectMateria.value === materia;
         selectMateria.value = jaAtiva ? "" : materia;
@@ -777,8 +774,9 @@ function abrirTelaSimulado() {
             const receita = casarReceita(lerReceita(texto), catalogoDe(questoes));
             return { receita, montagem: montarPelaReceita(questoes, receita, historico) };
         },
-        aoComecarReceita: (receita, minutos) => {
-            const { questoes: lista } = montarPelaReceita(questoes, receita, historico);
+        aoComecarReceita: (receita, minutos, montagem) => {
+            // v177: a prova usa o sorteio mostrado na prévia (antes sorteava de novo e o total podia mudar)
+            const { questoes: lista } = (montagem && montagem.questoes && montagem.questoes.length) ? montagem : montarPelaReceita(questoes, receita, historico);
             iniciarSimuladoCom(lista, minutos, receita.nome ? `Simulado · ${receita.nome}` : "Simulado");
         },
         carregarHistorico: async () => {
@@ -807,12 +805,12 @@ document.addEventListener("focopro:simulado-finalizado", (e) => {
     const reg = { id: novoId(), em: new Date().toISOString(), total: d.total, acertos: d.acertos, brancos: d.brancos,
         segundos: d.segundos, porTempo: d.porTempo, concurso: trilhaAtual(), porMateria: d.porMateria, certoErrado: d.certoErrado };
     guardarSimuladoLocal(reg);
+    limparProvaGuardada();
     if (usuarioAtual) salvarSimuladoNuvem(reg);
     abrirResultado(d, anteriores, {
         aoRefazer: (ids) => {
             const lista = ids.map(id => porId.get(String(id))).filter(Boolean);
-            simulado = null;
-            pararCronometro(displayCronometro);
+            encerrarProva();
             entrarFoco(lista, { silencioso: true, titulo: "Simulado: o que errei" });
         },
         aoCaderno: () => { const i = document.querySelector('.menu-item[data-acao="caderno"]'); if (i) i.click(); },
@@ -871,6 +869,7 @@ async function responder(card, botao) {
         if (!simulado.confiancas) simulado.confiancas = {};
         // Trocar só a alternativa mantém a confiança já escolhida
         if (botao) simulado.confiancas[idChave] = confianca;
+        guardarProva();
 
         card.querySelectorAll(".opcao-item").forEach(op => op.classList.remove("selecionada"));
         const labelPai = radioSelecionado.closest(".opcao-item");
@@ -1328,7 +1327,7 @@ if (btnSimulado) {
         const sorteadas = sortearSimulado(filtradas, qtd, historico, opcoesSimulado);
 
         if (sorteadas.length === 0) {
-            simulado = null;
+            encerrarProva();
             renderizarQuestoes(container, [], historico);
             showToast(
                 opcoesSimulado.somenteNovas
@@ -1343,19 +1342,95 @@ if (btnSimulado) {
     });
 }
 
+// ---------- Prova em andamento (v177) ----------
+// A prova vivia só na memória: fechar o app, recarregar ou o sistema descartar a aba perdia tudo.
+// Agora cada resposta é guardada no aparelho; ao abrir, o app oferece "Continuar simulado".
+const CHAVE_PROVA = "appEstudos_SimuladoEmAndamento";
+function guardarProva() {
+    try {
+        if (!simulado || simulado.finalizado || !foco || !foco.simulado) return;
+        localStorage.setItem(CHAVE_PROVA, JSON.stringify({
+            v: 1, usuario: usuarioAtual ? usuarioAtual.id : null,
+            ids: simulado.ids, respostas: simulado.respostas, confiancas: simulado.confiancas || {},
+            revisar: [...simulado.revisar], inicio: simulado.inicio, fimEm: simulado.fimEm || 0,
+            titulo: foco.titulo || "Simulado", indice: foco.indice, salvoEm: Date.now()
+        }));
+    } catch (e) { /* sem espaço no aparelho: a prova segue, só não fica guardada */ }
+}
+function limparProvaGuardada() { try { localStorage.removeItem(CHAVE_PROVA); } catch (e) { /* nada */ } }
+function encerrarProva() { simulado = null; pararCronometro(displayCronometro); limparProvaGuardada(); }
+
+async function oferecerContinuarProva() {
+    let g = null;
+    try { g = JSON.parse(localStorage.getItem(CHAVE_PROVA)); } catch (e) { g = null; }
+    if (!g || g.v !== 1 || !Array.isArray(g.ids) || !g.ids.length) return;
+    const lista = g.ids.map(id => porId.get(String(id))).filter(Boolean);
+    const velha = !g.salvoEm || Date.now() - g.salvoEm > 12 * 3600 * 1000;
+    const outraPessoa = g.usuario !== (usuarioAtual ? usuarioAtual.id : null);
+    if (velha || outraPessoa || simulado || lista.length !== g.ids.length) { limparProvaGuardada(); return; }
+    const respondidas = Object.keys(g.respostas || {}).filter(k => g.ids.map(String).includes(String(k))).length;
+    const acabou = g.fimEm && Date.now() >= g.fimEm;
+    const falta = g.fimEm && !acabou ? Math.ceil((g.fimEm - Date.now()) / 60000) : 0;
+    const ok = await showConfirmModal({
+        titulo: "Continuar o simulado?",
+        mensagem: `Você deixou um simulado em andamento: ${respondidas} de ${lista.length} respondidas${acabou ? ". O tempo acabou enquanto o app estava fechado; ao continuar, ele é corrigido agora" : (falta ? `, faltam cerca de ${falta} min` : "")}.`,
+        textoConfirmar: acabou ? "Corrigir agora" : "Continuar", textoCancelar: "Descartar", corPerigo: false
+    });
+    if (!ok) { limparProvaGuardada(); return; }
+    simulado = { ids: g.ids, respostas: g.respostas || {}, confiancas: g.confiancas || {}, revisar: new Set(g.revisar || []), inicio: g.inicio || Date.now(), fimEm: g.fimEm || 0, finalizado: false };
+    entrarFoco(lista, { titulo: g.titulo, simulado: true, silencioso: true });
+    fecharPaineis();
+    // Os cartões são novos: remarca a alternativa de cada questão já respondida
+    lista.forEach((q) => {
+        const letra = simulado.respostas[String(q.id)];
+        if (!letra) return;
+        const card = cardDoFoco(q);
+        const r = card && card.querySelector(`.radio-opcao[value="${CSS.escape(String(letra))}"]`);
+        if (r) { r.checked = true; const l = r.closest(".opcao-item"); if (l) l.classList.add("selecionada"); }
+    });
+    irPara(Math.max(0, Math.min(g.indice || 0, lista.length - 1)));
+    if (acabou) { finalizarSimuladoAtual(true); return; }
+    if (g.fimEm) iniciarCronometro(0, displayCronometro, () => finalizarSimuladoAtual(true), g.fimEm);
+}
+
+// Com a prova em andamento, tocar no menu, no logo, no ☰ ou numa matéria derrubava a prova em silêncio.
+// Agora todo toque fora da prova pede a mesma confirmação do "Sair".
+let _provaLiberada = false;
+document.addEventListener("click", async (e) => {
+    if (_provaLiberada) return;
+    if (!(foco && foco.simulado && simulado && !simulado.finalizado)) return;
+    const alvo = e.target && e.target.closest ? e.target.closest(".sidebar, .top-bar-mobile, .top-bar") : null;
+    if (!alvo) return;
+    const ativo = e.target.closest("a, button, label, select, input, [role='link'], .materia-tile, .menu-item");
+    if (!ativo) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const ok = await showConfirmModal({
+        titulo: "Sair do simulado?",
+        mensagem: "Você tem um simulado em andamento. Se sair, as respostas não serão corrigidas nem contadas.",
+        textoConfirmar: "Sair", textoCancelar: "Continuar", corPerigo: true
+    });
+    if (!ok) return;
+    encerrarProva();
+    sairFoco();
+    _provaLiberada = true;
+    try { ativo.click(); } finally { _provaLiberada = false; }
+}, true);
+
 // O simulado roda no Modo Foco em modo Prova: uma questão por vez, sem gabarito até finalizar
 function iniciarSimuladoCom(sorteadas, tempo, titulo) {
     if (!sorteadas.length) { showToast("Nenhuma questão para o simulado.", "alerta"); return; }
     pararCronometro(displayCronometro);
     if (foco) sairFoco({ silencioso: true });
-    simulado = { ids: sorteadas.map(q => q.id), respostas: {}, revisar: new Set(), inicio: Date.now(), finalizado: false };
+    simulado = { ids: sorteadas.map(q => q.id), respostas: {}, revisar: new Set(), inicio: Date.now(), finalizado: false, fimEm: tempo > 0 ? Date.now() + tempo * 60000 : 0 };
     entrarFoco(sorteadas, { titulo, simulado: true, silencioso: true });
+    guardarProva();
     fecharPaineis();
     showToast(`Simulado iniciado com ${sorteadas.length} questões!`, "info");
     if (tempo > 0) {
         iniciarCronometro(tempo, displayCronometro, () => {
             finalizarSimuladoAtual(true);
-        });
+        }, simulado.fimEm);
     }
 }
 // ==================== FIM ====================
@@ -1390,8 +1465,7 @@ if (btnTodas) {
 const btnModoRevisao = document.getElementById("btn-modo-revisao");
 if (btnModoRevisao) {
     btnModoRevisao.addEventListener("click", () => {
-        simulado = null;
-        pararCronometro(displayCronometro);
+        encerrarProva();
 
         // A fila do dia: até o teto, com uma amostra de cada assunto (ver revisao.js)
         const hoje = diaLocal();
@@ -1487,8 +1561,7 @@ function entrarFoco(lista, opcoes = {}) {
     }
     if (simulado && !opcoes.simulado) {
         if (!simulado.finalizado) showToast("Simulado encerrado sem correção.", "alerta");
-        simulado = null;
-        pararCronometro(displayCronometro);
+        encerrarProva();
     }
     foco = {
         simulado: Boolean(opcoes.simulado),
@@ -1603,7 +1676,7 @@ function desenharFoco() {
             : `<button type="button" class="btn-primary btn-largo foco-proxima">Próxima questão →</button>
                <button type="button" class="btn-painel prova-revisar${paraRevisar(foco.lista[foco.indice]) ? " ativo" : ""}" aria-pressed="${paraRevisar(foco.lista[foco.indice])}">${icone("alerta")}${paraRevisar(foco.lista[foco.indice]) ? "Vou revisar depois ✓" : "Revisar depois"}</button>
                <button type="button" class="btn-link foco-finalizar">${icone("feito")}Finalizar simulado</button>
-               <p class="foco-atalhos">Marque a alternativa e avance. A correção vem só no fim. Teclado: <kbd>A</kbd>–<kbd>E</kbd> escolhe · <kbd>Enter</kbd> registra e avança · <kbd>←</kbd> <kbd>→</kbd> navegam</p>`;
+               <p class="foco-atalhos">Marque a alternativa e avance. A correção vem só no fim. Teclado: <kbd>A</kbd>–<kbd>E</kbd> escolhe · <kbd>Enter</kbd> registra sem marcação e avança · <kbd>Shift</kbd>+<kbd>Enter</kbd> na dúvida · <kbd>←</kbd> <kbd>→</kbd> navegam</p>`;
         partes.push(rodape);
     } else {
         partes.push(cardDoFoco(foco.lista[foco.indice]));
@@ -1755,7 +1828,7 @@ async function pedirSaidaFoco() {
         });
         if (!ok) return;
     }
-    if (foco.simulado) { simulado = null; pararCronometro(displayCronometro); }
+    if (foco.simulado) encerrarProva();
     sairFoco();
 }
 
@@ -1770,6 +1843,7 @@ function irPara(indice) {
     }
     foco.indice = Math.max(0, Math.min(indice, foco.lista.length)); // == length é a tela final
     desenharFoco();
+    guardarProva();
 }
 
 // Questão-irmã no foco: entra logo depois da atual (sai de onde estava, se já estava na fila)
@@ -1877,7 +1951,7 @@ document.addEventListener("keydown", (e) => {
         e.preventDefault();
         if (!simulado || simulado.finalizado || !card) irPara(foco.indice + 1);
         else if (!card.querySelector(".radio-opcao:checked")) showToast("Escolha uma alternativa (A–E) antes de avançar.", "alerta", 1800);
-        else { responderPeloTeclado(card, e.shiftKey); irPara(foco.indice + 1); }
+        else { if (e.shiftKey) responderPeloTeclado(card, true); else responder(card, null); irPara(foco.indice + 1); }
     } else if (e.key === "Enter") {
         e.preventDefault();
         const corrigida = card && (card.dataset.exemplo === "1" || card.querySelector(".btn-refazer:not([hidden])"));
@@ -2026,8 +2100,7 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
 
     // setTimeout: chamar o Supabase de dentro deste evento pode travar o cliente (aviso da documentação)
     setTimeout(async () => {
-        simulado = null;
-        pararCronometro(displayCronometro);
+        encerrarProva();
         if (idAgora) {
             const questoesChegando = buscarQuestoes();
             await enviarFilaPendente();
@@ -2598,6 +2671,7 @@ async function iniciarApp() {
     try {
         await carregarBancoDeQuestoes(questoesChegando);
         registrarEtapa("pronto", { questoes: questoes.length });
+        oferecerContinuarProva();
     } catch (e) {
         console.warn("[FocoPro] Erro ao montar as questões:", e);
         registrarErroDeAbertura(e);
@@ -3181,8 +3255,7 @@ function praticarAssunto(materia, assunto) {
     if (!doAssunto.length) { showToast("Ainda não há questões deste assunto.", "info"); return; }
     const nivel = nivelParaPraticar(doAssunto);
     if (nivel === null) { showToast("Este assunto ainda não tem questões de nível Iniciante ou Intermediário.", "info", 4000); return; }
-    simulado = null;
-    pararCronometro(displayCronometro);
+    encerrarProva();
     if (foco) sairFoco({ silencioso: true });
     if (selectBanca) selectBanca.value = "";
     if (selectAno) selectAno.value = "";
@@ -3297,8 +3370,7 @@ if (btnAbrirBarra) btnAbrirBarra.addEventListener("click", () => aplicarBarraRec
                 },
                 aoRefazer: (qOuLista) => {
                     const lista = Array.isArray(qOuLista) ? qOuLista : [qOuLista];
-                    simulado = null;
-                    pararCronometro(displayCronometro);
+                    encerrarProva();
                     // Refazer abre sempre no Modo Foco: uma questão por vez, só as da lista
                     entrarFoco(lista, { silencioso: true, titulo: "Caderno de erros" });
                     const principal = document.querySelector(".main-content");

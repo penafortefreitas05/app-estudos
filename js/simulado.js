@@ -13,33 +13,46 @@ import { registrarMarca } from './simulado-tela.js';
 // ---------- 1. CONTROLE DO TEMPO E CRONÔMETRO ----------
 let timerInterval = null;
 
-export function iniciarCronometro(minutos, displayElement, onFinishCallback) {
+// v177: o tempo vem do relógio (hora de término), não de tiques. Com a tela bloqueada ou o app em
+// segundo plano os tiques param, mas a hora de término não. `fimEm` (ms) permite retomar a prova
+// guardada com o mesmo horário final.
+let aoVoltarVisivel = null;
+export function iniciarCronometro(minutos, displayElement, onFinishCallback, fimEm = null) {
     pararCronometro(displayElement);
     if (!displayElement) return;
 
-    let tempoRestante = minutos * 60;
-    displayElement.hidden = false;
-    displayElement.textContent = `Tempo restante: ${formatarTempo(tempoRestante)}`;
-    displayElement.classList.add("ativo");
-
-    timerInterval = setInterval(() => {
-        tempoRestante--;
-        if (displayElement) {
-            displayElement.textContent = `Tempo restante: ${formatarTempo(tempoRestante)}`;
-        }
-
-        if (tempoRestante <= 0) {
+    const fim = fimEm || (Date.now() + minutos * 60000);
+    const restante = () => Math.max(0, Math.ceil((fim - Date.now()) / 1000));
+    let acabou = false;
+    const atualizar = () => {
+        if (acabou) return;
+        const t = restante();
+        displayElement.textContent = `Tempo restante: ${formatarTempo(t)}`;
+        if (t <= 0) {
+            acabou = true;
             pararCronometro(displayElement);
             showToast("O tempo do simulado acabou!", "alerta");
             if (onFinishCallback) onFinishCallback();
         }
-    }, 1000);
+    };
+    displayElement.hidden = false;
+    displayElement.classList.add("ativo");
+    atualizar();
+    if (acabou) return;
+    timerInterval = setInterval(atualizar, 1000);
+    // Ao voltar para o app, confere na hora (não espera o próximo tique)
+    aoVoltarVisivel = () => { if (!document.hidden) atualizar(); };
+    document.addEventListener("visibilitychange", aoVoltarVisivel);
 }
 
 export function pararCronometro(displayElement) {
     if (timerInterval) {
         clearInterval(timerInterval);
         timerInterval = null;
+    }
+    if (aoVoltarVisivel) {
+        document.removeEventListener("visibilitychange", aoVoltarVisivel);
+        aoVoltarVisivel = null;
     }
     if (displayElement) {
         displayElement.innerText = "00:00";

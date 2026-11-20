@@ -28,7 +28,8 @@ export const OPCOES_EXTRA = [
 // ---------- Regras puras ----------
 export const percentual = (r) => (r && r.total ? Math.round((r.acertos * 100) / r.total) : 0);
 
-export function tempoSugerido(qtd) { return Math.max(5, Math.round((qtd * 2.5) / 5) * 5); }
+// Padrão Bacen: 3h30 (210 min) para 120 itens = 1,75 min por item (edital nº 1/2024, item 7.2)
+export function tempoSugerido(qtd) { return Math.max(5, Math.round((qtd * 1.75) / 5) * 5); }
 
 export function resumirSimulados(lista) {
     const l = Array.isArray(lista) ? lista : [];
@@ -149,11 +150,18 @@ export function textoComparacao(p, anteriores) {
     return `${Math.abs(d)} ${Math.abs(d) === 1 ? 'ponto percentual' : 'pontos percentuais'} ${d > 0 ? 'acima' : 'abaixo'} da sua média de ${antes.feitos} simulados (${antes.media}%).`;
 }
 
-// Nota líquida das Certo/Errado: cada erro anula um acerto; branco não desconta
-export function textoNotaLiquida(ce) {
+// Nota líquida das Certo/Errado no padrão Bacen: +1,00 por acerto e −0,50 por erro; branco não desconta
+// (edital nº 1/2024, item 8.11.2). `total` (opcional) = todas as questões do simulado, para dizer
+// sobre quantas a conta foi feita.
+export const fmtNota = (n) => String(Math.round(n * 100) / 100).replace('.', ',');
+export function notaLiquida(ce) {
+    return (ce && ce.t) ? (ce.a || 0) - 0.5 * (ce.e || 0) : 0;
+}
+export function textoNotaLiquida(ce, total = 0) {
     if (!ce || !ce.t) return '';
-    const liq = (ce.a || 0) - (ce.e || 0);
-    return `Nota líquida (Certo/Errado): <b>${liq}</b> de ${ce.t} <span class="sm-liq-conta">(${ce.a || 0} − ${ce.e || 0})</span>`;
+    const liq = notaLiquida(ce);
+    const parcial = total && ce.t < total ? ` A conta cobre só as ${ce.t} questões Certo/Errado, de ${total} no simulado.` : '';
+    return `Nota líquida (Certo/Errado, −0,50 por erro): <b>${fmtNota(liq)}</b> de ${ce.t} <span class="sm-liq-conta">(${ce.a || 0} − 0,5 × ${ce.e || 0})</span>${parcial}`;
 }
 
 // Linhas por matéria, da que precisa de mais reforço para a melhor
@@ -274,7 +282,7 @@ export function abrirSimulado({ carregarHistorico, modelo = null, prepararReceit
 
     const chip = (grupo, valor, texto, ativo) => `<button type="button" class="sm-chip${ativo ? ' ativo' : ''}" data-sm="${grupo}" data-v="${valor}" aria-pressed="${ativo}">${texto}</button>`;
     const curto = (m) => String(m || '').replace(/ &.*$/, '').replace(/,.*$/, '');
-    const guardar = () => gravar(CHAVE_MONTAGEM, mt.cfg);
+    const guardar = () => { mt.ultima = null; gravar(CHAVE_MONTAGEM, mt.cfg); };
 
     // Sorteio de prova (o mesmo do começo): diz, por cartão, quanto entra e de onde vem
     function avaliar() {
@@ -289,7 +297,9 @@ export function abrirSimulado({ carregarHistorico, modelo = null, prepararReceit
             b.caderno += l.caderno; b.querCaderno += l.querCaderno; b.vistas += l.vistas;
             if (l.entraram < l.qtd) b.faltas.push({ assunto: l.assunto, qtd: l.qtd, tem: l.disponiveis });
         });
-        return { receita, montagem, porBloco, contagem: contarPorAssunto(questoes, mt.cfg) };
+        // v177: guarda este sorteio; "Começar" usa exatamente ele (antes sorteava de novo e o total podia mudar)
+        mt.ultima = { receita, montagem, porBloco, contagem: contarPorAssunto(questoes, mt.cfg) };
+        return mt.ultima;
     }
 
     function minutosDe(tempo, total) {
@@ -364,6 +374,7 @@ export function abrirSimulado({ carregarHistorico, modelo = null, prepararReceit
                 <h3 class="sm-sec-titulo">Origem das questões</h3>
                 <div class="sm-chips sm-g4">${[['100/0', 'Só novas'], ['70/30', '70 / 30'], ['50/50', '50 / 50'], ['0/100', 'Só erros']].map(([v, t]) => chip('mt-status', v, t, st === v)).join('')}</div>
                 ${(() => { const q = av.porBloco.reduce((x, b) => x + b.querCaderno, 0), t = av.porBloco.reduce((x, b) => x + b.caderno, 0); return c.blocos.length && t < q ? `<p class="mt-aviso">${icone('alerta')}<span>Seu Caderno de erros tem ${t} ${t === 1 ? 'questão' : 'questões'} nesses assuntos e a origem pede ${q}; ${q - t === 1 ? 'a que falta vem' : `as ${q - t} que faltam vêm`} de questões novas.</span></p>` : ''; })()}
+                ${(() => { const extra = av.porBloco.reduce((x, b) => x + Math.max(0, b.caderno - b.querCaderno), 0); return extra > 0 ? `<p class="mt-aviso">${icone('alerta')}<span>Faltaram questões novas: ${extra === 1 ? '1 questão do seu Caderno de erros entrou' : `${extra} questões do seu Caderno de erros entraram`} para completar.</span></p>` : ''; })()}
                 <p class="mt-legenda">${st === '100/0' ? 'Só questões que você nunca respondeu.' : st === '0/100' ? 'Só questões do Caderno de erros (erros em aberto).' : `${c.status.novas}% novas e ${c.status.caderno}% do Caderno de erros, em cada matéria.`}</p>
                 <h3 class="sm-sec-titulo">Nível</h3>
                 <div class="sm-chips sm-g4">${chip('mt-nivel', 'todos', 'Todos', !c.niveis.length)}${[[1, 'Iniciante'], [2, 'Intermediário'], [3, 'Avançado']].map(([n, t]) => chip('mt-nivel', n, t, c.niveis.includes(n))).join('')}</div>
@@ -376,7 +387,7 @@ export function abrirSimulado({ carregarHistorico, modelo = null, prepararReceit
                     ${chip('mt-tempo', 60, '60 min', c.tempo.modo === 'minutos' && Number(c.tempo.minutos) === 60)}
                     ${chip('mt-tempo', 120, '120 min', c.tempo.modo === 'minutos' && Number(c.tempo.minutos) === 120)}
                 </div>
-                ${c.tempo.modo === 'sugerido' ? '<p class="mt-legenda">Sugerido: 2,5 min por questão, como na prova.</p>' : ''}
+                ${c.tempo.modo === 'sugerido' ? '<p class="mt-legenda">Sugerido: 1,75 min por questão (3h30 para 120, como no edital do Bacen).</p>' : ''}
                 ${c.blocos.length && total < pedidas ? `<p class="sm-ajuste" role="status">${icone('alerta')}Você pediu ${pedidas}, mas o simulado terá ${total}. Veja o aviso no cartão da matéria.</p>` : ''}
                 <button type="button" class="sm-comecar" data-sm="mt-comecar" ${total ? '' : 'disabled'}>${total ? `${icone('play')}Começar simulado (${total} ${total === 1 ? 'questão' : 'questões'}${min ? ` · ${min} min` : ''})` : 'Adicione uma matéria para começar'}</button>
                 <div class="mt-salvar">
@@ -590,12 +601,12 @@ export function abrirSimulado({ carregarHistorico, modelo = null, prepararReceit
             return desenhar();
         }
         if (a === 'mt-comecar') {
-            const av = avaliar();
+            const av = mt.ultima || avaliar();
             if (!av.montagem.total) return;
             if ((c.nome || '').trim()) guardarReceita(c.nome.trim(), receitaComoTexto(av.receita), Date.now(), c);
             const minutos = minutosDe(c.tempo, av.montagem.total);
             fechar();
-            if (aoComecarReceita) aoComecarReceita(av.receita, minutos);
+            if (aoComecarReceita) aoComecarReceita(av.receita, minutos, av.montagem);
             return;
         }
         // Folha
@@ -642,7 +653,7 @@ export function abrirResultado(resultado, anteriores = [], { aoRefazer, aoCadern
     if (document.querySelector('.sm-tela')) document.querySelector('.sm-tela').remove();
     const p = percentual(resultado);
     const comparacao = textoComparacao(p, anteriores);
-    const liquida = textoNotaLiquida(resultado.certoErrado);
+    const liquida = textoNotaLiquida(resultado.certoErrado, resultado.total);
     const refazer = resultado.erradas || [];
     const focoAntes = document.activeElement;
 

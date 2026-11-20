@@ -31,6 +31,9 @@ export const MODELOS = {
     }
 };
 
+// A trilha do Nathan é 'ti' (a prova de TI do Bacen usa o mesmo edital): o atalho "Prova completa · 120" vale nas duas.
+MODELOS.ti = { ...MODELOS.bacen, nome: 'Padrão Bacen TI (edital 2024)' };
+
 export const modeloDoConcurso = (trilha) => MODELOS[trilha] || null;
 
 // Quantas questões de cada matéria para um simulado de `qtd` (maior resto). [[materia, n]] na ordem da prova.
