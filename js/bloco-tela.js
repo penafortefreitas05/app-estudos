@@ -155,13 +155,16 @@ export function abrirBlocoDoDia(ctx) {
         const r = resumoDoBloco(ctx.questoes(), ctx.historico(), b);
         return `
             <section class="bd-sec" aria-labelledby="bd-h-bloco">
-                <h3 id="bd-h-bloco" class="bd-h">Bloco de hoje</h3>
+                <h3 id="bd-h-bloco" class="bd-h">Bloco de hoje${b.suspenso ? ' (suspenso)' : ''}</h3>
                 <p class="bd-bloco-nome">${esc(b.assunto)}</p>
                 <p class="bd-linha">${esc(b.materia)}</p>
                 <p class="bd-linha"><b>${r.erros}</b> ${r.erros === 1 ? 'erro em aberto' : 'erros em aberto'}${r.erros > TETO_ERROS_BLOCO ? ` (começa pelos ${TETO_ERROS_BLOCO} primeiros)` : ''} · <b>${r.novas}</b> ${r.novas === 1 ? 'questão nova' : 'questões novas'} · ${r.total} no assunto</p>
                 <div class="bd-acoes">
+                    ${b.suspenso
+        ? '<button type="button" class="ce-btn principal" data-bd="voltar">Voltar ao bloco</button>'
+        : '<button type="button" class="ce-btn" data-bd="ver-tudo">Ver tudo</button>'}
                     <button type="button" class="ce-btn" data-bd="escolher-bloco">Trocar de bloco</button>
-                    <button type="button" class="ce-btn" data-bd="ver-tudo">Ver tudo</button>
+                    <button type="button" class="ce-btn" data-bd="encerrar">Encerrar bloco</button>
                 </div>
             </section>`;
     }
@@ -210,6 +213,12 @@ export function abrirBlocoDoDia(ctx) {
         if (acao === 'fechar') return fechar();
         if (acao === 'escolher-bloco') return escolherAssunto((materia, assunto) => { ctx.aoEscolher(materia, assunto); desenhar(); });
         if (acao === 'ver-tudo') { ctx.aoVerTudo(); return desenhar(); }
+        if (acao === 'voltar') { ctx.aoVoltar(); return desenhar(); }
+        if (acao === 'encerrar') {
+            const ok = await ctx.confirmar({ titulo: 'Encerrar o bloco?', mensagem: 'Isso fecha a sessão de estudo deste assunto. Não significa que você dominou o assunto.', textoConfirmar: 'Encerrar', textoCancelar: 'Voltar' });
+            if (!ok) return;
+            ctx.aoEncerrar(); return desenhar();
+        }
         if (acao === 'fila') { fechar(); return ctx.aoAbrirRevisao(); }
         if (acao === 'passo') { if (b && alvo.dataset.id) { alternarPasso(b, alvo.dataset.id); desenhar(); } return; }
         if (acao === 'caderno') { fechar(); return ctx.aoCaderno(b); }

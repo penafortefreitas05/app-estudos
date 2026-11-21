@@ -19,7 +19,7 @@ export const TETO_ERROS_BLOCO = 5;
 
 // Passo 1 (escolher o bloco) é o próprio bloco ativo; os demais o aluno marca (ou o app marca sozinho).
 export const PASSOS = [
-    { id: 'erros', titulo: 'Caderno de erros do bloco', ajuda: `Até ${TETO_ERROS_BLOCO} erros ou 10 min. Tente antes de ver a resposta.` },
+    { id: 'erros', titulo: 'Caderno de erros do bloco', ajuda: `Sugestão: até ${TETO_ERROS_BLOCO} erros, cerca de 10 min. Diga por que errou antes de ver a resposta.` },
     { id: 'rever', titulo: 'Rever o assunto', ajuda: 'Cartão do Aprender ou vídeo.' },
     { id: 'questoes', titulo: 'Questões novas', ajuda: 'Do mesmo assunto, que você ainda não respondeu.' },
     { id: 'fechamento', titulo: 'Fechamento', ajuda: 'Anote em uma linha o que travou (5 min).' }
@@ -57,10 +57,16 @@ export function formatarDiaBR(dia) {
 // ---------- Bloco ativo ----------
 export function lerBloco() {
     const b = lerJSON(CHAVE_BLOCO, null);
-    return b && typeof b.materia === 'string' && typeof b.assunto === 'string' && b.assunto ? { materia: b.materia, assunto: b.assunto, dia: b.dia || null } : null;
+    return b && typeof b.materia === 'string' && typeof b.assunto === 'string' && b.assunto
+        ? { materia: b.materia, assunto: b.assunto, dia: b.dia || null, suspenso: Boolean(b.suspenso) } : null;
 }
 export function gravarBloco(materia, assunto, hoje = diaDeHoje()) {
-    gravarJSON(CHAVE_BLOCO, { materia, assunto, dia: hoje });
+    gravarJSON(CHAVE_BLOCO, { materia, assunto, dia: hoje, suspenso: false });
+}
+// "Ver tudo" só SUSPENDE o filtro: o bloco continua guardado e dá para voltar a ele (Sala Design, 21/11/2026).
+export function suspenderBloco() {
+    const b = lerBloco();
+    if (b) gravarJSON(CHAVE_BLOCO, { ...b, suspenso: true });
 }
 export function limparBloco() {
     try { localStorage.removeItem(CHAVE_BLOCO); } catch (e) { /* nada */ }
@@ -177,4 +183,39 @@ export function retestesDoDia(lista, hoje = diaDeHoje()) {
 export function totalRetestesVencidos(lista, hoje = diaDeHoje()) {
     const d = retestesDoDia(lista, hoje);
     return d.atrasados.length + d.hoje.length;
+}
+
+
+// ---------- Diagnóstico de erro (Fase 2): o aluno diz POR QUE errou antes de ver a explicação ----------
+// Tipo é obrigatório (ou "Ainda não sei"); o texto é opcional. Fica no aparelho, por conta.
+export const CHAVE_DIAGNOSTICOS = 'appEstudos_DiagnosticoErros';
+export const TIPOS_ERRO = [
+    { id: 'conceito', nome: 'Conceito', ajuda: 'Eu não sabia a regra' },
+    { id: 'confusao', nome: 'Confusão', ajuda: 'Misturei dois conceitos' },
+    { id: 'interpretacao', nome: 'Interpretação', ajuda: 'Entendi o enunciado errado' },
+    { id: 'desatencao', nome: 'Desatenção', ajuda: 'Sabia, mas deixei passar um detalhe' },
+    { id: 'aplicacao', nome: 'Aplicação', ajuda: 'Sabia a teoria, mas não consegui usar' },
+    { id: 'nao_sei', nome: 'Ainda não sei', ajuda: 'Depois da explicação eu classifico' }
+];
+export const TEMPO_ORIENTATIVO_MIN = 10;
+export function lerDiagnosticos() {
+    const v = lerJSON(CHAVE_DIAGNOSTICOS + sufixoUsuario, {});
+    return v && typeof v === 'object' && !Array.isArray(v) ? v : {};
+}
+export function gravarDiagnostico(questaoId, tipo, texto = '', agora = Date.now()) {
+    if (!TIPOS_ERRO.some((t) => t.id === tipo)) return null;
+    const todos = lerDiagnosticos();
+    const d = { tipo, texto: String(texto || '').trim().slice(0, 300), em: agora, dia: diaDeHoje(agora) };
+    todos[String(questaoId)] = d;
+    gravarJSON(CHAVE_DIAGNOSTICOS + sufixoUsuario, todos);
+    return d;
+}
+// Quantos erros foram diagnosticados hoje (para a sugestão de avançar, que é só orientativa)
+export function diagnosticadosHoje(hoje = diaDeHoje()) {
+    return Object.values(lerDiagnosticos()).filter((d) => d && d.dia === hoje).length;
+}
+export function apagarDiagnostico(questaoId) {
+    const todos = lerDiagnosticos();
+    delete todos[String(questaoId)];
+    gravarJSON(CHAVE_DIAGNOSTICOS + sufixoUsuario, todos);
 }

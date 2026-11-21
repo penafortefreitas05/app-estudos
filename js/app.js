@@ -33,7 +33,7 @@ import { modeloDoConcurso, quotasDoModelo, sortearPeloModelo } from './modelo-pr
 import { abrirSimulado, abrirResultado, lerSimuladosLocais, guardarSimuladoLocal, mesclarSimulados, novoId } from './simulado-tela.js';
 import { lerReceita, casarReceita, catalogoDe, montarPelaReceita } from './receita.js';
 import { abrirBlocoDoDia } from './bloco-tela.js';
-import { lerBloco, gravarBloco, limparBloco, lerRetestesLocal, gravarRetestesLocal, mesclarRetestes, usarUsuarioRetestes } from './bloco.js';
+import { lerBloco, gravarBloco, limparBloco, suspenderBloco, marcarPasso, retestesDoDia, totalRetestesVencidos, lerRetestesLocal, gravarRetestesLocal, mesclarRetestes, usarUsuarioRetestes } from './bloco.js';
 // ==================== FIM ====================
 
 // ---------- 1.2 Supabase (banco e cliente) ----------
@@ -2211,9 +2211,47 @@ const btnMeuDia = document.getElementById('btn-meu-dia');
 const modalMeuDia = document.getElementById('modal-meu-dia');
 const conteudoMeuDia = document.getElementById('conteudo-meu-dia');
 if (btnMeuDia && modalMeuDia) {
+    // Bloco do dia fica no topo do Meu dia (Sala Design, 21/11/2026): aparece mesmo sem internet
+    function desenharBlocoNoMeuDia() {
+        conteudoMeuDia.querySelector('.md-bloco')?.remove();
+        if (!usuarioAtual) return;
+        usarUsuarioRetestes(usuarioAtual.id);
+        if (!retestes.length) retestes = lerRetestesLocal();
+        const b = lerBloco();
+        const nFila = questoes.filter(q => venceHoje(historico[String(q.id)])).length;
+        const nRet = totalRetestesVencidos(retestes);
+        const pendentes = [nFila ? `${nFila} ${nFila === 1 ? 'questão' : 'questões'}` : '', nRet ? `${nRet} ${nRet === 1 ? 'reteste' : 'retestes'}` : ''].filter(Boolean).join(' · ');
+        const revisaoPrimeiro = Boolean(nFila || nRet);
+        const el = document.createElement('section');
+        el.className = 'md-bloco';
+        el.innerHTML = `
+            <p class="md-bloco-rotulo">Primeiro passo</p>
+            <p class="md-bloco-titulo">Revisar hoje</p>
+            <p class="md-bloco-sub">${pendentes ? esc(pendentes) + ' pendentes' : 'Nada pendente hoje'}</p>
+            <div class="md-bloco-acoes">
+                <button type="button" class="${revisaoPrimeiro ? 'btn-primary' : 'btn-secondary'}" data-md="revisar"${nFila ? '' : ' disabled'}>Iniciar revisão</button>
+                ${nRet ? '<button type="button" class="btn-secondary" data-md="retestes">Ver retestes</button>' : ''}
+            </div>
+            <p class="md-bloco-rotulo">Bloco do dia</p>
+            <p class="md-bloco-titulo">${b ? esc(b.assunto) : 'Nenhum bloco escolhido'}</p>
+            <p class="md-bloco-sub">${b ? (b.suspenso ? 'Suspenso: você está vendo todos os assuntos' : esc(b.materia)) : 'Escolha o assunto de hoje, ou fique só na revisão.'}</p>
+            <div class="md-bloco-acoes">
+                <button type="button" class="${revisaoPrimeiro ? 'btn-secondary' : 'btn-primary'}" data-md="bloco">${b ? 'Continuar bloco' : 'Escolher bloco'}</button>
+                ${b ? '<button type="button" class="btn-secondary" data-md="bloco">Alterar</button>' : ''}
+            </div>`;
+        conteudoMeuDia.prepend(el);
+    }
+    conteudoMeuDia.addEventListener('click', (e) => {
+        const a = e.target.closest('[data-md]');
+        if (!a) return;
+        modalMeuDia.classList.remove('visible');
+        if (a.dataset.md === 'revisar') document.getElementById('btn-modo-revisao')?.click();
+        else document.getElementById('btn-bloco-dia')?.click(); // 'bloco' e 'retestes' abrem a tela do bloco
+    });
     btnMeuDia.addEventListener('click', async () => {
         conteudoMeuDia.innerHTML = '<p class="modal-mensagem">Carregando…</p>';
         modalMeuDia.classList.add('visible');
+        desenharBlocoNoMeuDia();
         // Sem internet o pedido à nuvem pode demorar muito: avisa na hora (e desiste depois de 8 s)
         const semRede = navigator.onLine === false;
         const dados = semRede ? null : await Promise.race([
@@ -2224,9 +2262,11 @@ if (btnMeuDia && modalMeuDia) {
             conteudoMeuDia.innerHTML = semRede
                 ? '<p class="modal-mensagem">Sem internet. O "Meu dia" usa o histórico guardado na nuvem e abre quando o sinal voltar. Suas respostas de agora ficam guardadas no aparelho e sobem sozinhas.</p>'
                 : '<p class="modal-mensagem">Entre na sua conta (e confira a internet) para ver o seu dia. Os números vêm do histórico guardado na nuvem.</p>';
+            desenharBlocoNoMeuDia();
             return;
         }
         renderizarMeuDia(conteudoMeuDia, resumirPorDia(dados.linhas, dados.jaVistas, 7), { vencidas: questoes.filter(q => venceHoje(historico[String(q.id)])).length });
+        desenharBlocoNoMeuDia();
     });
     document.getElementById('btn-fechar-meu-dia')?.addEventListener('click', () => modalMeuDia.classList.remove('visible'));
     modalMeuDia.addEventListener('click', (e) => { if (e.target === modalMeuDia) modalMeuDia.classList.remove('visible'); });
@@ -2250,10 +2290,16 @@ function desenharFaixaBloco() {
     faixaBloco.hidden = !b;
     if (!b) { faixaBloco.innerHTML = ''; return; }
     const filtrado = blocoFiltrado(b);
-    faixaBloco.innerHTML = `<span class="faixa-bloco-txt">${filtrado ? 'Só o bloco de hoje' : 'Bloco de hoje'}: <b>${esc(b.assunto)}</b></span>` +
+    const nome = `<b title="${esc(b.assunto)}">${esc(b.assunto)}</b>`;
+    const abrir = '<button type="button" class="faixa-bloco-btn" data-fb="abrir">Bloco do dia</button>';
+    if (b.suspenso) {
+        faixaBloco.innerHTML = `<span class="faixa-bloco-txt">Todos os assuntos. Seu bloco continua guardado: ${nome}</span>` +
+            '<button type="button" class="faixa-bloco-btn destaque" data-fb="voltar">Voltar ao bloco</button>' + abrir;
+        return;
+    }
+    faixaBloco.innerHTML = `<span class="faixa-bloco-txt">${filtrado ? 'Bloco ativo' : 'Bloco de hoje'}: ${nome}</span>` +
         (filtrado ? '' : '<button type="button" class="faixa-bloco-btn" data-fb="filtrar">Filtrar</button>') +
-        '<button type="button" class="faixa-bloco-btn" data-fb="abrir">Bloco do dia</button>' +
-        `<button type="button" class="faixa-bloco-btn" data-fb="tudo">${filtrado ? 'Ver tudo' : 'Sair do bloco'}</button>`;
+        abrir + '<button type="button" class="faixa-bloco-btn" data-fb="tudo">Ver tudo</button>';
 }
 
 function ativarBloco(materia, assunto) {
@@ -2274,11 +2320,24 @@ function ativarBloco(materia, assunto) {
     showToast(`Bloco de hoje: ${assunto}`, "info", 2500);
 }
 
-function sairDoBloco() {
-    limparBloco();
+// "Ver tudo" só suspende o filtro: o bloco e o progresso do dia continuam guardados.
+function verTudoBloco() {
+    suspenderBloco();
     const b = document.getElementById("btn-todas");
     if (b) b.click(); // "Limpar filtros": mesma saída do resto do app
     desenharFaixaBloco();
+}
+function voltarAoBloco() {
+    const b = lerBloco();
+    if (b) ativarBloco(b.materia, b.assunto);
+}
+// Encerrar = terminou a sessão de estudo deste assunto. Não significa que dominou o assunto.
+function encerrarBloco() {
+    limparBloco();
+    const b = document.getElementById("btn-todas");
+    if (b) b.click();
+    desenharFaixaBloco();
+    showToast("Bloco encerrado. Isso fecha a sessão de estudo, não marca o assunto como dominado.", "info", 4000);
 }
 
 if (faixaBloco) faixaBloco.addEventListener('click', (e) => {
@@ -2287,7 +2346,8 @@ if (faixaBloco) faixaBloco.addEventListener('click', (e) => {
     const b = lerBloco();
     if (a.dataset.fb === 'abrir') document.getElementById('btn-bloco-dia')?.click();
     else if (a.dataset.fb === 'filtrar' && b) ativarBloco(b.materia, b.assunto);
-    else if (a.dataset.fb === 'tudo') sairDoBloco();
+    else if (a.dataset.fb === 'tudo') verTudoBloco();
+    else if (a.dataset.fb === 'voltar') voltarAoBloco();
 });
 
 // ----- Retestes: aparelho primeiro, nuvem quando houver sinal -----
@@ -2360,7 +2420,10 @@ if (btnBlocoDia) btnBlocoDia.addEventListener('click', async () => {
         retestes: () => retestes,
         filaDeHoje: () => Number((document.getElementById('contador-revisao') || {}).textContent) || 0,
         aoEscolher: ativarBloco,
-        aoVerTudo: sairDoBloco,
+        aoVerTudo: verTudoBloco,
+        aoVoltar: voltarAoBloco,
+        aoEncerrar: encerrarBloco,
+        confirmar: showConfirmModal,
         aoSalvarReteste: salvarRetesteDoBloco,
         aoFeitoReteste: concluirRetesteDoBloco,
         aoApagarReteste: apagarRetesteDoBloco,
@@ -3480,10 +3543,12 @@ async function abrirCadernoApp(soAssunto = null) {
     { const t = document.getElementById("menu-toggle"); if (t) t.checked = false; }
     if (!usuarioAtual) { mostrarEntradaVisitante(); return; }
     if (!questoes.length) { showToast("O caderno abre quando as questões carregarem. Isso precisa de internet.", "info", 5000); return; }
+    usarUsuarioRetestes(usuarioAtual.id); // diagnósticos dos erros são guardados por conta
     let cartoesAssuntoCache = new Map();
     try { cartoesAssuntoCache = new Map((await assuntosComCartoes()).map(a => [`${a.materia}|${a.assunto}`, a.cartoes])); } catch (e) { /* sem cartões: fica sem a linha de conceito */ }
     abrirCaderno({
         questoes, historico, naFila, soAssunto,
+        aoProximaEtapa: () => { const b = lerBloco(); if (b) marcarPasso(b, 'erros'); document.getElementById('btn-bloco-dia')?.click(); },
         cartoesDoAssunto: (mat, ass) => cartoesAssuntoCache.get(`${mat}|${ass}`) || [],
         pedirIA: pedirExplicacaoIA,
         // Ver a resposta certa e o comentário antes de refazer; funciona sem internet se o pacote offline estiver baixado

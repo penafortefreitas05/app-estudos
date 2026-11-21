@@ -9,7 +9,7 @@
 import { esc } from './ui.js';
 import { icone } from './icones.js';
 import { formatarDiaCurto } from './revisao.js';
-import { TETO_ERROS_BLOCO } from './bloco.js';
+import { TETO_ERROS_BLOCO, TIPOS_ERRO, TEMPO_ORIENTATIVO_MIN, lerDiagnosticos, gravarDiagnostico, apagarDiagnostico, diagnosticadosHoje } from './bloco.js';
 
 const CHAVE_EXPLICACOES = 'appEstudos_ExplicacoesIA';
 const CHAVE_USO_IA = 'appEstudos_UsoIA';
@@ -105,7 +105,7 @@ export function usoDeHoje() {
 // opcoes.cartoesDoAssunto(materia, assunto): cartões do assunto (para a linha de conceito)
 // opcoes.naFila(id): a questão está na fila de hoje?
 // soAssunto: { materia, assunto } do bloco do dia. Abre só com os erros dele (teto de TETO_ERROS_BLOCO ao refazer), com um botão para ver todos.
-export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGabarito, cartoesDoAssunto = () => [], naFila = () => false, soAssunto = null } = {}) {
+export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGabarito, cartoesDoAssunto = () => [], naFila = () => false, soAssunto = null, aoProximaEtapa = null } = {}) {
     if (document.querySelector('.ce-tela')) return;
     const itensTodos = listarErros(questoes || [], historico || {});
     let bloco = soAssunto && soAssunto.assunto ? soAssunto : null;
@@ -114,6 +114,8 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
     const focoAntes = document.activeElement;
     let estado = 'abertas', materia = '', busca = '', mostrando = PAGINA;
     const emUso = new Set();
+    const abriuEm = Date.now();
+    const rascunho = new Map(); // id da questão -> { tipo, texto } enquanto o aluno ainda não confirmou
 
     const el = document.createElement('div');
     el.className = 'ce-tela';
@@ -174,22 +176,45 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
             </article>`;
     }
 
+    const nomeTipo = (id) => (TIPOS_ERRO.find((t) => t.id === id) || {}).nome || '';
+    function alternativasHtml(q) {
+        const alts = Array.isArray(q.alternativas) ? q.alternativas.map(String) : [];
+        return alts.length ? `<ul class="ce-alts">${alts.map((a) => `<li>${esc(a)}</li>`).join('')}</ul>` : '';
+    }
+    // Modo bloco: antes de ver a resposta, o aluno diz por que acha que errou (tipo obrigatório, texto opcional)
+    function painelDiagnostico(q) {
+        const r = rascunho.get(String(q.id)) || { tipo: '', texto: '' };
+        return `
+            <div class="ce-diag">
+                <label class="ce-diag-rotulo" for="ce-diag-${esc(String(q.id))}">Por que você acha que errou?</label>
+                <textarea id="ce-diag-${esc(String(q.id))}" class="ce-diag-texto" rows="2" maxlength="300" placeholder="Explique com suas palavras (opcional)">${esc(r.texto)}</textarea>
+                <p class="ce-diag-rotulo">Qual foi o tipo de erro?</p>
+                <div class="ce-diag-tipos">${TIPOS_ERRO.map((t) => `<button type="button" class="ce-chip${r.tipo === t.id ? ' ativo' : ''}" data-ce="tipo" data-v="${t.id}" aria-pressed="${r.tipo === t.id}" title="${esc(t.ajuda)}">${esc(t.nome)}</button>`).join('')}</div>
+                <p class="ce-diag-ajuda">${r.tipo ? esc((TIPOS_ERRO.find((t) => t.id === r.tipo) || {}).ajuda || '') : 'Toque num tipo para continuar.'}</p>
+                <button type="button" class="ce-btn principal" data-ce="diagnosticar"${r.tipo ? '' : ' disabled'}>Ver explicação</button>
+            </div>`;
+    }
     function cartao({ q, h }) {
         const letra = h.letraErrada || '';
         const guardada = letra ? explicacaoGuardada(q, letra) : '';
         const volta = h.revisaoEm ? (naFila(q.id) ? 'Na fila de hoje' : `Volta em ${formatarDiaCurto(h.revisaoEm)}`) : 'Fora da revisão';
+        const diag = bloco ? lerDiagnosticos()[String(q.id)] : null;
+        const aguardaDiag = Boolean(bloco && !diag);
         return `
-            <article class="ce-item" data-id="${esc(String(q.id))}">
+            <article class="ce-item${aguardaDiag ? ' ce-diagnosticar' : ''}" data-id="${esc(String(q.id))}">
                 <p class="ce-meta">${esc(q.materia || 'Geral')} · ${esc(q.assunto || 'Geral')}</p>
                 <p class="ce-pergunta">${esc(q.pergunta || '')}</p>
+                ${bloco ? alternativasHtml(q) : ''}
                 <p class="ce-info${naFila(q.id) ? ' urgente' : ''}"><span class="ce-info-n">${h.erros} ${h.erros === 1 ? 'erro' : 'erros'}</span><span class="ce-info-volta">${esc(volta)}</span></p>
+                ${diag ? `<p class="ce-diag-feito">Tipo de erro: <b>${esc(nomeTipo(diag.tipo))}</b>${diag.texto ? ' · ' + esc(diag.texto) : ''} <button type="button" class="bd-link" data-ce="corrigir-tipo">Corrigir</button></p>` : ''}
+                ${aguardaDiag ? painelDiagnostico(q) : ''}
                 <div class="ce-resp" hidden></div>
                 <div class="ce-acoes ce-icones">
-                    <button type="button" class="ce-btn principal" data-ce="refazer" aria-label="Refazer a questão" title="Refazer">${icone("refazer")}</button>
-                    ${pedirGabarito ? '<button type="button" class="ce-btn" data-ce="resposta" aria-label="Ver resposta e explicação" title="Resposta e explicação">' + icone('olho') + '</button>' : ''}
-                    ${letra ? `<button type="button" class="ce-btn ia" data-ce="ia" aria-label="${guardada ? 'Ver a explicação da IA' : 'Entender meu erro com IA'}" title="${guardada ? 'Explicação da IA' : 'Entender meu erro com IA'}">${icone('ia')}</button>` : ''}
+                    <button type="button" class="ce-btn${aguardaDiag ? '' : ' principal'}" data-ce="refazer" aria-label="Refazer a questão" title="Refazer">${icone("refazer")}</button>
+                    ${!aguardaDiag && pedirGabarito ? '<button type="button" class="ce-btn" data-ce="resposta" aria-label="Ver resposta e explicação" title="Resposta e explicação">' + icone('olho') + '</button>' : ''}
+                    ${!aguardaDiag && letra ? `<button type="button" class="ce-btn ia" data-ce="ia" aria-label="${guardada ? 'Ver a explicação da IA' : 'Entender meu erro com IA'}" title="${guardada ? 'Explicação da IA' : 'Entender meu erro com IA'}">${icone('ia')}</button>` : ''}
                 </div>
-                <div class="ce-ia" ${guardada ? '' : 'hidden'}>${esc(guardada)}</div>
+                <div class="ce-ia" ${guardada && !aguardaDiag ? '' : 'hidden'}>${esc(guardada)}</div>
             </article>`;
     }
 
@@ -217,7 +242,14 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
 
     function desenhar() {
         elBloco.hidden = !bloco;
-        if (bloco) elBloco.innerHTML = `<span>Só o bloco de hoje: <b>${esc(bloco.assunto)}</b>. Refazer vai até ${TETO_ERROS_BLOCO} erros por vez.</span><button type="button" class="ce-btn" data-ce="ver-todos">Ver todos os erros</button>`;
+        if (bloco) {
+            const n = diagnosticadosHoje();
+            const minutos = Math.floor((Date.now() - abriuEm) / 60000);
+            const sugerir = n >= TETO_ERROS_BLOCO || minutos >= TEMPO_ORIENTATIVO_MIN;
+            elBloco.innerHTML = `<span>Só o bloco de hoje: <b>${esc(bloco.assunto)}</b>. Diagnóstico de até ${TETO_ERROS_BLOCO} erros, cerca de ${TEMPO_ORIENTATIVO_MIN} min. É uma sugestão, não um limite.</span>` +
+                (sugerir ? `<span class="ce-bloco-sugestao">${n >= TETO_ERROS_BLOCO ? `Você já diagnosticou ${n} erros hoje.` : `Já faz ${minutos} min.`} Que tal seguir para rever o assunto?${aoProximaEtapa ? ' <button type="button" class="ce-btn principal" data-ce="proxima">Próxima etapa</button>' : ''}</span>` : '') +
+                '<button type="button" class="ce-btn" data-ce="ver-todos">Ver todos os erros</button>';
+        }
         const todosDoEstado = itens.filter((i) => i.estado === estado);
         const por = contar(itens);
         sub.textContent = itens.length ? `${por.abertas} ${por.abertas === 1 ? 'erro' : 'erros'} · ${por.superadas} ${por.superadas === 1 ? 'superada' : 'superadas'}` : '';
@@ -234,7 +266,7 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
         } else if (!lista.length) {
             elLista.innerHTML = '<p class="ce-vazio">Nada por aqui com esse filtro.</p>';
         } else {
-            elLista.innerHTML = (estado === 'abertas' ? `<button type="button" class="ce-btn ce-todas principal" data-ce="refazer-todas">▶ Refazer ${bloco ? 'os primeiros do bloco' : (materia ? 'esta matéria' : 'todas')} no Foco (${bloco ? Math.min(lista.length, TETO_ERROS_BLOCO) : lista.length})</button><p class="ce-legenda">${icone("refazer")} refazer · ${icone("olho")} resposta · ${icone("ia")} entender o erro com IA</p>` : '') +
+            elLista.innerHTML = (estado === 'abertas' ? `<button type="button" class="ce-btn ce-todas principal" data-ce="refazer-todas">▶ Refazer ${bloco ? 'os erros do bloco' : (materia ? 'esta matéria' : 'todas')} no Foco (${lista.length})</button><p class="ce-legenda">${icone("refazer")} refazer · ${icone("olho")} resposta · ${icone("ia")} entender o erro com IA</p>` : '') +
                 (estado === 'superadas'
                     ? '<p class="ce-criterio">Superada: você acertou esta questão na última vez que respondeu. Releia de vez em quando para não esquecer.</p>' + listaComNotas([...lista].sort((a, b) => chaveNota(a.q.materia, a.q.assunto).localeCompare(chaveNota(b.q.materia, b.q.assunto), 'pt-BR') || (a.h.ultimaData || 0) - (b.h.ultimaData || 0)).slice(0, mostrando))
                     : lista.slice(0, mostrando).map(cartao).join('')) +
@@ -244,6 +276,11 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
     }
 
     el.addEventListener('input', (e) => {
+        if (e.target.classList.contains('ce-diag-texto')) {
+            const id = e.target.closest('.ce-item').dataset.id;
+            rascunho.set(id, { ...(rascunho.get(id) || { tipo: '' }), texto: e.target.value });
+            return;
+        }
         if (e.target.classList.contains('ce-nota')) { gravarNota(e.target.dataset.chave, e.target.value); return; }
         if (e.target.classList.contains('ce-busca')) { busca = e.target.value; mostrando = PAGINA; desenhar(); }
     });
@@ -256,10 +293,40 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
         if (acao === 'estado') { estado = alvo.dataset.v; materia = ''; mostrando = PAGINA; return desenhar(); }
         if (acao === 'materia') { materia = alvo.dataset.v; mostrando = PAGINA; return desenhar(); }
         if (acao === 'mais') { mostrando += PAGINA; return desenhar(); }
+        if (acao === 'proxima') { fechar(); if (aoProximaEtapa) aoProximaEtapa(); return; }
+        if (acao === 'tipo') {
+            const art = alvo.closest('.ce-item');
+            const id = art.dataset.id;
+            rascunho.set(id, { texto: (art.querySelector('.ce-diag-texto') || {}).value || '', tipo: alvo.dataset.v });
+            art.querySelectorAll('[data-ce=tipo]').forEach((b) => { const on = b === alvo; b.classList.toggle('ativo', on); b.setAttribute('aria-pressed', String(on)); });
+            const aj = art.querySelector('.ce-diag-ajuda'); if (aj) aj.textContent = (TIPOS_ERRO.find((t) => t.id === alvo.dataset.v) || {}).ajuda || '';
+            const bt = art.querySelector('[data-ce=diagnosticar]'); if (bt) bt.disabled = false;
+            return;
+        }
+        if (acao === 'diagnosticar') {
+            const art = alvo.closest('.ce-item');
+            const id = art.dataset.id;
+            const r = rascunho.get(id);
+            if (!r || !r.tipo) return;
+            gravarDiagnostico(id, r.tipo, r.texto);
+            rascunho.delete(id);
+            desenhar();
+            const novo = [...el.querySelectorAll('.ce-item')].find((x) => x.dataset.id === id);
+            novo?.querySelector('[data-ce=resposta]')?.click(); // depois de classificar, mostra a resposta
+            return;
+        }
+        if (acao === 'corrigir-tipo') {
+            const art = alvo.closest('.ce-item');
+            const id = art.dataset.id;
+            const d = lerDiagnosticos()[id];
+            if (d) rascunho.set(id, { tipo: d.tipo, texto: d.texto });
+            apagarDiagnostico(id);
+            desenhar();
+            return;
+        }
         if (acao === 'ver-todos') { bloco = null; itens = itensTodos; materia = ''; mostrando = PAGINA; return desenhar(); }
         if (acao === 'refazer-todas') {
-            let lista = filtrarItens(itens, { estado, materia, busca }).map((i) => i.q);
-            if (bloco) lista = lista.slice(0, TETO_ERROS_BLOCO);
+            const lista = filtrarItens(itens, { estado, materia, busca }).map((i) => i.q);
             fechar(); if (aoRefazer && lista.length) aoRefazer(lista); return;
         }
         const art = alvo.closest('.ce-item');
