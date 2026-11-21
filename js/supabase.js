@@ -1083,3 +1083,36 @@ export async function listarSimuladosNuvem() {
             segundos: r.segundos || 0, porTempo: r.por_tempo, concurso: r.concurso, porMateria: r.por_materia || {} }));
     } catch (e) { return null; }
 }
+
+// ---------- Retestes (assunto + data marcada pela coordenação; aparecem no "Revisar hoje") ----------
+// Tabela 'retestes' (RLS: cada conta só vê os seus). Falha de rede = null / false: o app segue com o que tem no aparelho.
+const deLinhaReteste = (r) => ({
+    id: r.id, materia: r.materia, assunto: r.assunto, data: r.data, feito: Boolean(r.feito),
+    feitoEm: r.feito_em || null, nota: r.nota || '', pendente: false
+});
+
+export async function listarRetestesNuvem() {
+    try {
+        const { data, error } = await supabaseClient.from('retestes')
+            .select('id, materia, assunto, data, feito, feito_em, nota').order('data', { ascending: true }).limit(500);
+        if (error || !Array.isArray(data)) return null;
+        return data.map(deLinhaReteste);
+    } catch (e) { return null; }
+}
+
+export async function gravarRetesteNuvem(r) {
+    try {
+        const { error } = await supabaseClient.from('retestes').upsert({
+            id: r.id, materia: r.materia, assunto: r.assunto, data: r.data, feito: Boolean(r.feito),
+            feito_em: r.feitoEm || null, nota: r.nota || ''
+        }, { onConflict: 'id' });
+        return !error;
+    } catch (e) { return false; }
+}
+
+export async function apagarRetesteNuvem(id) {
+    try {
+        const { error } = await supabaseClient.from('retestes').delete().eq('id', id);
+        return !error;
+    } catch (e) { return false; }
+}

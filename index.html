@@ -43,6 +43,7 @@
             <!-- Menu: cada item aciona o botão que já existe (ids em data-alvo). No computador os botões da barra de cima somem. -->
             <nav class="menu-lateral" id="menu-lateral" aria-label="Menu principal">
                 <button type="button" class="menu-item ativo" data-acao="questoes"><span class="menu-icone" aria-hidden="true"><span class="ic-wrap" data-icone="grade"></span></span>Questões</button>
+                <button type="button" class="menu-item" data-alvo="btn-bloco-dia"><span class="menu-icone" aria-hidden="true"><span class="ic-wrap" data-icone="alvo"></span></span>Bloco do dia</button>
                 <button type="button" class="menu-item" data-alvo="btn-meu-dia"><span class="menu-icone" aria-hidden="true"><span class="ic-wrap" data-icone="grafico"></span></span>Meu dia</button>
                 <button type="button" class="menu-item" data-acao="caderno"><span class="menu-icone" aria-hidden="true"><span class="ic-wrap" data-icone="caderno"></span></span>Caderno de erros</button>
                 <button type="button" class="menu-item" data-alvo="btn-painel-simulado"><span class="menu-icone" aria-hidden="true"><span class="ic-wrap" data-icone="relogio"></span></span>Simulados</button>
@@ -171,6 +172,7 @@
         </div>
                     </div>
 
+                    <div id="faixa-bloco" class="faixa-bloco" hidden></div>
                     <div class="barra-botoes">
                         <button type="button" id="btn-aprender-barra" class="btn-painel" title="Um assunto por vez: entenda, veja um exemplo resolvido e prove que aprendeu">
                             <span class="ic-wrap" data-icone="livro" data-cor="indigo"></span>Aprender
@@ -178,6 +180,9 @@
                         <!-- Modo Foco (U1): uma questão por vez, com atalhos de teclado -->
                         <button type="button" id="btn-meu-dia" class="btn-painel" title="Quanto você acertou hoje: revisão, questões novas e os últimos 7 dias">
                             <span class="ic-wrap" data-icone="grafico" data-cor="azul"></span>Meu dia
+                        </button>
+                        <button type="button" id="btn-bloco-dia" class="btn-painel" title="O assunto de hoje: erros, retestes e a sequência do dia">
+                            <span class="ic-wrap" data-icone="livro" data-cor="indigo"></span>Bloco
                         </button>
                         <button type="button" id="btn-modo-foco" class="btn-painel btn-foco" aria-pressed="false" title="Uma questão por vez. Teclas A–E, Enter responde, → próxima, Esc sai">
                             <span class="ic-wrap" data-icone="alvo" data-cor="azul"></span>Foco

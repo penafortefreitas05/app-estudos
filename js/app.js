@@ -32,6 +32,8 @@ import { salvarPacote, lerPacote, infoPacote, descreverPacote } from './offline-
 import { modeloDoConcurso, quotasDoModelo, sortearPeloModelo } from './modelo-prova.js';
 import { abrirSimulado, abrirResultado, lerSimuladosLocais, guardarSimuladoLocal, mesclarSimulados, novoId } from './simulado-tela.js';
 import { lerReceita, casarReceita, catalogoDe, montarPelaReceita } from './receita.js';
+import { abrirBlocoDoDia } from './bloco-tela.js';
+import { lerBloco, gravarBloco, limparBloco, lerRetestesLocal, gravarRetestesLocal, mesclarRetestes, usarUsuarioRetestes } from './bloco.js';
 // ==================== FIM ====================
 
 // ---------- 1.2 Supabase (banco e cliente) ----------
@@ -64,7 +66,10 @@ import {
     baixarPacoteOffline,
     definirGabaritosOffline,
     definirUsuarioOffline,
-    nuvemResponde
+    nuvemResponde,
+    listarRetestesNuvem,
+    gravarRetesteNuvem,
+    apagarRetesteNuvem
 } from './supabase.js';
 
 // ---------- 1.3 Autenticação ----------
@@ -529,6 +534,7 @@ function aplicarFiltros() {
     sincronizarFiltrosRapidos();
     marcarMateriaAtiva(selectMateria ? selectMateria.value : '');
     if (!foco) colocarCartaoHoje();
+    desenharFaixaBloco();
 }
 
 // ==================== INÍCIO: 6c. BARRA DE CIMA (título, contagem e filtros rápidos) ====================
@@ -2226,6 +2232,145 @@ if (btnMeuDia && modalMeuDia) {
     modalMeuDia.addEventListener('click', (e) => { if (e.target === modalMeuDia) modalMeuDia.classList.remove('visible'); });
 }
 
+// ============================================================
+// 12e. BLOCO DO DIA (desenho de 21/11/2026): o app acompanha o assunto do dia
+// ============================================================
+// Bloco = um assunto. Ativar o bloco usa os mesmos filtros do Praticar (matéria + assunto), então a lista,
+// o Foco e as questões seguem sozinhos; o Caderno e o Aprender abrem no assunto. "Ver tudo" desfaz.
+let retestes = [];
+const faixaBloco = document.getElementById('faixa-bloco');
+
+function blocoFiltrado(b) {
+    return Boolean(b && selectMateria && selectMateria.value === b.materia && tagSelecionada === b.assunto);
+}
+
+function desenharFaixaBloco() {
+    if (!faixaBloco) return;
+    const b = lerBloco();
+    faixaBloco.hidden = !b;
+    if (!b) { faixaBloco.innerHTML = ''; return; }
+    const filtrado = blocoFiltrado(b);
+    faixaBloco.innerHTML = `<span class="faixa-bloco-txt">${filtrado ? 'Só o bloco de hoje' : 'Bloco de hoje'}: <b>${esc(b.assunto)}</b></span>` +
+        (filtrado ? '' : '<button type="button" class="faixa-bloco-btn" data-fb="filtrar">Filtrar</button>') +
+        '<button type="button" class="faixa-bloco-btn" data-fb="abrir">Bloco do dia</button>' +
+        `<button type="button" class="faixa-bloco-btn" data-fb="tudo">${filtrado ? 'Ver tudo' : 'Sair do bloco'}</button>`;
+}
+
+function ativarBloco(materia, assunto) {
+    encerrarProva();
+    if (foco) sairFoco({ silencioso: true });
+    if (selectBanca) selectBanca.value = "";
+    if (selectAno) selectAno.value = "";
+    if (selectNivel) selectNivel.value = "";
+    if (selectStatus) selectStatus.value = "";
+    if (checkFavoritas) checkFavoritas.checked = false;
+    if (inputBusca) inputBusca.value = "";
+    if (selectMateria) selectMateria.value = materia;
+    tagSelecionada = "";
+    atualizarSelectAssunto();
+    gravarBloco(materia, assunto);
+    definirTag(assunto); // chama aplicarFiltros, que redesenha a faixa
+    desenharFaixaBloco();
+    showToast(`Bloco de hoje: ${assunto}`, "info", 2500);
+}
+
+function sairDoBloco() {
+    limparBloco();
+    const b = document.getElementById("btn-todas");
+    if (b) b.click(); // "Limpar filtros": mesma saída do resto do app
+    desenharFaixaBloco();
+}
+
+if (faixaBloco) faixaBloco.addEventListener('click', (e) => {
+    const a = e.target.closest('[data-fb]');
+    if (!a) return;
+    const b = lerBloco();
+    if (a.dataset.fb === 'abrir') document.getElementById('btn-bloco-dia')?.click();
+    else if (a.dataset.fb === 'filtrar' && b) ativarBloco(b.materia, b.assunto);
+    else if (a.dataset.fb === 'tudo') sairDoBloco();
+});
+
+// ----- Retestes: aparelho primeiro, nuvem quando houver sinal -----
+async function sincronizarRetestes() {
+    if (!usuarioAtual) return;
+    usarUsuarioRetestes(usuarioAtual.id);
+    retestes = lerRetestesLocal();
+    if (navigator.onLine === false) return;
+    const primeira = await listarRetestesNuvem();
+    if (!primeira) return;
+    for (const r of retestes.filter(x => x.pendente)) { if (await gravarRetesteNuvem(r)) r.pendente = false; }
+    const nuvem = (await listarRetestesNuvem()) || primeira;
+    retestes = mesclarRetestes(retestes.filter(x => x.pendente), nuvem);
+    gravarRetestesLocal(retestes);
+}
+async function empurrarReteste(r) {
+    if (!usuarioAtual || navigator.onLine === false) return;
+    if (await gravarRetesteNuvem(r)) { r.pendente = false; gravarRetestesLocal(retestes); }
+}
+async function salvarRetesteDoBloco(r) {
+    retestes = [...retestes, r];
+    gravarRetestesLocal(retestes);
+    await empurrarReteste(r);
+}
+async function concluirRetesteDoBloco(r) {
+    r.feito = true; r.feitoEm = new Date().toISOString(); r.pendente = true;
+    gravarRetestesLocal(retestes);
+    await empurrarReteste(r);
+}
+async function apagarRetesteDoBloco(r) {
+    if (!r.pendente && usuarioAtual) {
+        if (navigator.onLine === false || !(await apagarRetesteNuvem(r.id))) {
+            showToast("Sem sinal: não consegui apagar agora. Tente de novo com internet.", "alerta", 4000);
+            return;
+        }
+    }
+    retestes = retestes.filter(x => x.id !== r.id);
+    gravarRetestesLocal(retestes);
+}
+
+const btnBlocoDia = document.getElementById('btn-bloco-dia');
+if (btnBlocoDia) btnBlocoDia.addEventListener('click', async () => {
+    if (!usuarioAtual) { mostrarEntradaVisitante(); return; }
+    if (!questoes.length) { showToast("O bloco abre quando as questões carregarem. Isso precisa de internet ou do pacote baixado.", "info", 5000); return; }
+    if (!retestes.length) { usarUsuarioRetestes(usuarioAtual.id); retestes = lerRetestesLocal(); }
+    let cartoes = [];
+    try { cartoes = await assuntosComCartoes(); } catch (e) { /* sem cartões: a lista usa só as questões */ }
+    const mapa = new Map();
+    const chave = (m, a) => `${m}|${a}`;
+    questoes.forEach(q => {
+        if (!q.materia || !q.assunto) return;
+        const x = mapa.get(chave(q.materia, q.assunto)) || { materia: q.materia, assunto: q.assunto, nQuestoes: 0, nCartoes: 0 };
+        x.nQuestoes++; mapa.set(chave(q.materia, q.assunto), x);
+    });
+    cartoes.forEach(c => {
+        const x = mapa.get(chave(c.materia, c.assunto)) || { materia: c.materia, assunto: c.assunto, nQuestoes: 0, nCartoes: 0 };
+        x.nCartoes = (c.cartoes || []).length; mapa.set(chave(c.materia, c.assunto), x);
+    });
+    const visivel = typeof assuntoDoConcurso === 'function' ? assuntoDoConcurso() : null;
+    const ordem = [...ORDEM_MACROS];
+    const pos = (m) => { const i = ordem.indexOf(m); return i < 0 ? 999 : i; };
+    let lista = [...mapa.values()];
+    if (typeof visivel === 'function') { const f = lista.filter(a => visivel(a.materia, a.assunto)); if (f.length) lista = f; }
+    lista.sort((a, b) => pos(a.materia) - pos(b.materia) || a.materia.localeCompare(b.materia, 'pt-BR') || a.assunto.localeCompare(b.assunto, 'pt-BR'));
+    abrirBlocoDoDia({
+        assuntos: () => lista,
+        bloco: lerBloco,
+        questoes: () => questoes,
+        historico: () => historico,
+        retestes: () => retestes,
+        filaDeHoje: () => Number((document.getElementById('contador-revisao') || {}).textContent) || 0,
+        aoEscolher: ativarBloco,
+        aoVerTudo: sairDoBloco,
+        aoSalvarReteste: salvarRetesteDoBloco,
+        aoFeitoReteste: concluirRetesteDoBloco,
+        aoApagarReteste: apagarRetesteDoBloco,
+        aoAbrirRevisao: () => document.getElementById('btn-modo-revisao')?.click(),
+        aoCaderno: (b) => abrirCadernoApp(b),
+        aoRever: (b) => abrirEscolhaAprender({ materia: b.materia }),
+        aoPraticar: (b) => praticarAssunto(b.materia, b.assunto)
+    });
+});
+
 // 12d. NÍVEL DA CONTA: tela com a regra e a escada de níveis
 const botoesNivelConta = document.querySelectorAll('.js-nivel-abrir');
 const modalNivelConta = document.getElementById('modal-nivel-conta');
@@ -2672,6 +2817,8 @@ async function iniciarApp() {
         await carregarBancoDeQuestoes(questoesChegando);
         registrarEtapa("pronto", { questoes: questoes.length });
         oferecerContinuarProva();
+        sincronizarRetestes();
+        desenharFaixaBloco();
     } catch (e) {
         console.warn("[FocoPro] Erro ao montar as questões:", e);
         registrarErroDeAbertura(e);
@@ -3328,6 +3475,37 @@ if (btnAbrirBarra) btnAbrirBarra.addEventListener("click", () => aplicarBarraRec
 // ==================== FIM: 18. BARRA RECOLHÍVEL ====================
 
 
+// Caderno de erros. soAssunto: { materia, assunto } do bloco do dia (abre só com os erros dele).
+async function abrirCadernoApp(soAssunto = null) {
+    { const t = document.getElementById("menu-toggle"); if (t) t.checked = false; }
+    if (!usuarioAtual) { mostrarEntradaVisitante(); return; }
+    if (!questoes.length) { showToast("O caderno abre quando as questões carregarem. Isso precisa de internet.", "info", 5000); return; }
+    let cartoesAssuntoCache = new Map();
+    try { cartoesAssuntoCache = new Map((await assuntosComCartoes()).map(a => [`${a.materia}|${a.assunto}`, a.cartoes])); } catch (e) { /* sem cartões: fica sem a linha de conceito */ }
+    abrirCaderno({
+        questoes, historico, naFila, soAssunto,
+        cartoesDoAssunto: (mat, ass) => cartoesAssuntoCache.get(`${mat}|${ass}`) || [],
+        pedirIA: pedirExplicacaoIA,
+        // Ver a resposta certa e o comentário antes de refazer; funciona sem internet se o pacote offline estiver baixado
+        pedirGabarito: async (q, letra) => {
+            try {
+                const r = await corrigirResposta(q, letra || 'A'); // só para ler o gabarito: não grava nada
+                return { ok: true, gabarito: r.gabarito };
+            } catch (e) {
+                return { ok: false, message: e && e.semGabarito ? 'Esta questão está sem gabarito cadastrado.' : 'Não consegui buscar a resposta agora. Ela precisa de internet ou do pacote offline baixado.' };
+            }
+        },
+        aoRefazer: (qOuLista) => {
+            const lista = Array.isArray(qOuLista) ? qOuLista : [qOuLista];
+            encerrarProva();
+            // Refazer abre sempre no Modo Foco: uma questão por vez, só as da lista
+            entrarFoco(lista, { silencioso: true, titulo: "Caderno de erros" });
+            const principal = document.querySelector(".main-content");
+            if (principal) principal.scrollTo({ top: 0, behavior: "smooth" });
+        }
+    });
+}
+
 // ==================== INÍCIO: 19. MENU LATERAL ====================
 // Cada item aciona o botão que já existe (Meu dia, Simulado, Aprender, Foco, Revisar). Assim a lógica
 // continua num lugar só. "Questões" volta para a lista; "Desempenho" abre a gaveta de números.
@@ -3350,33 +3528,7 @@ if (btnAbrirBarra) btnAbrirBarra.addEventListener("click", () => aplicarBarraRec
             return;
         }
         if (item.dataset.acao === "caderno") {
-            fecharGaveta();
-            if (!usuarioAtual) { mostrarEntradaVisitante(); return; }
-            if (!questoes.length) { showToast("O caderno abre quando as questões carregarem. Isso precisa de internet.", "info", 5000); return; }
-            let cartoesAssuntoCache = new Map();
-            try { cartoesAssuntoCache = new Map((await assuntosComCartoes()).map(a => [`${a.materia}|${a.assunto}`, a.cartoes])); } catch (e) { /* sem cartões: fica sem a linha de conceito */ }
-            abrirCaderno({
-                questoes, historico, naFila,
-                cartoesDoAssunto: (mat, ass) => cartoesAssuntoCache.get(`${mat}|${ass}`) || [],
-                pedirIA: pedirExplicacaoIA,
-                // Ver a resposta certa e o comentário antes de refazer; funciona sem internet se o pacote offline estiver baixado
-                pedirGabarito: async (q, letra) => {
-                    try {
-                        const r = await corrigirResposta(q, letra || 'A'); // só para ler o gabarito: não grava nada
-                        return { ok: true, gabarito: r.gabarito };
-                    } catch (e) {
-                        return { ok: false, message: e && e.semGabarito ? 'Esta questão está sem gabarito cadastrado.' : 'Não consegui buscar a resposta agora. Ela precisa de internet ou do pacote offline baixado.' };
-                    }
-                },
-                aoRefazer: (qOuLista) => {
-                    const lista = Array.isArray(qOuLista) ? qOuLista : [qOuLista];
-                    encerrarProva();
-                    // Refazer abre sempre no Modo Foco: uma questão por vez, só as da lista
-                    entrarFoco(lista, { silencioso: true, titulo: "Caderno de erros" });
-                    const principal = document.querySelector(".main-content");
-                    if (principal) principal.scrollTo({ top: 0, behavior: "smooth" });
-                }
-            });
+            abrirCadernoApp();
             return;
         }
         if (item.dataset.acao === "questoes") {

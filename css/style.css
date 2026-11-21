@@ -2768,3 +2768,25 @@ body.prova-ativa .card-foco .tentativas { display: none !important; }
 .feed-menu-item { all: unset; box-sizing: border-box; cursor: pointer; display: block; padding: 0.65rem 0.9rem; border-radius: 8px; color: #e2e8f0; font-size: 0.92rem; white-space: nowrap; }
 .feed-menu-item:hover, .feed-menu-item:focus-visible { background: #1e293b; outline: none; }
 .feed-fim .leitura-btn, .feed-aviso .leitura-btn { flex: none; width: 100%; height: auto; min-height: 2.9rem; margin: 0; }
+
+/* ===== Bloco do dia (v178) ===== */
+.faixa-bloco { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin: 0.5rem 0; padding: 0.5rem 0.7rem; border: 1px solid #1e3a8a; border-radius: 10px; background: #0f1b3a; color: #dbeafe; font-size: 0.88rem; }
+.faixa-bloco[hidden] { display: none; }
+.faixa-bloco-txt { flex: 1 1 12rem; min-width: 0; overflow-wrap: anywhere; }
+.faixa-bloco-btn { all: unset; box-sizing: border-box; padding: 0.4rem 0.7rem; min-height: 2.2rem; display: inline-flex; align-items: center; border: 1px solid #334155; border-radius: 8px; font-size: 0.82rem; font-weight: 600; color: #e2e8f0; cursor: pointer; }
+.faixa-bloco-btn:focus-visible { outline: 2px solid #93c5fd; outline-offset: 2px; }
+.bd-corpo { display: flex; flex-direction: column; gap: 0.9rem; }
+.bd-sec { border: 1px solid #1e293b; border-radius: 12px; background: #0f172a; padding: 0.8rem 0.9rem; }
+.bd-h { margin: 0 0 0.45rem; font-size: 0.95rem; font-weight: 700; color: #f1f5f9; }
+.bd-sub, .bd-nota, .bd-vazio { margin: 0.2rem 0; font-size: 0.84rem; color: #94a3b8; line-height: 1.4; }
+.bd-bloco-nome { margin: 0 0 0.3rem; font-size: 1.05rem; font-weight: 700; color: #bfdbfe; overflow-wrap: anywhere; }
+.bd-linha, .bd-reteste, .bd-passo { display: flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0; flex-wrap: wrap; }
+.bd-reteste-txt, .bd-passo-txt { flex: 1 1 10rem; min-width: 0; overflow-wrap: anywhere; font-size: 0.9rem; }
+.bd-reteste-acoes, .bd-acoes, .bd-form-acoes, .bd-datas { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.bd-form { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem; }
+.bd-data-input { box-sizing: border-box; min-height: 2.6rem; padding: 0.4rem 0.6rem; border: 1px solid #334155; border-radius: 8px; background: #0b1220; color: #e2e8f0; font-size: 0.9rem; }
+.bd-passos { list-style: none; margin: 0; padding: 0; }
+.bd-check { width: 1.3rem; height: 1.3rem; flex: none; }
+.bd-link { all: unset; cursor: pointer; color: #93c5fd; text-decoration: underline; font-size: 0.85rem; }
+.bd-n { font-weight: 700; color: #f1f5f9; }
+.ce-bloco { margin: 0 0 0.6rem; padding: 0.5rem 0.7rem; border: 1px solid #1e3a8a; border-radius: 10px; background: #0f1b3a; color: #dbeafe; font-size: 0.85rem; }
