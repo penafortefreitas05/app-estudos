@@ -2790,3 +2790,24 @@ body.prova-ativa .card-foco .tentativas { display: none !important; }
 .bd-link { all: unset; cursor: pointer; color: #93c5fd; text-decoration: underline; font-size: 0.85rem; }
 .bd-n { font-weight: 700; color: #f1f5f9; }
 .ce-bloco { margin: 0 0 0.6rem; padding: 0.5rem 0.7rem; border: 1px solid #1e3a8a; border-radius: 10px; background: #0f1b3a; color: #dbeafe; font-size: 0.85rem; }
+
+/* Bloco no Meu dia (v179) */
+.md-bloco { margin: 0 0 1rem; padding: 0.9rem 1rem; border: 1px solid #1e3a8a; border-radius: 12px; background: #0f1b3a; }
+.md-bloco-rotulo { margin: 0.2rem 0 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #818cf8; }
+.md-bloco-titulo { margin: 0.1rem 0 0; font-size: 1.1rem; font-weight: 700; color: #f1f5f9; overflow-wrap: anywhere; }
+.md-bloco-sub { margin: 0.1rem 0 0.5rem; font-size: 0.85rem; color: #94a3b8; }
+.md-bloco-acoes { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem; }
+.md-bloco-acoes button { min-height: 2.6rem; }
+.faixa-bloco-btn.destaque { background: #2563eb; border-color: #2563eb; color: #fff; }
+
+/* Diagnóstico de erro (v179) */
+.ce-alts { margin: 0.4rem 0; padding-left: 1.1rem; font-size: 0.9rem; color: #cbd5e1; }
+.ce-alts li { margin: 0.2rem 0; overflow-wrap: anywhere; }
+.ce-diag { display: flex; flex-direction: column; gap: 0.45rem; margin: 0.5rem 0; padding: 0.6rem 0.7rem; border: 1px dashed #334155; border-radius: 10px; }
+.ce-diag-rotulo { margin: 0; font-size: 0.88rem; font-weight: 700; color: #e2e8f0; }
+.ce-diag-texto { box-sizing: border-box; width: 100%; padding: 0.5rem 0.6rem; border: 1px solid #334155; border-radius: 8px; background: #0b1220; color: #e2e8f0; font: inherit; font-size: 0.9rem; resize: vertical; }
+.ce-diag-tipos { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.ce-diag-ajuda { margin: 0; font-size: 0.8rem; color: #94a3b8; min-height: 1.1em; }
+.ce-diag-feito { margin: 0.4rem 0; font-size: 0.85rem; color: #c7d2fe; overflow-wrap: anywhere; }
+.ce-bloco { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+.ce-bloco-sugestao { flex: 1 1 100%; color: #fde68a; }
