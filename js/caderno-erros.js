@@ -9,6 +9,7 @@
 import { esc } from './ui.js';
 import { icone } from './icones.js';
 import { formatarDiaCurto } from './revisao.js';
+import { TETO_ERROS_BLOCO } from './bloco.js';
 
 const CHAVE_EXPLICACOES = 'appEstudos_ExplicacoesIA';
 const CHAVE_USO_IA = 'appEstudos_UsoIA';
@@ -103,9 +104,13 @@ export function usoDeHoje() {
 // opcoes.pedirGabarito(q, letra): Promise<{ ok, gabarito?, message? }> (funciona offline com o pacote baixado)
 // opcoes.cartoesDoAssunto(materia, assunto): cartões do assunto (para a linha de conceito)
 // opcoes.naFila(id): a questão está na fila de hoje?
-export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGabarito, cartoesDoAssunto = () => [], naFila = () => false } = {}) {
+// soAssunto: { materia, assunto } do bloco do dia. Abre só com os erros dele (teto de TETO_ERROS_BLOCO ao refazer), com um botão para ver todos.
+export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGabarito, cartoesDoAssunto = () => [], naFila = () => false, soAssunto = null } = {}) {
     if (document.querySelector('.ce-tela')) return;
-    const itens = listarErros(questoes || [], historico || {});
+    const itensTodos = listarErros(questoes || [], historico || {});
+    let bloco = soAssunto && soAssunto.assunto ? soAssunto : null;
+    const doBloco = (i) => i.q.materia === bloco.materia && i.q.assunto === bloco.assunto;
+    let itens = bloco ? itensTodos.filter(doBloco) : itensTodos;
     const focoAntes = document.activeElement;
     let estado = 'abertas', materia = '', busca = '', mostrando = PAGINA;
     const emUso = new Set();
@@ -124,6 +129,7 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
             <button type="button" class="ce-sair" data-ce="fechar" aria-label="Fechar o caderno de erros">${icone("fechar")}</button>
         </header>
         <div class="ce-corpo">
+            <div class="ce-bloco" hidden></div>
             <div class="ce-estados"></div>
             <div class="ce-materias"></div>
             <input type="search" class="ce-busca" placeholder="Buscar por assunto ou texto" aria-label="Buscar no caderno de erros" autocomplete="off">
@@ -143,6 +149,7 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
     document.addEventListener('keydown', aoTeclar, true);
 
     const sub = el.querySelector('.ce-sub');
+    const elBloco = el.querySelector('.ce-bloco');
     const elEstados = el.querySelector('.ce-estados');
     const elMaterias = el.querySelector('.ce-materias');
     const elUso = el.querySelector('.ce-uso');
@@ -209,6 +216,8 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
     }
 
     function desenhar() {
+        elBloco.hidden = !bloco;
+        if (bloco) elBloco.innerHTML = `<span>Só o bloco de hoje: <b>${esc(bloco.assunto)}</b>. Refazer vai até ${TETO_ERROS_BLOCO} erros por vez.</span><button type="button" class="ce-btn" data-ce="ver-todos">Ver todos os erros</button>`;
         const todosDoEstado = itens.filter((i) => i.estado === estado);
         const por = contar(itens);
         sub.textContent = itens.length ? `${por.abertas} ${por.abertas === 1 ? 'erro' : 'erros'} · ${por.superadas} ${por.superadas === 1 ? 'superada' : 'superadas'}` : '';
@@ -225,7 +234,7 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
         } else if (!lista.length) {
             elLista.innerHTML = '<p class="ce-vazio">Nada por aqui com esse filtro.</p>';
         } else {
-            elLista.innerHTML = (estado === 'abertas' ? `<button type="button" class="ce-btn ce-todas principal" data-ce="refazer-todas">▶ Refazer ${materia ? 'esta matéria' : 'todas'} no Foco (${lista.length})</button><p class="ce-legenda">${icone("refazer")} refazer · ${icone("olho")} resposta · ${icone("ia")} entender o erro com IA</p>` : '') +
+            elLista.innerHTML = (estado === 'abertas' ? `<button type="button" class="ce-btn ce-todas principal" data-ce="refazer-todas">▶ Refazer ${bloco ? 'os primeiros do bloco' : (materia ? 'esta matéria' : 'todas')} no Foco (${bloco ? Math.min(lista.length, TETO_ERROS_BLOCO) : lista.length})</button><p class="ce-legenda">${icone("refazer")} refazer · ${icone("olho")} resposta · ${icone("ia")} entender o erro com IA</p>` : '') +
                 (estado === 'superadas'
                     ? '<p class="ce-criterio">Superada: você acertou esta questão na última vez que respondeu. Releia de vez em quando para não esquecer.</p>' + listaComNotas([...lista].sort((a, b) => chaveNota(a.q.materia, a.q.assunto).localeCompare(chaveNota(b.q.materia, b.q.assunto), 'pt-BR') || (a.h.ultimaData || 0) - (b.h.ultimaData || 0)).slice(0, mostrando))
                     : lista.slice(0, mostrando).map(cartao).join('')) +
@@ -247,8 +256,10 @@ export function abrirCaderno({ questoes, historico, aoRefazer, pedirIA, pedirGab
         if (acao === 'estado') { estado = alvo.dataset.v; materia = ''; mostrando = PAGINA; return desenhar(); }
         if (acao === 'materia') { materia = alvo.dataset.v; mostrando = PAGINA; return desenhar(); }
         if (acao === 'mais') { mostrando += PAGINA; return desenhar(); }
+        if (acao === 'ver-todos') { bloco = null; itens = itensTodos; materia = ''; mostrando = PAGINA; return desenhar(); }
         if (acao === 'refazer-todas') {
-            const lista = filtrarItens(itens, { estado, materia, busca }).map((i) => i.q);
+            let lista = filtrarItens(itens, { estado, materia, busca }).map((i) => i.q);
+            if (bloco) lista = lista.slice(0, TETO_ERROS_BLOCO);
             fechar(); if (aoRefazer && lista.length) aoRefazer(lista); return;
         }
         const art = alvo.closest('.ce-item');
