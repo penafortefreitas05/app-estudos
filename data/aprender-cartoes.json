@@ -1721,7 +1721,7 @@
   {
     "id": "card-dev-n1-001",
     "materia": "Desenvolvimento, POO & Linguagens",
-    "assunto": "Orientação a objetos",
+    "assunto": "OO: Fundamentos e proteção",
     "nivel": 1,
     "conceito": "Classe",
     "termo_ingles": "Class",
@@ -1743,7 +1743,7 @@
   {
     "id": "card-dev-n1-002",
     "materia": "Desenvolvimento, POO & Linguagens",
-    "assunto": "Orientação a objetos",
+    "assunto": "OO: Fundamentos e proteção",
     "nivel": 1,
     "conceito": "Encapsulamento",
     "termo_ingles": "Encapsulation",
@@ -1765,7 +1765,7 @@
   {
     "id": "card-dev-n1-003",
     "materia": "Desenvolvimento, POO & Linguagens",
-    "assunto": "Orientação a objetos",
+    "assunto": "OO: Relacionamentos e reutilização",
     "nivel": 1,
     "conceito": "Herança",
     "termo_ingles": "Inheritance",
@@ -1787,7 +1787,7 @@
   {
     "id": "card-dev-n1-004",
     "materia": "Desenvolvimento, POO & Linguagens",
-    "assunto": "Orientação a objetos",
+    "assunto": "OO: Variação e contratos",
     "nivel": 1,
     "conceito": "Sobrecarga de métodos",
     "termo_ingles": "Method Overloading",
@@ -1810,7 +1810,7 @@
   {
     "id": "card-dev-n1-005",
     "materia": "Desenvolvimento, POO & Linguagens",
-    "assunto": "Orientação a objetos",
+    "assunto": "OO: Variação e contratos",
     "nivel": 1,
     "conceito": "Polimorfismo",
     "termo_ingles": "Polymorphism",
@@ -1833,7 +1833,7 @@
   {
     "id": "card-dev-n1-006",
     "materia": "Desenvolvimento, POO & Linguagens",
-    "assunto": "Orientação a objetos",
+    "assunto": "OO: Fundamentos e proteção",
     "nivel": 1,
     "conceito": "Abstração",
     "termo_ingles": "Abstraction",
@@ -18454,6 +18454,233 @@
     "fonte": "O. Torres-Reyna, Panel Data Analysis: Fixed and Random Effects, Princeton University.",
     "tags": [
       "econometria-de-dados-em-painel-efeito-fixo-efeito-aleatorio-tecnicas-de-identificacao"
+    ]
+  },
+  {
+    "id": "card-dev-n1-086",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "OO: Fundamentos e proteção",
+    "nivel": 1,
+    "conceito": "Modificadores de acesso",
+    "termo_ingles": "Access Modifiers",
+    "traducao": "Modificadores de acesso: palavras que limitam quem pode usar cada membro da classe.",
+    "resumo": "Em Java, definem quem acessa um atributo ou método: private (só a própria classe), padrão (mesmo pacote), protected (pacote e subclasses), public (qualquer classe).",
+    "nao_confundir": [
+      {
+        "conceito": "Encapsulamento",
+        "diferenca": "Modificador é a ferramenta; encapsulamento é o princípio de proteger os dados."
+      }
+    ],
+    "atencao": "Em Java, sem modificador o acesso é restrito ao mesmo pacote, e não a qualquer classe.",
+    "fonte": "Oracle. The Java Tutorials: Controlling Access to Members of a Class.",
+    "tags": [
+      "poo",
+      "modificadores-de-acesso"
+    ]
+  },
+  {
+    "id": "card-dev-n1-087",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "OO: Fundamentos e proteção",
+    "nivel": 1,
+    "conceito": "Getters e setters",
+    "termo_ingles": "Getters and Setters",
+    "traducao": "Getters e setters: métodos que leem e alteram um atributo.",
+    "resumo": "Getter é um método que lê um atributo privado; setter é um método que altera esse atributo, podendo validar o valor antes de gravar.",
+    "nao_confundir": [
+      {
+        "conceito": "Encapsulamento",
+        "diferenca": "Getters e setters são um meio de encapsular; só criá-los não garante proteção."
+      }
+    ],
+    "atencao": "get e set não são palavras reservadas do Java: getter e setter são métodos comuns.",
+    "fonte": "Oracle. The Java Tutorials: Controlling Access to Members of a Class; Java Language Specification, Java SE 21, §3.9.",
+    "tags": [
+      "poo",
+      "getters-setters",
+      "encapsulamento"
+    ]
+  },
+  {
+    "id": "card-dev-n1-088",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "OO: Relacionamentos e reutilização",
+    "nivel": 1,
+    "conceito": "Associação",
+    "termo_ingles": "Association",
+    "traducao": "Associação: ligação em que um objeto conhece e usa outro.",
+    "resumo": "Relação em que um objeto conhece e usa outro, sem que um seja parte do outro. Exemplo: um Professor usa uma Sala.",
+    "nao_confundir": [
+      {
+        "conceito": "Agregação",
+        "diferenca": "Associação é só conhecer ou usar; agregação já é todo e parte."
+      }
+    ],
+    "atencao": "Na UML, agregação e composição são associações com uma extremidade marcada, não relações separadas.",
+    "fonte": "OMG. Unified Modeling Language (UML) 2.5.1, §§ 9.5.3, 11.5.3 e 11.5.4.",
+    "tags": [
+      "poo",
+      "associacao"
+    ]
+  },
+  {
+    "id": "card-dev-n1-089",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "OO: Relacionamentos e reutilização",
+    "nivel": 1,
+    "conceito": "Agregação",
+    "termo_ingles": "Aggregation",
+    "traducao": "Agregação: relação todo-parte em que a parte existe sem o todo.",
+    "resumo": "Associação todo-parte em que a parte pode existir sozinha, mesmo sem o todo. Exemplo: um Time tem Jogadores, que seguem existindo.",
+    "nao_confundir": [
+      {
+        "conceito": "Composição",
+        "diferenca": "Na agregação a parte sobrevive ao todo; na composição, não."
+      }
+    ],
+    "atencao": "A UML não fixa uma semântica precisa para a agregação compartilhada; ela varia conforme o modelador.",
+    "fonte": "OMG. Unified Modeling Language (UML) 2.5.1, § 9.5.3 (shared aggregation).",
+    "tags": [
+      "poo",
+      "agregacao"
+    ]
+  },
+  {
+    "id": "card-dev-n1-090",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "OO: Relacionamentos e reutilização",
+    "nivel": 1,
+    "conceito": "Composição",
+    "termo_ingles": "Composition",
+    "traducao": "Composição: relação todo-parte em que a parte depende do todo.",
+    "resumo": "Associação todo-parte forte: a parte pertence a um só todo e é excluída com ele. Exemplo: Itens de um Pedido.",
+    "nao_confundir": [
+      {
+        "conceito": "Agregação",
+        "diferenca": "Composição: a parte morre com o todo; agregação: a parte sobrevive."
+      }
+    ],
+    "atencao": "Na UML, a composição usa losango preenchido; a agregação, losango vazio.",
+    "fonte": "OMG. Unified Modeling Language (UML) 2.5.1, §§ 9.5.3 e 11.5.4 (composite aggregation e notação).",
+    "tags": [
+      "poo",
+      "composicao"
+    ]
+  },
+  {
+    "id": "card-dev-n1-091",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "OO: Relacionamentos e reutilização",
+    "nivel": 1,
+    "conceito": "Composição × herança",
+    "termo_ingles": "Composition over inheritance",
+    "traducao": "Composição em vez de herança: reutilizar guardando objetos, e não estendendo classes.",
+    "resumo": "Herança reutiliza código pela relação \"é um\"; composição reutiliza pela relação \"tem um\", guardando outro objeto como atributo. Sem relação \"é um\", prefira composição.",
+    "nao_confundir": [
+      {
+        "conceito": "Composição na UML",
+        "diferenca": "Aqui composição é o princípio de guardar outro objeto, o que inclui a agregação."
+      }
+    ],
+    "atencao": "Herança só cabe quando a subclasse é um tipo da superclasse: MountainBike é uma Bicycle.",
+    "fonte": "Oracle. The Java Tutorials: What Is Inheritance? e Inheritance (subclasses).",
+    "tags": [
+      "poo",
+      "composicao-vs-heranca",
+      "composicao",
+      "heranca"
+    ]
+  },
+  {
+    "id": "card-dev-n1-092",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "OO: Variação e contratos",
+    "nivel": 1,
+    "conceito": "Sobrescrita de métodos",
+    "termo_ingles": "Method Overriding",
+    "traducao": "Sobrescrita de métodos: redefinição, na subclasse, de um método herdado.",
+    "resumo": "A subclasse redefine um método herdado, mantendo o mesmo nome, os mesmos parâmetros e um retorno compatível. Vale a versão do objeto real.",
+    "nao_confundir": [
+      {
+        "conceito": "Sobrecarga",
+        "diferenca": "Sobrescrita troca o comportamento herdado; sobrecarga cria outro método com parâmetros diferentes."
+      }
+    ],
+    "atencao": "Em Java, a anotação @Override faz o compilador acusar erro se a sobrescrita não for válida.",
+    "fonte": "Java Language Specification, Java SE 21, seções 8.4.8 e 9.6.4.4; Oracle. The Java Tutorials: Overriding and Hiding Methods.",
+    "tags": [
+      "poo",
+      "polimorfismo",
+      "sobrescrita"
+    ]
+  },
+  {
+    "id": "card-dev-n1-093",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "OO: Variação e contratos",
+    "nivel": 1,
+    "conceito": "Classe abstrata",
+    "termo_ingles": "Abstract Class",
+    "traducao": "Classe abstrata: classe que não pode ser instanciada e serve de base.",
+    "resumo": "Classe declarada com abstract que não pode ser instanciada. Serve de base para subclasses e pode ter métodos com corpo e métodos abstratos, sem corpo.",
+    "nao_confundir": [
+      {
+        "conceito": "Interface",
+        "diferenca": "Classe abstrata é base de uma família; interface é contrato que várias classes podem assinar."
+      }
+    ],
+    "atencao": "A subclasse concreta precisa implementar todos os métodos abstratos herdados; senão, deve ser declarada abstract.",
+    "fonte": "Oracle. The Java Tutorials: Abstract Methods and Classes; Java Language Specification, Java SE 21, seção 8.1.1.1.",
+    "tags": [
+      "poo",
+      "classe-abstrata",
+      "abstracao"
+    ]
+  },
+  {
+    "id": "card-dev-n1-094",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "OO: Variação e contratos",
+    "nivel": 1,
+    "conceito": "Interface",
+    "termo_ingles": "Interface",
+    "traducao": "Interface: contrato de métodos que uma classe se compromete a implementar.",
+    "resumo": "Contrato que lista métodos que uma classe se compromete a implementar, sem dizer como. Uma classe pode implementar várias interfaces.",
+    "nao_confundir": [
+      {
+        "conceito": "Classe abstrata",
+        "diferenca": "Interface define o que fazer; classe abstrata pode guardar atributos de instância e código comum."
+      }
+    ],
+    "atencao": "Desde o Java 8, interfaces podem ter métodos default com corpo; o conceito de contrato continua.",
+    "fonte": "Oracle. The Java Tutorials: What Is an Interface? e Defining an Interface; Java Language Specification, Java SE 21, §§ 9.1 e 9.4.",
+    "tags": [
+      "poo",
+      "interface"
+    ]
+  },
+  {
+    "id": "card-dev-n1-095",
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "OO: Variação e contratos",
+    "nivel": 1,
+    "conceito": "Interface × classe abstrata",
+    "termo_ingles": "Interface vs. abstract class",
+    "traducao": "Interface × classe abstrata: contrato sem estado × base com estado e código comum.",
+    "resumo": "Classe estende uma só classe (abstrata ou não), mas pode implementar várias interfaces. A classe abstrata guarda estado e código comum; a interface define o contrato.",
+    "nao_confundir": [
+      {
+        "conceito": "Herança múltipla",
+        "diferenca": "Java não tem herança múltipla de classes; implementar várias interfaces não herda estado."
+      }
+    ],
+    "atencao": "Campos de interface são sempre public, static e final: constantes, nunca atributos de instância.",
+    "fonte": "Oracle. The Java Tutorials: Abstract Methods and Classes; Java Language Specification, Java SE 21, § 9.3.",
+    "tags": [
+      "poo",
+      "interface-vs-classe-abstrata",
+      "interface",
+      "classe-abstrata"
     ]
   }
 ]
