@@ -2816,3 +2816,31 @@ body.prova-ativa .card-foco .tentativas { display: none !important; }
    do tamanho certo). Camada própria para a rolagem e sombra do cartão mais leve, para o Chrome repintar tudo. */
 .leitura-corpo { transform: translateZ(0); -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
 .leitura-cartao, .leitura-fim { box-shadow: none; }
+
+/* v182: Sequência do dia em linha do tempo (bolinhas ligadas, progresso, próximo passo em destaque) */
+.bd-seq-topo { display: flex; align-items: baseline; justify-content: space-between; gap: 0.5rem; }
+.bd-seq-topo .bd-h { margin: 0; }
+.bd-seq-conta { font-size: 0.8rem; font-weight: 700; color: #a5b4fc; font-variant-numeric: tabular-nums; }
+.bd-barra { height: 6px; margin: 0.5rem 0 0.8rem; border-radius: 99px; background: #1e293b; overflow: hidden; }
+.bd-barra i { display: block; height: 100%; border-radius: 99px; background: linear-gradient(90deg, #6366f1, #22c55e); transition: width 0.25s ease; }
+.bd-passos { position: relative; }
+.bd-passo { position: relative; flex-wrap: nowrap; align-items: flex-start; gap: 0.75rem; padding: 0 0 1.1rem; }
+.bd-passo:last-child { padding-bottom: 0.2rem; }
+.bd-passo::before { content: ''; position: absolute; left: 1.1rem; top: 2.3rem; bottom: 0.1rem; width: 2px; margin-left: -1px; background: #1e293b; }
+.bd-passo:last-child::before { display: none; }
+.bd-passo.feito::before { background: #22c55e; opacity: 0.55; }
+.bd-check { all: unset; box-sizing: border-box; flex: none; width: 2.2rem; height: 2.2rem; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 50%; }
+.bd-check:focus-visible { outline: 2px solid #c7d2fe; outline-offset: 2px; }
+.bd-check:disabled { cursor: default; }
+.bd-check-bola { width: 2.2rem; height: 2.2rem; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; border: 2px solid #334155; background: #0b1220; color: #94a3b8; font-size: 0.95rem; font-weight: 800; }
+.bd-passo.atual .bd-check-bola { border-color: #818cf8; color: #e0e7ff; background: #1e1b4b; box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.25); }
+.bd-passo.feito .bd-check-bola { border-color: #22c55e; background: #16a34a; color: #fff; font-size: 1.05rem; }
+.bd-passo.travado .bd-check-bola { opacity: 0.55; }
+.bd-passo-txt { flex: 1 1 auto; padding-top: 0.15rem; display: flex; flex-direction: column; gap: 0.15rem; }
+.bd-passo-txt b { font-size: 0.98rem; color: #f1f5f9; }
+.bd-passo-txt span { font-size: 0.84rem; line-height: 1.4; color: #94a3b8; }
+.bd-passo.feito .bd-passo-txt b { color: #86efac; }
+.bd-passo.feito .bd-passo-txt span { color: #64748b; }
+.bd-passo-tag { align-self: flex-start; font-style: normal; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.1rem 0.45rem; border-radius: 99px; background: #312e81; color: #c7d2fe; }
+.bd-passo-btn { align-self: flex-start; margin-top: 0.35rem; min-height: 2.4rem; }
+@media (prefers-reduced-motion: reduce) { .bd-barra i { transition: none; } }
