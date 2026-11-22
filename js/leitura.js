@@ -5,7 +5,8 @@
 // controle por cartão. A pessoa avança e volta (← →) pelos cartões do assunto e, no último, toca em
 // "Aprendi" ou "Ler novamente".
 //   - Cartões: data/aprender-cartoes.json (formato em claude/aprender-2-0.md no Project).
-//   - "Aprendi" é uma marca por ASSUNTO, guardada no aparelho (localStorage) com a data e um nível
+//   - "Aprendi" é uma marca por ASSUNTO, guardada no aparelho (localStorage) com a data e um nível;
+//     desde a v186 também sobe para a tabela "aprendidos" (por conta), via app.js
 //     (0 na primeira vez; sobe a cada novo "Aprendi"), pronta para um futuro lembrete de releitura.
 //   - Quem usou a versão antiga ("Entendi" por cartão): se todos os cartões de um assunto estavam
 //     entendidos, ele vira "Aprendi" uma única vez (migrarEntendidos).
@@ -89,11 +90,16 @@ export function mesclarBackupAprendidos(arquivo) {
     return { ok: true, novos, atualizados, ignorados };
 }
 
+// A11 (v186): o app avisa a nuvem a cada marca; aqui só guardamos quem ouvir.
+let aoMarcarAprendido = null;
+export function ouvirMarcaAprendi(fn) { aoMarcarAprendido = typeof fn === 'function' ? fn : null; }
+
 export function marcarAprendi(materia, assunto, hoje = hojeLocal()) {
     const v = lerAprendidos();
     const k = chaveAssunto(materia, assunto);
     v[k] = { data: hoje, nivel: v[k] ? Math.min((Number(v[k].nivel) || 0) + 1, 4) : 0 };
     gravarAprendidos(v);
+    if (aoMarcarAprendido) { try { aoMarcarAprendido(k, v[k]); } catch (e) { /* nuvem é opcional */ } }
     return v[k];
 }
 
