@@ -2853,3 +2853,11 @@ body.prova-ativa .card-foco .tentativas { display: none !important; }
 /* v184: "Refazer" com texto (antes só o ícone ↻ no canto) */
 .cq-ic.cq-ic-txt { width: auto; padding: 0 0.85rem 0 0.7rem; gap: 0.4rem; border-radius: 99px; font-size: 0.85rem; font-weight: 600; color: #c7d2fe; border-color: #3730a3; }
 .cq-ic.cq-ic-txt[hidden] { display: none; }
+
+/* ==================== v185: auditoria de design ==================== */
+/* Aprender: o botão de vídeos tinha só o ícone; agora traz o nome e o progresso */
+.at-videos { gap: 0.6rem; flex-wrap: wrap; }
+.at-videos-det::before { content: "· "; }
+/* Modo Foco: posição numa linha só e barra sem retângulo chapado sobre o degradê */
+.foco-barra .foco-posicao { white-space: nowrap; font-size: 0.8rem; }
+.foco-barra { background: linear-gradient(to bottom, #020617 0%, #020617 80%, rgba(2, 6, 23, 0) 100%); }

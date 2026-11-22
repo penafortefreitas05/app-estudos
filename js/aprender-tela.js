@@ -275,7 +275,7 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
         if (!trilha.length) { area.innerHTML = ''; return; }
         const r = resumoTrilha(trilha);
         area.innerHTML = `
-            <button type="button" class="at-videos" data-acao="feed" aria-label="Assistir vídeos de aprendizagem (${r.total} vídeos${r.assistidos ? `, ${r.assistidos} ${r.assistidos === 1 ? 'assistido' : 'assistidos'}` : ''})" title="Vídeos de aprendizagem">${icone('play', 'ic-indigo')}</button>`;
+            <button type="button" class="at-videos" data-acao="feed" aria-label="Assistir vídeos de aprendizagem (${r.total} vídeos${r.assistidos ? `, ${r.assistidos} ${r.assistidos === 1 ? 'assistido' : 'assistidos'}` : ''})" title="Vídeos de aprendizagem">${icone('play', 'ic-indigo')}<span class="at-videos-nome">Vídeos de aprendizagem</span><span class="at-videos-det">${r.assistidos} de ${r.total}</span></button>`;
     }
     function abrirVideosEmSequencia() {
         abrirFeed(trilha, {
