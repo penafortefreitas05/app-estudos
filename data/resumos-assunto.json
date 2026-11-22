@@ -1141,29 +1141,69 @@
   },
   {
     "materia": "Desenvolvimento, POO & Linguagens",
-    "assunto": "Orientação a objetos",
+    "assunto": "OO: Fundamentos e proteção",
     "modelo": "conceito",
-    "resumo": "Orientação a objetos organiza o programa em objetos que juntam dados e comportamento. Ex.: a classe Carro é o molde; cada carro criado a partir dela é um objeto.",
+    "resumo": "A classe é o molde e o objeto é a instância dela. A abstração escolhe o que representar; o encapsulamento protege os dados com modificadores de acesso e métodos que validam.",
     "nao_confundir": [
       {
+        "conceito": "Abstração",
+        "faz": "escolhe o que representar"
+      },
+      {
         "conceito": "Encapsulamento",
-        "faz": "esconde os dados; acesso só por métodos"
+        "faz": "controla o acesso aos dados"
+      },
+      {
+        "conceito": "Getter e setter",
+        "faz": "métodos que leem e alteram um atributo privado"
+      }
+    ],
+    "palavras_chave": "\"só a própria classe\" → private; \"mesmo pacote\" → acesso padrão (sem modificador); \"molde\" → classe; \"instância\" → objeto.",
+    "pegadinha": "Achar que private e encapsulamento são a mesma coisa: private é a ferramenta; encapsulamento é o princípio de controlar o acesso."
+  },
+  {
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "OO: Relacionamentos e reutilização",
+    "modelo": "conceito",
+    "resumo": "Objetos se relacionam por associação (um conhece e usa o outro), agregação (todo e parte, e a parte vive sem o todo) e composição (a parte depende do todo). Herança é a relação \"é um\".",
+    "nao_confundir": [
+      {
+        "conceito": "Agregação",
+        "faz": "a parte sobrevive ao todo"
+      },
+      {
+        "conceito": "Composição",
+        "faz": "a parte deixa de existir com o todo"
       },
       {
         "conceito": "Herança",
-        "faz": "a subclasse reaproveita a superclasse"
-      },
-      {
-        "conceito": "Polimorfismo",
-        "faz": "a mesma chamada, comportamentos diferentes"
-      },
-      {
-        "conceito": "Abstração",
-        "faz": "modela só o que é essencial"
+        "faz": "\"é um\": a subclasse é um tipo da superclasse"
       }
     ],
-    "palavras_chave": "\"mesma assinatura na subclasse\" → sobrescrita (override); \"mesmo nome, parâmetros diferentes\" → sobrecarga (overload); \"instância\" → objeto.",
-    "pegadinha": "Dizer que a sobrecarga depende de herança: ela é o mesmo nome com parâmetros diferentes, e não precisa de subclasse."
+    "palavras_chave": "\"tem um\" → composição ou agregação; \"é um\" → herança; \"losango preenchido\" (UML) → composição; \"losango vazio\" → agregação.",
+    "pegadinha": "Usar herança só para reaproveitar código: sem a relação \"é um\", o certo é guardar o objeto como atributo (composição)."
+  },
+  {
+    "materia": "Desenvolvimento, POO & Linguagens",
+    "assunto": "OO: Variação e contratos",
+    "modelo": "conceito",
+    "resumo": "Sobrecarga é o mesmo nome com parâmetros diferentes. Sobrescrita é a subclasse redefinir o método herdado, e no polimorfismo vale a versão do objeto real. Classe abstrata e interface definem contratos.",
+    "nao_confundir": [
+      {
+        "conceito": "Sobrescrita",
+        "faz": "a subclasse redefine o método herdado"
+      },
+      {
+        "conceito": "Classe abstrata",
+        "faz": "base que não gera objetos; pode ter código"
+      },
+      {
+        "conceito": "Interface",
+        "faz": "contrato; uma classe pode implementar várias"
+      }
+    ],
+    "palavras_chave": "\"mesma assinatura na subclasse\" → sobrescrita; \"mesmo nome, parâmetros diferentes\" → sobrecarga; \"implements\" → interface; \"não pode ser instanciada\" → classe abstrata.",
+    "pegadinha": "Dizer que uma classe pode estender várias classes abstratas: em Java ela estende uma só e pode implementar várias interfaces."
   },
   {
     "materia": "Desenvolvimento, POO & Linguagens",
