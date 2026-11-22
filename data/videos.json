@@ -112,5 +112,35 @@
     "arquivo": "videos/join.mp4",
     "duracao": 86,
     "bytes": 3621086
+  },
+  {
+    "id": "switch-roteador",
+    "ordem": 7,
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Fundamentos de redes (OSI, TCP/IP, equipamentos, tipos de rede)",
+    "titulo": "Switch × roteador",
+    "arquivo": "videos/switch-roteador.mp4",
+    "duracao": 88,
+    "bytes": 3574503
+  },
+  {
+    "id": "vlan",
+    "ordem": 1,
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Roteamento, switching e SDN",
+    "titulo": "VLAN: redes separadas no mesmo switch",
+    "arquivo": "videos/vlan.mp4",
+    "duracao": 81,
+    "bytes": 3064749
+  },
+  {
+    "id": "rota-padrao",
+    "ordem": 2,
+    "materia": "Redes & Segurança da Informação",
+    "assunto": "Roteamento, switching e SDN",
+    "titulo": "Tabela de roteamento e rota padrão",
+    "arquivo": "videos/rota-padrao.mp4",
+    "duracao": 99,
+    "bytes": 3805294
   }
 ]
