@@ -174,24 +174,31 @@ export function abrirBlocoDoDia(ctx) {
         const feitos = b ? lerPassos(b) : new Set();
         const r = b ? resumoDoBloco(ctx.questoes(), ctx.historico(), b) : null;
         const acao = { erros: ['caderno', 'Abrir o caderno'], rever: ['rever', 'Abrir no Aprender'], questoes: ['praticar', 'Praticar'] };
-        const passo = (n, titulo, ajuda, feito, id, travado) => `
-            <li class="bd-passo${feito ? ' feito' : ''}${travado ? ' travado' : ''}">
-                <button type="button" class="bd-check" data-bd="passo" data-id="${id || ''}" aria-pressed="${feito}" aria-label="${feito ? 'Desmarcar' : 'Marcar como feito'}: ${esc(titulo)}" ${!id || travado ? 'disabled' : ''}>${feito ? '✓' : n}</button>
-                <div class="bd-passo-txt"><b>${esc(titulo)}</b><span>${esc(ajuda)}</span>
+        const passo = (n, titulo, ajuda, feito, id, travado, atual) => `
+            <li class="bd-passo${feito ? ' feito' : ''}${travado ? ' travado' : ''}${atual ? ' atual' : ''}">
+                <button type="button" class="bd-check" data-bd="passo" data-id="${id || ''}" aria-pressed="${feito}" aria-label="${feito ? 'Desmarcar' : 'Marcar como feito'}: ${esc(titulo)}" ${!id || travado ? 'disabled' : ''}><span class="bd-check-bola">${feito ? '✓' : n}</span></button>
+                <div class="bd-passo-txt">${atual ? '<em class="bd-passo-tag">Próximo passo</em>' : ''}<b>${esc(titulo)}</b><span>${esc(ajuda)}</span>
                     ${id && acao[id] && b ? `<button type="button" class="ce-btn bd-passo-btn" data-bd="${acao[id][0]}">${acao[id][1]}</button>` : ''}
                 </div>
             </li>`;
-        let n = 1;
-        const itens = [passo(n++, 'Escolher o bloco', b ? b.assunto : 'Toque em "Escolher o bloco".', Boolean(b), null, false)];
+        const dados = [{ titulo: 'Escolher o bloco', ajuda: b ? b.assunto : 'Toque em "Escolher o bloco".', feito: Boolean(b), id: null, travado: false }];
         PASSOS.forEach((p) => {
             let ajuda = p.ajuda;
             if (b && p.id === 'erros' && r && !r.erros) ajuda = 'Nenhum erro em aberto neste assunto: pode pular.';
             if (b && p.id === 'questoes' && r && !r.novas) ajuda = 'Sem questões novas neste assunto (já respondeu todas).';
-            itens.push(passo(n++, p.titulo, ajuda, feitos.has(p.id), p.id, !b));
+            dados.push({ titulo: p.titulo, ajuda, feito: feitos.has(p.id), id: p.id, travado: !b });
         });
+        const proximo = b ? dados.findIndex((d) => !d.feito) : -1;
+        const feitosN = dados.filter((d) => d.feito).length;
+        const itens = dados.map((d, i) => passo(i + 1, d.titulo, d.ajuda, d.feito, d.id, d.travado, i === proximo));
+        const pct = Math.round((feitosN / dados.length) * 100);
         return `
             <section class="bd-sec" aria-labelledby="bd-h-seq">
-                <h3 id="bd-h-seq" class="bd-h">Sequência do dia</h3>
+                <div class="bd-seq-topo">
+                    <h3 id="bd-h-seq" class="bd-h">Sequência do dia</h3>
+                    <span class="bd-seq-conta">${feitosN} de ${dados.length}</span>
+                </div>
+                <div class="bd-barra" role="progressbar" aria-valuemin="0" aria-valuemax="${dados.length}" aria-valuenow="${feitosN}" aria-label="Passos feitos"><i style="width:${pct}%"></i></div>
                 <ol class="bd-passos">${itens.join('')}</ol>
                 <p class="bd-nota">Assunto novo, sem erros ainda: pule o caderno. A aula acontece fora do app; aqui você fixa.</p>
             </section>`;
