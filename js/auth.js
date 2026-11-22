@@ -14,7 +14,12 @@ export async function criarConta(email, senha) {
     });
 
     if (error) {
-        showToast("Erro ao criar conta: " + error.message, "erro");
+        // O cadastro está fechado no painel do Supabase; a mensagem original vem em inglês ("Signups not allowed...")
+        if (/signups? not allowed/i.test(error.message || "")) {
+            showToast("O cadastro está fechado. Peça acesso ao administrador.", "erro", 6000);
+        } else {
+            showToast("Erro ao criar conta: " + error.message, "erro");
+        }
         return null;
     }
 

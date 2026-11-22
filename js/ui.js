@@ -753,7 +753,7 @@ function desenharCards(container, lista, historico, restaurarRespostas) {
                     <div class="cq-rodape">
                         <small class="tentativas" ${tentativas ? '' : 'hidden'}>Tentativas: ${tentativas}</small>
                         <span class="cq-espaco"></span>
-                        <button type="button" class="btn-refazer cq-ic" data-id="${esc(idStr)}" hidden title="Resolver novamente" aria-label="Resolver novamente">${icone('refazer')}</button>
+                        <button type="button" class="btn-refazer cq-ic cq-ic-txt" data-id="${esc(idStr)}" hidden title="Resolver novamente" aria-label="Resolver novamente">${icone('refazer')}<span>Refazer</span></button>
                         <button type="button" class="btn-anotacao-toggle cq-ic${anotacao ? ' tem' : ''}" title="Anotação pessoal">${icone('lapis')}<span class="sr-only">${anotacao ? 'Editar Anotação Pessoal' : 'Adicionar Anotação Pessoal'}</span></button>
                         <button type="button" class="btn-reportar cq-ic" data-id="${esc(idStr)}" title="Reportar problema: gabarito errado, enunciado confuso, questão desatualizada..." aria-label="Reportar problema">${icone('alerta')}</button>
                     </div>
