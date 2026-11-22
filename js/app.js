@@ -22,7 +22,7 @@ import {
     marcarMateriaAtiva
 } from './ui.js';
 import { abrirAprender } from './aprender-tela.js';
-import { montarBackupAprendidos, mesclarBackupAprendidos, assuntosComCartoes } from './leitura.js';
+import { montarBackupAprendidos, mesclarBackupAprendidos, assuntosComCartoes, lerAprendidos, ouvirMarcaAprendi } from './leitura.js';
 import { abrirFiltros } from './filtros-tela.js';
 import { abrirCaderno, explicacaoGuardada, registrarExplicacaoIA } from './caderno-erros.js';
 import { icone, aplicarIcones } from './icones.js';
@@ -68,6 +68,8 @@ import {
     definirUsuarioOffline,
     nuvemResponde,
     listarRetestesNuvem,
+    listarAprendidosNuvem,
+    gravarAprendidosNuvem,
     gravarRetesteNuvem,
     apagarRetesteNuvem
 } from './supabase.js';
@@ -195,7 +197,7 @@ btnExportar.title = "Baixa um arquivo com todo o seu histórico de estudo";
 const antesDoSair = document.getElementById("btn-auth-acao");
 if (gavetaFerramentas) gavetaFerramentas.insertBefore(btnExportar, antesDoSair);
 
-// Backup das marcas "Aprendi" do Aprender (ficam só neste aparelho)
+// Backup das marcas "Aprendi" do Aprender (desde a v186 também ficam na nuvem; o arquivo é reserva)
 const btnSalvarAprendidos = criarBotaoSidebar("Salvar meu progresso do Aprender");
 btnSalvarAprendidos.title = "Baixa um arquivo com os assuntos que você marcou como aprendidos";
 const btnRestaurarAprendidos = criarBotaoSidebar("Restaurar progresso do Aprender");
@@ -2350,6 +2352,26 @@ if (faixaBloco) faixaBloco.addEventListener('click', (e) => {
     else if (a.dataset.fb === 'voltar') voltarAoBloco();
 });
 
+// ----- "Aprendi" (A11, v186): aparelho primeiro, nuvem quando houver sinal -----
+// Junta o que está na nuvem com o do aparelho (fica a marca mais recente) e sobe o que a nuvem não tem.
+async function sincronizarAprendidos() {
+    if (!usuarioAtual || navigator.onLine === false) return;
+    const nuvem = await listarAprendidosNuvem();
+    if (!nuvem) return;
+    mesclarBackupAprendidos({ tipo: 'focopro-aprendidos', aprendidos: nuvem });
+    const local = lerAprendidos();
+    const subir = {};
+    for (const [k, v] of Object.entries(local)) {
+        const n = nuvem[k];
+        if (!n || n.data !== v.data || (Number(n.nivel) || 0) !== (Number(v.nivel) || 0)) subir[k] = v;
+    }
+    await gravarAprendidosNuvem(subir);
+}
+ouvirMarcaAprendi((chave, valor) => {
+    if (!usuarioAtual || navigator.onLine === false) return; // fica no aparelho; sobe na próxima abertura
+    gravarAprendidosNuvem({ [chave]: valor });
+});
+
 // ----- Retestes: aparelho primeiro, nuvem quando houver sinal -----
 async function sincronizarRetestes() {
     if (!usuarioAtual) return;
@@ -2881,6 +2903,7 @@ async function iniciarApp() {
         registrarEtapa("pronto", { questoes: questoes.length });
         oferecerContinuarProva();
         sincronizarRetestes();
+        sincronizarAprendidos();
         desenharFaixaBloco();
     } catch (e) {
         console.warn("[FocoPro] Erro ao montar as questões:", e);

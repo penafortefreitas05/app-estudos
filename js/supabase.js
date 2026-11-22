@@ -1110,6 +1110,30 @@ export async function gravarRetesteNuvem(r) {
     } catch (e) { return false; }
 }
 
+// ---------- "Aprendi" do Aprender (A11, v186) ----------
+// Tabela 'aprendidos' (RLS: cada conta só vê as suas). Devolve { "materia|assunto": { data, nivel } } ou null.
+export async function listarAprendidosNuvem() {
+    try {
+        const { data, error } = await supabaseClient.from('aprendidos').select('chave, data, nivel').limit(2000);
+        if (error || !Array.isArray(data)) return null;
+        const v = {};
+        for (const r of data) v[r.chave] = { data: r.data, nivel: Number(r.nivel) || 0 };
+        return v;
+    } catch (e) { return null; }
+}
+
+// Recebe { chave: { data, nivel } } e grava tudo de uma vez.
+export async function gravarAprendidosNuvem(mapa) {
+    const linhas = Object.entries(mapa || {}).map(([chave, x]) => ({
+        chave, data: x.data, nivel: Math.max(0, Math.min(Number(x.nivel) || 0, 4)), atualizado_em: new Date().toISOString()
+    }));
+    if (!linhas.length) return true;
+    try {
+        const { error } = await supabaseClient.from('aprendidos').upsert(linhas, { onConflict: 'user_id,chave' });
+        return !error;
+    } catch (e) { return false; }
+}
+
 export async function apagarRetesteNuvem(id) {
     try {
         const { error } = await supabaseClient.from('retestes').delete().eq('id', id);
