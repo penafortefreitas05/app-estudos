@@ -2849,3 +2849,7 @@ body.prova-ativa .card-foco .tentativas { display: none !important; }
    o fundo em degradê da leitura (fica sólido) e a altura em dvh (a tela fixa já ocupa tudo com inset: 0). */
 .leitura-corpo { transform: none; -webkit-overflow-scrolling: auto; overscroll-behavior: auto; }
 .leitura { background-image: none; background-color: #0b0a24; height: auto; }
+
+/* v184: "Refazer" com texto (antes só o ícone ↻ no canto) */
+.cq-ic.cq-ic-txt { width: auto; padding: 0 0.85rem 0 0.7rem; gap: 0.4rem; border-radius: 99px; font-size: 0.85rem; font-weight: 600; color: #c7d2fe; border-color: #3730a3; }
+.cq-ic.cq-ic-txt[hidden] { display: none; }
