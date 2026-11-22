@@ -2811,3 +2811,8 @@ body.prova-ativa .card-foco .tentativas { display: none !important; }
 .ce-diag-feito { margin: 0.4rem 0; font-size: 0.85rem; color: #c7d2fe; overflow-wrap: anywhere; }
 .ce-bloco { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
 .ce-bloco-sugestao { flex: 1 1 100%; color: #fde68a; }
+
+/* v181: no Android o corpo da leitura às vezes pintava só uma faixa (resto da tela vazio, com a barra de rolagem
+   do tamanho certo). Camada própria para a rolagem e sombra do cartão mais leve, para o Chrome repintar tudo. */
+.leitura-corpo { transform: translateZ(0); -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+.leitura-cartao, .leitura-fim { box-shadow: none; }
