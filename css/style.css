@@ -2844,3 +2844,8 @@ body.prova-ativa .card-foco .tentativas { display: none !important; }
 .bd-passo-tag { align-self: flex-start; font-style: normal; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.1rem 0.45rem; border-radius: 99px; background: #312e81; color: #c7d2fe; }
 .bd-passo-btn { align-self: flex-start; margin-top: 0.35rem; min-height: 2.4rem; }
 @media (prefers-reduced-motion: reduce) { .bd-barra i { transition: none; } }
+
+/* v183: a v181 não resolveu (cartão ainda pintava só uma faixa até tocar na tela). Tiro a camada extra da v181,
+   o fundo em degradê da leitura (fica sólido) e a altura em dvh (a tela fixa já ocupa tudo com inset: 0). */
+.leitura-corpo { transform: none; -webkit-overflow-scrolling: auto; overscroll-behavior: auto; }
+.leitura { background-image: none; background-color: #0b0a24; height: auto; }
