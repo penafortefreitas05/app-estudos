@@ -939,18 +939,51 @@ export async function fecharReporte(id, status) {
     return error ? { ok: false, motivo: motivoDeErroReporte(error) } : { ok: true };
 }
 
-// ---------- Backup do banco de questões (só o admin; a RLS barra os demais) ----------
-// Baixa tudo que é conteúdo: questoes, questoes_gabarito e reportes_questao. Cada tabela
-// que falhar vira um aviso no próprio arquivo, sem derrubar as outras.
+// ---------- Backup do banco de questões e dos dados do aluno (botão só do admin) ----------
+// Parte 1, "tabelas": o conteúdo (questoes, questoes_gabarito e reportes_questao; a RLS barra quem
+// não é admin). Parte 2, "dados_aluno" (v190, item B1 da auditoria de 22/11): as linhas de estudo
+// de QUEM está logado, filtradas por user_id. Cada tabela que falhar vira um aviso no próprio
+// arquivo, sem derrubar as outras. Como restaurar: docs/sql/restaurar-dados-aluno.sql.
+const TABELAS_DO_ALUNO = {
+    historico_respostas: 'id',
+    retestes: 'id',
+    aprendidos: 'chave',
+    simulados: 'id',
+    favoritos_anotacoes: 'questao_id',
+    fila_do_dia: 'dia',
+    perfis: 'user_id',
+    progresso_estudos: 'id'
+};
+
 export async function exportarBackupDoBanco() {
     const tabelas = { questoes: 'id', questoes_gabarito: 'questao_id', reportes_questao: 'id' };
-    const backup = { gerado_em: new Date().toISOString(), tabelas: {}, avisos: [] };
+    const backup = { gerado_em: new Date().toISOString(), tabelas: {}, dados_aluno: {}, usuario: null, avisos: [] };
     for (const [tabela, ordem] of Object.entries(tabelas)) {
         try {
             backup.tabelas[tabela] = await buscarTodasAsPaginas(() => supabaseClient
                 .from(tabela).select('*').order(ordem, { ascending: true }));
         } catch (e) {
             backup.tabelas[tabela] = [];
+            backup.avisos.push(`${tabela}: ${e?.message || 'falhou'}`);
+        }
+    }
+    let userId = null;
+    try {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        userId = session?.user?.id || null;
+    } catch (e) { /* sem sessão */ }
+    if (!userId) {
+        backup.avisos.push('dados do aluno: sem login, não foram incluídos');
+        return backup;
+    }
+    backup.usuario = userId;
+    for (const [tabela, ordem] of Object.entries(TABELAS_DO_ALUNO)) {
+        try {
+            // order por coluna única: páginas de 1.000 não repetem nem perdem linha em empate
+            backup.dados_aluno[tabela] = await buscarTodasAsPaginas(() => supabaseClient
+                .from(tabela).select('*').eq('user_id', userId).order(ordem, { ascending: true }));
+        } catch (e) {
+            backup.dados_aluno[tabela] = [];
             backup.avisos.push(`${tabela}: ${e?.message || 'falhou'}`);
         }
     }

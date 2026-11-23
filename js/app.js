@@ -280,8 +280,8 @@ btnRegistroAbertura.addEventListener("click", () => {
 });
 
 // Backup do banco de questões: só o admin vê (a RLS também barra os outros no servidor)
-const btnBackupBanco = criarBotaoSidebar("Backup do banco de questões");
-btnBackupBanco.title = "Baixa todas as questões, gabaritos e reportes num arquivo .json";
+const btnBackupBanco = criarBotaoSidebar("Backup do banco e dos meus dados");
+btnBackupBanco.title = "Baixa as questões, gabaritos e reportes e também o seu histórico, retestes, Aprendi, simulados, favoritos, fila e perfil num arquivo .json";
 btnBackupBanco.hidden = true;
 if (gavetaFerramentas) gavetaFerramentas.insertBefore(btnBackupBanco, antesDoSair);
 
@@ -1111,12 +1111,13 @@ async function baixarBackupDoBanco() {
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = `focopro-backup-banco-${new Date().toISOString().slice(0, 10)}.json`;
+        a.download = `focopro-backup-banco-e-dados-${new Date().toISOString().slice(0, 10)}.json`;
         document.body.appendChild(a);
         a.click();
         a.remove();
         URL.revokeObjectURL(url);
-        const resumo = `${t.questoes.length} questões, ${t.questoes_gabarito.length} gabaritos, ${t.reportes_questao.length} reportes`;
+        const d = backup.dados_aluno || {};
+        const resumo = `${t.questoes.length} questões, ${t.questoes_gabarito.length} gabaritos, ${t.reportes_questao.length} reportes; seus dados: ${(d.historico_respostas || []).length} respostas, ${(d.simulados || []).length} simulados, ${(d.aprendidos || []).length} aprendidos`;
         showToast(backup.avisos.length ? `Backup baixado com avisos: ${backup.avisos.join("; ")}` : `Backup baixado: ${resumo}.`, backup.avisos.length ? "erro" : "sucesso");
     } catch (e) {
         showToast("Não foi possível gerar o backup agora.", "erro");
