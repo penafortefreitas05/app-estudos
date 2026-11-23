@@ -18682,5 +18682,27 @@
       "interface",
       "classe-abstrata"
     ]
+  },
+  {
+    "id": "card-bd-n1-129",
+    "materia": "Banco de Dados & Dados",
+    "assunto": "Modelagem de dados (MER e relacional)",
+    "nivel": 1,
+    "conceito": "Entidade fraca",
+    "termo_ingles": "Weak entity",
+    "traducao": "Entidade fraca: depende de outra entidade para ser identificada.",
+    "resumo": "Entidade forte tem chave própria; a fraca, não: é identificada pela chave da forte mais uma chave parcial, via relacionamento identificador, que liga as duas. Exemplo: Dependente de Funcionário.",
+    "nao_confundir": [
+      {
+        "conceito": "Entidade forte",
+        "diferenca": "A forte se identifica sozinha; toda fraca participa obrigatoriamente do relacionamento identificador."
+      }
+    ],
+    "atencao": "A chave parcial só distingue as fracas ligadas à mesma entidade forte; sozinha, não identifica.",
+    "fonte": "Universidade de São Paulo (USP), IME, Projeto Conceitual de Bancos de Dados: Modelo Entidade-Relacionamento, slides 48 e 50: https://users.ime.usp.br/~kellyrb/CBD5951/modelo_entidade_relacionamento.pdf ; Universidade Federal de Santa Catarina (UFSC), Modelagem Lógica de BD, seção Mapeamento de Entidades Fracas: https://www.inf.ufsc.br/~ronaldo/ine5623/3-ER2Relacional.pdf",
+    "tags": [
+      "mer",
+      "entidade-fraca"
+    ]
   }
 ]
