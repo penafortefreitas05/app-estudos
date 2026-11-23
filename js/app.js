@@ -92,7 +92,7 @@ import {
 
 // ---------- 1.45 Revisão espaçada ----------
 import { resumirPorDia, renderizarMeuDia } from './meu-dia.js';
-import { ontemDasLinhas, ontemLocal, semanaDasLinhas, semanaLocal, focoPrioritario, totalRespondidas, htmlHomePainel } from './home-painel.js';
+import { ontemDasLinhas, ontemLocal, semanaDasLinhas, semanaLocal, focoPrioritario, totalRespondidas, htmlHomePainel, htmlMeuDia, dadosDeSimulados } from './home-painel.js';
 import { renderizarDetalhesDaConta } from './conta.js';
 import { aplicarResposta, novoRegistro, venceHoje, descansa, formatarDiaCurto, somarDias, atualizarFilaDoDia, filaDeHoje, naFila, TETO_DIARIO, filaGuardadaHoje, guardarFilaDoDia } from './revisao.js';
 
@@ -132,10 +132,11 @@ let questoes = [];
 // Home nova (piloto, v192): estado do painel; a lógica fica junto do cartão "Hoje"
 const CHAVE_HOME_NOVA = "appEstudos_HomeNova";
 let homeNovaLigada = false;
-try { homeNovaLigada = localStorage.getItem(CHAVE_HOME_NOVA) === "1"; } catch (e) { /* segue desligada */ }
+try { homeNovaLigada = localStorage.getItem(CHAVE_HOME_NOVA) !== "0"; } catch (e) { homeNovaLigada = true; } // v193: ligada por padrão; "0" = você desligou
 let exploracaoAberta = false;
 let homeCache = null;           // { em, linhas } das respostas dos últimos 7 dias (nuvem)
 let homeCarregando = false;
+let homeSimulados = null;      // lista mesclada (aparelho + nuvem) dos simulados
 
 let porId = new Map();
 
@@ -3327,10 +3328,14 @@ async function atualizarDadosHome() {
     homeCarregando = true;
     try {
         const dados = await carregarRespostasRecentes(7);
-        if (dados && Array.isArray(dados.linhas)) homeCache = { em: Date.now(), linhas: dados.linhas };
+        if (dados && Array.isArray(dados.linhas)) homeCache = { em: Date.now(), linhas: dados.linhas, jaVistas: dados.jaVistas };
     } catch (e) { /* sem conexão: o painel usa os dados do aparelho */ }
+    try {
+        const nuvem = usuarioAtual ? await listarSimuladosNuvem() : null;
+        homeSimulados = mesclarSimulados(lerSimuladosLocais(), nuvem);
+    } catch (e) { /* fica com o que há no aparelho */ }
     homeCarregando = false;
-    if (homeCache) aplicarHomeNova(true);
+    if (homeCache || homeSimulados) aplicarHomeNova(true);
 }
 
 function aplicarHomeNova(semBuscar = false) {
@@ -3347,7 +3352,9 @@ function aplicarHomeNova(semBuscar = false) {
         semana: usaNuvem ? semanaDasLinhas(homeCache.linhas, agora) : semanaLocal(historico, agora),
         foco: focoPrioritario(questoes, historico),
         totalFeitas: totalRespondidas(historico),
-        exploracaoAberta
+        exploracaoAberta,
+        meuDia: usaNuvem ? htmlMeuDia(homeCache.linhas, homeCache.jaVistas, questoes.filter(q => venceHoje(historico[String(q.id)])).length, agora) : null,
+        simulados: dadosDeSimulados(homeSimulados || lerSimuladosLocais())
     };
     if (!painel) {
         painel = document.createElement("section");
@@ -3390,6 +3397,7 @@ if (container) {
         if (e.target.closest(".hoje-continuar")) { continuarHoje(); return; }
         // v192: Home nova
         if (e.target.closest(".home-explorar")) { exploracaoAberta = !exploracaoAberta; aplicarHomeNova(true); return; }
+        if (e.target.closest(".home-simulados")) { const b = document.getElementById("btn-painel-simulado"); if (b) b.click(); return; }
         if (e.target.closest(".home-meu-dia")) { const b = document.getElementById("btn-meu-dia"); if (b) b.click(); return; }
         const verErros = e.target.closest(".home-caderno");
         if (verErros) { abrirCadernoApp({ materia: verErros.dataset.materia, assunto: verErros.dataset.assunto }); return; }

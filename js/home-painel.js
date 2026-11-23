@@ -10,6 +10,7 @@
 import { diaLocal } from './storage.js';
 import { esc } from './ui.js';
 import { prioridadesDeRecuperacao } from './prioridade.js';
+import { resumirPorDia, renderizarMeuDia } from './meu-dia.js';
 
 const NOMES_DIA = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
 const UM_DIA = 24 * 60 * 60 * 1000;
@@ -118,12 +119,52 @@ function htmlSemana(dias) {
         <button type="button" class="btn-link home-meu-dia">Ver os detalhes em Meu dia</button>`;
 }
 
-// dados: { ontem, semana, foco, totalFeitas, exploracaoAberta }
-export function htmlHomePainel({ ontem, semana, foco, totalFeitas, exploracaoAberta }) {
-    return `<div class="home-grade">
+// "Meu dia" completo (o mesmo da tela Meu dia: hoje por revisão e novas, meta e os últimos 7 dias)
+export function htmlMeuDia(linhas, jaVistas, vencidas = 0, agora = Date.now()) {
+    const raiz = document.createElement('div');
+    renderizarMeuDia(raiz, resumirPorDia(linhas || [], jaVistas || new Set(), 7, agora), { vencidas });
+    return raiz.innerHTML;
+}
+
+// Relatório dos simulados (do mais novo ao mais antigo): resumo + os 3 últimos.
+// lista: [{ em, total, acertos, segundos, porTempo }]
+export function dadosDeSimulados(lista) {
+    const l = Array.isArray(lista) ? lista.filter((r) => r && r.total) : [];
+    if (!l.length) return null;
+    const pct = (r) => Math.round((r.acertos * 100) / r.total);
+    const pcts = l.map(pct);
+    return {
+        feitos: l.length,
+        media: Math.round(pcts.reduce((a, b) => a + b, 0) / pcts.length),
+        melhor: Math.max(...pcts),
+        tendencia: l.slice(0, 8).map(pct).reverse(),
+        ultimos: l.slice(0, 3).map((r) => ({ em: r.em, acertos: r.acertos, total: r.total, pct: pct(r), segundos: r.segundos, porTempo: r.porTempo }))
+    };
+}
+
+const dataCurta = (iso) => { const d = new Date(iso); return Number.isNaN(d.getTime()) ? '' : `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}`; };
+const duracao = (seg) => { const s = Math.max(0, Math.round(seg || 0)); const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), r = s % 60; return h ? `${h}h${String(m).padStart(2, '0')}` : `${m}:${String(r).padStart(2, '0')}`; };
+
+function htmlSimulados(sim) {
+    if (!sim) return '<p class="home-vazio">Quando você finalizar um simulado, o relatório aparece aqui.</p>';
+    const tendencia = sim.tendencia.length > 1
+        ? `<div class="sm-tendencia" aria-label="Evolução dos últimos simulados">${sim.tendencia.map((p) => `<i style="height:${Math.max(6, p)}%" title="${p}%"></i>`).join('')}</div>` : '';
+    return `<div class="sm-stats"><div><b>${sim.feitos}</b><span>feitos</span></div><div><b>${sim.media}%</b><span>média</span></div><div><b>${sim.melhor}%</b><span>melhor</span></div></div>
+        ${tendencia}
+        <div class="home-sim-lista">${sim.ultimos.map((r) => `<p class="home-sim-linha"><span>${dataCurta(r.em)}</span><span><strong>${r.acertos}/${r.total}</strong> · ${r.pct}%</span><span>${duracao(r.segundos)}${r.porTempo ? ' ⏰' : ''}</span></p>`).join('')}</div>
+        <button type="button" class="btn-link home-simulados">Ver todos os simulados</button>`;
+}
+
+// dados: { ontem, semana, foco, totalFeitas, exploracaoAberta, meuDia (html ou null), simulados }
+export function htmlHomePainel({ ontem, semana, foco, totalFeitas, exploracaoAberta, meuDia = null, simulados = null }) {
+    const blocoDia = meuDia
+        ? `<article class="home-card home-meu-dia-card"><h3 class="home-titulo">Meu dia</h3>${meuDia}</article>`
+        : `<article class="home-card"><h3 class="home-titulo">Semana</h3>${htmlSemana(semana)}</article>`;
+    return `${blocoDia}
+        <div class="home-grade">
             <article class="home-card"><h3 class="home-titulo">Ontem</h3>${htmlOntem(ontem, totalFeitas)}</article>
             <article class="home-card"><h3 class="home-titulo">Onde melhorar</h3>${htmlFoco(foco, totalFeitas)}</article>
         </div>
-        <article class="home-card"><h3 class="home-titulo">Semana</h3>${htmlSemana(semana)}</article>
+        <article class="home-card"><h3 class="home-titulo">Seus simulados</h3>${htmlSimulados(simulados)}</article>
         <button type="button" class="btn-secondary home-explorar" aria-expanded="${exploracaoAberta}">${exploracaoAberta ? 'Esconder as questões' : 'Explorar questões'}</button>`;
 }
