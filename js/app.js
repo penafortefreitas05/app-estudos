@@ -19,7 +19,8 @@ import {
     temGabarito,
     preencherSelectAssunto,
     textoGabaritoDe,
-    marcarMateriaAtiva
+    marcarMateriaAtiva,
+    alternarDetalheGeral
 } from './ui.js';
 import { abrirAprender } from './aprender-tela.js';
 import { montarBackupAprendidos, mesclarBackupAprendidos, assuntosComCartoes, lerAprendidos, ouvirMarcaAprendi } from './leitura.js';
@@ -718,6 +719,8 @@ if (dashboardMaterias) {
             revisarHojeDaMateria(revisao.dataset.revisarMateria);
             return;
         }
+        // v191: o quadradinho "Geral" só abre o resumo (não filtra nenhuma matéria)
+        if (e.target.closest(".materia-tile[data-geral]")) { alternarDetalheGeral(); return; }
         const item = e.target.closest(".materia-tile[data-materia]");
         if (!item || !selectMateria) return;
         const materia = item.dataset.materia;
