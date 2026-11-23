@@ -296,3 +296,25 @@ export function contarPorAssunto(questoes, { niveis = [], tipo = 'todas' } = {})
     });
     return m;
 }
+
+// v188b: quantas questões o aluno já respondeu, por matéria e assunto (mesmo filtro de nível e tipo
+// de contarPorAssunto). Serve para colorir as listas de "Adicionar matéria" e de assuntos.
+export function contarFeitasPorAssunto(questoes, historico = {}, { niveis = [], tipo = 'todas' } = {}) {
+    const m = new Map();
+    (questoes || []).forEach((q) => {
+        if (niveis.length && !niveis.includes(Number(q.nivel))) return;
+        if (tipo !== 'todas' && (q.tipo || 'multipla_escolha') !== tipo) return;
+        if (situacao(historico[String(q.id)]) === 'nova') return;
+        const mat = q.materia || 'Geral';
+        if (!m.has(mat)) m.set(mat, new Map());
+        const a = q.assunto || 'Sem assunto';
+        m.get(mat).set(a, (m.get(mat).get(a) || 0) + 1);
+    });
+    return m;
+}
+
+// Estado de cobertura: 'novo' (nada respondido), 'comecei' (menos da metade) ou 'coberto' (metade ou mais)
+export function estadoCobertura(feitas, total) {
+    if (!feitas || !total) return 'novo';
+    return feitas / total >= 0.5 ? 'coberto' : 'comecei';
+}

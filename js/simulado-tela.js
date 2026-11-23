@@ -9,7 +9,7 @@
 
 import { esc } from './ui.js';
 import { icone } from './icones.js';
-import { cfgVazia, cfgParaReceita, receitaParaCfg, receitaComoTexto, montarPelaReceita, contarPorAssunto, normalizar as normalizarTexto } from './receita.js';
+import { cfgVazia, cfgParaReceita, receitaParaCfg, receitaComoTexto, montarPelaReceita, contarPorAssunto, contarFeitasPorAssunto, estadoCobertura, normalizar as normalizarTexto } from './receita.js';
 
 const CHAVE_SIMULADOS = 'appEstudos_Simulados';
 const CHAVE_CONFIG = 'appEstudos_SimuladoConfig';
@@ -423,12 +423,17 @@ export function abrirSimulado({ carregarHistorico, modelo = null, prepararReceit
         if (!f) return;
         folhaEl.hidden = false;
         const contagem = contarPorAssunto(dados().questoes, mt.cfg);
+        const feitasMapa = contarFeitasPorAssunto(dados().questoes, dados().historico || {}, mt.cfg);
+        const soFeitas = !!mt.cfg.status.feitas;
+        const numeros = (feitas, total) => feitas ? `<b>${feitas}</b> de ${total}` : `${total}`;
+        const legenda = '<p class="mt-cob-legenda"><span class="mt-cob-ponto comecei"></span>Comecei <span class="mt-cob-ponto coberto"></span>Bem coberto <span class="mt-cob-nota">· “12 de 66” = feitas de total</span></p>';
         if (f.tipo === 'materias') {
-            const materias = [...contagem.entries()].map(([m, mapa]) => [m, [...mapa.values()].reduce((x, n) => x + n, 0)]).sort((a, b) => a[0].localeCompare(b[0], 'pt'));
+            const materias = [...contagem.entries()].map(([m, mapa]) => [m, [...mapa.values()].reduce((x, n) => x + n, 0), [...(feitasMapa.get(m) || new Map()).values()].reduce((x, n) => x + n, 0)]).sort((a, b) => a[0].localeCompare(b[0], 'pt'));
             folhaEl.innerHTML = `
                 <div class="mt-folha-caixa" role="dialog" aria-modal="true" aria-label="Escolher matéria">
                     <header class="mt-folha-topo"><button type="button" class="sm-link" data-sm="mt-folha-fechar">← Voltar</button><h3>Adicionar matéria</h3></header>
-                    <div class="mt-folha-lista">${materias.map(([m, n]) => `<button type="button" class="mt-folha-item" data-sm="mt-escolher-materia" data-v="${esc(m)}"><span>${esc(m)}</span><span class="mt-disp">${n}</span></button>`).join('') || '<p class="sm-vazio">Nenhuma questão com esse nível e tipo.</p>'}</div>
+                    ${legenda}
+                    <div class="mt-folha-lista">${materias.map(([m, n, fe]) => `<button type="button" class="mt-folha-item mt-cob-${estadoCobertura(fe, n)}" data-sm="mt-escolher-materia" data-v="${esc(m)}"><span>${esc(m)}</span><span class="mt-disp">${numeros(fe, n)}</span></button>`).join('') || '<p class="sm-vazio">Nenhuma questão com esse nível e tipo.</p>'}</div>
                 </div>`;
             return;
         }
@@ -438,10 +443,13 @@ export function abrirSimulado({ carregarHistorico, modelo = null, prepararReceit
         const filtrados = assuntos.filter(([a]) => !busca || normalizarTexto(a).includes(busca));
         const todos = f.sel.size === 0;
         const soma = f.porAssunto ? [...f.sel].reduce((x, a) => x + (Number(f.qtdPor[a]) || 0), 0) : f.qtd;
-        const dispSel = todos ? assuntos.reduce((x, [, n]) => x + n, 0) : [...f.sel].reduce((x, a) => x + (mapa.get(a) || 0), 0);
+        const feitasDaMateria = feitasMapa.get(f.materia) || new Map();
+        const quantos = (a) => (soFeitas ? (feitasDaMateria.get(a) || 0) : (mapa.get(a) || 0));
+        const dispSel = todos ? assuntos.reduce((x, [a]) => x + quantos(a), 0) : [...f.sel].reduce((x, a) => x + quantos(a), 0);
         folhaEl.innerHTML = `
             <div class="mt-folha-caixa" role="dialog" aria-modal="true" aria-label="Assuntos de ${esc(f.materia)}">
                 <header class="mt-folha-topo"><button type="button" class="sm-link" data-sm="mt-folha-fechar">← Voltar</button><h3>${esc(f.materia)}</h3><p>Escolha os assuntos do simulado</p></header>
+                ${legenda}
                 <input class="mt-busca" type="search" placeholder="Buscar assunto…" value="${esc(f.busca)}" aria-label="Buscar assunto">
                 <div class="sm-chips sm-g2 mt-modo">${chip('mt-modo', 'materia', 'Quantidade para a matéria', !f.porAssunto)}${chip('mt-modo', 'assunto', 'Quantidade por assunto', f.porAssunto)}</div>
                 <div class="mt-folha-lista">
@@ -450,7 +458,7 @@ export function abrirSimulado({ carregarHistorico, modelo = null, prepararReceit
                         const marcado = f.sel.has(a);
                         const [princ, resto] = [a.replace(/\s*\(.*$/, ''), (a.match(/\((.*)\)\s*$/) || [])[1]];
                         return `<div class="mt-linha-assunto${marcado ? ' marcado' : ''}">
-                            <button type="button" class="mt-folha-item mt-check${marcado ? ' marcado' : ''}" data-sm="mt-assunto" data-v="${esc(a)}" aria-pressed="${marcado}"><span class="mt-caixa" aria-hidden="true">${marcado ? icone('certo') : ''}</span><span class="mt-item-nome"><b>${esc(princ)}</b>${resto ? `<span>${esc(resto)}</span>` : ''}</span><span class="mt-disp">${n}</span></button>
+                            <button type="button" class="mt-folha-item mt-check mt-cob-${estadoCobertura(feitasDaMateria.get(a) || 0, n)}${marcado ? ' marcado' : ''}" data-sm="mt-assunto" data-v="${esc(a)}" aria-pressed="${marcado}"><span class="mt-caixa" aria-hidden="true">${marcado ? icone('certo') : ''}</span><span class="mt-item-nome"><b>${esc(princ)}</b>${resto ? `<span>${esc(resto)}</span>` : ''}</span><span class="mt-disp">${numeros(feitasDaMateria.get(a) || 0, n)}</span></button>
                             ${marcado && f.porAssunto ? `<div class="mt-qtd mt-qtd-assunto" role="group" aria-label="Questões de ${esc(princ)}">
                                 <button type="button" class="mt-passo" data-sm="mt-a-menos" data-v="${esc(a)}" aria-label="Menos uma">−</button>
                                 <input class="mt-num" type="number" inputmode="numeric" min="0" max="200" value="${Number(f.qtdPor[a]) || 0}" data-num="assunto" data-a="${esc(a)}" aria-label="Quantidade de ${esc(princ)}">
