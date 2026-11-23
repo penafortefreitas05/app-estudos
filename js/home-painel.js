@@ -128,6 +128,19 @@ export function htmlMeuDia(linhas, jaVistas, vencidas = 0, agora = Date.now()) {
 
 // Relatório dos simulados (do mais novo ao mais antigo): resumo + os 3 últimos.
 // lista: [{ em, total, acertos, segundos, porTempo }]
+// Soma todos os simulados por matéria; só entra quem tem 5+ questões (senão o % engana)
+export function materiasDosSimulados(lista) {
+    const soma = {};
+    lista.forEach((r) => Object.entries(r.porMateria || {}).forEach(([nome, v]) => {
+        const x = soma[nome] || (soma[nome] = { nome, t: 0, a: 0 });
+        x.t += (v && v.t) || 0; x.a += (v && v.a) || 0;
+    }));
+    const todas = Object.values(soma).filter((m) => m.t >= 5).map((m) => ({ ...m, pct: Math.round((m.a * 100) / m.t) })).sort((x, y) => x.pct - y.pct || y.t - x.t);
+    if (todas.length < 2) return null;
+    const n = Math.min(3, Math.floor(todas.length / 2));
+    return { fracas: todas.slice(0, n), fortes: todas.slice(-n).reverse() };
+}
+
 export function dadosDeSimulados(lista) {
     const l = Array.isArray(lista) ? lista.filter((r) => r && r.total) : [];
     if (!l.length) return null;
@@ -137,21 +150,33 @@ export function dadosDeSimulados(lista) {
         feitos: l.length,
         media: Math.round(pcts.reduce((a, b) => a + b, 0) / pcts.length),
         melhor: Math.max(...pcts),
-        tendencia: l.slice(0, 8).map(pct).reverse(),
-        ultimos: l.slice(0, 3).map((r) => ({ em: r.em, acertos: r.acertos, total: r.total, pct: pct(r), segundos: r.segundos, porTempo: r.porTempo }))
+        materias: materiasDosSimulados(l),
+        ultimos: l.slice(0, 5).map((r) => ({ em: r.em, acertos: r.acertos, total: r.total, pct: pct(r), segundos: r.segundos, porTempo: r.porTempo,
+            materias: Object.entries(r.porMateria || {}).map(([nome, v]) => ({ nome, t: (v && v.t) || 0, a: (v && v.a) || 0 })).filter((m) => m.t).sort((x, y) => y.t - x.t) }))
     };
 }
 
 const dataCurta = (iso) => { const d = new Date(iso); return Number.isNaN(d.getTime()) ? '' : `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}`; };
 const duracao = (seg) => { const s = Math.max(0, Math.round(seg || 0)); const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), r = s % 60; return h ? `${h}h${String(m).padStart(2, '0')}` : `${m}:${String(r).padStart(2, '0')}`; };
 
+const corPct = (p) => (p >= 80 ? 'bom' : p >= 60 ? 'medio' : 'baixo');
+const linhaMateria = (m) => `<li><span>${esc(m.nome)}</span><b class="home-pct-${corPct(m.pct)}">${m.pct}%</b><small>${m.a}/${m.t}</small></li>`;
+
 function htmlSimulados(sim) {
     if (!sim) return '<p class="home-vazio">Quando você finalizar um simulado, o relatório aparece aqui.</p>';
-    const tendencia = sim.tendencia.length > 1
-        ? `<div class="sm-tendencia" aria-label="Evolução dos últimos simulados">${sim.tendencia.map((p) => `<i style="height:${Math.max(6, p)}%" title="${p}%"></i>`).join('')}</div>` : '';
+    const mm = sim.materias;
+    const painel = mm ? `<div class="home-sim-mat">
+            <div><h4>Mais fracas nos simulados</h4><ul>${mm.fracas.map(linhaMateria).join('')}</ul></div>
+            <div><h4>Mais fortes nos simulados</h4><ul>${mm.fortes.map(linhaMateria).join('')}</ul></div>
+        </div>` : '';
+    const chips = (r) => {
+        if (!r.materias.length) return '<span class="home-sim-mats home-sim-mats-vazio">Sem detalhe por matéria</span>';
+        const vis = r.materias.slice(0, 3), resto = r.materias.length - vis.length;
+        return `<span class="home-sim-mats">${vis.map((m) => `<i class="home-sim-chip">${esc(m.nome)} <b>${m.a}/${m.t}</b></i>`).join('')}${resto > 0 ? `<i class="home-sim-chip home-sim-mais">+${resto}</i>` : ''}</span>`;
+    };
     return `<div class="sm-stats"><div><b>${sim.feitos}</b><span>feitos</span></div><div><b>${sim.media}%</b><span>média</span></div><div><b>${sim.melhor}%</b><span>melhor</span></div></div>
-        ${tendencia}
-        <div class="home-sim-lista">${sim.ultimos.map((r) => `<p class="home-sim-linha"><span>${dataCurta(r.em)}</span><span><strong>${r.acertos}/${r.total}</strong> · ${r.pct}%</span><span>${duracao(r.segundos)}${r.porTempo ? ' ⏰' : ''}</span></p>`).join('')}</div>
+        ${painel}
+        <div class="home-sim-lista">${sim.ultimos.map((r) => `<p class="home-sim-linha"><span class="home-sim-data">${dataCurta(r.em)}</span><span class="home-sim-nota"><strong>${r.acertos}/${r.total}</strong> · ${r.pct}%</span>${chips(r)}<span class="home-sim-tempo">${duracao(r.segundos)}${r.porTempo ? ' ⏰' : ''}</span></p>`).join('')}</div>
         <button type="button" class="btn-link home-simulados">Ver todos os simulados</button>`;
 }
 
