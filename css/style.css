@@ -2029,6 +2029,7 @@ body.modo-aprender .sidebar { background-color: #11102e; border-right-color: #2a
 .sm-chips { display: grid; gap: 0.5rem; }
 .sm-g4 { grid-template-columns: repeat(4, 1fr); }
 .sm-g2 { grid-template-columns: 1fr 1fr; }
+.sm-g1 { grid-template-columns: 1fr; margin-top: 0.4rem; }
 .sm-chip, .sm-opcao, .sm-comecar, .sm-sec-btn, .sm-mais, .sm-item-topo, .sm-link { all: unset; box-sizing: border-box; cursor: pointer; }
 .sm-chip { display: flex; align-items: center; justify-content: center; min-height: 2.8rem; padding: 0.4rem; border: 1px solid #1e293b; border-radius: 10px; background: #0f172a; color: #cbd5e1; font-size: 0.9rem; font-weight: 600; text-align: center; }
 .sm-chip.ativo { background: #1d4ed8; border-color: #3b82f6; color: #fff; }
