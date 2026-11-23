@@ -536,6 +536,20 @@ export function marcarMateriaAtiva(materia) {
     if (dica) dica.hidden = algum;
 }
 
+// v191: o quadradinho "Geral" (resumo de todas as questões carregadas) abre um detalhe próprio
+let detalheGeralAberto = false;
+export function alternarDetalheGeral() {
+    detalheGeralAberto = !detalheGeralAberto;
+    const raiz = document.getElementById('dashboard-materias');
+    if (!raiz) return;
+    const det = raiz.querySelector('.geral-detalhe');
+    if (det) det.hidden = !detalheGeralAberto;
+    const tile = raiz.querySelector('.materia-tile.geral');
+    if (tile) { tile.classList.toggle('ativa', detalheGeralAberto); tile.setAttribute('aria-expanded', String(detalheGeralAberto)); }
+    const dica = raiz.querySelector('.det-dica');
+    if (dica) dica.hidden = detalheGeralAberto || Boolean(raiz.querySelector('.materia-detalhe:not(.geral-detalhe):not([hidden])'));
+}
+
 function renderizarDesempenhoMaterias(materiasMap, questoes = [], historico = {}) {
     const containerMaterias = document.getElementById("dashboard-materias");
     if (!containerMaterias) return;
@@ -553,9 +567,11 @@ function renderizarDesempenhoMaterias(materiasMap, questoes = [], historico = {}
         if (h && Number(h.tentativas) > 0) extra[mat].niveis[n].feitas++;
     });
 
-    const comQuestoes = ORDEM_MACROS.filter(m => materiasMap[m] && materiasMap[m].total > 0);
+    // v191: só vira quadradinho a matéria que tem questão carregada. Respostas de questões que saíram
+    // do banco caíam num grupo "Geral" com 0%; o "Geral" de agora é o resumo de tudo (abaixo).
+    const comQuestoes = ORDEM_MACROS.filter(m => materiasMap[m] && materiasMap[m].total > 0 && extra[m]);
     const outras = Object.keys(materiasMap)
-        .filter(m => !ORDEM_MACROS.includes(m) && materiasMap[m].total > 0)
+        .filter(m => !ORDEM_MACROS.includes(m) && materiasMap[m].total > 0 && extra[m])
         .sort((a, b) => a.localeCompare(b, 'pt-BR'));
     const materias = [...comQuestoes, ...outras];
 
@@ -615,8 +631,45 @@ function renderizarDesempenhoMaterias(materiasMap, questoes = [], historico = {}
             </div>`;
     });
 
+    // --- v191: "Geral" = todas as questões carregadas (a trilha do aluno) ---
+    let gTotal = 0, gFeitas = 0, gCertas = 0, gErradas = 0, gAc = 0, gEr = 0;
+    questoes.forEach(q => {
+        gTotal++;
+        const h = historico[String(q.id)];
+        if (h && Number(h.tentativas) > 0) {
+            gFeitas++;
+            if (h.ultimaResposta === 'certo') gCertas++; else gErradas++;
+        }
+    });
+    materias.forEach(mat => { gAc += materiasMap[mat].acertos; gEr += materiasMap[mat].erros; });
+    const gNaoFeitas = gTotal - gFeitas;
+    const gPct = gTotal ? Math.round(gFeitas * 100 / gTotal) : 0;
+    const gComecou = gAc + gEr > 0;
+    const gTaxa = gComecou ? Math.round(gAc * 100 / (gAc + gEr)) : 0;
+    const gCor = COR(gTaxa, gComecou);
+    const barra = (n, cor) => `<span class="nv-barra"><span class="nv-barra-fill" style="width:${gTotal ? Math.round(n * 100 / gTotal) : 0}%;background:${cor};"></span></span>`;
+    if (gTotal > 0) {
+        tiles += `
+            <button type="button" class="materia-tile geral${detalheGeralAberto ? ' ativa' : ''}${gComecou ? '' : ' nao-comecou'}" data-geral="1" aria-expanded="${detalheGeralAberto}" title="Geral: ${gFeitas} de ${gTotal} questões feitas${gComecou ? `, ${gTaxa}% de acerto` : ''}. Toque para ver acertos, erros e não feitas.">
+                <svg class="tile-anel" width="46" height="46" viewBox="0 0 44 44" aria-hidden="true">
+                    <circle cx="22" cy="22" r="17" fill="none" stroke="#303951" stroke-width="4"/>
+                    <circle cx="22" cy="22" r="17" fill="none" stroke="${gCor}" stroke-width="4" stroke-linecap="round" stroke-dasharray="${CIRC.toFixed(1)}" stroke-dashoffset="${(CIRC * (1 - gPct / 100)).toFixed(1)}" transform="rotate(-90 22 22)"/>
+                    <text x="22" y="26" text-anchor="middle" font-size="11" font-weight="700" fill="#f8fafc">${gPct}%</text>
+                </svg>
+                <span class="tile-nome">Geral</span>
+            </button>`;
+        detalhes += `
+            <div class="materia-detalhe geral-detalhe" ${detalheGeralAberto ? '' : 'hidden'}>
+                <div class="det-topo"><strong>Geral · ${gFeitas} de ${gTotal} feitas</strong><span class="det-taxa" style="color:${gCor}">${gComecou ? `${gTaxa}% de acerto` : 'não começou'}</span></div>
+                <span class="geral-linha"><span class="geral-nome">Acertou</span>${barra(gCertas, '#34d399')}<span class="det-contagem">${gCertas}</span></span>
+                <span class="geral-linha"><span class="geral-nome">Errou</span>${barra(gErradas, '#f87171')}<span class="det-contagem">${gErradas}</span></span>
+                <span class="geral-linha"><span class="geral-nome">Não feitas</span>${barra(gNaoFeitas, '#64748b')}<span class="det-contagem">${gNaoFeitas}</span></span>
+                <p class="geral-nota">Acertou e errou valem pela última resposta de cada questão, e somam as feitas. Todas as matérias juntas.</p>
+            </div>`;
+    }
+
     let html = '<div class="painel-desempenho-materias grade">' + tiles + '</div>';
-    html += `<div class="materia-detalhes">${detalhes}<p class="det-dica"${ativa && materias.includes(ativa) ? ' hidden' : ''}>O anel mostra quanto da matéria você já fez; a cor é o seu acerto. Toque numa matéria para ver os níveis.</p></div>`;
+    html += `<div class="materia-detalhes">${detalhes}<p class="det-dica"${(ativa && materias.includes(ativa)) || detalheGeralAberto ? ' hidden' : ''}>O anel mostra quanto da matéria você já fez; a cor é o seu acerto. Toque numa matéria para ver os níveis.</p></div>`;
     containerMaterias.innerHTML = html;
 }
 
