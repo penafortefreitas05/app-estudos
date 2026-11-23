@@ -1011,12 +1011,16 @@ export async function carregarRespostasRecentes(dias = 7) {
     const inicioISO = inicio.toISOString();
 
     try {
-        const linhas = await buscarTodasAsPaginas(() => supabaseClient
+        const buscarLinhas = (colunas) => buscarTodasAsPaginas(() => supabaseClient
             .from('historico_respostas')
-            .select('questao_id, acertou, created_at')
+            .select(colunas)
             .eq('user_id', user.id)
             .gte('created_at', inicioISO)
             .order('created_at', { ascending: true }));
+        // v192: traz também a confiança (a Home nova mostra "erros com certeza"); sem a coluna, volta ao antigo
+        let linhas;
+        try { linhas = await buscarLinhas('questao_id, acertou, confianca, created_at'); }
+        catch (e) { linhas = await buscarLinhas('questao_id, acertou, created_at'); }
 
         const ids = [...new Set(linhas.map(l => String(l.questao_id)))];
         const jaVistas = new Set();

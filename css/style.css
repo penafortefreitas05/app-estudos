@@ -2877,3 +2877,27 @@ body.prova-ativa .card-foco .tentativas { display: none !important; }
 .geral-linha { display: grid; grid-template-columns: 5.2rem 1fr auto; align-items: center; gap: 0.45rem; font-size: 0.74rem; color: #cbd5e1; }
 .geral-nome { white-space: nowrap; }
 .geral-nota { margin: 0.1rem 0 0; font-size: 0.72rem; color: #94a3b8; line-height: 1.4; }
+
+/* v192: Home nova (piloto). Só aparece com a opção ligada em Ferramentas. */
+.home-piloto > :not(.cartao-hoje):not(.home-painel) { display: none !important; }
+.home-painel { display: flex; flex-direction: column; gap: 0.7rem; margin: 0.7rem 0 1rem; }
+.home-grade { display: grid; grid-template-columns: 1fr; gap: 0.7rem; }
+@media (min-width: 760px) { .home-grade { grid-template-columns: 1fr 1fr; } }
+.home-card { background: #0c1322; border: 1px solid #1e293b; border-radius: 12px; padding: 0.75rem 0.9rem; display: flex; flex-direction: column; gap: 0.35rem; }
+.home-titulo { margin: 0; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #94a3b8; }
+.home-grande { margin: 0; display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; font-size: 1.05rem; color: #f1f5f9; }
+.home-pct { font-weight: 700; font-size: 1rem; }
+.home-pct.alta { color: #34d399; } .home-pct.media { color: #fbbf24; } .home-pct.baixa { color: #f87171; }
+.home-linha { margin: 0; font-size: 0.86rem; color: #cbd5e1; }
+.home-linha.destaque { color: #fca5a5; }
+.home-nota, .home-vazio { margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.45; }
+.home-card .btn-secondary { align-self: flex-start; margin-top: 0.3rem; }
+.home-card .btn-link { align-self: flex-start; }
+.home-colunas { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.3rem; align-items: end; margin-top: 0.2rem; }
+.home-col { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; font-size: 0.7rem; color: #94a3b8; }
+.home-col-caixa { display: flex; align-items: flex-end; width: 100%; height: 2.6rem; background: #111a2e; border-radius: 4px; overflow: hidden; }
+.home-col-barra { display: block; width: 100%; background: #60a5fa; border-radius: 4px 4px 0 0; }
+.home-col.hoje .home-col-barra { background: #34d399; }
+.home-col-n { min-height: 0.9rem; color: #cbd5e1; font-variant-numeric: tabular-nums; }
+.home-explorar { align-self: stretch; }
+.home-card .btn-link { margin-top: 0.35rem; }

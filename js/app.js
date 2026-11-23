@@ -92,6 +92,7 @@ import {
 
 // ---------- 1.45 Revisão espaçada ----------
 import { resumirPorDia, renderizarMeuDia } from './meu-dia.js';
+import { ontemDasLinhas, ontemLocal, semanaDasLinhas, semanaLocal, focoPrioritario, totalRespondidas, htmlHomePainel } from './home-painel.js';
 import { renderizarDetalhesDaConta } from './conta.js';
 import { aplicarResposta, novoRegistro, venceHoje, descansa, formatarDiaCurto, somarDias, atualizarFilaDoDia, filaDeHoje, naFila, TETO_DIARIO, filaGuardadaHoje, guardarFilaDoDia } from './revisao.js';
 
@@ -128,6 +129,14 @@ const OPCOES_SELECT_NIVEL = { rotulo: (v) => NIVEIS[v] || v, numerico: true, mos
 // ---------- 2. ESTADO GLOBAL ----------
 let historico = {};
 let questoes = [];
+// Home nova (piloto, v192): estado do painel; a lógica fica junto do cartão "Hoje"
+const CHAVE_HOME_NOVA = "appEstudos_HomeNova";
+let homeNovaLigada = false;
+try { homeNovaLigada = localStorage.getItem(CHAVE_HOME_NOVA) === "1"; } catch (e) { /* segue desligada */ }
+let exploracaoAberta = false;
+let homeCache = null;           // { em, linhas } das respostas dos últimos 7 dias (nuvem)
+let homeCarregando = false;
+
 let porId = new Map();
 
 // ---------- Concurso (trilha) ----------
@@ -3256,6 +3265,7 @@ function colocarCartaoHoje() {
     // Busca/filtro sem resultado: o cartão "Hoje" some para não contradizer o aviso de lista vazia
     if (!usuarioAtual || foco || simulado || !questoes.length || container.querySelector(".aviso-vazio")) {
         if (antigo) antigo.remove();
+        aplicarHomeNova();
         return;
     }
     const revisar = questoesParaRevisarHoje();
@@ -3305,7 +3315,62 @@ function colocarCartaoHoje() {
         ${textoSemana}`;
     if (antigo) antigo.replaceWith(caixa);
     else container.prepend(caixa);
+    aplicarHomeNova();
 }
+
+// ---------- Home nova (piloto, v192) ----------
+// Opção em "Ferramentas": liga o painel (ontem, onde melhorar, semana) logo abaixo do cartão de hoje e
+// esconde a lista de questões enquanto não houver busca nem filtro. A Home atual continua o padrão.
+
+async function atualizarDadosHome() {
+    if (homeCarregando || (homeCache && Date.now() - homeCache.em < 60000)) return;
+    homeCarregando = true;
+    try {
+        const dados = await carregarRespostasRecentes(7);
+        if (dados && Array.isArray(dados.linhas)) homeCache = { em: Date.now(), linhas: dados.linhas };
+    } catch (e) { /* sem conexão: o painel usa os dados do aparelho */ }
+    homeCarregando = false;
+    if (homeCache) aplicarHomeNova(true);
+}
+
+function aplicarHomeNova(semBuscar = false) {
+    if (!container) return;
+    const caixa = container.querySelector(".cartao-hoje");
+    let painel = container.querySelector(".home-painel");
+    const ligada = homeNovaLigada && Boolean(caixa) && !algumFiltroAtivo();
+    container.classList.toggle("home-piloto", ligada && !exploracaoAberta);
+    if (!ligada) { if (painel) painel.remove(); return; }
+    const agora = Date.now();
+    const usaNuvem = homeCache && agora - homeCache.em < 10 * 60000;
+    const dados = {
+        ontem: usaNuvem ? ontemDasLinhas(homeCache.linhas, agora) : ontemLocal(historico, agora),
+        semana: usaNuvem ? semanaDasLinhas(homeCache.linhas, agora) : semanaLocal(historico, agora),
+        foco: focoPrioritario(questoes, historico),
+        totalFeitas: totalRespondidas(historico),
+        exploracaoAberta
+    };
+    if (!painel) {
+        painel = document.createElement("section");
+        painel.className = "home-painel";
+        painel.setAttribute("aria-label", "Painel de estudo");
+        caixa.after(painel);
+    }
+    painel.innerHTML = htmlHomePainel(dados);
+    if (!semBuscar) atualizarDadosHome();
+}
+
+const btnHomeNova = criarBotaoSidebar("");
+function rotuloHomeNova() { btnHomeNova.firstElementChild.textContent = `Home nova (teste): ${homeNovaLigada ? "ligada" : "desligada"}`; }
+btnHomeNova.title = "Mostra ontem, onde melhorar e a semana na tela inicial, no lugar da lista de questões. Dá para desligar a qualquer momento.";
+rotuloHomeNova();
+if (gavetaFerramentas) gavetaFerramentas.insertBefore(btnHomeNova, antesDoSair);
+btnHomeNova.addEventListener("click", () => {
+    homeNovaLigada = !homeNovaLigada;
+    exploracaoAberta = false;
+    try { localStorage.setItem(CHAVE_HOME_NOVA, homeNovaLigada ? "1" : "0"); } catch (e) { /* segue */ }
+    rotuloHomeNova();
+    aplicarFiltros();
+});
 
 // "Continuar": a revisão do dia primeiro, depois as novas da lista atual (filtros e ordem de estudo)
 function continuarHoje() {
@@ -3323,6 +3388,11 @@ function continuarHoje() {
 if (container) {
     container.addEventListener("click", (e) => {
         if (e.target.closest(".hoje-continuar")) { continuarHoje(); return; }
+        // v192: Home nova
+        if (e.target.closest(".home-explorar")) { exploracaoAberta = !exploracaoAberta; aplicarHomeNova(true); return; }
+        if (e.target.closest(".home-meu-dia")) { const b = document.getElementById("btn-meu-dia"); if (b) b.click(); return; }
+        const verErros = e.target.closest(".home-caderno");
+        if (verErros) { abrirCadernoApp({ materia: verErros.dataset.materia, assunto: verErros.dataset.assunto }); return; }
         const fechar = e.target.closest(".hoje-semana-fechar");
         if (fechar) {
             try { localStorage.setItem(CHAVE_SEMANA_DISPENSADA, fechar.dataset.chave); } catch (err) { /* segue */ }
