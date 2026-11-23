@@ -320,8 +320,8 @@ export function abrirSimulado({ carregarHistorico, modelo = null, prepararReceit
         const falta = s.entraram < pedidas;
         const avisos = [];
         if (falta && b.porAssunto) s.faltas.forEach((f) => avisos.push(`<p class="mt-aviso falta">${icone('alerta')}<span>${esc(String(f.assunto).replace(/\s*\(.*$/, ''))}: pediu ${f.qtd}, só há ${f.tem} com esse nível e tipo.</span></p>`));
-        else if (falta) avisos.push(`<p class="mt-aviso falta">${icone('alerta')}<span>Você pediu ${pedidas}, mas só ${s.disponiveis === 1 ? 'existe 1 questão' : `existem ${s.disponiveis} questões`} com esse nível e tipo.</span>${s.disponiveis ? `<button type="button" class="sm-link" data-sm="mt-ajustar" data-v="${i}">Ajustar para ${s.disponiveis}</button>` : ''}</p>`);
-        if (s.vistas) avisos.push(`<p class="mt-aviso">${icone('alerta')}<span>Faltaram novas: ${s.vistas} ${s.vistas === 1 ? 'questão já vista entra' : 'questões já vistas entram'} para completar.</span></p>`);
+        else if (falta) avisos.push(`<p class="mt-aviso falta">${icone('alerta')}<span>Você pediu ${pedidas}, mas só ${s.disponiveis === 1 ? 'existe 1 questão' : `existem ${s.disponiveis} questões`}${mt.cfg.status.feitas ? ' já feitas' : ''} com esse nível e tipo.</span>${s.disponiveis ? `<button type="button" class="sm-link" data-sm="mt-ajustar" data-v="${i}">Ajustar para ${s.disponiveis}</button>` : ''}</p>`);
+        if (s.vistas && !mt.cfg.status.feitas) avisos.push(`<p class="mt-aviso">${icone('alerta')}<span>Faltaram novas: ${s.vistas} ${s.vistas === 1 ? 'questão já vista entra' : 'questões já vistas entram'} para completar.</span></p>`);
         return `<article class="mt-bloco${falta ? ' falta' : ''}">
             <div class="mt-bloco-topo">
                 <h4 class="mt-bloco-nome">${esc(curto(b.materia))}</h4>
@@ -359,7 +359,7 @@ export function abrirSimulado({ carregarHistorico, modelo = null, prepararReceit
         const pedidas = av.receita.linhas.reduce((x, l) => x + l.qtd, 0);
         const min = minutosDe(mt.cfg.tempo, total || pedidas);
         const c = mt.cfg;
-        const st = `${c.status.novas}/${c.status.caderno}`;
+        const st = c.status.feitas ? 'feitas' : `${c.status.novas}/${c.status.caderno}`;
         corpo.innerHTML = `
             ${guardadas.length ? `<section class="sm-sec">
                 <h3 class="sm-sec-titulo">Receitas salvas</h3>
@@ -373,9 +373,10 @@ export function abrirSimulado({ carregarHistorico, modelo = null, prepararReceit
 
                 <h3 class="sm-sec-titulo">Origem das questões</h3>
                 <div class="sm-chips sm-g4">${[['100/0', 'Só novas'], ['70/30', '70 / 30'], ['50/50', '50 / 50'], ['0/100', 'Só erros']].map(([v, t]) => chip('mt-status', v, t, st === v)).join('')}</div>
-                ${(() => { const q = av.porBloco.reduce((x, b) => x + b.querCaderno, 0), t = av.porBloco.reduce((x, b) => x + b.caderno, 0); return c.blocos.length && t < q ? `<p class="mt-aviso">${icone('alerta')}<span>Seu Caderno de erros tem ${t} ${t === 1 ? 'questão' : 'questões'} nesses assuntos e a origem pede ${q}; ${q - t === 1 ? 'a que falta vem' : `as ${q - t} que faltam vêm`} de questões novas.</span></p>` : ''; })()}
-                ${(() => { const extra = av.porBloco.reduce((x, b) => x + Math.max(0, b.caderno - b.querCaderno), 0); return extra > 0 ? `<p class="mt-aviso">${icone('alerta')}<span>Faltaram questões novas: ${extra === 1 ? '1 questão do seu Caderno de erros entrou' : `${extra} questões do seu Caderno de erros entraram`} para completar.</span></p>` : ''; })()}
-                <p class="mt-legenda">${st === '100/0' ? 'Só questões que você nunca respondeu.' : st === '0/100' ? 'Só questões do Caderno de erros (erros em aberto).' : `${c.status.novas}% novas e ${c.status.caderno}% do Caderno de erros, em cada matéria.`}</p>
+                <div class="sm-chips sm-g1">${chip('mt-status', 'feitas', 'Já feitas', st === 'feitas')}</div>
+                ${(() => { if (c.status.feitas) return ''; const q = av.porBloco.reduce((x, b) => x + b.querCaderno, 0), t = av.porBloco.reduce((x, b) => x + b.caderno, 0); return c.blocos.length && t < q ? `<p class="mt-aviso">${icone('alerta')}<span>Seu Caderno de erros tem ${t} ${t === 1 ? 'questão' : 'questões'} nesses assuntos e a origem pede ${q}; ${q - t === 1 ? 'a que falta vem' : `as ${q - t} que faltam vêm`} de questões novas.</span></p>` : ''; })()}
+                ${(() => { if (c.status.feitas) return ''; const extra = av.porBloco.reduce((x, b) => x + Math.max(0, b.caderno - b.querCaderno), 0); return extra > 0 ? `<p class="mt-aviso">${icone('alerta')}<span>Faltaram questões novas: ${extra === 1 ? '1 questão do seu Caderno de erros entrou' : `${extra} questões do seu Caderno de erros entraram`} para completar.</span></p>` : ''; })()}
+                <p class="mt-legenda">${st === 'feitas' ? 'Só questões que você já respondeu (acertos e erros em aberto), misturadas. Serve para testar se o que você já estudou está sólido.' : st === '100/0' ? 'Só questões que você nunca respondeu.' : st === '0/100' ? 'Só questões do Caderno de erros (erros em aberto).' : `${c.status.novas}% novas e ${c.status.caderno}% do Caderno de erros, em cada matéria.`}</p>
                 <h3 class="sm-sec-titulo">Nível</h3>
                 <div class="sm-chips sm-g4">${chip('mt-nivel', 'todos', 'Todos', !c.niveis.length)}${[[1, 'Iniciante'], [2, 'Intermediário'], [3, 'Avançado']].map(([n, t]) => chip('mt-nivel', n, t, c.niveis.includes(n))).join('')}</div>
                 <h3 class="sm-sec-titulo">Tipo</h3>
@@ -570,7 +571,7 @@ export function abrirSimulado({ carregarHistorico, modelo = null, prepararReceit
         if (a === 'mt-remover') { c.blocos.splice(Number(v), 1); guardar(); return desenhar(); }
         if (a === 'mt-menos' || a === 'mt-mais') { const bl = c.blocos[Number(v)]; bl.qtd = Math.max(0, Math.min(200, (Number(bl.qtd) || 0) + (a === 'mt-mais' ? 1 : -1))); guardar(); return desenhar(); }
         if (a === 'mt-ajustar') { const av = avaliar(); c.blocos[Number(v)].qtd = av.porBloco[Number(v)].disponiveis; guardar(); return desenhar(); }
-        if (a === 'mt-status') { const [n, k] = v.split('/').map(Number); c.status = { novas: n, caderno: k }; guardar(); return desenhar(); }
+        if (a === 'mt-status') { if (v === 'feitas') c.status = { novas: 0, caderno: 0, feitas: true }; else { const [n, k] = v.split('/').map(Number); c.status = { novas: n, caderno: k }; } guardar(); return desenhar(); }
         if (a === 'mt-nivel') {
             if (v === 'todos') c.niveis = [];
             else { const n = Number(v); c.niveis = c.niveis.includes(n) ? c.niveis.filter(x => x !== n) : [...c.niveis, n].sort(); }

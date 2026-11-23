@@ -10,7 +10,7 @@
 //   <matéria> / <assunto> [/ tema: <tag>, <tag>] → <quantidade>
 //   <matéria> → <quantidade>                 (qualquer assunto da matéria)
 //   <matéria> / <assunto> + <assunto> → <quantidade>   (sorteia entre os assuntos; v172)
-//   status: <% novas>, <% Caderno de erros> · nível: 1 | 2 | 3 · tipo: todas | C/E | múltipla
+//   status: <% novas>, <% Caderno de erros> | já feitas · nível: 1 | 2 | 3 · tipo: todas | C/E | múltipla
 //   tempo: sem | sugerido | <minutos>
 
 // Sem acento, minúsculo e com espaços simples: "Normalização " == "normalizacao"
@@ -22,6 +22,8 @@ const SETA = /\s*(?:→|->|=>|⇒)\s*/;
 
 function lerPorcentagens(texto) {
     const t = normalizar(texto);
+    // v188: "status: já feitas" = só questões que o aluno já respondeu (erros em aberto + já vistas)
+    if (/\b(?:ja\s+)?(?:feita|vista|respondida)s?\b/.test(t) && !/nova|caderno/.test(t)) return { novas: 0, caderno: 0, feitas: true };
     const novas = t.match(/(\d{1,3})\s*%?\s*(?:de\s+)?nova/);
     const caderno = t.match(/(\d{1,3})\s*%?\s*(?:do\s+|de\s+)?caderno/);
     let n = novas ? Number(novas[1]) : null;
@@ -202,6 +204,16 @@ export function montarPelaReceita(questoes, receita, historico = {}, { aleatorio
             grupos[situacao(historico[String(q.id)])].push(q);
         });
         Object.keys(grupos).forEach((k) => { grupos[k] = embaralhar(grupos[k], aleatorio); });
+        // v188: origem "Já feitas": sorteia só entre o que o aluno já respondeu (erros em aberto
+        // e já vistas, misturados). Nunca completa com novas: se faltar, entra menos e a prévia avisa.
+        if (receita.status.feitas) {
+            const feitas = embaralhar([...grupos.caderno, ...grupos.vista], aleatorio);
+            const escolhidasLinha = feitas.slice(0, Math.max(0, l.qtd));
+            escolhidasLinha.forEach((q) => usadas.add(String(q.id)));
+            escolhidas.push(...escolhidasLinha);
+            const doCad = escolhidasLinha.filter((q) => situacao(historico[String(q.id)]) === 'caderno').length;
+            return { ...l, disponiveis: feitas.length, entraram: escolhidasLinha.length, querCaderno: 0, caderno: doCad, novas: 0, vistas: escolhidasLinha.length - doCad };
+        }
         const disponiveis = grupos.caderno.length + grupos.nova.length + grupos.vista.length;
         const querCaderno = Math.round((l.qtd * receita.status.caderno) / 100);
         const pega = (lista, n) => lista.splice(0, Math.max(0, n));
@@ -226,7 +238,7 @@ export function receitaComoTexto(r) {
     return [
         `SIMULADO: ${r.nome || 'Sem nome'}`,
         ...r.linhas.map((l) => `${l.materia}${l.assuntos && l.assuntos.length ? ` / ${l.assuntos.join(' + ')}` : l.assunto ? ` / ${l.assunto}` : ''}${l.temas && l.temas.length ? ` / tema: ${l.temas.join(', ')}` : ''} → ${l.qtd}`),
-        `status: ${r.status.novas}% novas, ${r.status.caderno}% Caderno de erros · nível: ${nivel} · tipo: ${tipo}`,
+        `status: ${r.status.feitas ? 'já feitas' : `${r.status.novas}% novas, ${r.status.caderno}% Caderno de erros`} · nível: ${nivel} · tipo: ${tipo}`,
         `tempo: ${tempo}`
     ].join('\n');
 }
