@@ -1791,8 +1791,8 @@
     "nivel": 1,
     "conceito": "Sobrecarga de métodos",
     "termo_ingles": "Method Overloading",
-    "traducao": "Sobrecarga: um mesmo nome identifica métodos com listas de parâmetros diferentes.",
-    "resumo": "Em Java, métodos de uma classe podem ter o mesmo nome quando suas listas de parâmetros diferem em quantidade, tipos ou ordem.",
+    "traducao": "",
+    "resumo": "Mesmo nome de método com parâmetros diferentes (quantidade, tipo ou ordem) na mesma classe. Exemplo: somar(int a, int b) e somar(double a, double b).",
     "nao_confundir": [
       {
         "conceito": "Sobrescrita",
@@ -1814,8 +1814,8 @@
     "nivel": 1,
     "conceito": "Polimorfismo",
     "termo_ingles": "Polymorphism",
-    "traducao": "Múltiplas formas: uma mesma chamada pode produzir comportamentos diferentes conforme o objeto utilizado.",
-    "resumo": "Uma variável do tipo da superclasse pode guardar objetos de subclasses; ao chamar um método, executa a versão do objeto real.",
+    "traducao": "",
+    "resumo": "Uma variável do tipo da superclasse guarda um objeto da subclasse, e a chamada executa a versão do objeto real. Exemplo: Animal a = new Cachorro(); a.som() late.",
     "nao_confundir": [
       {
         "conceito": "Herança",
@@ -18598,8 +18598,8 @@
     "nivel": 1,
     "conceito": "Sobrescrita de métodos",
     "termo_ingles": "Method Overriding",
-    "traducao": "Sobrescrita de métodos: redefinição, na subclasse, de um método herdado.",
-    "resumo": "A subclasse redefine um método herdado, mantendo o mesmo nome, os mesmos parâmetros e um retorno compatível. Vale a versão do objeto real.",
+    "traducao": "",
+    "resumo": "A subclasse redefine um método herdado, com o mesmo nome e os mesmos parâmetros; vale a versão do objeto real. Exemplo: Cachorro redefine som() herdado de Animal.",
     "nao_confundir": [
       {
         "conceito": "Sobrecarga",
@@ -18621,8 +18621,8 @@
     "nivel": 1,
     "conceito": "Classe abstrata",
     "termo_ingles": "Abstract Class",
-    "traducao": "Classe abstrata: classe que não pode ser instanciada e serve de base.",
-    "resumo": "Classe declarada com abstract que não pode ser instanciada. Serve de base para subclasses e pode ter métodos com corpo e métodos abstratos, sem corpo.",
+    "traducao": "",
+    "resumo": "Classe marcada com abstract que não gera objetos: serve de base e pode ter métodos com e sem corpo. Exemplo: se Animal é abstrata, new Animal() dá erro.",
     "nao_confundir": [
       {
         "conceito": "Interface",
@@ -18644,8 +18644,8 @@
     "nivel": 1,
     "conceito": "Interface",
     "termo_ingles": "Interface",
-    "traducao": "Interface: contrato de métodos que uma classe se compromete a implementar.",
-    "resumo": "Contrato que lista métodos que uma classe se compromete a implementar, sem dizer como. Uma classe pode implementar várias interfaces.",
+    "traducao": "",
+    "resumo": "Contrato que lista métodos sem dizer como; quem implementa é obrigado a escrevê-los. Uma classe pode implementar várias. Exemplo: class Pato implements Voador, Nadador.",
     "nao_confundir": [
       {
         "conceito": "Classe abstrata",
@@ -18666,8 +18666,8 @@
     "nivel": 1,
     "conceito": "Interface × classe abstrata",
     "termo_ingles": "Interface vs. abstract class",
-    "traducao": "Interface × classe abstrata: contrato sem estado × base com estado e código comum.",
-    "resumo": "Classe estende uma só classe (abstrata ou não), mas pode implementar várias interfaces. A classe abstrata guarda estado e código comum; a interface define o contrato.",
+    "traducao": "",
+    "resumo": "Uma classe estende só uma classe, mas implementa várias interfaces. A abstrata guarda estado e código comum; a interface define o contrato. Exemplo: class Pato extends Ave implements Voador.",
     "nao_confundir": [
       {
         "conceito": "Herança múltipla",
