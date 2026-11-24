@@ -1709,6 +1709,7 @@ function desenharFoco() {
             <p class="foco-atalhos">Teclado: <kbd>A</kbd>–<kbd>E</kbd> escolhe · <kbd>Enter</kbd> tenho certeza · <kbd>Shift</kbd>+<kbd>Enter</kbd> na dúvida · <kbd>→</kbd> próxima · <kbd>Esc</kbd> sai</p>`;
         partes.push(rodape);
     }
+    container.classList.remove("home-piloto"); // v196: a Home nova só vale na lista; o Foco/simulado desenha aqui dentro
     container.replaceChildren(...partes);
     if (foco.aprender && !fim && !foco.exemplos.has(String(foco.lista[foco.indice].id))) mostrarDica("antes-de-responder");
     // Rola para o topo nos dois casos: no computador quem rola é a lista; no celular, a página

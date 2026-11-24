@@ -2879,7 +2879,7 @@ body.prova-ativa .card-foco .tentativas { display: none !important; }
 .geral-nota { margin: 0.1rem 0 0; font-size: 0.72rem; color: #94a3b8; line-height: 1.4; }
 
 /* v192: Home nova (piloto). Só aparece com a opção ligada em Ferramentas. */
-.home-piloto > :not(.cartao-hoje):not(.home-painel) { display: none !important; }
+body:not(.modo-foco) .home-piloto > :not(.cartao-hoje):not(.home-painel) { display: none !important; }
 .home-painel { display: flex; flex-direction: column; gap: 0.7rem; margin-top: 0.7rem; margin-bottom: 1rem; }
 .home-grade { display: grid; grid-template-columns: 1fr; gap: 0.7rem; }
 @media (min-width: 760px) { .home-grade { grid-template-columns: 1fr 1fr; } }
