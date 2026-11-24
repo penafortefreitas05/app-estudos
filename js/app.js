@@ -2773,6 +2773,7 @@ async function carregarBancoDeQuestoes(questoesChegando = null) {
 // (body.visitante), porque sem login não há questões para filtrar.
 function mostrarEntradaVisitante() {
     document.body.classList.add("visitante");
+    container.classList.remove("home-piloto");
     container.innerHTML = `
         <section class="entrada-visitante" aria-labelledby="entrada-titulo">
             <p class="entrada-marca">FocoPro</p>
@@ -2799,6 +2800,7 @@ function mostrarErroDeCarga() {
     registrarErroDeAbertura("tela: não foi possível carregar as questões");
     questoes = [];
     porId = new Map();
+    container.classList.remove("home-piloto");
     container.innerHTML = `
         <div class="aviso-erro-carga">
             <p><strong>Não foi possível carregar as questões.</strong></p>
