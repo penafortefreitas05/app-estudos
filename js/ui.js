@@ -689,6 +689,7 @@ export function renderizarQuestoes(container, lista, historico = {}, mensagemVaz
         container._observadorLote = null;
     }
     container.innerHTML = "";
+    container.classList.remove("home-piloto"); // v197: só o cartão de hoje religa a Home nova (aplicarHomeNova)
 
     if (!lista || lista.length === 0) {
         container.innerHTML = `<p class="aviso-vazio">${esc(mensagemVazia)}</p>`;
