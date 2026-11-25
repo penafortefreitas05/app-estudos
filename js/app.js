@@ -3701,6 +3701,10 @@ async function abrirCadernoApp(soAssunto = null) {
             baixarPacoteDoMenu(item);
             return;
         }
+        if (item.dataset.acao === "laboratorio") {
+            import('./lab/bancada.js').then(m => m.abrirBancada()).catch(() => showToast("Não deu para abrir o Laboratório. Confira a conexão e tente de novo."));
+            return;
+        }
         if (item.dataset.acao === "caderno") {
             abrirCadernoApp();
             return;
