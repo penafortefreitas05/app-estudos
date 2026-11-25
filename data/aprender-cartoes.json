@@ -94,7 +94,7 @@
     "conceito": "Segunda Forma Normal (2FN)",
     "termo_ingles": "Second Normal Form (2NF)",
     "traducao": "Segunda Forma Normal: atributos dependem da chave inteira.",
-    "resumo": "Exige 1FN e ausência de dependência parcial. Em ItensPedido, com chave (código do pedido, código do produto), o nome do produto depende apenas do código do produto.",
+    "resumo": "Exige 1FN e nenhuma dependência parcial da chave composta. Exemplo: em ItensPedido (pedido, produto), o nome do produto depende só do produto e vai para a tabela Produto.",
     "nao_confundir": [
       {
         "conceito": "Primeira Forma Normal (1FN)",
@@ -145,7 +145,7 @@
     "conceito": "DDL (linguagem de definição de dados)",
     "termo_ingles": "Data Definition Language",
     "traducao": "Linguagem de definição de dados: comandos que criam, modificam ou removem estruturas do banco.",
-    "resumo": "Define a estrutura das tabelas. CREATE cria, ALTER modifica e DROP remove estruturas.",
+    "resumo": "Define a estrutura das tabelas: CREATE cria, ALTER modifica e DROP remove. Exemplo: CREATE TABLE cliente (id INT, nome VARCHAR(80));",
     "nao_confundir": [
       {
         "conceito": "DML",
@@ -211,7 +211,7 @@
     "conceito": "Chave primária (PRIMARY KEY)",
     "termo_ingles": "Primary Key",
     "traducao": "Chave primária: identificador único e obrigatório de cada linha.",
-    "resumo": "Identifica cada linha sem repetição ou valor nulo. Pode usar uma coluna ou uma combinação de colunas.",
+    "resumo": "Identifica cada linha sem repetição nem nulo; pode ser uma coluna ou combinação. Exemplo: id em cliente, ou (pedido, produto) em ItensPedido.",
     "nao_confundir": [
       {
         "conceito": "UNIQUE",
@@ -281,7 +281,7 @@
     "conceito": "DML (linguagem de manipulação de dados)",
     "termo_ingles": "Data Manipulation Language",
     "traducao": "Linguagem de manipulação de dados: comandos que inserem, alteram ou removem dados.",
-    "resumo": "Manipula os dados armazenados nas tabelas. INSERT insere linhas, UPDATE altera valores e DELETE remove linhas.",
+    "resumo": "Manipula os dados das tabelas: INSERT insere, UPDATE altera e DELETE remove linhas. Exemplo: UPDATE produto SET preco = 10 WHERE id = 3;",
     "nao_confundir": [
       {
         "conceito": "DDL",
@@ -349,7 +349,7 @@
     "conceito": "Comando DELETE",
     "termo_ingles": "DELETE",
     "traducao": "Excluir: comando que remove linhas de uma tabela.",
-    "resumo": "Remove as linhas selecionadas. A cláusula WHERE define a condição para escolher quais serão removidas.",
+    "resumo": "Remove as linhas selecionadas; o WHERE define quais. Exemplo: DELETE FROM pedido WHERE status = 'cancelado'; sem WHERE, apaga todas.",
     "nao_confundir": [
       {
         "conceito": "DROP TABLE",
@@ -439,7 +439,7 @@
     "conceito": "Teste de valor nulo (IS NULL)",
     "termo_ingles": "IS NULL Predicate",
     "traducao": "Teste de nulidade: verifica se uma expressão não possui valor conhecido.",
-    "resumo": "NULL representa um valor desconhecido ou ausente. WHERE email IS NULL seleciona linhas sem valor registrado em email.",
+    "resumo": "NULL é valor desconhecido ou ausente; testa-se com IS NULL, nunca com = NULL. Exemplo: WHERE email IS NULL traz clientes sem e-mail.",
     "nao_confundir": [
       {
         "conceito": "Zero",
@@ -552,7 +552,7 @@
     "conceito": "Ordem lógica de execução do SELECT",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "FROM escolhe a origem; WHERE filtra linhas; GROUP BY forma grupos; HAVING filtra grupos; SELECT escolhe colunas; ORDER BY ordena o resultado.",
+    "resumo": "FROM, WHERE, GROUP BY, HAVING, SELECT, ORDER BY. Exemplo: por isso o apelido criado no SELECT não pode ser usado no WHERE.",
     "nao_confundir": [
       {
         "conceito": "Ordem escrita das cláusulas",
@@ -576,7 +576,7 @@
     "conceito": "Função de agregação",
     "termo_ingles": "Aggregate Function",
     "traducao": "Agregação: reúne valores de várias linhas para produzir um resultado resumido.",
-    "resumo": "Resume várias linhas em um valor por consulta ou, com GROUP BY, por grupo. Pode contar registros, somar valores ou calcular uma média.",
+    "resumo": "Resume várias linhas em um valor, no total ou por grupo com GROUP BY: contar, somar, média. Exemplo: SELECT cidade, COUNT(*) FROM cliente GROUP BY cidade.",
     "nao_confundir": [
       {
         "conceito": "Função linha a linha",
@@ -688,7 +688,7 @@
     "conceito": "Funções UPPER e LOWER",
     "termo_ingles": "UPPER and LOWER",
     "traducao": "Maiúsculas e minúsculas: transformam as letras de um texto para a caixa indicada.",
-    "resumo": "UPPER retorna o texto em letras maiúsculas; LOWER retorna em letras minúsculas. Exemplos: UPPER('recife') retorna 'RECIFE'; LOWER('RECIFE') retorna 'recife'.",
+    "resumo": "UPPER retorna o texto em maiúsculas; LOWER, em minúsculas. Exemplo: UPPER('recife') retorna 'RECIFE'; LOWER('RECIFE') retorna 'recife'.",
     "nao_confundir": [
       {
         "conceito": "SUBSTRING",
@@ -777,7 +777,7 @@
     "conceito": "DCL (linguagem de controle de dados)",
     "termo_ingles": "Data Control Language",
     "traducao": "Linguagem de controle de dados: comandos usados para conceder e retirar permissões de acesso.",
-    "resumo": "Controla quais operações um usuário ou papel (nome que reúne permissões, atribuível a vários usuários) pode realizar sobre objetos do banco. GRANT concede permissões e REVOKE as retira.",
+    "resumo": "Controla quais operações um usuário ou papel pode fazer sobre objetos do banco: GRANT concede e REVOKE retira. Exemplo: GRANT SELECT ON cliente TO analista;",
     "nao_confundir": [
       {
         "conceito": "DDL",
@@ -868,7 +868,7 @@
     "conceito": "View (visão)",
     "termo_ingles": "View",
     "traducao": "Visão: consulta salva com um nome, que pode ser utilizada como uma tabela em outras consultas.",
-    "resumo": "Armazena a definição de uma consulta, não uma cópia dos dados. Pode apresentar apenas nomes e cidades dos clientes.",
+    "resumo": "Guarda a definição de uma consulta, não uma cópia dos dados. Exemplo: CREATE VIEW contatos AS SELECT nome, cidade FROM cliente;",
     "nao_confundir": [
       {
         "conceito": "View materializada",
@@ -935,7 +935,7 @@
     "conceito": "Sequence (sequência)",
     "termo_ingles": "Sequence",
     "traducao": "Sequência: objeto que gera uma série de valores numéricos sucessivos, frequentemente usados como identificadores.",
-    "resumo": "No PostgreSQL, nextval('pedido_seq') avança a sequência e retorna o próximo número. currval('pedido_seq') retorna o último número obtido por nextval na conexão atual do usuário.",
+    "resumo": "No PostgreSQL, nextval avança a sequência e retorna o próximo número; currval, o último obtido na conexão. Exemplo: nextval('pedido_seq') devolve 101.",
     "nao_confundir": [
       {
         "conceito": "Chave primária",
@@ -979,7 +979,7 @@
     "conceito": "Sistema gerenciador de banco de dados (SGBD)",
     "termo_ingles": "Database Management System (DBMS)",
     "traducao": "Sistema de gerenciamento: software que administra o armazenamento, a consulta e a alteração dos dados.",
-    "resumo": "Cria e administra bancos de dados, controla acessos e coordena operações simultâneas. Exemplos: PostgreSQL, MySQL e Oracle.",
+    "resumo": "Cria e administra bancos de dados, controla acessos e coordena operações simultâneas. Exemplo: PostgreSQL, MySQL e Oracle.",
     "nao_confundir": [
       {
         "conceito": "Servidor web",
@@ -1002,7 +1002,7 @@
     "conceito": "Modelo relacional",
     "termo_ingles": "Relational Model",
     "traducao": "Modelo baseado em relações: organiza os dados em tabelas relacionadas.",
-    "resumo": "Representa os dados em tabelas compostas por linhas e colunas. Cada tabela descreve um conjunto de informações, como clientes ou pedidos.",
+    "resumo": "Representa os dados em tabelas de linhas e colunas, cada uma sobre um conjunto de informações. Exemplo: tabela cliente com colunas id, nome e cidade.",
     "nao_confundir": [
       {
         "conceito": "Banco orientado a documentos",
@@ -1024,7 +1024,7 @@
     "conceito": "Controle de concorrência",
     "termo_ingles": "Concurrency Control",
     "traducao": "Controle de operações simultâneas: coordena acessos para evitar conflitos entre usuários.",
-    "resumo": "Permite que vários usuários consultem ou alterem dados sem produzir resultados conflitantes. O sistema de banco de dados coordena essas operações.",
+    "resumo": "Permite que vários usuários leiam e alterem dados sem resultados conflitantes; o SGBD coordena. Exemplo: dois caixas vendendo o último item: só um consegue.",
     "nao_confundir": [
       {
         "conceito": "Acesso simultâneo",
@@ -1046,7 +1046,7 @@
     "conceito": "Backup",
     "termo_ingles": "Backup",
     "traducao": "Cópia de segurança: cópia dos dados usada para recuperá-los após perda ou dano.",
-    "resumo": "Cria uma cópia dos dados para permitir recuperação em caso de falha, exclusão acidental ou dano ao armazenamento.",
+    "resumo": "Cria cópia dos dados para recuperar após falha, exclusão acidental ou dano ao armazenamento. Exemplo: pg_dump todas as noites.",
     "nao_confundir": [
       {
         "conceito": "Recuperação",
@@ -1068,7 +1068,7 @@
     "conceito": "Recuperação para ponto no tempo",
     "termo_ingles": "Point-in-Time Recovery (PITR)",
     "traducao": "Recuperação até um instante: restaura o banco ao estado de uma data e hora escolhidas.",
-    "resumo": "No PostgreSQL, combina um backup-base com registros das alterações posteriores para recuperar o banco até o instante selecionado.",
+    "resumo": "No PostgreSQL, junta um backup-base aos registros das alterações posteriores para voltar ao instante escolhido. Exemplo: restaurar até 14h59, antes do DELETE errado.",
     "nao_confundir": [
       {
         "conceito": "Restauração do backup",
@@ -1092,7 +1092,7 @@
     "conceito": "Modelagem de dados",
     "termo_ingles": "Data Modeling",
     "traducao": "Modelagem: representação das informações que um sistema precisa armazenar e de suas relações.",
-    "resumo": "Descreve quais informações serão registradas e como se relacionam antes da construção das tabelas do banco de dados.",
+    "resumo": "Descreve quais informações serão registradas e como se relacionam, antes de criar as tabelas. Exemplo: desenhar Cliente faz Pedido antes do CREATE TABLE.",
     "nao_confundir": [
       {
         "conceito": "Implementação",
@@ -1113,7 +1113,7 @@
     "conceito": "Entidade",
     "termo_ingles": "Entity",
     "traducao": "Entidade: representa algo sobre o qual o sistema precisa guardar informações.",
-    "resumo": "Representa um objeto ou elemento do mundo real que será registrado. Exemplos: Cliente, Produto e Funcionário.",
+    "resumo": "Representa um objeto do mundo real que será registrado. Exemplo: Cliente, Produto e Funcionário.",
     "nao_confundir": [
       {
         "conceito": "Atributo",
@@ -1135,7 +1135,7 @@
     "conceito": "Atributo",
     "termo_ingles": "Attribute",
     "traducao": "Atributo: característica usada para descrever uma entidade.",
-    "resumo": "Representa uma informação de uma entidade. Na entidade Cliente, exemplos de atributos são nome, CPF e data de nascimento.",
+    "resumo": "Representa uma informação de uma entidade. Exemplo: nome, CPF e data de nascimento são atributos de Cliente.",
     "nao_confundir": [
       {
         "conceito": "Valor de atributo",
@@ -1178,7 +1178,7 @@
     "conceito": "Cardinalidade",
     "termo_ingles": "Cardinality",
     "traducao": "Cardinalidade: indica quantas ocorrências de uma entidade podem se associar a outra.",
-    "resumo": "Indica quantas ocorrências se associam entre entidades. 1:N liga uma a várias; N:M liga várias a várias.",
+    "resumo": "Indica quantas ocorrências se associam entre entidades: 1:N liga uma a várias; N:M, várias a várias. Exemplo: um cliente faz vários pedidos (1:N).",
     "nao_confundir": [
       {
         "conceito": "1:1",
@@ -1200,7 +1200,7 @@
     "conceito": "Dicionário de dados",
     "termo_ingles": "Data Dictionary",
     "traducao": "Dicionário: registro que explica o significado e as características dos dados do modelo.",
-    "resumo": "Documenta elementos do modelo, como entidades, atributos, significados, tipos de dados e regras aplicáveis a cada informação.",
+    "resumo": "Documenta entidades, atributos, significados, tipos e regras de cada informação. Exemplo: \"cpf: texto, 11 dígitos, obrigatório, único\".",
     "nao_confundir": [
       {
         "conceito": "Diagrama",
@@ -1243,7 +1243,7 @@
     "conceito": "Atomicidade",
     "termo_ingles": "Atomicity",
     "traducao": "Atomicidade: propriedade de tratar todas as operações da transação como um todo indivisível.",
-    "resumo": "É uma das quatro propriedades ACID (atomicidade, consistência, isolamento, durabilidade): todas as operações da transação são concluídas ou nenhuma permanece aplicada.",
+    "resumo": "Propriedade ACID: todas as operações da transação são concluídas ou nenhuma fica aplicada. Exemplo: na transferência, se o crédito falha, o débito é desfeito.",
     "nao_confundir": [
       {
         "conceito": "Durabilidade",
@@ -1266,7 +1266,7 @@
     "conceito": "Consistência",
     "termo_ingles": "Consistency",
     "traducao": "Consistência: propriedade que preserva as regras definidas para os dados após uma transação.",
-    "resumo": "É uma propriedade ACID: uma transação concluída deve levar o banco de um estado que respeita suas regras a outro estado que também as respeita.",
+    "resumo": "Propriedade ACID: a transação leva o banco de um estado válido a outro também válido. Exemplo: saldo nunca fica negativo se a regra proíbe.",
     "nao_confundir": [
       {
         "conceito": "Atomicidade",
@@ -1288,7 +1288,7 @@
     "conceito": "Isolamento",
     "termo_ingles": "Isolation",
     "traducao": "Isolamento: propriedade que controla os efeitos de transações executadas simultaneamente.",
-    "resumo": "É uma propriedade ACID: busca impedir que operações simultâneas interfiram umas nas outras e produzam resultados conflitantes.",
+    "resumo": "Propriedade ACID: operações simultâneas não interferem umas nas outras. Exemplo: um relatório não vê pela metade uma transferência em andamento.",
     "nao_confundir": [
       {
         "conceito": "Atomicidade",
@@ -1312,7 +1312,7 @@
     "conceito": "Durabilidade",
     "termo_ingles": "Durability",
     "traducao": "Durabilidade: propriedade que mantém os efeitos de uma transação após sua confirmação.",
-    "resumo": "É uma propriedade ACID: depois da confirmação, as alterações devem sobreviver a falhas, como uma queda de energia.",
+    "resumo": "Propriedade ACID: depois de confirmadas, as alterações sobrevivem a falhas. Exemplo: após o COMMIT, uma queda de energia não apaga a venda.",
     "nao_confundir": [
       {
         "conceito": "Atomicidade",
@@ -1335,7 +1335,7 @@
     "conceito": "COMMIT",
     "termo_ingles": "COMMIT",
     "traducao": "Confirmar: comando que encerra a transação aplicando suas alterações.",
-    "resumo": "Confirma a transação: suas alterações passam a valer de forma definitiva no banco de dados.",
+    "resumo": "Confirma a transação: as alterações passam a valer de forma definitiva. Exemplo: BEGIN; UPDATE conta...; COMMIT;",
     "nao_confundir": [
       {
         "conceito": "ROLLBACK",
@@ -1357,7 +1357,7 @@
     "conceito": "ROLLBACK",
     "termo_ingles": "ROLLBACK",
     "traducao": "Reverter: comando que desfaz as alterações não confirmadas da transação.",
-    "resumo": "Cancela a transação atual e desfaz suas alterações ainda não confirmadas, voltando ao estado anterior ao início da transação.",
+    "resumo": "Cancela a transação atual e desfaz as alterações ainda não confirmadas. Exemplo: o DELETE apagou linhas demais; ROLLBACK antes do COMMIT recupera tudo.",
     "nao_confundir": [
       {
         "conceito": "COMMIT",
@@ -1380,7 +1380,7 @@
     "conceito": "EXPLAIN",
     "termo_ingles": "EXPLAIN",
     "traducao": "Explicar: comando que apresenta o plano escolhido para executar uma consulta.",
-    "resumo": "No PostgreSQL, mostra as etapas planejadas para executar uma consulta, como leitura de tabelas e uso de índices, sem executar a consulta.",
+    "resumo": "No PostgreSQL, mostra o plano de execução de uma consulta, como leitura de tabela e uso de índice, sem executá-la. Exemplo: EXPLAIN SELECT * FROM pedido WHERE id = 5;",
     "nao_confundir": [
       {
         "conceito": "EXPLAIN ANALYZE",
@@ -1424,7 +1424,7 @@
     "conceito": "Desenvolvimento guiado por testes",
     "termo_ingles": "Test-Driven Development (TDD)",
     "traducao": "Guiado por testes: escreve-se o teste antes do código da funcionalidade.",
-    "resumo": "Segue o ciclo vermelho, verde e refatoração: criar um teste que falha, escrever código para passar e melhorar o código sem alterar seu comportamento.",
+    "resumo": "Ciclo vermelho, verde e refatoração: escrever um teste que falha, fazer o código passar e melhorar sem mudar o comportamento. Exemplo: testar calcularDesconto() antes de existir a função.",
     "nao_confundir": [
       {
         "conceito": "Teste unitário",
@@ -1446,7 +1446,7 @@
     "conceito": "Desenvolvimento guiado por comportamento",
     "termo_ingles": "Behavior-Driven Development (BDD)",
     "traducao": "Guiado por comportamento: descreve o que o sistema deve fazer em situações reais.",
-    "resumo": "Descreve o comportamento esperado com exemplos que pessoas de negócio e técnicas entendem, em cenários no formato Dado, Quando, Então (linguagem Gherkin).",
+    "resumo": "Descreve o comportamento com exemplos que negócio e técnica entendem, em Dado, Quando, Então (Gherkin). Exemplo: Dado saldo 100, Quando saco 150, Então é recusado.",
     "nao_confundir": [
       {
         "conceito": "Desenvolvimento guiado por testes",
@@ -1468,7 +1468,7 @@
     "conceito": "Teste alfa",
     "termo_ingles": "Alpha Testing",
     "traducao": "Alfa (primeira letra grega): primeira rodada de avaliação, ainda nas instalações de quem desenvolve.",
-    "resumo": "Tipo de teste de aceitação (confirma se o sistema atende ao combinado), feito antes do lançamento, nas instalações de quem desenvolve.",
+    "resumo": "Teste de aceitação feito antes do lançamento, nas instalações de quem desenvolve. Exemplo: funcionários da empresa usam o app novo no escritório antes de liberar ao público.",
     "nao_confundir": [
       {
         "conceito": "Teste beta",
@@ -1489,7 +1489,7 @@
     "conceito": "Teste beta",
     "termo_ingles": "Beta Testing",
     "traducao": "Beta (segunda letra grega): segunda rodada de avaliação, com usuários no ambiente deles.",
-    "resumo": "Teste de aceitação em que usuários potenciais ou existentes avaliam o software em local externo à organização de desenvolvimento.",
+    "resumo": "Teste de aceitação em que usuários reais avaliam o software fora da organização que desenvolve. Exemplo: versão beta de um app liberada a um grupo de clientes.",
     "nao_confundir": [
       {
         "conceito": "Teste alfa",
@@ -1510,7 +1510,7 @@
     "conceito": "Teste de regressão",
     "termo_ingles": "Regression Testing",
     "traducao": "Regressão: verifica se uma alteração introduziu defeitos em partes que já funcionavam.",
-    "resumo": "Reexecuta testes de funcionalidades já verificadas após uma alteração no programa ou em seu ambiente.",
+    "resumo": "Reexecuta testes de funções já verificadas após uma alteração no programa ou no ambiente. Exemplo: após corrigir o login, rodar de novo os testes do carrinho.",
     "nao_confundir": [
       {
         "conceito": "Reteste",
@@ -1531,7 +1531,7 @@
     "conceito": "Teste de caixa-preta",
     "termo_ingles": "Black-Box Testing",
     "traducao": "Caixa-preta: testa o comportamento externo sem analisar a estrutura interna do código.",
-    "resumo": "Compara entradas e resultados observáveis com o comportamento esperado, sem depender de como o programa foi implementado.",
+    "resumo": "Compara entradas e resultados observáveis com o esperado, sem olhar como o programa foi feito. Exemplo: digitar CPF inválido e conferir se aparece a mensagem de erro.",
     "nao_confundir": [
       {
         "conceito": "Teste de caixa-branca",
@@ -1552,7 +1552,7 @@
     "conceito": "Teste de caixa-branca",
     "termo_ingles": "White-Box Testing",
     "traducao": "Caixa-branca: testa considerando a estrutura interna e a lógica do código.",
-    "resumo": "Utiliza elementos internos, como instruções, condições e caminhos de execução, para definir o que será testado.",
+    "resumo": "Usa a estrutura interna, como condições e caminhos de execução, para definir os testes. Exemplo: criar um teste para cada lado de um if no código.",
     "nao_confundir": [
       {
         "conceito": "Teste de caixa-preta",
@@ -1573,7 +1573,7 @@
     "conceito": "DevOps",
     "termo_ingles": "Development and Operations",
     "traducao": "Desenvolvimento e operações: aproxima as equipes que criam e mantêm o software em funcionamento.",
-    "resumo": "Cultura e conjunto de práticas que promovem colaboração entre desenvolvimento e operações, automação e feedback frequente.",
+    "resumo": "Cultura e práticas que unem desenvolvimento e operações, com automação e feedback frequente. Exemplo: o mesmo time escreve o código, publica e monitora o sistema em produção.",
     "nao_confundir": [
       {
         "conceito": "Métodos ágeis",
@@ -1594,7 +1594,7 @@
     "conceito": "Integração contínua",
     "termo_ingles": "Continuous Integration (CI)",
     "traducao": "Integração contínua: incorpora alterações ao código compartilhado com frequência e verifica cada integração.",
-    "resumo": "Desenvolvedores integram alterações frequentemente, e cada integração passa por verificações automatizadas, incluindo compilação e testes.",
+    "resumo": "Desenvolvedores integram alterações com frequência, e cada integração passa por compilação e testes automáticos. Exemplo: cada push no GitHub dispara os testes.",
     "nao_confundir": [
       {
         "conceito": "Implantação contínua",
@@ -1616,7 +1616,7 @@
     "conceito": "Pipeline de automação",
     "termo_ingles": "Pipeline",
     "traducao": "Esteira de etapas: sequência organizada de tarefas automatizadas executadas durante o desenvolvimento e a entrega.",
-    "resumo": "Encadeia etapas automatizadas, como compilação, testes e publicação, que normalmente rodam a cada alteração enviada ao código.",
+    "resumo": "Encadeia etapas automáticas, como compilar, testar e publicar, a cada alteração enviada. Exemplo: push → build → testes → deploy em homologação.",
     "nao_confundir": [
       {
         "conceito": "Integração contínua",
@@ -1638,7 +1638,7 @@
     "conceito": "Entrega contínua",
     "termo_ingles": "Continuous Delivery (CD)",
     "traducao": "Entrega contínua: mantém o software pronto para ser publicado quando houver decisão de liberar.",
-    "resumo": "Automatiza verificações e preparação da versão para que ela possa ser implantada em produção quando autorizada.",
+    "resumo": "Automatiza verificações e prepara a versão para ir à produção quando alguém autorizar. Exemplo: a versão fica pronta e o gerente aperta o botão de publicar.",
     "nao_confundir": [
       {
         "conceito": "Implantação contínua",
@@ -1660,7 +1660,7 @@
     "conceito": "Implantação contínua",
     "termo_ingles": "Continuous Deployment (CD)",
     "traducao": "Implantação contínua: publica automaticamente em produção as alterações que passam pelas verificações.",
-    "resumo": "Automatiza a publicação de cada alteração aprovada pelas etapas de verificação, sem exigir autorização manual para cada versão.",
+    "resumo": "Publica automaticamente cada alteração aprovada nas verificações, sem autorização manual. Exemplo: o commit passa nos testes e já vai para produção minutos depois.",
     "nao_confundir": [
       {
         "conceito": "Entrega contínua",
@@ -1682,7 +1682,7 @@
     "conceito": "DevSecOps",
     "termo_ingles": "Development, Security and Operations",
     "traducao": "Desenvolvimento, segurança e operações: integra práticas de segurança ao trabalho de desenvolvimento e operação.",
-    "resumo": "Amplia a abordagem DevOps ao incorporar segurança nas etapas de criação, verificação, entrega e operação do software.",
+    "resumo": "Amplia o DevOps incorporando segurança na criação, verificação, entrega e operação do software. Exemplo: o pipeline roda uma varredura de vulnerabilidades a cada build.",
     "nao_confundir": [
       {
         "conceito": "DevOps",
@@ -1704,7 +1704,7 @@
     "conceito": "Abordagem shift-left",
     "termo_ingles": "Shift-Left",
     "traducao": "Deslocar para a esquerda (para o início da linha do tempo): antecipar testes e verificações.",
-    "resumo": "Leva testes e verificações (inclusive de segurança) para etapas iniciais, como planejamento e escrita do código, em vez de concentrá-los no final.",
+    "resumo": "Leva testes e verificações, inclusive de segurança, para o início do trabalho, não só para o final. Exemplo: análise de código já no editor, enquanto se programa.",
     "nao_confundir": [
       {
         "conceito": "Auditoria final",
@@ -2126,7 +2126,7 @@
     "conceito": "Processo de software",
     "termo_ingles": "Software Process",
     "traducao": "Processo de software: conjunto de atividades para desenvolver e manter um sistema.",
-    "resumo": "Organiza atividades como especificação, desenvolvimento, validação e evolução de um sistema.",
+    "resumo": "Organiza atividades como especificação, desenvolvimento, validação e evolução de um sistema. Exemplo: levantar requisitos, programar, testar com o cliente e manter.",
     "nao_confundir": [
       {
         "conceito": "Modelo de processo",
@@ -2147,7 +2147,7 @@
     "conceito": "Modelo em cascata",
     "termo_ingles": "Waterfall Model",
     "traducao": "Cascata: modelo que organiza o desenvolvimento em fases sequenciais.",
-    "resumo": "As fases avançam em sequência, como requisitos, projeto, implementação, testes e entrega.",
+    "resumo": "As fases avançam em sequência: requisitos, projeto, implementação, testes e entrega. Exemplo: só começa a programar quando o projeto inteiro está aprovado.",
     "nao_confundir": [
       {
         "conceito": "Modelo incremental",
@@ -2191,7 +2191,7 @@
     "conceito": "Modelo espiral",
     "termo_ingles": "Spiral Model",
     "traducao": "Espiral: modelo que desenvolve o sistema em ciclos orientados à análise de riscos.",
-    "resumo": "Cada ciclo avalia objetivos, riscos (algo que pode dar errado e comprometer o projeto), desenvolvimento e planejamento seguinte.",
+    "resumo": "Cada ciclo avalia objetivos, riscos, desenvolvimento e o planejamento seguinte. Exemplo: antes de cada volta, a equipe testa um protótipo do ponto mais arriscado.",
     "nao_confundir": [
       {
         "conceito": "Modelo incremental",
@@ -2213,7 +2213,7 @@
     "conceito": "Manutenção corretiva",
     "termo_ingles": "Corrective Maintenance",
     "traducao": "Corretiva: manutenção que corrige defeitos identificados no software.",
-    "resumo": "Altera o software para corrigir um defeito que provoca comportamento diferente do esperado.",
+    "resumo": "Altera o software para corrigir um defeito que causa comportamento diferente do esperado. Exemplo: corrigir o cálculo errado do imposto na nota fiscal.",
     "nao_confundir": [
       {
         "conceito": "Manutenção preventiva",
@@ -2234,7 +2234,7 @@
     "conceito": "Manutenção adaptativa",
     "termo_ingles": "Adaptive Maintenance",
     "traducao": "Adaptativa: manutenção que ajusta o software a mudanças no ambiente.",
-    "resumo": "Modifica o sistema para continuar funcionando em um ambiente alterado, como uma nova versão do sistema operacional ou banco de dados.",
+    "resumo": "Modifica o sistema para continuar funcionando num ambiente alterado. Exemplo: ajustar o app para a nova versão do Android.",
     "nao_confundir": [
       {
         "conceito": "Manutenção perfectiva",
@@ -2255,7 +2255,7 @@
     "conceito": "Linguagem de Modelagem Unificada",
     "termo_ingles": "Unified Modeling Language (UML)",
     "traducao": "Linguagem de Modelagem Unificada: notação visual para representar sistemas.",
-    "resumo": "Reúne diagramas para representar estruturas e comportamentos de um sistema antes ou durante sua implementação.",
+    "resumo": "Reúne diagramas para representar estruturas e comportamentos de um sistema. Exemplo: diagrama de classes para a estrutura; de sequência para a troca de mensagens.",
     "nao_confundir": [
       {
         "conceito": "Processo de software",
@@ -2299,7 +2299,7 @@
     "conceito": "Diagrama de casos de uso",
     "termo_ingles": "Use Case Diagram",
     "traducao": "Diagrama de casos de uso: representação das funções do sistema e de quem interage com ele.",
-    "resumo": "Mostra atores (pessoas ou outros sistemas que interagem) e funcionalidades oferecidas pelo sistema.",
+    "resumo": "Mostra atores (pessoas ou sistemas) e as funcionalidades oferecidas pelo sistema. Exemplo: o ator Cliente ligado a \"Sacar dinheiro\" num caixa eletrônico.",
     "nao_confundir": [
       {
         "conceito": "Diagrama de atividades",
@@ -2343,7 +2343,7 @@
     "conceito": "Diagrama de comunicação",
     "termo_ingles": "Communication Diagram",
     "traducao": "Diagrama de comunicação: representação das ligações e mensagens entre participantes.",
-    "resumo": "Mostra objetos, ligações e mensagens numeradas que indicam a ordem da interação.",
+    "resumo": "Mostra objetos, ligações e mensagens numeradas na ordem da interação. Exemplo: 1: pedido() de Cliente para Loja; 2: reservar() de Loja para Estoque.",
     "nao_confundir": [
       {
         "conceito": "Diagrama de sequência",
@@ -2365,7 +2365,7 @@
     "conceito": "Projeto orientado ao domínio",
     "termo_ingles": "Domain-Driven Design (DDD)",
     "traducao": "Projeto orientado ao domínio: desenvolvimento guiado pela área de negócio atendida pelo sistema.",
-    "resumo": "Organiza o software em torno do domínio (área de negócio atendida), aproximando o modelo técnico das necessidades reais.",
+    "resumo": "Organiza o software em torno do domínio (área de negócio). Exemplo: classes Apólice e Sinistro num sistema de seguros.",
     "nao_confundir": [
       {
         "conceito": "Desenvolvimento orientado a dados",
@@ -2409,7 +2409,7 @@
     "conceito": "Padrões de projeto",
     "termo_ingles": "Design Patterns",
     "traducao": "Padrões de projeto: soluções descritas para problemas recorrentes no desenvolvimento de software.",
-    "resumo": "Descrevem soluções reutilizáveis em situações recorrentes, sem determinar uma implementação única.",
+    "resumo": "Descrevem soluções reutilizáveis para problemas recorrentes, sem impor uma implementação única. Exemplo: o Singleton garante uma única instância de uma classe.",
     "nao_confundir": [
       {
         "conceito": "Framework",
@@ -2431,7 +2431,7 @@
     "conceito": "Famílias de padrões GoF",
     "termo_ingles": "GoF Design Pattern Categories",
     "traducao": "Famílias GoF: classificação dos padrões em criação, estrutura e comportamento.",
-    "resumo": "Criação organiza como objetos são criados; estrutura, como classes e objetos se combinam; comportamento, como dividem responsabilidades e se comunicam.",
+    "resumo": "Criação: como objetos são criados; estrutura: como se combinam; comportamento: como se comunicam e dividem tarefas. Exemplo: Factory (criação), Adapter (estrutura), Observer (comportamento).",
     "nao_confundir": [
       {
         "conceito": "Criação × estruturais",
@@ -2499,7 +2499,7 @@
     "conceito": "Padrão Adapter",
     "termo_ingles": "Adapter",
     "traducao": "Adaptador: padrão que converte uma interface para outra esperada pelo cliente.",
-    "resumo": "Permite que componentes com interfaces incompatíveis trabalhem juntos, usando um adaptador entre eles.",
+    "resumo": "Permite que componentes com interfaces incompatíveis trabalhem juntos, usando um adaptador entre eles. Exemplo: classe que traduz o XML do sistema antigo para o JSON do novo.",
     "nao_confundir": [
       {
         "conceito": "Facade",
@@ -3060,7 +3060,7 @@
     "conceito": "Aprendizado de máquina",
     "termo_ingles": "Machine Learning",
     "traducao": "Aprendizado de máquina: técnica que permite ajustar modelos a partir de dados para produzir previsões ou decisões.",
-    "resumo": "O modelo identifica padrões em exemplos e é ajustado, em vez de usar apenas regras escritas manualmente.",
+    "resumo": "O modelo identifica padrões em exemplos e é ajustado, em vez de seguir só regras escritas à mão. Exemplo: o filtro aprende o que é spam com e-mails marcados.",
     "nao_confundir": [
       {
         "conceito": "Programação baseada em regras",
@@ -3081,7 +3081,7 @@
     "conceito": "Aprendizado supervisionado",
     "termo_ingles": "Supervised Learning",
     "traducao": "Aprendizado supervisionado: treina um modelo com exemplos que incluem a resposta esperada.",
-    "resumo": "Usa dados rotulados, isto é, exemplos com respostas conhecidas. Cada exemplo associa atributos a um resultado esperado.",
+    "resumo": "Usa dados rotulados, com respostas conhecidas: cada exemplo liga atributos a um resultado. Exemplo: fotos marcadas \"gato\" ou \"cachorro\" para treinar o modelo.",
     "nao_confundir": [
       {
         "conceito": "Aprendizado não supervisionado",
@@ -3103,7 +3103,7 @@
     "conceito": "Aprendizado não supervisionado",
     "termo_ingles": "Unsupervised Learning",
     "traducao": "Aprendizado não supervisionado: identifica padrões em dados sem respostas previamente informadas.",
-    "resumo": "Analisa exemplos sem rótulos para encontrar estruturas, semelhanças ou grupos nos dados.",
+    "resumo": "Analisa exemplos sem rótulos para achar estruturas, semelhanças ou grupos. Exemplo: separar clientes em perfis sem saber os perfis antes.",
     "nao_confundir": [
       {
         "conceito": "Aprendizado supervisionado",
@@ -3124,7 +3124,7 @@
     "conceito": "Aprendizado por reforço",
     "termo_ingles": "Reinforcement Learning",
     "traducao": "Aprendizado por reforço: aprende a escolher ações com base nas recompensas recebidas em um ambiente.",
-    "resumo": "Um agente realiza ações em um ambiente e recebe recompensas ou penalidades, ajustando seu comportamento ao longo das tentativas.",
+    "resumo": "Um agente age num ambiente, recebe recompensas ou penalidades e ajusta o comportamento. Exemplo: um programa aprende a jogar xadrez ganhando pontos ao vencer.",
     "nao_confundir": [
       {
         "conceito": "Aprendizado supervisionado",
@@ -3145,7 +3145,7 @@
     "conceito": "Classificação",
     "termo_ingles": "Classification",
     "traducao": "Classificação: prevê a categoria à qual um exemplo pertence.",
-    "resumo": "Atribui uma categoria a cada exemplo, como identificar se uma mensagem é spam ou não spam.",
+    "resumo": "Atribui uma categoria a cada exemplo. Exemplo: mensagem é spam ou não spam.",
     "nao_confundir": [
       {
         "conceito": "Regressão",
@@ -3167,7 +3167,7 @@
     "conceito": "Regressão",
     "termo_ingles": "Regression",
     "traducao": "Regressão: prevê um valor numérico a partir de padrões encontrados nos dados.",
-    "resumo": "Estima um número, como preço, temperatura ou tempo, com base nos atributos fornecidos ao modelo.",
+    "resumo": "Estima um número com base nos atributos. Exemplo: prever o preço de um imóvel pela área e localização.",
     "nao_confundir": [
       {
         "conceito": "Classificação",
@@ -3189,7 +3189,7 @@
     "conceito": "Agrupamento",
     "termo_ingles": "Clustering",
     "traducao": "Agrupamento: reúne exemplos semelhantes sem depender de categorias previamente informadas.",
-    "resumo": "Organiza exemplos em grupos com características semelhantes, como separar clientes por padrões de consumo.",
+    "resumo": "Organiza exemplos em grupos de características semelhantes. Exemplo: separar clientes por padrão de consumo.",
     "nao_confundir": [
       {
         "conceito": "Classificação",
@@ -3211,7 +3211,7 @@
     "conceito": "Atributo",
     "termo_ingles": "Feature",
     "traducao": "Atributo: característica de um exemplo usada como entrada para produzir uma previsão.",
-    "resumo": "Representa uma informação fornecida ao modelo, como área e localização de um imóvel usado para estimar seu preço.",
+    "resumo": "Informação fornecida ao modelo para a previsão. Exemplo: área e bairro de um imóvel usados para estimar o preço.",
     "nao_confundir": [
       {
         "conceito": "Rótulo",
@@ -3233,7 +3233,7 @@
     "conceito": "Sobreajuste",
     "termo_ingles": "Overfitting",
     "traducao": "Sobreajuste: ocorre quando o modelo se adapta demais aos exemplos de treinamento e perde desempenho em dados novos.",
-    "resumo": "O modelo apresenta bom desempenho nos dados usados para aprender, mas erra mais quando recebe exemplos que não viu.",
+    "resumo": "O modelo vai bem nos dados de treino, mas erra mais em exemplos novos. Exemplo: 99% de acerto no treino e 70% no teste.",
     "nao_confundir": [
       {
         "conceito": "Subajuste",
@@ -3254,7 +3254,7 @@
     "conceito": "Subajuste",
     "termo_ingles": "Underfitting",
     "traducao": "Subajuste: ocorre quando o modelo não aprende padrões suficientes nem nos dados de treinamento.",
-    "resumo": "O modelo é simples ou limitado demais para representar os padrões presentes nos dados, apresentando erros no treinamento e em dados novos.",
+    "resumo": "O modelo é simples demais para os padrões dos dados e erra no treino e em dados novos. Exemplo: uma reta tentando representar uma curva.",
     "nao_confundir": [
       {
         "conceito": "Sobreajuste",
@@ -3276,7 +3276,7 @@
     "conceito": "Conjunto de teste",
     "termo_ingles": "Test Set",
     "traducao": "Conjunto de teste: reúne exemplos separados para medir o desempenho final do modelo.",
-    "resumo": "Contém dados que não participam do treinamento e são usados para estimar o desempenho em exemplos ainda não vistos.",
+    "resumo": "Dados que não entram no treinamento e estimam o desempenho em exemplos não vistos. Exemplo: separar 20% dos dados só para testar no fim.",
     "nao_confundir": [
       {
         "conceito": "Conjunto de treinamento",
@@ -3298,7 +3298,7 @@
     "conceito": "Matriz de confusão",
     "termo_ingles": "Confusion Matrix",
     "traducao": "Matriz de confusão: organiza previsões do modelo conforme o resultado previsto e o resultado real.",
-    "resumo": "Em classificação, contabiliza verdadeiros positivos, falsos positivos, verdadeiros negativos e falsos negativos.",
+    "resumo": "Em classificação, conta verdadeiros e falsos positivos e negativos. Exemplo: tabela 2x2 de spam previsto contra spam real.",
     "nao_confundir": [
       {
         "conceito": "Falso positivo",
@@ -3319,7 +3319,7 @@
     "conceito": "Acurácia",
     "termo_ingles": "Accuracy",
     "traducao": "Acurácia: mede a proporção de previsões que correspondem aos resultados reais.",
-    "resumo": "É a quantidade de previsões corretas dividida pelo total de previsões realizadas.",
+    "resumo": "Previsões corretas divididas pelo total de previsões. Exemplo: 90 acertos em 100 previsões = 90%.",
     "nao_confundir": [
       {
         "conceito": "Precisão",
@@ -3341,7 +3341,7 @@
     "conceito": "Precisão",
     "termo_ingles": "Precision",
     "traducao": "Precisão: mede a proporção de previsões positivas que realmente pertencem à classe positiva.",
-    "resumo": "Entre os exemplos classificados como positivos, indica quantos eram realmente positivos.",
+    "resumo": "Entre os classificados como positivos, quantos eram positivos de fato. Exemplo: marcou 10 como spam e 8 eram: precisão de 80%.",
     "nao_confundir": [
       {
         "conceito": "Revocação",
@@ -3363,7 +3363,7 @@
     "conceito": "Revocação",
     "termo_ingles": "Recall",
     "traducao": "Revocação: mede a proporção de casos positivos reais que o modelo conseguiu identificar.",
-    "resumo": "Entre todos os exemplos realmente positivos, indica quantos foram classificados como positivos pelo modelo.",
+    "resumo": "Entre todos os positivos reais, quantos o modelo encontrou. Exemplo: havia 20 spams e pegou 15: revocação de 75%.",
     "nao_confundir": [
       {
         "conceito": "Precisão",
@@ -3407,7 +3407,7 @@
     "conceito": "Regressão linear",
     "termo_ingles": "Linear Regression",
     "traducao": "Regressão linear: estima um valor numérico ajustando uma relação linear aos dados.",
-    "resumo": "Relaciona atributos a um resultado numérico por uma equação linear, como estimar o preço de um imóvel pela área.",
+    "resumo": "Relaciona atributos a um resultado numérico por uma equação linear. Exemplo: preço = 3.000 × área + 50.000.",
     "nao_confundir": [
       {
         "conceito": "K-means",
@@ -3430,7 +3430,7 @@
     "conceito": "K-means",
     "termo_ingles": "K-Means",
     "traducao": "K médias: agrupa exemplos em torno de centros calculados a partir dos próprios dados.",
-    "resumo": "Algoritmo de agrupamento que distribui exemplos em K grupos, definidos antes da execução.",
+    "resumo": "Algoritmo de agrupamento que distribui os exemplos em K grupos definidos antes. Exemplo: K = 3 separa clientes em três perfis.",
     "nao_confundir": [
       {
         "conceito": "Naive Bayes",
@@ -3453,7 +3453,7 @@
     "conceito": "Centroide",
     "termo_ingles": "Centroid",
     "traducao": "Centroide: ponto que representa a posição média dos exemplos de um grupo.",
-    "resumo": "No K-means, é calculado pela média das posições dos exemplos atribuídos a cada grupo.",
+    "resumo": "No K-means, é a média das posições dos exemplos de cada grupo. Exemplo: o ponto central de um grupo de clientes no gráfico.",
     "nao_confundir": [
       {
         "conceito": "Rótulo",
@@ -3499,7 +3499,7 @@
     "conceito": "Independência condicional",
     "termo_ingles": "Conditional Independence",
     "traducao": "Independência condicional: hipótese de que características são independentes entre si quando uma classe é conhecida.",
-    "resumo": "No Naive Bayes, simplifica o cálculo das probabilidades ao tratar os atributos como condicionalmente independentes dada a classe.",
+    "resumo": "No Naive Bayes, trata os atributos como independentes dada a classe, simplificando o cálculo. Exemplo: as palavras \"grátis\" e \"prêmio\" contam separadas no spam.",
     "nao_confundir": [
       {
         "conceito": "Independência estatística",
@@ -3521,7 +3521,7 @@
     "conceito": "Banco de dados NoSQL",
     "termo_ingles": "NoSQL",
     "traducao": "Não apenas SQL: família de bancos que não exige o modelo relacional para organizar os dados.",
-    "resumo": "Armazena dados sem exigir tabelas relacionais. Pode usar documentos, pares chave-valor ou grafos, conforme o modelo adotado.",
+    "resumo": "Armazena dados sem tabelas relacionais, em documentos, chave-valor ou grafos, conforme o modelo. Exemplo: MongoDB (documentos) e Redis (chave-valor).",
     "nao_confundir": [
       {
         "conceito": "Banco relacional",
@@ -3543,7 +3543,7 @@
     "conceito": "Banco orientado a documentos",
     "termo_ingles": "Document Database",
     "traducao": "Banco de documentos: organiza registros em estruturas que agrupam campos e valores.",
-    "resumo": "Armazena cada registro como documento, que pode conter campos e estruturas aninhadas. Documentos ficam agrupados em coleções.",
+    "resumo": "Guarda cada registro como documento, com campos e estruturas aninhadas, agrupados em coleções. Exemplo: um pedido com a lista de itens dentro do próprio documento.",
     "nao_confundir": [
       {
         "conceito": "Banco chave-valor",
@@ -3565,7 +3565,7 @@
     "conceito": "BSON",
     "termo_ingles": "BSON",
     "traducao": "JSON binário: formato binário usado para representar documentos e seus valores.",
-    "resumo": "Formato binário semelhante ao JSON, com tipos adicionais. O MongoDB usa BSON para armazenar documentos.",
+    "resumo": "Formato binário parecido com JSON, com tipos adicionais; o MongoDB o usa para guardar documentos. Exemplo: tem tipo de data, que o JSON não tem.",
     "nao_confundir": [
       {
         "conceito": "JSON",
@@ -3588,7 +3588,7 @@
     "conceito": "Banco chave-valor",
     "termo_ingles": "Key-Value Database",
     "traducao": "Banco chave-valor: associa uma chave identificadora a um valor armazenado.",
-    "resumo": "Guarda pares de chave e valor. A aplicação recupera o valor informando sua chave, como em um dicionário.",
+    "resumo": "Guarda pares de chave e valor; a aplicação busca o valor pela chave, como num dicionário. Exemplo: sessao:123 → dados do usuário logado.",
     "nao_confundir": [
       {
         "conceito": "Banco orientado a documentos",
@@ -3633,7 +3633,7 @@
     "conceito": "Fragmentação horizontal",
     "termo_ingles": "Sharding",
     "traducao": "Fragmentação: divide os registros de uma coleção ou conjunto de dados entre vários servidores.",
-    "resumo": "Distribui partes dos dados entre servidores. Cada fragmento (shard) mantém uma parcela do conjunto total armazenado.",
+    "resumo": "Distribui partes dos dados entre servidores; cada fragmento (shard) guarda uma parcela. Exemplo: clientes de A a M num servidor, de N a Z em outro.",
     "nao_confundir": [
       {
         "conceito": "Replicação",
@@ -3655,7 +3655,7 @@
     "conceito": "Replicação de dados",
     "termo_ingles": "Replication",
     "traducao": "Replicação: mantém cópias dos mesmos dados em diferentes servidores.",
-    "resumo": "Copia dados entre servidores para permitir continuidade de acesso quando uma instância fica indisponível.",
+    "resumo": "Copia dados entre servidores para manter o acesso quando uma instância cai. Exemplo: o servidor principal falha e a réplica assume.",
     "nao_confundir": [
       {
         "conceito": "Fragmentação horizontal",
@@ -3677,7 +3677,7 @@
     "conceito": "Índice em banco de documentos",
     "termo_ingles": "Index",
     "traducao": "Índice: estrutura auxiliar que localiza documentos sem percorrer a coleção inteira.",
-    "resumo": "No MongoDB, o índice guarda uma pequena parte dos dados da coleção em estrutura fácil de percorrer, acelerando consultas.",
+    "resumo": "No MongoDB, guarda parte dos dados da coleção em estrutura fácil de percorrer, acelerando consultas. Exemplo: índice em email para achar o cliente rápido.",
     "nao_confundir": [
       {
         "conceito": "Varredura da coleção",
@@ -3700,7 +3700,7 @@
     "conceito": "Armazém de dados",
     "termo_ingles": "Data Warehouse",
     "traducao": "Armazém de dados: reúne dados integrados e históricos para análise e apoio à decisão.",
-    "resumo": "Integra dados de diferentes fontes e organiza seu histórico para consultas analíticas, relatórios e acompanhamento do negócio.",
+    "resumo": "Integra dados de várias fontes e guarda o histórico para análises e relatórios. Exemplo: vendas de 5 anos de todas as lojas num só lugar.",
     "nao_confundir": [
       {
         "conceito": "Banco transacional",
@@ -3721,7 +3721,7 @@
     "conceito": "Processamento transacional",
     "termo_ingles": "Online Transaction Processing (OLTP)",
     "traducao": "Processamento de transações em linha: registra operações rotineiras do negócio.",
-    "resumo": "Executa operações do dia a dia, como inserir uma venda, atualizar um pagamento ou consultar uma conta.",
+    "resumo": "Executa as operações do dia a dia. Exemplo: registrar uma venda no caixa ou atualizar um pagamento.",
     "nao_confundir": [
       {
         "conceito": "Processamento analítico",
@@ -3743,7 +3743,7 @@
     "conceito": "Processamento analítico",
     "termo_ingles": "Online Analytical Processing (OLAP)",
     "traducao": "Processamento analítico em linha: permite analisar dados por diferentes perspectivas.",
-    "resumo": "Executa consultas analíticas sobre conjuntos de dados, como comparar vendas por região, produto e período.",
+    "resumo": "Executa consultas analíticas sobre grandes conjuntos de dados. Exemplo: comparar vendas por região, produto e trimestre.",
     "nao_confundir": [
       {
         "conceito": "Processamento transacional",
@@ -3765,7 +3765,7 @@
     "conceito": "Mercado de dados",
     "termo_ingles": "Data Mart",
     "traducao": "Mercado de dados: conjunto de dados analíticos voltado a uma área específica da organização.",
-    "resumo": "Atende às análises de uma área, como vendas ou recursos humanos, com dados relacionados às suas necessidades.",
+    "resumo": "Atende às análises de uma área, com os dados que ela precisa. Exemplo: um data mart só de recursos humanos.",
     "nao_confundir": [
       {
         "conceito": "Armazém de dados",
@@ -3787,7 +3787,7 @@
     "conceito": "Não volatilidade",
     "termo_ingles": "Non-Volatility",
     "traducao": "Não volatilidade: característica de dados mantidos para consulta histórica, sem alterações rotineiras após a carga.",
-    "resumo": "Na definição de Inmon, dados carregados no armazém não devem mudar: servem para analisar o que já ocorreu.",
+    "resumo": "Na definição de Inmon, dados carregados no armazém não mudam: servem para analisar o passado. Exemplo: a venda de 2024 não é alterada, só consultada.",
     "nao_confundir": [
       {
         "conceito": "Volatilidade da memória",
@@ -3809,7 +3809,7 @@
     "conceito": "Tabela fato",
     "termo_ingles": "Fact Table",
     "traducao": "Tabela fato: registra ocorrências do negócio e medidas que podem ser analisadas.",
-    "resumo": "Normalmente armazena medidas, como quantidade e valor vendido, associadas às dimensões que descrevem cada ocorrência.",
+    "resumo": "Guarda medidas, como quantidade e valor vendido, ligadas às dimensões de cada ocorrência. Exemplo: fato_venda com quantidade, valor, id_produto e id_data.",
     "nao_confundir": [
       {
         "conceito": "Tabela dimensão",
@@ -3831,7 +3831,7 @@
     "conceito": "Tabela dimensão",
     "termo_ingles": "Dimension Table",
     "traducao": "Tabela dimensão: descreve características usadas para contextualizar e agrupar medidas.",
-    "resumo": "Armazena descrições como nome do produto, região e data, permitindo analisar medidas por diferentes perspectivas.",
+    "resumo": "Guarda descrições como produto, região e data, para analisar as medidas por perspectivas. Exemplo: dim_produto com nome, categoria e marca.",
     "nao_confundir": [
       {
         "conceito": "Tabela fato",
@@ -3853,7 +3853,7 @@
     "conceito": "Modelo estrela",
     "termo_ingles": "Star Schema",
     "traducao": "Modelo estrela: organiza uma tabela fato central ligada a tabelas dimensão.",
-    "resumo": "Estrutura dimensional em que uma tabela fato se relaciona diretamente com dimensões, como produto, cliente e tempo.",
+    "resumo": "Uma tabela fato ligada diretamente às dimensões, como produto, cliente e tempo. Exemplo: fato_venda no centro e quatro dimensões em volta.",
     "nao_confundir": [
       {
         "conceito": "Modelo floco de neve",
@@ -3876,7 +3876,7 @@
     "conceito": "Engenharia de dados",
     "termo_ingles": "Data Engineering",
     "traducao": "Engenharia de dados: constrói processos que coletam, organizam e disponibilizam dados para uso.",
-    "resumo": "Desenvolve processos e estruturas para levar dados de suas fontes a ambientes de armazenamento, análise e consumo.",
+    "resumo": "Desenvolve processos e estruturas que levam dados das fontes ao armazenamento, análise e consumo. Exemplo: montar a carga diária do sistema de vendas para o data warehouse.",
     "nao_confundir": [
       {
         "conceito": "Ciência de dados",
@@ -3898,7 +3898,7 @@
     "conceito": "Extração, transformação e carga",
     "termo_ingles": "Extract, Transform, Load (ETL)",
     "traducao": "Extração, transformação e carga: retira dados das fontes, trata-os e grava-os no destino.",
-    "resumo": "Processo que extrai dados, transforma formatos e valores e, por fim, carrega o resultado em um destino.",
+    "resumo": "Extrai dados, transforma formatos e valores e só então carrega no destino. Exemplo: converter datas e somar vendas antes de gravar no data warehouse.",
     "nao_confundir": [
       {
         "conceito": "ELT",
@@ -3919,7 +3919,7 @@
     "conceito": "Extração, carga e transformação",
     "termo_ingles": "Extract, Load, Transform (ELT)",
     "traducao": "Extração, carga e transformação: carrega os dados no destino antes de transformá-los.",
-    "resumo": "Extrai dados das fontes, carrega-os no destino e realiza as transformações nesse ambiente.",
+    "resumo": "Extrai os dados das fontes, carrega no destino e transforma lá dentro. Exemplo: copiar os dados brutos para a nuvem e tratá-los com SQL no próprio warehouse.",
     "nao_confundir": [
       {
         "conceito": "ETL",
@@ -3941,7 +3941,7 @@
     "conceito": "Lago de dados",
     "termo_ingles": "Data Lake",
     "traducao": "Lago de dados: repositório que armazena dados em formatos variados, inclusive brutos.",
-    "resumo": "Armazena grandes volumes de dados estruturados, semiestruturados e não estruturados, preservando frequentemente seu formato de origem.",
+    "resumo": "Armazena grandes volumes de dados estruturados, semiestruturados e não estruturados, muitas vezes no formato original. Exemplo: logs, fotos e CSVs guardados juntos no armazenamento em nuvem.",
     "nao_confundir": [
       {
         "conceito": "Armazém de dados",
@@ -3962,7 +3962,7 @@
     "conceito": "Esquema na leitura",
     "termo_ingles": "Schema-on-Read",
     "traducao": "Esquema na leitura: interpreta a estrutura dos dados quando eles são consultados.",
-    "resumo": "A estrutura é aplicada no momento da leitura, permitindo armazenar dados antes de definir como serão interpretados.",
+    "resumo": "A estrutura é aplicada na hora da leitura, permitindo guardar dados antes de definir como interpretá-los. Exemplo: grava o JSON bruto e só na consulta decide os campos.",
     "nao_confundir": [
       {
         "conceito": "Esquema na escrita",
@@ -3984,7 +3984,7 @@
     "conceito": "Arquivo CSV",
     "termo_ingles": "Comma-Separated Values (CSV)",
     "traducao": "Valores separados por vírgula: formato de texto que organiza registros em linhas e campos.",
-    "resumo": "Armazena dados em texto, com um registro por linha e campos separados por vírgula.",
+    "resumo": "Armazena dados em texto, um registro por linha e campos separados por vírgula. Exemplo: nome,cidade na primeira linha e Ana,Recife na segunda.",
     "nao_confundir": [
       {
         "conceito": "Banco relacional",
@@ -4006,7 +4006,7 @@
     "conceito": "Pipeline de dados",
     "termo_ingles": "Data Pipeline",
     "traducao": "Pipeline de dados: sequência de etapas que transporta e processa dados entre sistemas.",
-    "resumo": "Encadeia operações como extração, transformação e carga para disponibilizar dados em um destino.",
+    "resumo": "Encadeia operações como extração, transformação e carga para entregar dados a um destino. Exemplo: todo dia às 2h, puxa as vendas, limpa e grava no relatório.",
     "nao_confundir": [
       {
         "conceito": "ETL",
@@ -4028,7 +4028,7 @@
     "conceito": "Qualidade de dados",
     "termo_ingles": "Data Quality",
     "traducao": "Qualidade de dados: grau em que os dados atendem a critérios de uso, como precisão e completude.",
-    "resumo": "Avalia se os dados são exatos, completos e consistentes para o uso em sistemas e análises.",
+    "resumo": "Avalia se os dados são exatos, completos e consistentes para o uso. Exemplo: CPF com dígito errado ou cliente sem cidade indicam problema.",
     "nao_confundir": [
       {
         "conceito": "Limpeza de dados",
@@ -5629,7 +5629,7 @@
     "conceito": "Valores do Manifesto Ágil",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "Valoriza-se mais indivíduos e interações que processos, software funcionando que documentação abrangente, colaboração com o cliente que negociação de contratos, e responder a mudanças que seguir um plano.",
+    "resumo": "Valoriza mais: indivíduos e interações; software funcionando; colaboração com o cliente; responder a mudanças. Exemplo: conversar com o cliente vale mais que discutir cláusula de contrato.",
     "nao_confundir": [
       {
         "conceito": "Proibição de documentação",
@@ -5651,7 +5651,7 @@
     "conceito": "Programação em par no XP",
     "termo_ingles": "pair programming",
     "traducao": "Programação em par: duas pessoas trabalham juntas no mesmo código.",
-    "resumo": "No Extreme Programming (XP), uma pessoa escreve o código enquanto outra o acompanha e orienta; elas trocam de função durante o trabalho.",
+    "resumo": "No XP, uma pessoa escreve o código e outra acompanha e orienta; trocam de função. Exemplo: um digita, o outro revisa a lógica ao lado.",
     "nao_confundir": [
       {
         "conceito": "Revisão de código posterior",
@@ -5673,7 +5673,7 @@
     "conceito": "Limite de trabalho em andamento",
     "termo_ingles": "work in progress limit (WIP limit)",
     "traducao": "Limite de trabalho em andamento: teto de itens simultâneos em execução.",
-    "resumo": "No Kanban, método que torna o fluxo de trabalho visível, o limite de trabalho em andamento (WIP) fixa quantos itens podem estar em andamento ao mesmo tempo.",
+    "resumo": "No Kanban, o limite de trabalho em andamento (WIP) fixa quantos itens podem estar na mesma etapa ao mesmo tempo. Exemplo: no máximo 3 cartões na coluna \"Fazendo\".",
     "nao_confundir": [
       {
         "conceito": "Backlog",
@@ -5695,7 +5695,7 @@
     "conceito": "Lead time",
     "termo_ingles": "lead time",
     "traducao": "Prazo de entrega: tempo que um item leva no sistema até ser entregue.",
-    "resumo": "No Kanban, lead time é o tempo que um item leva no sistema até a entrega.",
+    "resumo": "No Kanban, tempo de um item do pedido até a entrega. Exemplo: pedido dia 1, entregue dia 8: lead time de 7 dias.",
     "nao_confundir": [
       {
         "conceito": "Taxa de entrega",
@@ -5718,7 +5718,7 @@
     "conceito": "Sistema puxado no Lean",
     "termo_ingles": "pull system",
     "traducao": "Sistema puxado: cada etapa produz quando a etapa seguinte solicita o trabalho.",
-    "resumo": "No Lean, que busca eliminar desperdício, cada etapa só começa quando a seguinte pede trabalho, reduzindo itens parados à espera de uso.",
+    "resumo": "No Lean, cada etapa só começa quando a seguinte pede, reduzindo itens parados. Exemplo: o teste puxa uma nova tarefa só quando terminou a anterior.",
     "nao_confundir": [
       {
         "conceito": "Sistema empurrado",
@@ -5741,7 +5741,7 @@
     "conceito": "Entrega frequente de software",
     "termo_ingles": "frequent delivery",
     "traducao": "Entrega frequente: software funcionando em intervalos curtos.",
-    "resumo": "Princípio ágil: entregar software funcionando com frequência, de poucas semanas a poucos meses, preferindo o menor intervalo.",
+    "resumo": "Princípio ágil: entregar software funcionando com frequência, de semanas a poucos meses, preferindo o menor intervalo. Exemplo: nova versão do app a cada duas semanas.",
     "nao_confundir": [
       {
         "conceito": "Entrega única ao final",
@@ -5763,7 +5763,7 @@
     "conceito": "Responsabilidades no Scrum Team",
     "termo_ingles": "Scrum Team accountabilities",
     "traducao": "Responsabilidades do Scrum Team: Product Owner, Scrum Master e Developers respondem por partes distintas do trabalho.",
-    "resumo": "Product Owner maximiza valor; Scrum Master promove compreensão e uso do Scrum; Developers criam incremento utilizável.",
+    "resumo": "Product Owner maximiza valor; Scrum Master promove o uso do Scrum; Developers criam o incremento. Exemplo: o PO decide a prioridade; os Developers decidem como fazer.",
     "nao_confundir": [
       {
         "conceito": "Gerente de projeto como papel obrigatório",
@@ -5786,7 +5786,7 @@
     "conceito": "Product Owner",
     "termo_ingles": "Product Owner",
     "traducao": "Product Owner: responsável por maximizar o valor do produto e ordenar o Product Backlog.",
-    "resumo": "O Product Owner responde pelo Product Backlog, a lista ordenada do que o produto precisa, e pela ordem de seus itens.",
+    "resumo": "Responde pelo Product Backlog, a lista ordenada do que o produto precisa, e pela ordem dos itens. Exemplo: o PO coloca \"pagamento por Pix\" no topo.",
     "nao_confundir": [
       {
         "conceito": "Scrum Master",
@@ -5809,7 +5809,7 @@
     "conceito": "Duração da Sprint",
     "termo_ingles": "Sprint timebox",
     "traducao": "Sprint: ciclo de trabalho de duração fixa.",
-    "resumo": "A Sprint é o ciclo de trabalho do Scrum, um evento de duração fixa de um mês ou menos que cria consistência.",
+    "resumo": "A Sprint é o ciclo de trabalho do Scrum, de duração fixa de um mês ou menos. Exemplo: Sprints de 2 semanas, sempre começando na segunda.",
     "nao_confundir": [
       {
         "conceito": "Sprint de duas semanas",
@@ -5832,7 +5832,7 @@
     "conceito": "Sprint Backlog",
     "termo_ingles": "Sprint Backlog",
     "traducao": "Sprint Backlog: plano dos Developers para a Sprint.",
-    "resumo": "É o plano dos Developers para a Sprint, com a Meta da Sprint (o porquê), itens escolhidos do Product Backlog (o quê) e um plano de como entregá-los.",
+    "resumo": "Plano dos Developers para a Sprint: Meta (por quê), itens do Product Backlog (o quê) e como entregá-los. Exemplo: Meta \"cliente paga por Pix\" e 5 itens escolhidos.",
     "nao_confundir": [
       {
         "conceito": "Product Backlog",
@@ -5855,7 +5855,7 @@
     "conceito": "Daily Scrum",
     "termo_ingles": "Daily Scrum",
     "traducao": "Scrum diário: evento curto para alinhar o trabalho da Sprint.",
-    "resumo": "Os Developers inspecionam o progresso rumo à Meta da Sprint e adaptam o Sprint Backlog, todo dia útil, por até 15 minutos.",
+    "resumo": "Os Developers inspecionam o progresso rumo à Meta e adaptam o Sprint Backlog, todo dia útil, em até 15 minutos. Exemplo: reunião rápida às 9h.",
     "nao_confundir": [
       {
         "conceito": "Sprint Review",
@@ -5877,7 +5877,7 @@
     "conceito": "Requisito funcional",
     "termo_ingles": "functional requirement",
     "traducao": "Requisito funcional: serviço ou comportamento que o sistema deve oferecer.",
-    "resumo": "Um requisito funcional descreve uma função do sistema, como calcular um pagamento ou emitir um documento.",
+    "resumo": "Descreve uma função do sistema. Exemplo: calcular um pagamento ou emitir um documento.",
     "nao_confundir": [
       {
         "conceito": "Requisito não funcional",
@@ -5899,7 +5899,7 @@
     "conceito": "Requisito não funcional",
     "termo_ingles": "nonfunctional requirement",
     "traducao": "Requisito não funcional: qualidade ou restrição que condiciona o funcionamento do sistema.",
-    "resumo": "Tempo de resposta e confiabilidade descrevem qualidades ou restrições, não uma nova função oferecida.",
+    "resumo": "Descreve qualidade ou restrição, não uma função nova. Exemplo: a tela deve responder em até 2 segundos.",
     "nao_confundir": [
       {
         "conceito": "Requisito funcional",
@@ -5921,7 +5921,7 @@
     "conceito": "Elicitação de requisitos",
     "termo_ingles": "requirements elicitation",
     "traducao": "Elicitação de requisitos: atividade de descobrir necessidades e requisitos com suas fontes.",
-    "resumo": "Entrevistas, observação e workshops ajudam a descobrir requisitos junto a pessoas e outras fontes relevantes.",
+    "resumo": "Descobre requisitos junto a pessoas e outras fontes. Exemplo: entrevistar o caixa e observar o atendimento no balcão.",
     "nao_confundir": [
       {
         "conceito": "Análise de requisitos",
@@ -5944,7 +5944,7 @@
     "conceito": "História de usuário",
     "termo_ingles": "user story",
     "traducao": "História de usuário: registro breve de uma necessidade pela perspectiva de quem usa.",
-    "resumo": "Descreve uma necessidade em frase curta, pelo ponto de vista de quem usa o sistema, e o benefício esperado.",
+    "resumo": "Descreve uma necessidade em frase curta, pelo ponto de vista de quem usa, com o benefício. Exemplo: como cliente, quero pagar por Pix para não usar cartão.",
     "nao_confundir": [
       {
         "conceito": "Cenário Dado Quando Então",
@@ -5966,7 +5966,7 @@
     "conceito": "Análise de requisitos",
     "termo_ingles": "requirements analysis",
     "traducao": "Análise de requisitos: exame e organização dos requisitos para identificar conflitos e esclarecer necessidades.",
-    "resumo": "A análise examina requisitos, prioridades e conflitos para apoiar uma especificação compreensível e consistente.",
+    "resumo": "Examina requisitos, prioridades e conflitos para uma especificação clara e consistente. Exemplo: dois setores pedem regras de desconto opostas; a análise resolve o conflito.",
     "nao_confundir": [
       {
         "conceito": "Validação de requisitos",
@@ -5988,7 +5988,7 @@
     "conceito": "Análise de Pontos de Função (APF)",
     "termo_ingles": "Function Point Analysis",
     "traducao": "Análise de Pontos de Função: mede o tamanho funcional do software pelas funções que oferece ao usuário.",
-    "resumo": "A APF conta as funções que o software oferece ao usuário, a partir dos requisitos funcionais.",
+    "resumo": "Conta as funções que o software oferece ao usuário, a partir dos requisitos funcionais. Exemplo: cadastrar, consultar e excluir cliente somam pontos de função.",
     "nao_confundir": [
       {
         "conceito": "Esforço em horas",
@@ -6009,7 +6009,7 @@
     "conceito": "Usuário na Análise de Pontos de Função",
     "termo_ingles": "User",
     "traducao": "Usuário: pessoa ou coisa que interage com o software.",
-    "resumo": "Quem ou o que interage com o software, seja pessoa ou outro sistema, conta como usuário na APF.",
+    "resumo": "Quem ou o que interage com o software, pessoa ou outro sistema. Exemplo: o sistema da Receita que consulta o seu também conta como usuário.",
     "nao_confundir": [
       {
         "conceito": "Operador de tela",
@@ -6031,7 +6031,7 @@
     "conceito": "Pontos de história",
     "termo_ingles": "Story points",
     "traducao": "Pontos de história: unidade com que a equipe compara o tamanho de histórias.",
-    "resumo": "A equipe atribui pontos às histórias para compará-las entre si, sem prever quanto tempo cada uma levará.",
+    "resumo": "A equipe dá pontos às histórias para compará-las, sem prever horas. Exemplo: login vale 2 pontos; relatório, 8, por ser quatro vezes maior.",
     "nao_confundir": [
       {
         "conceito": "Pontos de função (APF)",
@@ -6053,7 +6053,7 @@
     "conceito": "Planning Poker",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "Cada participante escolhe uma carta com sua estimativa em pontos de história, e todas são reveladas ao mesmo tempo.",
+    "resumo": "Cada um escolhe uma carta com a estimativa, e todas são reveladas juntas. Exemplo: cartas 3, 5 e 13 abrem discussão.",
     "nao_confundir": [
       {
         "conceito": "Estimativa por especialista",
@@ -6076,7 +6076,7 @@
     "conceito": "Velocidade da equipe",
     "termo_ingles": "Velocity",
     "traducao": "Velocidade: total de pontos estimados para histórias concluídas em uma iteração.",
-    "resumo": "A equipe usa sua velocidade observada para estimar quanto trabalho pode planejar em iterações futuras.",
+    "resumo": "A equipe usa a velocidade observada para planejar as próximas iterações. Exemplo: entregou cerca de 20 pontos por Sprint; planeja uns 20 na próxima.",
     "nao_confundir": [
       {
         "conceito": "Produtividade individual",
@@ -6098,7 +6098,7 @@
     "conceito": "CMMI",
     "termo_ingles": "Capability Maturity Model Integration",
     "traducao": "Integração do Modelo de Capacidade e Maturidade: modelo de melhoria de processos de uma organização.",
-    "resumo": "O CMMI define níveis de maturidade; o mais alto é Em Otimização.",
+    "resumo": "Define níveis de maturidade; o mais alto é Em Otimização. Exemplo: nível 2 Gerenciado, nível 3 Definido, nível 5 Em Otimização.",
     "nao_confundir": [
       {
         "conceito": "MPS.BR",
@@ -6119,7 +6119,7 @@
     "conceito": "Melhoria de Processo do Software Brasileiro (MPS.BR)",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "Modelo brasileiro de melhoria de processos de software, com sete níveis de maturidade identificados por letras.",
+    "resumo": "Modelo brasileiro de melhoria de processos, com sete níveis identificados por letras. Exemplo: vai de G, o mais baixo, até A, o mais alto.",
     "nao_confundir": [
       {
         "conceito": "CMMI",
@@ -6141,7 +6141,7 @@
     "conceito": "ISO/IEC 12207",
     "termo_ingles": "Software life cycle processes",
     "traducao": "Processos do ciclo de vida de software: conjunto de processos aplicáveis à aquisição, desenvolvimento, operação, manutenção e descarte de software.",
-    "resumo": "Norma internacional que oferece uma estrutura comum para processos do ciclo de vida de software.",
+    "resumo": "Norma internacional com estrutura comum para os processos do ciclo de vida de software. Exemplo: define processos como aquisição, desenvolvimento e manutenção.",
     "nao_confundir": [
       {
         "conceito": "ISO/IEC 25010",
@@ -6163,7 +6163,7 @@
     "conceito": "ISO/IEC 25010",
     "termo_ingles": "Product quality model",
     "traducao": "Modelo de qualidade de produto: organiza características para especificar, medir e avaliar a qualidade de produtos de software.",
-    "resumo": "Norma internacional, em sua edição de 2023, que define um modelo de qualidade aplicável a produtos de software e de tecnologia da informação e comunicação.",
+    "resumo": "Norma internacional, edição 2023, que define um modelo de qualidade para produtos de software e de TIC. Exemplo: segurança e confiabilidade são características do modelo.",
     "nao_confundir": [
       {
         "conceito": "ISO/IEC 12207",
@@ -6185,7 +6185,7 @@
     "conceito": "Qualidade de processo",
     "termo_ingles": "process quality",
     "traducao": "Qualidade de processo: quão bem o trabalho de produzir software é organizado e executado.",
-    "resumo": "Avalia como o software é produzido, e não o software pronto.",
+    "resumo": "Avalia como o software é produzido, não o software pronto. Exemplo: verificar se toda mudança passa por revisão de código.",
     "nao_confundir": [
       {
         "conceito": "Qualidade de produto",
@@ -6385,7 +6385,7 @@
     "conceito": "Aprendizado profundo",
     "termo_ingles": "deep learning",
     "traducao": "Aprendizado profundo: aprendizado de máquina com redes neurais de várias camadas, que aprendem características cada vez mais abstratas dos dados.",
-    "resumo": "Rede neural artificial é um modelo composto por unidades conectadas; camada é um conjunto dessas unidades que transforma entradas. Com mais camadas, a rede encadeia mais etapas de transformação.",
+    "resumo": "Usa redes neurais com várias camadas, cada uma transformando a saída da anterior. Exemplo: reconhecer rostos em fotos.",
     "nao_confundir": [
       {
         "conceito": "Aprendizado de máquina",
@@ -6407,7 +6407,7 @@
     "conceito": "Processamento de linguagem natural (PLN)",
     "termo_ingles": "natural language processing",
     "traducao": "Processamento de linguagem natural: área que permite a computadores processar linguagem humana escrita ou falada.",
-    "resumo": "Inclui tarefas como análise de texto e reconhecimento de fala, com métodos computacionais aplicados à linguagem humana.",
+    "resumo": "Métodos computacionais aplicados à linguagem humana, como análise de texto e reconhecimento de fala. Exemplo: o assistente que transcreve sua voz.",
     "nao_confundir": [
       {
         "conceito": "Aprendizado profundo",
@@ -6428,7 +6428,7 @@
     "conceito": "Saco de palavras",
     "termo_ingles": "bag of words",
     "traducao": "Saco de palavras: representação de texto por contagens de palavras, sem preservar sua ordem.",
-    "resumo": "Cada palavra recebe uma contagem no texto. Frases com as mesmas palavras e frequências podem ter a mesma representação mesmo em ordens diferentes.",
+    "resumo": "Cada palavra recebe uma contagem no texto, sem considerar a ordem. Exemplo: \"cão morde homem\" e \"homem morde cão\" ficam iguais.",
     "nao_confundir": [
       {
         "conceito": "Representação sequencial",
@@ -6450,7 +6450,7 @@
     "conceito": "Embedding de palavra",
     "termo_ingles": "word embedding",
     "traducao": "Vetor de palavra: sequência de números que representa uma palavra a partir de padrões de uso em textos.",
-    "resumo": "Palavras usadas em contextos semelhantes podem ter representações próximas no espaço numérico aprendido pelo modelo.",
+    "resumo": "Palavras usadas em contextos parecidos ficam próximas no espaço numérico aprendido. Exemplo: \"rei\" fica perto de \"rainha\".",
     "nao_confundir": [
       {
         "conceito": "Contagem de palavras",
@@ -6472,7 +6472,7 @@
     "conceito": "Inteligência artificial (IA) generativa",
     "termo_ingles": "generative artificial intelligence",
     "traducao": "Inteligência artificial generativa: sistemas que produzem conteúdo novo, como texto, imagem, áudio ou vídeo, a partir de padrões aprendidos.",
-    "resumo": "Os modelos aprendem a estrutura dos dados de treinamento e geram conteúdo sintético novo, derivado desses padrões.",
+    "resumo": "Modelos aprendem a estrutura dos dados de treino e geram conteúdo novo a partir desses padrões. Exemplo: criar uma imagem a partir de uma descrição em texto.",
     "nao_confundir": [
       {
         "conceito": "Classificação",
@@ -6494,7 +6494,7 @@
     "conceito": "Grande modelo de linguagem (LLM)",
     "termo_ingles": "large language model",
     "traducao": "Grande modelo de linguagem: modelo treinado com enorme volume de texto, que estima o próximo token dado o contexto.",
-    "resumo": "Token é uma unidade de texto processada pelo modelo, como uma palavra ou parte de palavra. A geração estima a próxima unidade pelo contexto.",
+    "resumo": "Token é a unidade de texto que o modelo processa; a geração estima o próximo token pelo contexto. Exemplo: o Claude.",
     "nao_confundir": [
       {
         "conceito": "Base de respostas prontas",
@@ -6516,7 +6516,7 @@
     "conceito": "Alucinação em geração de linguagem",
     "termo_ingles": "hallucination",
     "traducao": "Alucinação: texto gerado que contém informação não sustentada ou incompatível com a fonte de referência.",
-    "resumo": "O modelo gera conteúdo inventado ou que contradiz o material usado como referência.",
+    "resumo": "O modelo gera conteúdo inventado ou que contradiz a referência. Exemplo: citar um artigo de lei que não existe.",
     "nao_confundir": [
       {
         "conceito": "Informação desatualizada",
@@ -6539,7 +6539,7 @@
     "conceito": "Temperatura de amostragem",
     "termo_ingles": "sampling temperature",
     "traducao": "Temperatura: parâmetro que controla o grau de aleatoriedade na escolha do próximo token.",
-    "resumo": "Valores maiores aumentam a aleatoriedade; valores menores deixam a saída mais focada.",
+    "resumo": "Valores maiores aumentam a aleatoriedade; menores deixam a saída mais focada. Exemplo: temperatura 0 tende a repetir a mesma resposta.",
     "nao_confundir": [
       {
         "conceito": "Precisão factual",
@@ -6561,7 +6561,7 @@
     "conceito": "Operações de aprendizado de máquina (MLOps)",
     "termo_ingles": "machine learning operations",
     "traducao": "Operações de aprendizado de máquina: práticas para desenvolver, implantar e operar sistemas com modelos.",
-    "resumo": "Incluem automação e monitoramento durante a construção e operação de sistemas de aprendizado de máquina em produção.",
+    "resumo": "Automação e monitoramento na construção e operação de modelos em produção. Exemplo: retreinar o modelo sozinho todo mês.",
     "nao_confundir": [
       {
         "conceito": "DevOps",
@@ -6584,7 +6584,7 @@
     "conceito": "Registro de modelos",
     "termo_ingles": "model registry",
     "traducao": "Registro de modelos: local onde o modelo treinado é guardado depois do treinamento.",
-    "resumo": "O modelo treinado é enviado ao registro de modelos; em pipelines automatizados, esse envio é a saída da etapa de treinamento.",
+    "resumo": "O modelo treinado é enviado ao registro; em pipelines automáticos, esse envio é a saída do treino. Exemplo: guardar a versão 3 do modelo com suas métricas.",
     "nao_confundir": [
       {
         "conceito": "Versionamento de código",
@@ -6607,7 +6607,7 @@
     "conceito": "Implantação de modelo",
     "termo_ingles": "model deployment",
     "traducao": "Implantação: disponibilização de um modelo validado em ambiente que atende previsões.",
-    "resumo": "Após validado, o modelo é publicado em um ambiente onde passa a atender pedidos de previsão.",
+    "resumo": "Depois de validado, o modelo é publicado num ambiente que atende pedidos de previsão. Exemplo: o app chama uma API que devolve o risco de fraude.",
     "nao_confundir": [
       {
         "conceito": "Treinamento de modelo",
@@ -6629,7 +6629,7 @@
     "conceito": "Viés algorítmico",
     "termo_ingles": "algorithmic bias",
     "traducao": "Viés algorítmico: tendência sistemática de resultados injustos ou desiguais em um sistema algorítmico.",
-    "resumo": "O NIST descreve três categorias de viés em IA: sistêmico, computacional e estatístico, e humano-cognitivo.",
+    "resumo": "O NIST descreve três categorias: sistêmico, computacional e estatístico, e humano-cognitivo. Exemplo: dados de treino só de um grupo geram viés estatístico.",
     "nao_confundir": [
       {
         "conceito": "Viés sistêmico",
@@ -6652,7 +6652,7 @@
     "conceito": "Explicabilidade em inteligência artificial",
     "termo_ingles": "explainability",
     "traducao": "Explicabilidade: representação dos mecanismos internos de operação de um sistema de inteligência artificial.",
-    "resumo": "Descreve como o sistema opera e pode apoiar compreensão, auditoria e governança.",
+    "resumo": "Descreve como o sistema opera e apoia compreensão, auditoria e governança. Exemplo: mostrar quais fatores pesaram na recusa do crédito.",
     "nao_confundir": [
       {
         "conceito": "Interpretabilidade",
@@ -6675,7 +6675,7 @@
     "conceito": "Transparência em inteligência artificial",
     "termo_ingles": "transparency",
     "traducao": "Transparência: disponibilidade de informações sobre um sistema de inteligência artificial e suas saídas.",
-    "resumo": "As informações podem abranger projeto, dados de treinamento, usos pretendidos e decisões de implantação.",
+    "resumo": "Pode abranger projeto, dados de treinamento, usos pretendidos e decisões de implantação. Exemplo: publicar com que dados o modelo foi treinado.",
     "nao_confundir": [
       {
         "conceito": "Publicação integral do código",
@@ -6697,7 +6697,7 @@
     "conceito": "Lei Geral de Proteção de Dados Pessoais (LGPD)",
     "termo_ingles": "Brazilian General Data Protection Law",
     "traducao": "Lei Geral de Proteção de Dados Pessoais: lei que disciplina o tratamento de dados pessoais.",
-    "resumo": "O artigo 20 permite ao titular (a pessoa dos dados) pedir revisão de decisões unicamente automatizadas que afetem seus interesses.",
+    "resumo": "O art. 20 permite ao titular pedir revisão de decisões só automatizadas que afetem seus interesses. Exemplo: crédito negado pelo algoritmo.",
     "nao_confundir": [
       {
         "conceito": "Direito de acesso",
@@ -6720,7 +6720,7 @@
     "conceito": "Deriva de dados",
     "termo_ingles": "data drift",
     "traducao": "Deriva de dados: mudança dos dados observados em produção em relação aos dados usados no treinamento.",
-    "resumo": "Quando o perfil dos dados de entrada muda, o modelo pode ficar desatualizado e seu desempenho pode cair.",
+    "resumo": "Quando o perfil dos dados de entrada muda, o modelo pode perder desempenho. Exemplo: o padrão de compras muda na pandemia.",
     "nao_confundir": [
       {
         "conceito": "Deriva de conceito",
