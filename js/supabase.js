@@ -287,7 +287,8 @@ async function chavesJaNaNuvem(userId, linhas) {
         .eq('user_id', userId)
         .gte('created_at', de)
         .lte('created_at', ate)
-        .order('created_at', { ascending: true }));
+        .order('created_at', { ascending: true })
+        .order('id', { ascending: true })); // C3: desempate estável entre páginas
     return new Set(naNuvem.map(chaveDaLinha));
 }
 
@@ -456,7 +457,8 @@ export async function carregarHistoricoIncremental(cache) {
                 .select(colunas)
                 .eq('user_id', user.id);
             if (aPartirDe) consulta = consulta.gt('created_at', aPartirDe);
-            return consulta.order('created_at', { ascending: true });
+            // C3 (v199): 'id' desempata linhas com o mesmo created_at; sem isso, a virada de página pode pular ou repetir respostas
+            return consulta.order('created_at', { ascending: true }).order('id', { ascending: true });
         });
         for (let tentativa = 0; tentativa < 3; tentativa++) {
             try {
@@ -1016,7 +1018,8 @@ export async function carregarRespostasRecentes(dias = 7) {
             .select(colunas)
             .eq('user_id', user.id)
             .gte('created_at', inicioISO)
-            .order('created_at', { ascending: true }));
+            .order('created_at', { ascending: true })
+            .order('id', { ascending: true })); // C3: desempate estável
         // v192: traz também a confiança (a Home nova mostra "erros com certeza"); sem a coluna, volta ao antigo
         let linhas;
         try { linhas = await buscarLinhas('questao_id, acertou, confianca, created_at'); }
