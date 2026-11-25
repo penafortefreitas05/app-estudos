@@ -206,7 +206,10 @@ function cartaoHTML(c) {
     }
     const nomeEn = (sigla && !comparacao) ? ingles.nome : String(c.termo_ingles || '').trim();
     const traducao = String(c.traducao || '').trim();
-    const mostrarTraducao = traducao && !repete(traducao, c.resumo);
+    // v201 (modelo direto ao ponto): a tradução só aparece quando é curta (nome em português, até 6 palavras).
+    // Tradução longa vira definição repetida e deixa o cartão com cara de modelo antigo; o dado continua no JSON.
+    const traducaoCurta = traducao.split(/\s+/).length <= 6 && !/[:.;]/.test(traducao.replace(/\.$/, ''));
+    const mostrarTraducao = traducao && traducaoCurta && !repete(traducao, c.resumo);
     const linhaNC = p => {
         const dif = String(p.diferenca || '');
         const partes = dif.split(/;\s*/);
