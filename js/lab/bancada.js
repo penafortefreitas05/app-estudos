@@ -196,7 +196,7 @@ export function abrirBancada() {
             if (r.explicacao) out.push({ tipo: r.ok === 4 ? 'ok' : 'ruim', texto: `Por quê: ${r.explicacao}` });
             (r.avisos || []).forEach(x => out.push({ tipo: 'aviso', texto: `⚠ ${x}` }));
             eventos = r.tentativas && r.tentativas[0] && r.tentativas[0].eventos; // 1ª tentativa: ARP + um eco, como no Packet Tracer
-        } else if (c === 'tracert' && args[0]) { const r = M.tracert(projeto.rede, est, a.id, args[0]); out.push(...r.linhas); eventos = r.eventos; }
+        } else if (c === 'tracert' && args[0]) { const r = M.tracert(projeto.rede, est, a.id, args[0]); out.push(...r.linhas); eventos = r.eventos; registro.cmd = 'tracert'; }
         else if (c === 'ipconfig') out.push(...M.ipconfig(projeto.rede, a.id));
         else if (c === 'arp' && resto === '-a' || c === 'show' && resto === 'arp') out.push(...M.arpA(est, projeto.rede, a.id));
         else if (c === 'show' && /^mac/.test(resto)) { registro.cmd = 'show-mac'; out.push(...M.tabelaMac(est, projeto.rede, a.id)); }
@@ -257,7 +257,7 @@ export function abrirBancada() {
 
     function verEvento(i) {
         const e = simulacao.eventos[i]; if (!e || !missao) return;
-        missao.vistos.push({ tipo: e.quadro.tipo, op: e.quadro.op, para: (ap(e.para) || {}).nome });
+        missao.vistos.push({ tipo: e.quadro.tipo, op: e.quadro.op, alvoIp: e.quadro.alvoIp, ttl: e.quadro.ttl, para: (ap(e.para) || {}).nome });
         desenharMissao();
     }
 
@@ -268,8 +268,8 @@ export function abrirBancada() {
         est = M.novoEstado(); caboSel = null; ferramenta = null; modo = 'tempo-real';
         Object.keys(terminais).forEach(k => delete terminais[k]);
         simulacao = { eventos: [], i: -1, rodando: false };
-        const pc1 = projeto.rede.aparelhos.find(a => a.nome === 'PC1'); sel = pc1 ? pc1.id : null;
-        missao = { def, comandos: [], vistos: [], dicas: 0, resposta: null, aberta: true };
+        const pc1 = projeto.rede.aparelhos.find(a => a.nome === 'PC1') || projeto.rede.aparelhos.find(a => a.tipo === 'pc'); sel = pc1 ? pc1.id : null;
+        missao = { def, comandos: [], vistos: [], acoes: {}, feitos: new Set(), dicas: 0, resposta: null, aberta: true };
         $('.bc-dialogo').hidden = true; status('');
         desenharTudo(); desenharSim();
     }
@@ -278,7 +278,8 @@ export function abrirBancada() {
         if (!missao) { box.hidden = true; return; }
         box.hidden = false;
         const d = missao.def;
-        const res = avaliar(d, { rede: projeto.rede, comandos: missao.comandos, sim: { modo, vistos: missao.vistos } });
+        const res = avaliar(d, { rede: projeto.rede, comandos: missao.comandos, acoes: missao.acoes, feitos: missao.feitos, sim: { modo, vistos: missao.vistos } });
+        const proximo = res.indexOf(false);
         const tudo = res.every(Boolean);
         if (!missao.aberta) { box.innerHTML = `<button type="button" class="bc-missao-mini" data-missao="abrir">🎯 ${res.filter(Boolean).length}/${res.length} · ${esc(d.titulo)}</button>`; return; }
         const pergunta = tudo ? `<div class="bc-pergunta"><p><b>${esc(d.pergunta.texto)}</b></p>
@@ -286,7 +287,8 @@ export function abrirBancada() {
             ${missao.resposta !== null ? `<p class="bc-nota">${missao.resposta === d.pergunta.certa ? '<b class="bc-bom">Isso.</b> ' : '<b class="bc-ruim">Não foi isso.</b> '}${esc(d.pergunta.explicacao)}</p><p class="bc-bom"><b>Missão concluída ✓</b></p><button type="button" data-acao="missoes">Próxima missão</button>` : ''}</div>` : '';
         box.innerHTML = `<div class="bc-missao-cab"><p class="bc-rot">🎯 ${esc(d.grupo)}</p><button type="button" data-missao="recolher" aria-label="Recolher a missão">–</button></div>
             <p class="bc-missao-tit">${esc(d.titulo)}</p><p class="bc-nota">${esc(d.historia)}</p>
-            <ul class="bc-objetivos">${d.objetivos.map((o, i) => `<li class="${res[i] ? 'ok' : ''}"><span aria-hidden="true">${res[i] ? '✓' : '○'}</span> ${esc(o.texto)}<span class="sr-only">${res[i] ? ' (feito)' : ' (falta)'}</span></li>`).join('')}</ul>
+            <ul class="bc-objetivos">${d.objetivos.map((o, i) => `<li class="${res[i] ? 'ok' : ''} ${i === proximo && o.como ? 'agora' : ''}"><span aria-hidden="true">${res[i] ? '✓' : '○'}</span> ${esc(o.texto)}<span class="sr-only">${res[i] ? ' (feito)' : ' (falta)'}</span></li>`).join('')}</ul>
+            ${proximo >= 0 && d.objetivos[proximo].como ? `<p class="bc-agora"><b>Agora:</b> ${esc(d.objetivos[proximo].como)}</p>` : ''}
             ${d.dicas.slice(0, missao.dicas).map(t => `<p class="bc-dica-m">💡 ${esc(t)}</p>`).join('')}
             ${!tudo && missao.dicas < d.dicas.length ? `<button type="button" data-missao="dica">💡 Dica ${missao.dicas + 1} de ${d.dicas.length}</button>` : ''}
             ${pergunta}
@@ -298,8 +300,8 @@ export function abrirBancada() {
         d.innerHTML = `<div class="bc-caixa bc-caixa-larga"><p class="bc-rot">Missões</p>
             <p class="bc-nota">Cada missão abre a sua própria bancada. Seu projeto atual fica guardado se você usou "Salvar".</p>
             ${MISSOES.map((m, i) => { const g = m.grupo !== grupo ? `<p class="bc-grupo">${esc((grupo = m.grupo))}</p>` : ''; const f = feitas[m.id];
-                return `${g}<button type="button" class="bc-missao-item" data-iniciar="${i}"><span>${f ? '✓' : '○'}</span><span><b>${esc(m.titulo)}</b><small>${m.tipo === 'chamado' ? 'Chamado de suporte: ache a causa e conserte' : m.tipo === 'montar' ? 'Monte do zero' : 'Modo simulação'}</small></span></button>`; }).join('')}
-            <p class="bc-nota">Em breve: Projeto 2, dois setores ligados por um roteador.</p>
+                return `${g}<button type="button" class="bc-missao-item" data-iniciar="${i}"><span>${f ? '✓' : '○'}</span><span><b>${esc(m.titulo)}</b><small>${m.tipo === 'chamado' ? 'Chamado de suporte: ache a causa e conserte' : m.tipo === 'montar' ? 'Monte do zero' : m.tipo === 'tutorial' ? 'Tutorial: aprenda a mexer na bancada' : 'Modo simulação'}</small></span></button>`; }).join('')}
+            <p class="bc-nota">Em breve: Projeto 3, duas filiais com dois roteadores e rotas estáticas.</p>
             <button type="button" data-acao="fechar-dialogo">Fechar</button></div>`;
         d.hidden = false;
     }
@@ -366,7 +368,7 @@ export function abrirBancada() {
         a.y = Math.max(4, Math.min(r.height - H - 24, ev.offsetY - arrasto.dy));
         arrasto.moveu = true; desenharArea();
     });
-    svg.addEventListener('pointerup', () => { if (arrasto && arrasto.moveu) salvarAtual(); arrasto = null; });
+    svg.addEventListener('pointerup', () => { if (arrasto && arrasto.moveu) { salvarAtual(); if (missao && !missao.acoes.moveu) { missao.acoes.moveu = true; desenharMissao(); } } arrasto = null; });
 
     el.addEventListener('click', (ev) => {
         const b = ev.target.closest('button'); if (!b || !el.contains(b)) return;
@@ -437,5 +439,6 @@ export function abrirBancada() {
     document.addEventListener('keydown', tecla);
     function fechar() { salvarAtual(); document.removeEventListener('keydown', tecla); document.body.classList.remove('modo-bancada'); el.remove(); }
 
-    desenharTudo(); desenharSim();
+    if (!salvo && !Object.keys(progresso()).length) iniciarMissao(MISSOES[0]); // primeira visita: tutorial
+    else { desenharTudo(); desenharSim(); }
 }
