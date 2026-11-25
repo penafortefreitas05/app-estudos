@@ -8407,7 +8407,7 @@
     "conceito": "União e interseção de eventos",
     "termo_ingles": "Union and intersection of events",
     "traducao": "União: ocorrência de pelo menos um evento; interseção: ocorrência simultânea dos eventos.",
-    "resumo": "União: A ou B; interseção: A e B. Exemplo no dado: par ou maior que 4 = 3/6 + 2/6 − 1/6 = 4/6.",
+    "resumo": "União: A ou B; interseção: A e B. Exemplo: no dado, par ou maior que 4 = 3/6 + 2/6 − 1/6 = 4/6.",
     "nao_confundir": [
       {
         "conceito": "Eventos mutuamente exclusivos",
