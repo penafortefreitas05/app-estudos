@@ -1726,7 +1726,7 @@
     "conceito": "Classe",
     "termo_ingles": "Class",
     "traducao": "Classe: o molde que define como serão os objetos daquele tipo.",
-    "resumo": "Uma classe é um molde que define atributos (dados) e métodos (ações). Um objeto é uma instância concreta dessa classe, com valores próprios.",
+    "resumo": "Molde que define atributos (dados) e métodos (ações); o objeto é uma instância com valores próprios. Exemplo: classe Carro; objeto: o Gol prata placa ABC1234.",
     "nao_confundir": [
       {
         "conceito": "Objeto",
@@ -1748,7 +1748,7 @@
     "conceito": "Encapsulamento",
     "termo_ingles": "Encapsulation",
     "traducao": "Encapsular: proteger os dados internos e controlar como podem ser acessados.",
-    "resumo": "Reúne dados e métodos no objeto, restringindo o acesso direto aos dados e permitindo alterações por operações controladas.",
+    "resumo": "Reúne dados e métodos no objeto e só permite alterar os dados por operações controladas. Exemplo: saldo é privado e só muda por depositar() e sacar().",
     "nao_confundir": [
       {
         "conceito": "Abstração",
@@ -1770,7 +1770,7 @@
     "conceito": "Herança",
     "termo_ingles": "Inheritance",
     "traducao": "Herança: uma classe recebe características definidas em outra classe.",
-    "resumo": "Uma subclasse herda atributos e métodos de uma superclasse, podendo acrescentar características próprias e especializar seu comportamento.",
+    "resumo": "Uma subclasse herda atributos e métodos da superclasse e pode acrescentar ou especializar. Exemplo: Gerente herda de Funcionario e ganha o atributo bonus.",
     "nao_confundir": [
       {
         "conceito": "Composição",
@@ -1838,7 +1838,7 @@
     "conceito": "Abstração",
     "termo_ingles": "Abstraction",
     "traducao": "Abstrair: representar os aspectos essenciais de algo e deixar detalhes irrelevantes de fora.",
-    "resumo": "Na modelagem de um sistema, seleciona as características relevantes ao problema e ignora as que não contribuem para sua finalidade.",
+    "resumo": "Seleciona as características relevantes ao problema e ignora as que não importam. Exemplo: no sistema da escola, Aluno tem nota e matrícula, não cor do cabelo.",
     "nao_confundir": [
       {
         "conceito": "Encapsulamento",
@@ -1860,7 +1860,7 @@
     "conceito": "Protocolo HTTP",
     "termo_ingles": "Hypertext Transfer Protocol (HTTP)",
     "traducao": "Protocolo de transferência de hipertexto: define regras para trocar requisições e respostas na web.",
-    "resumo": "O cliente (programa que pede, como o navegador) envia uma requisição ao servidor (programa que atende), que devolve uma resposta.",
+    "resumo": "O cliente (como o navegador) envia uma requisição ao servidor, que devolve uma resposta. Exemplo: GET /index.html recebe 200 OK e a página.",
     "nao_confundir": [
       {
         "conceito": "HTTPS",
@@ -1881,7 +1881,7 @@
     "conceito": "Códigos de status HTTP",
     "termo_ingles": "HTTP Status Codes",
     "traducao": "Códigos de estado: informam o resultado do processamento de uma requisição HTTP.",
-    "resumo": "O primeiro dígito identifica a classe: 1xx informação, 2xx sucesso, 3xx redirecionamento, 4xx erro do cliente e 5xx erro do servidor. O código 404 indica recurso não encontrado.",
+    "resumo": "O primeiro dígito dá a classe: 1xx informação, 2xx sucesso, 3xx redirecionamento, 4xx erro do cliente, 5xx erro do servidor. Exemplo: 404, recurso não encontrado.",
     "nao_confundir": [
       {
         "conceito": "401 e 403",
@@ -1903,7 +1903,7 @@
     "conceito": "Multiplexação no HTTP/2",
     "termo_ingles": "HTTP/2 Multiplexing",
     "traducao": "Multiplexação: permite intercalar vários fluxos de comunicação em uma mesma conexão.",
-    "resumo": "O HTTP/2 mantém vários fluxos independentes na mesma conexão, permitindo o andamento simultâneo de diferentes requisições e respostas.",
+    "resumo": "Mantém vários fluxos independentes na mesma conexão, com requisições e respostas ao mesmo tempo. Exemplo: CSS, imagens e scripts chegam juntos por uma conexão.",
     "nao_confundir": [
       {
         "conceito": "HTTP/1.1",
@@ -1925,7 +1925,7 @@
     "conceito": "Protocolo WebSocket",
     "termo_ingles": "WebSocket Protocol",
     "traducao": "Soquete web: mantém um canal de comunicação para troca de mensagens nos dois sentidos.",
-    "resumo": "Após uma abertura de conexão, cliente e servidor podem enviar mensagens um ao outro sem iniciar uma nova requisição para cada troca.",
+    "resumo": "Após abrir a conexão, cliente e servidor trocam mensagens sem nova requisição a cada vez. Exemplo: chat em que as mensagens chegam na hora.",
     "nao_confundir": [
       {
         "conceito": "HTTP",
@@ -1946,7 +1946,7 @@
     "conceito": "Interface de programação de aplicações",
     "termo_ingles": "Application Programming Interface (API)",
     "traducao": "Interface de programação de aplicações: define como um programa pode utilizar operações oferecidas por outro.",
-    "resumo": "Estabelece regras para que programas solicitem dados ou funcionalidades de outros sistemas sem precisar conhecer sua implementação interna.",
+    "resumo": "Regras para um programa pedir dados ou funções a outro sem conhecer sua implementação. Exemplo: o app de entrega consulta o CEP pela API dos Correios.",
     "nao_confundir": [
       {
         "conceito": "Implementação",
@@ -1967,7 +1967,7 @@
     "conceito": "Arquitetura REST",
     "termo_ingles": "Representational State Transfer (REST)",
     "traducao": "Transferência de estado representacional: estilo de arquitetura para comunicação entre sistemas distribuídos.",
-    "resumo": "Organiza a interação em torno de recursos identificáveis e suas representações. É sem estado (stateless): cada requisição traz as informações necessárias, sem depender de sessão guardada no servidor.",
+    "resumo": "Organiza a interação em recursos identificáveis; é sem estado: cada requisição traz tudo o que precisa. Exemplo: GET /clientes/42 devolve o cliente 42.",
     "nao_confundir": [
       {
         "conceito": "Protocolo HTTP",
@@ -1990,7 +1990,7 @@
     "conceito": "Verbos HTTP em APIs",
     "termo_ingles": "HTTP Methods",
     "traducao": "Métodos HTTP: indicam a ação pretendida sobre o recurso solicitado.",
-    "resumo": "GET costuma consultar um recurso; POST envia dados para processamento, podendo resultar na criação de um recurso ou em outra operação.",
+    "resumo": "GET costuma consultar um recurso; POST envia dados para processamento, como criar um recurso. Exemplo: GET /pedidos lista; POST /pedidos cria um pedido.",
     "nao_confundir": [
       {
         "conceito": "Método PUT",
@@ -2013,7 +2013,7 @@
     "conceito": "Formato JSON",
     "termo_ingles": "JavaScript Object Notation (JSON)",
     "traducao": "Notação de objetos JavaScript: formato textual para representar e trocar dados estruturados.",
-    "resumo": "Formato de texto que representa dados com objetos (pares nome e valor), listas, textos, números, verdadeiro, falso e nulo.",
+    "resumo": "Formato de texto com objetos (nome e valor), listas, textos, números, verdadeiro, falso e nulo. Exemplo: {\"nome\": \"Ana\", \"idade\": 30}.",
     "nao_confundir": [
       {
         "conceito": "XML",
@@ -2035,7 +2035,7 @@
     "conceito": "GraphQL",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "Linguagem de consulta para APIs: permite ao cliente especificar os campos desejados, e a resposta contém os dados selecionados.",
+    "resumo": "Linguagem de consulta para APIs em que o cliente escolhe os campos que quer. Exemplo: pedir só nome e e-mail do usuário, nada mais.",
     "nao_confundir": [
       {
         "conceito": "REST",
@@ -2057,7 +2057,7 @@
     "conceito": "gRPC",
     "termo_ingles": "gRPC Remote Procedure Call",
     "traducao": "Chamada de procedimento remoto: permite chamar operações oferecidas por outro sistema como métodos de um serviço.",
-    "resumo": "Sistema de comunicação entre serviços que usa HTTP/2 e, por padrão, Protocol Buffers para descrever os serviços e converter as mensagens em formato binário.",
+    "resumo": "Comunicação entre serviços sobre HTTP/2, com Protocol Buffers descrevendo os serviços em formato binário. Exemplo: o serviço de pedidos chama ObterEstoque() do outro serviço.",
     "nao_confundir": [
       {
         "conceito": "REST",
@@ -2080,7 +2080,7 @@
     "conceito": "Protocolo SOAP",
     "termo_ingles": "SOAP (antes, Simple Object Access Protocol)",
     "traducao": "Antes, protocolo simples de acesso a objetos; desde a versão 1.2, SOAP é só um nome.",
-    "resumo": "Utiliza mensagens estruturadas em XML (linguagem extensível de marcação). O WSDL (linguagem de descrição de serviços web) descreve as operações oferecidas pelo serviço.",
+    "resumo": "Usa mensagens em XML; o WSDL descreve as operações do serviço. Exemplo: a nota fiscal eletrônica é enviada por web service SOAP.",
     "nao_confundir": [
       {
         "conceito": "REST",
@@ -2103,7 +2103,7 @@
     "conceito": "Webhook",
     "termo_ingles": "Webhook",
     "traducao": "Gancho web: chamada que o serviço faz ao endereço do cliente quando algo acontece.",
-    "resumo": "Notifica outro sistema quando ocorre um evento (fato relevante): o serviço envia uma requisição, normalmente HTTP POST, para uma URL (endereço de rede) previamente cadastrada.",
+    "resumo": "Notifica outro sistema quando ocorre um evento, enviando uma requisição (geralmente POST) a uma URL cadastrada. Exemplo: o pagamento aprovado avisa a loja.",
     "nao_confundir": [
       {
         "conceito": "Polling",
@@ -2545,7 +2545,7 @@
     "conceito": "Computação em nuvem",
     "termo_ingles": "Cloud Computing",
     "traducao": "Computação em nuvem: acesso pela rede a recursos compartilhados, disponibilizados sob demanda por um provedor.",
-    "resumo": "Oferece servidores, armazenamento e aplicações pela rede, liberados rapidamente e com pouca intervenção humana do provedor.",
+    "resumo": "Oferece servidores, armazenamento e aplicações pela rede, liberados rápido e com pouca intervenção do provedor. Exemplo: criar um servidor na AWS em minutos.",
     "nao_confundir": [
       {
         "conceito": "Hospedagem tradicional",
@@ -2567,7 +2567,7 @@
     "conceito": "Elasticidade",
     "termo_ingles": "Rapid Elasticity",
     "traducao": "Elasticidade rápida: capacidade de ampliar ou reduzir recursos rapidamente conforme a demanda.",
-    "resumo": "Ajusta recursos de computação à necessidade de uso, aumentando ou diminuindo a capacidade disponibilizada.",
+    "resumo": "Ajusta os recursos à necessidade de uso, aumentando ou diminuindo a capacidade. Exemplo: o site da loja ganha servidores na Black Friday e devolve depois.",
     "nao_confundir": [
       {
         "conceito": "Escalabilidade",
@@ -2589,7 +2589,7 @@
     "conceito": "Modelos de serviço em nuvem",
     "termo_ingles": "Cloud Service Models",
     "traducao": "Modelos de serviço: classificam o nível de recursos e gerenciamento oferecido pelo provedor.",
-    "resumo": "IaaS (infraestrutura como serviço) fornece servidores e armazenamento; PaaS (plataforma como serviço) executa as aplicações do cliente; SaaS (software como serviço) entrega aplicações prontas.",
+    "resumo": "IaaS dá servidores e armazenamento; PaaS executa as aplicações do cliente; SaaS entrega aplicações prontas. Exemplo: máquina virtual (IaaS), Vercel (PaaS), Gmail (SaaS).",
     "nao_confundir": [
       {
         "conceito": "IaaS",
@@ -2613,7 +2613,7 @@
     "conceito": "Modelos de implantação em nuvem",
     "termo_ingles": "Cloud Deployment Models",
     "traducao": "Modelos de implantação: classificam como a infraestrutura de nuvem é disponibilizada e utilizada.",
-    "resumo": "Pública é aberta ao público em geral; privada é exclusiva de uma organização; comunitária atende organizações com interesses comuns; híbrida combina duas ou mais dessas.",
+    "resumo": "Pública: aberta a todos; privada: de uma organização; comunitária: de organizações afins; híbrida: combina duas ou mais. Exemplo: dados sigilosos na privada e o site na pública.",
     "nao_confundir": [
       {
         "conceito": "Nuvem híbrida",
@@ -2636,7 +2636,7 @@
     "conceito": "Multicloud",
     "termo_ingles": "Multicloud",
     "traducao": "Múltiplas nuvens: uso de serviços de mais de um provedor de nuvem.",
-    "resumo": "Combina serviços de provedores diferentes, como AWS e Azure, em uma mesma estratégia tecnológica.",
+    "resumo": "Combina serviços de provedores diferentes numa mesma estratégia. Exemplo: banco de dados na AWS e inteligência artificial no Azure.",
     "nao_confundir": [
       {
         "conceito": "Nuvem híbrida",
@@ -2658,7 +2658,7 @@
     "conceito": "Multilocação",
     "termo_ingles": "Multitenancy",
     "traducao": "Multilocação: compartilhamento de recursos entre clientes com isolamento dos respectivos dados.",
-    "resumo": "Uma mesma infraestrutura atende vários clientes, chamados locatários, mantendo separados seus dados e acessos.",
+    "resumo": "Uma mesma infraestrutura atende vários clientes (locatários), com dados e acessos separados. Exemplo: milhares de empresas usam o mesmo Gmail sem ver os e-mails umas das outras.",
     "nao_confundir": [
       {
         "conceito": "Locação única",
@@ -2701,7 +2701,7 @@
     "conceito": "FinOps",
     "termo_ingles": "FinOps",
     "traducao": "Finanças + DevOps: prática colaborativa para maximizar o valor dos gastos com tecnologia.",
-    "resumo": "Integra tecnologia, finanças e negócio para acompanhar gastos, melhorar previsões e relacionar custos ao valor entregue.",
+    "resumo": "Integra tecnologia, finanças e negócio para acompanhar gastos de nuvem, prever custos e ligá-los ao valor entregue. Exemplo: desligar servidores de teste à noite e medir a economia.",
     "nao_confundir": [
       {
         "conceito": "Redução de custos",
@@ -2723,7 +2723,7 @@
     "conceito": "Contêiner",
     "termo_ingles": "Container",
     "traducao": "Contêiner: unidade que isola a execução de uma aplicação e suas dependências.",
-    "resumo": "Executa uma aplicação isolada, com as bibliotecas e arquivos de que ela precisa, compartilhando o núcleo (parte central) do sistema operacional da máquina.",
+    "resumo": "Executa uma aplicação isolada, com suas bibliotecas e arquivos, compartilhando o núcleo do sistema operacional. Exemplo: o mesmo app roda igual no notebook e no servidor via Docker.",
     "nao_confundir": [
       {
         "conceito": "Máquina virtual",
@@ -2745,7 +2745,7 @@
     "conceito": "Imagem de contêiner",
     "termo_ingles": "Container Image",
     "traducao": "Imagem de contêiner: pacote imutável com tudo o que é preciso para criar contêineres.",
-    "resumo": "Reúne aplicação, arquivos e dependências necessários à execução. Uma mesma imagem pode originar vários contêineres.",
+    "resumo": "Reúne aplicação, arquivos e dependências para a execução; uma imagem pode gerar vários contêineres. Exemplo: a imagem nginx:1.27 sobe três contêineres iguais.",
     "nao_confundir": [
       {
         "conceito": "Contêiner",
@@ -2767,7 +2767,7 @@
     "conceito": "Dockerfile",
     "termo_ingles": "Dockerfile",
     "traducao": "Arquivo Docker: texto com instruções para construir uma imagem; Docker é a ferramenta que cria e executa contêineres.",
-    "resumo": "Define etapas como escolher uma imagem-base, copiar arquivos e configurar o comando inicial da aplicação.",
+    "resumo": "Define etapas como escolher imagem-base, copiar arquivos e configurar o comando inicial. Exemplo: FROM node:20, COPY . /app, CMD npm start.",
     "nao_confundir": [
       {
         "conceito": "Imagem de contêiner",
@@ -2789,7 +2789,7 @@
     "conceito": "Kubernetes",
     "termo_ingles": "Kubernetes",
     "traducao": "Kubernetes (timoneiro, em grego): orquestrador que automatiza a execução de aplicações em contêineres.",
-    "resumo": "Gerencia aplicações em um cluster, conjunto de máquinas físicas ou virtuais chamadas nós, distribuindo e acompanhando suas cargas.",
+    "resumo": "Gerencia aplicações num cluster de máquinas (nós), distribuindo e acompanhando as cargas. Exemplo: se um nó cai, o Kubernetes recria os contêineres em outro.",
     "nao_confundir": [
       {
         "conceito": "Docker",
@@ -2812,7 +2812,7 @@
     "conceito": "Pod",
     "termo_ingles": "Pod",
     "traducao": "Unidade de execução: menor unidade implantável do Kubernetes, que agrupa um ou mais contêineres.",
-    "resumo": "Agrupa contêineres que rodam no mesmo nó, compartilham a rede e podem compartilhar armazenamento configurado (volumes).",
+    "resumo": "Agrupa contêineres no mesmo nó, que compartilham a rede e podem compartilhar volumes. Exemplo: a aplicação e um coletor de logs no mesmo Pod.",
     "nao_confundir": [
       {
         "conceito": "Contêiner",
@@ -2834,7 +2834,7 @@
     "conceito": "Deployment",
     "termo_ingles": "Deployment",
     "traducao": "Implantação: recurso que mantém a quantidade e a versão desejadas de Pods no Kubernetes.",
-    "resumo": "Define o estado desejado dos Pods, incluindo réplicas (cópias equivalentes), e permite atualizações controladas da aplicação.",
+    "resumo": "Define o estado desejado dos Pods, como o número de réplicas, e permite atualizar a aplicação aos poucos. Exemplo: manter 3 réplicas e trocar a versão uma de cada vez.",
     "nao_confundir": [
       {
         "conceito": "Pod",
@@ -2856,7 +2856,7 @@
     "conceito": "Service",
     "termo_ingles": "Service",
     "traducao": "Serviço: recurso que oferece um endereço de rede estável para acessar um conjunto de Pods.",
-    "resumo": "Permite acessar Pods por um endereço estável, mesmo quando eles são substituídos e recebem novos endereços individuais.",
+    "resumo": "Dá aos Pods um endereço estável, mesmo quando são substituídos e mudam de IP. Exemplo: o front acessa \"backend\" sem saber quais Pods estão vivos.",
     "nao_confundir": [
       {
         "conceito": "Pod",
@@ -2878,7 +2878,7 @@
     "conceito": "Componentes de execução e agendamento",
     "termo_ingles": "kube-scheduler and kubelet",
     "traducao": "Agendador e agente do nó: escolhem onde executar Pods e garantem a execução dos contêineres.",
-    "resumo": "kube-scheduler escolhe o nó de cada Pod; kubelet acompanha os Pods e mantém seus contêineres em execução no nó.",
+    "resumo": "kube-scheduler escolhe o nó de cada Pod; kubelet mantém os contêineres rodando no nó. Exemplo: o scheduler põe o Pod no nó com memória livre.",
     "nao_confundir": [
       {
         "conceito": "kube-scheduler",
@@ -2902,7 +2902,7 @@
     "conceito": "Alta disponibilidade",
     "termo_ingles": "High Availability",
     "traducao": "Alta disponibilidade: capacidade de manter um serviço acessível durante a maior parte do tempo.",
-    "resumo": "Busca reduzir interrupções e manter o serviço funcionando, inclusive quando componentes apresentam falhas.",
+    "resumo": "Busca reduzir interrupções e manter o serviço no ar mesmo com falhas de componentes. Exemplo: o site segue funcionando quando um dos servidores queima.",
     "nao_confundir": [
       {
         "conceito": "Escalabilidade",
@@ -2924,7 +2924,7 @@
     "conceito": "Redundância",
     "termo_ingles": "Redundancy",
     "traducao": "Redundância: existência de componentes adicionais para substituir ou apoiar componentes que falham.",
-    "resumo": "Mantém recursos alternativos para reduzir interrupções. Um ponto único de falha é um componente cuja falha interrompe o serviço.",
+    "resumo": "Mantém recursos alternativos para reduzir interrupções e evitar ponto único de falha. Exemplo: dois links de internet de operadoras diferentes.",
     "nao_confundir": [
       {
         "conceito": "Ponto único de falha",
@@ -2947,7 +2947,7 @@
     "conceito": "Balanceamento de carga",
     "termo_ingles": "Load Balancing",
     "traducao": "Balanceamento de carga: distribuição de requisições entre recursos que atendem um serviço.",
-    "resumo": "Distribui o tráfego entre servidores disponíveis, evitando concentrar todas as requisições em um único recurso.",
+    "resumo": "Distribui o tráfego entre os servidores disponíveis, sem concentrar tudo num só. Exemplo: 3 servidores web recebem as visitas em revezamento.",
     "nao_confundir": [
       {
         "conceito": "Failover",
@@ -2969,7 +2969,7 @@
     "conceito": "Failover",
     "termo_ingles": "Failover",
     "traducao": "Transferência por falha: mudança do atendimento para um recurso alternativo quando o principal falha.",
-    "resumo": "Assume o atendimento por um recurso de reserva após a falha do recurso principal, automaticamente ou por ação operacional.",
+    "resumo": "Um recurso de reserva assume após a falha do principal, automaticamente ou por ação manual. Exemplo: o banco principal cai e a réplica vira principal.",
     "nao_confundir": [
       {
         "conceito": "Failback",
@@ -2992,7 +2992,7 @@
     "conceito": "Métricas MTBF e MTTR",
     "termo_ingles": "Mean Time Between Failures and Mean Time to Repair",
     "traducao": "Tempo médio entre falhas e tempo médio de reparo: medidas de frequência de falhas e duração da recuperação.",
-    "resumo": "MTBF mede o tempo médio de funcionamento entre falhas; MTTR mede o tempo médio para reparar e restaurar o serviço.",
+    "resumo": "MTBF: tempo médio entre falhas; MTTR: tempo médio para reparar. Exemplo: falha a cada 500 horas e volta em 2 horas.",
     "nao_confundir": [
       {
         "conceito": "MTBF",
@@ -3015,7 +3015,7 @@
     "conceito": "Objetivos RPO e RTO",
     "termo_ingles": "Recovery Point Objective and Recovery Time Objective",
     "traducao": "Objetivo de ponto e tempo de recuperação: limites de perda de dados e de duração da interrupção.",
-    "resumo": "RPO define a perda máxima de dados aceita, medida em tempo; RTO define o tempo máximo para restaurar o serviço.",
+    "resumo": "RPO: perda máxima de dados aceita, em tempo; RTO: tempo máximo para restaurar. Exemplo: RPO 1h e RTO 4h.",
     "nao_confundir": [
       {
         "conceito": "RPO",
@@ -3038,7 +3038,7 @@
     "conceito": "Zonas de disponibilidade",
     "termo_ingles": "Availability Zones",
     "traducao": "Zonas de disponibilidade: locais isolados dentro de uma região de nuvem, usados para distribuir recursos.",
-    "resumo": "Uma região é uma área geográfica do provedor; suas zonas são locais separados, projetados para reduzir falhas compartilhadas.",
+    "resumo": "Região é uma área geográfica do provedor; zonas são locais separados dentro dela, para não falharem juntos. Exemplo: servidores em duas zonas de São Paulo.",
     "nao_confundir": [
       {
         "conceito": "Região",
@@ -4049,7 +4049,7 @@
     "conceito": "Virtualização",
     "termo_ingles": "Virtualization",
     "traducao": "Virtualização: permite executar ambientes computacionais isolados no mesmo hardware físico.",
-    "resumo": "Abstrai os recursos de um computador físico para criar máquinas virtuais, cada uma com seu próprio sistema operacional.",
+    "resumo": "Abstrai os recursos de um computador físico para criar máquinas virtuais, cada uma com seu sistema. Exemplo: um servidor roda ao mesmo tempo Windows e Linux.",
     "nao_confundir": [
       {
         "conceito": "Contêiner",
@@ -4071,7 +4071,7 @@
     "conceito": "Hipervisor",
     "termo_ingles": "Hypervisor",
     "traducao": "Hipervisor: cria e administra máquinas virtuais, distribuindo os recursos do hardware físico.",
-    "resumo": "Software responsável por executar e gerenciar máquinas virtuais, controlando o acesso delas ao processamento, à memória e a outros recursos físicos.",
+    "resumo": "Software que executa e gerencia máquinas virtuais, controlando o acesso delas a processador, memória e outros recursos. Exemplo: VMware ESXi, Hyper-V, KVM.",
     "nao_confundir": [
       {
         "conceito": "Máquina virtual",
@@ -4093,7 +4093,7 @@
     "conceito": "Hipervisor tipo 1",
     "termo_ingles": "Type 1 Hypervisor",
     "traducao": "Hipervisor tipo 1: executa diretamente sobre o hardware físico.",
-    "resumo": "Também chamado bare metal, funciona diretamente sobre o hardware, sem depender de um sistema operacional convencional intermediário.",
+    "resumo": "Bare metal: roda direto sobre o hardware, sem sistema operacional comum no meio. Exemplo: VMware ESXi.",
     "nao_confundir": [
       {
         "conceito": "Hipervisor tipo 2",
@@ -4115,7 +4115,7 @@
     "conceito": "Hipervisor tipo 2",
     "termo_ingles": "Type 2 Hypervisor",
     "traducao": "Hipervisor tipo 2: executa como aplicação sobre um sistema operacional existente.",
-    "resumo": "Depende de um sistema operacional instalado no computador para acessar o hardware e executar máquinas virtuais.",
+    "resumo": "Depende de um sistema operacional instalado para acessar o hardware. Exemplo: VirtualBox no Windows.",
     "nao_confundir": [
       {
         "conceito": "Hipervisor tipo 1",
@@ -4137,7 +4137,7 @@
     "conceito": "Migração ao vivo",
     "termo_ingles": "Live Migration",
     "traducao": "Migração ao vivo: transfere uma máquina virtual em execução para outro servidor físico.",
-    "resumo": "Move uma máquina virtual ligada entre servidores físicos, transferindo seu estado de execução para reduzir ou evitar interrupções.",
+    "resumo": "Move uma máquina virtual ligada entre servidores físicos, levando seu estado de execução. Exemplo: manutenção no servidor sem desligar o sistema.",
     "nao_confundir": [
       {
         "conceito": "Migração a frio",
@@ -4159,7 +4159,7 @@
     "conceito": "Infraestrutura hiperconvergente",
     "termo_ingles": "Hyperconverged Infrastructure (HCI)",
     "traducao": "Infraestrutura hiperconvergente: integra processamento, armazenamento e rede em uma plataforma gerenciada por software.",
-    "resumo": "Combina recursos de processamento, armazenamento e rede em servidores integrados, cuja gestão é centralizada por software.",
+    "resumo": "Junta processamento, armazenamento e rede em servidores integrados, geridos por software. Exemplo: um cluster de 4 caixas iguais em vez de servidor, storage e switch separados.",
     "nao_confundir": [
       {
         "conceito": "Infraestrutura convergente",
@@ -4182,7 +4182,7 @@
     "conceito": "Infraestrutura como código",
     "termo_ingles": "Infrastructure as Code (IaC)",
     "traducao": "Infraestrutura como código: define e administra recursos de infraestrutura por arquivos de configuração.",
-    "resumo": "Descreve servidores, redes e outros recursos em arquivos que podem ser versionados, revisados e executados por ferramentas de automação.",
+    "resumo": "Descreve servidores e redes em arquivos versionados, revisados e executados por automação. Exemplo: o arquivo no Git cria a rede e 2 servidores com um comando.",
     "nao_confundir": [
       {
         "conceito": "Configuração manual",
@@ -4205,7 +4205,7 @@
     "conceito": "Abordagem declarativa",
     "termo_ingles": "Declarative Approach",
     "traducao": "Abordagem declarativa: descreve o estado final que a infraestrutura deve alcançar.",
-    "resumo": "Informa quais recursos e configurações devem existir, sem determinar cada passo necessário para criá-los.",
+    "resumo": "Diz o que deve existir, não cada passo para criar. Exemplo: \"quero 3 servidores\"; a ferramenta descobre o que falta.",
     "nao_confundir": [
       {
         "conceito": "Abordagem imperativa",
@@ -4227,7 +4227,7 @@
     "conceito": "Terraform",
     "termo_ingles": "Terraform",
     "traducao": "Terraform: compara a configuração declarada com a infraestrutura existente e propõe alterações.",
-    "resumo": "Ferramenta de IaC que cria, modifica e remove recursos para aproximar a infraestrutura real do estado descrito nos arquivos.",
+    "resumo": "Ferramenta de IaC que cria, muda e remove recursos para a infraestrutura bater com os arquivos. Exemplo: terraform apply cria a rede descrita no .tf.",
     "nao_confundir": [
       {
         "conceito": "Ansible",
@@ -4249,7 +4249,7 @@
     "conceito": "Ansible",
     "termo_ingles": "Ansible",
     "traducao": "Ansible: automatiza tarefas de configuração e implantação em máquinas por meio de playbooks.",
-    "resumo": "Ferramenta de automação que utiliza arquivos chamados playbooks para descrever tarefas, como instalar pacotes e alterar configurações.",
+    "resumo": "Ferramenta de automação que descreve tarefas em playbooks, como instalar pacotes e mudar configurações. Exemplo: um playbook instala o nginx em 50 servidores.",
     "nao_confundir": [
       {
         "conceito": "Terraform",
@@ -4294,7 +4294,7 @@
     "conceito": "Provisionamento",
     "termo_ingles": "Provisioning",
     "traducao": "Provisionamento: disponibiliza recursos de infraestrutura para uso.",
-    "resumo": "Cria e prepara recursos como máquinas virtuais, redes e serviços, deixando-os disponíveis para receber configurações e aplicações.",
+    "resumo": "Cria e prepara recursos como máquinas virtuais, redes e serviços para receber configurações e aplicações. Exemplo: criar o servidor antes de instalar o sistema.",
     "nao_confundir": [
       {
         "conceito": "Configuração",
@@ -4317,7 +4317,7 @@
     "conceito": "Computação sem servidor",
     "termo_ingles": "Serverless Computing",
     "traducao": "Computação sem servidor: permite executar aplicações sem administrar diretamente os servidores.",
-    "resumo": "Modelo em que o provedor administra a infraestrutura necessária para executar o código, ajustando os recursos conforme a demanda.",
+    "resumo": "O provedor administra a infraestrutura que executa o código e ajusta os recursos à demanda. Exemplo: AWS Lambda, Vercel Functions.",
     "nao_confundir": [
       {
         "conceito": "Infraestrutura como serviço (IaaS)",
@@ -4339,7 +4339,7 @@
     "conceito": "Função como serviço",
     "termo_ingles": "Function as a Service (FaaS)",
     "traducao": "Função como serviço: executa funções em resposta a eventos, sem administrar servidores.",
-    "resumo": "Modelo serverless em que pequenas unidades de código são acionadas por eventos, como uma requisição ou o envio de um arquivo.",
+    "resumo": "Pequenas unidades de código acionadas por eventos, como requisição ou envio de arquivo. Exemplo: a foto enviada dispara uma função que gera a miniatura.",
     "nao_confundir": [
       {
         "conceito": "Plataforma como serviço",
@@ -4361,7 +4361,7 @@
     "conceito": "Backend como serviço",
     "termo_ingles": "Backend as a Service (BaaS)",
     "traducao": "Backend como serviço: disponibiliza serviços prontos de back-end por interfaces de programação.",
-    "resumo": "Back-end é a parte do sistema que roda no servidor. BaaS oferece peças prontas dele (autenticação, banco de dados, armazenamento) acessadas por API.",
+    "resumo": "Back-end é a parte que roda no servidor; BaaS oferece peças prontas dele (login, banco, armazenamento) por API. Exemplo: o Supabase do FocoPro.",
     "nao_confundir": [
       {
         "conceito": "Função como serviço",
@@ -4383,7 +4383,7 @@
     "conceito": "Cobrança por uso",
     "termo_ingles": "Pay-per-use",
     "traducao": "Cobrança por uso: calcula o custo conforme a utilização dos recursos contratados.",
-    "resumo": "Em serviços serverless, a cobrança pode considerar quantidade de execuções, duração e recursos consumidos.",
+    "resumo": "No serverless, a cobrança pode considerar execuções, duração e recursos usados. Exemplo: sem acessos à noite, não se paga nada.",
     "nao_confundir": [
       {
         "conceito": "Cobrança fixa",
@@ -4405,7 +4405,7 @@
     "conceito": "Inicialização a frio",
     "termo_ingles": "Cold Start",
     "traducao": "Inicialização a frio: adiciona tempo à execução quando é necessário preparar um novo ambiente.",
-    "resumo": "Acontece quando o serviço precisa preparar um ambiente de execução antes de iniciar a função, acrescentando atraso (latência) à chamada.",
+    "resumo": "O serviço prepara um ambiente antes de rodar a função, o que atrasa a chamada. Exemplo: a primeira requisição do dia demora 2 segundos.",
     "nao_confundir": [
       {
         "conceito": "Inicialização aquecida",
@@ -4427,7 +4427,7 @@
     "conceito": "Observabilidade",
     "termo_ingles": "Observability",
     "traducao": "Observabilidade: permite investigar o estado interno de um sistema a partir dos dados que ele produz.",
-    "resumo": "Utiliza sinais como registros de eventos, métricas e rastros de requisições para compreender o comportamento do sistema.",
+    "resumo": "Usa registros de eventos, métricas e rastros de requisições para entender o comportamento do sistema. Exemplo: descobrir por que o checkout ficou lento ontem às 20h.",
     "nao_confundir": [
       {
         "conceito": "Monitoramento",
@@ -4449,7 +4449,7 @@
     "conceito": "Registros de eventos",
     "termo_ingles": "Logs",
     "traducao": "Registros de eventos: armazenam informações sobre acontecimentos durante a execução de um sistema.",
-    "resumo": "Registram ocorrências como erros, acessos e operações realizadas, sempre com data e hora.",
+    "resumo": "Registram ocorrências como erros, acessos e operações, sempre com data e hora. Exemplo: \"2026-11-25 14:02 ERRO login falhou para ana\".",
     "nao_confundir": [
       {
         "conceito": "Métricas",
@@ -4471,7 +4471,7 @@
     "conceito": "Métricas",
     "termo_ingles": "Metrics",
     "traducao": "Métricas: representam medições numéricas coletadas durante a execução de um sistema.",
-    "resumo": "Permitem acompanhar valores como uso de memória, quantidade de requisições e tempo de resposta ao longo do tempo.",
+    "resumo": "Acompanham valores como memória, quantidade de requisições e tempo de resposta ao longo do tempo. Exemplo: gráfico do tempo de resposta por minuto.",
     "nao_confundir": [
       {
         "conceito": "Logs",
@@ -4493,7 +4493,7 @@
     "conceito": "Rastreamento distribuído",
     "termo_ingles": "Distributed Tracing",
     "traducao": "Rastreamento distribuído: acompanha o percurso de uma requisição por diferentes serviços.",
-    "resumo": "Registra as etapas percorridas por uma requisição e o tempo gasto em cada serviço de uma aplicação distribuída.",
+    "resumo": "Registra as etapas de uma requisição e o tempo gasto em cada serviço. Exemplo: o pedido levou 900 ms, 700 deles no serviço de pagamento.",
     "nao_confundir": [
       {
         "conceito": "Logs",
@@ -4515,7 +4515,7 @@
     "conceito": "Prometheus",
     "termo_ingles": "Prometheus",
     "traducao": "Prometheus: coleta e armazena métricas ao longo do tempo (séries temporais) para monitorar sistemas.",
-    "resumo": "Ferramenta de monitoramento que coleta medições identificadas por nomes e etiquetas, armazenando seus valores ao longo do tempo.",
+    "resumo": "Ferramenta de monitoramento que coleta medições com nome e etiquetas e guarda seus valores no tempo. Exemplo: http_requests_total{status=\"500\"}.",
     "nao_confundir": [
       {
         "conceito": "Grafana",
@@ -4537,7 +4537,7 @@
     "conceito": "Contador",
     "termo_ingles": "Counter",
     "traducao": "Contador: acumula valores que aumentam ou são reiniciados.",
-    "resumo": "Tipo de métrica usado para totais acumulados, como quantidade de requisições atendidas ou erros registrados.",
+    "resumo": "Tipo de métrica para totais acumulados, que só crescem. Exemplo: quantidade de requisições atendidas desde o início.",
     "nao_confundir": [
       {
         "conceito": "Medidor",
@@ -4559,7 +4559,7 @@
     "conceito": "Medidor",
     "termo_ingles": "Gauge",
     "traducao": "Medidor: registra um valor que pode aumentar ou diminuir.",
-    "resumo": "Tipo de métrica usado para valores variáveis, como temperatura, memória em uso ou quantidade atual de itens em uma fila.",
+    "resumo": "Tipo de métrica para valores que sobem e descem. Exemplo: memória em uso ou itens na fila agora.",
     "nao_confundir": [
       {
         "conceito": "Contador",
@@ -4581,7 +4581,7 @@
     "conceito": "Grafana",
     "termo_ingles": "Grafana",
     "traducao": "Grafana: consulta fontes de dados e apresenta informações em painéis e gráficos.",
-    "resumo": "Ferramenta de visualização que reúne dados de fontes como Prometheus e os apresenta em painéis para acompanhamento.",
+    "resumo": "Ferramenta de visualização que reúne dados de fontes como o Prometheus em painéis. Exemplo: um painel com CPU, erros e tempo de resposta.",
     "nao_confundir": [
       {
         "conceito": "Prometheus",
@@ -6207,7 +6207,7 @@
     "conceito": "Arquitetura em camadas",
     "termo_ingles": "Layered architecture",
     "traducao": "Arquitetura em camadas: separa as responsabilidades do sistema em divisões lógicas.",
-    "resumo": "Cada camada tem uma função. Na arquitetura de três camadas, apresentação atende à interface, negócio aplica regras e dados acessa armazenamento.",
+    "resumo": "Cada camada tem uma função: apresentação atende a interface, negócio aplica regras e dados acessa o armazenamento. Exemplo: tela, regra de desconto e banco separados.",
     "nao_confundir": [
       {
         "conceito": "Modelo–visão–controlador",
@@ -6229,7 +6229,7 @@
     "conceito": "Modelo–visão–controlador (MVC)",
     "termo_ingles": "Model–View–Controller (MVC)",
     "traducao": "Modelo–visão–controlador: separa dados, apresentação e fluxo de interação.",
-    "resumo": "O modelo representa o estado e a lógica de negócio, a visão apresenta a tela e o controlador trata a interação do usuário.",
+    "resumo": "Modelo: estado e regras; visão: a tela; controlador: trata a interação. Exemplo: clicar \"comprar\" (controlador) atualiza o carrinho (modelo) e a tela (visão).",
     "nao_confundir": [
       {
         "conceito": "Arquitetura em camadas",
@@ -6251,7 +6251,7 @@
     "conceito": "Arquitetura monolítica",
     "termo_ingles": "Monolithic architecture",
     "traducao": "Arquitetura monolítica: constrói e implanta a aplicação como uma unidade.",
-    "resumo": "A aplicação é estruturada como um único componente implantável, que usa um único banco de dados.",
+    "resumo": "A aplicação é um único componente implantável, com um único banco de dados. Exemplo: loja virtual em que catálogo, carrinho e pagamento sobem juntos.",
     "nao_confundir": [
       {
         "conceito": "Arquitetura de microsserviços",
@@ -6273,7 +6273,7 @@
     "conceito": "Arquitetura orientada a serviços",
     "termo_ingles": "Service-Oriented Architecture (SOA)",
     "traducao": "Arquitetura orientada a serviços: cria aplicações a partir de componentes de software chamados serviços.",
-    "resumo": "Na arquitetura orientada a serviços (SOA), aplicações são criadas com serviços que outros sistemas reutilizam, chamando-os por uma interface que define como invocá-los.",
+    "resumo": "Aplicações feitas de serviços reutilizados por outros sistemas, chamados por uma interface definida. Exemplo: o serviço de CEP usado por vários sistemas do governo.",
     "nao_confundir": [
       {
         "conceito": "Arquitetura de microsserviços",
@@ -6295,7 +6295,7 @@
     "conceito": "Arquitetura de microsserviços",
     "termo_ingles": "Microservices architecture",
     "traducao": "Arquitetura de microsserviços: divide a aplicação em serviços pequenos e autônomos.",
-    "resumo": "Cada serviço atende uma capacidade do negócio e pode ser desenvolvido, implantado e escalado de forma independente.",
+    "resumo": "Cada serviço atende uma capacidade do negócio e é desenvolvido, implantado e escalado sozinho. Exemplo: pagamento ganha mais servidores sem mexer no catálogo.",
     "nao_confundir": [
       {
         "conceito": "Arquitetura monolítica",
@@ -6319,7 +6319,7 @@
     "conceito": "Banco de dados por serviço",
     "termo_ingles": "Database per service",
     "traducao": "Banco de dados por serviço: mantém os dados de cada serviço sob seu próprio controle.",
-    "resumo": "Os dados de cada serviço são privados e só podem ser acessados pela API desse serviço.",
+    "resumo": "Dados de cada serviço são privados, acessados só pela API dele. Exemplo: o estoque pergunta ao serviço de pedidos.",
     "nao_confundir": [
       {
         "conceito": "Banco de dados compartilhado",
@@ -6341,7 +6341,7 @@
     "conceito": "Gateway de API",
     "termo_ingles": "API gateway",
     "traducao": "Gateway de API: ponto de entrada que recebe chamadas externas e as encaminha aos serviços.",
-    "resumo": "O gateway oferece aos clientes um ponto de entrada único e direciona cada chamada ao serviço apropriado.",
+    "resumo": "Ponto de entrada único que direciona cada chamada ao serviço certo. Exemplo: /pedidos vai ao serviço de pedidos; /pagamentos, ao de pagamentos.",
     "nao_confundir": [
       {
         "conceito": "Malha de serviços",
@@ -6363,7 +6363,7 @@
     "conceito": "Malha de serviços",
     "termo_ingles": "Service mesh",
     "traducao": "Malha de serviços: gerencia comunicação e tráfego entre serviços.",
-    "resumo": "Uma camada de infraestrutura controla a comunicação entre serviços, aplicando regras de tráfego e segurança e coletando dados de monitoramento.",
+    "resumo": "Camada de infraestrutura que controla a comunicação entre serviços: tráfego, segurança e monitoramento. Exemplo: o Istio cifra e mede as chamadas entre microsserviços.",
     "nao_confundir": [
       {
         "conceito": "Gateway de API",
@@ -6743,7 +6743,7 @@
     "conceito": "Processo",
     "termo_ingles": "process",
     "traducao": "Processo: instância de um programa enquanto executa sob gerenciamento do sistema operacional.",
-    "resumo": "O processo é a abstração de um programa em execução; o sistema mantém informações para interromper e retomar sua execução.",
+    "resumo": "Abstração de um programa em execução; o sistema guarda o necessário para interrompê-lo e retomá-lo. Exemplo: dois navegadores abertos são dois processos.",
     "nao_confundir": [
       {
         "conceito": "Programa",
@@ -6765,7 +6765,7 @@
     "conceito": "Concorrência",
     "termo_ingles": "concurrency",
     "traducao": "Concorrência: permite que mais de uma tarefa progrida em períodos sobrepostos.",
-    "resumo": "O sistema alterna a execução de tarefas para que várias avancem durante um mesmo intervalo de tempo.",
+    "resumo": "O sistema alterna tarefas para que várias avancem no mesmo intervalo de tempo. Exemplo: ouvir música enquanto baixa um arquivo num processador de um núcleo.",
     "nao_confundir": [
       {
         "conceito": "Paralelismo",
@@ -6786,7 +6786,7 @@
     "conceito": "Thread",
     "termo_ingles": "thread",
     "traducao": "Fluxo de execução: progride dentro de um processo e mantém estado próprio.",
-    "resumo": "Uma thread executa parte do trabalho de um processo; várias threads podem avançar de forma concorrente.",
+    "resumo": "Executa parte do trabalho de um processo; várias threads avançam de forma concorrente. Exemplo: no editor, uma thread digita e outra corrige a ortografia.",
     "nao_confundir": [
       {
         "conceito": "Processo",
@@ -6808,7 +6808,7 @@
     "conceito": "Escalonamento round-robin",
     "termo_ingles": "round-robin scheduling",
     "traducao": "Escalonamento circular: alterna processos após cada intervalo de uso do processador.",
-    "resumo": "Cada processo recebe um intervalo fixo, chamado quantum; ao fim dele, o próximo processo recebe o processador.",
+    "resumo": "Cada processo recebe um intervalo fixo, o quantum, e depois passa a vez. Exemplo: com quantum de 10 ms, cada um roda 10 ms e volta à fila.",
     "nao_confundir": [
       {
         "conceito": "FIFO (primeiro a chegar, primeiro a sair)",
@@ -6830,7 +6830,7 @@
     "conceito": "Memória virtual",
     "termo_ingles": "virtual memory",
     "traducao": "Memória virtual: oferece a cada processo seu próprio espaço de endereços, independente de onde os dados estão na memória física.",
-    "resumo": "Espaço de endereços é o conjunto de posições que o processo pode referenciar; memória física armazena instruções e dados em uso.",
+    "resumo": "Cada processo vê um espaço de endereços próprio, mapeado para a memória física. Exemplo: rodar programas que somam mais que a RAM, usando o disco.",
     "nao_confundir": [
       {
         "conceito": "Memória física",
@@ -6852,7 +6852,7 @@
     "conceito": "Paginação",
     "termo_ingles": "paging",
     "traducao": "Paginação: divide endereços virtuais e memória física em blocos fixos correspondentes.",
-    "resumo": "Cada página virtual tem o mesmo tamanho que um quadro da memória física, onde pode ser carregada.",
+    "resumo": "Cada página virtual tem o tamanho de um quadro da memória física, onde pode ser carregada. Exemplo: páginas de 4 KB carregadas em quadros de 4 KB.",
     "nao_confundir": [
       {
         "conceito": "Segmentação",
@@ -6874,7 +6874,7 @@
     "conceito": "Deadlock",
     "termo_ingles": "deadlock",
     "traducao": "Impasse: bloqueio em que processos aguardam recursos retidos uns pelos outros.",
-    "resumo": "Recurso é um item necessário ao processo; no deadlock, a espera circular impede que os envolvidos prossigam.",
+    "resumo": "Espera circular por recursos impede que os envolvidos prossigam. Exemplo: A tem a impressora e espera o scanner; B tem o scanner e espera a impressora.",
     "nao_confundir": [
       {
         "conceito": "Condição de corrida",
@@ -6896,7 +6896,7 @@
     "conceito": "Permissões de arquivo",
     "termo_ingles": "file permissions",
     "traducao": "Permissão de arquivo: controla leitura, escrita ou execução por dono, grupo e demais usuários.",
-    "resumo": "Arquivo é uma unidade nomeada de dados; no Linux, chmod altera os bits de permissão associados a ele.",
+    "resumo": "No Linux, chmod altera os bits de permissão de um arquivo. Exemplo: chmod 755 script.sh dá rwx ao dono e r-x aos outros.",
     "nao_confundir": [
       {
         "conceito": "chown",
@@ -6919,7 +6919,7 @@
     "conceito": "Link simbólico",
     "termo_ingles": "symbolic link",
     "traducao": "Link simbólico: arquivo que guarda o caminho de outro arquivo ou diretório.",
-    "resumo": "O link simbólico pode apontar para diretórios e para outros sistemas de arquivos (ex.: outro disco); o hard link não.",
+    "resumo": "Pode apontar para diretórios e para outro sistema de arquivos; o hard link não. Exemplo: ln -s /mnt/disco2/fotos ~/fotos.",
     "nao_confundir": [
       {
         "conceito": "Hard link",
@@ -6942,7 +6942,7 @@
     "conceito": "Ferramenta avançada de pacotes (APT)",
     "termo_ingles": "Advanced Package Tool",
     "traducao": "APT: ferramenta de alto nível para instalar, atualizar e remover pacotes Debian.",
-    "resumo": "APT usa repositórios (catálogos de pacotes) para localizar versões e gerenciar programas instaláveis no sistema.",
+    "resumo": "Usa repositórios para localizar versões e gerenciar programas instaláveis. Exemplo: sudo apt install git.",
     "nao_confundir": [
       {
         "conceito": "dpkg, ferramenta de gerenciamento de pacotes Debian",
@@ -6965,7 +6965,7 @@
     "conceito": "sudo",
     "termo_ingles": "sudo",
     "traducao": "Sudo: executa um comando autorizado como superusuário ou outro usuário.",
-    "resumo": "Superusuário é a conta administrativa; shell é o interpretador que recebe comandos e inicia sua execução.",
+    "resumo": "Executa um comando com privilégios de superusuário (conta administrativa). Exemplo: sudo apt update.",
     "nao_confundir": [
       {
         "conceito": "Sessão de login como superusuário",
@@ -6987,7 +6987,7 @@
     "conceito": "Pipe",
     "termo_ingles": "pipe",
     "traducao": "Canal de comunicação: conduz dados escritos em uma extremidade para leitura na outra.",
-    "resumo": "Pipe é canal unidirecional entre processos; uma extremidade recebe dados escritos na outra.",
+    "resumo": "Canal unidirecional entre processos: o que um escreve, o outro lê. Exemplo: ls | grep .txt.",
     "nao_confundir": [
       {
         "conceito": "Canal nomeado",
@@ -7009,7 +7009,7 @@
     "conceito": "Sistema distribuído",
     "termo_ingles": "distributed system",
     "traducao": "Sistema distribuído: elementos computacionais autônomos que aparentam formar um sistema coerente.",
-    "resumo": "Elemento autônomo age de forma independente; o sistema reúne esses elementos e aparenta ser uma unidade coerente para seus usuários.",
+    "resumo": "Elementos autônomos que aparentam ser um sistema único e coerente para os usuários. Exemplo: a busca do Google roda em milhares de servidores.",
     "nao_confundir": [
       {
         "conceito": "Computação paralela",
@@ -7030,7 +7030,7 @@
     "conceito": "Troca de mensagens",
     "termo_ingles": "message passing",
     "traducao": "Troca de mensagens: comunicação em que processos enviam informação uns aos outros.",
-    "resumo": "Nó é elemento computacional independente; nós cooperam enviando mensagens e respondendo às mensagens recebidas.",
+    "resumo": "Nós independentes cooperam enviando e respondendo mensagens. Exemplo: o servidor de pedidos manda mensagem ao de estoque e aguarda resposta.",
     "nao_confundir": [
       {
         "conceito": "Memória compartilhada",
@@ -7052,7 +7052,7 @@
     "conceito": "Paralelização",
     "termo_ingles": "parallelization",
     "traducao": "Paralelização: distribui partes do trabalho entre processadores para executá-las ao mesmo tempo.",
-    "resumo": "Aplicações paralelizadas podem espalhar trabalho por vários processadores e usar seus recursos para executar mais depressa.",
+    "resumo": "Espalha o trabalho por vários processadores para terminar mais depressa. Exemplo: renderizar um vídeo dividindo os quadros entre 8 núcleos.",
     "nao_confundir": [
       {
         "conceito": "Concorrência",
@@ -7073,7 +7073,7 @@
     "conceito": "Cluster computacional",
     "termo_ingles": "cluster computing",
     "traducao": "Cluster: conjunto de computadores conectados para executar trabalho coordenado.",
-    "resumo": "Cluster de computação de alto desempenho reúne computadores semelhantes conectados por uma rede rápida.",
+    "resumo": "Computadores semelhantes ligados por rede rápida para alto desempenho. Exemplo: o supercomputador de previsão do tempo.",
     "nao_confundir": [
       {
         "conceito": "Grade computacional",
@@ -7096,7 +7096,7 @@
     "conceito": "Escalabilidade de sistemas distribuídos",
     "termo_ingles": "scalability",
     "traducao": "Escalabilidade: capacidade de um sistema continuar atendendo ao crescer em usuários ou carga.",
-    "resumo": "A escalabilidade pode ser de tamanho, geográfica ou administrativa, conforme o que cresce no sistema.",
+    "resumo": "Pode ser de tamanho, geográfica ou administrativa, conforme o que cresce. Exemplo: atender usuários em vários continentes é escalabilidade geográfica.",
     "nao_confundir": [
       {
         "conceito": "Escalabilidade vertical",
@@ -7627,7 +7627,7 @@
     "conceito": "Serviço",
     "termo_ingles": "service",
     "traducao": "Serviço: meio que facilita resultados desejados pelo cliente.",
-    "resumo": "Serviço facilita resultados desejados pelo cliente, quem recebe a oferta, sem que ele precise gerenciar custos e riscos específicos.",
+    "resumo": "Facilita resultados que o cliente quer, sem que ele gerencie custos e riscos específicos. Exemplo: o e-mail corporativo: a empresa usa sem cuidar dos servidores.",
     "nao_confundir": [
       {
         "conceito": "Produto",
@@ -7649,7 +7649,7 @@
     "conceito": "Gerenciamento de incidentes (ITIL 4)",
     "termo_ingles": "incident management",
     "traducao": "Gerenciamento de incidentes: coordena a resposta a interrupções do serviço.",
-    "resumo": "Prática que coordena a resposta a incidentes, isto é, a interrupções que afetam o serviço.",
+    "resumo": "Coordena a resposta a incidentes, interrupções que afetam o serviço, para restaurá-lo rápido. Exemplo: o sistema de vendas caiu; a equipe o põe no ar de novo.",
     "nao_confundir": [
       {
         "conceito": "Gerenciamento de problemas",
@@ -7671,7 +7671,7 @@
     "conceito": "Gerenciamento de problemas (ITIL 4)",
     "termo_ingles": "problem management",
     "traducao": "Gerenciamento de problemas: identifica causas de incidentes e reduz sua recorrência.",
-    "resumo": "Prática que identifica causas reais ou potenciais de incidentes para reduzir sua probabilidade e impacto.",
+    "resumo": "Identifica causas reais ou potenciais de incidentes para reduzir probabilidade e impacto. Exemplo: o sistema cai toda segunda; descobrir que é o backup que lota o disco.",
     "nao_confundir": [
       {
         "conceito": "Gerenciamento de incidentes",
@@ -7693,7 +7693,7 @@
     "conceito": "Solicitação de serviço (ITIL 4)",
     "termo_ingles": "service request",
     "traducao": "Solicitação de serviço: pedido do usuário por algo previamente oferecido.",
-    "resumo": "Trata pedidos por serviço, informação ou acesso na infraestrutura de TI.",
+    "resumo": "Trata pedidos por serviço, informação ou acesso, que não são falhas. Exemplo: pedir acesso a uma pasta ou um notebook novo.",
     "nao_confundir": [
       {
         "conceito": "Incidente",
@@ -7715,7 +7715,7 @@
     "conceito": "Sistema de valor de serviço (SVS)",
     "termo_ingles": "service value system",
     "traducao": "Sistema de valor de serviço: integra componentes e atividades para criar valor.",
-    "resumo": "Modelo que reúne elementos e atividades organizacionais para coordenar criação e gestão de serviços.",
+    "resumo": "Reúne elementos e atividades da organização para criar e gerir serviços com valor. Exemplo: princípios, governança, cadeia de valor, práticas e melhoria contínua trabalhando juntos.",
     "nao_confundir": [
       {
         "conceito": "Cadeia de valor de serviço",
@@ -7737,7 +7737,7 @@
     "conceito": "Cadeia de valor de serviço (SVC)",
     "termo_ingles": "service value chain",
     "traducao": "Cadeia de valor de serviço: organiza atividades que atendem demandas e criam valor.",
-    "resumo": "Modelo que organiza fluxos de valor, sequências de atividades que transformam demandas em produtos e serviços.",
+    "resumo": "Organiza fluxos de valor que transformam demandas em produtos e serviços. Exemplo: planejar, melhorar, engajar, projetar, obter e entregar.",
     "nao_confundir": [
       {
         "conceito": "Sistema de valor de serviço (SVS)",
@@ -7759,7 +7759,7 @@
     "conceito": "Quatro dimensões do gerenciamento de serviços",
     "termo_ingles": "four dimensions of service management",
     "traducao": "Quatro dimensões: perspectivas que influenciam o gerenciamento de serviços.",
-    "resumo": "Quadro da ITIL 4 que considera quatro perspectivas organizacionais ao gerenciar serviços.",
+    "resumo": "Considera quatro perspectivas ao gerenciar serviços. Exemplo: organizações e pessoas; informação e tecnologia; parceiros; fluxos de valor e processos.",
     "nao_confundir": [
       {
         "conceito": "Cadeia de valor de serviço",
@@ -7781,7 +7781,7 @@
     "conceito": "Prática de gerenciamento (ITIL 4)",
     "termo_ingles": "management practice",
     "traducao": "Prática de gerenciamento: reúne recursos organizacionais para realizar trabalho ou atingir objetivo.",
-    "resumo": "Conjunto de recursos da organização usado para executar trabalho ou alcançar um objetivo.",
+    "resumo": "Conjunto de recursos organizacionais usado para executar trabalho ou alcançar um objetivo. Exemplo: gerenciamento de incidentes é uma das 34 práticas da ITIL 4.",
     "nao_confundir": [
       {
         "conceito": "Processo",
@@ -7803,7 +7803,7 @@
     "conceito": "Control Objectives for Information and Related Technologies (COBIT)",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "Framework da ISACA para governança e gestão de informação e tecnologia, que alinha decisões às metas empresariais.",
+    "resumo": "Framework da ISACA para governança e gestão de informação e tecnologia, alinhadas às metas da empresa. Exemplo: o conselho prioriza projetos com base nele.",
     "nao_confundir": [
       {
         "conceito": "ITIL 4",
@@ -7825,7 +7825,7 @@
     "conceito": "Governança de tecnologia e informação",
     "termo_ingles": "information and technology governance",
     "traducao": "Governança: avalia necessidades, define direção e monitora resultados.",
-    "resumo": "Função que orienta decisões sobre informação e tecnologia e alinha essa direção às metas empresariais.",
+    "resumo": "Orienta decisões sobre informação e tecnologia e as alinha às metas da empresa. Exemplo: o comitê decide investir em nuvem; a gestão executa.",
     "nao_confundir": [
       {
         "conceito": "Gestão de tecnologia e informação",
@@ -7849,7 +7849,7 @@
     "conceito": "Gestão de tecnologia e informação",
     "termo_ingles": "information and technology management",
     "traducao": "Gestão: planeja e executa atividades alinhadas à direção definida pela governança.",
-    "resumo": "Função que planeja, constrói, executa e monitora atividades conforme a direção estabelecida pela governança.",
+    "resumo": "Planeja, constrói, executa e monitora atividades conforme a direção da governança. Exemplo: o gerente de TI conduz a migração aprovada.",
     "nao_confundir": [
       {
         "conceito": "Governança de tecnologia e informação",
@@ -7872,7 +7872,7 @@
     "conceito": "Componentes do sistema de governança",
     "termo_ingles": "governance system components",
     "traducao": "Componentes: fatores que, em conjunto, apoiam objetivos de governança e gestão.",
-    "resumo": "Fatores que, individualmente ou em conjunto, contribuem para o funcionamento do sistema de governança.",
+    "resumo": "Fatores que, sozinhos ou juntos, fazem o sistema de governança funcionar. Exemplo: processos, estruturas, políticas, cultura, informação, pessoas e infraestrutura.",
     "nao_confundir": [
       {
         "conceito": "Processo",
@@ -7894,7 +7894,7 @@
     "conceito": "Nível de capacidade de processo",
     "termo_ingles": "process capability level",
     "traducao": "Nível de capacidade: mede o desempenho de um processo em escala de zero a cinco.",
-    "resumo": "Medida de quão bem um processo foi implementado e está funcionando, em níveis de zero a cinco.",
+    "resumo": "Mede quão bem um processo está implementado e funcionando, de zero a cinco. Exemplo: nível 0, processo inexistente; nível 5, otimizado.",
     "nao_confundir": [
       {
         "conceito": "Nível de maturidade de área de foco",
@@ -7916,7 +7916,7 @@
     "conceito": "Corpo de conhecimento em gestão de dados (DMBOK)",
     "termo_ingles": "Data Management Body of Knowledge",
     "traducao": "Corpo de conhecimento em gestão de dados: organiza áreas e práticas da disciplina.",
-    "resumo": "Guia da Data Management Association (DAMA) que organiza gestão de dados em onze áreas de conhecimento.",
+    "resumo": "Guia da DAMA que organiza a gestão de dados em onze áreas. Exemplo: governança, qualidade, segurança e metadados.",
     "nao_confundir": [
       {
         "conceito": "Gestão de dados",
@@ -7938,7 +7938,7 @@
     "conceito": "Governança de dados",
     "termo_ingles": "data governance",
     "traducao": "Governança de dados: define prestação de contas, políticas e direitos de decisão sobre dados.",
-    "resumo": "Função que estabelece prestação de contas, políticas e direitos de decisão para orientar o uso dos dados.",
+    "resumo": "Estabelece responsabilidades, políticas e direitos de decisão sobre o uso dos dados. Exemplo: definir quem aprova mudanças no cadastro de clientes.",
     "nao_confundir": [
       {
         "conceito": "Gestão de dados",
@@ -7961,7 +7961,7 @@
     "conceito": "Responsável pelos dados (data owner)",
     "termo_ingles": "data owner",
     "traducao": "Responsável pelos dados: responde por decisões sobre dados de um domínio organizacional.",
-    "resumo": "Pessoa responsável por decisões de negócio sobre dados de seu domínio, isto é, de uma área organizacional.",
+    "resumo": "Pessoa que decide, pelo negócio, sobre os dados de sua área. Exemplo: o diretor financeiro é dono dos dados de contas a pagar.",
     "nao_confundir": [
       {
         "conceito": "Administrador de banco de dados",
@@ -7983,7 +7983,7 @@
     "conceito": "Metadados",
     "termo_ingles": "metadata",
     "traducao": "Metadados: fornecem contexto e significado para interpretar outros dados.",
-    "resumo": "Dados descritivos que contextualizam outros dados e ajudam a localizá-los, utilizá-los e auditá-los.",
+    "resumo": "Dados que descrevem outros dados e ajudam a localizá-los, usá-los e auditá-los. Exemplo: autor, data de criação e significado de uma coluna.",
     "nao_confundir": [
       {
         "conceito": "Dado de negócio",
@@ -8005,7 +8005,7 @@
     "conceito": "Qualidade de dados",
     "termo_ingles": "data quality",
     "traducao": "Qualidade de dados: indica se dados são precisos, completos e confiáveis.",
-    "resumo": "Conjunto de características que permite confiar nos dados para decisões e usos organizacionais.",
+    "resumo": "Características que permitem confiar nos dados para decidir. Exemplo: cadastro sem CPF duplicado e endereços atualizados.",
     "nao_confundir": [
       {
         "conceito": "Governança de dados",
@@ -8096,7 +8096,7 @@
     "conceito": "Quartis",
     "termo_ingles": "Quartiles",
     "traducao": "Quartis: dividem os dados ordenados em quatro partes, indicando posições de referência.",
-    "resumo": "Q1 marca aproximadamente 25% dos dados; Q2 corresponde à mediana; Q3 marca aproximadamente 75%.",
+    "resumo": "Q1 marca cerca de 25% dos dados; Q2 é a mediana; Q3 marca cerca de 75%. Exemplo: em 1 a 9, Q2 = 5.",
     "nao_confundir": [
       {
         "conceito": "Percentis",
@@ -8119,7 +8119,7 @@
     "conceito": "Percentis",
     "termo_ingles": "Percentiles",
     "traducao": "Percentis: indicam posições que dividem os dados ordenados em cem partes.",
-    "resumo": "O percentil 25 indica a posição abaixo da qual estão cerca de 25% dos dados ordenados.",
+    "resumo": "O percentil 25 é a posição abaixo da qual estão cerca de 25% dos dados ordenados. Exemplo: nota no percentil 90 supera cerca de 90% dos candidatos.",
     "nao_confundir": [
       {
         "conceito": "Quartis",
@@ -8165,7 +8165,7 @@
     "conceito": "Variância",
     "termo_ingles": "Variance",
     "traducao": "Variância: média dos desvios em relação à média, elevados ao quadrado (na população).",
-    "resumo": "Para 2, 4 e 6, a média é 4; os desvios ao quadrado são 4, 0 e 4. Dividindo por n = 3 (população), dá 8/3.",
+    "resumo": "Média dos desvios ao quadrado em relação à média. Exemplo: em 2, 4 e 6, a média é 4; desvios ao quadrado 4, 0 e 4; população: 8/3.",
     "nao_confundir": [
       {
         "conceito": "Desvio padrão",
@@ -8234,7 +8234,7 @@
     "conceito": "Variância populacional e amostral",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "População é todo o conjunto estudado; amostra, uma parte dele. Na população divide-se por N; na amostra, por n − 1.",
+    "resumo": "População é o conjunto todo; amostra, uma parte. Na população divide-se por N; na amostra, por n − 1. Exemplo: 5 valores de amostra dividem por 4.",
     "nao_confundir": [
       {
         "conceito": "Desvio padrão populacional e amostral",
@@ -8278,7 +8278,7 @@
     "conceito": "Tipos de variável",
     "termo_ingles": "Variable types",
     "traducao": "Tipos de variável: qualitativa (categórica) ou quantitativa (numérica).",
-    "resumo": "A qualitativa (categórica) descreve atributos, como setor; a quantitativa resulta de contar ou medir, como idade ou número de operações.",
+    "resumo": "A qualitativa descreve atributos; a quantitativa vem de contar ou medir. Exemplo: setor é qualitativa; idade e número de operações, quantitativas.",
     "nao_confundir": [
       {
         "conceito": "Dados discretos e contínuos",
@@ -8299,7 +8299,7 @@
     "conceito": "Frequência absoluta",
     "termo_ingles": "Absolute frequency",
     "traducao": "Frequência absoluta: informa quantas vezes determinado valor ou categoria aparece nos dados.",
-    "resumo": "Se 8 pessoas escolheram a opção A, a frequência absoluta dessa opção é 8.",
+    "resumo": "Quantas vezes um valor aparece. Exemplo: se 8 pessoas escolheram a opção A, a frequência absoluta de A é 8.",
     "nao_confundir": [
       {
         "conceito": "Frequência relativa",
@@ -8320,7 +8320,7 @@
     "conceito": "Frequências relativa e acumulada",
     "termo_ingles": "Relative and cumulative frequency",
     "traducao": "Frequência relativa: representa a proporção no total; frequência acumulada: soma frequências até determinada posição.",
-    "resumo": "Com 20 observações e 5 ocorrências, a frequência relativa é 5/20 = 25%. A acumulada soma frequências sucessivas.",
+    "resumo": "A relativa divide pelo total; a acumulada soma as frequências sucessivas. Exemplo: 5 ocorrências em 20 observações = 25%.",
     "nao_confundir": [
       {
         "conceito": "Frequência absoluta",
@@ -8341,7 +8341,7 @@
     "conceito": "Espaço amostral e evento",
     "termo_ingles": "Sample space and event",
     "traducao": "Espaço amostral: reúne todos os resultados possíveis; evento: reúne resultados de interesse.",
-    "resumo": "No lançamento de um dado, o espaço amostral é {1, 2, 3, 4, 5, 6}; sair número par é um evento.",
+    "resumo": "O espaço amostral reúne todos os resultados possíveis; evento é um subconjunto deles. Exemplo: dado: {1, 2, 3, 4, 5, 6}; sair par é um evento.",
     "nao_confundir": [
       {
         "conceito": "Resultado",
@@ -8363,7 +8363,7 @@
     "conceito": "Probabilidade de um evento",
     "termo_ingles": "Probability",
     "traducao": "Probabilidade: expressa numericamente a possibilidade de ocorrência de um evento.",
-    "resumo": "Em resultados igualmente possíveis, divide-se casos favoráveis por casos possíveis. Dado: número par = 3/6 = 1/2.",
+    "resumo": "Com resultados igualmente possíveis, casos favoráveis divididos por casos possíveis. Exemplo: número par no dado = 3/6 = 1/2.",
     "nao_confundir": [
       {
         "conceito": "Frequência relativa",
@@ -8385,7 +8385,7 @@
     "conceito": "Evento complementar",
     "termo_ingles": "Complementary event",
     "traducao": "Evento complementar: reúne os resultados em que o evento original não ocorre.",
-    "resumo": "Se a probabilidade de A é 0,3, a de A não ocorrer é 1 − 0,3 = 0,7.",
+    "resumo": "P(não A) = 1 − P(A). Exemplo: se P(A) = 0,3, a de A não ocorrer é 0,7.",
     "nao_confundir": [
       {
         "conceito": "Eventos mutuamente exclusivos",
@@ -8407,7 +8407,7 @@
     "conceito": "União e interseção de eventos",
     "termo_ingles": "Union and intersection of events",
     "traducao": "União: ocorrência de pelo menos um evento; interseção: ocorrência simultânea dos eventos.",
-    "resumo": "A união considera A ou B; a interseção, A e B. Exemplo no dado: par ou maior que 4 = 3/6 + 2/6 − 1/6 = 4/6.",
+    "resumo": "União: A ou B; interseção: A e B. Exemplo no dado: par ou maior que 4 = 3/6 + 2/6 − 1/6 = 4/6.",
     "nao_confundir": [
       {
         "conceito": "Eventos mutuamente exclusivos",
@@ -8429,7 +8429,7 @@
     "conceito": "Probabilidade condicional",
     "termo_ingles": "Conditional probability",
     "traducao": "Probabilidade condicional: calcula a chance de um evento considerando que outro já ocorreu.",
-    "resumo": "P(A|B) = P(A e B) dividido pela probabilidade de B, que não pode ser zero. Se 2 de 5 casos de B são A, P(A|B) = 2/5.",
+    "resumo": "P(A|B) = P(A e B) dividido por P(B), com P(B) diferente de zero. Exemplo: se 2 de 5 casos de B são A, P(A|B) = 2/5.",
     "nao_confundir": [
       {
         "conceito": "Probabilidade conjunta",
@@ -8521,7 +8521,7 @@
     "conceito": "Variável aleatória",
     "termo_ingles": "Random variable",
     "traducao": "Variável aleatória: atribui um valor numérico a cada resultado de um processo aleatório.",
-    "resumo": "No lançamento de dois dados, X pode representar a soma dos resultados. Cada lançamento determina um valor para X.",
+    "resumo": "Associa um número a cada resultado do experimento. Exemplo: ao lançar dois dados, X é a soma; cada lançamento dá um valor para X.",
     "nao_confundir": [
       {
         "conceito": "Evento",
@@ -8544,7 +8544,7 @@
     "conceito": "Variável discreta e contínua",
     "termo_ingles": "Discrete and continuous random variables",
     "traducao": "Discreta: assume valores separados; contínua: pode assumir qualquer valor em um intervalo.",
-    "resumo": "Quantidade de reclamações é discreta. Tempo de atendimento é contínuo.",
+    "resumo": "Discreta assume valores contáveis; contínua, qualquer valor num intervalo. Exemplo: número de reclamações é discreta; tempo de atendimento, contínua.",
     "nao_confundir": [
       {
         "conceito": "Variável qualitativa (categórica)",
@@ -8567,7 +8567,7 @@
     "conceito": "Distribuição de probabilidade",
     "termo_ingles": "Probability distribution",
     "traducao": "Distribuição de probabilidade: associa probabilidades aos valores que uma variável aleatória pode assumir.",
-    "resumo": "Se X assume 0, 1 e 2 com probabilidades 0,5, 0,3 e 0,2, a distribuição apresenta esses valores e suas probabilidades.",
+    "resumo": "Lista os valores da variável e a probabilidade de cada um. Exemplo: X vale 0, 1 e 2 com probabilidades 0,5, 0,3 e 0,2.",
     "nao_confundir": [
       {
         "conceito": "Espaço amostral",
@@ -8590,7 +8590,7 @@
     "conceito": "Esperança matemática",
     "termo_ingles": "Expected value",
     "traducao": "Esperança matemática: representa a média dos valores possíveis ponderados por suas probabilidades.",
-    "resumo": "E(X) = soma de valor × probabilidade. Para 0, 1 e 2 com probabilidades 0,5, 0,3 e 0,2: E(X) = 0,7.",
+    "resumo": "E(X) = soma de valor × probabilidade. Exemplo: 0, 1 e 2 com 0,5, 0,3 e 0,2 dão E(X) = 0,7.",
     "nao_confundir": [
       {
         "conceito": "Média observada",
@@ -8613,7 +8613,7 @@
     "conceito": "Função de distribuição acumulada",
     "termo_ingles": "Cumulative distribution function",
     "traducao": "Função de distribuição acumulada: informa a probabilidade de a variável aleatória assumir valor menor ou igual a um limite.",
-    "resumo": "F(x) = P(X ≤ x). Se P(X = 0) = 0,5 e P(X = 1) = 0,3, então F(1) = 0,8.",
+    "resumo": "F(x) = P(X ≤ x), a probabilidade acumulada até x. Exemplo: se P(X = 0) = 0,5 e P(X = 1) = 0,3, então F(1) = 0,8.",
     "nao_confundir": [
       {
         "conceito": "Distribuição de probabilidade",
@@ -9453,7 +9453,7 @@
     "conceito": "Bits e bytes",
     "termo_ingles": "Bit and byte",
     "traducao": "Bit e byte: unidades de informação; o bit representa 0 ou 1 e o byte reúne oito bits.",
-    "resumo": "Um bit assume 0 ou 1. Um byte contém oito bits e representa 256 combinações possíveis.",
+    "resumo": "Um bit vale 0 ou 1; um byte tem oito bits e 256 combinações. Exemplo: a letra A é o byte 01000001.",
     "nao_confundir": [
       {
         "conceito": "Nibble",
@@ -9475,7 +9475,7 @@
     "conceito": "Conversão de bases e hexadecimal",
     "termo_ingles": "Number systems and hexadecimal",
     "traducao": "Sistemas numéricos e hexadecimal: representam valores usando diferentes conjuntos de símbolos e bases.",
-    "resumo": "Binário usa base 2; decimal, base 10; hexadecimal, base 16, com 0 a 9 e A a F.",
+    "resumo": "Binário: base 2; decimal: base 10; hexadecimal: base 16, com 0 a 9 e A a F. Exemplo: 255 = 11111111 = FF.",
     "nao_confundir": [
       {
         "conceito": "Octal",
@@ -9498,7 +9498,7 @@
     "conceito": "Complemento de dois",
     "termo_ingles": "Two's complement",
     "traducao": "Complemento de dois: representação binária de inteiros com sinal, usada para realizar operações aritméticas.",
-    "resumo": "Em uma representação com largura fixa, o complemento de dois representa inteiros positivos e negativos usando os mesmos bits.",
+    "resumo": "Representa inteiros positivos e negativos com os mesmos bits, em largura fixa. Exemplo: em 8 bits, -1 é 11111111.",
     "nao_confundir": [
       {
         "conceito": "Sinal e magnitude",
@@ -9520,7 +9520,7 @@
     "conceito": "Unidade Lógica e Aritmética",
     "termo_ingles": "Arithmetic Logic Unit (ALU)",
     "traducao": "Unidade Lógica e Aritmética: executa operações aritméticas e lógicas dentro do processador.",
-    "resumo": "A ULA realiza operações como soma, subtração, comparações e operações lógicas sobre dados.",
+    "resumo": "Realiza soma, subtração, comparações e operações lógicas. Exemplo: calcula 5 + 3 ou testa se A > B.",
     "nao_confundir": [
       {
         "conceito": "Registradores",
@@ -9542,7 +9542,7 @@
     "conceito": "Registradores do processador",
     "termo_ingles": "Processor registers",
     "traducao": "Registradores do processador: pequenas posições de armazenamento interno usadas durante a execução de instruções.",
-    "resumo": "Os registradores guardam temporariamente valores, endereços e informações necessários às operações do processador.",
+    "resumo": "Guardam temporariamente valores, endereços e dados das operações do processador. Exemplo: o contador de programa guarda o endereço da próxima instrução.",
     "nao_confundir": [
       {
         "conceito": "Memória RAM",
@@ -9565,7 +9565,7 @@
     "conceito": "Memória cache e memória RAM",
     "termo_ingles": "Cache memory and Random Access Memory (RAM)",
     "traducao": "Memória cache e memória de acesso aleatório: armazenam temporariamente dados para uso do processador, com capacidades e velocidades diferentes.",
-    "resumo": "A cache mantém dados de acesso frequente próxima ao processador; a RAM armazena programas e dados em uso.",
+    "resumo": "A cache guarda perto do processador o mais usado; a RAM, programas em uso. Exemplo: um laço repetido roda da cache.",
     "nao_confundir": [
       {
         "conceito": "Armazenamento secundário (SSD, HD)",
@@ -9588,7 +9588,7 @@
     "conceito": "Compilador e interpretador",
     "termo_ingles": "Compiler and interpreter",
     "traducao": "Compilador e interpretador: ferramentas que traduzem instruções de uma linguagem de programação para execução.",
-    "resumo": "O compilador traduz código antes da execução; o interpretador realiza tradução durante a execução do programa.",
+    "resumo": "O compilador traduz antes da execução; o interpretador, durante. Exemplo: C costuma ser compilado; Python, interpretado.",
     "nao_confundir": [
       {
         "conceito": "Montador",
@@ -9610,7 +9610,7 @@
     "conceito": "Kernel do sistema operacional",
     "termo_ingles": "Kernel",
     "traducao": "Núcleo do sistema operacional: componente central que gerencia recursos e oferece serviços essenciais aos programas.",
-    "resumo": "O kernel gerencia recursos como processador, memória e dispositivos, mediando o acesso dos programas ao hardware.",
+    "resumo": "Gerencia processador, memória e dispositivos, mediando o acesso dos programas ao hardware. Exemplo: o Linux.",
     "nao_confundir": [
       {
         "conceito": "Chamada de sistema",
@@ -9632,7 +9632,7 @@
     "conceito": "Estados de um processo",
     "termo_ingles": "Process states",
     "traducao": "Estados de processo: indicam a condição de execução ou espera de um processo no sistema operacional.",
-    "resumo": "Estados básicos incluem pronto, executando e bloqueado; representam espera pela CPU, uso da CPU ou espera por evento.",
+    "resumo": "Pronto (espera a CPU), executando (usa a CPU) e bloqueado (espera um evento). Exemplo: o programa esperando o disco fica bloqueado.",
     "nao_confundir": [
       {
         "conceito": "Programa",
@@ -9654,7 +9654,7 @@
     "conceito": "Escalonador de processos",
     "termo_ingles": "Process scheduler",
     "traducao": "Escalonador de processos: componente que seleciona qual processo pronto receberá tempo de processamento.",
-    "resumo": "O escalonador decide a ordem de uso do processador conforme uma política de escalonamento.",
+    "resumo": "Decide a ordem de uso do processador conforme uma política. Exemplo: dar a vez ao processo de maior prioridade.",
     "nao_confundir": [
       {
         "conceito": "Política de escalonamento",
@@ -9676,7 +9676,7 @@
     "conceito": "Condição de corrida",
     "termo_ingles": "Race condition",
     "traducao": "Condição de corrida: situação em que o resultado depende da ordem ou do momento de acessos concorrentes a dados compartilhados.",
-    "resumo": "Ocorre quando operações concorrentes acessam dados compartilhados e a ordem de execução altera o resultado.",
+    "resumo": "Operações concorrentes acessam dado compartilhado e a ordem altera o resultado. Exemplo: dois saques simultâneos leem o mesmo saldo e ambos passam.",
     "nao_confundir": [
       {
         "conceito": "Deadlock",
@@ -9698,7 +9698,7 @@
     "conceito": "Semáforo e mutex",
     "termo_ingles": "Semaphore and mutex",
     "traducao": "Semáforo e exclusão mútua: mecanismos de sincronização que coordenam o acesso concorrente a recursos compartilhados.",
-    "resumo": "O semáforo usa um contador para controlar acessos; o mutex garante exclusão mútua na região crítica (trecho que usa dado compartilhado).",
+    "resumo": "O semáforo controla acessos por contador; o mutex garante exclusão mútua na região crítica. Exemplo: semáforo 3 libera 3 conexões ao banco.",
     "nao_confundir": [
       {
         "conceito": "Semáforo binário",
@@ -9720,7 +9720,7 @@
     "conceito": "Estrutura de diretórios Linux",
     "termo_ingles": "Linux filesystem hierarchy",
     "traducao": "Hierarquia do sistema de arquivos Linux: organiza arquivos e diretórios a partir de um diretório raiz.",
-    "resumo": "No Linux, / é a raiz; /home guarda diretórios de usuários, /etc concentra configurações e /var contém dados variáveis.",
+    "resumo": "/ é a raiz; /home guarda usuários, /etc configurações e /var dados variáveis. Exemplo: logs em /var/log.",
     "nao_confundir": [
       {
         "conceito": "Diretório /root",
@@ -9742,7 +9742,7 @@
     "conceito": "Link físico e link simbólico",
     "termo_ingles": "Hard link and symbolic link",
     "traducao": "Link físico e link simbólico: nomes que referenciam um arquivo diretamente ou por meio de um caminho.",
-    "resumo": "No Linux, um link físico é outro nome para o mesmo inode (estrutura com os dados e metadados do arquivo); o simbólico guarda um caminho.",
+    "resumo": "No Linux, o físico é outro nome para o mesmo inode; o simbólico guarda um caminho. Exemplo: apagar o original quebra o simbólico, não o físico.",
     "nao_confundir": [
       {
         "conceito": "Cópia de arquivo",
@@ -9765,7 +9765,7 @@
     "conceito": "Comandos de navegação e arquivos",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "No Linux, pwd mostra o diretório atual, cd muda de diretório, ls lista conteúdo, cp copia e mv move ou renomeia arquivos.",
+    "resumo": "pwd mostra o diretório atual, cd muda, ls lista, cp copia e mv move ou renomeia. Exemplo: mv nota.txt notas/",
     "nao_confundir": [
       {
         "conceito": "cp e mv",
@@ -9787,7 +9787,7 @@
     "conceito": "Caminho absoluto e caminho relativo",
     "termo_ingles": "Absolute and relative pathname",
     "traducao": "Caminho absoluto e relativo: formas de indicar um arquivo a partir da raiz ou do diretório atual.",
-    "resumo": "No Linux, caminho absoluto começa em /, como /etc/hosts; caminho relativo parte do diretório atual, como docs/nota.txt.",
+    "resumo": "O absoluto começa em /, como /etc/hosts; o relativo parte do diretório atual, como docs/nota.txt. Exemplo: ../ sobe um nível.",
     "nao_confundir": [
       {
         "conceito": "Diretório de trabalho",
@@ -9810,7 +9810,7 @@
     "conceito": "Funções do Windows Server",
     "termo_ingles": "Windows Server roles",
     "traducao": "Funções do Windows Server: serviços instaláveis que permitem ao servidor executar tarefas específicas na rede.",
-    "resumo": "O Windows Server fornece funções como serviços de diretório, arquivos, impressão e serviços de rede para ambientes organizacionais.",
+    "resumo": "Oferece funções como diretório, arquivos, impressão e serviços de rede. Exemplo: o servidor que roda o Active Directory e o DHCP da empresa.",
     "nao_confundir": [
       {
         "conceito": "Recurso (feature)",
@@ -9831,7 +9831,7 @@
     "conceito": "Objeto de Política de Grupo",
     "termo_ingles": "Group Policy Object (GPO)",
     "traducao": "Objeto de Política de Grupo: conjunto de configurações centralizadas aplicáveis a usuários e computadores.",
-    "resumo": "A GPO reúne configurações para usuários e computadores do Active Directory e pode ser vinculada a site, domínio ou unidade organizacional (contêiner que agrupa objetos).",
+    "resumo": "Reúne configurações para usuários e computadores do AD, vinculada a site, domínio ou UO. Exemplo: proibir pen drive em toda a UO Financeiro.",
     "nao_confundir": [
       {
         "conceito": "Política local",
@@ -9853,7 +9853,7 @@
     "conceito": "Hyper-V no Windows Server",
     "termo_ingles": "Hyper-V",
     "traducao": "Hyper-V: tecnologia de hipervisor da Microsoft que permite criar, gerenciar e executar máquinas virtuais.",
-    "resumo": "No Windows Server, Hyper-V é uma função que permite executar sistemas operacionais convidados em máquinas virtuais.",
+    "resumo": "Função do Windows Server que executa sistemas convidados em máquinas virtuais. Exemplo: um Linux rodando dentro do servidor Windows.",
     "nao_confundir": [
       {
         "conceito": "Hipervisor tipo 2",
@@ -9876,7 +9876,7 @@
     "conceito": "Cmdlets do PowerShell",
     "termo_ingles": "PowerShell cmdlets",
     "traducao": "Cmdlets do PowerShell: comandos nativos que executam operações administrativas e seguem uma convenção de nomenclatura.",
-    "resumo": "No PowerShell, cmdlets são comandos especializados, como Get-Service, usados para consultar e administrar recursos do sistema.",
+    "resumo": "Comandos especializados do PowerShell para consultar e administrar o sistema. Exemplo: Get-Service lista os serviços.",
     "nao_confundir": [
       {
         "conceito": "Script",
@@ -9898,7 +9898,7 @@
     "conceito": "Execução remota no PowerShell",
     "termo_ingles": "PowerShell remoting",
     "traducao": "Execução remota do PowerShell: permite executar comandos em computadores remotos a partir de uma sessão local.",
-    "resumo": "O Enter-PSSession abre uma sessão interativa (você digita e o comando roda no remoto); o Invoke-Command executa comandos em um ou mais computadores.",
+    "resumo": "Enter-PSSession abre sessão interativa no remoto; Invoke-Command executa em um ou mais computadores. Exemplo: Invoke-Command -ComputerName srv1,srv2 {Get-Service}.",
     "nao_confundir": [
       {
         "conceito": "Execução local",
@@ -9921,7 +9921,7 @@
     "conceito": "Windows Admin Center",
     "termo_ingles": "Windows Admin Center",
     "traducao": "Central de Administração do Windows: ferramenta baseada em navegador para gerenciar servidores e clusters Windows.",
-    "resumo": "O Windows Admin Center reúne ferramentas de gerenciamento remoto de servidores, clusters e recursos do Windows Server.",
+    "resumo": "Reúne ferramentas de gerenciamento remoto de servidores e clusters Windows pelo navegador. Exemplo: reiniciar serviços de 10 servidores numa só tela.",
     "nao_confundir": [
       {
         "conceito": "Gerenciador do Servidor (Server Manager)",
@@ -9943,7 +9943,7 @@
     "conceito": "Entrega e resultado de serviço",
     "termo_ingles": "Output; Outcome",
     "traducao": "Output: entrega gerada por uma atividade; outcome: resultado que o cliente obtém com essa entrega.",
-    "resumo": "Output é o que uma atividade entrega; outcome é o resultado que o cliente obtém com essa entrega.",
+    "resumo": "Output é o que a atividade entrega; outcome, o resultado que o cliente obtém. Exemplo: o relatório entregue (output) e a decisão melhor (outcome).",
     "nao_confundir": [
       {
         "conceito": "Valor",
@@ -9966,7 +9966,7 @@
     "conceito": "Acordo de nível de serviço",
     "termo_ingles": "Service Level Agreement (SLA)",
     "traducao": "Acordo de nível de serviço: registra metas e compromissos acordados para a prestação de um serviço.",
-    "resumo": "O SLA formaliza os níveis de serviço acordados entre o provedor e o cliente, como metas de disponibilidade e tempo de resposta.",
+    "resumo": "O SLA formaliza os níveis de serviço acordados entre provedor e cliente. Exemplo: 99,9% de disponibilidade e resposta em até 4 horas.",
     "nao_confundir": [
       {
         "conceito": "Gestão de nível de serviço",
@@ -9989,7 +9989,7 @@
     "conceito": "Banco de dados de gerenciamento de configuração",
     "termo_ingles": "Configuration Management Database (CMDB)",
     "traducao": "Banco de dados de gerenciamento de configuração: reúne registros dos itens de configuração e de suas relações.",
-    "resumo": "Itens de configuração são os componentes do serviço, como servidores e aplicações; a CMDB registra dados e relações deles.",
+    "resumo": "Itens de configuração são componentes do serviço; a CMDB registra dados e relações deles. Exemplo: o app de vendas depende do servidor X.",
     "nao_confundir": [
       {
         "conceito": "Inventário de ativos",
@@ -10012,7 +10012,7 @@
     "conceito": "Central de serviços",
     "termo_ingles": "Service Desk",
     "traducao": "Central de serviços: ponto de entrada e de contato entre o provedor de serviços e os usuários.",
-    "resumo": "A central de serviços recebe demandas dos usuários, encaminha atendimentos e mantém a comunicação com o provedor.",
+    "resumo": "Recebe demandas dos usuários, encaminha atendimentos e mantém a comunicação. Exemplo: o ramal ou chat do suporte de TI.",
     "nao_confundir": [
       {
         "conceito": "Equipe de suporte técnico",
@@ -10034,7 +10034,7 @@
     "conceito": "Habilitação de mudanças",
     "termo_ingles": "Change Enablement",
     "traducao": "Habilitação de mudanças: avalia riscos e permite que mudanças sejam realizadas com controle.",
-    "resumo": "Essa prática busca aumentar o sucesso das mudanças, avaliando riscos, autorizando alterações e coordenando sua execução.",
+    "resumo": "Aumenta o sucesso das mudanças, avaliando riscos, autorizando e coordenando a execução. Exemplo: aprovar a atualização do servidor para domingo de madrugada.",
     "nao_confundir": [
       {
         "conceito": "Gerenciamento de mudanças clássico",
@@ -10056,7 +10056,7 @@
     "conceito": "Princípios orientadores",
     "termo_ingles": "Guiding Principles",
     "traducao": "Princípios orientadores: recomendações que direcionam decisões e ações da organização.",
-    "resumo": "Os sete: foco no valor; começar onde está; progredir iterativamente com feedback; colaborar e promover visibilidade; pensar e trabalhar holisticamente; manter simples e prático; otimizar e automatizar.",
+    "resumo": "Foco no valor; começar onde está; progredir iterativamente; colaborar com visibilidade; pensar holisticamente; manter simples; otimizar e automatizar. Exemplo: reaproveitar o que já funciona (começar onde está).",
     "nao_confundir": [
       {
         "conceito": "Processo",
@@ -10078,7 +10078,7 @@
     "conceito": "Data steward",
     "termo_ingles": "Data Steward",
     "traducao": "Data steward: profissional que gere os dados de uma área em nome de quem responde por eles.",
-    "resumo": "No dia a dia, o data steward cuida do uso e da qualidade dos dados de uma área; as decisões cabem ao responsável.",
+    "resumo": "No dia a dia, cuida do uso e da qualidade dos dados de uma área; as decisões são do responsável. Exemplo: corrigir cadastros duplicados do setor.",
     "nao_confundir": [
       {
         "conceito": "Responsável pelos dados (data owner)",
@@ -10102,7 +10102,7 @@
     "conceito": "Dimensões da qualidade de dados",
     "termo_ingles": "Data Quality Dimensions",
     "traducao": "Dimensões da qualidade de dados: características mensuráveis usadas para avaliar a qualidade.",
-    "resumo": "A DAMA UK define seis: precisão, completude, unicidade, consistência, atualidade e validade.",
+    "resumo": "Precisão, completude, unicidade, consistência, atualidade e validade. Exemplo: cliente cadastrado duas vezes fere a unicidade.",
     "nao_confundir": [
       {
         "conceito": "Validade",
@@ -10124,7 +10124,7 @@
     "conceito": "Segurança de dados",
     "termo_ingles": "Data Security",
     "traducao": "Segurança de dados: protege os dados contra acesso não autorizado e violações.",
-    "resumo": "É uma das áreas da gestão de dados descritas pela DAMA, ao lado de governança, qualidade e metadados.",
+    "resumo": "Uma das áreas da gestão de dados da DAMA, ao lado de governança, qualidade e metadados. Exemplo: controlar quem pode ver o salário dos funcionários.",
     "nao_confundir": [
       {
         "conceito": "Governança de dados",
@@ -10147,7 +10147,7 @@
     "conceito": "Metadados de negócio e técnicos",
     "termo_ingles": "Business and technical metadata",
     "traducao": "Metadados de negócio e técnicos: os primeiros dão contexto ao dado; os segundos trazem informação de TI sobre ele.",
-    "resumo": "Metadado de negócio dá contexto, como dizer que uma tabela guarda o cadastro de fornecedores; o técnico traz nomes de colunas, tipos e versões.",
+    "resumo": "O de negócio dá contexto; o técnico traz nomes de colunas, tipos e versões. Exemplo: \"cadastro de fornecedores\" (negócio) e \"cnpj CHAR(14)\" (técnico).",
     "nao_confundir": [
       {
         "conceito": "Dado",
@@ -10170,7 +10170,7 @@
     "conceito": "Definição de projeto",
     "termo_ingles": "Project",
     "traducao": "Projeto: esforço temporário para criar produto, serviço ou resultado único.",
-    "resumo": "Na definição clássica do PMI, anterior à 8ª edição, projeto é esforço temporário para criar produto, serviço ou resultado único.",
+    "resumo": "Na definição clássica do PMI, esforço temporário para criar produto, serviço ou resultado único. Exemplo: implantar o novo sistema de RH até março.",
     "nao_confundir": [
       {
         "conceito": "Operação",
@@ -10192,7 +10192,7 @@
     "conceito": "Grupos de processos",
     "termo_ingles": "Project Management Process Groups",
     "traducao": "Grupos de processos de gerenciamento de projetos: agrupamentos de processos conforme suas finalidades.",
-    "resumo": "Até a 6ª edição do PMBOK, os cinco grupos são iniciação, planejamento, execução, monitoramento e controle, e encerramento; na 7ª, viraram um dos modelos.",
+    "resumo": "Até o PMBOK 6: iniciação, planejamento, execução, monitoramento e controle, e encerramento; no 7, viraram um modelo. Exemplo: o termo de abertura nasce na iniciação.",
     "nao_confundir": [
       {
         "conceito": "Fases do ciclo de vida",
@@ -10214,7 +10214,7 @@
     "conceito": "Estrutura analítica do projeto",
     "termo_ingles": "Work Breakdown Structure (WBS)",
     "traducao": "Estrutura analítica do projeto: decomposição hierárquica do trabalho em partes menores orientadas às entregas.",
-    "resumo": "A EAP é a decomposição hierárquica, orientada às entregas, do trabalho a executar; ela organiza e define todo o escopo do projeto.",
+    "resumo": "Decomposição hierárquica, orientada a entregas, de todo o escopo do projeto. Exemplo: Site → Páginas → Página de contato.",
     "nao_confundir": [
       {
         "conceito": "Cronograma",
@@ -10237,7 +10237,7 @@
     "conceito": "Caminho crítico",
     "termo_ingles": "Critical Path",
     "traducao": "Caminho crítico: sequência de atividades dependentes que determina a duração do projeto.",
-    "resumo": "Segundo o Léxico do PMI 5.0, é a sequência de atividades que forma o caminho mais longo e determina a menor duração possível.",
+    "resumo": "Sequência de atividades que forma o caminho mais longo e define a menor duração do projeto. Exemplo: atrasar uma atividade dele atrasa o projeto inteiro.",
     "nao_confundir": [
       {
         "conceito": "Folga total",
@@ -10261,7 +10261,7 @@
     "conceito": "Partes interessadas",
     "termo_ingles": "Stakeholders",
     "traducao": "Partes interessadas (stakeholders): pessoas, grupos ou organizações que podem afetar ou ser afetados pelo projeto.",
-    "resumo": "No Léxico do PMI 5.0, é quem pode afetar, ser afetado ou se perceber afetado por decisão, atividade ou resultado.",
+    "resumo": "Quem pode afetar, ser afetado ou se perceber afetado pelo projeto. Exemplo: clientes, equipe, patrocinador e órgão regulador.",
     "nao_confundir": [
       {
         "conceito": "Equipe do projeto",
@@ -10283,7 +10283,7 @@
     "conceito": "Gestão de processos de negócio",
     "termo_ingles": "Business Process Management (BPM)",
     "traducao": "Gestão de processos de negócio: abordagem disciplinada para identificar, desenhar, executar, documentar, medir, monitorar e controlar processos.",
-    "resumo": "Para a ABPMP, BPM é disciplina de gestão apoiada por tecnologias, voltada a resultados consistentes e alinhados à estratégia.",
+    "resumo": "Para a ABPMP, disciplina de gestão apoiada por tecnologia, voltada a resultados alinhados à estratégia. Exemplo: redesenhar o processo de compras para reduzir o prazo.",
     "nao_confundir": [
       {
         "conceito": "Automação de processos",
@@ -10305,7 +10305,7 @@
     "conceito": "Notação de processos de negócio",
     "termo_ingles": "Business Process Model and Notation (BPMN)",
     "traducao": "Notação de modelagem de processos de negócio: padrão gráfico para representar processos e seus elementos.",
-    "resumo": "A BPMN 2.0 define elementos gráficos como eventos, atividades, gateways e fluxos de sequência para representar processos.",
+    "resumo": "A BPMN 2.0 define elementos gráficos como eventos, atividades, gateways e fluxos de sequência. Exemplo: círculo para evento, retângulo para atividade, losango para gateway.",
     "nao_confundir": [
       {
         "conceito": "BPM",
@@ -10327,7 +10327,7 @@
     "conceito": "Processo na situação atual",
     "termo_ingles": "AS-IS",
     "traducao": "AS-IS: representação de como o processo funciona atualmente.",
-    "resumo": "O modelo AS-IS descreve o funcionamento presente do processo, incluindo atividades e fluxo praticados pela organização.",
+    "resumo": "Descreve como o processo funciona hoje, com atividades e fluxo praticados. Exemplo: o pedido passa por três assinaturas em papel.",
     "nao_confundir": [
       {
         "conceito": "TO-BE",
@@ -10349,7 +10349,7 @@
     "conceito": "Processo na situação desejada",
     "termo_ingles": "TO-BE",
     "traducao": "TO-BE: situação ideal ou futura do processo de negócio.",
-    "resumo": "O modelo TO-BE descreve o processo pretendido depois das melhorias planejadas para seu funcionamento.",
+    "resumo": "Descreve o processo pretendido depois das melhorias. Exemplo: o pedido é aprovado no sistema por uma pessoa.",
     "nao_confundir": [
       {
         "conceito": "AS-IS",
@@ -10371,7 +10371,7 @@
     "conceito": "Eventos em BPMN",
     "termo_ingles": "Events",
     "traducao": "Eventos: elementos que representam ocorrências que afetam o fluxo de um processo.",
-    "resumo": "Evento é algo que acontece durante o processo e afeta seu fluxo; costuma ter uma causa (gatilho) ou um impacto (resultado).",
+    "resumo": "Algo que acontece no processo e afeta o fluxo, com gatilho ou resultado. Exemplo: \"pedido recebido\" inicia o processo.",
     "nao_confundir": [
       {
         "conceito": "Atividade",
@@ -10393,7 +10393,7 @@
     "conceito": "Gateways em BPMN",
     "termo_ingles": "Gateways",
     "traducao": "Gateways: controlam a divergência e a convergência do fluxo de sequência.",
-    "resumo": "Um gateway pode direcionar o fluxo para caminhos alternativos ou paralelos e reunir caminhos conforme suas regras.",
+    "resumo": "Desvia o fluxo para caminhos alternativos ou paralelos e os reúne conforme regras. Exemplo: valor acima de 1.000 segue para a aprovação da diretoria.",
     "nao_confundir": [
       {
         "conceito": "Evento",
@@ -10415,7 +10415,7 @@
     "conceito": "Pools e raias em BPMN",
     "termo_ingles": "Pools; Lanes",
     "traducao": "Pool: participante do processo; raia (lane): subdivisão do pool que organiza atividades.",
-    "resumo": "Na BPMN, o pool delimita um participante; as raias organizam e categorizam as atividades dentro dele.",
+    "resumo": "O pool delimita um participante; as raias organizam as atividades dentro dele. Exemplo: pool Empresa com raias Vendas e Financeiro.",
     "nao_confundir": [
       {
         "conceito": "Fluxo de mensagem",
@@ -12077,7 +12077,7 @@
     "conceito": "Estudo Técnico Preliminar",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "Estudo Técnico Preliminar (ETP) é o documento que caracteriza o interesse público envolvido e a melhor solução para a contratação.",
+    "resumo": "Documento que caracteriza o interesse público e a melhor solução para a contratação. Exemplo: comparar comprar servidores com contratar nuvem.",
     "nao_confundir": [
       {
         "conceito": "Termo de Referência",
@@ -12100,7 +12100,7 @@
     "conceito": "Termo de Referência",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "Termo de Referência (TR) descreve o objeto, os requisitos e as condições para contratar bens ou serviços.",
+    "resumo": "Descreve o objeto, os requisitos e as condições para contratar bens ou serviços. Exemplo: 100 notebooks com 16 GB de memória e garantia de 3 anos.",
     "nao_confundir": [
       {
         "conceito": "Projeto básico",
@@ -12145,7 +12145,7 @@
     "conceito": "Sanções administrativas",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "Sanção administrativa é a penalidade ao licitante ou contratado. São quatro: multa, advertência, declaração de inidoneidade e impedimento de licitar e contratar.",
+    "resumo": "Penalidade ao licitante ou contratado: advertência, multa, impedimento de licitar e contratar e declaração de inidoneidade. Exemplo: multa por entregar fora do prazo.",
     "nao_confundir": [
       {
         "conceito": "Impedimento e inidoneidade",
@@ -12168,7 +12168,7 @@
     "conceito": "Fiscalização do contrato",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "Fiscal do contrato é representante designado da Administração que acompanha a execução e registra ocorrências.",
+    "resumo": "Representante designado da Administração que acompanha a execução e registra ocorrências. Exemplo: o servidor que confere se o suporte cumpriu o prazo do contrato.",
     "nao_confundir": [
       {
         "conceito": "Preposto",
@@ -12190,7 +12190,7 @@
     "conceito": "Portal Nacional de Contratações Públicas",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "Portal Nacional de Contratações Públicas (PNCP) é o sítio oficial que divulga, de forma centralizada e obrigatória, os atos exigidos pela Lei 14.133/2021.",
+    "resumo": "Sítio oficial que divulga de forma centralizada e obrigatória os atos da Lei 14.133/2021. Exemplo: editais e contratos publicados no PNCP.",
     "nao_confundir": [
       {
         "conceito": "Divulgação complementar",
@@ -12213,7 +12213,7 @@
     "conceito": "Estratégia de segurança cibernética",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "A Resolução 396/2021 do Conselho Nacional de Justiça (CNJ), vigente, institui a Estratégia Nacional de Segurança Cibernética do Poder Judiciário (ENSEC-PJ).",
+    "resumo": "A Resolução CNJ 396/2021 institui a Estratégia Nacional de Segurança Cibernética do Poder Judiciário (ENSEC-PJ). Exemplo: base dos planos de segurança dos tribunais.",
     "nao_confundir": [
       {
         "conceito": "ETIR",
@@ -12259,7 +12259,7 @@
     "conceito": "Modelo de requisitos MoReq-Jus",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "A Resolução CNJ 522/2023, vigente, institui o MoReq-Jus, modelo de requisitos para sistemas de gestão de processos e documentos do Judiciário.",
+    "resumo": "A Resolução CNJ 522/2023 institui o MoReq-Jus, requisitos para sistemas de gestão de processos e documentos do Judiciário. Exemplo: regras para guardar processos eletrônicos.",
     "nao_confundir": [
       {
         "conceito": "Sistema de gestão",
@@ -12283,7 +12283,7 @@
     "conceito": "Portaria CNJ 162/2021",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "A Portaria CNJ 162/2021, vigente, aprova protocolos e manuais criados pela Resolução 396/2021 para a estratégia de segurança cibernética do Judiciário.",
+    "resumo": "Aprova protocolos e manuais da Resolução 396/2021 para a segurança cibernética do Judiciário. Exemplo: protocolo de resposta a incidentes nos tribunais.",
     "nao_confundir": [
       {
         "conceito": "Resolução CNJ 396/2021",
@@ -17414,7 +17414,7 @@
     "conceito": "Modelo clássico",
     "termo_ingles": "classical model",
     "traducao": "modelo clássico",
-    "resumo": "No modelo clássico, preços e salários flexíveis ajustam os mercados e a produção fica no PIB potencial; variáveis nominais não alteram as reais (neutralidade da moeda).",
+    "resumo": "Preços e salários flexíveis ajustam os mercados e a produção fica no PIB potencial; a moeda é neutra. Exemplo: dobrar a moeda só dobra os preços.",
     "nao_confundir": [
       {
         "conceito": "Visão novo-keynesiana",
@@ -18464,7 +18464,7 @@
     "conceito": "Modificadores de acesso",
     "termo_ingles": "Access Modifiers",
     "traducao": "Modificadores de acesso: palavras que limitam quem pode usar cada membro da classe.",
-    "resumo": "Em Java, definem quem acessa um atributo ou método: private (só a própria classe), padrão (mesmo pacote), protected (pacote e subclasses), public (qualquer classe).",
+    "resumo": "Em Java, definem quem acessa: private (a classe), padrão (pacote), protected (pacote e subclasses), public (todos). Exemplo: private double saldo.",
     "nao_confundir": [
       {
         "conceito": "Encapsulamento",
@@ -18486,7 +18486,7 @@
     "conceito": "Getters e setters",
     "termo_ingles": "Getters and Setters",
     "traducao": "Getters e setters: métodos que leem e alteram um atributo.",
-    "resumo": "Getter é um método que lê um atributo privado; setter é um método que altera esse atributo, podendo validar o valor antes de gravar.",
+    "resumo": "Getter lê um atributo privado; setter o altera, podendo validar antes. Exemplo: setIdade(-3) é recusado.",
     "nao_confundir": [
       {
         "conceito": "Encapsulamento",
@@ -18575,7 +18575,7 @@
     "conceito": "Composição × herança",
     "termo_ingles": "Composition over inheritance",
     "traducao": "Composição em vez de herança: reutilizar guardando objetos, e não estendendo classes.",
-    "resumo": "Herança reutiliza código pela relação \"é um\"; composição reutiliza pela relação \"tem um\", guardando outro objeto como atributo. Sem relação \"é um\", prefira composição.",
+    "resumo": "Herança reutiliza por \"é um\"; composição, por \"tem um\", guardando outro objeto. Sem \"é um\", prefira composição. Exemplo: Carro tem um Motor.",
     "nao_confundir": [
       {
         "conceito": "Composição na UML",
