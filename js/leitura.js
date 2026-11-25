@@ -268,7 +268,8 @@ function faixaVideos(videos) {
 }
 
 // videos (opcional): vídeos "Aprenda em 1 min" do assunto (data/videos.json); cada um ganha um botão no topo da leitura.
-export function abrirLeitura(cartoes, { titulo, aoFechar, aoPraticar, aoAprender, nivelPraticar, avisoSemQuestoes, videos = [] } = {}) {
+// laboratorio (opcional): { titulo, descricao, duracao, concluidoEm(), abrir() } — vira o cartão "Ver na prática" na tela final.
+export function abrirLeitura(cartoes, { titulo, aoFechar, aoPraticar, aoAprender, nivelPraticar, avisoSemQuestoes, videos = [], laboratorio = null } = {}) {
     if (!Array.isArray(cartoes) || !cartoes.length || document.querySelector('.leitura')) return;
     const assunto = titulo || cartoes[0].assunto;
     const materia = cartoes[0].materia;
@@ -314,6 +315,7 @@ export function abrirLeitura(cartoes, { titulo, aoFechar, aoPraticar, aoAprender
                         ? `"Aprendi" marca o assunto e já abre as questões dele (nível ${esc(nivelPraticar || 'Iniciante')}). "Praticar" abre as questões sem marcar.`
                         : 'Toque em "Aprendi" para marcar o assunto como aprendido.'}</p>
                     ${typeof aoPraticar !== 'function' && avisoSemQuestoes ? `<p class="leitura-fim-dica leitura-sem-questoes">${esc(avisoSemQuestoes)}</p>` : ''}
+                    ${laboratorio ? (() => { const em = typeof laboratorio.concluidoEm === 'function' ? laboratorio.concluidoEm() : null; return `<button type="button" class="leitura-lab" data-acao="laboratorio"><span class="leitura-lab-faixa">Ver na prática · ${esc(laboratorio.duracao || '')}</span><b>${esc(laboratorio.titulo)}</b><span>${esc(laboratorio.descricao || '')}</span>${em ? `<span class="leitura-lab-feito">Concluído em ${esc(new Date(em).toLocaleDateString('pt-BR'))}</span>` : ''}</button>`; })() : ''}
                 </div>`;
             acoes.innerHTML = `
                 <button type="button" class="leitura-btn ainda" data-acao="denovo">Ler novamente</button>
@@ -364,6 +366,7 @@ export function abrirLeitura(cartoes, { titulo, aoFechar, aoPraticar, aoAprender
             fechar();
             return aoPraticar();
         }
+        if (acao === 'laboratorio' && laboratorio) { fechar(); return laboratorio.abrir(); }
         if (acao === 'denovo') { sessao = novaSessao(cartoes.length); return desenhar(); }
         if (acao === 'proximo' || acao === 'anterior') {
             if (naFinal() && acao === 'proximo') return;

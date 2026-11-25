@@ -13,7 +13,7 @@
 // POR ISSO: a cada publicação que muda qualquer arquivo do site, suba o número do CACHE_NAME.
 // Sem isso, quem já tem o app continua na versão antiga.
 
-const CACHE_NAME = 'focopro-v202';
+const CACHE_NAME = 'focopro-v203';
 
 // Vídeos "Aprenda em 1 min": cache PRÓPRIO, fora do CACHE_NAME. Quem baixa é a página (botão "Baixar para ver
 // sem internet"); aqui o service worker só (1) preserva esse cache nas atualizações e (2) serve os vídeos
@@ -60,6 +60,9 @@ const RECURSOS_ESTATICOS = [
   './js/modelo-prova.js',
   './js/home-painel.js',
   './js/nivel-praticar.js',
+  './js/lab-subrede.js',
+  './js/lab-subrede-tela.js',
+  './js/lab-catalogo.js',
     './data/resumos-assunto.json',
     './data/aprender-cartoes.json',
     './js/laboratorio-sql.js',

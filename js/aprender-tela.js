@@ -9,6 +9,7 @@
 // Celular: duas vistas (matérias → assuntos, com botão voltar). Computador (>= 900px): duas colunas.
 // O "Aprendi" (uma marca por assunto) é guardado no aparelho por js/leitura.js; esta tela só lê esse estado.
 
+import { labDoAssunto } from './lab-catalogo.js';
 import { esc } from './ui.js';
 import { icone } from './icones.js';
 import { montarPlano, TIPOS_DIA } from './plano.js';
@@ -310,7 +311,11 @@ export async function abrirAprender({ ordemMaterias = [], temQuestoes = () => fa
             nivelPraticar: podePraticar ? nivelPraticar(mat, nome) : '',
             // Sem o que praticar: o botão é só "Aprendi ✓" (fica no Aprender) e a tela diz por quê
             avisoSemQuestoes: podePraticar ? '' : avisoSemQuestoes(mat, nome),
-            videos: videosDoAssunto(videos, mat, nome)
+            videos: videosDoAssunto(videos, mat, nome),
+            laboratorio: (() => {
+                const lab = labDoAssunto(mat, nome);
+                return lab ? { ...lab, abrir: () => lab.abrir({ aoPraticar: podePraticar ? () => { fechar(); aoPraticar(mat, nome); } : undefined }) } : null;
+            })()
         });
         // Sequência vídeo → cartões → questões: se o assunto tem vídeo que ainda não foi visto neste aparelho, ele abre primeiro.
         // Depois de visto (ou depois de tocar em "Ver os cartões"), o assunto abre direto nos cartões; o vídeo segue no topo da leitura.
