@@ -17,6 +17,27 @@ export function redeEscritorio(ajuste) {
     return r;
 }
 
+
+// Projeto 2: Administrativo (192.168.10.0/24) em cima, Financeiro (192.168.20.0/24) embaixo.
+// comRoteador=false: os dois setores prontos, sem roteador e sem gateway (o aluno liga).
+export function redeDoisSetores(comRoteador = true, ajuste) {
+    const r = M.novaRede();
+    const sa = M.adicionarAparelho(r, 'switch', 250, 125); sa.nome = 'SW-Adm';
+    const sf = M.adicionarAparelho(r, 'switch', 250, 315); sf.nome = 'SW-Fin';
+    const host = (tipo, x, y, nome, ip, sw, porta, gw) => { const h = M.adicionarAparelho(r, tipo, x, y); h.nome = nome; h.portas[0].ip = ip; h.gateway = comRoteador ? gw : ''; M.ligar(r, h.id, 'Fa0', sw.id, porta); return h; };
+    host('pc', 60, 30, 'Adm1', '192.168.10.11', sa, 'Fa0/1', '192.168.10.1');
+    host('pc', 440, 30, 'Adm2', '192.168.10.12', sa, 'Fa0/2', '192.168.10.1');
+    host('pc', 60, 400, 'Fin1', '192.168.20.11', sf, 'Fa0/1', '192.168.20.1');
+    host('servidor', 440, 400, 'Servidor', '192.168.20.10', sf, 'Fa0/2', '192.168.20.1');
+    if (comRoteador) {
+        const ro = M.adicionarAparelho(r, 'roteador', 250, 220); ro.nome = 'R1';
+        ro.portas[0].ip = '192.168.10.1'; ro.portas[1].ip = '192.168.20.1';
+        M.ligar(r, sa.id, 'Fa0/8', ro.id, 'Gi0/0'); M.ligar(r, sf.id, 'Fa0/8', ro.id, 'Gi0/1');
+    }
+    if (ajuste) ajuste(r, nome => r.aparelhos.find(a => a.nome === nome));
+    return r;
+}
+
 // ---------- verificações ----------
 const hosts = r => r.aparelhos.filter(a => M.TIPOS[a.tipo].host);
 const ipDe = a => (a.portas[0] || {}).ip || '';
@@ -36,6 +57,26 @@ const nomeDoIp = (r, ip) => (hosts(r).find(h => ipDe(h) === ip) || {}).nome;
 
 // ---------- as missões ----------
 export const MISSOES = [
+    {
+        id: 'p0-primeiros-passos', grupo: 'Comece aqui', titulo: 'Primeiros passos na bancada', tipo: 'tutorial',
+        historia: 'Um passo por vez: o cartão mostra o que fazer agora. Cada passo vira ✓ quando você consegue.',
+        inicio: () => M.novaRede(),
+        objetivos: [
+            { fixo: true, texto: 'Ponha um PC na bancada', como: 'Na coluna da esquerda, clique em "PC".', ok: ({ rede }) => rede.aparelhos.some(a => a.tipo === 'pc') },
+            { fixo: true, texto: 'Arraste o PC para outro lugar', como: 'Clique no PC e, sem soltar o botão, leve para outro ponto da área escura.', ok: ({ acoes }) => !!acoes.moveu },
+            { fixo: true, texto: 'Ponha um switch', como: 'Clique em "Switch" na esquerda. Ele é o aparelho que liga vários PCs numa rede local.', ok: ({ rede }) => rede.aparelhos.some(a => a.tipo === 'switch') },
+            { fixo: true, texto: 'Ligue o PC ao switch com um cabo', como: 'Clique em 🔌 Cabo (no alto) → clique no PC → escolha Fa0 → clique no switch → escolha Fa0/1.', ok: ({ rede }) => rede.cabos.length >= 1 },
+            { fixo: true, texto: 'Ponha um segundo PC e ligue no switch também', como: 'Clique em "PC" de novo, depois 🔌 Cabo: PC2 Fa0 → switch Fa0/2.', ok: ({ rede }) => rede.aparelhos.filter(a => a.tipo === 'pc' && M.caboDa(rede, a.id, 'Fa0')).length >= 2 },
+            { fixo: true, texto: 'Dê um IP a cada PC, na mesma rede', como: 'Clique no PC1. À direita, em IP digite 192.168.1.1 e em Máscara /24, e aperte Tab. No PC2: 192.168.1.2 e /24.', ok: ({ rede }) => { const ps = rede.aparelhos.filter(a => a.tipo === 'pc' && a.portas[0].ip); if (ps.length < 2) return false; const c = ps.map(p => calcular(p.portas[0].ip, p.portas[0].prefixo)); return c[0].rede === c[1].rede && ps[0].portas[0].ip !== ps[1].portas[0].ip; } },
+            { fixo: true, texto: 'Faça um ping de um PC para o outro', como: 'Com o PC1 selecionado, clique no terminal (embaixo à direita), digite ping 192.168.1.2 e Enter. "Reply from" = chegou e voltou.', ok: ({ comandos }) => comandos.some(c => c.cmd === 'ping' && c.ok > 0) },
+            { fixo: true, texto: 'Desligue uma porta e veja a luz ficar vermelha', como: 'Clique no switch. Na porta Fa0/2, desmarque "ligada". Repare na luz do cabo. Rode o ping de novo no PC1: agora falha.', ok: ({ rede }) => rede.aparelhos.some(a => a.portas.some(p => !p.ligada)) },
+            { fixo: true, texto: 'Ligue a porta de volta', como: 'No switch, marque "ligada" de novo na Fa0/2. A luz volta a ficar verde.', ok: ({ rede, feitos }) => feitos.has(7) && rede.aparelhos.every(a => a.portas.every(p => p.ligada)) },
+            { fixo: true, texto: 'Veja o pacote andar no modo Simulação', como: 'No alto, clique em "Simulação". Rode o ping no PC1 e use "Próximo ▶" no painel que aparece embaixo.', ok: ({ sim }) => sim.vistos.length >= 2 }
+        ],
+        dicas: [],
+        pergunta: { texto: 'Para que serve o switch nessa rede?', opcoes: ['Liga os aparelhos da mesma rede local e entrega cada quadro na porta certa, pelo MAC', 'Dá IP automático para os PCs', 'Liga a rede à internet'], certa: 0,
+            explicacao: 'Switch = camada 2: junta os aparelhos da rede local e aprende em que porta está cada MAC. IP automático é DHCP; sair para outra rede ou para a internet é papel do roteador.' }
+    },
     {
         id: 'p1-montar', grupo: 'Projeto 1 · Escritório da Ana', titulo: 'Montar o escritório', tipo: 'montar',
         historia: 'A Ana abriu um escritório com 3 computadores e 1 impressora. Monte a rede local para que todos conversem entre si. Rede combinada: 192.168.10.0/24.',
@@ -104,9 +145,85 @@ export const MISSOES = [
         dicas: ['Use "Próximo ▶" para andar um passo por vez e leia o quadro acima da lista.', 'Repare: o primeiro ARP vai para FF:FF:FF:FF:FF:FF (todos). A resposta volta só para o PC1.'],
         pergunta: { texto: 'Por que o primeiro quadro do ping é um ARP em broadcast?', opcoes: ['Porque o PC1 sabia o IP da impressora, mas não o MAC, e precisa do MAC para montar o quadro Ethernet', 'Porque o switch exige um broadcast antes de cada ping', 'Porque o ICMP só funciona em broadcast'], certa: 0,
             explicacao: 'Na rede local, a entrega é por MAC (camada 2). O ARP traduz IP → MAC: "quem tem o 192.168.10.20?" vai para todos, e só a dona do IP responde. Depois disso o PC guarda na tabela ARP (veja com arp -a) e não precisa perguntar de novo.' }
+    },
+
+    {
+        id: 'p2-ligar', grupo: 'Projeto 2 · Dois setores e um roteador', titulo: 'Ligar o Administrativo ao Financeiro', tipo: 'montar',
+        historia: 'A empresa cresceu: o Administrativo usa 192.168.10.0/24 e o Financeiro 192.168.20.0/24. Cada setor já funciona sozinho. Ponha um roteador entre os dois para que todos conversem.',
+        inicio: () => redeDoisSetores(false),
+        objetivos: [
+            { texto: 'Ponha um roteador e ligue uma porta em cada switch', ok: ({ rede }) => { const ro = rede.aparelhos.find(a => a.tipo === 'roteador'); if (!ro) return false; const viz = ro.portas.map(p => M.caboDa(rede, ro.id, p.nome)).filter(Boolean).map(c => (c.a.id === ro.id ? c.b.id : c.a.id)); const nomes = viz.map(id => M.aparelho(rede, id).nome); return nomes.includes('SW-Adm') && nomes.includes('SW-Fin'); } },
+            { texto: 'Dê ao roteador um IP em cada rede (uma porta para cada setor)', ok: ({ rede }) => { const ro = rede.aparelhos.find(a => a.tipo === 'roteador'); if (!ro) return false; const redes = ro.portas.filter(p => p.ip).map(p => { const c = calcular(p.ip, p.prefixo); return c.erro ? '' : `${c.rede}/${p.prefixo}`; }); return redes.includes('192.168.10.0/24') && redes.includes('192.168.20.0/24'); } },
+            { texto: 'Configure o gateway padrão de cada PC e do servidor', ok: ({ rede }) => { const ro = rede.aparelhos.find(a => a.tipo === 'roteador'); if (!ro) return false; const ipsRo = ro.portas.map(p => p.ip).filter(Boolean); return hosts(rede).every(h => ipsRo.includes(h.gateway) && calcular(h.gateway, h.portas[0].prefixo).rede === calcular(ipDe(h), h.portas[0].prefixo).rede); } },
+            { texto: 'Todos conversam com todos, nos dois setores', ok: ({ rede }) => todosConversam(rede) },
+            { texto: 'Prove no terminal: tracert do Adm1 para o Servidor', ok: ({ rede, comandos }) => { const a = rede.aparelhos.find(x => x.nome === 'Adm1'); return !!a && comandos.some(c => c.cmd === 'tracert' && c.de === a.id && c.alvo === '192.168.20.10'); } }
+        ],
+        dicas: ['Ponha um Roteador e use 🔌 Cabo: SW-Adm (porta livre) → roteador Gi0/0; SW-Fin → roteador Gi0/1.',
+            'Selecione o roteador: Gi0/0 = 192.168.10.1 /24 e Gi0/1 = 192.168.20.1 /24. Cada porta do roteador fica numa rede.',
+            'Gateway de cada aparelho = IP do roteador na rede DELE. Adm1 e Adm2: 192.168.10.1. Fin1 e Servidor: 192.168.20.1.'],
+        pergunta: { texto: 'Por que agora o gateway não pode ficar em branco?', opcoes: ['Porque o switch só funciona com gateway', 'Porque o destino está em outra rede, e o PC entrega para o gateway (o roteador) levar até lá', 'Porque o servidor exige gateway para responder ping'], certa: 1,
+            explicacao: 'O PC faz a conta com a máscara: se o destino é de outra rede, ele não entrega direto; manda para o gateway. O roteador tem uma perna em cada rede e repassa. Sem gateway: "General failure".' }
+    },
+    {
+        id: 'p2-chamado-gateway', grupo: 'Projeto 2 · Dois setores e um roteador', titulo: 'Chamado: o Fin1 só fala com o próprio setor', tipo: 'chamado',
+        historia: 'O Fin1 acessa o Servidor normalmente, mas não alcança ninguém do Administrativo. O resto da empresa funciona. Descubra por quê.',
+        inicio: () => redeDoisSetores(true, (r, n) => { n('Fin1').gateway = '192.168.20.254'; }),
+        objetivos: [
+            { texto: 'Investigue no Fin1 (ipconfig, ping ou tracert)', ok: ({ rede, comandos }) => { const f = rede.aparelhos.find(a => a.nome === 'Fin1'); return !!f && comandos.some(c => c.de === f.id && ['ipconfig', 'ping', 'tracert'].includes(c.cmd)); } },
+            { texto: 'Todos voltam a conversar com todos', ok: ({ rede }) => todosConversam(rede) },
+            { texto: 'Prove no terminal: ping do Fin1 para o Adm1, com resposta', ok: ({ rede, comandos }) => { const f = rede.aparelhos.find(a => a.nome === 'Fin1'); return !!f && comandos.some(c => c.cmd === 'ping' && c.de === f.id && c.alvo === '192.168.10.11' && c.ok > 0); } }
+        ],
+        dicas: ['Dentro do setor funciona, fora não. Quem leva o pacote para fora?', 'Compare o "Default Gateway" do ipconfig do Fin1 com o IP do roteador na porta Gi0/1.'],
+        pergunta: { texto: 'Qual era a causa?', opcoes: ['Máscara errada no Fin1', 'Gateway apontando para um IP que não existe (192.168.20.254)', 'Porta do roteador desligada'], certa: 1,
+            explicacao: 'Para o mesmo setor o PC entrega direto e nem usa o gateway; por isso funcionava. Para fora, o Fin1 pergunta via ARP "quem é 192.168.20.254?" e ninguém responde: Request timed out. Sintoma típico de gateway errado: local ok, fora não.' }
+    },
+    {
+        id: 'p2-chamado-volta', grupo: 'Projeto 2 · Dois setores e um roteador', titulo: 'Chamado: o Servidor recebe, mas não responde', tipo: 'chamado',
+        historia: 'O pessoal do Administrativo não alcança o Servidor. No Financeiro, o Fin1 usa o Servidor normalmente. O roteador parece bem. Investigue.',
+        inicio: () => redeDoisSetores(true, (r, n) => { n('Servidor').gateway = ''; }),
+        objetivos: [
+            { texto: 'Investigue com ping do Adm1 para o Servidor', ok: ({ rede, comandos }) => { const a = rede.aparelhos.find(x => x.nome === 'Adm1'); return !!a && comandos.some(c => c.cmd === 'ping' && c.de === a.id && c.alvo === '192.168.20.10'); } },
+            { texto: 'Todos voltam a conversar com todos', ok: ({ rede }) => todosConversam(rede) }
+        ],
+        dicas: ['Leia a linha "Por quê:" do ping. O pedido chegou ao Servidor?', 'Para responder ao Adm1, o Servidor também precisa sair da rede dele. Olhe o gateway do Servidor.'],
+        pergunta: { texto: 'Por que o ping falhava se o pedido chegava ao Servidor?', opcoes: ['A resposta precisa fazer o caminho de volta, e o Servidor sem gateway não sabia sair da rede dele', 'O roteador bloqueia respostas', 'O Servidor estava desligado'], certa: 0,
+            explicacao: 'Ping é ida e volta. A ida usou o gateway do Adm1; a volta depende do gateway do Servidor. Sem ele, a resposta para 192.168.10.11 (outra rede) não sai. Lição: em comunicação entre redes, confira os dois lados.' }
+    },
+    {
+        id: 'p2-chamado-roteador', grupo: 'Projeto 2 · Dois setores e um roteador', titulo: 'Chamado: ninguém do Financeiro sai do setor', tipo: 'chamado',
+        historia: 'Depois de uma "manutenção" no roteador, ninguém do Financeiro alcança o Administrativo, e o Administrativo também não alcança o Financeiro. Dentro de cada setor, tudo normal. Os cabos estão verdes.',
+        inicio: () => redeDoisSetores(true, (r, n) => { n('R1').portas[1].ip = '192.168.21.1'; }),
+        objetivos: [
+            { texto: 'Investigue no roteador: show ip interface brief ou show ip route', ok: ({ rede, comandos }) => { const ro = rede.aparelhos.find(a => a.nome === 'R1'); return !!ro && comandos.some(c => c.de === ro.id && c.cmd === 'show'); } },
+            { texto: 'Todos voltam a conversar com todos', ok: ({ rede }) => todosConversam(rede) }
+        ],
+        dicas: ['Cabos verdes descartam o físico. Selecione o R1 e rode show ip interface brief.', 'A porta do Financeiro (Gi0/1) precisa ter um IP da rede 192.168.20.0/24, o mesmo que os PCs usam como gateway.'],
+        pergunta: { texto: 'Qual era o problema?', opcoes: ['A porta Gi0/1 do roteador estava em outra rede (192.168.21.1), então o gateway 192.168.20.1 não existia mais', 'Faltava uma rota estática para 192.168.20.0', 'O switch do Financeiro estava em shutdown'], certa: 0,
+            explicacao: 'O roteador só conhece de cara as redes das suas portas (rotas "C - connected" no show ip route). Com 192.168.21.1, ele deixou de estar na rede do Financeiro, e o gateway 192.168.20.1 sumiu. Não falta rota estática: as duas redes são diretamente conectadas.' }
+    },
+    {
+        id: 'p2-por-dentro', grupo: 'Projeto 2 · Dois setores e um roteador', titulo: 'Ver por dentro: o pacote atravessa o roteador', tipo: 'simulacao',
+        historia: 'Com tudo funcionando, veja o que muda quando o destino está em outra rede: a quem o PC pergunta o MAC, e o que acontece com o TTL.',
+        inicio: () => redeDoisSetores(true),
+        objetivos: [
+            { texto: 'Troque o modo para Simulação', ok: ({ sim }) => sim.modo === 'simulacao' },
+            { texto: 'No Adm1, rode: ping 192.168.20.10', ok: ({ rede, comandos }) => { const a = rede.aparelhos.find(x => x.nome === 'Adm1'); return !!a && comandos.some(c => c.cmd === 'ping' && c.de === a.id && c.alvo === '192.168.20.10'); } },
+            { texto: 'Veja o ARP do Adm1 perguntando pelo gateway (192.168.10.1), não pelo Servidor', ok: ({ sim }) => sim.vistos.some(e => e.tipo === 'ARP' && e.op === 'pedido' && e.alvoIp === '192.168.10.1') },
+            { texto: 'Veja o ICMP chegar ao Servidor com TTL 127', ok: ({ sim }) => sim.vistos.some(e => e.tipo === 'ICMP' && e.para === 'Servidor' && e.ttl === 127) }
+        ],
+        dicas: ['Avance com "Próximo ▶" e leia o quadro de cada passo: o alvo do ARP e o TTL.', 'São dois ARP: um no Administrativo (Adm1 → gateway) e outro no Financeiro (R1 → Servidor).'],
+        pergunta: { texto: 'Por que o TTL chegou 127 e não 128?', opcoes: ['Cada roteador no caminho diminui o TTL em 1; aqui houve um roteador', 'O switch diminui o TTL', 'O Servidor diminui antes de ler'], certa: 0,
+            explicacao: 'TTL (time to live) cai 1 a cada roteador. Serve para um pacote não rodar para sempre num laço: chegou a 0, é descartado. Switch não mexe no TTL: ele nem olha o IP. É por isso que o tracert consegue listar os saltos.' }
     }
 ];
 
+// Objetivo "fixo": uma vez feito, continua ✓ (passos do tutorial). Os demais são conferidos ao vivo.
 export function avaliar(missao, ctx) {
-    return missao.objetivos.map(o => { try { return !!o.ok(ctx); } catch (e) { return false; } });
+    const feitos = ctx.feitos || new Set();
+    return missao.objetivos.map((o, i) => {
+        if (o.fixo && feitos.has(i)) return true;
+        let ok = false; try { ok = !!o.ok({ ...ctx, feitos }); } catch (e) { ok = false; }
+        if (ok && o.fixo) feitos.add(i);
+        return ok;
+    });
 }
