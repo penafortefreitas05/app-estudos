@@ -4625,7 +4625,7 @@
     "conceito": "Criptografia assimétrica",
     "termo_ingles": "Asymmetric encryption",
     "traducao": "Criptografia assimétrica: utiliza chaves pública e privada para operações criptográficas.",
-    "resumo": "Utiliza um par de chaves relacionadas: a pública pode ser compartilhada; a privada deve permanecer protegida. Na cifragem para sigilo, usa-se a pública do destinatário.",
+    "resumo": "Par de chaves: a pública pode ser divulgada; a privada fica protegida. Para sigilo, cifra-se com a pública do destinatário. Exemplo: só o banco abre o que cifrei para ele.",
     "nao_confundir": [
       {
         "conceito": "Criptografia simétrica",
@@ -4669,7 +4669,7 @@
     "conceito": "Assinatura digital",
     "termo_ingles": "Digital signature",
     "traducao": "Assinatura digital: permite verificar autoria e integridade de dados assinados.",
-    "resumo": "É produzida com a chave privada do signatário e verificada com sua chave pública. Ajuda a comprovar autoria e detectar alterações no conteúdo.",
+    "resumo": "É gerada com a chave privada do signatário e verificada com a chave pública dele. Comprova autoria e detecta alteração. Exemplo: contrato assinado em PDF acusa qualquer mudança no texto.",
     "nao_confundir": [
       {
         "conceito": "Cifragem para sigilo",
@@ -4692,7 +4692,7 @@
     "conceito": "Certificado digital X.509",
     "termo_ingles": "X.509 digital certificate",
     "traducao": "Certificado digital: associa uma identidade a uma chave pública por meio de uma assinatura de confiança.",
-    "resumo": "Documento eletrônico que vincula a identidade de uma entidade a uma chave pública. É assinado por uma autoridade certificadora (AC), que emite e garante certificados.",
+    "resumo": "Documento eletrônico que liga a identidade de alguém a uma chave pública, assinado por uma autoridade certificadora (AC). Exemplo: o cadeado do navegador mostra o certificado do site do banco.",
     "nao_confundir": [
       {
         "conceito": "Chave privada",
@@ -4715,7 +4715,7 @@
     "conceito": "Infraestrutura de chaves públicas",
     "termo_ingles": "Public Key Infrastructure (PKI)",
     "traducao": "Infraestrutura de chaves públicas (ICP, em inglês PKI): organiza a emissão, validação e gestão de certificados digitais.",
-    "resumo": "Conjunto de entidades, políticas, procedimentos e tecnologias que sustentam certificados digitais e a confiança nas associações entre identidades e chaves públicas.",
+    "resumo": "Conjunto de entidades, políticas e tecnologias que emite e sustenta certificados digitais e a confiança entre identidades e chaves públicas. Exemplo: a ICP-Brasil.",
     "nao_confundir": [
       {
         "conceito": "Certificado digital",
@@ -4738,7 +4738,7 @@
     "conceito": "Criptografia híbrida",
     "termo_ingles": "Hybrid cryptography",
     "traducao": "Criptografia híbrida: combina criptografia assimétrica e simétrica para proteger comunicações.",
-    "resumo": "Usa criptografia assimétrica para estabelecer uma chave secreta entre as partes e criptografia simétrica para proteger os dados em si.",
+    "resumo": "Assimétrica para combinar a chave secreta; simétrica para proteger os dados. Exemplo: o TLS combina a chave e cifra o tráfego com AES.",
     "nao_confundir": [
       {
         "conceito": "Criptografia exclusivamente assimétrica",
@@ -4762,7 +4762,7 @@
     "conceito": "Gestão de chaves criptográficas",
     "termo_ingles": "Cryptographic key management",
     "traducao": "Gestão de chaves: controla criação, armazenamento, uso, proteção e descarte de chaves criptográficas.",
-    "resumo": "Abrange o ciclo de vida das chaves, desde sua criação até o descarte, incluindo proteção contra acesso e uso não autorizados.",
+    "resumo": "Cuida do ciclo de vida das chaves, da criação ao descarte, protegendo contra acesso e uso indevidos. Exemplo: trocar periodicamente a chave e destruir a antiga.",
     "nao_confundir": [
       {
         "conceito": "Criptografia",
@@ -4784,7 +4784,7 @@
     "conceito": "Autenticação e autorização",
     "termo_ingles": "Authentication and authorization",
     "traducao": "Autenticação: confirma uma identidade; autorização: determina as ações permitidas.",
-    "resumo": "Autenticação verifica quem está acessando. Autorização define quais recursos e operações essa identidade pode utilizar.",
+    "resumo": "Autenticação verifica quem está acessando. Autorização define o que essa identidade pode usar. Exemplo: o login confirma que é você; a permissão decide se você pode excluir arquivos.",
     "nao_confundir": [
       {
         "conceito": "Identificação",
@@ -4827,7 +4827,7 @@
     "conceito": "Senha única baseada em tempo",
     "termo_ingles": "Time-Based One-Time Password (TOTP)",
     "traducao": "Senha única baseada em tempo: gera códigos temporários para autenticação.",
-    "resumo": "Algoritmo que gera códigos de uso único a partir de um segredo compartilhado e do tempo atual. Aplicativos autenticadores podem utilizá-lo.",
+    "resumo": "Gera códigos de uso único a partir de um segredo compartilhado e do horário. Exemplo: o código de 6 dígitos do autenticador, trocado a cada 30 segundos.",
     "nao_confundir": [
       {
         "conceito": "HOTP",
@@ -4849,7 +4849,7 @@
     "conceito": "Autenticação única",
     "termo_ingles": "Single Sign-On (SSO)",
     "traducao": "Autenticação única: permite acessar vários sistemas integrados após uma autenticação.",
-    "resumo": "Centraliza a autenticação: o usuário realiza o login uma vez e acessa diferentes sistemas que confiam no serviço de identidade integrado.",
+    "resumo": "Centraliza a autenticação: o usuário entra uma vez e acessa vários sistemas que confiam no mesmo serviço de identidade. Exemplo: um login gov.br vale para vários serviços do governo.",
     "nao_confundir": [
       {
         "conceito": "MFA",
@@ -4872,7 +4872,7 @@
     "conceito": "Autorização delegada",
     "termo_ingles": "OAuth 2.0",
     "traducao": "Autorização delegada: permite conceder acesso limitado a recursos sem compartilhar a senha do titular.",
-    "resumo": "O OAuth 2.0 é um framework que permite a um aplicativo obter acesso limitado a um serviço, usando um token de acesso: credencial que representa a permissão concedida.",
+    "resumo": "Dá a um aplicativo acesso limitado a um serviço por um token de acesso, sem receber a senha. Exemplo: um app de fotos acessa só o seu Google Drive.",
     "nao_confundir": [
       {
         "conceito": "Autenticação",
@@ -4894,7 +4894,7 @@
     "conceito": "Camada de identidade sobre OAuth",
     "termo_ingles": "OpenID Connect (OIDC)",
     "traducao": "OpenID Connect: permite verificar a identidade do usuário usando OAuth 2.0 como base.",
-    "resumo": "Camada de identidade construída sobre OAuth 2.0. Permite ao aplicativo verificar quem é o usuário e receber informações básicas de identidade.",
+    "resumo": "Camada de identidade sobre o OAuth 2.0: o aplicativo verifica quem é o usuário e recebe dados básicos dele. Exemplo: \"Entrar com Google\" num site.",
     "nao_confundir": [
       {
         "conceito": "OAuth 2.0",
@@ -4918,7 +4918,7 @@
     "conceito": "Linguagem de marcação para declarações de segurança",
     "termo_ingles": "Security Assertion Markup Language (SAML)",
     "traducao": "SAML: permite transmitir declarações de autenticação e atributos entre sistemas.",
-    "resumo": "Padrão baseado em declarações de segurança, usado para integrar autenticação entre um provedor de identidade (serviço que autentica o usuário) e os sistemas.",
+    "resumo": "Padrão de declarações de segurança que integra a autenticação entre um provedor de identidade e os sistemas. Exemplo: o login corporativo único que abre o sistema de RH.",
     "nao_confundir": [
       {
         "conceito": "OAuth 2.0",
@@ -4940,7 +4940,7 @@
     "conceito": "Controle de acesso baseado em papéis",
     "termo_ingles": "Role-Based Access Control (RBAC)",
     "traducao": "Controle baseado em papéis: associa permissões a funções atribuídas aos usuários.",
-    "resumo": "Modelo em que as permissões são associadas a papéis, e os usuários recebem um ou mais papéis conforme suas responsabilidades.",
+    "resumo": "Permissões são ligadas a papéis, e cada usuário recebe papéis conforme a função. Exemplo: o papel \"financeiro\" aprova pagamentos; quem muda de setor só troca de papel.",
     "nao_confundir": [
       {
         "conceito": "Controle discricionário (DAC)",
@@ -4963,7 +4963,7 @@
     "conceito": "Injeção de SQL",
     "termo_ingles": "SQL injection",
     "traducao": "Injeção de SQL: insere dados não confiáveis na estrutura de uma consulta SQL.",
-    "resumo": "Ocorre quando dados enviados pelo usuário são interpretados como parte do comando SQL, podendo alterar a consulta executada pelo banco.",
+    "resumo": "Ocorre quando dados enviados pelo usuário viram parte do comando SQL e alteram a consulta. Exemplo: digitar ' OR '1'='1 no login e entrar sem senha.",
     "nao_confundir": [
       {
         "conceito": "Cross-Site Scripting",
@@ -4986,7 +4986,7 @@
     "conceito": "Execução de scripts entre sites",
     "termo_ingles": "Cross-Site Scripting (XSS)",
     "traducao": "XSS: permite executar código malicioso no navegador de outro usuário.",
-    "resumo": "Ataque em que conteúdo controlado pelo atacante é interpretado como código pelo navegador da vítima, podendo manipular a página ou acessar dados disponíveis.",
+    "resumo": "Ataque em que conteúdo do atacante é executado como código no navegador da vítima. Exemplo: um comentário com <script> rouba o cookie de quem abre a página.",
     "nao_confundir": [
       {
         "conceito": "Injeção de SQL",
@@ -5010,7 +5010,7 @@
     "conceito": "Falsificação de requisição entre sites",
     "termo_ingles": "Cross-Site Request Forgery (CSRF)",
     "traducao": "CSRF: induz o navegador autenticado a enviar uma requisição não desejada.",
-    "resumo": "Ataque que induz o navegador de um usuário autenticado a executar uma ação sem sua intenção, aproveitando informações de autenticação enviadas automaticamente.",
+    "resumo": "Induz o navegador de um usuário autenticado a executar uma ação sem querer, usando credenciais enviadas automaticamente. Exemplo: link escondido que faz transferência no banco aberto em outra aba.",
     "nao_confundir": [
       {
         "conceito": "Cross-Site Scripting",
@@ -5033,7 +5033,7 @@
     "conceito": "Validação de entrada",
     "termo_ingles": "Input validation",
     "traducao": "Validação de entrada: verifica se os dados recebidos atendem às regras esperadas.",
-    "resumo": "Confere formato, tipo, tamanho e faixa dos dados recebidos antes do processamento. Deve ocorrer no servidor, mesmo quando existe validação no navegador.",
+    "resumo": "Confere formato, tipo, tamanho e faixa dos dados antes de processá-los, sempre no servidor. Exemplo: recusar idade -5 ou CPF com letras, mesmo que o formulário já tenha checado.",
     "nao_confundir": [
       {
         "conceito": "Validação no cliente",
@@ -5055,7 +5055,7 @@
     "conceito": "Phishing",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "Fraude que usa mensagens, páginas ou contatos falsos, passando-se por entidade confiável, para convencer a vítima a revelar informações.",
+    "resumo": "Fraude com mensagens, páginas ou contatos falsos, fingindo ser entidade confiável, para obter informações da vítima. Exemplo: e-mail \"do banco\" pedindo para confirmar a senha num link.",
     "nao_confundir": [
       {
         "conceito": "Malware",
@@ -5077,7 +5077,7 @@
     "conceito": "Dez riscos críticos de aplicações web",
     "termo_ingles": "OWASP Top 10",
     "traducao": "OWASP Top 10: reúne categorias de riscos críticos para a segurança de aplicações web.",
-    "resumo": "Documento de conscientização que apresenta categorias de riscos relevantes, como controle de acesso quebrado, falhas criptográficas e injeção.",
+    "resumo": "Documento de conscientização com categorias de riscos web, como controle de acesso quebrado, falhas criptográficas e injeção. Exemplo: o OWASP Top 10.",
     "nao_confundir": [
       {
         "conceito": "ASVS",
@@ -5098,7 +5098,7 @@
     "conceito": "Teste de segurança por entradas aleatórias",
     "termo_ingles": "Fuzzing",
     "traducao": "Fuzzing: testa programas com entradas inesperadas ou malformadas para encontrar falhas.",
-    "resumo": "Técnica automatizada que envia entradas variadas, inválidas ou inesperadas a um programa e observa falhas, comportamentos incorretos ou encerramentos inesperados.",
+    "resumo": "Técnica automatizada que envia entradas variadas, inválidas ou inesperadas a um programa e observa falhas. Exemplo: mandar milhares de arquivos corrompidos até o leitor de PDF travar.",
     "nao_confundir": [
       {
         "conceito": "Teste funcional convencional",
@@ -5120,7 +5120,7 @@
     "conceito": "Análise estática de segurança",
     "termo_ingles": "Static Application Security Testing (SAST)",
     "traducao": "Análise estática: examina o código sem executar a aplicação para identificar possíveis falhas.",
-    "resumo": "Técnica de análise de segurança que examina código-fonte ou componentes em busca de padrões associados a vulnerabilidades, sem executar a aplicação.",
+    "resumo": "Examina código-fonte ou componentes em busca de padrões de vulnerabilidade, sem executar a aplicação. Exemplo: a ferramenta aponta uma consulta SQL montada com texto do usuário.",
     "nao_confundir": [
       {
         "conceito": "Análise dinâmica (DAST)",
@@ -7118,7 +7118,7 @@
     "conceito": "Firewall",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "Controla o tráfego entre redes ou equipamentos com níveis de segurança diferentes, como a rede interna e a internet, segundo uma política de acesso.",
+    "resumo": "Controla o tráfego entre redes com níveis de segurança diferentes, como rede interna e internet, segundo uma política. Exemplo: liberar a porta 443 e bloquear o resto vindo de fora.",
     "nao_confundir": [
       {
         "conceito": "Antivírus",
@@ -7139,7 +7139,7 @@
     "conceito": "Sistema de detecção de intrusão (IDS)",
     "termo_ingles": "intrusion detection system",
     "traducao": "Sistema de detecção de intrusão: monitora eventos e alerta sobre atividade suspeita.",
-    "resumo": "Monitora eventos de rede ou computador, analisa sinais de possíveis incidentes e emite alertas aos responsáveis.",
+    "resumo": "Monitora eventos de rede ou computador, analisa sinais de possíveis incidentes e alerta os responsáveis. Exemplo: avisa a equipe quando vê uma varredura de portas.",
     "nao_confundir": [
       {
         "conceito": "Sistema de prevenção de intrusão (IPS)",
@@ -7160,7 +7160,7 @@
     "conceito": "Sistema de prevenção de intrusão (IPS)",
     "termo_ingles": "intrusion prevention system",
     "traducao": "Sistema de prevenção de intrusão: detecta atividade suspeita e tenta interrompê-la.",
-    "resumo": "Monitora eventos e analisa sinais de intrusão para tentar impedir que a atividade alcance seus alvos.",
+    "resumo": "Monitora eventos e analisa sinais de intrusão para impedir que o ataque alcance o alvo. Exemplo: descarta pacotes de um ataque conhecido.",
     "nao_confundir": [
       {
         "conceito": "Sistema de detecção de intrusão (IDS)",
@@ -7181,7 +7181,7 @@
     "conceito": "Rede privada virtual (VPN)",
     "termo_ingles": "virtual private network",
     "traducao": "Rede privada virtual: protege comunicações sobre uma infraestrutura de rede pública.",
-    "resumo": "VPN cria um túnel, ou canal protegido, entre dois pontos sobre infraestrutura pública.",
+    "resumo": "VPN cria um túnel, ou canal protegido, entre dois pontos sobre infraestrutura pública. Exemplo: o servidor em casa acessa a rede da empresa pela internet com segurança.",
     "nao_confundir": [
       {
         "conceito": "Proxy",
@@ -7202,7 +7202,7 @@
     "conceito": "Negação de serviço (DoS)",
     "termo_ingles": "denial of service",
     "traducao": "Negação de serviço: impede acesso autorizado a recursos ou atrasa operações.",
-    "resumo": "Ataque que impede o acesso autorizado a recursos de um sistema.",
+    "resumo": "Ataque que impede o acesso autorizado a recursos de um sistema. Exemplo: enxurrada de requisições derruba o site de inscrição na véspera do prazo.",
     "nao_confundir": [
       {
         "conceito": "Negação distribuída de serviço (DDoS)",
@@ -7224,7 +7224,7 @@
     "conceito": "Falsificação de endereço IP (spoofing)",
     "termo_ingles": "IP address spoofing",
     "traducao": "Falsificação de origem: faz um pacote parecer enviado por outro endereço.",
-    "resumo": "Envia um pacote que aparenta partir de endereço IP diferente da origem real.",
+    "resumo": "Envia um pacote que aparenta partir de um endereço IP diferente da origem real. Exemplo: o atacante põe o IP da vítima como origem para as respostas irem a ela.",
     "nao_confundir": [
       {
         "conceito": "Captura de tráfego (sniffing)",
@@ -7246,7 +7246,7 @@
     "conceito": "Captura de tráfego de rede (sniffing)",
     "termo_ingles": "network sniffing",
     "traducao": "Captura de tráfego: observa e registra comunicações para análise.",
-    "resumo": "Técnica passiva que observa e registra comunicação da rede para exame posterior.",
+    "resumo": "Técnica passiva que observa e registra a comunicação da rede para exame posterior. Exemplo: no Wi-Fi aberto, alguém grava o tráfego e lê o que não está cifrado.",
     "nao_confundir": [
       {
         "conceito": "Falsificação de origem (spoofing)",
@@ -7268,7 +7268,7 @@
     "conceito": "Arquitetura de confiança zero (Zero Trust)",
     "termo_ingles": "zero trust architecture",
     "traducao": "Confiança zero: protege recursos verificando identidade e cada pedido de acesso.",
-    "resumo": "Modelo de segurança que protege recursos e verifica usuários e dispositivos antes de estabelecer acesso.",
+    "resumo": "Verifica usuários e dispositivos antes de cada acesso, sem confiar pela localização na rede. Exemplo: mesmo dentro do escritório, o notebook prova identidade para abrir o sistema.",
     "nao_confundir": [
       {
         "conceito": "Rede privada virtual (VPN)",
@@ -7290,7 +7290,7 @@
     "conceito": "Código malicioso (malware)",
     "termo_ingles": "malware",
     "traducao": "Código malicioso: hardware, firmware ou software inserido para executar ações não autorizadas e prejudiciais.",
-    "resumo": "Malware é hardware, firmware (programa interno) ou software inserido em sistema para causar dano.",
+    "resumo": "Malware é hardware, firmware (programa interno) ou software inserido em sistema para causar dano. Exemplo: vírus, worm, trojan e ransomware.",
     "nao_confundir": [
       {
         "conceito": "Vírus",
@@ -7311,7 +7311,7 @@
     "conceito": "Worm",
     "termo_ingles": "worm",
     "traducao": "Worm: programa independente que se propaga pela rede sem arquivo hospedeiro.",
-    "resumo": "Programa que replica cópias de si pela rede sem precisar infectar outro programa ou arquivo.",
+    "resumo": "Programa que se replica pela rede sem precisar infectar outro programa ou arquivo. Exemplo: o WannaCry se espalhava sozinho entre máquinas Windows vulneráveis.",
     "nao_confundir": [
       {
         "conceito": "Vírus",
@@ -7333,7 +7333,7 @@
     "conceito": "Vírus de computador",
     "termo_ingles": "computer virus",
     "traducao": "Vírus: infecta arquivo ou programa hospedeiro e pode inserir cópias de si nele.",
-    "resumo": "Código malicioso que se replica ao infectar outros programas ou arquivos, chamados hospedeiros.",
+    "resumo": "Código malicioso que se replica ao infectar outros programas ou arquivos, chamados hospedeiros. Exemplo: o vírus se anexa a um executável e age quando ele é aberto.",
     "nao_confundir": [
       {
         "conceito": "Worm",
@@ -7355,7 +7355,7 @@
     "conceito": "Cavalo de Troia (trojan)",
     "termo_ingles": "Trojan horse",
     "traducao": "Cavalo de Troia: parece legítimo, mas oculta uma finalidade maliciosa.",
-    "resumo": "Programa que aparenta executar função benigna, mas realiza ações maliciosas ocultas.",
+    "resumo": "Programa que aparenta executar função benigna, mas realiza ações maliciosas ocultas. Exemplo: um \"jogo grátis\" que instala um programa de acesso remoto.",
     "nao_confundir": [
       {
         "conceito": "Backdoor",
@@ -7377,7 +7377,7 @@
     "conceito": "Backdoor",
     "termo_ingles": "backdoor",
     "traducao": "Porta dos fundos: forma não documentada de obter acesso a um sistema.",
-    "resumo": "Programa malicioso que mantém um caminho de acesso não documentado ao computador.",
+    "resumo": "Programa malicioso que mantém um caminho de acesso não documentado ao computador. Exemplo: o invasor deixa uma porta aberta para voltar mesmo após a troca de senhas.",
     "nao_confundir": [
       {
         "conceito": "Cavalo de Troia (trojan)",
@@ -7399,7 +7399,7 @@
     "conceito": "Ransomware",
     "termo_ingles": "ransomware",
     "traducao": "Ransomware: torna dados inacessíveis e exige resgate para tentar liberar o acesso.",
-    "resumo": "Código malicioso que geralmente criptografa dados, impede acesso e exige pagamento de resgate.",
+    "resumo": "Código malicioso que geralmente criptografa dados, impede acesso e exige pagamento de resgate. Exemplo: arquivos viram .locked e aparece pedido de pagamento em bitcoin.",
     "nao_confundir": [
       {
         "conceito": "Worm",
@@ -7421,7 +7421,7 @@
     "conceito": "Endurecimento de sistemas (hardening)",
     "termo_ingles": "system hardening",
     "traducao": "Endurecimento: ajusta configurações para reduzir vulnerabilidades do sistema.",
-    "resumo": "Altera configurações padrão e desativa funções desnecessárias para reduzir vulnerabilidades, ou fraquezas exploráveis.",
+    "resumo": "Altera configurações padrão e desativa funções desnecessárias para reduzir vulnerabilidades, ou fraquezas exploráveis. Exemplo: desligar serviços sem uso e trocar a senha padrão do roteador.",
     "nao_confundir": [
       {
         "conceito": "Antivírus",
@@ -7442,7 +7442,7 @@
     "conceito": "Tríade de confidencialidade, integridade e disponibilidade (CID)",
     "termo_ingles": "confidentiality, integrity and availability triad",
     "traducao": "Tríade CID: reúne três objetivos centrais de proteção da informação.",
-    "resumo": "Confidencialidade restringe acesso; integridade preserva exatidão; disponibilidade mantém acesso quando necessário.",
+    "resumo": "Confidencialidade restringe acesso; integridade preserva exatidão; disponibilidade mantém acesso quando necessário. Exemplo: vazamento fere a confidencialidade; site fora do ar, a disponibilidade.",
     "nao_confundir": [
       {
         "conceito": "Privacidade",
@@ -7466,7 +7466,7 @@
     "conceito": "Risco de segurança da informação",
     "termo_ingles": "information security risk",
     "traducao": "Risco de segurança: combina possibilidade de evento danoso e impacto potencial.",
-    "resumo": "Risco estima a chance de um evento explorar uma fraqueza e o impacto adverso resultante.",
+    "resumo": "Risco estima a chance de um evento explorar uma fraqueza e o impacto adverso resultante. Exemplo: servidor sem atualização (fraqueza) atacado por ransomware (evento) para o serviço (impacto).",
     "nao_confundir": [
       {
         "conceito": "Incidente de segurança",
@@ -7489,7 +7489,7 @@
     "conceito": "Tratamento de riscos",
     "termo_ingles": "risk treatment",
     "traducao": "Tratamento de riscos: escolhe ações para lidar com exposições identificadas.",
-    "resumo": "A organização pode evitar a atividade, reduzir a exposição, compartilhar ou transferir efeitos, ou aceitar o risco.",
+    "resumo": "Evitar, reduzir, compartilhar ou transferir, ou aceitar o risco. Exemplo: seguro transfere; firewall reduz.",
     "nao_confundir": [
       {
         "conceito": "Risco residual",
@@ -7516,7 +7516,7 @@
     "conceito": "Sistema de Gestão da Segurança da Informação (SGSI)",
     "termo_ingles": "information security management system",
     "traducao": "Sistema de gestão da segurança da informação: organiza processos para gerir proteção informacional.",
-    "resumo": "Sistema organizacional que estabelece objetivos, políticas e processos para gerir a segurança da informação.",
+    "resumo": "Sistema organizacional que estabelece objetivos, políticas e processos para gerir a segurança da informação. Exemplo: o conjunto de políticas, riscos e auditorias certificado pela ISO 27001.",
     "nao_confundir": [
       {
         "conceito": "Política de segurança",
@@ -7539,7 +7539,7 @@
     "conceito": "ISO/IEC 27001",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "ISO/IEC 27001 é a norma de requisitos para sistemas de gestão da segurança da informação (SGSI).",
+    "resumo": "ISO/IEC 27001 é a norma de requisitos para sistemas de gestão da segurança da informação (SGSI). Exemplo: a empresa é auditada e recebe a certificação 27001.",
     "nao_confundir": [
       {
         "conceito": "ISO/IEC 27002",
@@ -7561,7 +7561,7 @@
     "conceito": "ISO/IEC 27005",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "A ISO/IEC 27005 orienta identificação, avaliação e tratamento de riscos de segurança da informação.",
+    "resumo": "A ISO/IEC 27005 orienta identificação, avaliação e tratamento de riscos de segurança da informação. Exemplo: guia para montar a matriz de riscos do SGSI.",
     "nao_confundir": [
       {
         "conceito": "ISO 31000",
@@ -7584,7 +7584,7 @@
     "conceito": "Contenção de incidente de segurança",
     "termo_ingles": "incident containment",
     "traducao": "Contenção: limita o avanço de um incidente e seus efeitos.",
-    "resumo": "Incidente de segurança é evento que compromete sistemas; contenção limita seu avanço antes da recuperação.",
+    "resumo": "Incidente de segurança é evento que compromete sistemas; contenção limita seu avanço antes da recuperação. Exemplo: desconectar da rede o computador infectado.",
     "nao_confundir": [
       {
         "conceito": "Erradicação",
@@ -7606,7 +7606,7 @@
     "conceito": "Autenticação multifator (MFA) contra senha roubada",
     "termo_ingles": "multifactor authentication",
     "traducao": "Autenticação multifator: exige fatores distintos para confirmar a identidade.",
-    "resumo": "Mesmo que o atacante descubra ou roube a senha, ela sozinha não basta para entrar na conta.",
+    "resumo": "Mesmo que o atacante roube a senha, ela sozinha não basta para entrar. Exemplo: o login ainda pede o código do celular.",
     "nao_confundir": [
       {
         "conceito": "Bloqueio de conta",
@@ -8636,7 +8636,7 @@
     "conceito": "Segurança do protocolo IP",
     "termo_ingles": "Internet Protocol Security (IPsec)",
     "traducao": "IPsec: protege comunicações na camada de rede, aplicando serviços de segurança aos pacotes IP.",
-    "resumo": "Protege o tráfego entre equipamentos ou redes, por exemplo na criação de uma rede privada virtual (VPN).",
+    "resumo": "Protege o tráfego IP entre equipamentos ou redes, cifrando e autenticando os pacotes. Exemplo: túnel IPsec ligando a matriz à filial (VPN).",
     "nao_confundir": [
       {
         "conceito": "Segurança da camada de transporte",
@@ -8658,7 +8658,7 @@
     "conceito": "Segurança da camada de transporte",
     "termo_ingles": "Transport Layer Security (TLS)",
     "traducao": "TLS: estabelece um canal seguro entre aplicações comunicantes, protegendo os dados contra interceptação e alteração.",
-    "resumo": "TLS protege a comunicação entre cliente e servidor. É utilizado em conexões HTTPS para proteger os dados transmitidos.",
+    "resumo": "TLS protege a comunicação entre cliente e servidor. Exemplo: é o \"S\" do HTTPS, que cifra a senha digitada no site do banco.",
     "nao_confundir": [
       {
         "conceito": "Segurança do protocolo IP (IPsec)",
@@ -8679,7 +8679,7 @@
     "conceito": "Gerenciamento de eventos de segurança",
     "termo_ingles": "Security Information and Event Management (SIEM)",
     "traducao": "SIEM: centraliza registros de segurança e permite analisar eventos provenientes de diferentes fontes.",
-    "resumo": "Reúne registros de equipamentos e sistemas para apoiar a identificação de atividades suspeitas e incidentes.",
+    "resumo": "Reúne registros de equipamentos e sistemas para identificar atividades suspeitas e incidentes. Exemplo: o SIEM cruza 50 logins errados no servidor com um acesso vindo do exterior.",
     "nao_confundir": [
       {
         "conceito": "Sistema de detecção de intrusão",
@@ -8702,7 +8702,7 @@
     "conceito": "Proxy direto e reverso",
     "termo_ingles": "Forward proxy and reverse proxy",
     "traducao": "Proxy direto e reverso: o direto age em nome do cliente; o reverso fica à frente dos servidores.",
-    "resumo": "O proxy direto intermedeia o acesso do cliente. O reverso recebe solicitações externas e as encaminha aos servidores de destino.",
+    "resumo": "O direto intermedeia o acesso do cliente; o reverso recebe pedidos externos e repassa aos servidores. Exemplo: direto filtra a navegação interna; reverso protege o site.",
     "nao_confundir": [
       {
         "conceito": "Firewall",
@@ -8723,7 +8723,7 @@
     "conceito": "Negação distribuída de serviço",
     "termo_ingles": "Distributed Denial of Service (DDoS)",
     "traducao": "DDoS: ataque de negação de serviço em que várias máquinas geram tráfego contra um mesmo alvo.",
-    "resumo": "Sobrecarrega um serviço com tráfego originado de múltiplas máquinas que atuam em conjunto, prejudicando sua disponibilidade.",
+    "resumo": "Sobrecarrega um serviço com tráfego de muitas máquinas atuando em conjunto, prejudicando a disponibilidade. Exemplo: milhares de câmeras infectadas (botnet) atacam o mesmo site.",
     "nao_confundir": [
       {
         "conceito": "Negação de serviço",
@@ -8745,7 +8745,7 @@
     "conceito": "Falsificação de ARP",
     "termo_ingles": "ARP spoofing",
     "traducao": "Falsificação de ARP: manipula informações de resolução de endereços para direcionar tráfego a um equipamento indevido.",
-    "resumo": "O atacante envia informações falsas do protocolo de resolução de endereços, alterando tabelas e podendo interceptar comunicações.",
+    "resumo": "O atacante envia respostas ARP falsas, altera tabelas e intercepta comunicações. Exemplo: finge ser o roteador e o tráfego local passa por ele.",
     "nao_confundir": [
       {
         "conceito": "Falsificação de endereço IP",
@@ -8768,7 +8768,7 @@
     "conceito": "Captura de pacotes com Wireshark",
     "termo_ingles": "Packet capture",
     "traducao": "Captura de pacotes: registra dados que trafegam pela interface de rede para permitir sua análise.",
-    "resumo": "No Wireshark, a captura permite examinar pacotes, protocolos e comunicações observadas em uma interface selecionada.",
+    "resumo": "No Wireshark, a captura permite examinar pacotes, protocolos e comunicações de uma interface escolhida. Exemplo: filtrar por dns e ver as consultas do computador.",
     "nao_confundir": [
       {
         "conceito": "Sistema de detecção de intrusão (IDS)",
@@ -8791,7 +8791,7 @@
     "conceito": "Registrador de teclas",
     "termo_ingles": "Keylogger",
     "traducao": "Keylogger: programa que registra as teclas pressionadas para obter dados digitados.",
-    "resumo": "Pode capturar senhas, mensagens e outros dados digitados pelo usuário, armazenando ou enviando essas informações.",
+    "resumo": "Pode capturar senhas, mensagens e outros dados digitados, armazenando ou enviando as informações. Exemplo: o programa escondido grava a senha digitada no internet banking.",
     "nao_confundir": [
       {
         "conceito": "Spyware",
@@ -8814,7 +8814,7 @@
     "conceito": "Malware sem arquivo",
     "termo_ingles": "Fileless malware",
     "traducao": "Malware sem arquivo: ameaça que executa atividades maliciosas sem necessariamente gravar um arquivo malicioso no disco.",
-    "resumo": "Pode utilizar memória, scripts e recursos legítimos do sistema para executar ações maliciosas.",
+    "resumo": "Pode usar memória, scripts e recursos legítimos do sistema para executar ações maliciosas, sem gravar arquivo próprio. Exemplo: comando PowerShell malicioso executado só na memória.",
     "nao_confundir": [
       {
         "conceito": "Malware baseado em arquivo",
@@ -8837,7 +8837,7 @@
     "conceito": "Serviços de domínio Active Directory",
     "termo_ingles": "Active Directory Domain Services (AD DS)",
     "traducao": "Active Directory: serviço de diretório que organiza informações de usuários, computadores e recursos de uma rede.",
-    "resumo": "No ambiente Windows, permite armazenar informações de contas e recursos, além de apoiar autenticação e controle de acesso.",
+    "resumo": "No Windows, armazena informações de contas e recursos e apoia autenticação e controle de acesso. Exemplo: o login de rede da empresa e os grupos de permissão vêm do AD.",
     "nao_confundir": [
       {
         "conceito": "LDAP",
@@ -8859,7 +8859,7 @@
     "conceito": "Segurança no trabalho remoto",
     "termo_ingles": "Telework security",
     "traducao": "Segurança no trabalho remoto: protege dispositivos, conexões e informações utilizados fora das instalações da organização.",
-    "resumo": "Abrange equipamentos corporativos e pessoais autorizados, acesso remoto e medidas de proteção contra ameaças externas.",
+    "resumo": "Abrange equipamentos corporativos e pessoais autorizados, acesso remoto e proteção contra ameaças externas. Exemplo: notebook da empresa com VPN e disco cifrado para trabalhar de casa.",
     "nao_confundir": [
       {
         "conceito": "Segurança de rede interna",
@@ -8881,7 +8881,7 @@
     "conceito": "Plataforma de proteção de endpoint",
     "termo_ingles": "Endpoint Protection Platform (EPP)",
     "traducao": "EPP: software de proteção instalado nos endpoints (máquinas do usuário final, como estações e notebooks).",
-    "resumo": "Pode incluir antivírus, antispyware, firewall pessoal e mecanismos de detecção e prevenção de intrusões no equipamento.",
+    "resumo": "Pode reunir antivírus, antispyware, firewall pessoal e detecção e prevenção de intrusões no equipamento. Exemplo: o pacote de proteção instalado em todos os notebooks da empresa.",
     "nao_confundir": [
       {
         "conceito": "Proteção de rede",
@@ -8903,7 +8903,7 @@
     "conceito": "Detecção e resposta em endpoint",
     "termo_ingles": "Endpoint Detection and Response (EDR)",
     "traducao": "EDR: monitora dispositivos finais para detectar atividades suspeitas e apoiar ações de resposta.",
-    "resumo": "Acompanha atividades em computadores e outros dispositivos, identifica comportamentos suspeitos e fornece informações para investigação e correção.",
+    "resumo": "Acompanha atividades nos dispositivos, identifica comportamentos suspeitos e fornece dados para investigação e correção. Exemplo: alerta que o Word abriu um PowerShell e isola a máquina.",
     "nao_confundir": [
       {
         "conceito": "Plataforma de proteção de endpoint",
@@ -8925,7 +8925,7 @@
     "conceito": "Controles da ISO/IEC 27002",
     "termo_ingles": "Information security controls",
     "traducao": "Controles de segurança da informação: medidas e orientações para tratar riscos e proteger informações organizacionais.",
-    "resumo": "A ISO/IEC 27002:2022 apresenta orientações sobre controles, enquanto a ISO/IEC 27001 estabelece requisitos para o sistema de gestão.",
+    "resumo": "A ISO/IEC 27002:2022 orienta sobre controles; a ISO/IEC 27001 estabelece os requisitos do sistema de gestão. Exemplo: a 27002 detalha como aplicar controle de acesso.",
     "nao_confundir": [
       {
         "conceito": "Requisitos da ISO/IEC 27001",
@@ -8948,7 +8948,7 @@
     "conceito": "Declaração de aplicabilidade",
     "termo_ingles": "Statement of Applicability (SoA)",
     "traducao": "Declaração de aplicabilidade: documento que identifica controles necessários, sua inclusão e a situação de implementação.",
-    "resumo": "Registra os controles necessários, por que entraram, se estão implementados e por que controles do Anexo A (referência de controles da 27001) ficaram de fora.",
+    "resumo": "Registra os controles necessários, por que entraram, se estão implementados e por que controles do Anexo A ficaram de fora. Exemplo: \"desenvolvimento seguro: excluído, não desenvolvemos software\".",
     "nao_confundir": [
       {
         "conceito": "Plano de tratamento de riscos",
@@ -8971,7 +8971,7 @@
     "conceito": "Ciclo de resposta a incidentes",
     "termo_ingles": "Incident response lifecycle",
     "traducao": "Ciclo de resposta a incidentes: preparação; detecção e análise; contenção, erradicação e recuperação; atividade pós-incidente.",
-    "resumo": "A resposta não termina na contenção: também envolve eliminar a causa, recuperar sistemas e registrar lições aprendidas.",
+    "resumo": "A resposta não termina na contenção: também elimina a causa, recupera sistemas e registra lições aprendidas. Exemplo: isolar, remover o malware, restaurar o backup e revisar o que falhou.",
     "nao_confundir": [
       {
         "conceito": "Contenção de incidente",
@@ -8994,7 +8994,7 @@
     "conceito": "Política de segurança da informação",
     "termo_ingles": "Information security policy",
     "traducao": "Política de segurança da informação: estabelece diretrizes e regras para orientar a proteção e o uso das informações.",
-    "resumo": "Define objetivos, responsabilidades e orientações organizacionais para gerenciar, proteger e distribuir informações.",
+    "resumo": "Define objetivos, responsabilidades e orientações organizacionais para gerenciar, proteger e distribuir informações. Exemplo: documento aprovado pela direção com as regras de senha e de uso de e-mail.",
     "nao_confundir": [
       {
         "conceito": "Procedimento de segurança",
@@ -9040,7 +9040,7 @@
     "conceito": "Melhoria contínua do SGSI",
     "termo_ingles": "Continual improvement",
     "traducao": "Melhoria contínua: aprimora continuamente a adequação, suficiência e eficácia do sistema de gestão.",
-    "resumo": "Envolve avaliar resultados, identificar oportunidades de melhoria e aperfeiçoar o sistema de gestão de segurança da informação.",
+    "resumo": "Avalia resultados, identifica oportunidades de melhoria e aperfeiçoa o sistema de gestão de segurança da informação. Exemplo: após a auditoria, corrigir os pontos fracos encontrados.",
     "nao_confundir": [
       {
         "conceito": "Ação corretiva",
@@ -9063,7 +9063,7 @@
     "conceito": "NIST Cybersecurity Framework",
     "termo_ingles": "NIST Cybersecurity Framework (CSF)",
     "traducao": "Estrutura de Cibersegurança: organiza resultados e atividades para gerenciar riscos de segurança cibernética.",
-    "resumo": "O NIST CSF orienta organizações a compreender, avaliar, priorizar e comunicar riscos de segurança cibernética.",
+    "resumo": "O NIST CSF orienta organizações a compreender, avaliar, priorizar e comunicar riscos de segurança cibernética. Exemplo: usar o CSF para comparar o estado atual com a meta de segurança.",
     "nao_confundir": [
       {
         "conceito": "Catálogo de controles",
@@ -9084,7 +9084,7 @@
     "conceito": "Funções do NIST CSF 2.0",
     "termo_ingles": "Govern, Identify, Protect, Detect, Respond, Recover",
     "traducao": "Governar, Identificar, Proteger, Detectar, Responder e Recuperar: funções que organizam os resultados de segurança cibernética.",
-    "resumo": "As seis funções orientam a governança, o conhecimento dos ativos, a proteção, a detecção, a resposta e a recuperação.",
+    "resumo": "As seis funções orientam governança, conhecimento dos ativos, proteção, detecção, resposta e recuperação. Exemplo: Governar, Identificar, Proteger, Detectar, Responder e Recuperar.",
     "nao_confundir": [
       {
         "conceito": "Categorias",
@@ -9105,7 +9105,7 @@
     "conceito": "CIS Controls e grupos de implementação",
     "termo_ingles": "Center for Internet Security Critical Security Controls",
     "traducao": "Controles Críticos do CIS: conjunto priorizado de salvaguardas para defender sistemas e redes contra ataques cibernéticos.",
-    "resumo": "Os CIS Controls v8.1 reúnem 18 controles e organizam salvaguardas em três grupos de implementação, conforme risco e recursos.",
+    "resumo": "Os CIS Controls v8.1 reúnem 18 controles e organizam salvaguardas em três grupos de implementação, conforme risco e recursos. Exemplo: uma pequena empresa começa pelo grupo 1.",
     "nao_confundir": [
       {
         "conceito": "NIST CSF",
@@ -9126,7 +9126,7 @@
     "conceito": "Inventário de ativos",
     "termo_ingles": "Inventory and Control of Enterprise Assets",
     "traducao": "Inventário e controle de ativos: identifica e acompanha os equipamentos e recursos que precisam ser protegidos.",
-    "resumo": "O inventário registra ativos corporativos, como dispositivos de usuários, equipamentos de rede, servidores e recursos em nuvem.",
+    "resumo": "Registra ativos corporativos, como dispositivos de usuários, equipamentos de rede, servidores e recursos em nuvem. Exemplo: planilha com todos os notebooks, roteadores e servidores e seus responsáveis.",
     "nao_confundir": [
       {
         "conceito": "Inventário de software",
@@ -9148,7 +9148,7 @@
     "conceito": "MITRE ATT&CK",
     "termo_ingles": "MITRE ATT&CK",
     "traducao": "Base de conhecimento de táticas e técnicas: organiza comportamentos de adversários observados em ataques reais.",
-    "resumo": "O MITRE ATT&CK cataloga comportamentos de adversários e auxilia a compreender ações realizadas durante operações de ataque.",
+    "resumo": "O MITRE ATT&CK cataloga comportamentos de adversários e ajuda a entender ações realizadas em ataques. Exemplo: classificar um phishing como técnica de acesso inicial.",
     "nao_confundir": [
       {
         "conceito": "Tática e técnica",
@@ -9170,7 +9170,7 @@
     "conceito": "Catálogo NIST SP 800-53",
     "termo_ingles": "Security and Privacy Controls for Information Systems and Organizations",
     "traducao": "Controles de Segurança e Privacidade: catálogo de controles aplicáveis a sistemas de informação e organizações.",
-    "resumo": "A NIST SP 800-53 Rev. 5 reúne controles de segurança e privacidade flexíveis, organizados em famílias e ajustáveis aos riscos.",
+    "resumo": "A NIST SP 800-53 Rev. 5 reúne controles de segurança e privacidade, organizados em famílias e ajustáveis aos riscos. Exemplo: a família AC trata de controle de acesso.",
     "nao_confundir": [
       {
         "conceito": "NIST CSF",
@@ -9191,7 +9191,7 @@
     "conceito": "Política Nacional de Segurança da Informação",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "A PNSI estabelece diretrizes de segurança da informação no âmbito da Administração Pública Federal, abrangendo dados, ativos, processos, ambientes e pessoas.",
+    "resumo": "A PNSI dá diretrizes de segurança da informação na Administração Pública Federal: dados, ativos, processos e pessoas. Exemplo: base da política de segurança de um ministério.",
     "nao_confundir": [
       {
         "conceito": "Política institucional",
@@ -9213,7 +9213,7 @@
     "conceito": "Processos de gestão de SI na APF",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "A Instrução Normativa GSI/PR nº 3/2021 estabelece processos de gestão de segurança da informação para órgãos e entidades da Administração Pública Federal.",
+    "resumo": "A IN GSI/PR nº 3/2021 estabelece processos de gestão de segurança da informação na APF. Exemplo: o órgão organiza a gestão de riscos seguindo a IN.",
     "nao_confundir": [
       {
         "conceito": "Estrutura de gestão de SI",
@@ -9235,7 +9235,7 @@
     "conceito": "Controlador e operador na LGPD",
     "termo_ingles": "Controller and Processor",
     "traducao": "Controlador e operador: agentes que decidem sobre o tratamento de dados pessoais e executam o tratamento em nome do controlador.",
-    "resumo": "Controlador é quem toma as decisões sobre o tratamento de dados pessoais; operador é quem realiza o tratamento em nome do controlador.",
+    "resumo": "Controlador toma as decisões sobre o tratamento de dados pessoais; operador trata em nome do controlador. Exemplo: a loja é controladora; a empresa de e-mail marketing contratada é operadora.",
     "nao_confundir": [
       {
         "conceito": "Encarregado",
@@ -9258,7 +9258,7 @@
     "conceito": "Princípios da LGPD",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "O tratamento de dados pessoais deve observar a boa-fé e princípios como finalidade, adequação, necessidade, transparência, segurança e prevenção.",
+    "resumo": "O tratamento de dados pessoais segue a boa-fé e princípios como finalidade, adequação, necessidade, transparência, segurança e prevenção. Exemplo: pedir só o CPF necessário para a nota, nada além (necessidade).",
     "nao_confundir": [
       {
         "conceito": "Finalidade e necessidade",
@@ -9280,7 +9280,7 @@
     "conceito": "Marco Civil da Internet",
     "termo_ingles": "",
     "traducao": "",
-    "resumo": "A Lei nº 12.965/2014 estabelece princípios, garantias, direitos e deveres para o uso da internet no Brasil.",
+    "resumo": "A Lei nº 12.965/2014 estabelece princípios, garantias, direitos e deveres para o uso da internet no Brasil. Exemplo: prevê a neutralidade da rede.",
     "nao_confundir": [
       {
         "conceito": "LGPD",
@@ -9301,7 +9301,7 @@
     "conceito": "Segurança em nuvem governamental",
     "termo_ingles": "Government Cloud Computing",
     "traducao": "Computação em nuvem governamental: uso de recursos computacionais acessados pela rede, sujeito a requisitos de segurança da Administração Pública Federal.",
-    "resumo": "A utilização de soluções de computação em nuvem na APF deve observar requisitos mínimos de segurança da informação definidos pelo GSI.",
+    "resumo": "Nuvem na APF deve seguir requisitos mínimos de segurança da informação definidos pelo GSI. Exemplo: o órgão confere esses requisitos antes de contratar o provedor.",
     "nao_confundir": [
       {
         "conceito": "Nuvem pública",
@@ -9323,7 +9323,7 @@
     "conceito": "Contratação de soluções de TIC",
     "termo_ingles": "Information and Communication Technology Procurement",
     "traducao": "Contratação de TIC: processo de planejamento, seleção e gestão de contratos de tecnologia da informação e comunicação.",
-    "resumo": "A IN SGD/ME nº 94/2022 disciplina as contratações de soluções de TIC pelos órgãos e entidades do SISP do Poder Executivo Federal.",
+    "resumo": "A IN SGD/ME nº 94/2022 disciplina as contratações de soluções de TIC pelos órgãos do SISP. Exemplo: rege a compra de licenças de software por um ministério.",
     "nao_confundir": [
       {
         "conceito": "Modelo de contratação de nuvem",
@@ -9344,7 +9344,7 @@
     "conceito": "Continuidade de negócios",
     "termo_ingles": "Business Continuity",
     "traducao": "Continuidade de negócios: capacidade de manter ou recuperar atividades prioritárias durante uma interrupção.",
-    "resumo": "Organiza ações para manter serviços essenciais durante interrupções (falha, ataque, desastre) e restabelecer as atividades suspensas.",
+    "resumo": "Organiza ações para manter serviços essenciais durante interrupções e restabelecer as atividades suspensas. Exemplo: com o datacenter inundado, o banco segue operando pelo site secundário.",
     "nao_confundir": [
       {
         "conceito": "Recuperação de desastre",
@@ -9366,7 +9366,7 @@
     "conceito": "Análise de impacto nos negócios",
     "termo_ingles": "Business Impact Analysis (BIA)",
     "traducao": "Análise de Impacto nos Negócios: identifica consequências de interrupções e prioridades de recuperação.",
-    "resumo": "A análise identifica impactos da interrupção de atividades e ajuda a decidir quais processos e sistemas recuperar primeiro.",
+    "resumo": "Mede o impacto de parar cada atividade e define o que recuperar primeiro. Exemplo: a folha de pagamento não pode parar mais que 4 horas.",
     "nao_confundir": [
       {
         "conceito": "Avaliação de riscos",
@@ -9387,7 +9387,7 @@
     "conceito": "Objetivo de tempo de recuperação",
     "termo_ingles": "Recovery Time Objective (RTO)",
     "traducao": "Objetivo de Tempo de Recuperação: prazo máximo de indisponibilidade tolerado antes de impacto inaceitável.",
-    "resumo": "O RTO define quanto tempo um recurso ou sistema pode permanecer indisponível após uma interrupção.",
+    "resumo": "O RTO define quanto tempo um recurso pode ficar indisponível após uma interrupção. Exemplo: RTO de 4 horas: o sistema precisa voltar em até 4 horas.",
     "nao_confundir": [
       {
         "conceito": "Objetivo de ponto de recuperação",
@@ -9409,7 +9409,7 @@
     "conceito": "Objetivo de ponto de recuperação",
     "termo_ingles": "Recovery Point Objective (RPO)",
     "traducao": "Objetivo de Ponto de Recuperação: determina até que momento anterior à interrupção os dados precisam ser recuperáveis.",
-    "resumo": "O RPO expressa a perda de dados tolerada, medida pelo intervalo de tempo entre a interrupção e o ponto recuperável.",
+    "resumo": "Perda de dados tolerada, medida em tempo até o último ponto recuperável. Exemplo: RPO de 1 hora exige backup horário.",
     "nao_confundir": [
       {
         "conceito": "Objetivo de tempo de recuperação (RTO)",
@@ -9431,7 +9431,7 @@
     "conceito": "Cópia de segurança",
     "termo_ingles": "Backup",
     "traducao": "Cópia de segurança: cópia de dados mantida para possibilitar sua restauração após perda ou interrupção.",
-    "resumo": "O backup preserva cópias de dados para restauração quando os dados originais são perdidos, danificados ou ficam indisponíveis.",
+    "resumo": "Preserva cópias de dados para restaurar quando os originais se perdem ou estragam. Exemplo: copiar os arquivos todo dia para um disco fora da empresa.",
     "nao_confundir": [
       {
         "conceito": "Plano de continuidade",
@@ -12870,7 +12870,7 @@
     "conceito": "Portas conhecidas",
     "termo_ingles": "Well-known ports",
     "traducao": "Portas conhecidas: números de 0 a 1023 reservados a serviços padronizados.",
-    "resumo": "Portas conhecidas, ou do sistema (0 a 1023), atribuídas pela IANA. Exemplos: HTTP 80, HTTPS 443, SMTP 25, SSH 22, FTP 21, DNS 53, POP3 110, IMAP 143, LDAP 389.",
+    "resumo": "Portas conhecidas, ou do sistema (0 a 1023), atribuídas pela IANA. Exemplo: HTTP 80, HTTPS 443, SMTP 25, SSH 22, FTP 21, DNS 53, POP3 110, IMAP 143, LDAP 389.",
     "nao_confundir": [
       {
         "conceito": "Porta registrada",
