@@ -4,9 +4,11 @@
 import { esc } from '../ui.js';
 import * as M from './motor.js';
 import { calcular, prefixoDaMascara, ipParaNumero } from './ipv4.js';
+import { MISSOES, redeEscritorio, avaliar } from './missoes.js';
 
 const CHAVE_ATUAL = 'focopro_lab_atual';
 const CHAVE_PROJETOS = 'focopro_lab_projetos';
+const CHAVE_MISSOES = 'focopro_lab_missoes';
 const ICONE = { pc: '🖥️', notebook: '💻', servidor: '🗄️', impressora: '🖨️', switch: '🔀', roteador: '📡' };
 const W = 104, H = 64; // tamanho do aparelho na área de montagem
 
@@ -21,14 +23,8 @@ function lerMascara(txt) {
 
 // Exemplo pronto: o escritório da Ana (mesmo cenário do Projeto 1)
 function exemploEscritorio() {
-    const r = M.novaRede();
-    const sw = M.adicionarAparelho(r, 'switch', 420, 220); sw.nome = 'SW-Escritorio';
-    const ps = [[180, 90, 'PC1', '192.168.10.11'], [180, 220, 'PC2', '192.168.10.12'], [180, 350, 'PC3', '192.168.10.13']].map(([x, y, n, ip], i) => {
-        const p = M.adicionarAparelho(r, 'pc', x, y); p.nome = n; p.portas[0].ip = ip; M.ligar(r, p.id, 'Fa0', sw.id, `Fa0/${i + 1}`); return p;
-    });
-    const imp = M.adicionarAparelho(r, 'impressora', 660, 220); imp.nome = 'Impressora'; imp.portas[0].ip = '192.168.10.20';
-    M.ligar(r, imp.id, 'Fa0', sw.id, 'Fa0/4');
-    return { nome: 'Escritório da Ana', rede: r, sel: ps[0].id };
+    const rede = redeEscritorio();
+    return { nome: 'Escritório da Ana', rede, sel: rede.aparelhos.find(a => a.nome === 'PC1').id };
 }
 
 export function abrirBancada() {
@@ -41,6 +37,7 @@ export function abrirBancada() {
     let ferramenta = null; // null | { tipo: 'cabo', a?: {id, porta} }
     const terminais = {}; // id → linhas
     let simulacao = { eventos: [], i: -1, rodando: false };
+    let missao = null; // { def, comandos: [], vistos: [], dicas: 0, resposta: null }
 
     const el = document.createElement('div');
     el.className = 'bancada';
@@ -49,6 +46,8 @@ export function abrirBancada() {
         <header class="bc-topo">
             <div class="bc-titulo"><span class="bc-faixa">Laboratório</span><input class="bc-nome" aria-label="Nome do projeto" value=""></div>
             <div class="bc-barra">
+                <button type="button" data-acao="missoes" class="bc-destaque">🎯 Missões</button>
+                <span class="bc-sep"></span>
                 <button type="button" data-acao="novo">Novo</button>
                 <button type="button" data-acao="exemplo">Exemplo: escritório</button>
                 <button type="button" data-acao="salvar">Salvar</button>
@@ -71,6 +70,7 @@ export function abrirBancada() {
                 <svg class="bc-svg" role="application" aria-label="Área de montagem"></svg>
                 <div class="bc-portas" hidden></div>
                 <div class="bc-sim" hidden></div>
+                <div class="bc-missao" hidden></div>
             </section>
             <aside class="bc-lado">
                 <div class="bc-config"></div>
@@ -175,7 +175,7 @@ export function abrirBancada() {
         $('.bc-nome').value = projeto.nome;
         el.querySelectorAll('[data-modo]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.modo === modo)));
         $('.bc-cabo').setAttribute('aria-pressed', String(!!ferramenta));
-        desenharArea(); desenharConfig(); salvarAtual();
+        desenharArea(); desenharConfig(); salvarAtual(); desenharMissao();
     }
 
     // ---------- comandos ----------
@@ -186,10 +186,12 @@ export function abrirBancada() {
         out.push(`${prompt}${cmdTxt}`);
         const [cmd, ...args] = cmdTxt.trim().split(/\s+/); const c = (cmd || '').toLowerCase(); const resto = args.join(' ').toLowerCase();
         let eventos = null;
+        const registro = { de: a.id, cmd: c, alvo: args[0] || '', ok: 0 };
         if (c === 'cls' || c === 'clear') { terminais[a.id] = []; desenharTerminal(); return; }
         if (c === 'help' || c === '?') out.push('ping <ip> · ipconfig · arp -a · tracert <ip> · cls');
         else if (c === 'ping' && args[0]) {
             const r = M.ping(projeto.rede, est, a.id, args[0]);
+            registro.ok = r.ok || 0;
             out.push(...r.linhas);
             if (r.explicacao) out.push({ tipo: r.ok === 4 ? 'ok' : 'ruim', texto: `Por quê: ${r.explicacao}` });
             (r.avisos || []).forEach(x => out.push({ tipo: 'aviso', texto: `⚠ ${x}` }));
@@ -197,7 +199,7 @@ export function abrirBancada() {
         } else if (c === 'tracert' && args[0]) { const r = M.tracert(projeto.rede, est, a.id, args[0]); out.push(...r.linhas); eventos = r.eventos; }
         else if (c === 'ipconfig') out.push(...M.ipconfig(projeto.rede, a.id));
         else if (c === 'arp' && resto === '-a' || c === 'show' && resto === 'arp') out.push(...M.arpA(est, projeto.rede, a.id));
-        else if (c === 'show' && /^mac/.test(resto)) out.push(...M.tabelaMac(est, projeto.rede, a.id));
+        else if (c === 'show' && /^mac/.test(resto)) { registro.cmd = 'show-mac'; out.push(...M.tabelaMac(est, projeto.rede, a.id)); }
         else if (c === 'show' && resto === 'ip route') {
             const linhas = ['Codes: C - connected, S - static, S* - default', ''];
             a.portas.filter(p => p.ip && p.ligada).forEach(p => { const k = calcular(p.ip, p.prefixo); linhas.push(`C    ${k.rede}/${p.prefixo} is directly connected, ${p.nome}`); });
@@ -208,8 +210,10 @@ export function abrirBancada() {
             a.portas.forEach(p => out.push(`${p.nome.padEnd(13)}${(p.ip || 'unassigned').padEnd(17)}${p.ligada ? 'up' : 'administratively down'}`));
         } else out.push(`'${cmdTxt}' não é um comando conhecido aqui. Digite help.`);
         out.push('');
+        if (missao) missao.comandos.push(registro);
         desenharTerminal();
         if (eventos && eventos.length && modo === 'simulacao') prepararSimulacao(eventos);
+        desenharMissao();
     }
 
     // ---------- modo simulação ----------
@@ -247,9 +251,75 @@ export function abrirBancada() {
     }
     function proximoEvento(continuar) {
         if (simulacao.i >= simulacao.eventos.length - 1) { simulacao.rodando = false; desenharSim(); return; }
-        simulacao.i++; desenharSim();
+        simulacao.i++; verEvento(simulacao.i); desenharSim();
         animar(simulacao.i, () => { if (continuar && simulacao.rodando) setTimeout(() => proximoEvento(true), 150); });
     }
+
+    function verEvento(i) {
+        const e = simulacao.eventos[i]; if (!e || !missao) return;
+        missao.vistos.push({ tipo: e.quadro.tipo, op: e.quadro.op, para: (ap(e.para) || {}).nome });
+        desenharMissao();
+    }
+
+    // ---------- missões ----------
+    const progresso = () => ler(CHAVE_MISSOES, {});
+    function iniciarMissao(def) {
+        projeto = { nome: `Missão: ${def.titulo}`, rede: def.inicio() };
+        est = M.novoEstado(); caboSel = null; ferramenta = null; modo = 'tempo-real';
+        Object.keys(terminais).forEach(k => delete terminais[k]);
+        simulacao = { eventos: [], i: -1, rodando: false };
+        const pc1 = projeto.rede.aparelhos.find(a => a.nome === 'PC1'); sel = pc1 ? pc1.id : null;
+        missao = { def, comandos: [], vistos: [], dicas: 0, resposta: null, aberta: true };
+        $('.bc-dialogo').hidden = true; status('');
+        desenharTudo(); desenharSim();
+    }
+    function desenharMissao() {
+        const box = $('.bc-missao');
+        if (!missao) { box.hidden = true; return; }
+        box.hidden = false;
+        const d = missao.def;
+        const res = avaliar(d, { rede: projeto.rede, comandos: missao.comandos, sim: { modo, vistos: missao.vistos } });
+        const tudo = res.every(Boolean);
+        if (!missao.aberta) { box.innerHTML = `<button type="button" class="bc-missao-mini" data-missao="abrir">🎯 ${res.filter(Boolean).length}/${res.length} · ${esc(d.titulo)}</button>`; return; }
+        const pergunta = tudo ? `<div class="bc-pergunta"><p><b>${esc(d.pergunta.texto)}</b></p>
+            ${d.pergunta.opcoes.map((o, i) => `<button type="button" data-resp="${i}" class="${missao.resposta === null ? '' : i === d.pergunta.certa ? 'certa' : i === missao.resposta ? 'errada' : ''}" ${missao.resposta !== null ? 'disabled' : ''}>${esc(o)}</button>`).join('')}
+            ${missao.resposta !== null ? `<p class="bc-nota">${missao.resposta === d.pergunta.certa ? '<b class="bc-bom">Isso.</b> ' : '<b class="bc-ruim">Não foi isso.</b> '}${esc(d.pergunta.explicacao)}</p><p class="bc-bom"><b>Missão concluída ✓</b></p><button type="button" data-acao="missoes">Próxima missão</button>` : ''}</div>` : '';
+        box.innerHTML = `<div class="bc-missao-cab"><p class="bc-rot">🎯 ${esc(d.grupo)}</p><button type="button" data-missao="recolher" aria-label="Recolher a missão">–</button></div>
+            <p class="bc-missao-tit">${esc(d.titulo)}</p><p class="bc-nota">${esc(d.historia)}</p>
+            <ul class="bc-objetivos">${d.objetivos.map((o, i) => `<li class="${res[i] ? 'ok' : ''}"><span aria-hidden="true">${res[i] ? '✓' : '○'}</span> ${esc(o.texto)}<span class="sr-only">${res[i] ? ' (feito)' : ' (falta)'}</span></li>`).join('')}</ul>
+            ${d.dicas.slice(0, missao.dicas).map(t => `<p class="bc-dica-m">💡 ${esc(t)}</p>`).join('')}
+            ${!tudo && missao.dicas < d.dicas.length ? `<button type="button" data-missao="dica">💡 Dica ${missao.dicas + 1} de ${d.dicas.length}</button>` : ''}
+            ${pergunta}
+            <button type="button" class="bc-link" data-missao="sair">Sair da missão</button>`;
+    }
+    function listaMissoes() {
+        const feitas = progresso(); let grupo = '';
+        const d = $('.bc-dialogo');
+        d.innerHTML = `<div class="bc-caixa bc-caixa-larga"><p class="bc-rot">Missões</p>
+            <p class="bc-nota">Cada missão abre a sua própria bancada. Seu projeto atual fica guardado se você usou "Salvar".</p>
+            ${MISSOES.map((m, i) => { const g = m.grupo !== grupo ? `<p class="bc-grupo">${esc((grupo = m.grupo))}</p>` : ''; const f = feitas[m.id];
+                return `${g}<button type="button" class="bc-missao-item" data-iniciar="${i}"><span>${f ? '✓' : '○'}</span><span><b>${esc(m.titulo)}</b><small>${m.tipo === 'chamado' ? 'Chamado de suporte: ache a causa e conserte' : m.tipo === 'montar' ? 'Monte do zero' : 'Modo simulação'}</small></span></button>`; }).join('')}
+            <p class="bc-nota">Em breve: Projeto 2, dois setores ligados por um roteador.</p>
+            <button type="button" data-acao="fechar-dialogo">Fechar</button></div>`;
+        d.hidden = false;
+    }
+    $('.bc-missao').addEventListener('click', (ev) => {
+        const b = ev.target.closest('button'); if (!b || !missao) return;
+        ev.stopPropagation();
+        if (b.dataset.acao === 'missoes') { listaMissoes(); return; }
+        const k = b.dataset.missao;
+        if (k === 'dica') missao.dicas++;
+        if (k === 'recolher') missao.aberta = false;
+        if (k === 'abrir') missao.aberta = true;
+        if (k === 'sair') { missao = null; }
+        if (b.dataset.resp !== undefined && missao.resposta === null) {
+            missao.resposta = Number(b.dataset.resp);
+            const t = progresso(); const acertou = missao.resposta === missao.def.pergunta.certa;
+            t[missao.def.id] = { feita: true, acertou: (t[missao.def.id] && t[missao.def.id].acertou) || acertou, em: new Date().toISOString().slice(0, 10) };
+            gravar(CHAVE_MISSOES, t);
+        }
+        desenharMissao();
+    });
 
     // ---------- portas para o cabo ----------
     function escolherPorta(a, x, y, aoEscolher) {
@@ -300,6 +370,7 @@ export function abrirBancada() {
 
     el.addEventListener('click', (ev) => {
         const b = ev.target.closest('button'); if (!b || !el.contains(b)) return;
+        if (b.dataset.iniciar !== undefined) { iniciarMissao(MISSOES[Number(b.dataset.iniciar)]); return; }
         if (b.dataset.novo) {
             const r = svg.getBoundingClientRect();
             const n = projeto.rede.aparelhos.length;
@@ -316,9 +387,10 @@ export function abrirBancada() {
         const ac = b.dataset.acao;
         if (ac === 'fechar') return fechar();
         if (ac === 'mesmo-assim') { el.classList.add('forcar'); return; }
+        if (ac === 'missoes') { listaMissoes(); return; }
         if (ac === 'cabo') { ferramenta = ferramenta ? null : { tipo: 'cabo' }; status(ferramenta ? 'Cabo: clique no primeiro aparelho e escolha a porta. Esc cancela.' : ''); desenharTudo(); return; }
-        if (ac === 'novo') { projeto = { nome: 'Projeto novo', rede: M.novaRede() }; est = M.novoEstado(); sel = null; caboSel = null; desenharTudo(); return; }
-        if (ac === 'exemplo') { projeto = exemploEscritorio(); sel = projeto.sel; est = M.novoEstado(); caboSel = null; desenharTudo(); return; }
+        if (ac === 'novo') { missao = null; projeto = { nome: 'Projeto novo', rede: M.novaRede() }; est = M.novoEstado(); sel = null; caboSel = null; desenharTudo(); return; }
+        if (ac === 'exemplo') { missao = null; projeto = exemploEscritorio(); sel = projeto.sel; est = M.novoEstado(); caboSel = null; desenharTudo(); return; }
         if (ac === 'salvar') { const t = ler(CHAVE_PROJETOS, {}); t[projeto.nome] = M.serializar(projeto.rede); gravar(CHAVE_PROJETOS, t); status(`Projeto "${projeto.nome}" salvo neste computador.`); return; }
         if (ac === 'abrir-lista') {
             const t = ler(CHAVE_PROJETOS, {}); const nomes = Object.keys(t);
@@ -326,14 +398,14 @@ export function abrirBancada() {
             d.innerHTML = `<div class="bc-caixa"><p class="bc-rot">Projetos salvos neste computador</p>${nomes.length ? nomes.map(n => `<p class="bc-proj"><button type="button" data-abre="${esc(n)}">${esc(n)}</button> <button type="button" data-apaga="${esc(n)}" aria-label="Apagar ${esc(n)}">🗑</button></p>`).join('') : '<p class="bc-nota">Nenhum projeto salvo ainda. Use "Salvar".</p>'}<button type="button" data-acao="fechar-dialogo">Fechar</button></div>`;
             d.hidden = false; return;
         }
-        if (b.dataset.abre) { const t = ler(CHAVE_PROJETOS, {}); projeto = { nome: b.dataset.abre, rede: M.carregar(t[b.dataset.abre]) }; est = M.novoEstado(); sel = null; caboSel = null; $('.bc-dialogo').hidden = true; desenharTudo(); return; }
+        if (b.dataset.abre) { missao = null; const t = ler(CHAVE_PROJETOS, {}); projeto = { nome: b.dataset.abre, rede: M.carregar(t[b.dataset.abre]) }; est = M.novoEstado(); sel = null; caboSel = null; $('.bc-dialogo').hidden = true; desenharTudo(); return; }
         if (b.dataset.apaga) { const t = ler(CHAVE_PROJETOS, {}); delete t[b.dataset.apaga]; gravar(CHAVE_PROJETOS, t); b.closest('.bc-proj').remove(); return; }
         if (ac === 'fechar-dialogo') { $('.bc-dialogo').hidden = true; return; }
         if (ac === 'excluir' && sel) { M.removerAparelho(projeto.rede, sel); sel = null; M.limparTabelas(est); desenharTudo(); return; }
         if (ac === 'remover-cabo' && caboSel !== null) { M.desligarCabo(projeto.rede, projeto.rede.cabos[caboSel]); caboSel = null; M.limparTabelas(est); desenharTudo(); return; }
         if (ac === 'tirar-rota') { const a = ap(sel); a.rotas.splice(Number(b.dataset.i), 1); M.limparTabelas(est); desenharTudo(); return; }
     });
-    $('.bc-sim').addEventListener('click', (ev) => { const li = ev.target.closest('[data-ev]'); if (!li) return; simulacao.i = Number(li.dataset.ev); simulacao.rodando = false; desenharSim(); animar(simulacao.i); });
+    $('.bc-sim').addEventListener('click', (ev) => { const li = ev.target.closest('[data-ev]'); if (!li) return; simulacao.i = Number(li.dataset.ev); simulacao.rodando = false; verEvento(simulacao.i); desenharSim(); animar(simulacao.i); });
 
     // Configuração: aplica ao sair do campo (e no Enter)
     $('.bc-config').addEventListener('change', (ev) => {

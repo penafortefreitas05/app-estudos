@@ -2973,7 +2973,7 @@ body.modo-bancada { overflow: hidden; }
 .bc-pacote.ARP rect { fill: #a855f7; }
 .bc-pacote text { fill: #fff; font-size: 10px; font-weight: 700; text-anchor: middle; }
 .bc-pacote.perdido rect { fill: #ef4444; }
-.bc-portas { position: absolute; z-index: 3; background: #111c33; border: 1px solid #334155; border-radius: 10px; padding: 8px; display: grid; grid-template-columns: repeat(2, auto); gap: 4px; box-shadow: 0 8px 24px #0008; }
+.bc-portas { position: absolute; z-index: 6; background: #111c33; border: 1px solid #334155; border-radius: 10px; padding: 8px; display: grid; grid-template-columns: repeat(2, auto); gap: 4px; box-shadow: 0 8px 24px #0008; }
 .bc-portas .bc-rot { grid-column: 1 / -1; margin: 0 0 4px; }
 .bc-sim { position: absolute; left: 12px; bottom: 12px; width: min(460px, calc(100% - 24px)); max-height: 46%; overflow: auto; background: #111c33ee; border: 1px solid #334155; border-radius: 12px; padding: 10px 12px; z-index: 2; }
 .bc-sim-cab { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
@@ -3013,3 +3013,29 @@ body.modo-bancada { overflow: hidden; }
     .bancada.forcar .bc-paleta { flex-direction: row; overflow-x: auto; border: 0; }
     .bancada.forcar .bc-paleta .bc-rot, .bancada.forcar .bc-dica { display: none; }
 }
+/* Laboratório: missões (js/lab/missoes.js) */
+.bancada .bc-destaque { background: #1d4ed8; border-color: #3b82f6; color: #fff; font-weight: 600; }
+.bc-missao { position: absolute; right: 12px; top: 12px; width: 300px; max-height: calc(100% - 24px); overflow: auto; background: #111c33f2; border: 1px solid #3b82f6; border-radius: 12px; padding: 10px 12px; z-index: 3; box-shadow: 0 8px 24px #0006; }
+.bc-missao[hidden] { display: none; }
+.bc-missao:has(.bc-missao-mini) { width: auto; padding: 0; border: 0; background: none; box-shadow: none; }
+.bc-missao-cab { display: flex; justify-content: space-between; align-items: center; }
+.bc-missao-cab button { padding: 0 8px; }
+.bc-missao-tit { margin: 2px 0 4px; font-weight: 700; font-size: 15px; color: #fff; }
+.bc-objetivos { list-style: none; padding: 0; margin: 8px 0; display: grid; gap: 5px; }
+.bc-objetivos li { display: flex; gap: 8px; font-size: 13px; line-height: 1.35; color: #cbd5e1; }
+.bc-objetivos li span:first-child { width: 16px; flex: none; color: #64748b; font-weight: 700; }
+.bc-objetivos li.ok { color: #86efac; } .bc-objetivos li.ok span:first-child { color: #22c55e; }
+.bc-dica-m { font-size: 12.5px; color: #fde68a; background: #422006; border-radius: 8px; padding: 6px 8px; margin: 6px 0; line-height: 1.4; }
+.bc-pergunta { border-top: 1px solid #334155; margin-top: 8px; padding-top: 8px; display: grid; gap: 6px; }
+.bc-pergunta p { margin: 0; }
+.bc-pergunta button { text-align: left; line-height: 1.35; }
+.bc-pergunta button.certa { border-color: #22c55e; background: #14532d; }
+.bc-pergunta button.errada { border-color: #ef4444; background: #450a0a; }
+.bc-pergunta button:disabled { cursor: default; opacity: 1; }
+.bc-bom { color: #4ade80; margin: 0; }
+.bancada .bc-link { background: none; border: 0; color: #94a3b8; text-decoration: underline; padding: 4px 0; margin-top: 6px; font-size: 12px; }
+.bc-caixa-larga { width: min(520px, 92vw); max-height: 86vh; overflow: auto; }
+.bc-grupo { margin: 12px 0 6px; font-weight: 700; color: #93c5fd; }
+.bancada .bc-missao-item { display: flex; gap: 10px; width: 100%; text-align: left; margin-bottom: 6px; align-items: flex-start; }
+.bc-missao-item span:first-child { width: 20px; color: #22c55e; font-weight: 700; }
+.bc-missao-item small { display: block; color: #94a3b8; }
