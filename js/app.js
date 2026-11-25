@@ -31,6 +31,7 @@ aplicarIcones();
 import { prioridadesDeRecuperacao } from './prioridade.js';
 import { salvarPacote, lerPacote, infoPacote, descreverPacote } from './offline-pacote.js';
 import { modeloDoConcurso, quotasDoModelo, sortearPeloModelo } from './modelo-prova.js';
+import { situacaoDaSubida } from './nivel-praticar.js';
 import { abrirSimulado, abrirResultado, lerSimuladosLocais, guardarSimuladoLocal, mesclarSimulados, novoId } from './simulado-tela.js';
 import { lerReceita, casarReceita, catalogoDe, montarPelaReceita } from './receita.js';
 import { abrirBlocoDoDia } from './bloco-tela.js';
@@ -3542,18 +3543,14 @@ function cardExemplo(q) {
 // Aprender 2.0: "Praticar" ao fim da leitura. Leva direto às questões do assunto no Modo Foco, com os
 // outros filtros limpos para a lista não ficar vazia sem explicação.
 // Praticar do Aprender: só o nível que o cartão ensinou. Começa no nível 1 (Iniciante); o nível 2
-// entra quando o nível 1 do assunto já tem 70% ou mais de acerto (sobre as respondidas, com pelo
-// menos metade respondida). Avançado e Especialista ficam de fora: cobram mais do que os cartões.
-// Ordem: as ainda não respondidas primeiro, para a conta dos 70% medir o que você sabe agora.
-const MINIMO_PRATICAR = 0.7;
+// entra pela regra de 13/11 (I1, v200, js/nivel-praticar.js): 85% de acerto com certeza, 6+ questões,
+// 2 dias diferentes. Avançado e Especialista ficam de fora: cobram mais do que os cartões.
+// No nível 2, as questões do nível 1 que você nunca respondeu vêm primeiro (não somem).
 function nivelParaPraticar(doAssunto) {
     const n1 = doAssunto.filter(q => Number(q.nivel) === 1);
     const n2 = doAssunto.filter(q => Number(q.nivel) === 2);
     if (!n1.length) return n2.length ? 2 : null;
-    const resp = n1.filter(q => { const h = historico[String(q.id)]; return h && h.tentativas; });
-    const certas = resp.filter(q => historico[String(q.id)].ultimaResposta === 'certo').length;
-    const pronto = resp.length >= Math.ceil(n1.length / 2) && certas / resp.length >= MINIMO_PRATICAR;
-    return pronto && n2.length ? 2 : 1;
+    return situacaoDaSubida(n1, historico).pronto && n2.length ? 2 : 1;
 }
 
 const NOMES_NIVEL_PRATICAR = { 1: "Iniciante", 2: "Intermediário" };
@@ -3590,8 +3587,11 @@ function praticarAssunto(materia, assunto) {
     const hoje = diaLocal();
     const naoFeita = q => { const h = historico[String(q.id)]; return !h || !h.tentativas; };
     const lista = doAssunto.filter(q => Number(q.nivel) === nivel);
+    // I1: no nível 2, as N1 nunca respondidas entram antes (eram escondidas quando o Praticar subia)
+    const n1Novas = nivel === 2 ? doAssunto.filter(q => Number(q.nivel) === 1 && naoFeita(q)) : [];
     const vence = q => venceHoje(historico[String(q.id)], hoje);
     const ordenada = [
+        ...n1Novas,
         ...lista.filter(naoFeita),
         ...lista.filter(q => !naoFeita(q) && vence(q)),
         ...lista.filter(q => !naoFeita(q) && !vence(q) && !descansa(historico[String(q.id)], hoje))
@@ -3602,7 +3602,8 @@ function praticarAssunto(materia, assunto) {
     }
     const nome = NOMES_NIVEL_PRATICAR[nivel];
     entrarFoco(ordenada, { silencioso: true, titulo: `Praticando: ${assunto} (${nome})`, praticar: { materia, assunto, nivel } });
-    showToast(`Praticando ${assunto}, nível ${nome}: ${ordenada.length} ${ordenada.length === 1 ? "questão" : "questões"}. Esc para sair.`, "info", 3500);
+    const extra = n1Novas.length ? ` (primeiro ${n1Novas.length} do Iniciante que você ainda não viu)` : "";
+    showToast(`Praticando ${assunto}, nível ${nome}: ${ordenada.length} ${ordenada.length === 1 ? "questão" : "questões"}${extra}. Esc para sair.`, "info", 4000);
 }
 
 // "📖 Aprender": abre a tela nova (matérias → assuntos), em js/aprender-tela.js.
