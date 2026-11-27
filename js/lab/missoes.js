@@ -11,7 +11,7 @@ export function redeEscritorio(ajuste) {
     [[90, 90, 'PC1', '192.168.10.11'], [90, 220, 'PC2', '192.168.10.12'], [90, 350, 'PC3', '192.168.10.13']].forEach(([x, y, n, ip], i) => {
         const p = M.adicionarAparelho(r, 'pc', x, y); p.nome = n; p.portas[0].ip = ip; M.ligar(r, p.id, 'Fa0', sw.id, `Fa0/${i + 1}`);
     });
-    const imp = M.adicionarAparelho(r, 'impressora', 520, 220); imp.nome = 'Impressora'; imp.portas[0].ip = '192.168.10.20';
+    const imp = M.adicionarAparelho(r, 'impressora', 495, 220); imp.nome = 'Impressora'; imp.portas[0].ip = '192.168.10.20';
     M.ligar(r, imp.id, 'Fa0', sw.id, 'Fa0/4');
     if (ajuste) ajuste(r, nome => r.aparelhos.find(a => a.nome === nome));
     return r;
@@ -67,6 +67,87 @@ export function redeDuasFiliais(opcoes = {}, ajuste) {
     return r;
 }
 
+
+// Projeto 4 (DHCP): o escritório da Ana com um servidor DHCP (192.168.10.5) na Fa0/5.
+// opcoes: { servico, pool: [inicio, fim], pcsDhcp, notebook } — o que já vem pronto.
+export function redeDhcp(opcoes = {}, ajuste) {
+    const { servico = true, pool = ['192.168.10.100', '192.168.10.150'], pcsDhcp = true, notebook = false } = opcoes;
+    const r = redeEscritorio();
+    const n = nome => r.aparelhos.find(a => a.nome === nome);
+    const sw = n('SW-Escritorio');
+    const sv = M.adicionarAparelho(r, 'servidor', 320, 400); sv.nome = 'Servidor'; sv.portas[0].ip = '192.168.10.5';
+    M.ligar(r, sv.id, 'Fa0', sw.id, 'Fa0/5');
+    sv.servicoDhcp = { ativo: servico, pools: pool ? [{ inicio: pool[0], fim: pool[1], prefixo: 24, gateway: '', dns: '' }] : [], concessoes: {} };
+    ['PC1', 'PC2', 'PC3'].forEach(x => { const h = n(x); h.portas[0].ip = ''; h.dhcp = pcsDhcp; });
+    if (notebook) { const nb = M.adicionarAparelho(r, 'notebook', 495, 400); nb.nome = 'Note-Ana'; nb.dhcp = true; M.ligar(r, nb.id, 'Fa0', sw.id, 'Fa0/6'); }
+    if (ajuste) ajuste(r, n, 'antes');
+    const est = M.novoEstado();
+    r.aparelhos.filter(a => a.dhcp && a.nome !== 'Note-Ana').forEach(a => M.obterIp(r, est, a.id));
+    if (ajuste) ajuste(r, n, 'depois');
+    const nb = n('Note-Ana'); if (nb) M.obterIp(r, est, nb.id);
+    return r;
+}
+// Projeto 4, segunda parte: os dois setores do Projeto 2 com o servidor DHCP no Financeiro.
+export function redeDhcpSetores(opcoes = {}, ajuste) {
+    const { poolAdm = false, helper = false, gwAdm = '192.168.10.1' } = opcoes;
+    const r = redeDoisSetores(true);
+    const n = nome => r.aparelhos.find(a => a.nome === nome);
+    const sv = n('Servidor');
+    sv.servicoDhcp = { ativo: true, pools: [{ inicio: '192.168.20.100', fim: '192.168.20.150', prefixo: 24, gateway: '192.168.20.1', dns: '' }], concessoes: {} };
+    if (poolAdm) sv.servicoDhcp.pools.push({ inicio: '192.168.10.100', fim: '192.168.10.150', prefixo: 24, gateway: gwAdm, dns: '' });
+    if (helper) n('R1').portas[0].helper = '192.168.20.10';
+    ['Adm1', 'Adm2', 'Fin1'].forEach(x => { const h = n(x); h.dhcp = true; h.portas[0].ip = ''; h.gateway = ''; });
+    if (ajuste) ajuste(r, n);
+    const est = M.novoEstado();
+    ['Fin1', 'Adm1', 'Adm2'].forEach(x => M.obterIp(r, est, n(x).id));
+    return r;
+}
+
+
+// Projeto 5 (VLAN): um switch só, Administrativo (VLAN 10, 192.168.10.0/24) e Financeiro (VLAN 20, 192.168.20.0/24).
+// opcoes: { vlans, roteador, trunk, subs } — o que já vem pronto.
+export function redeVlan(opcoes = {}, ajuste) {
+    const { vlans = true, roteador = true, trunk = true, subs = true } = opcoes;
+    const r = M.novaRede();
+    const sw = M.adicionarAparelho(r, 'switch', 290, 230); sw.nome = 'SW-Empresa';
+    const host = (x, y, nome, ip, porta, gw) => { const h = M.adicionarAparelho(r, 'pc', x, y); h.nome = nome; h.portas[0].ip = ip; h.gateway = gw; M.ligar(r, h.id, 'Fa0', sw.id, porta); return h; };
+    host(60, 60, 'Adm1', '192.168.10.11', 'Fa0/1', '192.168.10.1');
+    host(60, 230, 'Adm2', '192.168.10.12', 'Fa0/2', '192.168.10.1');
+    host(500, 60, 'Fin1', '192.168.20.11', 'Fa0/3', '192.168.20.1');
+    host(500, 230, 'Fin2', '192.168.20.12', 'Fa0/4', '192.168.20.1');
+    if (vlans) { [10, 10, 20, 20].forEach((v, i) => { sw.portas[i].vlan = v; }); }
+    if (roteador) {
+        const ro = M.adicionarAparelho(r, 'roteador', 290, 400); ro.nome = 'R1';
+        M.ligar(r, ro.id, 'Gi0/0', sw.id, 'Fa0/8');
+        if (trunk) sw.portas[7].modo = 'trunk';
+        if (subs) ro.portas[0].subs = [{ nome: 'Gi0/0.10', vlan: 10, ip: '192.168.10.1', prefixo: 24 }, { nome: 'Gi0/0.20', vlan: 20, ip: '192.168.20.1', prefixo: 24 }];
+    }
+    if (ajuste) ajuste(r, nome => r.aparelhos.find(a => a.nome === nome));
+    return r;
+}
+
+
+// Projeto 6 (NAT e DNS): escritório 192.168.10.0/24 → R-Empresa → link 200.10.10.0/30 → R-Provedor → "internet" 8.8.8.0/24.
+// O R-Provedor NÃO conhece redes privadas (como na internet de verdade). opcoes: { nat, dns, rotaPadrao }.
+export function redeInternet(opcoes = {}, ajuste) {
+    const { nat = true, dns = true, rotaPadrao = true } = opcoes;
+    const r = M.novaRede();
+    const sw = M.adicionarAparelho(r, 'switch', 170, 190); sw.nome = 'SW-Escritorio';
+    const host = (x, y, nome, ip, porta) => { const h = M.adicionarAparelho(r, 'pc', x, y); h.nome = nome; h.portas[0].ip = ip; h.gateway = '192.168.10.1'; h.dns = dns ? '8.8.8.8' : ''; M.ligar(r, h.id, 'Fa0', sw.id, porta); return h; };
+    host(20, 50, 'PC1', '192.168.10.11', 'Fa0/1'); host(20, 330, 'PC2', '192.168.10.12', 'Fa0/2');
+    const re = M.adicionarAparelho(r, 'roteador', 330, 190); re.nome = 'R-Empresa';
+    re.portas[0].ip = '192.168.10.1'; re.portas[1].ip = '200.10.10.2'; re.portas[1].prefixo = 30;
+    if (nat) { re.nat = true; re.portas[0].nat = 'inside'; re.portas[1].nat = 'outside'; }
+    if (rotaPadrao) re.rotas = [{ rede: '0.0.0.0', prefixo: 0, proximo: '200.10.10.1' }];
+    const rp = M.adicionarAparelho(r, 'roteador', 490, 190); rp.nome = 'R-Provedor';
+    rp.portas[1].ip = '200.10.10.1'; rp.portas[1].prefixo = 30; rp.portas[0].ip = '8.8.8.1';
+    const sv = M.adicionarAparelho(r, 'servidor', 490, 340); sv.nome = 'Servidor-Internet'; sv.portas[0].ip = '8.8.8.8'; sv.gateway = '8.8.8.1';
+    sv.servicoDns = { ativo: true, registros: { 'www.focopro.com.br': '8.8.8.8', 'www.exemplo.com': '8.8.8.8' } };
+    M.ligar(r, sw.id, 'Fa0/8', re.id, 'Gi0/0'); M.ligar(r, re.id, 'Gi0/1', rp.id, 'Gi0/1'); M.ligar(r, rp.id, 'Gi0/0', sv.id, 'Fa0');
+    if (ajuste) ajuste(r, nome => r.aparelhos.find(a => a.nome === nome));
+    return r;
+}
+
 // ---------- verificações ----------
 const hosts = r => r.aparelhos.filter(a => M.TIPOS[a.tipo].host);
 const ipDe = a => (a.portas[0] || {}).ip || '';
@@ -93,6 +174,12 @@ function temRotaUtil(r, nomeRoteador, destino) {
     const rt = M.rotaPara(ro, destino);
     return !rt.erro && rt.tipo !== 'conectada';
 }
+const servidorDhcp = r => r.aparelhos.find(a => a.servicoDhcp);
+const noPool = (r, ip) => { const sv = servidorDhcp(r); if (!sv || !ip) return false; const n = ipParaNumero(ip); return (sv.servicoDhcp.pools || []).some(pl => n >= ipParaNumero(pl.inicio) && n <= ipParaNumero(pl.fim)); };
+const pegouDhcp = (r, nome) => { const h = r.aparelhos.find(a => a.nome === nome); return !!h && !!h.dhcp && noPool(r, ipDe(h)) && !/^169\.254\./.test(ipDe(h)); };
+const portaSw = (r, nome) => { const sw = r.aparelhos.find(a => a.tipo === 'switch'); return sw ? M.porta(sw, nome) : null; };
+const vlanDaPorta = (r, nome) => { const p = portaSw(r, nome); return p && p.modo !== 'trunk' ? (Number(p.vlan) || 1) : null; };
+const conversa = (r, de, para) => { const a = r.aparelhos.find(x => x.nome === de), b = r.aparelhos.find(x => x.nome === para); return !!a && !!b && conversam(r, a, b); };
 const pingDe = (ctx, filtro) => ctx.comandos.some(c => c.cmd === 'ping' && filtro(c));
 const nomeDoIp = (r, ip) => (hosts(r).find(h => ipDe(h) === ip) || {}).nome;
 
@@ -327,6 +414,251 @@ export const MISSOES = [
         dicas: ['Use "Próximo ▶" e leia a linha de camada 3 de cada passo: o TTL vai caindo.', 'São três trechos de rede (Matriz, link, Filial), e cada trecho tem seu próprio ARP: o MAC muda a cada salto, o IP de origem e destino não.'],
         pergunta: { texto: 'Ao atravessar os dois roteadores, o que muda no pacote?', opcoes: ['Os MACs mudam a cada trecho e o TTL cai 1 por roteador; os IPs de origem e destino continuam os mesmos', 'Os IPs mudam a cada roteador e os MACs continuam', 'Nada muda: o pacote é igual do início ao fim'], certa: 0,
             explicacao: 'IP = endereço fim a fim (quem mandou e quem vai receber). MAC = endereço do trecho atual (de quem para quem neste cabo). Cada roteador monta um quadro novo com MACs novos e diminui o TTL: 128 → 127 → 126.' }
+    },
+    {
+        id: 'p4-montar', grupo: 'Projeto 4 · DHCP (IP automático)', titulo: 'Ligar o DHCP no escritório', tipo: 'montar',
+        historia: 'A Ana cansou de configurar IP na mão em cada PC. O servidor (192.168.10.5) vai emprestar os IPs automaticamente. A impressora (.20) e o servidor continuam com IP fixo.',
+        inicio: () => redeDhcp({ servico: false, pool: null, pcsDhcp: false }),
+        objetivos: [
+            { texto: 'No Servidor: serviço DHCP ligado, com um pool da rede 192.168.10.0/24', ok: ({ rede }) => { const sv = servidorDhcp(rede); return !!sv && sv.servicoDhcp.ativo && sv.servicoDhcp.pools.some(pl => calcular(pl.inicio, pl.prefixo).rede === '192.168.10.0' && pl.prefixo === 24); } },
+            { texto: 'O pool não pode incluir os IPs fixos (servidor .5 e impressora .20)', ok: ({ rede }) => { const sv = servidorDhcp(rede); if (!sv || !sv.servicoDhcp.pools.length) return false; return sv.servicoDhcp.pools.every(pl => ['192.168.10.5', '192.168.10.20'].every(ip => { const x = ipParaNumero(ip); return x < ipParaNumero(pl.inicio) || x > ipParaNumero(pl.fim); })); } },
+            { texto: 'PC1, PC2 e PC3 em DHCP, cada um com um IP do pool', ok: ({ rede }) => ['PC1', 'PC2', 'PC3'].every(x => pegouDhcp(rede, x)) },
+            { texto: 'Todos conversam com todos', ok: ({ rede }) => todosConversam(rede) },
+            { texto: 'Confira no terminal de um PC: ipconfig (procure "DHCP Enabled")', ok: ({ rede, comandos }) => comandos.some(c => c.cmd === 'ipconfig' && (M.aparelho(rede, c.de) || {}).dhcp) }
+        ],
+        dicas: ['Selecione o Servidor. Em "Serviço DHCP", marque ligado e crie um pool: primeiro IP 192.168.10.100, último 192.168.10.150, máscara /24. Gateway pode ficar vazio (rede sem saída).',
+            'Em cada PC, clique em "DHCP" no topo do painel. O PC pede o IP na hora.',
+            'Se um PC ficar com 169.254.x.x, o pedido não foi atendido: confira se o serviço está ligado e clique em "Pedir IP de novo".'],
+        pergunta: { texto: 'Por que o primeiro pedido do PC (DHCP Discover) vai em broadcast?', opcoes: ['Porque o PC ainda não tem IP e não sabe qual é o IP do servidor: grita para a rede toda', 'Porque o switch exige broadcast', 'Porque o servidor só escuta broadcast por segurança'], certa: 0,
+            explicacao: 'Sem IP (origem 0.0.0.0) e sem saber quem é o servidor, o PC manda para 255.255.255.255 e MAC FF:FF:FF:FF:FF:FF. Todo mundo da rede local recebe; só o servidor DHCP responde. São 4 mensagens: Discover, Offer, Request, Ack (DORA).' }
+    },
+    {
+        id: 'p4-chamado-apipa', grupo: 'Projeto 4 · DHCP (IP automático)', titulo: 'Chamado: o notebook novo ficou com 169.254', tipo: 'chamado',
+        historia: 'Chegou o notebook da Ana. Ela ligou no cabo e ele ficou com um IP 169.254.x.x e não acessa nada. Os PCs antigos continuam funcionando normalmente.',
+        inicio: () => redeDhcp({ notebook: true }, (r, n, fase) => { if (fase === 'depois') n('Servidor').servicoDhcp.ativo = false; }),
+        objetivos: [
+            { texto: 'Investigue: ipconfig no Note-Ana', ok: ({ rede, comandos }) => { const nb = rede.aparelhos.find(a => a.nome === 'Note-Ana'); return !!nb && comandos.some(c => c.de === nb.id && c.cmd === 'ipconfig'); } },
+            { texto: 'O Note-Ana recebe um IP do pool', ok: ({ rede }) => pegouDhcp(rede, 'Note-Ana') },
+            { texto: 'Todos conversam com todos', ok: ({ rede }) => todosConversam(rede) }
+        ],
+        dicas: ['169.254.x.x não vem de servidor nenhum: o próprio Windows inventa quando o DHCP não responde (APIPA).', 'Os PCs antigos ainda estão com o IP emprestado de antes. Olhe o painel do Servidor: o serviço está ligado? Depois, no notebook, "Pedir IP de novo" (ipconfig /renew).'],
+        pergunta: { texto: 'O que um IP 169.254.x.x indica?', opcoes: ['Que o aparelho está em DHCP, mas nenhum servidor DHCP respondeu (APIPA)', 'Que o servidor DHCP deu um IP de outra rede', 'Que o aparelho está com IP fixo errado'], certa: 0,
+            explicacao: 'APIPA (Automatic Private IP Addressing): sem resposta do DHCP, o Windows se dá um 169.254.x.x/16. Com isso ele só fala com outros aparelhos na mesma situação. Em prova: viu 169.254, pense "DHCP não respondeu".' }
+    },
+    {
+        id: 'p4-chamado-pool', grupo: 'Projeto 4 · DHCP (IP automático)', titulo: 'Chamado: o DHCP está ligado, mas o notebook não pega IP', tipo: 'chamado',
+        historia: 'Desta vez o serviço DHCP está ligado (confira!). Os três PCs pegaram IP sem problema. O notebook novo, não: 169.254 de novo.',
+        inicio: () => redeDhcp({ notebook: true, pool: ['192.168.10.100', '192.168.10.102'] }),
+        objetivos: [
+            { texto: 'Investigue: olhe o pool e as concessões no Servidor', ok: ({ rede, comandos }) => { const nb = rede.aparelhos.find(a => a.nome === 'Note-Ana'); return !!nb && comandos.some(c => c.de === nb.id && (c.cmd === 'ipconfig' || c.cmd === 'dhcp')); } },
+            { texto: 'O Note-Ana recebe um IP do pool', ok: ({ rede }) => pegouDhcp(rede, 'Note-Ana') },
+            { texto: 'Todos conversam com todos', ok: ({ rede }) => todosConversam(rede) }
+        ],
+        dicas: ['Conte: quantos IPs cabem de .100 a .102? Quantos já estão em "Concessões"?', 'Remova o pool (✕) e crie um maior, por exemplo .100 a .150. Depois, no notebook, "Pedir IP de novo".'],
+        pergunta: { texto: 'Qual era a causa?', opcoes: ['O pool tinha só 3 IPs e todos já estavam emprestados (pool esgotado)', 'O notebook não aceita DHCP', 'O cabo do notebook estava cruzado'], certa: 0,
+            explicacao: 'O servidor só empresta o que está no pool. Com .100 a .102 cabem 3 aparelhos; o quarto fica sem resposta e cai no APIPA. Na vida real: dimensione o pool para o número de aparelhos (com folga) e lembre que celulares e visitantes também pedem IP.' }
+    },
+    {
+        id: 'p4-relay', grupo: 'Projeto 4 · DHCP (IP automático)', titulo: 'Um servidor DHCP para os dois setores (relay)', tipo: 'montar',
+        historia: 'Na rede do Projeto 2, o servidor DHCP fica no Financeiro e já atende o Fin1. O pessoal do Administrativo também está em DHCP, mas ficou com 169.254. Faça o mesmo servidor atender os dois setores.',
+        inicio: () => redeDhcpSetores(),
+        objetivos: [
+            { texto: 'No Servidor: um pool para a rede 192.168.10.0/24 com gateway 192.168.10.1', ok: ({ rede }) => { const sv = servidorDhcp(rede); return !!sv && sv.servicoDhcp.pools.some(pl => calcular(pl.inicio, pl.prefixo).rede === '192.168.10.0' && pl.gateway === '192.168.10.1'); } },
+            { texto: 'No R1, porta do Administrativo (Gi0/0): ip helper-address 192.168.20.10', ok: ({ rede }) => { const ro = rede.aparelhos.find(a => a.nome === 'R1'); return !!ro && ro.portas[0].helper === '192.168.20.10'; } },
+            { texto: 'Adm1 e Adm2 recebem IP pelo DHCP', ok: ({ rede }) => pegouDhcp(rede, 'Adm1') && pegouDhcp(rede, 'Adm2') },
+            { texto: 'Todos conversam com todos', ok: ({ rede }) => todosConversam(rede) }
+        ],
+        dicas: ['O Discover é broadcast, e roteador não repassa broadcast. Por isso o pedido do Adm1 morre no R1.', 'Selecione o R1. Na porta Gi0/0 (lado do Administrativo), preencha "ip helper-address" com 192.168.20.10. No Cisco: interface g0/0 → ip helper-address 192.168.20.10.', 'O servidor também precisa de um pool para o Administrativo: .10.100 a .10.150, /24, gateway 192.168.10.1. Depois, em Adm1 e Adm2, "Pedir IP de novo".'],
+        pergunta: { texto: 'Por que foi preciso o ip helper-address no roteador?', opcoes: ['Porque o Discover é broadcast e o roteador não repassa broadcast; o helper transforma o pedido em unicast até o servidor', 'Porque o servidor DHCP só atende roteadores', 'Porque sem ele o roteador apaga o gateway dos PCs'], certa: 0,
+            explicacao: 'Broadcast fica preso na rede local: roteador separa domínios de broadcast. O relay (ip helper-address) escuta o Discover na porta do setor e o encaminha em unicast ao servidor, informando de qual rede veio. Assim o servidor sabe de qual pool tirar o IP.' }
+    },
+    {
+        id: 'p4-chamado-gateway', grupo: 'Projeto 4 · DHCP (IP automático)', titulo: 'Chamado: pega IP, mas não sai do setor', tipo: 'chamado',
+        historia: 'No Administrativo, Adm1 e Adm2 pegam IP pelo DHCP direitinho e conversam entre si. Mas ninguém do Administrativo alcança o Financeiro. Ninguém mexeu nos PCs.',
+        inicio: () => redeDhcpSetores({ poolAdm: true, helper: true, gwAdm: '192.168.10.254' }),
+        objetivos: [
+            { texto: 'Investigue: ipconfig no Adm1', ok: ({ rede, comandos }) => { const a = rede.aparelhos.find(x => x.nome === 'Adm1'); return !!a && comandos.some(c => c.de === a.id && c.cmd === 'ipconfig'); } },
+            { texto: 'Todos voltam a conversar com todos', ok: ({ rede }) => todosConversam(rede) },
+            { texto: 'Adm1 e Adm2 continuam em DHCP', ok: ({ rede }) => pegouDhcp(rede, 'Adm1') && pegouDhcp(rede, 'Adm2') }
+        ],
+        dicas: ['O PC em DHCP recebe do servidor não só o IP, mas também a máscara e o gateway. Compare o gateway do ipconfig com o IP do R1.', 'O erro está no pool do Administrativo, no Servidor. Corrija (remova e crie de novo com gateway 192.168.10.1) e peça IP de novo nos dois PCs.'],
+        pergunta: { texto: 'Por que consertar no Servidor, e não nos PCs?', opcoes: ['Porque o gateway errado vinha do pool do DHCP; corrigindo o pool, todos os PCs do setor recebem o certo', 'Porque PC em DHCP não tem gateway', 'Porque o roteador lê o gateway do servidor'], certa: 0,
+            explicacao: 'DHCP entrega o pacote completo: IP, máscara, gateway e DNS. Um erro no pool se espalha para todos os aparelhos daquela rede, e o conserto também: corrige uma vez, e cada PC recebe o certo ao renovar.' }
+    },
+    {
+        id: 'p4-por-dentro', grupo: 'Projeto 4 · DHCP (IP automático)', titulo: 'Ver por dentro: as 4 mensagens do DHCP (DORA)', tipo: 'simulacao',
+        historia: 'Veja em câmera lenta como um PC sem IP conversa com o servidor DHCP: quem fala em broadcast, quem responde e em que ordem.',
+        inicio: () => redeDhcp(),
+        objetivos: [
+            { texto: 'Troque o modo para Simulação', ok: ({ sim }) => sim.modo === 'simulacao' },
+            { texto: 'No PC1, rode: ipconfig /renew', ok: ({ rede, comandos }) => { const a = rede.aparelhos.find(x => x.nome === 'PC1'); return !!a && comandos.some(c => c.de === a.id && c.cmd === 'dhcp'); } },
+            { texto: 'Veja o Discover e o Offer', ok: ({ sim }) => ['Discover', 'Offer'].every(op => sim.vistos.some(e => e.tipo === 'DHCP' && e.op === op)) },
+            { texto: 'Veja o Request e o Ack chegando ao PC1', ok: ({ sim }) => sim.vistos.some(e => e.tipo === 'DHCP' && e.op === 'Request') && sim.vistos.some(e => e.tipo === 'DHCP' && e.op === 'Ack' && e.para === 'PC1') }
+        ],
+        dicas: ['Use "Próximo ▶". Repare na linha de camada 3: origem 0.0.0.0 e destino 255.255.255.255 no Discover.', 'O switch inunda o Discover e o Request (broadcast) para todas as portas. Offer e Ack vão direto ao PC1.'],
+        pergunta: { texto: 'Qual é a ordem das mensagens do DHCP?', opcoes: ['Discover → Offer → Request → Ack', 'Request → Offer → Discover → Ack', 'Offer → Discover → Ack → Request'], certa: 0,
+            explicacao: 'DORA: o cliente Descobre (Discover), o servidor Oferece (Offer), o cliente Requisita o que foi oferecido (Request) e o servidor Confirma (Ack). Discover e Request saem em broadcast porque o cliente ainda não tem IP.' }
+    },
+    {
+        id: 'p5-separar', grupo: 'Projeto 5 · VLAN (setores no mesmo switch)', titulo: 'Separar os setores com VLANs', tipo: 'montar',
+        historia: 'A empresa comprou um switch só para os dois setores. Hoje todo broadcast do Administrativo chega aos PCs do Financeiro, e vice-versa. Crie a VLAN 10 (Administrativo, portas Fa0/1 e Fa0/2) e a VLAN 20 (Financeiro, Fa0/3 e Fa0/4).',
+        inicio: () => redeVlan({ vlans: false, roteador: false }),
+        objetivos: [
+            { texto: 'Antes: no modo Simulação, veja o ARP do Adm1 chegar ao Fin1 (mesmo domínio de broadcast)', ok: ({ sim }) => sim.vistos.some(e => e.tipo === 'ARP' && e.op === 'pedido' && e.para === 'Fin1') },
+            { texto: 'Fa0/1 e Fa0/2 na VLAN 10', ok: ({ rede }) => vlanDaPorta(rede, 'Fa0/1') === 10 && vlanDaPorta(rede, 'Fa0/2') === 10 },
+            { texto: 'Fa0/3 e Fa0/4 na VLAN 20', ok: ({ rede }) => vlanDaPorta(rede, 'Fa0/3') === 20 && vlanDaPorta(rede, 'Fa0/4') === 20 },
+            { texto: 'Cada setor continua falando internamente (Adm1↔Adm2, Fin1↔Fin2)', ok: ({ rede }) => conversa(rede, 'Adm1', 'Adm2') && conversa(rede, 'Fin1', 'Fin2') },
+            { texto: 'Confira no switch: show vlan brief', ok: ({ comandos }) => comandos.some(c => c.cmd === 'show-vlan') }
+        ],
+        dicas: ['Primeiro observe o problema: troque para Simulação, rode no Adm1 ping 192.168.10.12 e avance. Repare que o ARP (broadcast) chega até o Fin1 e o Fin2.', 'Selecione o SW-Empresa. Em Fa0/1 e Fa0/2, VLAN = 10; em Fa0/3 e Fa0/4, VLAN = 20 (aperte Tab). No Cisco: interface fa0/1 → switchport mode access → switchport access vlan 10.', 'Depois, no terminal do switch: show vlan brief.'],
+        pergunta: { texto: 'O que a VLAN fez nessa rede?', opcoes: ['Dividiu um switch em dois domínios de broadcast: o broadcast de um setor não chega mais ao outro', 'Deixou a rede mais rápida trocando os cabos', 'Deu IP automático para cada setor'], certa: 0,
+            explicacao: 'VLAN = switch "partido" em vários switches lógicos. Cada VLAN é um domínio de broadcast separado: ARP e DHCP de um setor ficam no setor. Ganhos: segurança, menos broadcast, organização. Custo: para um setor falar com o outro, agora é preciso um roteador (camada 3).' }
+    },
+    {
+        id: 'p5-roas', grupo: 'Projeto 5 · VLAN (setores no mesmo switch)', titulo: 'Rotear entre as VLANs (router-on-a-stick)', tipo: 'montar',
+        historia: 'Com as VLANs, os setores ficaram isolados. Mas o Administrativo precisa acessar o Financeiro. Use um roteador com UM cabo só até o switch: o trunk leva as duas VLANs, e o roteador tem uma subinterface para cada uma.',
+        inicio: () => redeVlan({ trunk: false, subs: false }),
+        objetivos: [
+            { texto: 'No switch, a porta do roteador (Fa0/8) em modo trunk', ok: ({ rede }) => { const p = portaSw(rede, 'Fa0/8'); return !!p && p.modo === 'trunk'; } },
+            { texto: 'No R1: subinterface da VLAN 10 com 192.168.10.1/24', ok: ({ rede }) => { const ro = rede.aparelhos.find(a => a.nome === 'R1'); return !!ro && M.interfaces(ro).some(x => Number(x.vlan) === 10 && x.ip === '192.168.10.1' && x.prefixo === 24); } },
+            { texto: 'No R1: subinterface da VLAN 20 com 192.168.20.1/24', ok: ({ rede }) => { const ro = rede.aparelhos.find(a => a.nome === 'R1'); return !!ro && M.interfaces(ro).some(x => Number(x.vlan) === 20 && x.ip === '192.168.20.1' && x.prefixo === 24); } },
+            { texto: 'Todos conversam com todos', ok: ({ rede }) => todosConversam(rede) },
+            { texto: 'Prove no terminal: tracert do Adm1 para o Fin1', ok: ({ rede, comandos }) => { const a = rede.aparelhos.find(x => x.nome === 'Adm1'); return !!a && comandos.some(c => c.cmd === 'tracert' && c.de === a.id && c.alvo === '192.168.20.11'); } }
+        ],
+        dicas: ['Selecione o SW-Empresa e mude o Modo da Fa0/8 para trunk. No Cisco: interface fa0/8 → switchport mode trunk.', 'Selecione o R1. Na porta Gi0/0, crie as subinterfaces: VLAN 10, IP 192.168.10.1, /24; depois VLAN 20, IP 192.168.20.1, /24. No Cisco: interface g0/0.10 → encapsulation dot1Q 10 → ip address 192.168.10.1 255.255.255.0.', 'O IP de cada subinterface é exatamente o gateway que os PCs daquele setor já usam.'],
+        pergunta: { texto: 'Por que um cabo só basta para o roteador atender as duas VLANs?', opcoes: ['Porque no trunk cada quadro leva a etiqueta 802.1Q da sua VLAN, e o roteador entrega cada etiqueta à subinterface certa', 'Porque o roteador junta as duas VLANs numa só', 'Porque o switch converte a VLAN 20 em VLAN 10'], certa: 0,
+            explicacao: 'Trunk = cabo que transporta várias VLANs; o 802.1Q põe no quadro a marca da VLAN. O roteador tem uma subinterface por VLAN (Gi0/0.10, Gi0/0.20), cada uma com o gateway daquele setor. Por isso o nome "router-on-a-stick": roteador num "palito", um cabo só.' }
+    },
+    {
+        id: 'p5-chamado-porta', grupo: 'Projeto 5 · VLAN (setores no mesmo switch)', titulo: 'Chamado: o Fin2 ficou ilhado', tipo: 'chamado',
+        historia: 'Depois de trocar o Fin2 de mesa, ele não fala com ninguém: nem com o Fin1, nem com o gateway. O IP e o gateway do Fin2 estão certos e o cabo está verde.',
+        inicio: () => redeVlan({}, (r) => { const sw = r.aparelhos.find(a => a.tipo === 'switch'); M.porta(sw, 'Fa0/4').vlan = 10; }),
+        objetivos: [
+            { texto: 'Investigue: show vlan brief no switch', ok: ({ comandos }) => comandos.some(c => c.cmd === 'show-vlan') },
+            { texto: 'Todos voltam a conversar com todos', ok: ({ rede }) => todosConversam(rede) }
+        ],
+        dicas: ['O IP diz de que rede o PC acha que é. Mas quem decide em que VLAN ele está é a porta do switch.', 'No show vlan brief, procure a Fa0/4. Ela está na VLAN dos colegas dele?'],
+        pergunta: { texto: 'Qual era a causa?', opcoes: ['A porta Fa0/4 estava na VLAN 10: o Fin2 (rede .20) ficou no domínio de broadcast do Administrativo', 'O Fin2 estava com máscara errada', 'O trunk do roteador estava desligado'], certa: 0,
+            explicacao: 'VLAN é configuração da porta do switch, não do PC. Na VLAN 10, o ARP do Fin2 só chega ao pessoal do Administrativo, que não tem os IPs .20. Ninguém responde, e ele fica ilhado. Na prova: "PC não fala com ninguém, IP certo, cabo verde" → confira a VLAN da porta.' }
+    },
+    {
+        id: 'p5-chamado-trunk', grupo: 'Projeto 5 · VLAN (setores no mesmo switch)', titulo: 'Chamado: ninguém sai do próprio setor', tipo: 'chamado',
+        historia: 'Depois de uma "padronização" no switch, cada setor continua falando internamente, mas o Administrativo não alcança o Financeiro e vice-versa. O roteador não foi mexido.',
+        inicio: () => redeVlan({}, (r) => { const sw = r.aparelhos.find(a => a.tipo === 'switch'); const p = M.porta(sw, 'Fa0/8'); p.modo = 'access'; p.vlan = 10; }),
+        objetivos: [
+            { texto: 'Investigue: show vlan brief no switch e show ip interface brief no R1', ok: ({ rede, comandos }) => comandos.some(c => c.cmd === 'show-vlan') && comandos.some(c => c.cmd === 'show' && (M.aparelho(rede, c.de) || {}).tipo === 'roteador') },
+            { texto: 'Todos voltam a conversar com todos', ok: ({ rede }) => todosConversam(rede) }
+        ],
+        dicas: ['O R1 tem as subinterfaces .10 e .20. Elas só funcionam se os quadros chegarem com etiqueta 802.1Q.', 'Olhe a Fa0/8 no show vlan brief: ela aparece como trunk ou como porta comum de uma VLAN?'],
+        pergunta: { texto: 'Por que a porta do roteador precisa ser trunk?', opcoes: ['Porque ela leva as duas VLANs ao roteador; como access, ela só passa uma VLAN e sem etiqueta', 'Porque roteador só aceita cabo cruzado', 'Porque access desliga o roteador'], certa: 0,
+            explicacao: 'Access = uma VLAN, quadros sem etiqueta (para PCs). Trunk = várias VLANs, com etiqueta 802.1Q (para outro switch ou roteador). Com a Fa0/8 em access, os quadros chegam ao R1 sem etiqueta, e nenhuma subinterface aceita. Resultado: ninguém alcança o gateway.' }
+    },
+    {
+        id: 'p5-chamado-permitidas', grupo: 'Projeto 5 · VLAN (setores no mesmo switch)', titulo: 'Chamado: só o Financeiro ficou sem saída', tipo: 'chamado',
+        historia: 'O Administrativo funciona normal, inclusive para sair da VLAN. Mas o Financeiro não alcança o gateway 192.168.20.1. O trunk está ligado e as subinterfaces do R1 existem.',
+        inicio: () => redeVlan({}, (r) => { const sw = r.aparelhos.find(a => a.tipo === 'switch'); M.porta(sw, 'Fa0/8').permitidas = '10'; }),
+        objetivos: [
+            { texto: 'Investigue: ping do Fin1 para 192.168.20.1 e show vlan brief no switch', ok: ({ rede, comandos }) => { const f = rede.aparelhos.find(a => a.nome === 'Fin1'); return !!f && comandos.some(c => c.de === f.id && c.cmd === 'ping') && comandos.some(c => c.cmd === 'show-vlan'); } },
+            { texto: 'Todos voltam a conversar com todos', ok: ({ rede }) => todosConversam(rede) }
+        ],
+        dicas: ['No modo Simulação, o ping do Fin1 mostra onde o quadro é descartado e por quê.', 'Um trunk pode limitar quais VLANs passam. Veja "VLANs permitidas" na Fa0/8: a 20 está na lista?'],
+        pergunta: { texto: 'Qual era a causa?', opcoes: ['O trunk só permitia a VLAN 10 (allowed vlan 10); os quadros da VLAN 20 eram descartados', 'A VLAN 20 não existia no roteador', 'O Fin1 estava na VLAN 10'], certa: 0,
+            explicacao: 'No Cisco: switchport trunk allowed vlan 10 restringe o trunk à VLAN 10. Serve para não levar VLANs aonde não precisa, mas, se esquecer uma, aquela VLAN perde o caminho. Conserto: incluir a 20 (allowed vlan 10,20) ou deixar todas.' }
+    },
+    {
+        id: 'p5-por-dentro', grupo: 'Projeto 5 · VLAN (setores no mesmo switch)', titulo: 'Ver por dentro: a etiqueta 802.1Q no trunk', tipo: 'simulacao',
+        historia: 'Acompanhe um ping do Adm1 para o Fin1. O mesmo pacote sobe pelo trunk com a etiqueta de uma VLAN e desce com a etiqueta de outra.',
+        inicio: () => redeVlan(),
+        objetivos: [
+            { texto: 'Troque o modo para Simulação', ok: ({ sim }) => sim.modo === 'simulacao' },
+            { texto: 'No Adm1, rode: ping 192.168.20.11', ok: ({ rede, comandos }) => { const a = rede.aparelhos.find(x => x.nome === 'Adm1'); return !!a && comandos.some(c => c.cmd === 'ping' && c.de === a.id && c.alvo === '192.168.20.11'); } },
+            { texto: 'Veja o quadro subir para o R1 com etiqueta VLAN 10', ok: ({ sim }) => sim.vistos.some(e => e.vlan === 10 && e.para === 'R1') },
+            { texto: 'Veja o R1 devolver ao switch com etiqueta VLAN 20', ok: ({ sim }) => sim.vistos.some(e => e.vlan === 20 && e.de === 'R1') },
+            { texto: 'Confira: o ARP do Adm1 (procurando 192.168.10.1) não chega a nenhum PC do Financeiro', ok: ({ sim }) => sim.vistos.some(e => e.tipo === 'ARP' && e.op === 'pedido' && e.alvoIp === '192.168.10.1' && e.para === 'Adm2') && !sim.vistos.some(e => e.tipo === 'ARP' && e.alvoIp === '192.168.10.1' && /^Fin/.test(e.para || '')) }
+        ],
+        dicas: ['Use "Próximo ▶". Quadros no cabo do trunk mostram uma etiqueta verde VLAN 10 ou VLAN 20.', 'Nos cabos dos PCs (portas access), o quadro vai sem etiqueta: o PC nem sabe que existe VLAN.'],
+        pergunta: { texto: 'Onde a etiqueta 802.1Q aparece?', opcoes: ['Só nos cabos trunk (switch↔roteador ou switch↔switch); nos cabos access, até o PC, o quadro vai sem etiqueta', 'Em todos os cabos, inclusive o do PC', 'Só dentro do roteador'], certa: 0,
+            explicacao: 'O switch põe a etiqueta ao mandar pelo trunk e tira ao entregar numa porta access. O PC nunca vê VLAN. O roteador lê a etiqueta para escolher a subinterface e, ao rotear para a outra rede, devolve com a etiqueta da VLAN de destino.' }
+    },
+    {
+        id: 'p6-nat', grupo: 'Projeto 6 · Saída para a internet (NAT e DNS)', titulo: 'Por que a internet não responde? (NAT)', tipo: 'montar',
+        historia: 'O escritório (192.168.10.0/24) ganhou um link com o provedor. A rota padrão já aponta para ele, mas nenhum PC consegue falar com o servidor na internet (8.8.8.8). Descubra por quê e ligue o NAT no R-Empresa.',
+        inicio: () => redeInternet({ nat: false }),
+        objetivos: [
+            { texto: 'Teste primeiro: ping 8.8.8.8 no PC1 (e leia o "Por quê")', ok: ({ rede, comandos }) => { const a = rede.aparelhos.find(x => x.nome === 'PC1'); return !!a && comandos.some(c => c.cmd === 'ping' && c.de === a.id && c.alvo === '8.8.8.8'); } },
+            { texto: 'R-Empresa: Gi0/0 como NAT inside e Gi0/1 como NAT outside', ok: ({ rede }) => { const ro = rede.aparelhos.find(a => a.nome === 'R-Empresa'); return !!ro && ro.portas[0].nat === 'inside' && ro.portas[1].nat === 'outside'; } },
+            { texto: 'R-Empresa: NAT com sobrecarga (PAT) ligado', ok: ({ rede }) => { const ro = rede.aparelhos.find(a => a.nome === 'R-Empresa'); return !!ro && !!ro.nat; } },
+            { texto: 'PC1 e PC2 alcançam 8.8.8.8', ok: ({ rede }) => conversa(rede, 'PC1', 'Servidor-Internet') && conversa(rede, 'PC2', 'Servidor-Internet') },
+            { texto: 'Confira no R-Empresa: show ip nat translations', ok: ({ comandos }) => comandos.some(c => c.cmd === 'show-nat') }
+        ],
+        dicas: ['O "Por quê" do ping diz onde a resposta morre. O R-Provedor conhece a rede 192.168.10.0? Na internet de verdade, ninguém roteia IP privado.', 'Selecione o R-Empresa. Em Gi0/0, "NAT nesta porta" = inside; em Gi0/1 = outside. Depois marque "NAT com sobrecarga (PAT)" ligado.', 'Rode o ping de novo no PC1 e, no R-Empresa, show ip nat translations.'],
+        pergunta: { texto: 'Por que foi preciso o NAT?', opcoes: ['Porque 192.168.x.x é IP privado e não é roteado na internet; o NAT troca a origem pelo IP público do roteador', 'Porque o servidor 8.8.8.8 bloqueia PCs sem NAT', 'Porque sem NAT o roteador não tem rota padrão'], certa: 0,
+            explicacao: 'IPs privados (10/8, 172.16/12, 192.168/16, RFC 1918) se repetem em milhões de redes, então a internet não sabe voltar para eles. O NAT com sobrecarga (PAT) faz todos os PCs saírem com um único IP público, diferenciados pela porta. Na volta, o roteador consulta a tabela e devolve ao PC certo.' }
+    },
+    {
+        id: 'p6-dns', grupo: 'Projeto 6 · Saída para a internet (NAT e DNS)', titulo: 'Acessar pelo nome (DNS)', tipo: 'montar',
+        historia: 'A internet já funciona por IP. Mas ninguém decora 8.8.8.8: a Ana quer acessar www.focopro.com.br pelo nome. O Servidor-Internet também é um servidor DNS. Configure os PCs para usá-lo.',
+        inicio: () => redeInternet({ dns: false }),
+        objetivos: [
+            { texto: 'Teste: ping www.focopro.com.br no PC1 (vai falhar: por quê?)', ok: ({ rede, comandos }) => { const a = rede.aparelhos.find(x => x.nome === 'PC1'); return !!a && comandos.some(c => c.de === a.id && c.nome === 'www.focopro.com.br'); } },
+            { texto: 'PC1 e PC2 com servidor DNS 8.8.8.8', ok: ({ rede }) => ['PC1', 'PC2'].every(x => (rede.aparelhos.find(a => a.nome === x) || {}).dns === '8.8.8.8') },
+            { texto: 'No PC1: nslookup www.focopro.com.br com resposta', ok: ({ comandos }) => comandos.some(c => c.cmd === 'nslookup' && c.ok > 0) },
+            { texto: 'No PC2: ping www.focopro.com.br com resposta', ok: ({ rede, comandos }) => { const a = rede.aparelhos.find(x => x.nome === 'PC2'); return !!a && comandos.some(c => c.de === a.id && c.cmd === 'ping' && c.nome === 'www.focopro.com.br' && c.ok > 0); } }
+        ],
+        dicas: ['Sem DNS configurado, o PC não tem a quem perguntar o IP do nome: "could not find host".', 'Em cada PC, preencha "Servidor DNS" com 8.8.8.8 (aperte Tab). Num PC em DHCP, isso viria do pool.', 'Depois: nslookup www.focopro.com.br e ping www.focopro.com.br.'],
+        pergunta: { texto: 'O que o DNS faz?', opcoes: ['Traduz nomes (www.focopro.com.br) em endereços IP', 'Dá IP automático para os PCs', 'Troca o IP privado pelo público'], certa: 0,
+            explicacao: 'DNS = "lista telefônica" da internet: nome → IP (registro A). Usa a porta 53 (UDP nas consultas comuns). Não confunda: IP automático é DHCP; trocar privado por público é NAT.' }
+    },
+    {
+        id: 'p6-chamado-dns', grupo: 'Projeto 6 · Saída para a internet (NAT e DNS)', titulo: 'Chamado: "a internet caiu" (mas só pelo nome)', tipo: 'chamado',
+        historia: 'O PC1 reclama que nenhum site abre. Curiosamente, o PC2 navega normal. O técnico mediu: ping 8.8.8.8 no PC1 funciona.',
+        inicio: () => redeInternet({}, (r, n) => { n('PC1').dns = '8.8.4.4'; }),
+        objetivos: [
+            { texto: 'Investigue no PC1: ping por IP, ping por nome e ipconfig', ok: ({ rede, comandos }) => { const a = rede.aparelhos.find(x => x.nome === 'PC1'); return !!a && comandos.some(c => c.de === a.id && c.cmd === 'ipconfig') && comandos.some(c => c.de === a.id && c.cmd === 'ping' && c.nome); } },
+            { texto: 'PC1 volta a acessar www.exemplo.com pelo nome', ok: ({ rede, comandos }) => { const a = rede.aparelhos.find(x => x.nome === 'PC1'); return !!a && a.dns === '8.8.8.8' && comandos.some(c => c.de === a.id && c.cmd === 'ping' && c.nome && c.ok > 0); } }
+        ],
+        dicas: ['Por IP funciona e por nome não: a rede está boa, o problema é a tradução nome → IP.', 'Compare a linha "DNS Servers" do ipconfig do PC1 com a do PC2.'],
+        pergunta: { texto: 'Qual era a causa?', opcoes: ['O PC1 apontava para um servidor DNS que não existe (8.8.4.4)', 'O NAT estava desligado', 'O cabo do PC1 estava ruim'], certa: 0,
+            explicacao: 'Regra de suporte: "por IP funciona, por nome não" = DNS. Rede, gateway e NAT estavam certos (o ping por IP provou). O PC1 perguntava os nomes a um servidor DNS inexistente, e nenhum nome era resolvido.' }
+    },
+    {
+        id: 'p6-chamado-nat', grupo: 'Projeto 6 · Saída para a internet (NAT e DNS)', titulo: 'Chamado: depois da troca do roteador, ninguém navega', tipo: 'chamado',
+        historia: 'Trocaram o R-Empresa e copiaram a configuração "de cabeça". O NAT está ligado, a rota padrão existe, os cabos estão verdes. Mesmo assim, nenhum PC alcança a internet.',
+        inicio: () => redeInternet({}, (r, n) => { const ro = n('R-Empresa'); ro.portas[0].nat = 'outside'; ro.portas[1].nat = 'inside'; }),
+        objetivos: [
+            { texto: 'Investigue: ping 8.8.8.8 no PC1 e show ip nat translations no R-Empresa', ok: ({ comandos }) => comandos.some(c => c.cmd === 'ping' && c.alvo === '8.8.8.8') && comandos.some(c => c.cmd === 'show-nat') },
+            { texto: 'PC1 e PC2 alcançam 8.8.8.8', ok: ({ rede }) => conversa(rede, 'PC1', 'Servidor-Internet') && conversa(rede, 'PC2', 'Servidor-Internet') }
+        ],
+        dicas: ['A tabela NAT está vazia mesmo depois do ping? Então nada foi traduzido.', 'Inside = lado da rede interna (dos PCs). Outside = lado do provedor. Confira as duas portas do R-Empresa.'],
+        pergunta: { texto: 'Por que a tabela NAT ficou vazia?', opcoes: ['Inside e outside estavam trocados: o tráfego dos PCs não ia de inside para outside, então nada era traduzido', 'O NAT só funciona com DHCP', 'Faltava uma rota para 192.168.10.0 no provedor'], certa: 0,
+            explicacao: 'O NAT só traduz o que entra por uma porta inside e sai por uma outside. Invertidas, os pacotes saíram com o IP privado e a resposta morreu no provedor. "Colocar uma rota para 192.168.10.0 no provedor" não é solução: na internet real, você não controla o roteador do provedor.' }
+    },
+    {
+        id: 'p6-chamado-rota', grupo: 'Projeto 6 · Saída para a internet (NAT e DNS)', titulo: 'Chamado: "Destination host unreachable" ao sair', tipo: 'chamado',
+        historia: 'Os PCs falam entre si e com o gateway, o NAT está configurado certo, mas qualquer ping para a internet volta "Destination host unreachable", vindo do 192.168.10.1.',
+        inicio: () => redeInternet({ rotaPadrao: false }),
+        objetivos: [
+            { texto: 'Investigue: show ip route no R-Empresa', ok: ({ rede, comandos }) => { const ro = rede.aparelhos.find(a => a.nome === 'R-Empresa'); return !!ro && comandos.some(c => c.de === ro.id && c.cmd === 'show'); } },
+            { texto: 'PC1 e PC2 alcançam 8.8.8.8', ok: ({ rede }) => conversa(rede, 'PC1', 'Servidor-Internet') && conversa(rede, 'PC2', 'Servidor-Internet') }
+        ],
+        dicas: ['"Unreachable" vindo do 192.168.10.1 = o próprio R-Empresa não sabe para onde mandar.', 'A internet tem milhões de redes: não dá para criar uma rota para cada uma. Uma rota padrão (0.0.0.0 /0) para o provedor (200.10.10.1) resolve.'],
+        pergunta: { texto: 'Qual é a rota típica de um roteador de empresa para a internet?', opcoes: ['Rota padrão 0.0.0.0/0 apontando para o roteador do provedor', 'Uma rota estática para cada site', 'Nenhuma: o NAT já sabe o caminho'], certa: 0,
+            explicacao: 'Tudo que não é da rede interna vai para o provedor: é o caso clássico de rota padrão (S* no show ip route, "gateway of last resort"). NAT e rota são coisas diferentes: o NAT troca o endereço, a rota escolhe o caminho.' }
+    },
+    {
+        id: 'p6-por-dentro', grupo: 'Projeto 6 · Saída para a internet (NAT e DNS)', titulo: 'Ver por dentro: o endereço trocado pelo NAT', tipo: 'simulacao',
+        historia: 'Acompanhe um ping do PC1 até a internet e olhe o IP de origem em cada trecho. O servidor da internet nunca fica sabendo que o PC1 existe.',
+        inicio: () => redeInternet(),
+        objetivos: [
+            { texto: 'Troque o modo para Simulação', ok: ({ sim }) => sim.modo === 'simulacao' },
+            { texto: 'No PC1, rode: ping www.focopro.com.br', ok: ({ rede, comandos }) => { const a = rede.aparelhos.find(x => x.nome === 'PC1'); return !!a && comandos.some(c => c.de === a.id && c.cmd === 'ping' && c.nome); } },
+            { texto: 'Veja a consulta DNS sair antes do ping', ok: ({ sim }) => sim.vistos.some(e => e.tipo === 'DNS') },
+            { texto: 'Veja o ICMP chegar ao servidor com origem 200.10.10.2 (não 192.168.10.11)', ok: ({ sim }) => sim.vistos.some(e => e.tipo === 'ICMP' && e.para === 'Servidor-Internet' && e.origemIp === '200.10.10.2') },
+            { texto: 'Veja a resposta chegar ao PC1 com destino 192.168.10.11 (destraduzida)', ok: ({ sim }) => sim.vistos.some(e => e.tipo === 'ICMP' && e.para === 'PC1' && e.destinoIp === '192.168.10.11') }
+        ],
+        dicas: ['Use "Próximo ▶" (ou Tocar). Os passos com a etiqueta laranja NAT mostram a troca.', 'Primeiro vem o DNS (que também passa pelo NAT), depois o ICMP.'],
+        pergunta: { texto: 'Na tabela NAT, o que é o "Inside global"?', opcoes: ['O IP público pelo qual o PC interno aparece na internet (aqui, 200.10.10.2)', 'O IP privado do PC (192.168.10.11)', 'O IP do servidor da internet'], certa: 0,
+            explicacao: 'Inside local = IP do PC dentro da empresa (192.168.10.11). Inside global = como ele aparece lá fora (200.10.10.2:porta). Com PAT, vários PCs compartilham o mesmo inside global; a porta diferencia cada conversa.' }
     }
 ];
 

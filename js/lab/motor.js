@@ -71,14 +71,23 @@ export function desligarCabo(rede, cabo) { rede.cabos = rede.cabos.filter(c => c
 export function novoEstado() { return { arp: {}, mac: {} }; }
 function tabArp(est, id) { return est.arp[id] || (est.arp[id] = {}); }
 function tabMac(est, id) { return est.mac[id] || (est.mac[id] = {}); }
-export function limparTabelas(est) { est.arp = {}; est.mac = {}; }
+export function limparTabelas(est) { est.arp = {}; est.mac = {}; est.nat = {}; }
 
 // ---------- camada 3: de onde sai e para quem vai ----------
-function interfacesIp(a) { return a.portas.filter(p => p.ip && ipParaNumero(p.ip) !== null); }
+// Interfaces L3: portas com IP e, no roteador, subinterfaces (Gi0/0.10 = VLAN 10 pelo trunk) com a porta física ligada.
+export function interfaces(a) {
+    const lista = [];
+    for (const p of a.portas) {
+        lista.push(p);
+        for (const s of (p.subs || [])) { s.fisica = p.nome; s.mac = p.mac; s.ligada = p.ligada; lista.push(s); }
+    }
+    return lista;
+}
+function interfacesIp(a) { return interfaces(a).filter(p => p.ip && ipParaNumero(p.ip) !== null && (p.fisica ? p.ligada : true)); }
 function ifaceLocal(a, ip) {
     return interfacesIp(a).find(p => eLocal({ ip: p.ip, prefixo: p.prefixo }, ip)) || null;
 }
-function ehMeu(a, ip) { return a.portas.some(p => p.ip === ip); }
+function ehMeu(a, ip) { return interfaces(a).some(p => p.ip === ip); }
 
 // Rota para o destino: { porta, proximo } ou { erro }
 export function rotaPara(a, ip) {
@@ -101,12 +110,17 @@ export function rotaPara(a, ip) {
 }
 
 // ---------- camada 2: um quadro atravessando cabos e switches ----------
+// VLAN: porta de switch "access" pertence a uma VLAN (p.vlan, padrão 1); "trunk" leva várias, com etiqueta 802.1Q
+// (VLAN 1 = nativa, vai sem etiqueta). O switch só encaminha dentro da mesma VLAN (domínio de broadcast).
+const vlanDe = p => Number(p.vlan) || 1;
+function trunkPermite(p, v) { const l = String(p.permitidas || '').trim(); if (!l || /^(all|todas)$/i.test(l)) return true; return l.split(/[\s,]+/).map(Number).includes(v); }
+function portaNaVlan(p, v) { return p.modo === 'trunk' ? trunkPermite(p, v) : vlanDe(p) === v; }
 // Retorna a lista de [aparelho, porta] que RECEBERAM o quadro (hosts/roteadores), registrando os eventos.
 function transmitir(rede, est, origem, portaOrigem, quadro, ev, limite) {
     const recebidos = [];
-    const fila = [{ id: origem.id, porta: portaOrigem.nome }];
+    const fila = [{ id: origem.id, porta: portaOrigem.fisica || portaOrigem.nome, tag: portaOrigem.fisica ? (Number(portaOrigem.vlan) || null) : null }];
     while (fila.length) {
-        const { id, porta: p } = fila.shift();
+        const { id, porta: p, tag } = fila.shift();
         if (++limite.n > 200) { limite.tempestade = true; break; }
         const a0 = aparelho(rede, id), p0 = porta(a0, p);
         if (!p0 || !p0.ligada) continue;
@@ -114,18 +128,33 @@ function transmitir(rede, est, origem, portaOrigem, quadro, ev, limite) {
         if (!cabo) continue;
         const outro = cabo.a.id === id && cabo.a.porta === p ? cabo.b : cabo.a;
         const dest = aparelho(rede, outro.id), pd = porta(dest, outro.porta);
-        if (!pd || !pd.ligada) { ev.push({ de: id, para: outro.id, quadro, perdido: 'porta desligada' }); continue; }
-        ev.push({ de: id, para: outro.id, quadro });
+        const q = tag ? { ...quadro, vlan: tag } : quadro;
+        if (!pd || !pd.ligada) { ev.push({ de: id, para: outro.id, quadro: q, perdido: 'porta desligada' }); continue; }
         if (dest.tipo === 'switch') {
+            let v;
+            if (pd.modo === 'trunk') { v = tag || 1; if (!trunkPermite(pd, v)) { ev.push({ de: id, para: outro.id, quadro: q, perdido: `VLAN ${v} não permitida no trunk` }); continue; } }
+            else { v = vlanDe(pd); if (tag && tag !== v) { ev.push({ de: id, para: outro.id, quadro: q, perdido: `chegou com etiqueta da VLAN ${tag} numa porta access da VLAN ${v}` }); continue; } }
+            ev.push({ de: id, para: outro.id, quadro: q });
             const t = tabMac(est, dest.id);
-            t[quadro.origemMac] = outro.porta; // aprende de onde veio
-            const saida = quadro.destinoMac !== BROADCAST ? t[quadro.destinoMac] : null;
-            const portas = saida ? [saida] : dest.portas.map(x => x.nome).filter(n => n !== outro.porta);
-            if (saida === outro.porta) continue; // destino está do mesmo lado: o switch descarta
-            portas.forEach(n => fila.push({ id: dest.id, porta: n }));
-        } else if (quadro.destinoMac === BROADCAST || quadro.destinoMac === pd.mac) {
-            recebidos.push([dest, pd]);
+            t[`${v}|${quadro.origemMac}`] = outro.porta; // aprende de onde veio (por VLAN)
+            const conhecida = quadro.destinoMac !== BROADCAST ? t[`${v}|${quadro.destinoMac}`] : null;
+            if (conhecida === outro.porta) continue; // destino está do mesmo lado: o switch descarta
+            const saidas = conhecida ? [porta(dest, conhecida)] : dest.portas.filter(x => x.nome !== outro.porta && portaNaVlan(x, v));
+            if (!conhecida) dest.portas.filter(x => x.nome !== outro.porta && x.modo === 'trunk' && !trunkPermite(x, v)).forEach(x => {
+                const c2 = caboDa(rede, dest.id, x.nome); if (!c2) return;
+                const viz = c2.a.id === dest.id && c2.a.porta === x.nome ? c2.b.id : c2.a.id;
+                ev.push({ de: dest.id, para: viz, quadro: { ...quadro, vlan: v }, perdido: `VLAN ${v} não permitida no trunk ${x.nome}` });
+            });
+            saidas.forEach(x => fila.push({ id: dest.id, porta: x.nome, tag: x.modo === 'trunk' && v !== 1 ? v : null }));
+            continue;
         }
+        ev.push({ de: id, para: outro.id, quadro: q });
+        let pr = pd;
+        if (tag) { // quadro com etiqueta: só uma subinterface daquela VLAN aceita
+            pr = TIPOS[dest.tipo].roteia ? interfaces(dest).find(x => x.fisica === pd.nome && Number(x.vlan) === tag) : null;
+            if (!pr) { ev[ev.length - 1].perdido = `${dest.nome} não tem subinterface para a VLAN ${tag}`; continue; }
+        }
+        if (quadro.destinoMac === BROADCAST || quadro.destinoMac === pr.mac) recebidos.push([dest, pr]);
     }
     return recebidos;
 }
@@ -148,23 +177,44 @@ function resolverArp(rede, est, a, p, ip, ev, limite, avisos) {
     return t[ip] || null;
 }
 
-// Envia um pacote IP de "a" até ip destino, passando por roteadores. Retorna { ok, chegouEm, ttl, motivo, saltos }
-function enviarIp(rede, est, a, destinoIp, pacote, ev, limite, avisos, saltos = []) {
-    if (ehMeu(a, destinoIp)) return { ok: true, chegouEm: a, ttl: pacote.ttl, saltos };
+// NAT com sobrecarga (PAT), como "ip nat inside source ... overload": o roteador com a.nat = true troca o IP de origem
+// de quem vem de uma porta "inside" e sai por uma porta "outside" pelo IP dessa porta, anotando uma "porta" na tabela.
+// A resposta chega ao IP público do roteador e é destraduzida de volta para o IP interno.
+function tabNat(est, id) { est.nat = est.nat || {}; return est.nat[id] || (est.nat[id] = { proxima: 1025, t: {} }); }
+
+// Envia um pacote IP de "a" até ip destino, passando por roteadores. Retorna { ok, chegouEm, ttl, motivo, saltos, origemVista, portaNat }
+function enviarIp(rede, est, a, destinoIp, pacote, ev, limite, avisos, saltos = [], entrada = null) {
+    if (ehMeu(a, destinoIp)) return { ok: true, chegouEm: a, ttl: pacote.ttl, saltos, origemVista: pacote.origemIp, portaNat: pacote.portaNat };
     const r = rotaPara(a, destinoIp);
     if (r.erro) return { ok: false, motivo: r.erro, em: a, saltos };
+    if (TIPOS[a.tipo].roteia && a.nat && entrada && entrada.nat === 'inside' && r.porta.nat === 'outside' && r.porta.ip) {
+        const tn = tabNat(est, a.id); const porta = tn.proxima++;
+        tn.t[porta] = { interno: pacote.origemIp, externo: r.porta.ip, destino: destinoIp, tipo: pacote.tipo };
+        pacote = { ...pacote, origemIp: r.porta.ip, portaNat: porta, natNota: `NAT no ${a.nome}: origem ${pacote.origemIp} → ${r.porta.ip}:${porta}` };
+    }
     const mac = resolverArp(rede, est, a, r.porta, r.proximo, ev, limite, avisos);
     if (!mac) return { ok: false, motivo: r.tipo === 'conectada' ? 'arp-sem-resposta' : 'gateway-sem-resposta', em: a, proximo: r.proximo, saltos };
-    const quadro = { tipo: pacote.tipo, origemMac: r.porta.mac, destinoMac: mac, origemIp: pacote.origemIp, destinoIp, ttl: pacote.ttl,
-        resumo: `${pacote.tipo === 'ICMP' ? (pacote.echo === 'pedido' ? 'ICMP echo request' : 'ICMP echo reply') : pacote.tipo} ${pacote.origemIp} → ${destinoIp} (TTL ${pacote.ttl})` };
+    const quadro = { tipo: pacote.tipo, op: pacote.op, origemMac: r.porta.mac, destinoMac: mac, origemIp: pacote.origemIp, destinoIp, ttl: pacote.ttl, nat: pacote.natNota,
+        resumo: pacote.tipo === 'DHCP' ? `DHCP ${pacote.op} repassado (relay, unicast) ${pacote.origemIp} → ${destinoIp}`
+            : pacote.tipo === 'DNS' ? `DNS ${pacote.op === 'consulta' ? `consulta: qual é o IP de ${pacote.nome}?` : `resposta: ${pacote.nome} = ${pacote.resposta || 'não encontrado'}`} (${pacote.origemIp} → ${destinoIp})`
+            : `${pacote.tipo === 'ICMP' ? (pacote.echo === 'pedido' ? 'ICMP echo request' : 'ICMP echo reply') : pacote.tipo} ${pacote.origemIp} → ${destinoIp} (TTL ${pacote.ttl})` };
+    if (pacote.natNota) pacote = { ...pacote, natNota: undefined };
     const recebeu = transmitir(rede, est, a, r.porta, quadro, ev, limite).find(([d, pd]) => pd.mac === mac);
     if (!recebeu) return { ok: false, motivo: 'quadro-perdido', em: a, saltos };
-    const [prox] = recebeu;
-    if (ehMeu(prox, destinoIp)) return { ok: true, chegouEm: prox, ttl: pacote.ttl, saltos };
+    const [prox, pin] = recebeu;
+    if (ehMeu(prox, destinoIp)) {
+        // Resposta chegando ao IP público: destraduz e segue para dentro
+        const tn = est.nat && est.nat[prox.id];
+        if (TIPOS[prox.tipo].roteia && pin.nat === 'outside' && pacote.portaNat && tn && tn.t[pacote.portaNat]) {
+            const reg = tn.t[pacote.portaNat];
+            return enviarIp(rede, est, prox, reg.interno, { ...pacote, ttl: pacote.ttl - 1, portaNat: undefined, natNota: `NAT no ${prox.nome}: destino ${destinoIp}:${pacote.portaNat} → ${reg.interno}` }, ev, limite, avisos, [...saltos, { aparelho: prox, ip: pin.ip }], pin);
+        }
+        return { ok: true, chegouEm: prox, ttl: pacote.ttl, saltos, origemVista: pacote.origemIp, portaNat: pacote.portaNat };
+    }
     if (!TIPOS[prox.tipo].roteia) return { ok: false, motivo: 'descartado', em: prox, saltos };
-    const salto = { aparelho: prox, ip: recebeu[1].ip };
+    const salto = { aparelho: prox, ip: pin.ip };
     if (pacote.ttl <= 1) return { ok: false, motivo: 'ttl-expirou', em: prox, saltos: [...saltos, salto] };
-    return enviarIp(rede, est, prox, destinoIp, { ...pacote, ttl: pacote.ttl - 1 }, ev, limite, avisos, [...saltos, salto]);
+    return enviarIp(rede, est, prox, destinoIp, { ...pacote, ttl: pacote.ttl - 1 }, ev, limite, avisos, [...saltos, salto], pin);
 }
 
 const MOTIVO = {
@@ -172,12 +222,148 @@ const MOTIVO = {
     'sem-gateway': 'o destino é de outra rede e não há gateway configurado',
     'gateway-fora': 'o gateway está fora da sub-rede do aparelho',
     'sem-rota': 'o roteador não tem rota para essa rede',
-    'arp-sem-resposta': 'ninguém respondeu ao ARP (o destino não existe nessa rede, está desligado ou sem cabo)',
-    'gateway-sem-resposta': 'o gateway não respondeu ao ARP (não existe, sem cabo ou porta desligada)',
+    'arp-sem-resposta': 'ninguém respondeu ao ARP (o destino não existe nessa rede, está em outra VLAN, desligado ou sem cabo)',
+    'gateway-sem-resposta': 'o gateway não respondeu ao ARP (não existe, está em outra VLAN, sem cabo ou porta desligada)',
     'quadro-perdido': 'o quadro se perdeu no caminho (cabo ou porta)',
     'descartado': 'o pacote chegou a um aparelho que não roteia',
     'ttl-expirou': 'o TTL chegou a zero (laço de roteamento)'
 };
+
+
+// ---------- DHCP (fase 3, 27/11/2026) ----------
+// Host com a.dhcp = true pede IP. Servidor com a.servicoDhcp = { ativo, pools: [{ inicio, fim, prefixo, gateway, dns }], concessoes: { mac: ip } }.
+// Porta de roteador com p.helper = IP do servidor repassa o pedido (relay, "ip helper-address").
+// DORA: Discover (broadcast) → Offer → Request (broadcast) → Ack. Sem resposta: APIPA 169.254.x.y/16.
+const IP_BROADCAST = '255.255.255.255';
+function redeDoPool(pool) { const c = calcular(pool.inicio, pool.prefixo); return c.erro ? null : c.rede; }
+function poolPara(servidor, ipReferencia) {
+    const sv = servidor.servicoDhcp; if (!sv || !sv.ativo) return null;
+    return (sv.pools || []).find(pl => { const c = calcular(ipReferencia, pl.prefixo); return !c.erro && c.rede === redeDoPool(pl); }) || null;
+}
+function ipsEmUso(rede) { return new Set(rede.aparelhos.flatMap(a => a.portas.map(p => p.ip).filter(Boolean))); }
+function escolherIp(rede, servidor, pool, mac) {
+    const sv = servidor.servicoDhcp; sv.concessoes = sv.concessoes || {};
+    const ja = sv.concessoes[mac];
+    if (ja && calcular(ja, pool.prefixo).rede === redeDoPool(pool)) return ja;
+    const usados = ipsEmUso(rede); Object.values(sv.concessoes).forEach(ip => usados.add(ip));
+    const a = ipParaNumero(pool.inicio), b = ipParaNumero(pool.fim);
+    if (a === null || b === null || b < a) return null;
+    for (let n = a; n <= b; n++) {
+        const ip = [n >>> 24, (n >>> 16) & 255, (n >>> 8) & 255, n & 255].join('.');
+        const c = calcular(ip, pool.prefixo);
+        if (c.eRede || c.eBroadcast || usados.has(ip)) continue;
+        return ip;
+    }
+    return null; // pool esgotado
+}
+const quadroDhcp = (op, origemMac, destinoMac, origemIp, destinoIp, resumo) => ({ tipo: 'DHCP', op, origemMac, destinoMac, origemIp, destinoIp, ttl: 128, resumo });
+
+// Leva uma mensagem DHCP do host até um servidor (direto no segmento ou via relay). Retorna { servidor, pool, relay } ou { motivo }.
+function acharServidor(rede, est, host, p, op, ev, limite, avisos) {
+    const q = quadroDhcp(op, p.mac, BROADCAST, '0.0.0.0', IP_BROADCAST, op === 'Discover' ? 'DHCP Discover: alguém aí tem um IP para mim? (broadcast)' : 'DHCP Request: quero o IP que me ofereceram (broadcast)');
+    const recebidos = transmitir(rede, est, host, p, q, ev, limite);
+    let motivo = 'sem-servidor';
+    for (const [d, pd] of recebidos) {
+        if (d.servicoDhcp && d.servicoDhcp.ativo) {
+            const ref = pd.ip || (interfacesIp(d)[0] || {}).ip; const pool = ref && poolPara(d, ref);
+            if (pool) return { servidor: d, porta: pd, pool, relay: null };
+            motivo = 'sem-pool';
+        }
+        if (TIPOS[d.tipo].roteia && pd.helper && pd.ip) {
+            const ida = enviarIp(rede, est, d, pd.helper, { tipo: 'DHCP', op, origemIp: pd.ip, ttl: 255 }, ev, limite, avisos);
+            if (!ida.ok) { motivo = 'relay-sem-caminho'; continue; }
+            const sv = ida.chegouEm;
+            if (!sv.servicoDhcp || !sv.servicoDhcp.ativo) { motivo = 'relay-sem-servico'; continue; }
+            const pool = poolPara(sv, pd.ip);
+            if (!pool) { motivo = 'sem-pool'; continue; }
+            return { servidor: sv, pool, relay: { roteador: d, porta: pd } };
+        }
+    }
+    return { motivo };
+}
+// Resposta do servidor até o host (Offer/Ack). Retorna true se chegou.
+function responder(rede, est, achado, host, p, op, ip, ev, limite, avisos) {
+    const { servidor, relay } = achado;
+    const resumo = op === 'Offer' ? `DHCP Offer: ofereço ${ip}` : `DHCP Ack: ${ip} é seu (concessão confirmada)`;
+    if (!relay) {
+        const ps = achado.porta;
+        return transmitir(rede, est, servidor, ps, quadroDhcp(op, ps.mac, p.mac, ps.ip, ip, resumo), ev, limite).some(([x]) => x.id === host.id);
+    }
+    const volta = enviarIp(rede, est, servidor, relay.porta.ip, { tipo: 'DHCP', op, origemIp: (interfacesIp(servidor)[0] || {}).ip, ttl: 128 }, ev, limite, avisos);
+    if (!volta.ok) return false;
+    return transmitir(rede, est, relay.roteador, relay.porta, quadroDhcp(op, relay.porta.mac, p.mac, relay.porta.ip, ip, resumo + ' (repassado pelo roteador)'), ev, limite).some(([x]) => x.id === host.id);
+}
+const MOTIVO_DHCP = {
+    'sem-servidor': 'nenhum servidor DHCP respondeu nesta rede (serviço desligado, sem cabo, ou o servidor está em outra rede sem relay no roteador)',
+    'sem-pool': 'o servidor DHCP não tem pool para esta rede',
+    'relay-sem-caminho': 'o roteador repassou o pedido, mas não alcança o servidor (confira o ip helper-address e as rotas)',
+    'relay-sem-servico': 'o roteador repassou o pedido para um aparelho sem serviço DHCP ativo',
+    'pool-esgotado': 'o pool do servidor acabou: todos os IPs já estão concedidos',
+    'sem-resposta': 'a resposta do servidor não chegou ao aparelho'
+};
+function apipa(p) {
+    const h = parseInt(p.mac.replace(/:/g, '').slice(-4), 16);
+    return `169.254.${(h >> 8) % 254 + 1}.${(h & 255) % 254 + 1}`;
+}
+export function obterIp(rede, est, hostId) {
+    const host = aparelho(rede, hostId); const p = host.portas[0];
+    const ev = [], limite = { n: 0 }, avisos = new Set();
+    p.ip = ''; host.gateway = '';
+    const falhar = (motivo) => { p.ip = apipa(p); p.prefixo = 16; host.gateway = ''; return { ok: false, ip: p.ip, motivo, explicacao: MOTIVO_DHCP[motivo] || motivo, eventos: ev }; };
+    const a1 = acharServidor(rede, est, host, p, 'Discover', ev, limite, avisos);
+    if (!a1.servidor) return falhar(a1.motivo);
+    const ip = escolherIp(rede, a1.servidor, a1.pool, p.mac);
+    if (!ip) return falhar('pool-esgotado');
+    if (!responder(rede, est, a1, host, p, 'Offer', ip, ev, limite, avisos)) return falhar('sem-resposta');
+    const a2 = acharServidor(rede, est, host, p, 'Request', ev, limite, avisos);
+    if (!a2.servidor) return falhar(a2.motivo);
+    if (!responder(rede, est, a2, host, p, 'Ack', ip, ev, limite, avisos)) return falhar('sem-resposta');
+    a1.servidor.servicoDhcp.concessoes[p.mac] = ip;
+    p.ip = ip; p.prefixo = a1.pool.prefixo; host.gateway = a1.pool.gateway || ''; host.dns = a1.pool.dns || '';
+    return { ok: true, ip, prefixo: p.prefixo, gateway: host.gateway, servidor: a1.servidor.nome, relay: a1.relay ? a1.relay.roteador.nome : null, eventos: ev };
+}
+export function liberarIp(rede, hostId) {
+    const host = aparelho(rede, hostId); const p = host.portas[0];
+    rede.aparelhos.forEach(a => { if (a.servicoDhcp && a.servicoDhcp.concessoes) delete a.servicoDhcp.concessoes[p.mac]; });
+    p.ip = ''; host.gateway = '';
+}
+export function concessoes(rede, servidorId) {
+    const sv = aparelho(rede, servidorId).servicoDhcp; const c = (sv && sv.concessoes) || {};
+    const macParaNome = {}; rede.aparelhos.forEach(a => a.portas.forEach(p => { macParaNome[p.mac] = a.nome; }));
+    return Object.entries(c).map(([mac, ip]) => ({ mac, ip, nome: macParaNome[mac] || '?' }));
+}
+
+
+// ---------- DNS (fase 3) ----------
+// Servidor com a.servicoDns = { ativo, registros: { 'www.exemplo.com': '8.8.8.8' } }. Host usa a.dns (configurado ou vindo do DHCP).
+export function resolverNome(rede, est, origemId, nome) {
+    const a = aparelho(rede, origemId); const ev = [], limite = { n: 0 }, avisos = new Set();
+    const n = String(nome || '').toLowerCase().replace(/\.$/, '');
+    if (!a.dns) return { ok: false, motivo: 'sem-dns', explicacao: 'o aparelho não tem servidor DNS configurado', eventos: ev };
+    const pa = interfacesIp(a)[0]; if (!pa) return { ok: false, motivo: 'sem-ip', explicacao: 'o aparelho não tem IP', eventos: ev };
+    const ida = enviarIp(rede, est, a, a.dns, { tipo: 'DNS', op: 'consulta', nome: n, origemIp: pa.ip, ttl: TIPOS[a.tipo].ttl || 128 }, ev, limite, avisos);
+    if (!ida.ok) return { ok: false, motivo: 'dns-inalcancavel', explicacao: `a consulta não chegou ao servidor DNS ${a.dns} (${MOTIVO[ida.motivo] || ida.motivo})`, eventos: ev };
+    const sv = ida.chegouEm;
+    if (!sv.servicoDns || !sv.servicoDns.ativo) return { ok: false, motivo: 'sem-servico-dns', explicacao: `${a.dns} não é um servidor DNS (o serviço não está ativo nele)`, eventos: ev };
+    const ip = (sv.servicoDns.registros || {})[n] || null;
+    const volta = enviarIp(rede, est, sv, ida.origemVista || pa.ip, { tipo: 'DNS', op: 'resposta', nome: n, resposta: ip, origemIp: a.dns, ttl: 128, portaNat: ida.portaNat }, ev, limite, avisos);
+    if (!volta.ok) return { ok: false, motivo: 'dns-sem-volta', explicacao: 'o servidor DNS respondeu, mas a resposta não voltou', eventos: ev };
+    if (!ip) return { ok: false, motivo: 'nome-inexistente', explicacao: `o servidor DNS não conhece o nome ${n}`, eventos: ev, servidor: sv.nome };
+    return { ok: true, ip, servidor: sv.nome, eventos: ev };
+}
+export function nslookup(rede, est, origemId, nome) {
+    const a = aparelho(rede, origemId); const r = resolverNome(rede, est, origemId, nome);
+    const linhas = [`Server:  ${a.dns || '(nenhum)'}`, `Address: ${a.dns || '-'}`, ''];
+    if (r.ok) linhas.push(`Name:    ${String(nome).toLowerCase()}`, `Address: ${r.ip}`);
+    else linhas.push(`*** Não foi possível resolver ${nome}: ${r.explicacao}.`);
+    return { linhas, ...r };
+}
+export function traducoesNat(est, rede, id) {
+    const tn = est.nat && est.nat[id];
+    if (!tn || !Object.keys(tn.t).length) return ['Tabela NAT vazia (nada saiu ainda por uma porta outside com NAT).'];
+    const linhas = Object.entries(tn.t).slice(-8).map(([p, x]) => `${x.tipo === 'DNS' ? 'udp ' : 'icmp'} ${x.interno}:${p} → ${x.externo}:${p} (${x.destino})`);
+    return ['Inside local → Inside global (Outside)', ...linhas, Object.keys(tn.t).length > 8 ? `… ${Object.keys(tn.t).length} traduções no total` : ''].filter(Boolean);
+}
 
 // ---------- comandos do terminal ----------
 export function ping(rede, est, origemId, destinoIp, vezes = 4) {
@@ -197,7 +383,7 @@ export function ping(rede, est, origemId, destinoIp, vezes = 4) {
         if (ida.ok) {
             const resp = ida.chegouEm;
             const ipResp = destinoIp;
-            volta = enviarIp(rede, est, resp, pa.ip, { tipo: 'ICMP', echo: 'resposta', origemIp: ipResp, ttl: TIPOS[resp.tipo].ttl || 128 }, ev, limite, avisos);
+            volta = enviarIp(rede, est, resp, ida.origemVista || pa.ip, { tipo: 'ICMP', echo: 'resposta', origemIp: ipResp, ttl: TIPOS[resp.tipo].ttl || 128, portaNat: ida.portaNat }, ev, limite, avisos);
         }
         if (limite.tempestade) avisos.add('Laço entre switches: os cabos fecham um círculo e o broadcast fica rodando sem parar (tempestade de broadcast). Switches reais usam o STP para bloquear um dos caminhos; esta bancada ainda não simula STP.');
         const sucesso = ida.ok && volta && volta.ok;
@@ -227,7 +413,7 @@ export function ping(rede, est, origemId, destinoIp, vezes = 4) {
 export function ipconfig(rede, id) {
     const a = aparelho(rede, id);
     const out = [];
-    for (const p of a.portas) {
+    for (const p of interfaces(a)) {
         if (!p.ip && TIPOS[a.tipo].host === false) continue;
         const c = p.ip ? calcular(p.ip, p.prefixo) : null;
         out.push(`${TIPOS[a.tipo].host ? 'Ethernet adapter' : 'Interface'} ${p.nome}:`, '',
@@ -235,6 +421,8 @@ export function ipconfig(rede, id) {
             `   IPv4 Address. . . . . . . . . . : ${p.ip || '0.0.0.0'}`,
             `   Subnet Mask . . . . . . . . . . : ${c && !c.erro ? c.mascara : '0.0.0.0'}`);
         if (TIPOS[a.tipo].host) out.push(`   Default Gateway . . . . . . . . : ${a.gateway || '0.0.0.0'}`);
+        if (TIPOS[a.tipo].host && a.dns) out.push(`   DNS Servers . . . . . . . . . . : ${a.dns}`);
+        if (TIPOS[a.tipo].host && a.dhcp) out.push(`   DHCP Enabled. . . . . . . . . . : Yes${/^169\.254\./.test(p.ip) ? '   (sem resposta do DHCP: endereço automático APIPA)' : ''}`);
         out.push('');
     }
     return out.length ? out : ['Nenhuma interface com IP.'];
@@ -251,8 +439,17 @@ export function arpA(est, rede, id) {
 export function tabelaMac(est, rede, id) {
     const t = tabMac(est, id); const macs = Object.keys(t);
     if (!macs.length) return ['Tabela MAC vazia (o switch ainda não viu nenhum quadro).'];
-    return ['          Mac Address Table', '-------------------------------------------', 'Mac Address          Ports',
-        ...macs.map(m => `${m.padEnd(21)}${t[m]}`)];
+    return ['          Mac Address Table', '-------------------------------------------', 'Vlan    Mac Address          Ports',
+        ...macs.map(k => { const [v, m] = k.includes('|') ? k.split('|') : ['1', k]; return `${v.padEnd(8)}${m.padEnd(21)}${t[k]}`; })];
+}
+export function vlanBrief(rede, id) {
+    const a = aparelho(rede, id); const vs = {};
+    a.portas.filter(p => p.modo !== 'trunk').forEach(p => { const v = Number(p.vlan) || 1; (vs[v] = vs[v] || []).push(p.nome); });
+    const linhas = ['VLAN Name      Status  Ports', '---- --------- ------- ----------------'];
+    Object.keys(vs).map(Number).sort((x, y) => x - y).forEach(v => linhas.push(`${String(v).padEnd(5)}${(v === 1 ? 'default' : 'VLAN' + String(v).padStart(4, '0')).padEnd(10)}active  ${vs[v].join(', ')}`));
+    const trunks = a.portas.filter(p => p.modo === 'trunk');
+    if (trunks.length) linhas.push('', 'Trunks (802.1Q): ' + trunks.map(p => `${p.nome} (VLANs ${String(p.permitidas || '').trim() || 'todas'})`).join(', '));
+    return linhas;
 }
 
 export function tracert(rede, est, origemId, destinoIp) {
