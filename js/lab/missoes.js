@@ -126,6 +126,28 @@ export function redeVlan(opcoes = {}, ajuste) {
     return r;
 }
 
+
+// Projeto 6 (NAT e DNS): escritório 192.168.10.0/24 → R-Empresa → link 200.10.10.0/30 → R-Provedor → "internet" 8.8.8.0/24.
+// O R-Provedor NÃO conhece redes privadas (como na internet de verdade). opcoes: { nat, dns, rotaPadrao }.
+export function redeInternet(opcoes = {}, ajuste) {
+    const { nat = true, dns = true, rotaPadrao = true } = opcoes;
+    const r = M.novaRede();
+    const sw = M.adicionarAparelho(r, 'switch', 170, 190); sw.nome = 'SW-Escritorio';
+    const host = (x, y, nome, ip, porta) => { const h = M.adicionarAparelho(r, 'pc', x, y); h.nome = nome; h.portas[0].ip = ip; h.gateway = '192.168.10.1'; h.dns = dns ? '8.8.8.8' : ''; M.ligar(r, h.id, 'Fa0', sw.id, porta); return h; };
+    host(20, 50, 'PC1', '192.168.10.11', 'Fa0/1'); host(20, 330, 'PC2', '192.168.10.12', 'Fa0/2');
+    const re = M.adicionarAparelho(r, 'roteador', 330, 190); re.nome = 'R-Empresa';
+    re.portas[0].ip = '192.168.10.1'; re.portas[1].ip = '200.10.10.2'; re.portas[1].prefixo = 30;
+    if (nat) { re.nat = true; re.portas[0].nat = 'inside'; re.portas[1].nat = 'outside'; }
+    if (rotaPadrao) re.rotas = [{ rede: '0.0.0.0', prefixo: 0, proximo: '200.10.10.1' }];
+    const rp = M.adicionarAparelho(r, 'roteador', 490, 190); rp.nome = 'R-Provedor';
+    rp.portas[1].ip = '200.10.10.1'; rp.portas[1].prefixo = 30; rp.portas[0].ip = '8.8.8.1';
+    const sv = M.adicionarAparelho(r, 'servidor', 490, 340); sv.nome = 'Servidor-Internet'; sv.portas[0].ip = '8.8.8.8'; sv.gateway = '8.8.8.1';
+    sv.servicoDns = { ativo: true, registros: { 'www.focopro.com.br': '8.8.8.8', 'www.exemplo.com': '8.8.8.8' } };
+    M.ligar(r, sw.id, 'Fa0/8', re.id, 'Gi0/0'); M.ligar(r, re.id, 'Gi0/1', rp.id, 'Gi0/1'); M.ligar(r, rp.id, 'Gi0/0', sv.id, 'Fa0');
+    if (ajuste) ajuste(r, nome => r.aparelhos.find(a => a.nome === nome));
+    return r;
+}
+
 // ---------- verificações ----------
 const hosts = r => r.aparelhos.filter(a => M.TIPOS[a.tipo].host);
 const ipDe = a => (a.portas[0] || {}).ip || '';
@@ -557,6 +579,86 @@ export const MISSOES = [
         dicas: ['Use "Próximo ▶". Quadros no cabo do trunk mostram uma etiqueta verde VLAN 10 ou VLAN 20.', 'Nos cabos dos PCs (portas access), o quadro vai sem etiqueta: o PC nem sabe que existe VLAN.'],
         pergunta: { texto: 'Onde a etiqueta 802.1Q aparece?', opcoes: ['Só nos cabos trunk (switch↔roteador ou switch↔switch); nos cabos access, até o PC, o quadro vai sem etiqueta', 'Em todos os cabos, inclusive o do PC', 'Só dentro do roteador'], certa: 0,
             explicacao: 'O switch põe a etiqueta ao mandar pelo trunk e tira ao entregar numa porta access. O PC nunca vê VLAN. O roteador lê a etiqueta para escolher a subinterface e, ao rotear para a outra rede, devolve com a etiqueta da VLAN de destino.' }
+    },
+    {
+        id: 'p6-nat', grupo: 'Projeto 6 · Saída para a internet (NAT e DNS)', titulo: 'Por que a internet não responde? (NAT)', tipo: 'montar',
+        historia: 'O escritório (192.168.10.0/24) ganhou um link com o provedor. A rota padrão já aponta para ele, mas nenhum PC consegue falar com o servidor na internet (8.8.8.8). Descubra por quê e ligue o NAT no R-Empresa.',
+        inicio: () => redeInternet({ nat: false }),
+        objetivos: [
+            { texto: 'Teste primeiro: ping 8.8.8.8 no PC1 (e leia o "Por quê")', ok: ({ rede, comandos }) => { const a = rede.aparelhos.find(x => x.nome === 'PC1'); return !!a && comandos.some(c => c.cmd === 'ping' && c.de === a.id && c.alvo === '8.8.8.8'); } },
+            { texto: 'R-Empresa: Gi0/0 como NAT inside e Gi0/1 como NAT outside', ok: ({ rede }) => { const ro = rede.aparelhos.find(a => a.nome === 'R-Empresa'); return !!ro && ro.portas[0].nat === 'inside' && ro.portas[1].nat === 'outside'; } },
+            { texto: 'R-Empresa: NAT com sobrecarga (PAT) ligado', ok: ({ rede }) => { const ro = rede.aparelhos.find(a => a.nome === 'R-Empresa'); return !!ro && !!ro.nat; } },
+            { texto: 'PC1 e PC2 alcançam 8.8.8.8', ok: ({ rede }) => conversa(rede, 'PC1', 'Servidor-Internet') && conversa(rede, 'PC2', 'Servidor-Internet') },
+            { texto: 'Confira no R-Empresa: show ip nat translations', ok: ({ comandos }) => comandos.some(c => c.cmd === 'show-nat') }
+        ],
+        dicas: ['O "Por quê" do ping diz onde a resposta morre. O R-Provedor conhece a rede 192.168.10.0? Na internet de verdade, ninguém roteia IP privado.', 'Selecione o R-Empresa. Em Gi0/0, "NAT nesta porta" = inside; em Gi0/1 = outside. Depois marque "NAT com sobrecarga (PAT)" ligado.', 'Rode o ping de novo no PC1 e, no R-Empresa, show ip nat translations.'],
+        pergunta: { texto: 'Por que foi preciso o NAT?', opcoes: ['Porque 192.168.x.x é IP privado e não é roteado na internet; o NAT troca a origem pelo IP público do roteador', 'Porque o servidor 8.8.8.8 bloqueia PCs sem NAT', 'Porque sem NAT o roteador não tem rota padrão'], certa: 0,
+            explicacao: 'IPs privados (10/8, 172.16/12, 192.168/16, RFC 1918) se repetem em milhões de redes, então a internet não sabe voltar para eles. O NAT com sobrecarga (PAT) faz todos os PCs saírem com um único IP público, diferenciados pela porta. Na volta, o roteador consulta a tabela e devolve ao PC certo.' }
+    },
+    {
+        id: 'p6-dns', grupo: 'Projeto 6 · Saída para a internet (NAT e DNS)', titulo: 'Acessar pelo nome (DNS)', tipo: 'montar',
+        historia: 'A internet já funciona por IP. Mas ninguém decora 8.8.8.8: a Ana quer acessar www.focopro.com.br pelo nome. O Servidor-Internet também é um servidor DNS. Configure os PCs para usá-lo.',
+        inicio: () => redeInternet({ dns: false }),
+        objetivos: [
+            { texto: 'Teste: ping www.focopro.com.br no PC1 (vai falhar: por quê?)', ok: ({ rede, comandos }) => { const a = rede.aparelhos.find(x => x.nome === 'PC1'); return !!a && comandos.some(c => c.de === a.id && c.nome === 'www.focopro.com.br'); } },
+            { texto: 'PC1 e PC2 com servidor DNS 8.8.8.8', ok: ({ rede }) => ['PC1', 'PC2'].every(x => (rede.aparelhos.find(a => a.nome === x) || {}).dns === '8.8.8.8') },
+            { texto: 'No PC1: nslookup www.focopro.com.br com resposta', ok: ({ comandos }) => comandos.some(c => c.cmd === 'nslookup' && c.ok > 0) },
+            { texto: 'No PC2: ping www.focopro.com.br com resposta', ok: ({ rede, comandos }) => { const a = rede.aparelhos.find(x => x.nome === 'PC2'); return !!a && comandos.some(c => c.de === a.id && c.cmd === 'ping' && c.nome === 'www.focopro.com.br' && c.ok > 0); } }
+        ],
+        dicas: ['Sem DNS configurado, o PC não tem a quem perguntar o IP do nome: "could not find host".', 'Em cada PC, preencha "Servidor DNS" com 8.8.8.8 (aperte Tab). Num PC em DHCP, isso viria do pool.', 'Depois: nslookup www.focopro.com.br e ping www.focopro.com.br.'],
+        pergunta: { texto: 'O que o DNS faz?', opcoes: ['Traduz nomes (www.focopro.com.br) em endereços IP', 'Dá IP automático para os PCs', 'Troca o IP privado pelo público'], certa: 0,
+            explicacao: 'DNS = "lista telefônica" da internet: nome → IP (registro A). Usa a porta 53 (UDP nas consultas comuns). Não confunda: IP automático é DHCP; trocar privado por público é NAT.' }
+    },
+    {
+        id: 'p6-chamado-dns', grupo: 'Projeto 6 · Saída para a internet (NAT e DNS)', titulo: 'Chamado: "a internet caiu" (mas só pelo nome)', tipo: 'chamado',
+        historia: 'O PC1 reclama que nenhum site abre. Curiosamente, o PC2 navega normal. O técnico mediu: ping 8.8.8.8 no PC1 funciona.',
+        inicio: () => redeInternet({}, (r, n) => { n('PC1').dns = '8.8.4.4'; }),
+        objetivos: [
+            { texto: 'Investigue no PC1: ping por IP, ping por nome e ipconfig', ok: ({ rede, comandos }) => { const a = rede.aparelhos.find(x => x.nome === 'PC1'); return !!a && comandos.some(c => c.de === a.id && c.cmd === 'ipconfig') && comandos.some(c => c.de === a.id && c.cmd === 'ping' && c.nome); } },
+            { texto: 'PC1 volta a acessar www.exemplo.com pelo nome', ok: ({ rede, comandos }) => { const a = rede.aparelhos.find(x => x.nome === 'PC1'); return !!a && a.dns === '8.8.8.8' && comandos.some(c => c.de === a.id && c.cmd === 'ping' && c.nome && c.ok > 0); } }
+        ],
+        dicas: ['Por IP funciona e por nome não: a rede está boa, o problema é a tradução nome → IP.', 'Compare a linha "DNS Servers" do ipconfig do PC1 com a do PC2.'],
+        pergunta: { texto: 'Qual era a causa?', opcoes: ['O PC1 apontava para um servidor DNS que não existe (8.8.4.4)', 'O NAT estava desligado', 'O cabo do PC1 estava ruim'], certa: 0,
+            explicacao: 'Regra de suporte: "por IP funciona, por nome não" = DNS. Rede, gateway e NAT estavam certos (o ping por IP provou). O PC1 perguntava os nomes a um servidor DNS inexistente, e nenhum nome era resolvido.' }
+    },
+    {
+        id: 'p6-chamado-nat', grupo: 'Projeto 6 · Saída para a internet (NAT e DNS)', titulo: 'Chamado: depois da troca do roteador, ninguém navega', tipo: 'chamado',
+        historia: 'Trocaram o R-Empresa e copiaram a configuração "de cabeça". O NAT está ligado, a rota padrão existe, os cabos estão verdes. Mesmo assim, nenhum PC alcança a internet.',
+        inicio: () => redeInternet({}, (r, n) => { const ro = n('R-Empresa'); ro.portas[0].nat = 'outside'; ro.portas[1].nat = 'inside'; }),
+        objetivos: [
+            { texto: 'Investigue: ping 8.8.8.8 no PC1 e show ip nat translations no R-Empresa', ok: ({ comandos }) => comandos.some(c => c.cmd === 'ping' && c.alvo === '8.8.8.8') && comandos.some(c => c.cmd === 'show-nat') },
+            { texto: 'PC1 e PC2 alcançam 8.8.8.8', ok: ({ rede }) => conversa(rede, 'PC1', 'Servidor-Internet') && conversa(rede, 'PC2', 'Servidor-Internet') }
+        ],
+        dicas: ['A tabela NAT está vazia mesmo depois do ping? Então nada foi traduzido.', 'Inside = lado da rede interna (dos PCs). Outside = lado do provedor. Confira as duas portas do R-Empresa.'],
+        pergunta: { texto: 'Por que a tabela NAT ficou vazia?', opcoes: ['Inside e outside estavam trocados: o tráfego dos PCs não ia de inside para outside, então nada era traduzido', 'O NAT só funciona com DHCP', 'Faltava uma rota para 192.168.10.0 no provedor'], certa: 0,
+            explicacao: 'O NAT só traduz o que entra por uma porta inside e sai por uma outside. Invertidas, os pacotes saíram com o IP privado e a resposta morreu no provedor. "Colocar uma rota para 192.168.10.0 no provedor" não é solução: na internet real, você não controla o roteador do provedor.' }
+    },
+    {
+        id: 'p6-chamado-rota', grupo: 'Projeto 6 · Saída para a internet (NAT e DNS)', titulo: 'Chamado: "Destination host unreachable" ao sair', tipo: 'chamado',
+        historia: 'Os PCs falam entre si e com o gateway, o NAT está configurado certo, mas qualquer ping para a internet volta "Destination host unreachable", vindo do 192.168.10.1.',
+        inicio: () => redeInternet({ rotaPadrao: false }),
+        objetivos: [
+            { texto: 'Investigue: show ip route no R-Empresa', ok: ({ rede, comandos }) => { const ro = rede.aparelhos.find(a => a.nome === 'R-Empresa'); return !!ro && comandos.some(c => c.de === ro.id && c.cmd === 'show'); } },
+            { texto: 'PC1 e PC2 alcançam 8.8.8.8', ok: ({ rede }) => conversa(rede, 'PC1', 'Servidor-Internet') && conversa(rede, 'PC2', 'Servidor-Internet') }
+        ],
+        dicas: ['"Unreachable" vindo do 192.168.10.1 = o próprio R-Empresa não sabe para onde mandar.', 'A internet tem milhões de redes: não dá para criar uma rota para cada uma. Uma rota padrão (0.0.0.0 /0) para o provedor (200.10.10.1) resolve.'],
+        pergunta: { texto: 'Qual é a rota típica de um roteador de empresa para a internet?', opcoes: ['Rota padrão 0.0.0.0/0 apontando para o roteador do provedor', 'Uma rota estática para cada site', 'Nenhuma: o NAT já sabe o caminho'], certa: 0,
+            explicacao: 'Tudo que não é da rede interna vai para o provedor: é o caso clássico de rota padrão (S* no show ip route, "gateway of last resort"). NAT e rota são coisas diferentes: o NAT troca o endereço, a rota escolhe o caminho.' }
+    },
+    {
+        id: 'p6-por-dentro', grupo: 'Projeto 6 · Saída para a internet (NAT e DNS)', titulo: 'Ver por dentro: o endereço trocado pelo NAT', tipo: 'simulacao',
+        historia: 'Acompanhe um ping do PC1 até a internet e olhe o IP de origem em cada trecho. O servidor da internet nunca fica sabendo que o PC1 existe.',
+        inicio: () => redeInternet(),
+        objetivos: [
+            { texto: 'Troque o modo para Simulação', ok: ({ sim }) => sim.modo === 'simulacao' },
+            { texto: 'No PC1, rode: ping www.focopro.com.br', ok: ({ rede, comandos }) => { const a = rede.aparelhos.find(x => x.nome === 'PC1'); return !!a && comandos.some(c => c.de === a.id && c.cmd === 'ping' && c.nome); } },
+            { texto: 'Veja a consulta DNS sair antes do ping', ok: ({ sim }) => sim.vistos.some(e => e.tipo === 'DNS') },
+            { texto: 'Veja o ICMP chegar ao servidor com origem 200.10.10.2 (não 192.168.10.11)', ok: ({ sim }) => sim.vistos.some(e => e.tipo === 'ICMP' && e.para === 'Servidor-Internet' && e.origemIp === '200.10.10.2') },
+            { texto: 'Veja a resposta chegar ao PC1 com destino 192.168.10.11 (destraduzida)', ok: ({ sim }) => sim.vistos.some(e => e.tipo === 'ICMP' && e.para === 'PC1' && e.destinoIp === '192.168.10.11') }
+        ],
+        dicas: ['Use "Próximo ▶" (ou Tocar). Os passos com a etiqueta laranja NAT mostram a troca.', 'Primeiro vem o DNS (que também passa pelo NAT), depois o ICMP.'],
+        pergunta: { texto: 'Na tabela NAT, o que é o "Inside global"?', opcoes: ['O IP público pelo qual o PC interno aparece na internet (aqui, 200.10.10.2)', 'O IP privado do PC (192.168.10.11)', 'O IP do servidor da internet'], certa: 0,
+            explicacao: 'Inside local = IP do PC dentro da empresa (192.168.10.11). Inside global = como ele aparece lá fora (200.10.10.2:porta). Com PAT, vários PCs compartilham o mesmo inside global; a porta diferencia cada conversa.' }
     }
 ];
 

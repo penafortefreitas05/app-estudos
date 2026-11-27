@@ -145,6 +145,7 @@ export function abrirBancada() {
                     <label class="bc-liga"><input type="checkbox" data-campo="ligada" ${p.ligada ? 'checked' : ''}> ${p.ligada ? 'ligada' : 'desligada (shutdown)'}</label></div>
                 ${ipConf ? `<div class="bc-campos"><label>IP<input data-campo="ip" value="${esc(p.ip)}" placeholder="192.168.1.10" ${a.dhcp ? 'disabled' : ''}></label>
                     <label>Máscara<input data-campo="mascara" value="${p.ip ? esc(calc && !calc.erro ? calc.mascara : '') : ''}" placeholder="255.255.255.0 ou /24" ${a.dhcp ? 'disabled' : ''}></label></div>
+                    ${t.roteia ? `<label class="bc-helper">NAT nesta porta<select data-campo="nat"><option value="" ${!p.nat ? 'selected' : ''}>—</option><option value="inside" ${p.nat === 'inside' ? 'selected' : ''}>inside (rede interna)</option><option value="outside" ${p.nat === 'outside' ? 'selected' : ''}>outside (para a internet)</option></select></label>` : ''}
                     ${t.roteia ? `<label class="bc-helper">ip helper-address (relay DHCP)<input data-campo="helper" value="${esc(p.helper || '')}" placeholder="IP do servidor DHCP, se estiver em outra rede"></label>` : ''}
                     ${calc && !calc.erro ? `<p class="bc-nota">Rede ${esc(calc.rede)}/${p.prefixo} · broadcast ${esc(calc.broadcast)} · ${calc.hosts} hosts${calc.eRede || calc.eBroadcast ? ' · <b class="bc-ruim">esse IP é o endereço de rede/broadcast: não serve para aparelho</b>' : ''}</p>` : ''}` : `${a.tipo === 'switch' ? `<div class="bc-campos bc-vlan"><label>Modo<select data-campo="modo"><option value="access" ${p.modo !== 'trunk' ? 'selected' : ''}>access</option><option value="trunk" ${p.modo === 'trunk' ? 'selected' : ''}>trunk (802.1Q)</option></select></label>
                     ${p.modo === 'trunk' ? `<label>VLANs permitidas<input data-campo="permitidas" value="${esc(p.permitidas || '')}" placeholder="todas (ou 10,20)"></label>` : `<label>VLAN<input data-campo="vlan" type="number" min="1" max="4094" value="${Number(p.vlan) || 1}"></label>`}</div>` : `<p class="bc-nota">MAC ${esc(p.mac)}</p>`}`}
@@ -157,10 +158,12 @@ export function abrirBancada() {
             <label class="bc-nome-ap">Nome<input data-campo="nome" value="${esc(a.nome)}"></label>
             ${t.host ? `<div class="bc-modo-ip" role="group" aria-label="Como o aparelho recebe o IP"><span>Endereço IP:</span><button type="button" data-ipmodo="estatico" aria-pressed="${!a.dhcp}">Estático</button><button type="button" data-ipmodo="dhcp" aria-pressed="${!!a.dhcp}">DHCP</button></div>
                 ${a.dhcp ? `<p class="bc-nota">${a.portas[0].ip ? (/^169\.254\./.test(a.portas[0].ip) ? '<b class="bc-ruim">Sem resposta do DHCP: ficou com 169.254.x.x (APIPA).</b>' : `Recebido por DHCP.`) : 'Ainda sem IP.'} <button type="button" data-acao="renovar">Pedir IP de novo</button></p>` : ''}
-                <label class="bc-nome-ap">Gateway padrão<input data-campo="gateway" value="${esc(a.gateway || '')}" placeholder="vazio = sem gateway" ${a.dhcp ? 'disabled' : ''}></label>` : ''}
+                <label class="bc-nome-ap">Gateway padrão<input data-campo="gateway" value="${esc(a.gateway || '')}" placeholder="vazio = sem gateway" ${a.dhcp ? 'disabled' : ''}></label>
+                <label class="bc-nome-ap">Servidor DNS<input data-campo="dns" value="${esc(a.dns || '')}" placeholder="ex.: 8.8.8.8 (vazio = sem DNS)" ${a.dhcp ? 'disabled' : ''}></label>` : ''}
             ${portas.map(linhaPorta).join('')}
-            ${a.tipo === 'servidor' ? painelDhcp(a) : ''}
+            ${a.tipo === 'servidor' ? painelDhcp(a) + painelDns(a) : ''}
             ${a.tipo === 'switch' ? `<p class="bc-nota">Switch não precisa de IP para encaminhar: ele aprende sozinho em que porta está cada MAC. Porta access = uma VLAN; trunk = várias, com etiqueta 802.1Q (para outro switch ou roteador).</p>` : ''}
+            ${t.roteia ? `<div class="bc-servico"><div class="bc-porta-cab"><b>NAT com sobrecarga (PAT)</b><label class="bc-liga"><input type="checkbox" data-nat="ativo" ${a.nat ? 'checked' : ''}> ${a.nat ? 'ligado' : 'desligado'}</label></div><p class="bc-nota">Quem entra por uma porta inside e sai por uma outside passa a usar o IP da porta outside. No Cisco: ip nat inside source list 1 interface g0/1 overload.</p></div>` : ''}
             ${t.roteia ? `<p class="bc-rot">Rotas estáticas</p>
                 ${(a.rotas || []).map((r, i) => `<p class="bc-rota">${esc(r.rede)}/${r.prefixo} via ${esc(r.proximo)} ${r.prefixo === 0 ? '<span class="bc-nota">(rota padrão)</span>' : ''} <button type="button" data-acao="tirar-rota" data-i="${i}" aria-label="Remover rota">✕</button></p>`).join('') || '<p class="bc-nota">Nenhuma. O roteador já conhece as redes ligadas às suas portas.</p>'}
                 <form class="bc-nova-rota"><input name="rede" placeholder="rede (10.0.0.0)"><input name="mascara" placeholder="máscara (/8)"><input name="proximo" placeholder="próximo salto"><button>+ rota</button></form>` : ''}
@@ -169,7 +172,7 @@ export function abrirBancada() {
         term.hidden = false;
         $('.bc-term-tit').textContent = `Terminal · ${a.nome}`;
         $('.bc-prompt').textContent = a.tipo === 'switch' || a.tipo === 'roteador' ? `${a.nome}#` : `C:\\>`;
-        if (!terminais[a.id]) terminais[a.id] = [a.tipo === 'switch' ? 'Comandos: show mac address-table, show vlan brief, clear' : a.tipo === 'roteador' ? 'Comandos: ping, show ip route, show ip interface brief, show arp, clear' : 'Comandos: ping, ipconfig, ipconfig /renew, arp -a, tracert, cls, help'];
+        if (!terminais[a.id]) terminais[a.id] = [a.tipo === 'switch' ? 'Comandos: show mac address-table, show vlan brief, clear' : a.tipo === 'roteador' ? 'Comandos: ping, show ip route, show ip interface brief, show ip nat translations, show arp, clear' : 'Comandos: ping, nslookup, ipconfig, ipconfig /renew, arp -a, tracert, cls, help'];
         desenharTerminal();
     }
     function painelDhcp(a) {
@@ -180,6 +183,13 @@ export function abrirBancada() {
             <form class="bc-novo-pool"><input name="inicio" placeholder="primeiro IP"><input name="fim" placeholder="último IP"><input name="mascara" placeholder="máscara"><input name="gateway" placeholder="gateway (opcional)"><input name="dns" placeholder="DNS (opcional)"><button>+ pool</button></form>
             <p class="bc-rot">Concessões (${cs.length})</p>
             ${cs.map(c => `<p class="bc-rota">${esc(c.ip)} → ${esc(c.nome)} <span class="bc-nota">${esc(c.mac)}</span></p>`).join('') || '<p class="bc-nota">Nenhum IP emprestado ainda.</p>'}</div>`;
+    }
+    function painelDns(a) {
+        const sv = a.servicoDns || { ativo: false, registros: {} };
+        const regs = Object.entries(sv.registros || {});
+        return `<div class="bc-servico bc-servico-dns"><div class="bc-porta-cab"><b>Serviço DNS</b><label class="bc-liga"><input type="checkbox" data-dnsserv="ativo" ${sv.ativo ? 'checked' : ''}> ${sv.ativo ? 'ligado' : 'desligado'}</label></div>
+            ${regs.map(([n, ip]) => `<p class="bc-rota">${esc(n)} → ${esc(ip)} <button type="button" data-acao="tirar-dns" data-nome="${esc(n)}" aria-label="Remover registro">✕</button></p>`).join('') || '<p class="bc-nota">Nenhum registro. Um registro A liga um nome a um IP.</p>'}
+            <form class="bc-novo-dns"><input name="nome" placeholder="nome (www.exemplo.com)"><input name="ip" placeholder="IP"><button>+ registro</button></form></div>`;
     }
     function pedirIp(a) {
         const r = M.obterIp(projeto.rede, est, a.id);
@@ -214,7 +224,23 @@ export function abrirBancada() {
         let eventos = null;
         const registro = { de: a.id, cmd: c, alvo: args[0] || '', ok: 0 };
         if (c === 'cls' || c === 'clear') { terminais[a.id] = []; desenharTerminal(); return; }
-        if (c === 'help' || c === '?') out.push('ping <ip> · ipconfig · ipconfig /renew · ipconfig /release · arp -a · tracert <ip> · cls');
+        if (c === 'help' || c === '?') out.push(a.tipo === 'roteador' ? 'ping <ip> · show ip route · show ip interface brief · show ip nat translations · show arp' : 'ping <ip ou nome> · nslookup <nome> · ipconfig · ipconfig /renew · ipconfig /release · arp -a · tracert <ip> · cls');
+        else if (c === 'nslookup' && args[0]) {
+            const r = M.nslookup(projeto.rede, est, a.id, args[0]); out.push(...r.linhas);
+            registro.cmd = 'nslookup'; registro.alvo = args[0].toLowerCase(); registro.ok = r.ok ? 1 : 0; eventos = r.eventos;
+        }
+        else if (c === 'ping' && args[0] && ipParaNumero(args[0]) === null && /[a-z]/i.test(args[0])) {
+            const rn = M.resolverNome(projeto.rede, est, a.id, args[0]);
+            registro.nome = args[0].toLowerCase();
+            if (!rn.ok) { out.push(`Ping request could not find host ${args[0]}. Please check the name and try again.`, { tipo: 'ruim', texto: `Por quê: ${rn.explicacao}.` }); eventos = rn.eventos; }
+            else {
+                const r = M.ping(projeto.rede, est, a.id, rn.ip);
+                registro.alvo = rn.ip; registro.ok = r.ok || 0;
+                out.push(`Pinging ${args[0]} [${rn.ip}] with 32 bytes of data:`, ...r.linhas.slice(1));
+                if (r.explicacao) out.push({ tipo: r.ok === 4 ? 'ok' : 'ruim', texto: `Por quê: o DNS (${rn.servidor}) respondeu ${rn.ip}. ${r.explicacao}` });
+                eventos = [...rn.eventos, ...((r.tentativas && r.tentativas[0] && r.tentativas[0].eventos) || [])];
+            }
+        }
         else if (c === 'ping' && args[0]) {
             const r = M.ping(projeto.rede, est, a.id, args[0]);
             registro.ok = r.ok || 0;
@@ -232,6 +258,7 @@ export function abrirBancada() {
         }
         else if (c === 'ipconfig') out.push(...M.ipconfig(projeto.rede, a.id));
         else if (c === 'arp' && resto === '-a' || c === 'show' && resto === 'arp') out.push(...M.arpA(est, projeto.rede, a.id));
+        else if (c === 'show' && /^ip nat/.test(resto)) { registro.cmd = 'show-nat'; out.push(...M.traducoesNat(est, projeto.rede, a.id)); }
         else if (c === 'show' && /^vlan/.test(resto)) { registro.cmd = 'show-vlan'; out.push(...M.vlanBrief(projeto.rede, a.id)); }
         else if (c === 'show' && /^mac/.test(resto)) { registro.cmd = 'show-mac'; out.push(...M.tabelaMac(est, projeto.rede, a.id)); }
         else if (c === 'show' && resto === 'ip route') {
@@ -266,15 +293,16 @@ export function abrirBancada() {
         box.innerHTML = `<div class="bc-sim-cab"><p class="bc-rot">Simulação · ${simulacao.i + 1} de ${ev.length}</p>
             <div><button type="button" data-sim="reiniciar">⏮</button><button type="button" data-sim="passo">Próximo ▶</button><button type="button" data-sim="tocar">${simulacao.rodando ? '⏸ Pausar' : '▶▶ Tocar'}</button></div></div>
             ${atual ? `<div class="bc-detalhe"><p><b>${esc(atual.quadro.resumo)}</b></p>
-                <p class="bc-nota">Camada 2 (Ethernet): de ${esc(atual.quadro.origemMac)} para ${esc(atual.quadro.destinoMac)}${atual.quadro.destinoMac === 'FF:FF:FF:FF:FF:FF' ? ' (broadcast: todos da mesma VLAN recebem)' : ''}</p>${atual.quadro.vlan ? `<p class="bc-nota"><span class="bc-tag">802.1Q</span> etiqueta VLAN ${atual.quadro.vlan}: neste cabo (trunk) o quadro leva a marca de qual VLAN ele é.</p>` : ''}${atual.perdido ? `<p class="bc-nota bc-ruim">Descartado: ${esc(atual.perdido)}.</p>` : ''}
+                <p class="bc-nota">Camada 2 (Ethernet): de ${esc(atual.quadro.origemMac)} para ${esc(atual.quadro.destinoMac)}${atual.quadro.destinoMac === 'FF:FF:FF:FF:FF:FF' ? ' (broadcast: todos da mesma VLAN recebem)' : ''}</p>${atual.quadro.vlan ? `<p class="bc-nota"><span class="bc-tag">802.1Q</span> etiqueta VLAN ${atual.quadro.vlan}: neste cabo (trunk) o quadro leva a marca de qual VLAN ele é.</p>` : ''}${atual.perdido ? `<p class="bc-nota bc-ruim">Descartado: ${esc(atual.perdido)}.</p>` : ''}${atual.quadro.nat ? `<p class="bc-nota"><span class="bc-tag bc-tag-nat">NAT</span> ${esc(atual.quadro.nat)}</p>` : ''}
                 ${atual.quadro.tipo === 'ARP' ? `<p class="bc-nota">ARP ${atual.quadro.op === 'pedido' ? 'pedido' : 'resposta'}: IP ${esc(atual.quadro.origemIp)} pergunta/responde sobre ${esc(atual.quadro.alvoIp)}</p>` : `<p class="bc-nota">Camada 3 (IP): de ${esc(atual.quadro.origemIp)} para ${esc(atual.quadro.destinoIp)} · TTL ${atual.quadro.ttl}</p>${atual.quadro.origemIp === '0.0.0.0' ? '<p class="bc-nota">Origem 0.0.0.0: o aparelho ainda não tem IP. Destino 255.255.255.255: broadcast, todos da rede local recebem.</p>' : ''}`}</div>` : ''}
-            <ol class="bc-eventos">${ev.map((e, i) => `<li class="${i === simulacao.i ? 'atual' : ''} ${e.quadro.tipo}" data-ev="${i}"><b>${e.quadro.tipo}${e.quadro.tipo === 'DHCP' && e.quadro.op ? ' ' + e.quadro.op : ''}</b>${e.quadro.vlan ? ` <span class="bc-tag">VLAN ${e.quadro.vlan}</span>` : ''} ${esc(nome(e.de))} → ${esc(nome(e.para))}${e.perdido ? ` <span class="bc-ruim">✕ ${esc(e.perdido)}</span>` : ''}</li>`).join('')}</ol>`;
+            <ol class="bc-eventos">${ev.map((e, i) => `<li class="${i === simulacao.i ? 'atual' : ''} ${e.quadro.tipo}" data-ev="${i}"><b>${e.quadro.tipo}${e.quadro.tipo === 'DHCP' && e.quadro.op ? ' ' + e.quadro.op : ''}</b>${e.quadro.vlan ? ` <span class="bc-tag">VLAN ${e.quadro.vlan}</span>` : ''}${e.quadro.nat ? ' <span class="bc-tag bc-tag-nat">NAT</span>' : ''} ${esc(nome(e.de))} → ${esc(nome(e.para))}${e.perdido ? ` <span class="bc-ruim">✕ ${esc(e.perdido)}</span>` : ''}</li>`).join('')}</ol>`;
+        const atualLi = box.querySelector('.bc-eventos li.atual'); if (atualLi) atualLi.scrollIntoView({ block: 'nearest' });
     }
     function animar(i, depois) {
         const e = simulacao.eventos[i]; const g = svg.querySelector('.bc-pacotes');
         const A = ap(e.de), B = ap(e.para); if (!A || !B || !g) { if (depois) depois(); return; }
         const a = centro(A), b = centro(B);
-        g.innerHTML = `<g class="bc-pacote ${e.quadro.tipo}"><rect x="-11" y="-8" width="22" height="16" rx="3"/><text y="4">${e.quadro.tipo === 'ARP' ? 'A' : e.quadro.tipo === 'DHCP' ? 'D' : 'I'}</text></g>`;
+        g.innerHTML = `<g class="bc-pacote ${e.quadro.tipo}"><rect x="-11" y="-8" width="22" height="16" rx="3"/><text y="4">${e.quadro.tipo === 'ARP' ? 'A' : e.quadro.tipo === 'DHCP' ? 'D' : e.quadro.tipo === 'DNS' ? 'N' : 'I'}</text></g>`;
         const p = g.firstChild; const t0 = performance.now(), dur = 650;
         const passo = (t) => {
             const k = Math.min(1, (t - t0) / dur), lim = e.perdido ? 0.5 : 1, kk = Math.min(k, lim);
@@ -291,7 +319,7 @@ export function abrirBancada() {
 
     function verEvento(i) {
         const e = simulacao.eventos[i]; if (!e || !missao) return;
-        missao.vistos.push({ tipo: e.quadro.tipo, op: e.quadro.op, alvoIp: e.quadro.alvoIp, ttl: e.quadro.ttl, vlan: e.quadro.vlan, perdido: e.perdido, de: (ap(e.de) || {}).nome, para: (ap(e.para) || {}).nome });
+        missao.vistos.push({ origemIp: e.quadro.origemIp, destinoIp: e.quadro.destinoIp, nat: !!e.quadro.nat, tipo: e.quadro.tipo, op: e.quadro.op, alvoIp: e.quadro.alvoIp, ttl: e.quadro.ttl, vlan: e.quadro.vlan, perdido: e.perdido, de: (ap(e.de) || {}).nome, para: (ap(e.para) || {}).nome });
         desenharMissao();
     }
 
@@ -342,7 +370,7 @@ export function abrirBancada() {
             <p class="bc-nota">Cada missão abre a sua própria bancada. Seu projeto atual fica guardado se você usou "Salvar".</p>
             ${MISSOES.map((m, i) => { const g = m.grupo !== grupo ? `<p class="bc-grupo">${esc((grupo = m.grupo))}</p>` : ''; const f = feitas[m.id];
                 return `${g}<button type="button" class="bc-missao-item" data-iniciar="${i}"><span>${f ? '✓' : '○'}</span><span><b>${esc(m.titulo)}</b><small>${m.tipo === 'chamado' ? 'Chamado de suporte: ache a causa e conserte' : m.tipo === 'montar' ? 'Monte do zero' : m.tipo === 'tutorial' ? 'Tutorial: aprenda a mexer na bancada' : 'Modo simulação'}</small></span></button>`; }).join('')}
-            <p class="bc-nota">Em breve: fase 3 do Laboratório (DHCP, VLAN, NAT e DNS).</p>
+            <p class="bc-nota">Em breve: mais projetos (ACL, segurança e serviços).</p>
             <button type="button" data-acao="fechar-dialogo">Fechar</button></div>`;
         d.hidden = false;
     }
@@ -452,6 +480,7 @@ export function abrirBancada() {
             desenharTudo(); desenharTerminal(); return;
         }
         if (ac === 'renovar') { const a = ap(sel); M.limparTabelas(est); pedirIp(a); desenharTudo(); return; }
+        if (ac === 'tirar-dns') { const a = ap(sel); delete a.servicoDns.registros[b.dataset.nome]; desenharTudo(); return; }
         if (ac === 'tirar-sub') { const a = ap(sel); const pf = M.porta(a, b.closest('[data-porta]').dataset.porta); pf.subs.splice(Number(b.dataset.i), 1); M.limparTabelas(est); desenharTudo(); return; }
         if (ac === 'tirar-pool') { const a = ap(sel); a.servicoDhcp.pools.splice(Number(b.dataset.i), 1); desenharTudo(); return; }
         if (ac === 'tirar-rota') { const a = ap(sel); a.rotas.splice(Number(b.dataset.i), 1); M.limparTabelas(est); desenharTudo(); return; }
@@ -461,6 +490,8 @@ export function abrirBancada() {
     // Configuração: aplica ao sair do campo (e no Enter)
     $('.bc-config').addEventListener('change', (ev) => {
         const inp = ev.target; const a = ap(sel);
+        if (a && inp.dataset.nat === 'ativo') { a.nat = inp.checked; M.limparTabelas(est); desenharTudo(); return; }
+        if (a && inp.dataset.dnsserv === 'ativo') { a.servicoDns = a.servicoDns || { ativo: false, registros: {} }; a.servicoDns.ativo = inp.checked; desenharTudo(); return; }
         if (a && inp.dataset.dhcp === 'ativo') { a.servicoDhcp = a.servicoDhcp || { ativo: false, pools: [], concessoes: {} }; a.servicoDhcp.ativo = inp.checked; desenharTudo(); return; }
         if (!a || !inp.dataset.campo) return;
         const pDiv = inp.closest('[data-porta]'); const p = pDiv ? M.porta(a, pDiv.dataset.porta) : null;
@@ -471,6 +502,8 @@ export function abrirBancada() {
         if (p && inp.dataset.campo === 'mascara') { const pre = lerMascara(v); if (pre === null) { status(`Máscara "${v}" inválida. Use 255.255.255.0 ou /24 (os 1 precisam vir todos antes dos 0).`); return; } p.prefixo = pre; }
         if (p && inp.dataset.campo === 'ligada') p.ligada = inp.checked;
         if (p && inp.dataset.campo === 'modo') { p.modo = inp.value; }
+        if (p && inp.dataset.campo === 'nat') { p.nat = inp.value || undefined; }
+        if (inp.dataset.campo === 'dns') { if (v && ipParaNumero(v) === null) { status(`DNS "${v}" não é um IPv4 válido.`); return; } a.dns = v; }
         if (p && inp.dataset.campo === 'vlan') { const v = Number(v0()); if (!(v >= 1 && v <= 4094)) { status('VLAN vai de 1 a 4094.'); return; } p.vlan = v; }
         if (p && inp.dataset.campo === 'permitidas') { if (v && !/^(all|todas|[\d\s,]+)$/i.test(v)) { status('VLANs permitidas: deixe vazio (todas) ou liste os números, ex.: 10,20.'); return; } p.permitidas = v; }
         if (p && inp.dataset.campo === 'helper') { if (v && ipParaNumero(v) === null) { status(`"${v}" não é um IPv4 válido.`); return; } p.helper = v; }
@@ -485,6 +518,11 @@ export function abrirBancada() {
             if ((gw && ipParaNumero(gw) === null) || (dns && ipParaNumero(dns) === null)) { status('Pool: gateway e DNS, se preenchidos, precisam ser IPv4 válidos.'); return; }
             a.servicoDhcp = a.servicoDhcp || { ativo: true, pools: [], concessoes: {} };
             a.servicoDhcp.pools.push({ inicio: ini, fim, prefixo: pre, gateway: gw, dns }); status(''); desenharTudo(); return;
+        }
+        if (f.classList.contains('bc-novo-dns')) {
+            const nome = f.nome.value.trim().toLowerCase().replace(/\.$/, ''), ip = f.ip.value.trim();
+            if (!/^[a-z0-9-]+(\.[a-z0-9-]+)+$/.test(nome) || ipParaNumero(ip) === null) { status('Registro DNS: um nome como www.exemplo.com e um IPv4.'); return; }
+            a.servicoDns = a.servicoDns || { ativo: true, registros: {} }; a.servicoDns.registros[nome] = ip; status(''); desenharTudo(); return;
         }
         if (f.classList.contains('bc-nova-sub')) {
             const pf = M.porta(a, f.closest('[data-porta]').dataset.porta);
