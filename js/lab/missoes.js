@@ -38,6 +38,35 @@ export function redeDoisSetores(comRoteador = true, ajuste) {
     return r;
 }
 
+
+// Projeto 3: Matriz (192.168.10.0/24) à esquerda, Filial (192.168.30.0/24) à direita,
+// roteadores ligados por um link 10.0.0.0/30. opcoes: { link, rotas } controlam o que já vem pronto.
+export function redeDuasFiliais(opcoes = {}, ajuste) {
+    const { link = true, rotas = true } = opcoes;
+    const r = M.novaRede();
+    const sm = M.adicionarAparelho(r, 'switch', 95, 200); sm.nome = 'SW-Matriz';
+    const sf = M.adicionarAparelho(r, 'switch', 400, 200); sf.nome = 'SW-Filial';
+    const rm = M.adicionarAparelho(r, 'roteador', 150, 350); rm.nome = 'R-Matriz';
+    const rf = M.adicionarAparelho(r, 'roteador', 350, 350); rf.nome = 'R-Filial';
+    const host = (tipo, x, y, nome, ip, sw, porta, gw) => { const h = M.adicionarAparelho(r, tipo, x, y); h.nome = nome; h.portas[0].ip = ip; h.gateway = gw; M.ligar(r, h.id, 'Fa0', sw.id, porta); return h; };
+    host('pc', 10, 50, 'M1', '192.168.10.11', sm, 'Fa0/1', '192.168.10.1');
+    host('servidor', 170, 50, 'Servidor', '192.168.10.10', sm, 'Fa0/2', '192.168.10.1');
+    host('pc', 330, 50, 'F1', '192.168.30.11', sf, 'Fa0/1', '192.168.30.1');
+    host('pc', 480, 50, 'F2', '192.168.30.12', sf, 'Fa0/2', '192.168.30.1');
+    rm.portas[0].ip = '192.168.10.1'; rf.portas[0].ip = '192.168.30.1';
+    M.ligar(r, sm.id, 'Fa0/8', rm.id, 'Gi0/0'); M.ligar(r, sf.id, 'Fa0/8', rf.id, 'Gi0/0');
+    if (link) {
+        rm.portas[1].ip = '10.0.0.1'; rm.portas[1].prefixo = 30; rf.portas[1].ip = '10.0.0.2'; rf.portas[1].prefixo = 30;
+        M.ligar(r, rm.id, 'Gi0/1', rf.id, 'Gi0/1');
+    }
+    if (rotas) {
+        rm.rotas = [{ rede: '192.168.30.0', prefixo: 24, proximo: '10.0.0.2' }];
+        rf.rotas = [{ rede: '192.168.10.0', prefixo: 24, proximo: '10.0.0.1' }];
+    }
+    if (ajuste) ajuste(r, nome => r.aparelhos.find(a => a.nome === nome));
+    return r;
+}
+
 // ---------- verificações ----------
 const hosts = r => r.aparelhos.filter(a => M.TIPOS[a.tipo].host);
 const ipDe = a => (a.portas[0] || {}).ip || '';
@@ -51,6 +80,18 @@ export function todosConversam(r) {
     const hs = hosts(r); if (hs.length < 2) return false;
     for (let i = 0; i < hs.length; i++) for (let j = i + 1; j < hs.length; j++) if (!conversam(r, hs[i], hs[j]) || !conversam(r, hs[j], hs[i])) return false;
     return true;
+}
+function linkEntreRoteadores(r) {
+    for (const c of r.cabos) {
+        const A = M.aparelho(r, c.a.id), B = M.aparelho(r, c.b.id);
+        if (A && B && A.tipo === 'roteador' && B.tipo === 'roteador') return [M.porta(A, c.a.porta), M.porta(B, c.b.porta)];
+    }
+    return null;
+}
+function temRotaUtil(r, nomeRoteador, destino) {
+    const ro = r.aparelhos.find(a => a.nome === nomeRoteador); if (!ro) return false;
+    const rt = M.rotaPara(ro, destino);
+    return !rt.erro && rt.tipo !== 'conectada';
 }
 const pingDe = (ctx, filtro) => ctx.comandos.some(c => c.cmd === 'ping' && filtro(c));
 const nomeDoIp = (r, ip) => (hosts(r).find(h => ipDe(h) === ip) || {}).nome;
@@ -214,6 +255,78 @@ export const MISSOES = [
         dicas: ['Avance com "Próximo ▶" e leia o quadro de cada passo: o alvo do ARP e o TTL.', 'São dois ARP: um no Administrativo (Adm1 → gateway) e outro no Financeiro (R1 → Servidor).'],
         pergunta: { texto: 'Por que o TTL chegou 127 e não 128?', opcoes: ['Cada roteador no caminho diminui o TTL em 1; aqui houve um roteador', 'O switch diminui o TTL', 'O Servidor diminui antes de ler'], certa: 0,
             explicacao: 'TTL (time to live) cai 1 a cada roteador. Serve para um pacote não rodar para sempre num laço: chegou a 0, é descartado. Switch não mexe no TTL: ele nem olha o IP. É por isso que o tracert consegue listar os saltos.' }
+    },
+    {
+        id: 'p3-ligar', grupo: 'Projeto 3 · Matriz e Filial (rotas estáticas)', titulo: 'Ligar a Matriz à Filial', tipo: 'montar',
+        historia: 'A empresa abriu uma filial em outra cidade. Cada lado tem sua rede e seu roteador (Matriz 192.168.10.0/24, Filial 192.168.30.0/24). Ligue os dois roteadores por um link 10.0.0.0/30 e ensine a cada um o caminho para a rede do outro.',
+        inicio: () => redeDuasFiliais({ link: false, rotas: false }),
+        objetivos: [
+            { texto: 'Ligue um cabo entre os dois roteadores', ok: ({ rede }) => !!linkEntreRoteadores(rede) },
+            { texto: 'Dê às duas pontas do link IPs da mesma rede /30', ok: ({ rede }) => { const l = linkEntreRoteadores(rede); if (!l) return false; const [pa, pb] = l; if (!pa.ip || !pb.ip || pa.ip === pb.ip || pa.prefixo !== 30 || pb.prefixo !== 30) return false; const ca = calcular(pa.ip, 30), cb = calcular(pb.ip, 30); return ca.rede === cb.rede && !ca.eRede && !ca.eBroadcast && !cb.eRede && !cb.eBroadcast; } },
+            { texto: 'Prove que os roteadores se enxergam: ping de um roteador para o outro', ok: ({ rede, comandos }) => comandos.some(c => c.cmd === 'ping' && c.ok > 0 && (M.aparelho(rede, c.de) || {}).tipo === 'roteador' && /^10\./.test(c.alvo)) },
+            { texto: 'R-Matriz: rota para 192.168.30.0/24', ok: ({ rede }) => temRotaUtil(rede, 'R-Matriz', '192.168.30.11') },
+            { texto: 'R-Filial: rota para 192.168.10.0/24', ok: ({ rede }) => temRotaUtil(rede, 'R-Filial', '192.168.10.11') },
+            { texto: 'Todos conversam com todos, nas duas cidades', ok: ({ rede }) => todosConversam(rede) },
+            { texto: 'Prove no terminal: tracert do M1 para o F1 (3 saltos)', ok: ({ rede, comandos }) => { const a = rede.aparelhos.find(x => x.nome === 'M1'); return !!a && comandos.some(c => c.cmd === 'tracert' && c.de === a.id && c.alvo === '192.168.30.11'); } }
+        ],
+        dicas: ['🔌 Cabo: R-Matriz Gi0/1 → R-Filial Gi0/1 (o app escolhe cabo cruzado: mesmo tipo de aparelho nas duas pontas). Depois, no R-Matriz, Gi0/1 = 10.0.0.1 /30; no R-Filial, Gi0/1 = 10.0.0.2 /30.',
+            'Teste o link antes das rotas: selecione o R-Matriz e rode ping 10.0.0.2. Se falhar aqui, rota nenhuma vai resolver.',
+            'Rotas: no R-Matriz, rede 192.168.30.0, máscara /24, próximo salto 10.0.0.2. No R-Filial, rede 192.168.10.0, /24, próximo salto 10.0.0.1. (No Cisco: ip route 192.168.30.0 255.255.255.0 10.0.0.2)'],
+        pergunta: { texto: 'Por que usar máscara /30 no link entre os roteadores?', opcoes: ['Porque /30 tem só 2 IPs utilizáveis: exatamente um para cada roteador, sem desperdício', 'Porque roteadores só aceitam /30', 'Porque /30 deixa o link mais rápido'], certa: 0,
+            explicacao: '/30 = 4 endereços: rede (10.0.0.0), dois utilizáveis (.1 e .2) e broadcast (.3). Um link ponto a ponto só tem duas pontas, então /30 é o tamanho certo. Cai muito em prova junto com a conta de hosts: 2^(32−30) − 2 = 2.' }
+    },
+    {
+        id: 'p3-chamado-volta', grupo: 'Projeto 3 · Matriz e Filial (rotas estáticas)', titulo: 'Chamado: a rota está lá, mas não funciona', tipo: 'chamado',
+        historia: 'O técnico configurou a rota para a Filial no R-Matriz e jura que está certa (e está). Mesmo assim, o M1 não alcança o F1, e o pessoal da Filial também não alcança a Matriz. O link entre os roteadores responde ping.',
+        inicio: () => redeDuasFiliais({}, (r, n) => { n('R-Filial').rotas = []; }),
+        objetivos: [
+            { texto: 'Investigue: ping do M1 para o F1 e show ip route nos roteadores', ok: ({ rede, comandos }) => comandos.some(c => c.cmd === 'show' && (M.aparelho(rede, c.de) || {}).tipo === 'roteador') },
+            { texto: 'Todos voltam a conversar com todos', ok: ({ rede }) => todosConversam(rede) }
+        ],
+        dicas: ['Leia o "Por quê:" do ping do M1. O pedido chegou ao F1?', 'Compare o show ip route dos dois roteadores. Cada um precisa conhecer a rede do OUTRO lado.'],
+        pergunta: { texto: 'Qual era a causa?', opcoes: ['Faltava a rota de volta no R-Filial (para 192.168.10.0/24)', 'A rota do R-Matriz estava errada', 'O link /30 estava com máscara errada'], certa: 0,
+            explicacao: 'Roteamento é de mão dupla: a ida usa a tabela do R-Matriz, a volta usa a do R-Filial. Sem a rota de volta, a resposta morre no R-Filial e o M1 só vê "Request timed out". Sintoma clássico: o pedido chega, a resposta não volta.' }
+    },
+    {
+        id: 'p3-chamado-digitacao', grupo: 'Projeto 3 · Matriz e Filial (rotas estáticas)', titulo: 'Chamado: depois da alteração, a Filial sumiu', tipo: 'chamado',
+        historia: 'Ontem à noite alguém "revisou" as rotas do R-Matriz. Hoje a Matriz não alcança a Filial, e o ping mostra uma mensagem diferente de antes. O R-Filial não foi mexido.',
+        inicio: () => redeDuasFiliais({}, (r, n) => { n('R-Matriz').rotas = [{ rede: '192.168.3.0', prefixo: 24, proximo: '10.0.0.2' }]; }),
+        objetivos: [
+            { texto: 'Investigue: show ip route no R-Matriz', ok: ({ rede, comandos }) => { const ro = rede.aparelhos.find(a => a.nome === 'R-Matriz'); return !!ro && comandos.some(c => c.de === ro.id && c.cmd === 'show'); } },
+            { texto: 'Todos voltam a conversar com todos', ok: ({ rede }) => todosConversam(rede) },
+            { texto: 'Prove no terminal: ping do M1 para o F2, com resposta', ok: ({ rede, comandos }) => { const a = rede.aparelhos.find(x => x.nome === 'M1'); return !!a && comandos.some(c => c.cmd === 'ping' && c.de === a.id && c.alvo === '192.168.30.12' && c.ok > 0); } }
+        ],
+        dicas: ['"Destination host unreachable" vindo de 192.168.10.1 quer dizer: o próprio R-Matriz não sabe chegar lá.', 'Leia a rota S com calma, número por número, e compare com a rede da Filial. Remova a errada (✕) e crie a certa.'],
+        pergunta: { texto: 'Por que a mensagem foi "Destination host unreachable" e não "Request timed out"?', opcoes: ['Porque o R-Matriz, na ida, não achou rota e avisou o M1 de volta', 'Porque o F1 estava desligado', 'Porque a máscara do M1 estava errada'], certa: 0,
+            explicacao: 'O roteador compara o destino (192.168.30.x) com cada rota. 192.168.3.0/24 não casa, e não há rota padrão: ele descarta e avisa a origem ("unreachable"). Regra prática: unreachable = algum roteador na ida não tem rota; timed out = o pacote (ou a resposta) sumiu sem aviso.' }
+    },
+    {
+        id: 'p3-rota-padrao', grupo: 'Projeto 3 · Matriz e Filial (rotas estáticas)', titulo: 'Simplificar a Filial com rota padrão', tipo: 'montar',
+        historia: 'A Filial só tem uma saída: o link para a Matriz. Em vez de uma rota para cada rede da empresa, deixe no R-Filial apenas uma rota padrão. Tudo precisa continuar funcionando.',
+        inicio: () => redeDuasFiliais(),
+        objetivos: [
+            { texto: 'R-Filial com rota padrão 0.0.0.0/0 apontando para o R-Matriz', ok: ({ rede }) => { const ro = rede.aparelhos.find(a => a.nome === 'R-Filial'); return !!ro && (ro.rotas || []).some(r => r.prefixo === 0 && r.proximo === '10.0.0.1'); } },
+            { texto: 'R-Filial sem nenhuma outra rota estática', ok: ({ rede }) => { const ro = rede.aparelhos.find(a => a.nome === 'R-Filial'); return !!ro && (ro.rotas || []).length > 0 && ro.rotas.every(r => r.prefixo === 0); } },
+            { texto: 'Todos continuam conversando com todos', ok: ({ rede }) => todosConversam(rede) },
+            { texto: 'Confira no R-Filial: show ip route (procure o S*)', ok: ({ rede, comandos }) => { const ro = rede.aparelhos.find(a => a.nome === 'R-Filial'); return !!ro && comandos.some(c => c.de === ro.id && c.cmd === 'show' && c.alvo === 'ip'); } }
+        ],
+        dicas: ['Selecione o R-Filial. Em "Rotas estáticas", crie: rede 0.0.0.0, máscara /0, próximo salto 10.0.0.1. (No Cisco: ip route 0.0.0.0 0.0.0.0 10.0.0.1)', 'Depois remova (✕) a rota para 192.168.10.0/24 e teste de novo.'],
+        pergunta: { texto: 'Quando a rota padrão é a melhor escolha?', opcoes: ['Quando a rede tem uma única saída (rede "stub"): tudo que não é local vai pelo mesmo caminho', 'Sempre, em todos os roteadores, porque é mais rápida', 'Só quando não há switch'], certa: 0,
+            explicacao: '0.0.0.0/0 casa com qualquer destino, mas é a menos específica: só é usada se nenhuma outra rota servir. Numa filial com uma única saída, uma linha resolve tudo. No Cisco ela aparece como S* e é o "gateway of last resort".' }
+    },
+    {
+        id: 'p3-por-dentro', grupo: 'Projeto 3 · Matriz e Filial (rotas estáticas)', titulo: 'Ver por dentro: dois roteadores no caminho', tipo: 'simulacao',
+        historia: 'Acompanhe um ping da Matriz até a Filial. Repare quantas vezes aparece ARP (um em cada trecho) e o que acontece com o TTL a cada roteador.',
+        inicio: () => redeDuasFiliais(),
+        objetivos: [
+            { texto: 'Troque o modo para Simulação', ok: ({ sim }) => sim.modo === 'simulacao' },
+            { texto: 'No M1, rode: ping 192.168.30.11', ok: ({ rede, comandos }) => { const a = rede.aparelhos.find(x => x.nome === 'M1'); return !!a && comandos.some(c => c.cmd === 'ping' && c.de === a.id && c.alvo === '192.168.30.11'); } },
+            { texto: 'Veja o ARP no link: R-Matriz perguntando por 10.0.0.2', ok: ({ sim }) => sim.vistos.some(e => e.tipo === 'ARP' && e.op === 'pedido' && e.alvoIp === '10.0.0.2') },
+            { texto: 'Veja o ICMP chegar ao F1 com TTL 126', ok: ({ sim }) => sim.vistos.some(e => e.tipo === 'ICMP' && e.para === 'F1' && e.ttl === 126) }
+        ],
+        dicas: ['Use "Próximo ▶" e leia a linha de camada 3 de cada passo: o TTL vai caindo.', 'São três trechos de rede (Matriz, link, Filial), e cada trecho tem seu próprio ARP: o MAC muda a cada salto, o IP de origem e destino não.'],
+        pergunta: { texto: 'Ao atravessar os dois roteadores, o que muda no pacote?', opcoes: ['Os MACs mudam a cada trecho e o TTL cai 1 por roteador; os IPs de origem e destino continuam os mesmos', 'Os IPs mudam a cada roteador e os MACs continuam', 'Nada muda: o pacote é igual do início ao fim'], certa: 0,
+            explicacao: 'IP = endereço fim a fim (quem mandou e quem vai receber). MAC = endereço do trecho atual (de quem para quem neste cabo). Cada roteador monta um quadro novo com MACs novos e diminui o TTL: 128 → 127 → 126.' }
     }
 ];
 
