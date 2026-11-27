@@ -103,6 +103,29 @@ export function redeDhcpSetores(opcoes = {}, ajuste) {
     return r;
 }
 
+
+// Projeto 5 (VLAN): um switch só, Administrativo (VLAN 10, 192.168.10.0/24) e Financeiro (VLAN 20, 192.168.20.0/24).
+// opcoes: { vlans, roteador, trunk, subs } — o que já vem pronto.
+export function redeVlan(opcoes = {}, ajuste) {
+    const { vlans = true, roteador = true, trunk = true, subs = true } = opcoes;
+    const r = M.novaRede();
+    const sw = M.adicionarAparelho(r, 'switch', 290, 230); sw.nome = 'SW-Empresa';
+    const host = (x, y, nome, ip, porta, gw) => { const h = M.adicionarAparelho(r, 'pc', x, y); h.nome = nome; h.portas[0].ip = ip; h.gateway = gw; M.ligar(r, h.id, 'Fa0', sw.id, porta); return h; };
+    host(60, 60, 'Adm1', '192.168.10.11', 'Fa0/1', '192.168.10.1');
+    host(60, 230, 'Adm2', '192.168.10.12', 'Fa0/2', '192.168.10.1');
+    host(500, 60, 'Fin1', '192.168.20.11', 'Fa0/3', '192.168.20.1');
+    host(500, 230, 'Fin2', '192.168.20.12', 'Fa0/4', '192.168.20.1');
+    if (vlans) { [10, 10, 20, 20].forEach((v, i) => { sw.portas[i].vlan = v; }); }
+    if (roteador) {
+        const ro = M.adicionarAparelho(r, 'roteador', 290, 400); ro.nome = 'R1';
+        M.ligar(r, ro.id, 'Gi0/0', sw.id, 'Fa0/8');
+        if (trunk) sw.portas[7].modo = 'trunk';
+        if (subs) ro.portas[0].subs = [{ nome: 'Gi0/0.10', vlan: 10, ip: '192.168.10.1', prefixo: 24 }, { nome: 'Gi0/0.20', vlan: 20, ip: '192.168.20.1', prefixo: 24 }];
+    }
+    if (ajuste) ajuste(r, nome => r.aparelhos.find(a => a.nome === nome));
+    return r;
+}
+
 // ---------- verificações ----------
 const hosts = r => r.aparelhos.filter(a => M.TIPOS[a.tipo].host);
 const ipDe = a => (a.portas[0] || {}).ip || '';
@@ -132,6 +155,9 @@ function temRotaUtil(r, nomeRoteador, destino) {
 const servidorDhcp = r => r.aparelhos.find(a => a.servicoDhcp);
 const noPool = (r, ip) => { const sv = servidorDhcp(r); if (!sv || !ip) return false; const n = ipParaNumero(ip); return (sv.servicoDhcp.pools || []).some(pl => n >= ipParaNumero(pl.inicio) && n <= ipParaNumero(pl.fim)); };
 const pegouDhcp = (r, nome) => { const h = r.aparelhos.find(a => a.nome === nome); return !!h && !!h.dhcp && noPool(r, ipDe(h)) && !/^169\.254\./.test(ipDe(h)); };
+const portaSw = (r, nome) => { const sw = r.aparelhos.find(a => a.tipo === 'switch'); return sw ? M.porta(sw, nome) : null; };
+const vlanDaPorta = (r, nome) => { const p = portaSw(r, nome); return p && p.modo !== 'trunk' ? (Number(p.vlan) || 1) : null; };
+const conversa = (r, de, para) => { const a = r.aparelhos.find(x => x.nome === de), b = r.aparelhos.find(x => x.nome === para); return !!a && !!b && conversam(r, a, b); };
 const pingDe = (ctx, filtro) => ctx.comandos.some(c => c.cmd === 'ping' && filtro(c));
 const nomeDoIp = (r, ip) => (hosts(r).find(h => ipDe(h) === ip) || {}).nome;
 
@@ -450,6 +476,87 @@ export const MISSOES = [
         dicas: ['Use "Próximo ▶". Repare na linha de camada 3: origem 0.0.0.0 e destino 255.255.255.255 no Discover.', 'O switch inunda o Discover e o Request (broadcast) para todas as portas. Offer e Ack vão direto ao PC1.'],
         pergunta: { texto: 'Qual é a ordem das mensagens do DHCP?', opcoes: ['Discover → Offer → Request → Ack', 'Request → Offer → Discover → Ack', 'Offer → Discover → Ack → Request'], certa: 0,
             explicacao: 'DORA: o cliente Descobre (Discover), o servidor Oferece (Offer), o cliente Requisita o que foi oferecido (Request) e o servidor Confirma (Ack). Discover e Request saem em broadcast porque o cliente ainda não tem IP.' }
+    },
+    {
+        id: 'p5-separar', grupo: 'Projeto 5 · VLAN (setores no mesmo switch)', titulo: 'Separar os setores com VLANs', tipo: 'montar',
+        historia: 'A empresa comprou um switch só para os dois setores. Hoje todo broadcast do Administrativo chega aos PCs do Financeiro, e vice-versa. Crie a VLAN 10 (Administrativo, portas Fa0/1 e Fa0/2) e a VLAN 20 (Financeiro, Fa0/3 e Fa0/4).',
+        inicio: () => redeVlan({ vlans: false, roteador: false }),
+        objetivos: [
+            { texto: 'Antes: no modo Simulação, veja o ARP do Adm1 chegar ao Fin1 (mesmo domínio de broadcast)', ok: ({ sim }) => sim.vistos.some(e => e.tipo === 'ARP' && e.op === 'pedido' && e.para === 'Fin1') },
+            { texto: 'Fa0/1 e Fa0/2 na VLAN 10', ok: ({ rede }) => vlanDaPorta(rede, 'Fa0/1') === 10 && vlanDaPorta(rede, 'Fa0/2') === 10 },
+            { texto: 'Fa0/3 e Fa0/4 na VLAN 20', ok: ({ rede }) => vlanDaPorta(rede, 'Fa0/3') === 20 && vlanDaPorta(rede, 'Fa0/4') === 20 },
+            { texto: 'Cada setor continua falando internamente (Adm1↔Adm2, Fin1↔Fin2)', ok: ({ rede }) => conversa(rede, 'Adm1', 'Adm2') && conversa(rede, 'Fin1', 'Fin2') },
+            { texto: 'Confira no switch: show vlan brief', ok: ({ comandos }) => comandos.some(c => c.cmd === 'show-vlan') }
+        ],
+        dicas: ['Primeiro observe o problema: troque para Simulação, rode no Adm1 ping 192.168.10.12 e avance. Repare que o ARP (broadcast) chega até o Fin1 e o Fin2.', 'Selecione o SW-Empresa. Em Fa0/1 e Fa0/2, VLAN = 10; em Fa0/3 e Fa0/4, VLAN = 20 (aperte Tab). No Cisco: interface fa0/1 → switchport mode access → switchport access vlan 10.', 'Depois, no terminal do switch: show vlan brief.'],
+        pergunta: { texto: 'O que a VLAN fez nessa rede?', opcoes: ['Dividiu um switch em dois domínios de broadcast: o broadcast de um setor não chega mais ao outro', 'Deixou a rede mais rápida trocando os cabos', 'Deu IP automático para cada setor'], certa: 0,
+            explicacao: 'VLAN = switch "partido" em vários switches lógicos. Cada VLAN é um domínio de broadcast separado: ARP e DHCP de um setor ficam no setor. Ganhos: segurança, menos broadcast, organização. Custo: para um setor falar com o outro, agora é preciso um roteador (camada 3).' }
+    },
+    {
+        id: 'p5-roas', grupo: 'Projeto 5 · VLAN (setores no mesmo switch)', titulo: 'Rotear entre as VLANs (router-on-a-stick)', tipo: 'montar',
+        historia: 'Com as VLANs, os setores ficaram isolados. Mas o Administrativo precisa acessar o Financeiro. Use um roteador com UM cabo só até o switch: o trunk leva as duas VLANs, e o roteador tem uma subinterface para cada uma.',
+        inicio: () => redeVlan({ trunk: false, subs: false }),
+        objetivos: [
+            { texto: 'No switch, a porta do roteador (Fa0/8) em modo trunk', ok: ({ rede }) => { const p = portaSw(rede, 'Fa0/8'); return !!p && p.modo === 'trunk'; } },
+            { texto: 'No R1: subinterface da VLAN 10 com 192.168.10.1/24', ok: ({ rede }) => { const ro = rede.aparelhos.find(a => a.nome === 'R1'); return !!ro && M.interfaces(ro).some(x => Number(x.vlan) === 10 && x.ip === '192.168.10.1' && x.prefixo === 24); } },
+            { texto: 'No R1: subinterface da VLAN 20 com 192.168.20.1/24', ok: ({ rede }) => { const ro = rede.aparelhos.find(a => a.nome === 'R1'); return !!ro && M.interfaces(ro).some(x => Number(x.vlan) === 20 && x.ip === '192.168.20.1' && x.prefixo === 24); } },
+            { texto: 'Todos conversam com todos', ok: ({ rede }) => todosConversam(rede) },
+            { texto: 'Prove no terminal: tracert do Adm1 para o Fin1', ok: ({ rede, comandos }) => { const a = rede.aparelhos.find(x => x.nome === 'Adm1'); return !!a && comandos.some(c => c.cmd === 'tracert' && c.de === a.id && c.alvo === '192.168.20.11'); } }
+        ],
+        dicas: ['Selecione o SW-Empresa e mude o Modo da Fa0/8 para trunk. No Cisco: interface fa0/8 → switchport mode trunk.', 'Selecione o R1. Na porta Gi0/0, crie as subinterfaces: VLAN 10, IP 192.168.10.1, /24; depois VLAN 20, IP 192.168.20.1, /24. No Cisco: interface g0/0.10 → encapsulation dot1Q 10 → ip address 192.168.10.1 255.255.255.0.', 'O IP de cada subinterface é exatamente o gateway que os PCs daquele setor já usam.'],
+        pergunta: { texto: 'Por que um cabo só basta para o roteador atender as duas VLANs?', opcoes: ['Porque no trunk cada quadro leva a etiqueta 802.1Q da sua VLAN, e o roteador entrega cada etiqueta à subinterface certa', 'Porque o roteador junta as duas VLANs numa só', 'Porque o switch converte a VLAN 20 em VLAN 10'], certa: 0,
+            explicacao: 'Trunk = cabo que transporta várias VLANs; o 802.1Q põe no quadro a marca da VLAN. O roteador tem uma subinterface por VLAN (Gi0/0.10, Gi0/0.20), cada uma com o gateway daquele setor. Por isso o nome "router-on-a-stick": roteador num "palito", um cabo só.' }
+    },
+    {
+        id: 'p5-chamado-porta', grupo: 'Projeto 5 · VLAN (setores no mesmo switch)', titulo: 'Chamado: o Fin2 ficou ilhado', tipo: 'chamado',
+        historia: 'Depois de trocar o Fin2 de mesa, ele não fala com ninguém: nem com o Fin1, nem com o gateway. O IP e o gateway do Fin2 estão certos e o cabo está verde.',
+        inicio: () => redeVlan({}, (r) => { const sw = r.aparelhos.find(a => a.tipo === 'switch'); M.porta(sw, 'Fa0/4').vlan = 10; }),
+        objetivos: [
+            { texto: 'Investigue: show vlan brief no switch', ok: ({ comandos }) => comandos.some(c => c.cmd === 'show-vlan') },
+            { texto: 'Todos voltam a conversar com todos', ok: ({ rede }) => todosConversam(rede) }
+        ],
+        dicas: ['O IP diz de que rede o PC acha que é. Mas quem decide em que VLAN ele está é a porta do switch.', 'No show vlan brief, procure a Fa0/4. Ela está na VLAN dos colegas dele?'],
+        pergunta: { texto: 'Qual era a causa?', opcoes: ['A porta Fa0/4 estava na VLAN 10: o Fin2 (rede .20) ficou no domínio de broadcast do Administrativo', 'O Fin2 estava com máscara errada', 'O trunk do roteador estava desligado'], certa: 0,
+            explicacao: 'VLAN é configuração da porta do switch, não do PC. Na VLAN 10, o ARP do Fin2 só chega ao pessoal do Administrativo, que não tem os IPs .20. Ninguém responde, e ele fica ilhado. Na prova: "PC não fala com ninguém, IP certo, cabo verde" → confira a VLAN da porta.' }
+    },
+    {
+        id: 'p5-chamado-trunk', grupo: 'Projeto 5 · VLAN (setores no mesmo switch)', titulo: 'Chamado: ninguém sai do próprio setor', tipo: 'chamado',
+        historia: 'Depois de uma "padronização" no switch, cada setor continua falando internamente, mas o Administrativo não alcança o Financeiro e vice-versa. O roteador não foi mexido.',
+        inicio: () => redeVlan({}, (r) => { const sw = r.aparelhos.find(a => a.tipo === 'switch'); const p = M.porta(sw, 'Fa0/8'); p.modo = 'access'; p.vlan = 10; }),
+        objetivos: [
+            { texto: 'Investigue: show vlan brief no switch e show ip interface brief no R1', ok: ({ rede, comandos }) => comandos.some(c => c.cmd === 'show-vlan') && comandos.some(c => c.cmd === 'show' && (M.aparelho(rede, c.de) || {}).tipo === 'roteador') },
+            { texto: 'Todos voltam a conversar com todos', ok: ({ rede }) => todosConversam(rede) }
+        ],
+        dicas: ['O R1 tem as subinterfaces .10 e .20. Elas só funcionam se os quadros chegarem com etiqueta 802.1Q.', 'Olhe a Fa0/8 no show vlan brief: ela aparece como trunk ou como porta comum de uma VLAN?'],
+        pergunta: { texto: 'Por que a porta do roteador precisa ser trunk?', opcoes: ['Porque ela leva as duas VLANs ao roteador; como access, ela só passa uma VLAN e sem etiqueta', 'Porque roteador só aceita cabo cruzado', 'Porque access desliga o roteador'], certa: 0,
+            explicacao: 'Access = uma VLAN, quadros sem etiqueta (para PCs). Trunk = várias VLANs, com etiqueta 802.1Q (para outro switch ou roteador). Com a Fa0/8 em access, os quadros chegam ao R1 sem etiqueta, e nenhuma subinterface aceita. Resultado: ninguém alcança o gateway.' }
+    },
+    {
+        id: 'p5-chamado-permitidas', grupo: 'Projeto 5 · VLAN (setores no mesmo switch)', titulo: 'Chamado: só o Financeiro ficou sem saída', tipo: 'chamado',
+        historia: 'O Administrativo funciona normal, inclusive para sair da VLAN. Mas o Financeiro não alcança o gateway 192.168.20.1. O trunk está ligado e as subinterfaces do R1 existem.',
+        inicio: () => redeVlan({}, (r) => { const sw = r.aparelhos.find(a => a.tipo === 'switch'); M.porta(sw, 'Fa0/8').permitidas = '10'; }),
+        objetivos: [
+            { texto: 'Investigue: ping do Fin1 para 192.168.20.1 e show vlan brief no switch', ok: ({ rede, comandos }) => { const f = rede.aparelhos.find(a => a.nome === 'Fin1'); return !!f && comandos.some(c => c.de === f.id && c.cmd === 'ping') && comandos.some(c => c.cmd === 'show-vlan'); } },
+            { texto: 'Todos voltam a conversar com todos', ok: ({ rede }) => todosConversam(rede) }
+        ],
+        dicas: ['No modo Simulação, o ping do Fin1 mostra onde o quadro é descartado e por quê.', 'Um trunk pode limitar quais VLANs passam. Veja "VLANs permitidas" na Fa0/8: a 20 está na lista?'],
+        pergunta: { texto: 'Qual era a causa?', opcoes: ['O trunk só permitia a VLAN 10 (allowed vlan 10); os quadros da VLAN 20 eram descartados', 'A VLAN 20 não existia no roteador', 'O Fin1 estava na VLAN 10'], certa: 0,
+            explicacao: 'No Cisco: switchport trunk allowed vlan 10 restringe o trunk à VLAN 10. Serve para não levar VLANs aonde não precisa, mas, se esquecer uma, aquela VLAN perde o caminho. Conserto: incluir a 20 (allowed vlan 10,20) ou deixar todas.' }
+    },
+    {
+        id: 'p5-por-dentro', grupo: 'Projeto 5 · VLAN (setores no mesmo switch)', titulo: 'Ver por dentro: a etiqueta 802.1Q no trunk', tipo: 'simulacao',
+        historia: 'Acompanhe um ping do Adm1 para o Fin1. O mesmo pacote sobe pelo trunk com a etiqueta de uma VLAN e desce com a etiqueta de outra.',
+        inicio: () => redeVlan(),
+        objetivos: [
+            { texto: 'Troque o modo para Simulação', ok: ({ sim }) => sim.modo === 'simulacao' },
+            { texto: 'No Adm1, rode: ping 192.168.20.11', ok: ({ rede, comandos }) => { const a = rede.aparelhos.find(x => x.nome === 'Adm1'); return !!a && comandos.some(c => c.cmd === 'ping' && c.de === a.id && c.alvo === '192.168.20.11'); } },
+            { texto: 'Veja o quadro subir para o R1 com etiqueta VLAN 10', ok: ({ sim }) => sim.vistos.some(e => e.vlan === 10 && e.para === 'R1') },
+            { texto: 'Veja o R1 devolver ao switch com etiqueta VLAN 20', ok: ({ sim }) => sim.vistos.some(e => e.vlan === 20 && e.de === 'R1') },
+            { texto: 'Confira: o ARP do Adm1 (procurando 192.168.10.1) não chega a nenhum PC do Financeiro', ok: ({ sim }) => sim.vistos.some(e => e.tipo === 'ARP' && e.op === 'pedido' && e.alvoIp === '192.168.10.1' && e.para === 'Adm2') && !sim.vistos.some(e => e.tipo === 'ARP' && e.alvoIp === '192.168.10.1' && /^Fin/.test(e.para || '')) }
+        ],
+        dicas: ['Use "Próximo ▶". Quadros no cabo do trunk mostram uma etiqueta verde VLAN 10 ou VLAN 20.', 'Nos cabos dos PCs (portas access), o quadro vai sem etiqueta: o PC nem sabe que existe VLAN.'],
+        pergunta: { texto: 'Onde a etiqueta 802.1Q aparece?', opcoes: ['Só nos cabos trunk (switch↔roteador ou switch↔switch); nos cabos access, até o PC, o quadro vai sem etiqueta', 'Em todos os cabos, inclusive o do PC', 'Só dentro do roteador'], certa: 0,
+            explicacao: 'O switch põe a etiqueta ao mandar pelo trunk e tira ao entregar numa porta access. O PC nunca vê VLAN. O roteador lê a etiqueta para escolher a subinterface e, ao rotear para a outra rede, devolve com a etiqueta da VLAN de destino.' }
     }
 ];
 

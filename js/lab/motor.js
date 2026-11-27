@@ -74,11 +74,20 @@ function tabMac(est, id) { return est.mac[id] || (est.mac[id] = {}); }
 export function limparTabelas(est) { est.arp = {}; est.mac = {}; }
 
 // ---------- camada 3: de onde sai e para quem vai ----------
-function interfacesIp(a) { return a.portas.filter(p => p.ip && ipParaNumero(p.ip) !== null); }
+// Interfaces L3: portas com IP e, no roteador, subinterfaces (Gi0/0.10 = VLAN 10 pelo trunk) com a porta física ligada.
+export function interfaces(a) {
+    const lista = [];
+    for (const p of a.portas) {
+        lista.push(p);
+        for (const s of (p.subs || [])) { s.fisica = p.nome; s.mac = p.mac; s.ligada = p.ligada; lista.push(s); }
+    }
+    return lista;
+}
+function interfacesIp(a) { return interfaces(a).filter(p => p.ip && ipParaNumero(p.ip) !== null && (p.fisica ? p.ligada : true)); }
 function ifaceLocal(a, ip) {
     return interfacesIp(a).find(p => eLocal({ ip: p.ip, prefixo: p.prefixo }, ip)) || null;
 }
-function ehMeu(a, ip) { return a.portas.some(p => p.ip === ip); }
+function ehMeu(a, ip) { return interfaces(a).some(p => p.ip === ip); }
 
 // Rota para o destino: { porta, proximo } ou { erro }
 export function rotaPara(a, ip) {
@@ -101,12 +110,17 @@ export function rotaPara(a, ip) {
 }
 
 // ---------- camada 2: um quadro atravessando cabos e switches ----------
+// VLAN: porta de switch "access" pertence a uma VLAN (p.vlan, padrão 1); "trunk" leva várias, com etiqueta 802.1Q
+// (VLAN 1 = nativa, vai sem etiqueta). O switch só encaminha dentro da mesma VLAN (domínio de broadcast).
+const vlanDe = p => Number(p.vlan) || 1;
+function trunkPermite(p, v) { const l = String(p.permitidas || '').trim(); if (!l || /^(all|todas)$/i.test(l)) return true; return l.split(/[\s,]+/).map(Number).includes(v); }
+function portaNaVlan(p, v) { return p.modo === 'trunk' ? trunkPermite(p, v) : vlanDe(p) === v; }
 // Retorna a lista de [aparelho, porta] que RECEBERAM o quadro (hosts/roteadores), registrando os eventos.
 function transmitir(rede, est, origem, portaOrigem, quadro, ev, limite) {
     const recebidos = [];
-    const fila = [{ id: origem.id, porta: portaOrigem.nome }];
+    const fila = [{ id: origem.id, porta: portaOrigem.fisica || portaOrigem.nome, tag: portaOrigem.fisica ? (Number(portaOrigem.vlan) || null) : null }];
     while (fila.length) {
-        const { id, porta: p } = fila.shift();
+        const { id, porta: p, tag } = fila.shift();
         if (++limite.n > 200) { limite.tempestade = true; break; }
         const a0 = aparelho(rede, id), p0 = porta(a0, p);
         if (!p0 || !p0.ligada) continue;
@@ -114,18 +128,33 @@ function transmitir(rede, est, origem, portaOrigem, quadro, ev, limite) {
         if (!cabo) continue;
         const outro = cabo.a.id === id && cabo.a.porta === p ? cabo.b : cabo.a;
         const dest = aparelho(rede, outro.id), pd = porta(dest, outro.porta);
-        if (!pd || !pd.ligada) { ev.push({ de: id, para: outro.id, quadro, perdido: 'porta desligada' }); continue; }
-        ev.push({ de: id, para: outro.id, quadro });
+        const q = tag ? { ...quadro, vlan: tag } : quadro;
+        if (!pd || !pd.ligada) { ev.push({ de: id, para: outro.id, quadro: q, perdido: 'porta desligada' }); continue; }
         if (dest.tipo === 'switch') {
+            let v;
+            if (pd.modo === 'trunk') { v = tag || 1; if (!trunkPermite(pd, v)) { ev.push({ de: id, para: outro.id, quadro: q, perdido: `VLAN ${v} não permitida no trunk` }); continue; } }
+            else { v = vlanDe(pd); if (tag && tag !== v) { ev.push({ de: id, para: outro.id, quadro: q, perdido: `chegou com etiqueta da VLAN ${tag} numa porta access da VLAN ${v}` }); continue; } }
+            ev.push({ de: id, para: outro.id, quadro: q });
             const t = tabMac(est, dest.id);
-            t[quadro.origemMac] = outro.porta; // aprende de onde veio
-            const saida = quadro.destinoMac !== BROADCAST ? t[quadro.destinoMac] : null;
-            const portas = saida ? [saida] : dest.portas.map(x => x.nome).filter(n => n !== outro.porta);
-            if (saida === outro.porta) continue; // destino está do mesmo lado: o switch descarta
-            portas.forEach(n => fila.push({ id: dest.id, porta: n }));
-        } else if (quadro.destinoMac === BROADCAST || quadro.destinoMac === pd.mac) {
-            recebidos.push([dest, pd]);
+            t[`${v}|${quadro.origemMac}`] = outro.porta; // aprende de onde veio (por VLAN)
+            const conhecida = quadro.destinoMac !== BROADCAST ? t[`${v}|${quadro.destinoMac}`] : null;
+            if (conhecida === outro.porta) continue; // destino está do mesmo lado: o switch descarta
+            const saidas = conhecida ? [porta(dest, conhecida)] : dest.portas.filter(x => x.nome !== outro.porta && portaNaVlan(x, v));
+            if (!conhecida) dest.portas.filter(x => x.nome !== outro.porta && x.modo === 'trunk' && !trunkPermite(x, v)).forEach(x => {
+                const c2 = caboDa(rede, dest.id, x.nome); if (!c2) return;
+                const viz = c2.a.id === dest.id && c2.a.porta === x.nome ? c2.b.id : c2.a.id;
+                ev.push({ de: dest.id, para: viz, quadro: { ...quadro, vlan: v }, perdido: `VLAN ${v} não permitida no trunk ${x.nome}` });
+            });
+            saidas.forEach(x => fila.push({ id: dest.id, porta: x.nome, tag: x.modo === 'trunk' && v !== 1 ? v : null }));
+            continue;
         }
+        ev.push({ de: id, para: outro.id, quadro: q });
+        let pr = pd;
+        if (tag) { // quadro com etiqueta: só uma subinterface daquela VLAN aceita
+            pr = TIPOS[dest.tipo].roteia ? interfaces(dest).find(x => x.fisica === pd.nome && Number(x.vlan) === tag) : null;
+            if (!pr) { ev[ev.length - 1].perdido = `${dest.nome} não tem subinterface para a VLAN ${tag}`; continue; }
+        }
+        if (quadro.destinoMac === BROADCAST || quadro.destinoMac === pr.mac) recebidos.push([dest, pr]);
     }
     return recebidos;
 }
@@ -173,8 +202,8 @@ const MOTIVO = {
     'sem-gateway': 'o destino é de outra rede e não há gateway configurado',
     'gateway-fora': 'o gateway está fora da sub-rede do aparelho',
     'sem-rota': 'o roteador não tem rota para essa rede',
-    'arp-sem-resposta': 'ninguém respondeu ao ARP (o destino não existe nessa rede, está desligado ou sem cabo)',
-    'gateway-sem-resposta': 'o gateway não respondeu ao ARP (não existe, sem cabo ou porta desligada)',
+    'arp-sem-resposta': 'ninguém respondeu ao ARP (o destino não existe nessa rede, está em outra VLAN, desligado ou sem cabo)',
+    'gateway-sem-resposta': 'o gateway não respondeu ao ARP (não existe, está em outra VLAN, sem cabo ou porta desligada)',
     'quadro-perdido': 'o quadro se perdeu no caminho (cabo ou porta)',
     'descartado': 'o pacote chegou a um aparelho que não roteia',
     'ttl-expirou': 'o TTL chegou a zero (laço de roteamento)'
@@ -332,7 +361,7 @@ export function ping(rede, est, origemId, destinoIp, vezes = 4) {
 export function ipconfig(rede, id) {
     const a = aparelho(rede, id);
     const out = [];
-    for (const p of a.portas) {
+    for (const p of interfaces(a)) {
         if (!p.ip && TIPOS[a.tipo].host === false) continue;
         const c = p.ip ? calcular(p.ip, p.prefixo) : null;
         out.push(`${TIPOS[a.tipo].host ? 'Ethernet adapter' : 'Interface'} ${p.nome}:`, '',
@@ -357,8 +386,17 @@ export function arpA(est, rede, id) {
 export function tabelaMac(est, rede, id) {
     const t = tabMac(est, id); const macs = Object.keys(t);
     if (!macs.length) return ['Tabela MAC vazia (o switch ainda não viu nenhum quadro).'];
-    return ['          Mac Address Table', '-------------------------------------------', 'Mac Address          Ports',
-        ...macs.map(m => `${m.padEnd(21)}${t[m]}`)];
+    return ['          Mac Address Table', '-------------------------------------------', 'Vlan    Mac Address          Ports',
+        ...macs.map(k => { const [v, m] = k.includes('|') ? k.split('|') : ['1', k]; return `${v.padEnd(8)}${m.padEnd(21)}${t[k]}`; })];
+}
+export function vlanBrief(rede, id) {
+    const a = aparelho(rede, id); const vs = {};
+    a.portas.filter(p => p.modo !== 'trunk').forEach(p => { const v = Number(p.vlan) || 1; (vs[v] = vs[v] || []).push(p.nome); });
+    const linhas = ['VLAN Name      Status  Ports', '---- --------- ------- ----------------'];
+    Object.keys(vs).map(Number).sort((x, y) => x - y).forEach(v => linhas.push(`${String(v).padEnd(5)}${(v === 1 ? 'default' : 'VLAN' + String(v).padStart(4, '0')).padEnd(10)}active  ${vs[v].join(', ')}`));
+    const trunks = a.portas.filter(p => p.modo === 'trunk');
+    if (trunks.length) linhas.push('', 'Trunks (802.1Q): ' + trunks.map(p => `${p.nome} (VLANs ${String(p.permitidas || '').trim() || 'todas'})`).join(', '));
+    return linhas;
 }
 
 export function tracert(rede, est, origemId, destinoIp) {
