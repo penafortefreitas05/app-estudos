@@ -3042,3 +3042,4 @@ body.modo-bancada { overflow: hidden; }
 .bc-agora { font-size: 13px; line-height: 1.45; background: #172554; border: 1px solid #3b82f6; border-radius: 8px; padding: 7px 9px; margin: 6px 0; color: #dbeafe; }
 .bc-objetivos li.agora { color: #fff; font-weight: 600; }
 .bc-objetivos li.agora span:first-child { color: #60a5fa; }
+.bc-ap-ip, .bc-porta-rot { paint-order: stroke; stroke: #0b1222; stroke-width: 4px; stroke-linejoin: round; }

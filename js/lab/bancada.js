@@ -263,6 +263,13 @@ export function abrirBancada() {
 
     // ---------- missões ----------
     const progresso = () => ler(CHAVE_MISSOES, {});
+    // Embaralha as opções da pergunta numa ordem fixa por missão (a certa não fica sempre no mesmo lugar).
+    function ordemOpcoes(d) {
+        let h = 0; for (const ch of d.id) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+        const idx = d.pergunta.opcoes.map((_, i) => i);
+        for (let i = idx.length - 1; i > 0; i--) { h = (h * 1103515245 + 12345) >>> 0; const j = h % (i + 1); [idx[i], idx[j]] = [idx[j], idx[i]]; }
+        return idx;
+    }
     function iniciarMissao(def) {
         projeto = { nome: `Missão: ${def.titulo}`, rede: def.inicio() };
         est = M.novoEstado(); caboSel = null; ferramenta = null; modo = 'tempo-real';
@@ -283,7 +290,7 @@ export function abrirBancada() {
         const tudo = res.every(Boolean);
         if (!missao.aberta) { box.innerHTML = `<button type="button" class="bc-missao-mini" data-missao="abrir">🎯 ${res.filter(Boolean).length}/${res.length} · ${esc(d.titulo)}</button>`; return; }
         const pergunta = tudo ? `<div class="bc-pergunta"><p><b>${esc(d.pergunta.texto)}</b></p>
-            ${d.pergunta.opcoes.map((o, i) => `<button type="button" data-resp="${i}" class="${missao.resposta === null ? '' : i === d.pergunta.certa ? 'certa' : i === missao.resposta ? 'errada' : ''}" ${missao.resposta !== null ? 'disabled' : ''}>${esc(o)}</button>`).join('')}
+            ${ordemOpcoes(d).map(i => [d.pergunta.opcoes[i], i]).map(([o, i]) => `<button type="button" data-resp="${i}" class="${missao.resposta === null ? '' : i === d.pergunta.certa ? 'certa' : i === missao.resposta ? 'errada' : ''}" ${missao.resposta !== null ? 'disabled' : ''}>${esc(o)}</button>`).join('')}
             ${missao.resposta !== null ? `<p class="bc-nota">${missao.resposta === d.pergunta.certa ? '<b class="bc-bom">Isso.</b> ' : '<b class="bc-ruim">Não foi isso.</b> '}${esc(d.pergunta.explicacao)}</p><p class="bc-bom"><b>Missão concluída ✓</b></p><button type="button" data-acao="missoes">Próxima missão</button>` : ''}</div>` : '';
         box.innerHTML = `<div class="bc-missao-cab"><p class="bc-rot">🎯 ${esc(d.grupo)}</p><button type="button" data-missao="recolher" aria-label="Recolher a missão">–</button></div>
             <p class="bc-missao-tit">${esc(d.titulo)}</p><p class="bc-nota">${esc(d.historia)}</p>
@@ -301,7 +308,7 @@ export function abrirBancada() {
             <p class="bc-nota">Cada missão abre a sua própria bancada. Seu projeto atual fica guardado se você usou "Salvar".</p>
             ${MISSOES.map((m, i) => { const g = m.grupo !== grupo ? `<p class="bc-grupo">${esc((grupo = m.grupo))}</p>` : ''; const f = feitas[m.id];
                 return `${g}<button type="button" class="bc-missao-item" data-iniciar="${i}"><span>${f ? '✓' : '○'}</span><span><b>${esc(m.titulo)}</b><small>${m.tipo === 'chamado' ? 'Chamado de suporte: ache a causa e conserte' : m.tipo === 'montar' ? 'Monte do zero' : m.tipo === 'tutorial' ? 'Tutorial: aprenda a mexer na bancada' : 'Modo simulação'}</small></span></button>`; }).join('')}
-            <p class="bc-nota">Em breve: Projeto 3, duas filiais com dois roteadores e rotas estáticas.</p>
+            <p class="bc-nota">Em breve: fase 3 do Laboratório (DHCP, VLAN, NAT e DNS).</p>
             <button type="button" data-acao="fechar-dialogo">Fechar</button></div>`;
         d.hidden = false;
     }

@@ -185,7 +185,9 @@ export function ping(rede, est, origemId, destinoIp, vezes = 4) {
     const linhas = [`Pinging ${destinoIp} with 32 bytes of data:`, ''];
     const tentativas = [];
     if (ipParaNumero(destinoIp) === null) return { linhas: [`Ping request could not find host ${destinoIp}. Please check the name and try again.`], tentativas, explicacao: 'Endereço IP inválido.' };
-    const pa = interfacesIp(a)[0];
+    // Origem do ping: num roteador, o IP da porta por onde o pacote sai (como no Cisco); nos demais, a única porta com IP.
+    let pa = interfacesIp(a)[0];
+    if (TIPOS[a.tipo].roteia) { const rt = rotaPara(a, destinoIp); if (rt.porta && rt.porta.ip) pa = rt.porta; }
     const problema = pa ? validar({ ip: pa.ip, prefixo: pa.prefixo, gateway: TIPOS[a.tipo].host ? a.gateway : '' }) : null;
     let ok = 0; const avisos = new Set(); let ultimoMotivo = null;
     for (let i = 0; i < vezes; i++) {
@@ -204,7 +206,9 @@ export function ping(rede, est, origemId, destinoIp, vezes = 4) {
             const m = !ida.ok ? ida : volta;
             ultimoMotivo = { lado: !ida.ok ? 'ida' : 'volta', ...m };
             if (m.motivo === 'sem-ip' || (m.motivo === 'sem-gateway' && m.em === a) || (m.motivo === 'gateway-fora' && m.em === a)) linhas.push('PING: transmit failed. General failure.');
-            else if (m.motivo === 'sem-rota' && m.em && TIPOS[m.em.tipo].roteia) linhas.push(`Reply from ${(interfacesIp(m.em)[0] || {}).ip}: Destination host unreachable.`);
+            // O aviso "unreachable" só chega se a falha foi na ida (o roteador sabe voltar à origem).
+            // Falha na volta = a resposta some no caminho: o PC só vê o tempo esgotar.
+            else if (!ida.ok && m.motivo === 'sem-rota' && m.em && TIPOS[m.em.tipo].roteia) { const r0 = pa ? rotaPara(m.em, pa.ip) : {}; const ipAviso = (r0.porta && r0.porta.ip) || (interfacesIp(m.em)[0] || {}).ip; linhas.push(`Reply from ${ipAviso}: Destination host unreachable.`); }
             else linhas.push('Request timed out.');
         }
         tentativas.push({ eventos: ev, sucesso });
