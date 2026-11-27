@@ -155,8 +155,9 @@ function enviarIp(rede, est, a, destinoIp, pacote, ev, limite, avisos, saltos = 
     if (r.erro) return { ok: false, motivo: r.erro, em: a, saltos };
     const mac = resolverArp(rede, est, a, r.porta, r.proximo, ev, limite, avisos);
     if (!mac) return { ok: false, motivo: r.tipo === 'conectada' ? 'arp-sem-resposta' : 'gateway-sem-resposta', em: a, proximo: r.proximo, saltos };
-    const quadro = { tipo: pacote.tipo, origemMac: r.porta.mac, destinoMac: mac, origemIp: pacote.origemIp, destinoIp, ttl: pacote.ttl,
-        resumo: `${pacote.tipo === 'ICMP' ? (pacote.echo === 'pedido' ? 'ICMP echo request' : 'ICMP echo reply') : pacote.tipo} ${pacote.origemIp} → ${destinoIp} (TTL ${pacote.ttl})` };
+    const quadro = { tipo: pacote.tipo, op: pacote.op, origemMac: r.porta.mac, destinoMac: mac, origemIp: pacote.origemIp, destinoIp, ttl: pacote.ttl,
+        resumo: pacote.tipo === 'DHCP' ? `DHCP ${pacote.op} repassado (relay, unicast) ${pacote.origemIp} → ${destinoIp}`
+            : `${pacote.tipo === 'ICMP' ? (pacote.echo === 'pedido' ? 'ICMP echo request' : 'ICMP echo reply') : pacote.tipo} ${pacote.origemIp} → ${destinoIp} (TTL ${pacote.ttl})` };
     const recebeu = transmitir(rede, est, a, r.porta, quadro, ev, limite).find(([d, pd]) => pd.mac === mac);
     if (!recebeu) return { ok: false, motivo: 'quadro-perdido', em: a, saltos };
     const [prox] = recebeu;
@@ -178,6 +179,110 @@ const MOTIVO = {
     'descartado': 'o pacote chegou a um aparelho que não roteia',
     'ttl-expirou': 'o TTL chegou a zero (laço de roteamento)'
 };
+
+
+// ---------- DHCP (fase 3, 27/11/2026) ----------
+// Host com a.dhcp = true pede IP. Servidor com a.servicoDhcp = { ativo, pools: [{ inicio, fim, prefixo, gateway, dns }], concessoes: { mac: ip } }.
+// Porta de roteador com p.helper = IP do servidor repassa o pedido (relay, "ip helper-address").
+// DORA: Discover (broadcast) → Offer → Request (broadcast) → Ack. Sem resposta: APIPA 169.254.x.y/16.
+const IP_BROADCAST = '255.255.255.255';
+function redeDoPool(pool) { const c = calcular(pool.inicio, pool.prefixo); return c.erro ? null : c.rede; }
+function poolPara(servidor, ipReferencia) {
+    const sv = servidor.servicoDhcp; if (!sv || !sv.ativo) return null;
+    return (sv.pools || []).find(pl => { const c = calcular(ipReferencia, pl.prefixo); return !c.erro && c.rede === redeDoPool(pl); }) || null;
+}
+function ipsEmUso(rede) { return new Set(rede.aparelhos.flatMap(a => a.portas.map(p => p.ip).filter(Boolean))); }
+function escolherIp(rede, servidor, pool, mac) {
+    const sv = servidor.servicoDhcp; sv.concessoes = sv.concessoes || {};
+    const ja = sv.concessoes[mac];
+    if (ja && calcular(ja, pool.prefixo).rede === redeDoPool(pool)) return ja;
+    const usados = ipsEmUso(rede); Object.values(sv.concessoes).forEach(ip => usados.add(ip));
+    const a = ipParaNumero(pool.inicio), b = ipParaNumero(pool.fim);
+    if (a === null || b === null || b < a) return null;
+    for (let n = a; n <= b; n++) {
+        const ip = [n >>> 24, (n >>> 16) & 255, (n >>> 8) & 255, n & 255].join('.');
+        const c = calcular(ip, pool.prefixo);
+        if (c.eRede || c.eBroadcast || usados.has(ip)) continue;
+        return ip;
+    }
+    return null; // pool esgotado
+}
+const quadroDhcp = (op, origemMac, destinoMac, origemIp, destinoIp, resumo) => ({ tipo: 'DHCP', op, origemMac, destinoMac, origemIp, destinoIp, ttl: 128, resumo });
+
+// Leva uma mensagem DHCP do host até um servidor (direto no segmento ou via relay). Retorna { servidor, pool, relay } ou { motivo }.
+function acharServidor(rede, est, host, p, op, ev, limite, avisos) {
+    const q = quadroDhcp(op, p.mac, BROADCAST, '0.0.0.0', IP_BROADCAST, op === 'Discover' ? 'DHCP Discover: alguém aí tem um IP para mim? (broadcast)' : 'DHCP Request: quero o IP que me ofereceram (broadcast)');
+    const recebidos = transmitir(rede, est, host, p, q, ev, limite);
+    let motivo = 'sem-servidor';
+    for (const [d, pd] of recebidos) {
+        if (d.servicoDhcp && d.servicoDhcp.ativo) {
+            const ref = pd.ip || (interfacesIp(d)[0] || {}).ip; const pool = ref && poolPara(d, ref);
+            if (pool) return { servidor: d, porta: pd, pool, relay: null };
+            motivo = 'sem-pool';
+        }
+        if (TIPOS[d.tipo].roteia && pd.helper && pd.ip) {
+            const ida = enviarIp(rede, est, d, pd.helper, { tipo: 'DHCP', op, origemIp: pd.ip, ttl: 255 }, ev, limite, avisos);
+            if (!ida.ok) { motivo = 'relay-sem-caminho'; continue; }
+            const sv = ida.chegouEm;
+            if (!sv.servicoDhcp || !sv.servicoDhcp.ativo) { motivo = 'relay-sem-servico'; continue; }
+            const pool = poolPara(sv, pd.ip);
+            if (!pool) { motivo = 'sem-pool'; continue; }
+            return { servidor: sv, pool, relay: { roteador: d, porta: pd } };
+        }
+    }
+    return { motivo };
+}
+// Resposta do servidor até o host (Offer/Ack). Retorna true se chegou.
+function responder(rede, est, achado, host, p, op, ip, ev, limite, avisos) {
+    const { servidor, relay } = achado;
+    const resumo = op === 'Offer' ? `DHCP Offer: ofereço ${ip}` : `DHCP Ack: ${ip} é seu (concessão confirmada)`;
+    if (!relay) {
+        const ps = achado.porta;
+        return transmitir(rede, est, servidor, ps, quadroDhcp(op, ps.mac, p.mac, ps.ip, ip, resumo), ev, limite).some(([x]) => x.id === host.id);
+    }
+    const volta = enviarIp(rede, est, servidor, relay.porta.ip, { tipo: 'DHCP', op, origemIp: (interfacesIp(servidor)[0] || {}).ip, ttl: 128 }, ev, limite, avisos);
+    if (!volta.ok) return false;
+    return transmitir(rede, est, relay.roteador, relay.porta, quadroDhcp(op, relay.porta.mac, p.mac, relay.porta.ip, ip, resumo + ' (repassado pelo roteador)'), ev, limite).some(([x]) => x.id === host.id);
+}
+const MOTIVO_DHCP = {
+    'sem-servidor': 'nenhum servidor DHCP respondeu nesta rede (serviço desligado, sem cabo, ou o servidor está em outra rede sem relay no roteador)',
+    'sem-pool': 'o servidor DHCP não tem pool para esta rede',
+    'relay-sem-caminho': 'o roteador repassou o pedido, mas não alcança o servidor (confira o ip helper-address e as rotas)',
+    'relay-sem-servico': 'o roteador repassou o pedido para um aparelho sem serviço DHCP ativo',
+    'pool-esgotado': 'o pool do servidor acabou: todos os IPs já estão concedidos',
+    'sem-resposta': 'a resposta do servidor não chegou ao aparelho'
+};
+function apipa(p) {
+    const h = parseInt(p.mac.replace(/:/g, '').slice(-4), 16);
+    return `169.254.${(h >> 8) % 254 + 1}.${(h & 255) % 254 + 1}`;
+}
+export function obterIp(rede, est, hostId) {
+    const host = aparelho(rede, hostId); const p = host.portas[0];
+    const ev = [], limite = { n: 0 }, avisos = new Set();
+    p.ip = ''; host.gateway = '';
+    const falhar = (motivo) => { p.ip = apipa(p); p.prefixo = 16; host.gateway = ''; return { ok: false, ip: p.ip, motivo, explicacao: MOTIVO_DHCP[motivo] || motivo, eventos: ev }; };
+    const a1 = acharServidor(rede, est, host, p, 'Discover', ev, limite, avisos);
+    if (!a1.servidor) return falhar(a1.motivo);
+    const ip = escolherIp(rede, a1.servidor, a1.pool, p.mac);
+    if (!ip) return falhar('pool-esgotado');
+    if (!responder(rede, est, a1, host, p, 'Offer', ip, ev, limite, avisos)) return falhar('sem-resposta');
+    const a2 = acharServidor(rede, est, host, p, 'Request', ev, limite, avisos);
+    if (!a2.servidor) return falhar(a2.motivo);
+    if (!responder(rede, est, a2, host, p, 'Ack', ip, ev, limite, avisos)) return falhar('sem-resposta');
+    a1.servidor.servicoDhcp.concessoes[p.mac] = ip;
+    p.ip = ip; p.prefixo = a1.pool.prefixo; host.gateway = a1.pool.gateway || ''; host.dns = a1.pool.dns || '';
+    return { ok: true, ip, prefixo: p.prefixo, gateway: host.gateway, servidor: a1.servidor.nome, relay: a1.relay ? a1.relay.roteador.nome : null, eventos: ev };
+}
+export function liberarIp(rede, hostId) {
+    const host = aparelho(rede, hostId); const p = host.portas[0];
+    rede.aparelhos.forEach(a => { if (a.servicoDhcp && a.servicoDhcp.concessoes) delete a.servicoDhcp.concessoes[p.mac]; });
+    p.ip = ''; host.gateway = '';
+}
+export function concessoes(rede, servidorId) {
+    const sv = aparelho(rede, servidorId).servicoDhcp; const c = (sv && sv.concessoes) || {};
+    const macParaNome = {}; rede.aparelhos.forEach(a => a.portas.forEach(p => { macParaNome[p.mac] = a.nome; }));
+    return Object.entries(c).map(([mac, ip]) => ({ mac, ip, nome: macParaNome[mac] || '?' }));
+}
 
 // ---------- comandos do terminal ----------
 export function ping(rede, est, origemId, destinoIp, vezes = 4) {
@@ -235,6 +340,7 @@ export function ipconfig(rede, id) {
             `   IPv4 Address. . . . . . . . . . : ${p.ip || '0.0.0.0'}`,
             `   Subnet Mask . . . . . . . . . . : ${c && !c.erro ? c.mascara : '0.0.0.0'}`);
         if (TIPOS[a.tipo].host) out.push(`   Default Gateway . . . . . . . . : ${a.gateway || '0.0.0.0'}`);
+        if (TIPOS[a.tipo].host && a.dhcp) out.push(`   DHCP Enabled. . . . . . . . . . : Yes${/^169\.254\./.test(p.ip) ? '   (sem resposta do DHCP: endereço automático APIPA)' : ''}`);
         out.push('');
     }
     return out.length ? out : ['Nenhuma interface com IP.'];

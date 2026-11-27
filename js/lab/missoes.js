@@ -11,7 +11,7 @@ export function redeEscritorio(ajuste) {
     [[90, 90, 'PC1', '192.168.10.11'], [90, 220, 'PC2', '192.168.10.12'], [90, 350, 'PC3', '192.168.10.13']].forEach(([x, y, n, ip], i) => {
         const p = M.adicionarAparelho(r, 'pc', x, y); p.nome = n; p.portas[0].ip = ip; M.ligar(r, p.id, 'Fa0', sw.id, `Fa0/${i + 1}`);
     });
-    const imp = M.adicionarAparelho(r, 'impressora', 520, 220); imp.nome = 'Impressora'; imp.portas[0].ip = '192.168.10.20';
+    const imp = M.adicionarAparelho(r, 'impressora', 495, 220); imp.nome = 'Impressora'; imp.portas[0].ip = '192.168.10.20';
     M.ligar(r, imp.id, 'Fa0', sw.id, 'Fa0/4');
     if (ajuste) ajuste(r, nome => r.aparelhos.find(a => a.nome === nome));
     return r;
@@ -67,6 +67,42 @@ export function redeDuasFiliais(opcoes = {}, ajuste) {
     return r;
 }
 
+
+// Projeto 4 (DHCP): o escritório da Ana com um servidor DHCP (192.168.10.5) na Fa0/5.
+// opcoes: { servico, pool: [inicio, fim], pcsDhcp, notebook } — o que já vem pronto.
+export function redeDhcp(opcoes = {}, ajuste) {
+    const { servico = true, pool = ['192.168.10.100', '192.168.10.150'], pcsDhcp = true, notebook = false } = opcoes;
+    const r = redeEscritorio();
+    const n = nome => r.aparelhos.find(a => a.nome === nome);
+    const sw = n('SW-Escritorio');
+    const sv = M.adicionarAparelho(r, 'servidor', 320, 400); sv.nome = 'Servidor'; sv.portas[0].ip = '192.168.10.5';
+    M.ligar(r, sv.id, 'Fa0', sw.id, 'Fa0/5');
+    sv.servicoDhcp = { ativo: servico, pools: pool ? [{ inicio: pool[0], fim: pool[1], prefixo: 24, gateway: '', dns: '' }] : [], concessoes: {} };
+    ['PC1', 'PC2', 'PC3'].forEach(x => { const h = n(x); h.portas[0].ip = ''; h.dhcp = pcsDhcp; });
+    if (notebook) { const nb = M.adicionarAparelho(r, 'notebook', 495, 400); nb.nome = 'Note-Ana'; nb.dhcp = true; M.ligar(r, nb.id, 'Fa0', sw.id, 'Fa0/6'); }
+    if (ajuste) ajuste(r, n, 'antes');
+    const est = M.novoEstado();
+    r.aparelhos.filter(a => a.dhcp && a.nome !== 'Note-Ana').forEach(a => M.obterIp(r, est, a.id));
+    if (ajuste) ajuste(r, n, 'depois');
+    const nb = n('Note-Ana'); if (nb) M.obterIp(r, est, nb.id);
+    return r;
+}
+// Projeto 4, segunda parte: os dois setores do Projeto 2 com o servidor DHCP no Financeiro.
+export function redeDhcpSetores(opcoes = {}, ajuste) {
+    const { poolAdm = false, helper = false, gwAdm = '192.168.10.1' } = opcoes;
+    const r = redeDoisSetores(true);
+    const n = nome => r.aparelhos.find(a => a.nome === nome);
+    const sv = n('Servidor');
+    sv.servicoDhcp = { ativo: true, pools: [{ inicio: '192.168.20.100', fim: '192.168.20.150', prefixo: 24, gateway: '192.168.20.1', dns: '' }], concessoes: {} };
+    if (poolAdm) sv.servicoDhcp.pools.push({ inicio: '192.168.10.100', fim: '192.168.10.150', prefixo: 24, gateway: gwAdm, dns: '' });
+    if (helper) n('R1').portas[0].helper = '192.168.20.10';
+    ['Adm1', 'Adm2', 'Fin1'].forEach(x => { const h = n(x); h.dhcp = true; h.portas[0].ip = ''; h.gateway = ''; });
+    if (ajuste) ajuste(r, n);
+    const est = M.novoEstado();
+    ['Fin1', 'Adm1', 'Adm2'].forEach(x => M.obterIp(r, est, n(x).id));
+    return r;
+}
+
 // ---------- verificações ----------
 const hosts = r => r.aparelhos.filter(a => M.TIPOS[a.tipo].host);
 const ipDe = a => (a.portas[0] || {}).ip || '';
@@ -93,6 +129,9 @@ function temRotaUtil(r, nomeRoteador, destino) {
     const rt = M.rotaPara(ro, destino);
     return !rt.erro && rt.tipo !== 'conectada';
 }
+const servidorDhcp = r => r.aparelhos.find(a => a.servicoDhcp);
+const noPool = (r, ip) => { const sv = servidorDhcp(r); if (!sv || !ip) return false; const n = ipParaNumero(ip); return (sv.servicoDhcp.pools || []).some(pl => n >= ipParaNumero(pl.inicio) && n <= ipParaNumero(pl.fim)); };
+const pegouDhcp = (r, nome) => { const h = r.aparelhos.find(a => a.nome === nome); return !!h && !!h.dhcp && noPool(r, ipDe(h)) && !/^169\.254\./.test(ipDe(h)); };
 const pingDe = (ctx, filtro) => ctx.comandos.some(c => c.cmd === 'ping' && filtro(c));
 const nomeDoIp = (r, ip) => (hosts(r).find(h => ipDe(h) === ip) || {}).nome;
 
@@ -327,6 +366,90 @@ export const MISSOES = [
         dicas: ['Use "Próximo ▶" e leia a linha de camada 3 de cada passo: o TTL vai caindo.', 'São três trechos de rede (Matriz, link, Filial), e cada trecho tem seu próprio ARP: o MAC muda a cada salto, o IP de origem e destino não.'],
         pergunta: { texto: 'Ao atravessar os dois roteadores, o que muda no pacote?', opcoes: ['Os MACs mudam a cada trecho e o TTL cai 1 por roteador; os IPs de origem e destino continuam os mesmos', 'Os IPs mudam a cada roteador e os MACs continuam', 'Nada muda: o pacote é igual do início ao fim'], certa: 0,
             explicacao: 'IP = endereço fim a fim (quem mandou e quem vai receber). MAC = endereço do trecho atual (de quem para quem neste cabo). Cada roteador monta um quadro novo com MACs novos e diminui o TTL: 128 → 127 → 126.' }
+    },
+    {
+        id: 'p4-montar', grupo: 'Projeto 4 · DHCP (IP automático)', titulo: 'Ligar o DHCP no escritório', tipo: 'montar',
+        historia: 'A Ana cansou de configurar IP na mão em cada PC. O servidor (192.168.10.5) vai emprestar os IPs automaticamente. A impressora (.20) e o servidor continuam com IP fixo.',
+        inicio: () => redeDhcp({ servico: false, pool: null, pcsDhcp: false }),
+        objetivos: [
+            { texto: 'No Servidor: serviço DHCP ligado, com um pool da rede 192.168.10.0/24', ok: ({ rede }) => { const sv = servidorDhcp(rede); return !!sv && sv.servicoDhcp.ativo && sv.servicoDhcp.pools.some(pl => calcular(pl.inicio, pl.prefixo).rede === '192.168.10.0' && pl.prefixo === 24); } },
+            { texto: 'O pool não pode incluir os IPs fixos (servidor .5 e impressora .20)', ok: ({ rede }) => { const sv = servidorDhcp(rede); if (!sv || !sv.servicoDhcp.pools.length) return false; return sv.servicoDhcp.pools.every(pl => ['192.168.10.5', '192.168.10.20'].every(ip => { const x = ipParaNumero(ip); return x < ipParaNumero(pl.inicio) || x > ipParaNumero(pl.fim); })); } },
+            { texto: 'PC1, PC2 e PC3 em DHCP, cada um com um IP do pool', ok: ({ rede }) => ['PC1', 'PC2', 'PC3'].every(x => pegouDhcp(rede, x)) },
+            { texto: 'Todos conversam com todos', ok: ({ rede }) => todosConversam(rede) },
+            { texto: 'Confira no terminal de um PC: ipconfig (procure "DHCP Enabled")', ok: ({ rede, comandos }) => comandos.some(c => c.cmd === 'ipconfig' && (M.aparelho(rede, c.de) || {}).dhcp) }
+        ],
+        dicas: ['Selecione o Servidor. Em "Serviço DHCP", marque ligado e crie um pool: primeiro IP 192.168.10.100, último 192.168.10.150, máscara /24. Gateway pode ficar vazio (rede sem saída).',
+            'Em cada PC, clique em "DHCP" no topo do painel. O PC pede o IP na hora.',
+            'Se um PC ficar com 169.254.x.x, o pedido não foi atendido: confira se o serviço está ligado e clique em "Pedir IP de novo".'],
+        pergunta: { texto: 'Por que o primeiro pedido do PC (DHCP Discover) vai em broadcast?', opcoes: ['Porque o PC ainda não tem IP e não sabe qual é o IP do servidor: grita para a rede toda', 'Porque o switch exige broadcast', 'Porque o servidor só escuta broadcast por segurança'], certa: 0,
+            explicacao: 'Sem IP (origem 0.0.0.0) e sem saber quem é o servidor, o PC manda para 255.255.255.255 e MAC FF:FF:FF:FF:FF:FF. Todo mundo da rede local recebe; só o servidor DHCP responde. São 4 mensagens: Discover, Offer, Request, Ack (DORA).' }
+    },
+    {
+        id: 'p4-chamado-apipa', grupo: 'Projeto 4 · DHCP (IP automático)', titulo: 'Chamado: o notebook novo ficou com 169.254', tipo: 'chamado',
+        historia: 'Chegou o notebook da Ana. Ela ligou no cabo e ele ficou com um IP 169.254.x.x e não acessa nada. Os PCs antigos continuam funcionando normalmente.',
+        inicio: () => redeDhcp({ notebook: true }, (r, n, fase) => { if (fase === 'depois') n('Servidor').servicoDhcp.ativo = false; }),
+        objetivos: [
+            { texto: 'Investigue: ipconfig no Note-Ana', ok: ({ rede, comandos }) => { const nb = rede.aparelhos.find(a => a.nome === 'Note-Ana'); return !!nb && comandos.some(c => c.de === nb.id && c.cmd === 'ipconfig'); } },
+            { texto: 'O Note-Ana recebe um IP do pool', ok: ({ rede }) => pegouDhcp(rede, 'Note-Ana') },
+            { texto: 'Todos conversam com todos', ok: ({ rede }) => todosConversam(rede) }
+        ],
+        dicas: ['169.254.x.x não vem de servidor nenhum: o próprio Windows inventa quando o DHCP não responde (APIPA).', 'Os PCs antigos ainda estão com o IP emprestado de antes. Olhe o painel do Servidor: o serviço está ligado? Depois, no notebook, "Pedir IP de novo" (ipconfig /renew).'],
+        pergunta: { texto: 'O que um IP 169.254.x.x indica?', opcoes: ['Que o aparelho está em DHCP, mas nenhum servidor DHCP respondeu (APIPA)', 'Que o servidor DHCP deu um IP de outra rede', 'Que o aparelho está com IP fixo errado'], certa: 0,
+            explicacao: 'APIPA (Automatic Private IP Addressing): sem resposta do DHCP, o Windows se dá um 169.254.x.x/16. Com isso ele só fala com outros aparelhos na mesma situação. Em prova: viu 169.254, pense "DHCP não respondeu".' }
+    },
+    {
+        id: 'p4-chamado-pool', grupo: 'Projeto 4 · DHCP (IP automático)', titulo: 'Chamado: o DHCP está ligado, mas o notebook não pega IP', tipo: 'chamado',
+        historia: 'Desta vez o serviço DHCP está ligado (confira!). Os três PCs pegaram IP sem problema. O notebook novo, não: 169.254 de novo.',
+        inicio: () => redeDhcp({ notebook: true, pool: ['192.168.10.100', '192.168.10.102'] }),
+        objetivos: [
+            { texto: 'Investigue: olhe o pool e as concessões no Servidor', ok: ({ rede, comandos }) => { const nb = rede.aparelhos.find(a => a.nome === 'Note-Ana'); return !!nb && comandos.some(c => c.de === nb.id && (c.cmd === 'ipconfig' || c.cmd === 'dhcp')); } },
+            { texto: 'O Note-Ana recebe um IP do pool', ok: ({ rede }) => pegouDhcp(rede, 'Note-Ana') },
+            { texto: 'Todos conversam com todos', ok: ({ rede }) => todosConversam(rede) }
+        ],
+        dicas: ['Conte: quantos IPs cabem de .100 a .102? Quantos já estão em "Concessões"?', 'Remova o pool (✕) e crie um maior, por exemplo .100 a .150. Depois, no notebook, "Pedir IP de novo".'],
+        pergunta: { texto: 'Qual era a causa?', opcoes: ['O pool tinha só 3 IPs e todos já estavam emprestados (pool esgotado)', 'O notebook não aceita DHCP', 'O cabo do notebook estava cruzado'], certa: 0,
+            explicacao: 'O servidor só empresta o que está no pool. Com .100 a .102 cabem 3 aparelhos; o quarto fica sem resposta e cai no APIPA. Na vida real: dimensione o pool para o número de aparelhos (com folga) e lembre que celulares e visitantes também pedem IP.' }
+    },
+    {
+        id: 'p4-relay', grupo: 'Projeto 4 · DHCP (IP automático)', titulo: 'Um servidor DHCP para os dois setores (relay)', tipo: 'montar',
+        historia: 'Na rede do Projeto 2, o servidor DHCP fica no Financeiro e já atende o Fin1. O pessoal do Administrativo também está em DHCP, mas ficou com 169.254. Faça o mesmo servidor atender os dois setores.',
+        inicio: () => redeDhcpSetores(),
+        objetivos: [
+            { texto: 'No Servidor: um pool para a rede 192.168.10.0/24 com gateway 192.168.10.1', ok: ({ rede }) => { const sv = servidorDhcp(rede); return !!sv && sv.servicoDhcp.pools.some(pl => calcular(pl.inicio, pl.prefixo).rede === '192.168.10.0' && pl.gateway === '192.168.10.1'); } },
+            { texto: 'No R1, porta do Administrativo (Gi0/0): ip helper-address 192.168.20.10', ok: ({ rede }) => { const ro = rede.aparelhos.find(a => a.nome === 'R1'); return !!ro && ro.portas[0].helper === '192.168.20.10'; } },
+            { texto: 'Adm1 e Adm2 recebem IP pelo DHCP', ok: ({ rede }) => pegouDhcp(rede, 'Adm1') && pegouDhcp(rede, 'Adm2') },
+            { texto: 'Todos conversam com todos', ok: ({ rede }) => todosConversam(rede) }
+        ],
+        dicas: ['O Discover é broadcast, e roteador não repassa broadcast. Por isso o pedido do Adm1 morre no R1.', 'Selecione o R1. Na porta Gi0/0 (lado do Administrativo), preencha "ip helper-address" com 192.168.20.10. No Cisco: interface g0/0 → ip helper-address 192.168.20.10.', 'O servidor também precisa de um pool para o Administrativo: .10.100 a .10.150, /24, gateway 192.168.10.1. Depois, em Adm1 e Adm2, "Pedir IP de novo".'],
+        pergunta: { texto: 'Por que foi preciso o ip helper-address no roteador?', opcoes: ['Porque o Discover é broadcast e o roteador não repassa broadcast; o helper transforma o pedido em unicast até o servidor', 'Porque o servidor DHCP só atende roteadores', 'Porque sem ele o roteador apaga o gateway dos PCs'], certa: 0,
+            explicacao: 'Broadcast fica preso na rede local: roteador separa domínios de broadcast. O relay (ip helper-address) escuta o Discover na porta do setor e o encaminha em unicast ao servidor, informando de qual rede veio. Assim o servidor sabe de qual pool tirar o IP.' }
+    },
+    {
+        id: 'p4-chamado-gateway', grupo: 'Projeto 4 · DHCP (IP automático)', titulo: 'Chamado: pega IP, mas não sai do setor', tipo: 'chamado',
+        historia: 'No Administrativo, Adm1 e Adm2 pegam IP pelo DHCP direitinho e conversam entre si. Mas ninguém do Administrativo alcança o Financeiro. Ninguém mexeu nos PCs.',
+        inicio: () => redeDhcpSetores({ poolAdm: true, helper: true, gwAdm: '192.168.10.254' }),
+        objetivos: [
+            { texto: 'Investigue: ipconfig no Adm1', ok: ({ rede, comandos }) => { const a = rede.aparelhos.find(x => x.nome === 'Adm1'); return !!a && comandos.some(c => c.de === a.id && c.cmd === 'ipconfig'); } },
+            { texto: 'Todos voltam a conversar com todos', ok: ({ rede }) => todosConversam(rede) },
+            { texto: 'Adm1 e Adm2 continuam em DHCP', ok: ({ rede }) => pegouDhcp(rede, 'Adm1') && pegouDhcp(rede, 'Adm2') }
+        ],
+        dicas: ['O PC em DHCP recebe do servidor não só o IP, mas também a máscara e o gateway. Compare o gateway do ipconfig com o IP do R1.', 'O erro está no pool do Administrativo, no Servidor. Corrija (remova e crie de novo com gateway 192.168.10.1) e peça IP de novo nos dois PCs.'],
+        pergunta: { texto: 'Por que consertar no Servidor, e não nos PCs?', opcoes: ['Porque o gateway errado vinha do pool do DHCP; corrigindo o pool, todos os PCs do setor recebem o certo', 'Porque PC em DHCP não tem gateway', 'Porque o roteador lê o gateway do servidor'], certa: 0,
+            explicacao: 'DHCP entrega o pacote completo: IP, máscara, gateway e DNS. Um erro no pool se espalha para todos os aparelhos daquela rede, e o conserto também: corrige uma vez, e cada PC recebe o certo ao renovar.' }
+    },
+    {
+        id: 'p4-por-dentro', grupo: 'Projeto 4 · DHCP (IP automático)', titulo: 'Ver por dentro: as 4 mensagens do DHCP (DORA)', tipo: 'simulacao',
+        historia: 'Veja em câmera lenta como um PC sem IP conversa com o servidor DHCP: quem fala em broadcast, quem responde e em que ordem.',
+        inicio: () => redeDhcp(),
+        objetivos: [
+            { texto: 'Troque o modo para Simulação', ok: ({ sim }) => sim.modo === 'simulacao' },
+            { texto: 'No PC1, rode: ipconfig /renew', ok: ({ rede, comandos }) => { const a = rede.aparelhos.find(x => x.nome === 'PC1'); return !!a && comandos.some(c => c.de === a.id && c.cmd === 'dhcp'); } },
+            { texto: 'Veja o Discover e o Offer', ok: ({ sim }) => ['Discover', 'Offer'].every(op => sim.vistos.some(e => e.tipo === 'DHCP' && e.op === op)) },
+            { texto: 'Veja o Request e o Ack chegando ao PC1', ok: ({ sim }) => sim.vistos.some(e => e.tipo === 'DHCP' && e.op === 'Request') && sim.vistos.some(e => e.tipo === 'DHCP' && e.op === 'Ack' && e.para === 'PC1') }
+        ],
+        dicas: ['Use "Próximo ▶". Repare na linha de camada 3: origem 0.0.0.0 e destino 255.255.255.255 no Discover.', 'O switch inunda o Discover e o Request (broadcast) para todas as portas. Offer e Ack vão direto ao PC1.'],
+        pergunta: { texto: 'Qual é a ordem das mensagens do DHCP?', opcoes: ['Discover → Offer → Request → Ack', 'Request → Offer → Discover → Ack', 'Offer → Discover → Ack → Request'], certa: 0,
+            explicacao: 'DORA: o cliente Descobre (Discover), o servidor Oferece (Offer), o cliente Requisita o que foi oferecido (Request) e o servidor Confirma (Ack). Discover e Request saem em broadcast porque o cliente ainda não tem IP.' }
     }
 ];
 
