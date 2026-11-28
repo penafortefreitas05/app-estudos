@@ -148,6 +148,24 @@ export function redeInternet(opcoes = {}, ajuste) {
     return r;
 }
 
+
+// Projeto 7 (sub-redes): rede 192.168.10.0 dividida em blocos /26 (passo 64). Vendas .0/26 e Estoque .64/26.
+export function redeSubredes(configurada = true, ajuste) {
+    const r = M.novaRede();
+    const sv = M.adicionarAparelho(r, 'switch', 130, 170); sv.nome = 'SW-Vendas';
+    const se = M.adicionarAparelho(r, 'switch', 420, 170); se.nome = 'SW-Estoque';
+    const ro = M.adicionarAparelho(r, 'roteador', 275, 330); ro.nome = 'R1';
+    const host = (x, y, nome, sw, porta, ip, gw) => { const h = M.adicionarAparelho(r, 'pc', x, y); h.nome = nome; M.ligar(r, h.id, 'Fa0', sw.id, porta); if (configurada) { h.portas[0].ip = ip; h.portas[0].prefixo = 26; h.gateway = gw; } return h; };
+    host(20, 30, 'Vendas1', sv, 'Fa0/1', '192.168.10.10', '192.168.10.1');
+    host(190, 30, 'Vendas2', sv, 'Fa0/2', '192.168.10.11', '192.168.10.1');
+    host(350, 30, 'Estoque1', se, 'Fa0/1', '192.168.10.70', '192.168.10.65');
+    host(500, 30, 'Estoque2', se, 'Fa0/2', '192.168.10.71', '192.168.10.65');
+    M.ligar(r, sv.id, 'Fa0/8', ro.id, 'Gi0/0'); M.ligar(r, se.id, 'Fa0/8', ro.id, 'Gi0/1');
+    if (configurada) { ro.portas[0].ip = '192.168.10.1'; ro.portas[0].prefixo = 26; ro.portas[1].ip = '192.168.10.65'; ro.portas[1].prefixo = 26; }
+    if (ajuste) ajuste(r, nome => r.aparelhos.find(a => a.nome === nome));
+    return r;
+}
+
 // ---------- verificações ----------
 const hosts = r => r.aparelhos.filter(a => M.TIPOS[a.tipo].host);
 const ipDe = a => (a.portas[0] || {}).ip || '';
@@ -180,6 +198,12 @@ const pegouDhcp = (r, nome) => { const h = r.aparelhos.find(a => a.nome === nome
 const portaSw = (r, nome) => { const sw = r.aparelhos.find(a => a.tipo === 'switch'); return sw ? M.porta(sw, nome) : null; };
 const vlanDaPorta = (r, nome) => { const p = portaSw(r, nome); return p && p.modo !== 'trunk' ? (Number(p.vlan) || 1) : null; };
 const conversa = (r, de, para) => { const a = r.aparelhos.find(x => x.nome === de), b = r.aparelhos.find(x => x.nome === para); return !!a && !!b && conversam(r, a, b); };
+// Desafios de conta (previsão antes de ver): campos com a resposta certa. 'final' aceita só o último número (.64, 64 ou o IP inteiro).
+const desafioFeito = (acoes, i) => !!(acoes.desafios && acoes.desafios[i]);
+const portaDoLado = (r, ro, nomeSw) => ro.portas.find(p => { const c = M.caboDa(r, ro.id, p.nome); if (!c) return false; const viz = c.a.id === ro.id ? c.b.id : c.a.id; return M.aparelho(r, viz).nome === nomeSw; });
+const noBloco = (p, rede, pre) => !!p && ipParaNumero(p.ip) !== null && p.prefixo === pre && (() => { const c = calcular(p.ip, pre); return c.rede === rede && !c.eRede && !c.eBroadcast; })();
+const setorOk = (r, nomes, rede, pre, gw) => nomes.every(x => { const h = r.aparelhos.find(a => a.nome === x); return !!h && noBloco(h.portas[0], rede, pre) && h.gateway === gw; });
+function contaMascara(pre) { const c = calcular('192.168.10.70', pre); return [{ rotulo: 'Rede', certo: c.rede, tipo: 'final' }, { rotulo: 'Broadcast', certo: c.broadcast, tipo: 'final' }, { rotulo: 'Hosts', certo: String(c.hosts), tipo: 'numero' }]; }
 const pingDe = (ctx, filtro) => ctx.comandos.some(c => c.cmd === 'ping' && filtro(c));
 const nomeDoIp = (r, ip) => (hosts(r).find(h => ipDe(h) === ip) || {}).nome;
 
@@ -237,8 +261,8 @@ export const MISSOES = [
     },
     {
         id: 'p1-chamado-mascara', grupo: 'Projeto 1 · Escritório da Ana', titulo: 'Chamado: o PC2 fala com uns e não com outros', tipo: 'chamado',
-        historia: 'O PC2 acessa o PC3, mas não acha o PC1 nem a impressora. E o PC1 também não consegue falar com o PC2. O IP do PC2 está certo. Descubra o que mais pode estar errado.',
-        inicio: () => redeEscritorio((r, n) => { n('PC2').portas[0].prefixo = 30; }),
+        historia: 'O PC2 (192.168.10.14) acessa o PC3, mas não acha o PC1 nem a impressora. E o PC1 também não consegue falar com o PC2. O IP do PC2 é válido. Descubra o que mais pode estar errado.',
+        inicio: () => redeEscritorio((r, n) => { n('PC2').portas[0].ip = '192.168.10.14'; n('PC2').portas[0].prefixo = 30; }),
         objetivos: [
             { texto: 'Investigue: rode um ping a partir do PC2', ok: ({ rede, comandos }) => { const pc2 = rede.aparelhos.find(a => a.nome === 'PC2'); return !!pc2 && pingDe({ comandos }, c => c.de === pc2.id); } },
             { texto: 'Todos voltam a conversar com todos', ok: ({ rede }) => todosConversam(rede) },
@@ -659,6 +683,92 @@ export const MISSOES = [
         dicas: ['Use "Próximo ▶" (ou Tocar). Os passos com a etiqueta laranja NAT mostram a troca.', 'Primeiro vem o DNS (que também passa pelo NAT), depois o ICMP.'],
         pergunta: { texto: 'Na tabela NAT, o que é o "Inside global"?', opcoes: ['O IP público pelo qual o PC interno aparece na internet (aqui, 200.10.10.2)', 'O IP privado do PC (192.168.10.11)', 'O IP do servidor da internet'], certa: 0,
             explicacao: 'Inside local = IP do PC dentro da empresa (192.168.10.11). Inside global = como ele aparece lá fora (200.10.10.2:porta). Com PAT, vários PCs compartilham o mesmo inside global; a porta diferencia cada conversa.' }
+    },
+    {
+        id: 'p7-contas', grupo: 'Projeto 7 · Sub-redes e máscara', titulo: 'Prever antes de ver: rede, broadcast e hosts', tipo: 'contas',
+        historia: 'O PC Teste tem o IP 192.168.10.70. Para cada máscara, faça a conta no papel e escreva a previsão aqui no cartão. Só depois troque a máscara no painel e compare. Método: passo = 256 − último número da máscara.',
+        inicio: () => { const r = M.novaRede(); const sw = M.adicionarAparelho(r, 'switch', 300, 220); sw.nome = 'SW'; const h = M.adicionarAparelho(r, 'pc', 80, 220); h.nome = 'Teste'; h.portas[0].ip = '192.168.10.70'; M.ligar(r, h.id, 'Fa0', sw.id, 'Fa0/1'); return r; },
+        desafios: [26, 27, 28, 29, 30].map(pre => ({ titulo: `Previsão para 192.168.10.70 /${pre}`, campos: contaMascara(pre) })),
+        objetivos: [
+            { fixo: true, texto: 'Previsão certa para /26', ok: ({ acoes }) => desafioFeito(acoes, 0) },
+            { fixo: true, texto: 'Previsão certa para /27', ok: ({ acoes }) => desafioFeito(acoes, 1) },
+            { fixo: true, texto: 'Previsão certa para /28', ok: ({ acoes }) => desafioFeito(acoes, 2) },
+            { fixo: true, texto: 'Previsão certa para /29', ok: ({ acoes }) => desafioFeito(acoes, 3) },
+            { fixo: true, texto: 'Previsão certa para /30', ok: ({ acoes }) => desafioFeito(acoes, 4) },
+            { texto: 'Por fim, ponha /30 no PC Teste e confira a conta no painel', ok: ({ rede }) => (rede.aparelhos.find(a => a.nome === 'Teste') || { portas: [{}] }).portas[0].prefixo === 30 }
+        ],
+        dicas: ['Passo = 256 − último número da máscara. /26 = 255.255.255.192 → passo 64. Os blocos começam em 0, 64, 128, 192.', 'Rede = início do bloco onde o .70 cai. Broadcast = início do próximo bloco − 1. Hosts = passo − 2.', '/27 → passo 32 (0, 32, 64, 96…). /28 → 16. /29 → 8. /30 → 4 (…64, 68, 72…).'],
+        pergunta: { texto: 'Por que no /30 a rede do .70 virou .68, se nas outras máscaras era .64?', opcoes: ['Porque no /30 os blocos andam de 4 em 4 (64, 68, 72), e o .70 cai no bloco que começa em 68', 'Porque o /30 sempre soma 4 ao endereço', 'Porque o .64 vira broadcast no /30'], certa: 0,
+            explicacao: 'Quanto maior o número depois da barra, menor o passo: 64, 32, 16, 8, 4. A rede é o início do bloco onde o IP cai. Com passo 4, os blocos são 64–67 e 68–71, e o .70 está no segundo. Por isso a rede é .68, o broadcast é .71 e sobram 2 hosts.' }
+    },
+    {
+        id: 'p7-montar', grupo: 'Projeto 7 · Sub-redes e máscara', titulo: 'Dividir em Vendas e Estoque com /26', tipo: 'montar',
+        historia: 'A Ana tem só a rede 192.168.10.0 e quer separar Vendas e Estoque sem comprar outra faixa. Use blocos /26: Vendas no primeiro (192.168.10.0/26) e Estoque no segundo (192.168.10.64/26). O roteador liga os dois.',
+        inicio: () => redeSubredes(false),
+        desafios: [{ titulo: 'Faixa de hosts de cada setor (/26)', campos: [{ rotulo: 'Vendas: 1º host', certo: '192.168.10.1', tipo: 'final' }, { rotulo: 'Vendas: último', certo: '192.168.10.62', tipo: 'final' }, { rotulo: 'Estoque: 1º host', certo: '192.168.10.65', tipo: 'final' }, { rotulo: 'Estoque: último', certo: '192.168.10.126', tipo: 'final' }] }],
+        objetivos: [
+            { fixo: true, texto: 'Antes de montar: acerte a faixa de hosts dos dois setores (no cartão)', ok: ({ acoes }) => desafioFeito(acoes, 0) },
+            { texto: 'R1: porta de Vendas com IP do bloco .0/26, porta de Estoque com IP do bloco .64/26', ok: ({ rede }) => { const ro = rede.aparelhos.find(a => a.nome === 'R1'); return !!ro && noBloco(portaDoLado(rede, ro, 'SW-Vendas'), '192.168.10.0', 26) && noBloco(portaDoLado(rede, ro, 'SW-Estoque'), '192.168.10.64', 26); } },
+            { texto: 'Vendas1 e Vendas2: IP do bloco de Vendas e gateway = R1 do lado de Vendas', ok: ({ rede }) => { const ro = rede.aparelhos.find(a => a.nome === 'R1'); const p = ro && portaDoLado(rede, ro, 'SW-Vendas'); return !!p && setorOk(rede, ['Vendas1', 'Vendas2'], '192.168.10.0', 26, p.ip); } },
+            { texto: 'Estoque1 e Estoque2: IP do bloco de Estoque e gateway = R1 do lado de Estoque', ok: ({ rede }) => { const ro = rede.aparelhos.find(a => a.nome === 'R1'); const p = ro && portaDoLado(rede, ro, 'SW-Estoque'); return !!p && setorOk(rede, ['Estoque1', 'Estoque2'], '192.168.10.64', 26, p.ip); } },
+            { texto: 'Todos conversam com todos', ok: ({ rede }) => todosConversam(rede) },
+            { texto: 'Prove no terminal: tracert do Vendas1 para um PC do Estoque', ok: ({ rede, comandos }) => { const a = rede.aparelhos.find(x => x.nome === 'Vendas1'); return !!a && comandos.some(c => c.cmd === 'tracert' && c.de === a.id && /^192\.168\.10\.(6[5-9]|[7-9]\d|1[01]\d|12[0-6])$/.test(c.alvo)); } }
+        ],
+        dicas: ['Sugestão: R1 Gi0/0 = 192.168.10.1 /26 e Gi0/1 = 192.168.10.65 /26. Vendas1 .10, Vendas2 .11 (gateway .1). Estoque1 .70, Estoque2 .71 (gateway .65).', 'Máscara /26 = 255.255.255.192. Pode digitar /26 no campo.', 'Se um PC do Estoque não sai, confira se o gateway dele é .65 (e não .1).'],
+        pergunta: { texto: 'Por que o gateway do Estoque é .65 e não .1?', opcoes: ['Porque o gateway precisa estar dentro do bloco do próprio setor; .1 é do bloco de Vendas', 'Porque o roteador só aceita números ímpares', 'Porque .1 é o broadcast do Estoque'], certa: 0,
+            explicacao: 'O PC só entrega ao gateway se ele estiver na mesma rede, ou seja, no mesmo bloco. O bloco do Estoque é .64 a .127, e o .65 é o primeiro host desse bloco. O .1 fica no bloco de Vendas (.0 a .63): para um PC do Estoque, ele é "outra rede".' }
+    },
+    {
+        id: 'p7-chamado-vizinho', grupo: 'Projeto 7 · Sub-redes e máscara', titulo: 'Chamado: dois PCs no mesmo switch e não se falam', tipo: 'chamado',
+        historia: 'O PC-A (192.168.10.50) e o PC-B (192.168.10.70) estão no mesmo switch, cabos verdes, ambos com máscara /26 e sem gateway. Mesmo assim, um não alcança o outro.',
+        inicio: () => { const r = M.novaRede(); const sw = M.adicionarAparelho(r, 'switch', 290, 220); sw.nome = 'SW'; [['PC-A', '192.168.10.50', 60, 'Fa0/1'], ['PC-B', '192.168.10.70', 500, 'Fa0/2']].forEach(([n, ip, x, pt]) => { const h = M.adicionarAparelho(r, 'pc', x, 220); h.nome = n; h.portas[0].ip = ip; h.portas[0].prefixo = 26; M.ligar(r, h.id, 'Fa0', sw.id, pt); }); return r; },
+        desafios: [{ titulo: 'Em que bloco /26 cada um está? (início do bloco)', campos: [{ rotulo: 'Bloco do .50 começa em', certo: '192.168.10.0', tipo: 'final' }, { rotulo: 'Bloco do .70 começa em', certo: '192.168.10.64', tipo: 'final' }] }],
+        objetivos: [
+            { texto: 'Investigue: ping do PC-A para o PC-B (leia o "Por quê")', ok: ({ rede, comandos }) => { const a = rede.aparelhos.find(x => x.nome === 'PC-A'); return !!a && comandos.some(c => c.cmd === 'ping' && c.de === a.id); } },
+            { fixo: true, texto: 'Descubra o bloco de cada PC (no cartão)', ok: ({ acoes }) => desafioFeito(acoes, 0) },
+            { texto: 'PC-A e PC-B voltam a conversar (sem roteador)', ok: ({ rede }) => conversa(rede, 'PC-A', 'PC-B') }
+        ],
+        dicas: ['Com /26 o passo é 64: blocos 0–63, 64–127, 128–191, 192–255.', 'Duas saídas valem: trocar o IP de um deles para o bloco do outro (ex.: PC-B .60) ou aumentar o bloco dos dois para /25 (0–127).'],
+        pergunta: { texto: 'Qual era a causa?', opcoes: ['.50 e .70 ficam em blocos /26 diferentes: redes diferentes, mesmo no mesmo switch', 'O switch precisava de VLAN', 'Faltava cabo cruzado entre os PCs'], certa: 0,
+            explicacao: 'O cabo e o switch não decidem a rede: quem decide é a máscara. Com /26, o .50 fica em 0–63 e o .70 em 64–127. Cada PC conclui que o outro está "fora" e, sem gateway, nem tenta. Vizinho no switch não é, necessariamente, vizinho de rede.' }
+    },
+    {
+        id: 'p7-chamado-broadcast', grupo: 'Projeto 7 · Sub-redes e máscara', titulo: 'Chamado: o IP parece válido, mas a impressora sumiu', tipo: 'chamado',
+        historia: 'O escritório agora usa /26 (192.168.10.0/26). Alguém configurou a impressora com 192.168.10.63 "porque é o último número da faixa". Ninguém consegue imprimir.',
+        inicio: () => redeEscritorio((r, n) => { ['PC1', 'PC2', 'PC3', 'Impressora'].forEach(x => { n(x).portas[0].prefixo = 26; }); n('Impressora').portas[0].ip = '192.168.10.63'; }),
+        objetivos: [
+            { texto: 'Investigue: ping de um PC para 192.168.10.63 (leia o "Por quê")', ok: ({ comandos }) => comandos.some(c => c.cmd === 'ping' && c.alvo === '192.168.10.63') },
+            { texto: 'Impressora com um IP de host válido do bloco', ok: ({ rede }) => noBloco((rede.aparelhos.find(a => a.nome === 'Impressora') || { portas: [] }).portas[0], '192.168.10.0', 26) },
+            { texto: 'Todos conversam com todos', ok: ({ rede }) => todosConversam(rede) }
+        ],
+        dicas: ['Bloco /26 que começa em 0: vai de .0 a .63. Qual desses dois extremos é a rede, e qual é o broadcast?', 'Hosts válidos: .1 a .62. Use, por exemplo, .20 ou .62.'],
+        pergunta: { texto: 'Por que .63 não serve para a impressora nesse bloco?', opcoes: ['Porque é o broadcast do bloco 0–63: o último endereço é reservado, não é de host', 'Porque números ímpares são reservados', 'Porque impressora só aceita IP abaixo de .50'], certa: 0,
+            explicacao: 'Em todo bloco, o primeiro endereço é a rede e o último é o broadcast; nenhum dos dois vai em aparelho. No /26 que começa em 0, a rede é .0 e o broadcast é .63, então os hosts vão de .1 a .62. Pegadinha clássica: "último número da faixa" é o broadcast, não o último host.' }
+    },
+    {
+        id: 'p7-chamado-gateway', grupo: 'Projeto 7 · Sub-redes e máscara', titulo: 'Chamado: o Estoque1 fala com o setor, mas não sai dele', tipo: 'chamado',
+        historia: 'Na rede de Vendas e Estoque, o Estoque1 conversa com o Estoque2, mas não alcança nenhum PC de Vendas. O Estoque2 sai normalmente.',
+        inicio: () => redeSubredes(true, (r, n) => { n('Estoque1').gateway = '192.168.10.1'; }),
+        objetivos: [
+            { texto: 'Investigue: ipconfig e ping no Estoque1', ok: ({ rede, comandos }) => { const a = rede.aparelhos.find(x => x.nome === 'Estoque1'); return !!a && comandos.some(c => c.de === a.id && c.cmd === 'ipconfig') && comandos.some(c => c.de === a.id && c.cmd === 'ping'); } },
+            { texto: 'Todos voltam a conversar com todos', ok: ({ rede }) => todosConversam(rede) }
+        ],
+        dicas: ['Compare o gateway do Estoque1 com o do Estoque2.', 'Em que bloco /26 está o gateway 192.168.10.1? E o Estoque1 (.70)?'],
+        pergunta: { texto: 'Por que o gateway .1 não funciona para o Estoque1?', opcoes: ['O .1 está no bloco de Vendas (0–63); o PC só usa gateway do próprio bloco (64–127)', 'O roteador estava desligado', 'O Estoque1 estava na VLAN errada'], certa: 0,
+            explicacao: 'Antes de mandar, o PC confere se o gateway está na rede dele. O .1 fica fora do bloco 64–127, então o PC nem tenta. Diferente do chamado do Projeto 2, em que o gateway estava no bloco certo mas não existia: aqui ele existe, só que do outro lado.' }
+    },
+    {
+        id: 'p7-por-dentro', grupo: 'Projeto 7 · Sub-redes e máscara', titulo: 'Ver por dentro: o PC faz a conta antes de mandar', tipo: 'simulacao',
+        historia: 'O mesmo PC, dois destinos. Para um, ele pergunta direto pelo MAC do destino; para o outro, pergunta pelo gateway. A diferença está só na conta com a máscara.',
+        inicio: () => redeSubredes(true),
+        objetivos: [
+            { texto: 'Troque o modo para Simulação', ok: ({ sim }) => sim.modo === 'simulacao' },
+            { texto: 'No Vendas1, ping 192.168.10.11: veja o ARP perguntando pelo .11 (mesmo bloco)', ok: ({ sim }) => sim.vistos.some(e => e.tipo === 'ARP' && e.op === 'pedido' && e.alvoIp === '192.168.10.11') },
+            { texto: 'No Vendas1, ping 192.168.10.70: veja o ARP perguntando pelo .1 (gateway), não pelo .70', ok: ({ sim, comandos }) => comandos.some(c => c.cmd === 'ping' && c.alvo === '192.168.10.70') && sim.vistos.some(e => e.tipo === 'ARP' && e.op === 'pedido' && e.alvoIp === '192.168.10.1') }
+        ],
+        dicas: ['Use "Próximo ▶" e leia o alvo do ARP no quadro de cada passo.', 'Vendas1 é .10/26 (bloco 0–63). O .11 está no mesmo bloco; o .70, não.'],
+        pergunta: { texto: 'Como o PC decide se pergunta pelo destino ou pelo gateway?', opcoes: ['Aplica a máscara ao IP dele e ao do destino: mesmo bloco, ARP do destino; outro bloco, ARP do gateway', 'Pergunta sempre pelo gateway primeiro', 'Depende do switch'], certa: 0,
+            explicacao: 'O PC faz a conta antes de mandar qualquer coisa. Mesmo bloco = entrega direta (ARP do destino). Outro bloco = entrega ao gateway (ARP do gateway). Por isso a máscara errada muda o comportamento mesmo com cabos e IPs "certos".' }
     }
 ];
 

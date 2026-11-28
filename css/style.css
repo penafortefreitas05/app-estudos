@@ -3069,3 +3069,10 @@ body.modo-bancada { overflow: hidden; }
 
 .bc-sim .bc-eventos { overflow: auto; min-height: 48px; flex: 1 1 auto; }
 .bc-sim .bc-sim-cab, .bc-sim .bc-detalhe { flex: none; }
+/* Laboratório: desafios de conta (Projeto 7) */
+.bc-desafio { border: 1px dashed #60a5fa; border-radius: 10px; padding: 8px; margin: 8px 0; background: #0b1222; display: grid; gap: 6px; }
+.bc-desafio .bc-rot { margin: 0; color: #93c5fd; }
+.bc-desafio-campos { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.bc-desafio-campos label { display: grid; gap: 2px; font-size: 12px; color: #94a3b8; }
+.bc-desafio p { margin: 0; }
+.bc-desafio-ok { margin: 6px 0; }

@@ -83,7 +83,9 @@ export function interfaces(a) {
     }
     return lista;
 }
-function interfacesIp(a) { return interfaces(a).filter(p => p.ip && ipParaNumero(p.ip) !== null && (p.fisica ? p.ligada : true)); }
+// IP de rede ou de broadcast não serve para aparelho (o Windows nem aceita): a porta fica como se não tivesse IP.
+function ipDeHost(p) { if (!p.ip || ipParaNumero(p.ip) === null) return false; if (p.prefixo >= 31) return true; const c = calcular(p.ip, p.prefixo); return !c.erro && !c.eRede && !c.eBroadcast; }
+function interfacesIp(a) { return interfaces(a).filter(p => ipDeHost(p) && (p.fisica ? p.ligada : true)); }
 function ifaceLocal(a, ip) {
     return interfacesIp(a).find(p => eLocal({ ip: p.ip, prefixo: p.prefixo }, ip)) || null;
 }
@@ -165,7 +167,7 @@ function resolverArp(rede, est, a, p, ip, ev, limite, avisos) {
     if (t[ip]) return t[ip];
     const pedido = { tipo: 'ARP', op: 'pedido', origemMac: p.mac, destinoMac: BROADCAST, origemIp: p.ip, alvoIp: ip,
         resumo: `ARP: quem tem ${ip}? Responda a ${p.ip}` };
-    const quem = transmitir(rede, est, a, p, pedido, ev, limite).filter(([d, pd]) => pd.ip === ip);
+    const quem = transmitir(rede, est, a, p, pedido, ev, limite).filter(([d, pd]) => pd.ip === ip && ipDeHost(pd));
     if (quem.length > 1) avisos.add(`Conflito de IP: ${quem.map(([d]) => d.nome).join(' e ')} usam ${ip}.`);
     for (const [d, pd] of quem) {
         tabArp(est, d.id)[p.ip] = p.mac; // quem responde também aprende o pedinte
@@ -374,6 +376,11 @@ export function ping(rede, est, origemId, destinoIp, vezes = 4) {
     // Origem do ping: num roteador, o IP da porta por onde o pacote sai (como no Cisco); nos demais, a única porta com IP.
     let pa = interfacesIp(a)[0];
     if (TIPOS[a.tipo].roteia) { const rt = rotaPara(a, destinoIp); if (rt.porta && rt.porta.ip) pa = rt.porta; }
+    // IP de rede/broadcast na própria porta: explica em vez do genérico "sem IP"
+    const pInvalida = !pa && a.portas.find(p => p.ip && ipParaNumero(p.ip) !== null && !ipDeHost(p));
+    if (pInvalida) { const v = validar({ ip: pInvalida.ip, prefixo: pInvalida.prefixo }); return { linhas: ['Pinging ' + destinoIp + ' with 32 bytes of data:', '', 'PING: transmit failed. General failure.'], tentativas, ok: 0, explicacao: `${a.nome}: ${v ? v.texto : 'IP inválido'}`, avisos: [] }; }
+    // Destino é o endereço de rede ou o broadcast da rede da origem: não é de nenhum aparelho
+    if (pa && pa.prefixo < 31) { const c = calcular(pa.ip, pa.prefixo); const cd = calcular(destinoIp, pa.prefixo); if (!cd.erro && cd.rede === c.rede && (cd.eRede || cd.eBroadcast)) return { linhas: ['Pinging ' + destinoIp + ' with 32 bytes of data:', '', ...Array(4).fill('Request timed out.')], tentativas, ok: 0, explicacao: `${destinoIp} é o ${cd.eRede ? 'endereço da rede' : 'broadcast'} ${c.rede}/${pa.prefixo}: não pertence a nenhum aparelho.`, avisos: [] }; }
     const problema = pa ? validar({ ip: pa.ip, prefixo: pa.prefixo, gateway: TIPOS[a.tipo].host ? a.gateway : '' }) : null;
     let ok = 0; const avisos = new Set(); let ultimoMotivo = null;
     for (let i = 0; i < vezes; i++) {

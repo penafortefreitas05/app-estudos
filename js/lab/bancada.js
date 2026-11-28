@@ -358,24 +358,48 @@ export function abrirBancada() {
             <p class="bc-missao-tit">${esc(d.titulo)}</p><p class="bc-nota">${esc(d.historia)}</p>
             <ul class="bc-objetivos">${d.objetivos.map((o, i) => `<li class="${res[i] ? 'ok' : ''} ${i === proximo && o.como ? 'agora' : ''}"><span aria-hidden="true">${res[i] ? '✓' : '○'}</span> ${esc(o.texto)}<span class="sr-only">${res[i] ? ' (feito)' : ' (falta)'}</span></li>`).join('')}</ul>
             ${proximo >= 0 && d.objetivos[proximo].como ? `<p class="bc-agora"><b>Agora:</b> ${esc(d.objetivos[proximo].como)}</p>` : ''}
+            ${painelDesafio(d)}
             ${d.dicas.slice(0, missao.dicas).map(t => `<p class="bc-dica-m">💡 ${esc(t)}</p>`).join('')}
             ${!tudo && missao.dicas < d.dicas.length ? `<button type="button" data-missao="dica">💡 Dica ${missao.dicas + 1} de ${d.dicas.length}</button>` : ''}
             ${pergunta}
             <button type="button" class="bc-link" data-missao="sair">Sair da missão</button>`;
     }
+    // Desafio de conta: o aluno escreve a previsão; o app confere. Aceita ".64", "64" ou o IP inteiro.
+    function painelDesafio(d) {
+        if (!d.desafios) return '';
+        const feitos = missao.acoes.desafios || [];
+        const i = d.desafios.findIndex((_, k) => !feitos[k]);
+        if (i < 0) return `<p class="bc-bom bc-desafio-ok">✓ Todas as contas certas.</p>`;
+        const ds = d.desafios[i]; const erros = (missao.acoes.erros || [])[i] || 0;
+        return `<form class="bc-desafio" data-desafio="${i}"><p class="bc-rot">✎ ${esc(ds.titulo)}</p>
+            <div class="bc-desafio-campos">${ds.campos.map((c, k) => `<label>${esc(c.rotulo)}<input name="c${k}" autocomplete="off" inputmode="decimal" value="${esc((missao.acoes.rascunho || {})[`${i}-${k}`] || '')}"></label>`).join('')}</div>
+            <button>Conferir</button>${missao.acoes.msg ? `<p class="bc-nota ${missao.acoes.msgOk ? 'bc-bom' : 'bc-ruim'}">${esc(missao.acoes.msg)}</p>` : ''}
+            ${erros >= 2 ? '<p class="bc-nota">Método: passo = 256 − último número da máscara. Rede = início do bloco onde o IP cai; broadcast = próximo início − 1; hosts = passo − 2.</p>' : ''}</form>`;
+    }
+    const normalizar = (v, tipo) => { const t = String(v || '').trim().replace(/^\./, ''); if (tipo === 'numero') return t.replace(/\D/g, ''); const partes = t.split('.'); return partes[partes.length - 1]; };
     function listaMissoes() {
         const feitas = progresso(); let grupo = '';
         const d = $('.bc-dialogo');
         d.innerHTML = `<div class="bc-caixa bc-caixa-larga"><p class="bc-rot">Missões</p>
             <p class="bc-nota">Cada missão abre a sua própria bancada. Seu projeto atual fica guardado se você usou "Salvar".</p>
             ${MISSOES.map((m, i) => { const g = m.grupo !== grupo ? `<p class="bc-grupo">${esc((grupo = m.grupo))}</p>` : ''; const f = feitas[m.id];
-                return `${g}<button type="button" class="bc-missao-item" data-iniciar="${i}"><span>${f ? '✓' : '○'}</span><span><b>${esc(m.titulo)}</b><small>${m.tipo === 'chamado' ? 'Chamado de suporte: ache a causa e conserte' : m.tipo === 'montar' ? 'Monte do zero' : m.tipo === 'tutorial' ? 'Tutorial: aprenda a mexer na bancada' : 'Modo simulação'}</small></span></button>`; }).join('')}
+                return `${g}<button type="button" class="bc-missao-item" data-iniciar="${i}"><span>${f ? '✓' : '○'}</span><span><b>${esc(m.titulo)}</b><small>${m.tipo === 'chamado' ? 'Chamado de suporte: ache a causa e conserte' : m.tipo === 'montar' ? 'Monte do zero' : m.tipo === 'tutorial' ? 'Tutorial: aprenda a mexer na bancada' : m.tipo === 'contas' ? 'Contas: preveja antes de ver' : 'Modo simulação'}</small></span></button>`; }).join('')}
             <p class="bc-nota">Em breve: mais projetos (ACL, segurança e serviços).</p>
             <button type="button" data-acao="fechar-dialogo">Fechar</button></div>`;
         d.hidden = false;
     }
+    $('.bc-missao').addEventListener('submit', (ev) => {
+        const f = ev.target.closest('.bc-desafio'); if (!f || !missao) return;
+        ev.preventDefault(); ev.stopPropagation();
+        const i = Number(f.dataset.desafio); const ds = missao.def.desafios[i];
+        const ac = missao.acoes; ac.rascunho = ac.rascunho || {};
+        const certos = ds.campos.map((c, k) => { const v = f.elements[`c${k}`].value; ac.rascunho[`${i}-${k}`] = v; return normalizar(v, c.tipo) === normalizar(c.certo, c.tipo); });
+        if (certos.every(Boolean)) { ac.desafios = ac.desafios || []; ac.desafios[i] = true; ac.msg = 'Certo! Agora, se quiser, troque a máscara no painel e confira.'; ac.msgOk = true; }
+        else { ac.erros = ac.erros || []; ac.erros[i] = (ac.erros[i] || 0) + 1; ac.msg = `Ainda não: ${certos.filter(x => !x).length} de ${certos.length} campo(s) errado(s). Refaça a conta (sem trocar a máscara antes).`; ac.msgOk = false; }
+        desenharMissao();
+    });
     $('.bc-missao').addEventListener('click', (ev) => {
-        const b = ev.target.closest('button'); if (!b || !missao) return;
+        const b = ev.target.closest('button'); if (!b || !missao || b.closest('.bc-desafio')) return;
         ev.stopPropagation();
         if (b.dataset.acao === 'missoes') { listaMissoes(); return; }
         const k = b.dataset.missao;
